@@ -11,754 +11,749 @@ import (
 
 func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConnectPlugin(resp *shared.OpenidConnectPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateOpenidConnectPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.Audience = []types.String{}
-			for _, v := range resp.Config.Audience {
-				r.Config.Audience = append(r.Config.Audience, types.StringValue(v))
-			}
-			r.Config.AudienceClaim = []types.String{}
-			for _, v := range resp.Config.AudienceClaim {
-				r.Config.AudienceClaim = append(r.Config.AudienceClaim, types.StringValue(v))
-			}
-			r.Config.AudienceRequired = []types.String{}
-			for _, v := range resp.Config.AudienceRequired {
-				r.Config.AudienceRequired = append(r.Config.AudienceRequired, types.StringValue(v))
-			}
-			r.Config.AuthMethods = []types.String{}
-			for _, v := range resp.Config.AuthMethods {
-				r.Config.AuthMethods = append(r.Config.AuthMethods, types.StringValue(string(v)))
-			}
-			r.Config.AuthenticatedGroupsClaim = []types.String{}
-			for _, v := range resp.Config.AuthenticatedGroupsClaim {
-				r.Config.AuthenticatedGroupsClaim = append(r.Config.AuthenticatedGroupsClaim, types.StringValue(v))
-			}
-			r.Config.AuthorizationCookieDomain = types.StringPointerValue(resp.Config.AuthorizationCookieDomain)
-			r.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(resp.Config.AuthorizationCookieHTTPOnly)
-			r.Config.AuthorizationCookieName = types.StringPointerValue(resp.Config.AuthorizationCookieName)
-			r.Config.AuthorizationCookiePath = types.StringPointerValue(resp.Config.AuthorizationCookiePath)
-			if resp.Config.AuthorizationCookieSameSite != nil {
-				r.Config.AuthorizationCookieSameSite = types.StringValue(string(*resp.Config.AuthorizationCookieSameSite))
-			} else {
-				r.Config.AuthorizationCookieSameSite = types.StringNull()
-			}
-			r.Config.AuthorizationCookieSecure = types.BoolPointerValue(resp.Config.AuthorizationCookieSecure)
-			r.Config.AuthorizationEndpoint = types.StringPointerValue(resp.Config.AuthorizationEndpoint)
-			r.Config.AuthorizationQueryArgsClient = []types.String{}
-			for _, v := range resp.Config.AuthorizationQueryArgsClient {
-				r.Config.AuthorizationQueryArgsClient = append(r.Config.AuthorizationQueryArgsClient, types.StringValue(v))
-			}
-			r.Config.AuthorizationQueryArgsNames = []types.String{}
-			for _, v := range resp.Config.AuthorizationQueryArgsNames {
-				r.Config.AuthorizationQueryArgsNames = append(r.Config.AuthorizationQueryArgsNames, types.StringValue(v))
-			}
-			r.Config.AuthorizationQueryArgsValues = []types.String{}
-			for _, v := range resp.Config.AuthorizationQueryArgsValues {
-				r.Config.AuthorizationQueryArgsValues = append(r.Config.AuthorizationQueryArgsValues, types.StringValue(v))
-			}
-			if resp.Config.AuthorizationRollingTimeout != nil {
-				r.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.AuthorizationRollingTimeout)))
-			} else {
-				r.Config.AuthorizationRollingTimeout = types.NumberNull()
-			}
-			r.Config.BearerTokenCookieName = types.StringPointerValue(resp.Config.BearerTokenCookieName)
-			r.Config.BearerTokenParamType = []types.String{}
-			for _, v := range resp.Config.BearerTokenParamType {
-				r.Config.BearerTokenParamType = append(r.Config.BearerTokenParamType, types.StringValue(string(v)))
-			}
-			r.Config.ByUsernameIgnoreCase = types.BoolPointerValue(resp.Config.ByUsernameIgnoreCase)
-			r.Config.CacheIntrospection = types.BoolPointerValue(resp.Config.CacheIntrospection)
-			r.Config.CacheTokenExchange = types.BoolPointerValue(resp.Config.CacheTokenExchange)
-			r.Config.CacheTokens = types.BoolPointerValue(resp.Config.CacheTokens)
-			r.Config.CacheTokensSalt = types.StringPointerValue(resp.Config.CacheTokensSalt)
-			if resp.Config.CacheTTL != nil {
-				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-			} else {
-				r.Config.CacheTTL = types.NumberNull()
-			}
-			if resp.Config.CacheTTLMax != nil {
-				r.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLMax)))
-			} else {
-				r.Config.CacheTTLMax = types.NumberNull()
-			}
-			if resp.Config.CacheTTLMin != nil {
-				r.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLMin)))
-			} else {
-				r.Config.CacheTTLMin = types.NumberNull()
-			}
-			if resp.Config.CacheTTLNeg != nil {
-				r.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLNeg)))
-			} else {
-				r.Config.CacheTTLNeg = types.NumberNull()
-			}
-			if resp.Config.CacheTTLResurrect != nil {
-				r.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLResurrect)))
-			} else {
-				r.Config.CacheTTLResurrect = types.NumberNull()
-			}
-			r.Config.CacheUserInfo = types.BoolPointerValue(resp.Config.CacheUserInfo)
-			r.Config.ClaimsForbidden = []types.String{}
-			for _, v := range resp.Config.ClaimsForbidden {
-				r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
-			}
-			r.Config.ClientAlg = []types.String{}
-			for _, v := range resp.Config.ClientAlg {
-				r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
-			}
-			r.Config.ClientArg = types.StringPointerValue(resp.Config.ClientArg)
-			r.Config.ClientAuth = []types.String{}
-			for _, v := range resp.Config.ClientAuth {
-				r.Config.ClientAuth = append(r.Config.ClientAuth, types.StringValue(string(v)))
-			}
-			r.Config.ClientCredentialsParamType = []types.String{}
-			for _, v := range resp.Config.ClientCredentialsParamType {
-				r.Config.ClientCredentialsParamType = append(r.Config.ClientCredentialsParamType, types.StringValue(string(v)))
-			}
-			r.Config.ClientID = []types.String{}
-			for _, v := range resp.Config.ClientID {
-				r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
-			}
-			r.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
-			if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
-				r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
-			}
-			for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
-				var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
-				clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
-				clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
-				clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
-				clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
-				clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
-				clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
-				clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
-				clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
-				clientJwk1.KeyOps = []types.String{}
-				for _, v := range clientJwkItem.KeyOps {
-					clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
-				}
-				clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
-				clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
-				clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
-				clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
-				clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
-				clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
-				clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
-				clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
-				clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
-				clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
-				clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
-				clientJwk1.X5c = []types.String{}
-				for _, v := range clientJwkItem.X5c {
-					clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
-				}
-				clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
-				clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
-				clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
-				clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
-				if clientJwkCount+1 > len(r.Config.ClientJwk) {
-					r.Config.ClientJwk = append(r.Config.ClientJwk, clientJwk1)
-				} else {
-					r.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
-					r.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
-					r.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
-					r.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
-					r.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
-					r.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
-					r.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
-					r.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
-					r.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
-					r.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
-					r.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
-					r.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
-					r.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
-					r.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
-					r.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
-					r.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
-					r.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
-					r.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
-					r.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
-					r.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
-					r.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
-					r.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
-					r.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
-					r.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
-					r.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
-				}
-			}
-			r.Config.ClientSecret = []types.String{}
-			for _, v := range resp.Config.ClientSecret {
-				r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
-			}
-			if resp.Config.ClusterCacheRedis == nil {
-				r.Config.ClusterCacheRedis = nil
-			} else {
-				r.Config.ClusterCacheRedis = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginRedis{}
-				r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
-				r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
-				if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
-					r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-					var clusterNodes1 tfTypes.ClusterNodes
-					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
-						r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
-					} else {
-						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-						r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-					}
-				}
-				r.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ConnectTimeout)
-				r.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.ClusterCacheRedis.ConnectionIsProxied)
-				r.Config.ClusterCacheRedis.Database = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Database)
-				r.Config.ClusterCacheRedis.Host = types.StringPointerValue(resp.Config.ClusterCacheRedis.Host)
-				r.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepaliveBacklog)
-				r.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepalivePoolSize)
-				r.Config.ClusterCacheRedis.Password = types.StringPointerValue(resp.Config.ClusterCacheRedis.Password)
-				r.Config.ClusterCacheRedis.Port = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Port)
-				r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
-				r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
-				r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
-				r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
-				if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
-					r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-					var sentinelNodes1 tfTypes.SentinelNodes
-					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
-						r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
-					} else {
-						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-						r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-					}
-				}
-				r.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelPassword)
-				if resp.Config.ClusterCacheRedis.SentinelRole != nil {
-					r.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*resp.Config.ClusterCacheRedis.SentinelRole))
-				} else {
-					r.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
-				}
-				r.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelUsername)
-				r.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(resp.Config.ClusterCacheRedis.ServerName)
-				r.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(resp.Config.ClusterCacheRedis.Ssl)
-				r.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(resp.Config.ClusterCacheRedis.SslVerify)
-				r.Config.ClusterCacheRedis.Username = types.StringPointerValue(resp.Config.ClusterCacheRedis.Username)
-			}
-			if resp.Config.ClusterCacheStrategy != nil {
-				r.Config.ClusterCacheStrategy = types.StringValue(string(*resp.Config.ClusterCacheStrategy))
-			} else {
-				r.Config.ClusterCacheStrategy = types.StringNull()
-			}
-			r.Config.ConsumerBy = []types.String{}
-			for _, v := range resp.Config.ConsumerBy {
-				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-			}
-			r.Config.ConsumerClaim = []types.String{}
-			for _, v := range resp.Config.ConsumerClaim {
-				r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
-			}
-			r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
-			r.Config.CredentialClaim = []types.String{}
-			for _, v := range resp.Config.CredentialClaim {
-				r.Config.CredentialClaim = append(r.Config.CredentialClaim, types.StringValue(v))
-			}
-			r.Config.DisableSession = []types.String{}
-			for _, v := range resp.Config.DisableSession {
-				r.Config.DisableSession = append(r.Config.DisableSession, types.StringValue(string(v)))
-			}
-			r.Config.DiscoveryHeadersNames = []types.String{}
-			for _, v := range resp.Config.DiscoveryHeadersNames {
-				r.Config.DiscoveryHeadersNames = append(r.Config.DiscoveryHeadersNames, types.StringValue(v))
-			}
-			r.Config.DiscoveryHeadersValues = []types.String{}
-			for _, v := range resp.Config.DiscoveryHeadersValues {
-				r.Config.DiscoveryHeadersValues = append(r.Config.DiscoveryHeadersValues, types.StringValue(v))
-			}
-			r.Config.DisplayErrors = types.BoolPointerValue(resp.Config.DisplayErrors)
-			r.Config.Domains = []types.String{}
-			for _, v := range resp.Config.Domains {
-				r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
-			}
-			r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
-			r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
-			r.Config.DownstreamHeadersClaims = []types.String{}
-			for _, v := range resp.Config.DownstreamHeadersClaims {
-				r.Config.DownstreamHeadersClaims = append(r.Config.DownstreamHeadersClaims, types.StringValue(v))
-			}
-			r.Config.DownstreamHeadersNames = []types.String{}
-			for _, v := range resp.Config.DownstreamHeadersNames {
-				r.Config.DownstreamHeadersNames = append(r.Config.DownstreamHeadersNames, types.StringValue(v))
-			}
-			r.Config.DownstreamIDTokenHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenHeader)
-			r.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenJwkHeader)
-			r.Config.DownstreamIntrospectionHeader = types.StringPointerValue(resp.Config.DownstreamIntrospectionHeader)
-			r.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(resp.Config.DownstreamIntrospectionJwtHeader)
-			r.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(resp.Config.DownstreamRefreshTokenHeader)
-			r.Config.DownstreamSessionIDHeader = types.StringPointerValue(resp.Config.DownstreamSessionIDHeader)
-			r.Config.DownstreamUserInfoHeader = types.StringPointerValue(resp.Config.DownstreamUserInfoHeader)
-			r.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(resp.Config.DownstreamUserInfoJwtHeader)
-			if resp.Config.DpopProofLifetime != nil {
-				r.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*resp.Config.DpopProofLifetime)))
-			} else {
-				r.Config.DpopProofLifetime = types.NumberNull()
-			}
-			r.Config.DpopUseNonce = types.BoolPointerValue(resp.Config.DpopUseNonce)
-			r.Config.EnableHsSignatures = types.BoolPointerValue(resp.Config.EnableHsSignatures)
-			r.Config.EndSessionEndpoint = types.StringPointerValue(resp.Config.EndSessionEndpoint)
-			r.Config.ExposeErrorCode = types.BoolPointerValue(resp.Config.ExposeErrorCode)
-			r.Config.ExtraJwksUris = []types.String{}
-			for _, v := range resp.Config.ExtraJwksUris {
-				r.Config.ExtraJwksUris = append(r.Config.ExtraJwksUris, types.StringValue(v))
-			}
-			r.Config.ForbiddenDestroySession = types.BoolPointerValue(resp.Config.ForbiddenDestroySession)
-			r.Config.ForbiddenErrorMessage = types.StringPointerValue(resp.Config.ForbiddenErrorMessage)
-			r.Config.ForbiddenRedirectURI = []types.String{}
-			for _, v := range resp.Config.ForbiddenRedirectURI {
-				r.Config.ForbiddenRedirectURI = append(r.Config.ForbiddenRedirectURI, types.StringValue(v))
-			}
-			r.Config.GroupsClaim = []types.String{}
-			for _, v := range resp.Config.GroupsClaim {
-				r.Config.GroupsClaim = append(r.Config.GroupsClaim, types.StringValue(v))
-			}
-			r.Config.GroupsRequired = []types.String{}
-			for _, v := range resp.Config.GroupsRequired {
-				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
-			}
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
-			r.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.HTTPProxyAuthorization)
-			if resp.Config.HTTPVersion != nil {
-				r.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPVersion)))
-			} else {
-				r.Config.HTTPVersion = types.NumberNull()
-			}
-			r.Config.HTTPSProxy = types.StringPointerValue(resp.Config.HTTPSProxy)
-			r.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.HTTPSProxyAuthorization)
-			r.Config.IDTokenParamName = types.StringPointerValue(resp.Config.IDTokenParamName)
-			r.Config.IDTokenParamType = []types.String{}
-			for _, v := range resp.Config.IDTokenParamType {
-				r.Config.IDTokenParamType = append(r.Config.IDTokenParamType, types.StringValue(string(v)))
-			}
-			r.Config.IgnoreSignature = []types.String{}
-			for _, v := range resp.Config.IgnoreSignature {
-				r.Config.IgnoreSignature = append(r.Config.IgnoreSignature, types.StringValue(string(v)))
-			}
-			r.Config.IntrospectJwtTokens = types.BoolPointerValue(resp.Config.IntrospectJwtTokens)
-			if resp.Config.IntrospectionAccept != nil {
-				r.Config.IntrospectionAccept = types.StringValue(string(*resp.Config.IntrospectionAccept))
-			} else {
-				r.Config.IntrospectionAccept = types.StringNull()
-			}
-			r.Config.IntrospectionCheckActive = types.BoolPointerValue(resp.Config.IntrospectionCheckActive)
-			r.Config.IntrospectionEndpoint = types.StringPointerValue(resp.Config.IntrospectionEndpoint)
-			if resp.Config.IntrospectionEndpointAuthMethod != nil {
-				r.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*resp.Config.IntrospectionEndpointAuthMethod))
-			} else {
-				r.Config.IntrospectionEndpointAuthMethod = types.StringNull()
-			}
-			r.Config.IntrospectionHeadersClient = []types.String{}
-			for _, v := range resp.Config.IntrospectionHeadersClient {
-				r.Config.IntrospectionHeadersClient = append(r.Config.IntrospectionHeadersClient, types.StringValue(v))
-			}
-			r.Config.IntrospectionHeadersNames = []types.String{}
-			for _, v := range resp.Config.IntrospectionHeadersNames {
-				r.Config.IntrospectionHeadersNames = append(r.Config.IntrospectionHeadersNames, types.StringValue(v))
-			}
-			r.Config.IntrospectionHeadersValues = []types.String{}
-			for _, v := range resp.Config.IntrospectionHeadersValues {
-				r.Config.IntrospectionHeadersValues = append(r.Config.IntrospectionHeadersValues, types.StringValue(v))
-			}
-			r.Config.IntrospectionHint = types.StringPointerValue(resp.Config.IntrospectionHint)
-			r.Config.IntrospectionPostArgsClient = []types.String{}
-			for _, v := range resp.Config.IntrospectionPostArgsClient {
-				r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
-			}
-			r.Config.IntrospectionPostArgsNames = []types.String{}
-			for _, v := range resp.Config.IntrospectionPostArgsNames {
-				r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
-			}
-			r.Config.IntrospectionPostArgsValues = []types.String{}
-			for _, v := range resp.Config.IntrospectionPostArgsValues {
-				r.Config.IntrospectionPostArgsValues = append(r.Config.IntrospectionPostArgsValues, types.StringValue(v))
-			}
-			r.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.Config.IntrospectionTokenParamName)
-			r.Config.Issuer = types.StringPointerValue(resp.Config.Issuer)
-			r.Config.IssuersAllowed = []types.String{}
-			for _, v := range resp.Config.IssuersAllowed {
-				r.Config.IssuersAllowed = append(r.Config.IssuersAllowed, types.StringValue(v))
-			}
-			r.Config.JwtSessionClaim = types.StringPointerValue(resp.Config.JwtSessionClaim)
-			r.Config.JwtSessionCookie = types.StringPointerValue(resp.Config.JwtSessionCookie)
-			r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
-			if resp.Config.Leeway != nil {
-				r.Config.Leeway = types.NumberValue(big.NewFloat(float64(*resp.Config.Leeway)))
-			} else {
-				r.Config.Leeway = types.NumberNull()
-			}
-			if resp.Config.LoginAction != nil {
-				r.Config.LoginAction = types.StringValue(string(*resp.Config.LoginAction))
-			} else {
-				r.Config.LoginAction = types.StringNull()
-			}
-			r.Config.LoginMethods = []types.String{}
-			for _, v := range resp.Config.LoginMethods {
-				r.Config.LoginMethods = append(r.Config.LoginMethods, types.StringValue(string(v)))
-			}
-			if resp.Config.LoginRedirectMode != nil {
-				r.Config.LoginRedirectMode = types.StringValue(string(*resp.Config.LoginRedirectMode))
-			} else {
-				r.Config.LoginRedirectMode = types.StringNull()
-			}
-			r.Config.LoginRedirectURI = []types.String{}
-			for _, v := range resp.Config.LoginRedirectURI {
-				r.Config.LoginRedirectURI = append(r.Config.LoginRedirectURI, types.StringValue(v))
-			}
-			r.Config.LoginTokens = []types.String{}
-			for _, v := range resp.Config.LoginTokens {
-				r.Config.LoginTokens = append(r.Config.LoginTokens, types.StringValue(string(v)))
-			}
-			r.Config.LogoutMethods = []types.String{}
-			for _, v := range resp.Config.LogoutMethods {
-				r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
-			}
-			r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
-			r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
-			r.Config.LogoutRedirectURI = []types.String{}
-			for _, v := range resp.Config.LogoutRedirectURI {
-				r.Config.LogoutRedirectURI = append(r.Config.LogoutRedirectURI, types.StringValue(v))
-			}
-			r.Config.LogoutRevoke = types.BoolPointerValue(resp.Config.LogoutRevoke)
-			r.Config.LogoutRevokeAccessToken = types.BoolPointerValue(resp.Config.LogoutRevokeAccessToken)
-			r.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(resp.Config.LogoutRevokeRefreshToken)
-			r.Config.LogoutURISuffix = types.StringPointerValue(resp.Config.LogoutURISuffix)
-			if resp.Config.MaxAge != nil {
-				r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
-			} else {
-				r.Config.MaxAge = types.NumberNull()
-			}
-			r.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(resp.Config.MtlsIntrospectionEndpoint)
-			r.Config.MtlsRevocationEndpoint = types.StringPointerValue(resp.Config.MtlsRevocationEndpoint)
-			r.Config.MtlsTokenEndpoint = types.StringPointerValue(resp.Config.MtlsTokenEndpoint)
-			r.Config.NoProxy = types.StringPointerValue(resp.Config.NoProxy)
-			r.Config.PasswordParamType = []types.String{}
-			for _, v := range resp.Config.PasswordParamType {
-				r.Config.PasswordParamType = append(r.Config.PasswordParamType, types.StringValue(string(v)))
-			}
-			r.Config.PreserveQueryArgs = types.BoolPointerValue(resp.Config.PreserveQueryArgs)
-			r.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(resp.Config.ProofOfPossessionAuthMethodsValidation)
-			if resp.Config.ProofOfPossessionDpop != nil {
-				r.Config.ProofOfPossessionDpop = types.StringValue(string(*resp.Config.ProofOfPossessionDpop))
-			} else {
-				r.Config.ProofOfPossessionDpop = types.StringNull()
-			}
-			if resp.Config.ProofOfPossessionMtls != nil {
-				r.Config.ProofOfPossessionMtls = types.StringValue(string(*resp.Config.ProofOfPossessionMtls))
-			} else {
-				r.Config.ProofOfPossessionMtls = types.StringNull()
-			}
-			r.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(resp.Config.PushedAuthorizationRequestEndpoint)
-			if resp.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
-				r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*resp.Config.PushedAuthorizationRequestEndpointAuthMethod))
-			} else {
-				r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
-			}
-			r.Config.RedirectURI = []types.String{}
-			for _, v := range resp.Config.RedirectURI {
-				r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
-			}
-			if resp.Config.Redis == nil {
-				r.Config.Redis = nil
-			} else {
-				r.Config.Redis = &tfTypes.CreateKonnectApplicationAuthPluginRedis{}
-				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
-				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-				}
-				for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes3 tfTypes.ClusterNodes
-					clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
-					clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
-					if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
-						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes3)
-					} else {
-						r.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
-						r.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
-					}
-				}
-				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
-				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
-				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
-				r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
-				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-				r.Config.Redis.Prefix = types.StringPointerValue(resp.Config.Redis.Prefix)
-				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
-				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
-				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
-				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-				}
-				for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes3 tfTypes.SentinelNodes
-					sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-					sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
-					if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
-						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes3)
-					} else {
-						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
-						r.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
-					}
-				}
-				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
-				if resp.Config.Redis.SentinelRole != nil {
-					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
-				} else {
-					r.Config.Redis.SentinelRole = types.StringNull()
-				}
-				r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
-				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-				r.Config.Redis.Socket = types.StringPointerValue(resp.Config.Redis.Socket)
-				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
-			}
-			if resp.Config.RediscoveryLifetime != nil {
-				r.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*resp.Config.RediscoveryLifetime)))
-			} else {
-				r.Config.RediscoveryLifetime = types.NumberNull()
-			}
-			r.Config.RefreshTokenParamName = types.StringPointerValue(resp.Config.RefreshTokenParamName)
-			r.Config.RefreshTokenParamType = []types.String{}
-			for _, v := range resp.Config.RefreshTokenParamType {
-				r.Config.RefreshTokenParamType = append(r.Config.RefreshTokenParamType, types.StringValue(string(v)))
-			}
-			r.Config.RefreshTokens = types.BoolPointerValue(resp.Config.RefreshTokens)
-			r.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(resp.Config.RequireProofKeyForCodeExchange)
-			r.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(resp.Config.RequirePushedAuthorizationRequests)
-			r.Config.RequireSignedRequestObject = types.BoolPointerValue(resp.Config.RequireSignedRequestObject)
-			r.Config.ResolveDistributedClaims = types.BoolPointerValue(resp.Config.ResolveDistributedClaims)
-			if resp.Config.ResponseMode != nil {
-				r.Config.ResponseMode = types.StringValue(string(*resp.Config.ResponseMode))
-			} else {
-				r.Config.ResponseMode = types.StringNull()
-			}
-			r.Config.ResponseType = []types.String{}
-			for _, v := range resp.Config.ResponseType {
-				r.Config.ResponseType = append(r.Config.ResponseType, types.StringValue(v))
-			}
-			r.Config.Reverify = types.BoolPointerValue(resp.Config.Reverify)
-			r.Config.RevocationEndpoint = types.StringPointerValue(resp.Config.RevocationEndpoint)
-			if resp.Config.RevocationEndpointAuthMethod != nil {
-				r.Config.RevocationEndpointAuthMethod = types.StringValue(string(*resp.Config.RevocationEndpointAuthMethod))
-			} else {
-				r.Config.RevocationEndpointAuthMethod = types.StringNull()
-			}
-			r.Config.RevocationTokenParamName = types.StringPointerValue(resp.Config.RevocationTokenParamName)
-			r.Config.RolesClaim = []types.String{}
-			for _, v := range resp.Config.RolesClaim {
-				r.Config.RolesClaim = append(r.Config.RolesClaim, types.StringValue(v))
-			}
-			r.Config.RolesRequired = []types.String{}
-			for _, v := range resp.Config.RolesRequired {
-				r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
-			}
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-			r.Config.Scopes = []types.String{}
-			for _, v := range resp.Config.Scopes {
-				r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
-			}
-			r.Config.ScopesClaim = []types.String{}
-			for _, v := range resp.Config.ScopesClaim {
-				r.Config.ScopesClaim = append(r.Config.ScopesClaim, types.StringValue(v))
-			}
-			r.Config.ScopesRequired = []types.String{}
-			for _, v := range resp.Config.ScopesRequired {
-				r.Config.ScopesRequired = append(r.Config.ScopesRequired, types.StringValue(v))
-			}
-			r.Config.SearchUserInfo = types.BoolPointerValue(resp.Config.SearchUserInfo)
-			if resp.Config.SessionAbsoluteTimeout != nil {
-				r.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionAbsoluteTimeout)))
-			} else {
-				r.Config.SessionAbsoluteTimeout = types.NumberNull()
-			}
-			r.Config.SessionAudience = types.StringPointerValue(resp.Config.SessionAudience)
-			r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
-			r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
-			r.Config.SessionCookieName = types.StringPointerValue(resp.Config.SessionCookieName)
-			r.Config.SessionCookiePath = types.StringPointerValue(resp.Config.SessionCookiePath)
-			if resp.Config.SessionCookieSameSite != nil {
-				r.Config.SessionCookieSameSite = types.StringValue(string(*resp.Config.SessionCookieSameSite))
-			} else {
-				r.Config.SessionCookieSameSite = types.StringNull()
-			}
-			r.Config.SessionCookieSecure = types.BoolPointerValue(resp.Config.SessionCookieSecure)
-			r.Config.SessionEnforceSameSubject = types.BoolPointerValue(resp.Config.SessionEnforceSameSubject)
-			r.Config.SessionHashStorageKey = types.BoolPointerValue(resp.Config.SessionHashStorageKey)
-			r.Config.SessionHashSubject = types.BoolPointerValue(resp.Config.SessionHashSubject)
-			if resp.Config.SessionIdlingTimeout != nil {
-				r.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionIdlingTimeout)))
-			} else {
-				r.Config.SessionIdlingTimeout = types.NumberNull()
-			}
-			r.Config.SessionMemcachedHost = types.StringPointerValue(resp.Config.SessionMemcachedHost)
-			r.Config.SessionMemcachedPort = types.Int64PointerValue(resp.Config.SessionMemcachedPort)
-			r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
-			r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
-			r.Config.SessionRemember = types.BoolPointerValue(resp.Config.SessionRemember)
-			if resp.Config.SessionRememberAbsoluteTimeout != nil {
-				r.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberAbsoluteTimeout)))
-			} else {
-				r.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
-			}
-			r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
-			if resp.Config.SessionRememberRollingTimeout != nil {
-				r.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberRollingTimeout)))
-			} else {
-				r.Config.SessionRememberRollingTimeout = types.NumberNull()
-			}
-			r.Config.SessionRequestHeaders = []types.String{}
-			for _, v := range resp.Config.SessionRequestHeaders {
-				r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
-			}
-			r.Config.SessionResponseHeaders = []types.String{}
-			for _, v := range resp.Config.SessionResponseHeaders {
-				r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
-			}
-			if resp.Config.SessionRollingTimeout != nil {
-				r.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRollingTimeout)))
-			} else {
-				r.Config.SessionRollingTimeout = types.NumberNull()
-			}
-			r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
-			if resp.Config.SessionStorage != nil {
-				r.Config.SessionStorage = types.StringValue(string(*resp.Config.SessionStorage))
-			} else {
-				r.Config.SessionStorage = types.StringNull()
-			}
-			r.Config.SessionStoreMetadata = types.BoolPointerValue(resp.Config.SessionStoreMetadata)
-			r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
-			r.Config.TLSClientAuthCertID = types.StringPointerValue(resp.Config.TLSClientAuthCertID)
-			r.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.Config.TLSClientAuthSslVerify)
-			r.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(resp.Config.TokenCacheKeyIncludeScope)
-			r.Config.TokenEndpoint = types.StringPointerValue(resp.Config.TokenEndpoint)
-			if resp.Config.TokenEndpointAuthMethod != nil {
-				r.Config.TokenEndpointAuthMethod = types.StringValue(string(*resp.Config.TokenEndpointAuthMethod))
-			} else {
-				r.Config.TokenEndpointAuthMethod = types.StringNull()
-			}
-			r.Config.TokenExchangeEndpoint = types.StringPointerValue(resp.Config.TokenExchangeEndpoint)
-			r.Config.TokenHeadersClient = []types.String{}
-			for _, v := range resp.Config.TokenHeadersClient {
-				r.Config.TokenHeadersClient = append(r.Config.TokenHeadersClient, types.StringValue(v))
-			}
-			r.Config.TokenHeadersGrants = []types.String{}
-			for _, v := range resp.Config.TokenHeadersGrants {
-				r.Config.TokenHeadersGrants = append(r.Config.TokenHeadersGrants, types.StringValue(string(v)))
-			}
-			r.Config.TokenHeadersNames = []types.String{}
-			for _, v := range resp.Config.TokenHeadersNames {
-				r.Config.TokenHeadersNames = append(r.Config.TokenHeadersNames, types.StringValue(v))
-			}
-			r.Config.TokenHeadersPrefix = types.StringPointerValue(resp.Config.TokenHeadersPrefix)
-			r.Config.TokenHeadersReplay = []types.String{}
-			for _, v := range resp.Config.TokenHeadersReplay {
-				r.Config.TokenHeadersReplay = append(r.Config.TokenHeadersReplay, types.StringValue(v))
-			}
-			r.Config.TokenHeadersValues = []types.String{}
-			for _, v := range resp.Config.TokenHeadersValues {
-				r.Config.TokenHeadersValues = append(r.Config.TokenHeadersValues, types.StringValue(v))
-			}
-			r.Config.TokenPostArgsClient = []types.String{}
-			for _, v := range resp.Config.TokenPostArgsClient {
-				r.Config.TokenPostArgsClient = append(r.Config.TokenPostArgsClient, types.StringValue(v))
-			}
-			r.Config.TokenPostArgsNames = []types.String{}
-			for _, v := range resp.Config.TokenPostArgsNames {
-				r.Config.TokenPostArgsNames = append(r.Config.TokenPostArgsNames, types.StringValue(v))
-			}
-			r.Config.TokenPostArgsValues = []types.String{}
-			for _, v := range resp.Config.TokenPostArgsValues {
-				r.Config.TokenPostArgsValues = append(r.Config.TokenPostArgsValues, types.StringValue(v))
-			}
-			r.Config.UnauthorizedDestroySession = types.BoolPointerValue(resp.Config.UnauthorizedDestroySession)
-			r.Config.UnauthorizedErrorMessage = types.StringPointerValue(resp.Config.UnauthorizedErrorMessage)
-			r.Config.UnauthorizedRedirectURI = []types.String{}
-			for _, v := range resp.Config.UnauthorizedRedirectURI {
-				r.Config.UnauthorizedRedirectURI = append(r.Config.UnauthorizedRedirectURI, types.StringValue(v))
-			}
-			r.Config.UnexpectedRedirectURI = []types.String{}
-			for _, v := range resp.Config.UnexpectedRedirectURI {
-				r.Config.UnexpectedRedirectURI = append(r.Config.UnexpectedRedirectURI, types.StringValue(v))
-			}
-			r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
-			r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
-			r.Config.UpstreamHeadersClaims = []types.String{}
-			for _, v := range resp.Config.UpstreamHeadersClaims {
-				r.Config.UpstreamHeadersClaims = append(r.Config.UpstreamHeadersClaims, types.StringValue(v))
-			}
-			r.Config.UpstreamHeadersNames = []types.String{}
-			for _, v := range resp.Config.UpstreamHeadersNames {
-				r.Config.UpstreamHeadersNames = append(r.Config.UpstreamHeadersNames, types.StringValue(v))
-			}
-			r.Config.UpstreamIDTokenHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenHeader)
-			r.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenJwkHeader)
-			r.Config.UpstreamIntrospectionHeader = types.StringPointerValue(resp.Config.UpstreamIntrospectionHeader)
-			r.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(resp.Config.UpstreamIntrospectionJwtHeader)
-			r.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(resp.Config.UpstreamRefreshTokenHeader)
-			r.Config.UpstreamSessionIDHeader = types.StringPointerValue(resp.Config.UpstreamSessionIDHeader)
-			r.Config.UpstreamUserInfoHeader = types.StringPointerValue(resp.Config.UpstreamUserInfoHeader)
-			r.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(resp.Config.UpstreamUserInfoJwtHeader)
-			if resp.Config.UserinfoAccept != nil {
-				r.Config.UserinfoAccept = types.StringValue(string(*resp.Config.UserinfoAccept))
-			} else {
-				r.Config.UserinfoAccept = types.StringNull()
-			}
-			r.Config.UserinfoEndpoint = types.StringPointerValue(resp.Config.UserinfoEndpoint)
-			r.Config.UserinfoHeadersClient = []types.String{}
-			for _, v := range resp.Config.UserinfoHeadersClient {
-				r.Config.UserinfoHeadersClient = append(r.Config.UserinfoHeadersClient, types.StringValue(v))
-			}
-			r.Config.UserinfoHeadersNames = []types.String{}
-			for _, v := range resp.Config.UserinfoHeadersNames {
-				r.Config.UserinfoHeadersNames = append(r.Config.UserinfoHeadersNames, types.StringValue(v))
-			}
-			r.Config.UserinfoHeadersValues = []types.String{}
-			for _, v := range resp.Config.UserinfoHeadersValues {
-				r.Config.UserinfoHeadersValues = append(r.Config.UserinfoHeadersValues, types.StringValue(v))
-			}
-			r.Config.UserinfoQueryArgsClient = []types.String{}
-			for _, v := range resp.Config.UserinfoQueryArgsClient {
-				r.Config.UserinfoQueryArgsClient = append(r.Config.UserinfoQueryArgsClient, types.StringValue(v))
-			}
-			r.Config.UserinfoQueryArgsNames = []types.String{}
-			for _, v := range resp.Config.UserinfoQueryArgsNames {
-				r.Config.UserinfoQueryArgsNames = append(r.Config.UserinfoQueryArgsNames, types.StringValue(v))
-			}
-			r.Config.UserinfoQueryArgsValues = []types.String{}
-			for _, v := range resp.Config.UserinfoQueryArgsValues {
-				r.Config.UserinfoQueryArgsValues = append(r.Config.UserinfoQueryArgsValues, types.StringValue(v))
-			}
-			r.Config.UsingPseudoIssuer = types.BoolPointerValue(resp.Config.UsingPseudoIssuer)
-			r.Config.VerifyClaims = types.BoolPointerValue(resp.Config.VerifyClaims)
-			r.Config.VerifyNonce = types.BoolPointerValue(resp.Config.VerifyNonce)
-			r.Config.VerifyParameters = types.BoolPointerValue(resp.Config.VerifyParameters)
-			r.Config.VerifySignature = types.BoolPointerValue(resp.Config.VerifySignature)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.Audience = []types.String{}
+		for _, v := range resp.Config.Audience {
+			r.Config.Audience = append(r.Config.Audience, types.StringValue(v))
 		}
+		r.Config.AudienceClaim = []types.String{}
+		for _, v := range resp.Config.AudienceClaim {
+			r.Config.AudienceClaim = append(r.Config.AudienceClaim, types.StringValue(v))
+		}
+		r.Config.AudienceRequired = []types.String{}
+		for _, v := range resp.Config.AudienceRequired {
+			r.Config.AudienceRequired = append(r.Config.AudienceRequired, types.StringValue(v))
+		}
+		r.Config.AuthMethods = []types.String{}
+		for _, v := range resp.Config.AuthMethods {
+			r.Config.AuthMethods = append(r.Config.AuthMethods, types.StringValue(string(v)))
+		}
+		r.Config.AuthenticatedGroupsClaim = []types.String{}
+		for _, v := range resp.Config.AuthenticatedGroupsClaim {
+			r.Config.AuthenticatedGroupsClaim = append(r.Config.AuthenticatedGroupsClaim, types.StringValue(v))
+		}
+		r.Config.AuthorizationCookieDomain = types.StringPointerValue(resp.Config.AuthorizationCookieDomain)
+		r.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(resp.Config.AuthorizationCookieHTTPOnly)
+		r.Config.AuthorizationCookieName = types.StringPointerValue(resp.Config.AuthorizationCookieName)
+		r.Config.AuthorizationCookiePath = types.StringPointerValue(resp.Config.AuthorizationCookiePath)
+		if resp.Config.AuthorizationCookieSameSite != nil {
+			r.Config.AuthorizationCookieSameSite = types.StringValue(string(*resp.Config.AuthorizationCookieSameSite))
+		} else {
+			r.Config.AuthorizationCookieSameSite = types.StringNull()
+		}
+		r.Config.AuthorizationCookieSecure = types.BoolPointerValue(resp.Config.AuthorizationCookieSecure)
+		r.Config.AuthorizationEndpoint = types.StringPointerValue(resp.Config.AuthorizationEndpoint)
+		r.Config.AuthorizationQueryArgsClient = []types.String{}
+		for _, v := range resp.Config.AuthorizationQueryArgsClient {
+			r.Config.AuthorizationQueryArgsClient = append(r.Config.AuthorizationQueryArgsClient, types.StringValue(v))
+		}
+		r.Config.AuthorizationQueryArgsNames = []types.String{}
+		for _, v := range resp.Config.AuthorizationQueryArgsNames {
+			r.Config.AuthorizationQueryArgsNames = append(r.Config.AuthorizationQueryArgsNames, types.StringValue(v))
+		}
+		r.Config.AuthorizationQueryArgsValues = []types.String{}
+		for _, v := range resp.Config.AuthorizationQueryArgsValues {
+			r.Config.AuthorizationQueryArgsValues = append(r.Config.AuthorizationQueryArgsValues, types.StringValue(v))
+		}
+		if resp.Config.AuthorizationRollingTimeout != nil {
+			r.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.AuthorizationRollingTimeout)))
+		} else {
+			r.Config.AuthorizationRollingTimeout = types.NumberNull()
+		}
+		r.Config.BearerTokenCookieName = types.StringPointerValue(resp.Config.BearerTokenCookieName)
+		r.Config.BearerTokenParamType = []types.String{}
+		for _, v := range resp.Config.BearerTokenParamType {
+			r.Config.BearerTokenParamType = append(r.Config.BearerTokenParamType, types.StringValue(string(v)))
+		}
+		r.Config.ByUsernameIgnoreCase = types.BoolPointerValue(resp.Config.ByUsernameIgnoreCase)
+		r.Config.CacheIntrospection = types.BoolPointerValue(resp.Config.CacheIntrospection)
+		r.Config.CacheTokenExchange = types.BoolPointerValue(resp.Config.CacheTokenExchange)
+		r.Config.CacheTokens = types.BoolPointerValue(resp.Config.CacheTokens)
+		r.Config.CacheTokensSalt = types.StringPointerValue(resp.Config.CacheTokensSalt)
+		if resp.Config.CacheTTL != nil {
+			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+		} else {
+			r.Config.CacheTTL = types.NumberNull()
+		}
+		if resp.Config.CacheTTLMax != nil {
+			r.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLMax)))
+		} else {
+			r.Config.CacheTTLMax = types.NumberNull()
+		}
+		if resp.Config.CacheTTLMin != nil {
+			r.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLMin)))
+		} else {
+			r.Config.CacheTTLMin = types.NumberNull()
+		}
+		if resp.Config.CacheTTLNeg != nil {
+			r.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLNeg)))
+		} else {
+			r.Config.CacheTTLNeg = types.NumberNull()
+		}
+		if resp.Config.CacheTTLResurrect != nil {
+			r.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTLResurrect)))
+		} else {
+			r.Config.CacheTTLResurrect = types.NumberNull()
+		}
+		r.Config.CacheUserInfo = types.BoolPointerValue(resp.Config.CacheUserInfo)
+		r.Config.ClaimsForbidden = []types.String{}
+		for _, v := range resp.Config.ClaimsForbidden {
+			r.Config.ClaimsForbidden = append(r.Config.ClaimsForbidden, types.StringValue(v))
+		}
+		r.Config.ClientAlg = []types.String{}
+		for _, v := range resp.Config.ClientAlg {
+			r.Config.ClientAlg = append(r.Config.ClientAlg, types.StringValue(string(v)))
+		}
+		r.Config.ClientArg = types.StringPointerValue(resp.Config.ClientArg)
+		r.Config.ClientAuth = []types.String{}
+		for _, v := range resp.Config.ClientAuth {
+			r.Config.ClientAuth = append(r.Config.ClientAuth, types.StringValue(string(v)))
+		}
+		r.Config.ClientCredentialsParamType = []types.String{}
+		for _, v := range resp.Config.ClientCredentialsParamType {
+			r.Config.ClientCredentialsParamType = append(r.Config.ClientCredentialsParamType, types.StringValue(string(v)))
+		}
+		r.Config.ClientID = []types.String{}
+		for _, v := range resp.Config.ClientID {
+			r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
+		}
+		r.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
+		if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
+			r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
+		}
+		for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
+			var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
+			clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
+			clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
+			clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
+			clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
+			clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
+			clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
+			clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
+			clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
+			clientJwk1.KeyOps = []types.String{}
+			for _, v := range clientJwkItem.KeyOps {
+				clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
+			}
+			clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
+			clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
+			clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
+			clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
+			clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
+			clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
+			clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
+			clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
+			clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
+			clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
+			clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
+			clientJwk1.X5c = []types.String{}
+			for _, v := range clientJwkItem.X5c {
+				clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
+			}
+			clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
+			clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
+			clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
+			clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
+			if clientJwkCount+1 > len(r.Config.ClientJwk) {
+				r.Config.ClientJwk = append(r.Config.ClientJwk, clientJwk1)
+			} else {
+				r.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
+				r.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
+				r.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
+				r.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
+				r.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
+				r.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
+				r.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
+				r.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
+				r.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
+				r.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
+				r.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
+				r.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
+				r.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
+				r.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
+				r.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
+				r.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
+				r.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
+				r.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
+				r.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
+				r.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
+				r.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
+				r.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
+				r.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
+				r.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
+				r.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
+			}
+		}
+		r.Config.ClientSecret = []types.String{}
+		for _, v := range resp.Config.ClientSecret {
+			r.Config.ClientSecret = append(r.Config.ClientSecret, types.StringValue(v))
+		}
+		if resp.Config.ClusterCacheRedis == nil {
+			r.Config.ClusterCacheRedis = nil
+		} else {
+			r.Config.ClusterCacheRedis = &tfTypes.Redis{}
+			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
+			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+			if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
+				r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
+			}
+			for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
+				var clusterNodes1 tfTypes.ClusterNodes
+				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+				if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
+					r.Config.ClusterCacheRedis.ClusterNodes = append(r.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
+				} else {
+					r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+					r.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+				}
+			}
+			r.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ConnectTimeout)
+			r.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.ClusterCacheRedis.ConnectionIsProxied)
+			r.Config.ClusterCacheRedis.Database = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Database)
+			r.Config.ClusterCacheRedis.Host = types.StringPointerValue(resp.Config.ClusterCacheRedis.Host)
+			r.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepaliveBacklog)
+			r.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.ClusterCacheRedis.KeepalivePoolSize)
+			r.Config.ClusterCacheRedis.Password = types.StringPointerValue(resp.Config.ClusterCacheRedis.Password)
+			r.Config.ClusterCacheRedis.Port = types.Int64PointerValue(resp.Config.ClusterCacheRedis.Port)
+			r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
+			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
+			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
+			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+			if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
+				r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
+			}
+			for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
+				var sentinelNodes1 tfTypes.SentinelNodes
+				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+				if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
+					r.Config.ClusterCacheRedis.SentinelNodes = append(r.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
+				} else {
+					r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+					r.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+				}
+			}
+			r.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelPassword)
+			if resp.Config.ClusterCacheRedis.SentinelRole != nil {
+				r.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*resp.Config.ClusterCacheRedis.SentinelRole))
+			} else {
+				r.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
+			}
+			r.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelUsername)
+			r.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(resp.Config.ClusterCacheRedis.ServerName)
+			r.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(resp.Config.ClusterCacheRedis.Ssl)
+			r.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(resp.Config.ClusterCacheRedis.SslVerify)
+			r.Config.ClusterCacheRedis.Username = types.StringPointerValue(resp.Config.ClusterCacheRedis.Username)
+		}
+		if resp.Config.ClusterCacheStrategy != nil {
+			r.Config.ClusterCacheStrategy = types.StringValue(string(*resp.Config.ClusterCacheStrategy))
+		} else {
+			r.Config.ClusterCacheStrategy = types.StringNull()
+		}
+		r.Config.ConsumerBy = []types.String{}
+		for _, v := range resp.Config.ConsumerBy {
+			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+		}
+		r.Config.ConsumerClaim = []types.String{}
+		for _, v := range resp.Config.ConsumerClaim {
+			r.Config.ConsumerClaim = append(r.Config.ConsumerClaim, types.StringValue(v))
+		}
+		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
+		r.Config.CredentialClaim = []types.String{}
+		for _, v := range resp.Config.CredentialClaim {
+			r.Config.CredentialClaim = append(r.Config.CredentialClaim, types.StringValue(v))
+		}
+		r.Config.DisableSession = []types.String{}
+		for _, v := range resp.Config.DisableSession {
+			r.Config.DisableSession = append(r.Config.DisableSession, types.StringValue(string(v)))
+		}
+		r.Config.DiscoveryHeadersNames = []types.String{}
+		for _, v := range resp.Config.DiscoveryHeadersNames {
+			r.Config.DiscoveryHeadersNames = append(r.Config.DiscoveryHeadersNames, types.StringValue(v))
+		}
+		r.Config.DiscoveryHeadersValues = []types.String{}
+		for _, v := range resp.Config.DiscoveryHeadersValues {
+			r.Config.DiscoveryHeadersValues = append(r.Config.DiscoveryHeadersValues, types.StringValue(v))
+		}
+		r.Config.DisplayErrors = types.BoolPointerValue(resp.Config.DisplayErrors)
+		r.Config.Domains = []types.String{}
+		for _, v := range resp.Config.Domains {
+			r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
+		}
+		r.Config.DownstreamAccessTokenHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenHeader)
+		r.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamAccessTokenJwkHeader)
+		r.Config.DownstreamHeadersClaims = []types.String{}
+		for _, v := range resp.Config.DownstreamHeadersClaims {
+			r.Config.DownstreamHeadersClaims = append(r.Config.DownstreamHeadersClaims, types.StringValue(v))
+		}
+		r.Config.DownstreamHeadersNames = []types.String{}
+		for _, v := range resp.Config.DownstreamHeadersNames {
+			r.Config.DownstreamHeadersNames = append(r.Config.DownstreamHeadersNames, types.StringValue(v))
+		}
+		r.Config.DownstreamIDTokenHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenHeader)
+		r.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.DownstreamIDTokenJwkHeader)
+		r.Config.DownstreamIntrospectionHeader = types.StringPointerValue(resp.Config.DownstreamIntrospectionHeader)
+		r.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(resp.Config.DownstreamIntrospectionJwtHeader)
+		r.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(resp.Config.DownstreamRefreshTokenHeader)
+		r.Config.DownstreamSessionIDHeader = types.StringPointerValue(resp.Config.DownstreamSessionIDHeader)
+		r.Config.DownstreamUserInfoHeader = types.StringPointerValue(resp.Config.DownstreamUserInfoHeader)
+		r.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(resp.Config.DownstreamUserInfoJwtHeader)
+		if resp.Config.DpopProofLifetime != nil {
+			r.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*resp.Config.DpopProofLifetime)))
+		} else {
+			r.Config.DpopProofLifetime = types.NumberNull()
+		}
+		r.Config.DpopUseNonce = types.BoolPointerValue(resp.Config.DpopUseNonce)
+		r.Config.EnableHsSignatures = types.BoolPointerValue(resp.Config.EnableHsSignatures)
+		r.Config.EndSessionEndpoint = types.StringPointerValue(resp.Config.EndSessionEndpoint)
+		r.Config.ExposeErrorCode = types.BoolPointerValue(resp.Config.ExposeErrorCode)
+		r.Config.ExtraJwksUris = []types.String{}
+		for _, v := range resp.Config.ExtraJwksUris {
+			r.Config.ExtraJwksUris = append(r.Config.ExtraJwksUris, types.StringValue(v))
+		}
+		r.Config.ForbiddenDestroySession = types.BoolPointerValue(resp.Config.ForbiddenDestroySession)
+		r.Config.ForbiddenErrorMessage = types.StringPointerValue(resp.Config.ForbiddenErrorMessage)
+		r.Config.ForbiddenRedirectURI = []types.String{}
+		for _, v := range resp.Config.ForbiddenRedirectURI {
+			r.Config.ForbiddenRedirectURI = append(r.Config.ForbiddenRedirectURI, types.StringValue(v))
+		}
+		r.Config.GroupsClaim = []types.String{}
+		for _, v := range resp.Config.GroupsClaim {
+			r.Config.GroupsClaim = append(r.Config.GroupsClaim, types.StringValue(v))
+		}
+		r.Config.GroupsRequired = []types.String{}
+		for _, v := range resp.Config.GroupsRequired {
+			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+		}
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		r.Config.HTTPProxy = types.StringPointerValue(resp.Config.HTTPProxy)
+		r.Config.HTTPProxyAuthorization = types.StringPointerValue(resp.Config.HTTPProxyAuthorization)
+		if resp.Config.HTTPVersion != nil {
+			r.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPVersion)))
+		} else {
+			r.Config.HTTPVersion = types.NumberNull()
+		}
+		r.Config.HTTPSProxy = types.StringPointerValue(resp.Config.HTTPSProxy)
+		r.Config.HTTPSProxyAuthorization = types.StringPointerValue(resp.Config.HTTPSProxyAuthorization)
+		r.Config.IDTokenParamName = types.StringPointerValue(resp.Config.IDTokenParamName)
+		r.Config.IDTokenParamType = []types.String{}
+		for _, v := range resp.Config.IDTokenParamType {
+			r.Config.IDTokenParamType = append(r.Config.IDTokenParamType, types.StringValue(string(v)))
+		}
+		r.Config.IgnoreSignature = []types.String{}
+		for _, v := range resp.Config.IgnoreSignature {
+			r.Config.IgnoreSignature = append(r.Config.IgnoreSignature, types.StringValue(string(v)))
+		}
+		r.Config.IntrospectJwtTokens = types.BoolPointerValue(resp.Config.IntrospectJwtTokens)
+		if resp.Config.IntrospectionAccept != nil {
+			r.Config.IntrospectionAccept = types.StringValue(string(*resp.Config.IntrospectionAccept))
+		} else {
+			r.Config.IntrospectionAccept = types.StringNull()
+		}
+		r.Config.IntrospectionCheckActive = types.BoolPointerValue(resp.Config.IntrospectionCheckActive)
+		r.Config.IntrospectionEndpoint = types.StringPointerValue(resp.Config.IntrospectionEndpoint)
+		if resp.Config.IntrospectionEndpointAuthMethod != nil {
+			r.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*resp.Config.IntrospectionEndpointAuthMethod))
+		} else {
+			r.Config.IntrospectionEndpointAuthMethod = types.StringNull()
+		}
+		r.Config.IntrospectionHeadersClient = []types.String{}
+		for _, v := range resp.Config.IntrospectionHeadersClient {
+			r.Config.IntrospectionHeadersClient = append(r.Config.IntrospectionHeadersClient, types.StringValue(v))
+		}
+		r.Config.IntrospectionHeadersNames = []types.String{}
+		for _, v := range resp.Config.IntrospectionHeadersNames {
+			r.Config.IntrospectionHeadersNames = append(r.Config.IntrospectionHeadersNames, types.StringValue(v))
+		}
+		r.Config.IntrospectionHeadersValues = []types.String{}
+		for _, v := range resp.Config.IntrospectionHeadersValues {
+			r.Config.IntrospectionHeadersValues = append(r.Config.IntrospectionHeadersValues, types.StringValue(v))
+		}
+		r.Config.IntrospectionHint = types.StringPointerValue(resp.Config.IntrospectionHint)
+		r.Config.IntrospectionPostArgsClient = []types.String{}
+		for _, v := range resp.Config.IntrospectionPostArgsClient {
+			r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
+		}
+		r.Config.IntrospectionPostArgsNames = []types.String{}
+		for _, v := range resp.Config.IntrospectionPostArgsNames {
+			r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
+		}
+		r.Config.IntrospectionPostArgsValues = []types.String{}
+		for _, v := range resp.Config.IntrospectionPostArgsValues {
+			r.Config.IntrospectionPostArgsValues = append(r.Config.IntrospectionPostArgsValues, types.StringValue(v))
+		}
+		r.Config.IntrospectionTokenParamName = types.StringPointerValue(resp.Config.IntrospectionTokenParamName)
+		r.Config.Issuer = types.StringPointerValue(resp.Config.Issuer)
+		r.Config.IssuersAllowed = []types.String{}
+		for _, v := range resp.Config.IssuersAllowed {
+			r.Config.IssuersAllowed = append(r.Config.IssuersAllowed, types.StringValue(v))
+		}
+		r.Config.JwtSessionClaim = types.StringPointerValue(resp.Config.JwtSessionClaim)
+		r.Config.JwtSessionCookie = types.StringPointerValue(resp.Config.JwtSessionCookie)
+		r.Config.Keepalive = types.BoolPointerValue(resp.Config.Keepalive)
+		if resp.Config.Leeway != nil {
+			r.Config.Leeway = types.NumberValue(big.NewFloat(float64(*resp.Config.Leeway)))
+		} else {
+			r.Config.Leeway = types.NumberNull()
+		}
+		if resp.Config.LoginAction != nil {
+			r.Config.LoginAction = types.StringValue(string(*resp.Config.LoginAction))
+		} else {
+			r.Config.LoginAction = types.StringNull()
+		}
+		r.Config.LoginMethods = []types.String{}
+		for _, v := range resp.Config.LoginMethods {
+			r.Config.LoginMethods = append(r.Config.LoginMethods, types.StringValue(string(v)))
+		}
+		if resp.Config.LoginRedirectMode != nil {
+			r.Config.LoginRedirectMode = types.StringValue(string(*resp.Config.LoginRedirectMode))
+		} else {
+			r.Config.LoginRedirectMode = types.StringNull()
+		}
+		r.Config.LoginRedirectURI = []types.String{}
+		for _, v := range resp.Config.LoginRedirectURI {
+			r.Config.LoginRedirectURI = append(r.Config.LoginRedirectURI, types.StringValue(v))
+		}
+		r.Config.LoginTokens = []types.String{}
+		for _, v := range resp.Config.LoginTokens {
+			r.Config.LoginTokens = append(r.Config.LoginTokens, types.StringValue(string(v)))
+		}
+		r.Config.LogoutMethods = []types.String{}
+		for _, v := range resp.Config.LogoutMethods {
+			r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
+		}
+		r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
+		r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
+		r.Config.LogoutRedirectURI = []types.String{}
+		for _, v := range resp.Config.LogoutRedirectURI {
+			r.Config.LogoutRedirectURI = append(r.Config.LogoutRedirectURI, types.StringValue(v))
+		}
+		r.Config.LogoutRevoke = types.BoolPointerValue(resp.Config.LogoutRevoke)
+		r.Config.LogoutRevokeAccessToken = types.BoolPointerValue(resp.Config.LogoutRevokeAccessToken)
+		r.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(resp.Config.LogoutRevokeRefreshToken)
+		r.Config.LogoutURISuffix = types.StringPointerValue(resp.Config.LogoutURISuffix)
+		if resp.Config.MaxAge != nil {
+			r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+		} else {
+			r.Config.MaxAge = types.NumberNull()
+		}
+		r.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(resp.Config.MtlsIntrospectionEndpoint)
+		r.Config.MtlsRevocationEndpoint = types.StringPointerValue(resp.Config.MtlsRevocationEndpoint)
+		r.Config.MtlsTokenEndpoint = types.StringPointerValue(resp.Config.MtlsTokenEndpoint)
+		r.Config.NoProxy = types.StringPointerValue(resp.Config.NoProxy)
+		r.Config.PasswordParamType = []types.String{}
+		for _, v := range resp.Config.PasswordParamType {
+			r.Config.PasswordParamType = append(r.Config.PasswordParamType, types.StringValue(string(v)))
+		}
+		r.Config.PreserveQueryArgs = types.BoolPointerValue(resp.Config.PreserveQueryArgs)
+		r.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(resp.Config.ProofOfPossessionAuthMethodsValidation)
+		if resp.Config.ProofOfPossessionDpop != nil {
+			r.Config.ProofOfPossessionDpop = types.StringValue(string(*resp.Config.ProofOfPossessionDpop))
+		} else {
+			r.Config.ProofOfPossessionDpop = types.StringNull()
+		}
+		if resp.Config.ProofOfPossessionMtls != nil {
+			r.Config.ProofOfPossessionMtls = types.StringValue(string(*resp.Config.ProofOfPossessionMtls))
+		} else {
+			r.Config.ProofOfPossessionMtls = types.StringNull()
+		}
+		r.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(resp.Config.PushedAuthorizationRequestEndpoint)
+		if resp.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
+			r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*resp.Config.PushedAuthorizationRequestEndpointAuthMethod))
+		} else {
+			r.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
+		}
+		r.Config.RedirectURI = []types.String{}
+		for _, v := range resp.Config.RedirectURI {
+			r.Config.RedirectURI = append(r.Config.RedirectURI, types.StringValue(v))
+		}
+		if resp.Config.Redis == nil {
+			r.Config.Redis = nil
+		} else {
+			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
+			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+			}
+			for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
+				var clusterNodes3 tfTypes.ClusterNodes
+				clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
+				clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+				if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes3)
+				} else {
+					r.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
+					r.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
+				}
+			}
+			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
+			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
+			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
+			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.Prefix = types.StringPointerValue(resp.Config.Redis.Prefix)
+			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
+			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+			}
+			for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
+				var sentinelNodes3 tfTypes.SentinelNodes
+				sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+				sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+				if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes3)
+				} else {
+					r.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
+					r.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
+				}
+			}
+			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
+			if resp.Config.Redis.SentinelRole != nil {
+				r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+			} else {
+				r.Config.Redis.SentinelRole = types.StringNull()
+			}
+			r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
+			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+			r.Config.Redis.Socket = types.StringPointerValue(resp.Config.Redis.Socket)
+			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+		}
+		if resp.Config.RediscoveryLifetime != nil {
+			r.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*resp.Config.RediscoveryLifetime)))
+		} else {
+			r.Config.RediscoveryLifetime = types.NumberNull()
+		}
+		r.Config.RefreshTokenParamName = types.StringPointerValue(resp.Config.RefreshTokenParamName)
+		r.Config.RefreshTokenParamType = []types.String{}
+		for _, v := range resp.Config.RefreshTokenParamType {
+			r.Config.RefreshTokenParamType = append(r.Config.RefreshTokenParamType, types.StringValue(string(v)))
+		}
+		r.Config.RefreshTokens = types.BoolPointerValue(resp.Config.RefreshTokens)
+		r.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(resp.Config.RequireProofKeyForCodeExchange)
+		r.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(resp.Config.RequirePushedAuthorizationRequests)
+		r.Config.RequireSignedRequestObject = types.BoolPointerValue(resp.Config.RequireSignedRequestObject)
+		r.Config.ResolveDistributedClaims = types.BoolPointerValue(resp.Config.ResolveDistributedClaims)
+		if resp.Config.ResponseMode != nil {
+			r.Config.ResponseMode = types.StringValue(string(*resp.Config.ResponseMode))
+		} else {
+			r.Config.ResponseMode = types.StringNull()
+		}
+		r.Config.ResponseType = []types.String{}
+		for _, v := range resp.Config.ResponseType {
+			r.Config.ResponseType = append(r.Config.ResponseType, types.StringValue(v))
+		}
+		r.Config.Reverify = types.BoolPointerValue(resp.Config.Reverify)
+		r.Config.RevocationEndpoint = types.StringPointerValue(resp.Config.RevocationEndpoint)
+		if resp.Config.RevocationEndpointAuthMethod != nil {
+			r.Config.RevocationEndpointAuthMethod = types.StringValue(string(*resp.Config.RevocationEndpointAuthMethod))
+		} else {
+			r.Config.RevocationEndpointAuthMethod = types.StringNull()
+		}
+		r.Config.RevocationTokenParamName = types.StringPointerValue(resp.Config.RevocationTokenParamName)
+		r.Config.RolesClaim = []types.String{}
+		for _, v := range resp.Config.RolesClaim {
+			r.Config.RolesClaim = append(r.Config.RolesClaim, types.StringValue(v))
+		}
+		r.Config.RolesRequired = []types.String{}
+		for _, v := range resp.Config.RolesRequired {
+			r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
+		}
+		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+		r.Config.Scopes = []types.String{}
+		for _, v := range resp.Config.Scopes {
+			r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
+		}
+		r.Config.ScopesClaim = []types.String{}
+		for _, v := range resp.Config.ScopesClaim {
+			r.Config.ScopesClaim = append(r.Config.ScopesClaim, types.StringValue(v))
+		}
+		r.Config.ScopesRequired = []types.String{}
+		for _, v := range resp.Config.ScopesRequired {
+			r.Config.ScopesRequired = append(r.Config.ScopesRequired, types.StringValue(v))
+		}
+		r.Config.SearchUserInfo = types.BoolPointerValue(resp.Config.SearchUserInfo)
+		if resp.Config.SessionAbsoluteTimeout != nil {
+			r.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionAbsoluteTimeout)))
+		} else {
+			r.Config.SessionAbsoluteTimeout = types.NumberNull()
+		}
+		r.Config.SessionAudience = types.StringPointerValue(resp.Config.SessionAudience)
+		r.Config.SessionCookieDomain = types.StringPointerValue(resp.Config.SessionCookieDomain)
+		r.Config.SessionCookieHTTPOnly = types.BoolPointerValue(resp.Config.SessionCookieHTTPOnly)
+		r.Config.SessionCookieName = types.StringPointerValue(resp.Config.SessionCookieName)
+		r.Config.SessionCookiePath = types.StringPointerValue(resp.Config.SessionCookiePath)
+		if resp.Config.SessionCookieSameSite != nil {
+			r.Config.SessionCookieSameSite = types.StringValue(string(*resp.Config.SessionCookieSameSite))
+		} else {
+			r.Config.SessionCookieSameSite = types.StringNull()
+		}
+		r.Config.SessionCookieSecure = types.BoolPointerValue(resp.Config.SessionCookieSecure)
+		r.Config.SessionEnforceSameSubject = types.BoolPointerValue(resp.Config.SessionEnforceSameSubject)
+		r.Config.SessionHashStorageKey = types.BoolPointerValue(resp.Config.SessionHashStorageKey)
+		r.Config.SessionHashSubject = types.BoolPointerValue(resp.Config.SessionHashSubject)
+		if resp.Config.SessionIdlingTimeout != nil {
+			r.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionIdlingTimeout)))
+		} else {
+			r.Config.SessionIdlingTimeout = types.NumberNull()
+		}
+		r.Config.SessionMemcachedHost = types.StringPointerValue(resp.Config.SessionMemcachedHost)
+		r.Config.SessionMemcachedPort = types.Int64PointerValue(resp.Config.SessionMemcachedPort)
+		r.Config.SessionMemcachedPrefix = types.StringPointerValue(resp.Config.SessionMemcachedPrefix)
+		r.Config.SessionMemcachedSocket = types.StringPointerValue(resp.Config.SessionMemcachedSocket)
+		r.Config.SessionRemember = types.BoolPointerValue(resp.Config.SessionRemember)
+		if resp.Config.SessionRememberAbsoluteTimeout != nil {
+			r.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberAbsoluteTimeout)))
+		} else {
+			r.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
+		}
+		r.Config.SessionRememberCookieName = types.StringPointerValue(resp.Config.SessionRememberCookieName)
+		if resp.Config.SessionRememberRollingTimeout != nil {
+			r.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRememberRollingTimeout)))
+		} else {
+			r.Config.SessionRememberRollingTimeout = types.NumberNull()
+		}
+		r.Config.SessionRequestHeaders = []types.String{}
+		for _, v := range resp.Config.SessionRequestHeaders {
+			r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
+		}
+		r.Config.SessionResponseHeaders = []types.String{}
+		for _, v := range resp.Config.SessionResponseHeaders {
+			r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
+		}
+		if resp.Config.SessionRollingTimeout != nil {
+			r.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.SessionRollingTimeout)))
+		} else {
+			r.Config.SessionRollingTimeout = types.NumberNull()
+		}
+		r.Config.SessionSecret = types.StringPointerValue(resp.Config.SessionSecret)
+		if resp.Config.SessionStorage != nil {
+			r.Config.SessionStorage = types.StringValue(string(*resp.Config.SessionStorage))
+		} else {
+			r.Config.SessionStorage = types.StringNull()
+		}
+		r.Config.SessionStoreMetadata = types.BoolPointerValue(resp.Config.SessionStoreMetadata)
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
+		if resp.Config.Timeout != nil {
+			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+		} else {
+			r.Config.Timeout = types.NumberNull()
+		}
+		r.Config.TLSClientAuthCertID = types.StringPointerValue(resp.Config.TLSClientAuthCertID)
+		r.Config.TLSClientAuthSslVerify = types.BoolPointerValue(resp.Config.TLSClientAuthSslVerify)
+		r.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(resp.Config.TokenCacheKeyIncludeScope)
+		r.Config.TokenEndpoint = types.StringPointerValue(resp.Config.TokenEndpoint)
+		if resp.Config.TokenEndpointAuthMethod != nil {
+			r.Config.TokenEndpointAuthMethod = types.StringValue(string(*resp.Config.TokenEndpointAuthMethod))
+		} else {
+			r.Config.TokenEndpointAuthMethod = types.StringNull()
+		}
+		r.Config.TokenExchangeEndpoint = types.StringPointerValue(resp.Config.TokenExchangeEndpoint)
+		r.Config.TokenHeadersClient = []types.String{}
+		for _, v := range resp.Config.TokenHeadersClient {
+			r.Config.TokenHeadersClient = append(r.Config.TokenHeadersClient, types.StringValue(v))
+		}
+		r.Config.TokenHeadersGrants = []types.String{}
+		for _, v := range resp.Config.TokenHeadersGrants {
+			r.Config.TokenHeadersGrants = append(r.Config.TokenHeadersGrants, types.StringValue(string(v)))
+		}
+		r.Config.TokenHeadersNames = []types.String{}
+		for _, v := range resp.Config.TokenHeadersNames {
+			r.Config.TokenHeadersNames = append(r.Config.TokenHeadersNames, types.StringValue(v))
+		}
+		r.Config.TokenHeadersPrefix = types.StringPointerValue(resp.Config.TokenHeadersPrefix)
+		r.Config.TokenHeadersReplay = []types.String{}
+		for _, v := range resp.Config.TokenHeadersReplay {
+			r.Config.TokenHeadersReplay = append(r.Config.TokenHeadersReplay, types.StringValue(v))
+		}
+		r.Config.TokenHeadersValues = []types.String{}
+		for _, v := range resp.Config.TokenHeadersValues {
+			r.Config.TokenHeadersValues = append(r.Config.TokenHeadersValues, types.StringValue(v))
+		}
+		r.Config.TokenPostArgsClient = []types.String{}
+		for _, v := range resp.Config.TokenPostArgsClient {
+			r.Config.TokenPostArgsClient = append(r.Config.TokenPostArgsClient, types.StringValue(v))
+		}
+		r.Config.TokenPostArgsNames = []types.String{}
+		for _, v := range resp.Config.TokenPostArgsNames {
+			r.Config.TokenPostArgsNames = append(r.Config.TokenPostArgsNames, types.StringValue(v))
+		}
+		r.Config.TokenPostArgsValues = []types.String{}
+		for _, v := range resp.Config.TokenPostArgsValues {
+			r.Config.TokenPostArgsValues = append(r.Config.TokenPostArgsValues, types.StringValue(v))
+		}
+		r.Config.UnauthorizedDestroySession = types.BoolPointerValue(resp.Config.UnauthorizedDestroySession)
+		r.Config.UnauthorizedErrorMessage = types.StringPointerValue(resp.Config.UnauthorizedErrorMessage)
+		r.Config.UnauthorizedRedirectURI = []types.String{}
+		for _, v := range resp.Config.UnauthorizedRedirectURI {
+			r.Config.UnauthorizedRedirectURI = append(r.Config.UnauthorizedRedirectURI, types.StringValue(v))
+		}
+		r.Config.UnexpectedRedirectURI = []types.String{}
+		for _, v := range resp.Config.UnexpectedRedirectURI {
+			r.Config.UnexpectedRedirectURI = append(r.Config.UnexpectedRedirectURI, types.StringValue(v))
+		}
+		r.Config.UpstreamAccessTokenHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenHeader)
+		r.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamAccessTokenJwkHeader)
+		r.Config.UpstreamHeadersClaims = []types.String{}
+		for _, v := range resp.Config.UpstreamHeadersClaims {
+			r.Config.UpstreamHeadersClaims = append(r.Config.UpstreamHeadersClaims, types.StringValue(v))
+		}
+		r.Config.UpstreamHeadersNames = []types.String{}
+		for _, v := range resp.Config.UpstreamHeadersNames {
+			r.Config.UpstreamHeadersNames = append(r.Config.UpstreamHeadersNames, types.StringValue(v))
+		}
+		r.Config.UpstreamIDTokenHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenHeader)
+		r.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(resp.Config.UpstreamIDTokenJwkHeader)
+		r.Config.UpstreamIntrospectionHeader = types.StringPointerValue(resp.Config.UpstreamIntrospectionHeader)
+		r.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(resp.Config.UpstreamIntrospectionJwtHeader)
+		r.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(resp.Config.UpstreamRefreshTokenHeader)
+		r.Config.UpstreamSessionIDHeader = types.StringPointerValue(resp.Config.UpstreamSessionIDHeader)
+		r.Config.UpstreamUserInfoHeader = types.StringPointerValue(resp.Config.UpstreamUserInfoHeader)
+		r.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(resp.Config.UpstreamUserInfoJwtHeader)
+		if resp.Config.UserinfoAccept != nil {
+			r.Config.UserinfoAccept = types.StringValue(string(*resp.Config.UserinfoAccept))
+		} else {
+			r.Config.UserinfoAccept = types.StringNull()
+		}
+		r.Config.UserinfoEndpoint = types.StringPointerValue(resp.Config.UserinfoEndpoint)
+		r.Config.UserinfoHeadersClient = []types.String{}
+		for _, v := range resp.Config.UserinfoHeadersClient {
+			r.Config.UserinfoHeadersClient = append(r.Config.UserinfoHeadersClient, types.StringValue(v))
+		}
+		r.Config.UserinfoHeadersNames = []types.String{}
+		for _, v := range resp.Config.UserinfoHeadersNames {
+			r.Config.UserinfoHeadersNames = append(r.Config.UserinfoHeadersNames, types.StringValue(v))
+		}
+		r.Config.UserinfoHeadersValues = []types.String{}
+		for _, v := range resp.Config.UserinfoHeadersValues {
+			r.Config.UserinfoHeadersValues = append(r.Config.UserinfoHeadersValues, types.StringValue(v))
+		}
+		r.Config.UserinfoQueryArgsClient = []types.String{}
+		for _, v := range resp.Config.UserinfoQueryArgsClient {
+			r.Config.UserinfoQueryArgsClient = append(r.Config.UserinfoQueryArgsClient, types.StringValue(v))
+		}
+		r.Config.UserinfoQueryArgsNames = []types.String{}
+		for _, v := range resp.Config.UserinfoQueryArgsNames {
+			r.Config.UserinfoQueryArgsNames = append(r.Config.UserinfoQueryArgsNames, types.StringValue(v))
+		}
+		r.Config.UserinfoQueryArgsValues = []types.String{}
+		for _, v := range resp.Config.UserinfoQueryArgsValues {
+			r.Config.UserinfoQueryArgsValues = append(r.Config.UserinfoQueryArgsValues, types.StringValue(v))
+		}
+		r.Config.UsingPseudoIssuer = types.BoolPointerValue(resp.Config.UsingPseudoIssuer)
+		r.Config.VerifyClaims = types.BoolPointerValue(resp.Config.VerifyClaims)
+		r.Config.VerifyNonce = types.BoolPointerValue(resp.Config.VerifyNonce)
+		r.Config.VerifyParameters = types.BoolPointerValue(resp.Config.VerifyParameters)
+		r.Config.VerifySignature = types.BoolPointerValue(resp.Config.VerifySignature)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -778,11 +773,11 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -791,7 +786,7 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

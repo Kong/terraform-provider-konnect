@@ -9,1986 +9,2007 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedCreateKonnectApplicationAuthPlugin() *shared.CreateKonnectApplicationAuthPlugin {
-	var config *shared.CreateKonnectApplicationAuthPluginConfig
-	if r.Config != nil {
-		authType := new(shared.CreateKonnectApplicationAuthPluginAuthType)
-		if !r.Config.AuthType.IsUnknown() && !r.Config.AuthType.IsNull() {
-			*authType = shared.CreateKonnectApplicationAuthPluginAuthType(r.Config.AuthType.ValueString())
+func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplicationAuthPluginInput() *shared.KonnectApplicationAuthPluginInput {
+	authType := new(shared.KonnectApplicationAuthPluginAuthType)
+	if !r.Config.AuthType.IsUnknown() && !r.Config.AuthType.IsNull() {
+		*authType = shared.KonnectApplicationAuthPluginAuthType(r.Config.AuthType.ValueString())
+	} else {
+		authType = nil
+	}
+	var keyNames []string = []string{}
+	for _, keyNamesItem := range r.Config.KeyNames {
+		keyNames = append(keyNames, keyNamesItem.ValueString())
+	}
+	scope := new(string)
+	if !r.Config.Scope.IsUnknown() && !r.Config.Scope.IsNull() {
+		*scope = r.Config.Scope.ValueString()
+	} else {
+		scope = nil
+	}
+	var v2Strategies *shared.V2Strategies
+	if r.Config.V2Strategies != nil {
+		var keyAuth []shared.KonnectApplicationAuthPluginKeyAuth = []shared.KonnectApplicationAuthPluginKeyAuth{}
+		for _, keyAuthItem := range r.Config.V2Strategies.KeyAuth {
+			var keyNames1 []string = []string{}
+			for _, keyNamesItem1 := range keyAuthItem.Config.KeyNames {
+				keyNames1 = append(keyNames1, keyNamesItem1.ValueString())
+			}
+			config1 := shared.KonnectApplicationAuthPluginConfigV2StrategiesConfig{
+				KeyNames: keyNames1,
+			}
+			var strategyID string
+			strategyID = keyAuthItem.StrategyID.ValueString()
+
+			keyAuth = append(keyAuth, shared.KonnectApplicationAuthPluginKeyAuth{
+				Config:     config1,
+				StrategyID: strategyID,
+			})
+		}
+		var openidConnect []shared.OpenidConnect = []shared.OpenidConnect{}
+		for _, openidConnectItem := range r.Config.V2Strategies.OpenidConnect {
+			var config2 *shared.KonnectApplicationAuthPluginConfigConfig
+			if openidConnectItem.Config != nil {
+				anonymous := new(string)
+				if !openidConnectItem.Config.Anonymous.IsUnknown() && !openidConnectItem.Config.Anonymous.IsNull() {
+					*anonymous = openidConnectItem.Config.Anonymous.ValueString()
+				} else {
+					anonymous = nil
+				}
+				var audience []string = []string{}
+				for _, audienceItem := range openidConnectItem.Config.Audience {
+					audience = append(audience, audienceItem.ValueString())
+				}
+				var audienceClaim []string = []string{}
+				for _, audienceClaimItem := range openidConnectItem.Config.AudienceClaim {
+					audienceClaim = append(audienceClaim, audienceClaimItem.ValueString())
+				}
+				var audienceRequired []string = []string{}
+				for _, audienceRequiredItem := range openidConnectItem.Config.AudienceRequired {
+					audienceRequired = append(audienceRequired, audienceRequiredItem.ValueString())
+				}
+				var authMethods []shared.KonnectApplicationAuthPluginAuthMethods = []shared.KonnectApplicationAuthPluginAuthMethods{}
+				for _, authMethodsItem := range openidConnectItem.Config.AuthMethods {
+					authMethods = append(authMethods, shared.KonnectApplicationAuthPluginAuthMethods(authMethodsItem.ValueString()))
+				}
+				var authenticatedGroupsClaim []string = []string{}
+				for _, authenticatedGroupsClaimItem := range openidConnectItem.Config.AuthenticatedGroupsClaim {
+					authenticatedGroupsClaim = append(authenticatedGroupsClaim, authenticatedGroupsClaimItem.ValueString())
+				}
+				authorizationCookieDomain := new(string)
+				if !openidConnectItem.Config.AuthorizationCookieDomain.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieDomain.IsNull() {
+					*authorizationCookieDomain = openidConnectItem.Config.AuthorizationCookieDomain.ValueString()
+				} else {
+					authorizationCookieDomain = nil
+				}
+				authorizationCookieHTTPOnly := new(bool)
+				if !openidConnectItem.Config.AuthorizationCookieHTTPOnly.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieHTTPOnly.IsNull() {
+					*authorizationCookieHTTPOnly = openidConnectItem.Config.AuthorizationCookieHTTPOnly.ValueBool()
+				} else {
+					authorizationCookieHTTPOnly = nil
+				}
+				authorizationCookieName := new(string)
+				if !openidConnectItem.Config.AuthorizationCookieName.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieName.IsNull() {
+					*authorizationCookieName = openidConnectItem.Config.AuthorizationCookieName.ValueString()
+				} else {
+					authorizationCookieName = nil
+				}
+				authorizationCookiePath := new(string)
+				if !openidConnectItem.Config.AuthorizationCookiePath.IsUnknown() && !openidConnectItem.Config.AuthorizationCookiePath.IsNull() {
+					*authorizationCookiePath = openidConnectItem.Config.AuthorizationCookiePath.ValueString()
+				} else {
+					authorizationCookiePath = nil
+				}
+				authorizationCookieSameSite := new(shared.KonnectApplicationAuthPluginAuthorizationCookieSameSite)
+				if !openidConnectItem.Config.AuthorizationCookieSameSite.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieSameSite.IsNull() {
+					*authorizationCookieSameSite = shared.KonnectApplicationAuthPluginAuthorizationCookieSameSite(openidConnectItem.Config.AuthorizationCookieSameSite.ValueString())
+				} else {
+					authorizationCookieSameSite = nil
+				}
+				authorizationCookieSecure := new(bool)
+				if !openidConnectItem.Config.AuthorizationCookieSecure.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieSecure.IsNull() {
+					*authorizationCookieSecure = openidConnectItem.Config.AuthorizationCookieSecure.ValueBool()
+				} else {
+					authorizationCookieSecure = nil
+				}
+				authorizationEndpoint := new(string)
+				if !openidConnectItem.Config.AuthorizationEndpoint.IsUnknown() && !openidConnectItem.Config.AuthorizationEndpoint.IsNull() {
+					*authorizationEndpoint = openidConnectItem.Config.AuthorizationEndpoint.ValueString()
+				} else {
+					authorizationEndpoint = nil
+				}
+				var authorizationQueryArgsClient []string = []string{}
+				for _, authorizationQueryArgsClientItem := range openidConnectItem.Config.AuthorizationQueryArgsClient {
+					authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
+				}
+				var authorizationQueryArgsNames []string = []string{}
+				for _, authorizationQueryArgsNamesItem := range openidConnectItem.Config.AuthorizationQueryArgsNames {
+					authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
+				}
+				var authorizationQueryArgsValues []string = []string{}
+				for _, authorizationQueryArgsValuesItem := range openidConnectItem.Config.AuthorizationQueryArgsValues {
+					authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
+				}
+				authorizationRollingTimeout := new(float64)
+				if !openidConnectItem.Config.AuthorizationRollingTimeout.IsUnknown() && !openidConnectItem.Config.AuthorizationRollingTimeout.IsNull() {
+					*authorizationRollingTimeout, _ = openidConnectItem.Config.AuthorizationRollingTimeout.ValueBigFloat().Float64()
+				} else {
+					authorizationRollingTimeout = nil
+				}
+				bearerTokenCookieName := new(string)
+				if !openidConnectItem.Config.BearerTokenCookieName.IsUnknown() && !openidConnectItem.Config.BearerTokenCookieName.IsNull() {
+					*bearerTokenCookieName = openidConnectItem.Config.BearerTokenCookieName.ValueString()
+				} else {
+					bearerTokenCookieName = nil
+				}
+				var bearerTokenParamType []shared.KonnectApplicationAuthPluginBearerTokenParamType = []shared.KonnectApplicationAuthPluginBearerTokenParamType{}
+				for _, bearerTokenParamTypeItem := range openidConnectItem.Config.BearerTokenParamType {
+					bearerTokenParamType = append(bearerTokenParamType, shared.KonnectApplicationAuthPluginBearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
+				}
+				byUsernameIgnoreCase := new(bool)
+				if !openidConnectItem.Config.ByUsernameIgnoreCase.IsUnknown() && !openidConnectItem.Config.ByUsernameIgnoreCase.IsNull() {
+					*byUsernameIgnoreCase = openidConnectItem.Config.ByUsernameIgnoreCase.ValueBool()
+				} else {
+					byUsernameIgnoreCase = nil
+				}
+				cacheIntrospection := new(bool)
+				if !openidConnectItem.Config.CacheIntrospection.IsUnknown() && !openidConnectItem.Config.CacheIntrospection.IsNull() {
+					*cacheIntrospection = openidConnectItem.Config.CacheIntrospection.ValueBool()
+				} else {
+					cacheIntrospection = nil
+				}
+				cacheTokenExchange := new(bool)
+				if !openidConnectItem.Config.CacheTokenExchange.IsUnknown() && !openidConnectItem.Config.CacheTokenExchange.IsNull() {
+					*cacheTokenExchange = openidConnectItem.Config.CacheTokenExchange.ValueBool()
+				} else {
+					cacheTokenExchange = nil
+				}
+				cacheTokens := new(bool)
+				if !openidConnectItem.Config.CacheTokens.IsUnknown() && !openidConnectItem.Config.CacheTokens.IsNull() {
+					*cacheTokens = openidConnectItem.Config.CacheTokens.ValueBool()
+				} else {
+					cacheTokens = nil
+				}
+				cacheTokensSalt := new(string)
+				if !openidConnectItem.Config.CacheTokensSalt.IsUnknown() && !openidConnectItem.Config.CacheTokensSalt.IsNull() {
+					*cacheTokensSalt = openidConnectItem.Config.CacheTokensSalt.ValueString()
+				} else {
+					cacheTokensSalt = nil
+				}
+				cacheTTL := new(float64)
+				if !openidConnectItem.Config.CacheTTL.IsUnknown() && !openidConnectItem.Config.CacheTTL.IsNull() {
+					*cacheTTL, _ = openidConnectItem.Config.CacheTTL.ValueBigFloat().Float64()
+				} else {
+					cacheTTL = nil
+				}
+				cacheTTLMax := new(float64)
+				if !openidConnectItem.Config.CacheTTLMax.IsUnknown() && !openidConnectItem.Config.CacheTTLMax.IsNull() {
+					*cacheTTLMax, _ = openidConnectItem.Config.CacheTTLMax.ValueBigFloat().Float64()
+				} else {
+					cacheTTLMax = nil
+				}
+				cacheTTLMin := new(float64)
+				if !openidConnectItem.Config.CacheTTLMin.IsUnknown() && !openidConnectItem.Config.CacheTTLMin.IsNull() {
+					*cacheTTLMin, _ = openidConnectItem.Config.CacheTTLMin.ValueBigFloat().Float64()
+				} else {
+					cacheTTLMin = nil
+				}
+				cacheTTLNeg := new(float64)
+				if !openidConnectItem.Config.CacheTTLNeg.IsUnknown() && !openidConnectItem.Config.CacheTTLNeg.IsNull() {
+					*cacheTTLNeg, _ = openidConnectItem.Config.CacheTTLNeg.ValueBigFloat().Float64()
+				} else {
+					cacheTTLNeg = nil
+				}
+				cacheTTLResurrect := new(float64)
+				if !openidConnectItem.Config.CacheTTLResurrect.IsUnknown() && !openidConnectItem.Config.CacheTTLResurrect.IsNull() {
+					*cacheTTLResurrect, _ = openidConnectItem.Config.CacheTTLResurrect.ValueBigFloat().Float64()
+				} else {
+					cacheTTLResurrect = nil
+				}
+				cacheUserInfo := new(bool)
+				if !openidConnectItem.Config.CacheUserInfo.IsUnknown() && !openidConnectItem.Config.CacheUserInfo.IsNull() {
+					*cacheUserInfo = openidConnectItem.Config.CacheUserInfo.ValueBool()
+				} else {
+					cacheUserInfo = nil
+				}
+				var claimsForbidden []string = []string{}
+				for _, claimsForbiddenItem := range openidConnectItem.Config.ClaimsForbidden {
+					claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
+				}
+				var clientAlg []shared.KonnectApplicationAuthPluginClientAlg = []shared.KonnectApplicationAuthPluginClientAlg{}
+				for _, clientAlgItem := range openidConnectItem.Config.ClientAlg {
+					clientAlg = append(clientAlg, shared.KonnectApplicationAuthPluginClientAlg(clientAlgItem.ValueString()))
+				}
+				clientArg := new(string)
+				if !openidConnectItem.Config.ClientArg.IsUnknown() && !openidConnectItem.Config.ClientArg.IsNull() {
+					*clientArg = openidConnectItem.Config.ClientArg.ValueString()
+				} else {
+					clientArg = nil
+				}
+				var clientAuth []shared.KonnectApplicationAuthPluginClientAuth = []shared.KonnectApplicationAuthPluginClientAuth{}
+				for _, clientAuthItem := range openidConnectItem.Config.ClientAuth {
+					clientAuth = append(clientAuth, shared.KonnectApplicationAuthPluginClientAuth(clientAuthItem.ValueString()))
+				}
+				var clientCredentialsParamType []shared.KonnectApplicationAuthPluginClientCredentialsParamType = []shared.KonnectApplicationAuthPluginClientCredentialsParamType{}
+				for _, clientCredentialsParamTypeItem := range openidConnectItem.Config.ClientCredentialsParamType {
+					clientCredentialsParamType = append(clientCredentialsParamType, shared.KonnectApplicationAuthPluginClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
+				}
+				var clientID []string = []string{}
+				for _, clientIDItem := range openidConnectItem.Config.ClientID {
+					clientID = append(clientID, clientIDItem.ValueString())
+				}
+				var clientJwk []shared.KonnectApplicationAuthPluginClientJwk = []shared.KonnectApplicationAuthPluginClientJwk{}
+				for _, clientJwkItem := range openidConnectItem.Config.ClientJwk {
+					alg := new(string)
+					if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
+						*alg = clientJwkItem.Alg.ValueString()
+					} else {
+						alg = nil
+					}
+					crv := new(string)
+					if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
+						*crv = clientJwkItem.Crv.ValueString()
+					} else {
+						crv = nil
+					}
+					d := new(string)
+					if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
+						*d = clientJwkItem.D.ValueString()
+					} else {
+						d = nil
+					}
+					dp := new(string)
+					if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
+						*dp = clientJwkItem.Dp.ValueString()
+					} else {
+						dp = nil
+					}
+					dq := new(string)
+					if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
+						*dq = clientJwkItem.Dq.ValueString()
+					} else {
+						dq = nil
+					}
+					e := new(string)
+					if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
+						*e = clientJwkItem.E.ValueString()
+					} else {
+						e = nil
+					}
+					issuer := new(string)
+					if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
+						*issuer = clientJwkItem.Issuer.ValueString()
+					} else {
+						issuer = nil
+					}
+					k := new(string)
+					if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
+						*k = clientJwkItem.K.ValueString()
+					} else {
+						k = nil
+					}
+					var keyOps []string = []string{}
+					for _, keyOpsItem := range clientJwkItem.KeyOps {
+						keyOps = append(keyOps, keyOpsItem.ValueString())
+					}
+					kid := new(string)
+					if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
+						*kid = clientJwkItem.Kid.ValueString()
+					} else {
+						kid = nil
+					}
+					kty := new(string)
+					if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
+						*kty = clientJwkItem.Kty.ValueString()
+					} else {
+						kty = nil
+					}
+					n := new(string)
+					if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
+						*n = clientJwkItem.N.ValueString()
+					} else {
+						n = nil
+					}
+					oth := new(string)
+					if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
+						*oth = clientJwkItem.Oth.ValueString()
+					} else {
+						oth = nil
+					}
+					p := new(string)
+					if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
+						*p = clientJwkItem.P.ValueString()
+					} else {
+						p = nil
+					}
+					q := new(string)
+					if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
+						*q = clientJwkItem.Q.ValueString()
+					} else {
+						q = nil
+					}
+					qi := new(string)
+					if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
+						*qi = clientJwkItem.Qi.ValueString()
+					} else {
+						qi = nil
+					}
+					r1 := new(string)
+					if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
+						*r1 = clientJwkItem.R.ValueString()
+					} else {
+						r1 = nil
+					}
+					t := new(string)
+					if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
+						*t = clientJwkItem.T.ValueString()
+					} else {
+						t = nil
+					}
+					use := new(string)
+					if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
+						*use = clientJwkItem.Use.ValueString()
+					} else {
+						use = nil
+					}
+					x := new(string)
+					if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
+						*x = clientJwkItem.X.ValueString()
+					} else {
+						x = nil
+					}
+					var x5c []string = []string{}
+					for _, x5cItem := range clientJwkItem.X5c {
+						x5c = append(x5c, x5cItem.ValueString())
+					}
+					x5t := new(string)
+					if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
+						*x5t = clientJwkItem.X5t.ValueString()
+					} else {
+						x5t = nil
+					}
+					x5tNumberS256 := new(string)
+					if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
+						*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
+					} else {
+						x5tNumberS256 = nil
+					}
+					x5u := new(string)
+					if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
+						*x5u = clientJwkItem.X5u.ValueString()
+					} else {
+						x5u = nil
+					}
+					y := new(string)
+					if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
+						*y = clientJwkItem.Y.ValueString()
+					} else {
+						y = nil
+					}
+					clientJwk = append(clientJwk, shared.KonnectApplicationAuthPluginClientJwk{
+						Alg:           alg,
+						Crv:           crv,
+						D:             d,
+						Dp:            dp,
+						Dq:            dq,
+						E:             e,
+						Issuer:        issuer,
+						K:             k,
+						KeyOps:        keyOps,
+						Kid:           kid,
+						Kty:           kty,
+						N:             n,
+						Oth:           oth,
+						P:             p,
+						Q:             q,
+						Qi:            qi,
+						R:             r1,
+						T:             t,
+						Use:           use,
+						X:             x,
+						X5c:           x5c,
+						X5t:           x5t,
+						X5tNumberS256: x5tNumberS256,
+						X5u:           x5u,
+						Y:             y,
+					})
+				}
+				var clientSecret []string = []string{}
+				for _, clientSecretItem := range openidConnectItem.Config.ClientSecret {
+					clientSecret = append(clientSecret, clientSecretItem.ValueString())
+				}
+				clusterMaxRedirections := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.IsNull() {
+					*clusterMaxRedirections = openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.ValueInt64()
+				} else {
+					clusterMaxRedirections = nil
+				}
+				var clusterNodes []shared.KonnectApplicationAuthPluginClusterNodes = []shared.KonnectApplicationAuthPluginClusterNodes{}
+				for _, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
+					ip := new(string)
+					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+						*ip = clusterNodesItem.IP.ValueString()
+					} else {
+						ip = nil
+					}
+					port := new(int64)
+					if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+						*port = clusterNodesItem.Port.ValueInt64()
+					} else {
+						port = nil
+					}
+					clusterNodes = append(clusterNodes, shared.KonnectApplicationAuthPluginClusterNodes{
+						IP:   ip,
+						Port: port,
+					})
+				}
+				connectTimeout := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
+					*connectTimeout = openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.ValueInt64()
+				} else {
+					connectTimeout = nil
+				}
+				connectionIsProxied := new(bool)
+				if !openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.IsNull() {
+					*connectionIsProxied = openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.ValueBool()
+				} else {
+					connectionIsProxied = nil
+				}
+				database := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.Database.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Database.IsNull() {
+					*database = openidConnectItem.Config.ClusterCacheRedis.Database.ValueInt64()
+				} else {
+					database = nil
+				}
+				host := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.Host.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Host.IsNull() {
+					*host = openidConnectItem.Config.ClusterCacheRedis.Host.ValueString()
+				} else {
+					host = nil
+				}
+				keepaliveBacklog := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.IsNull() {
+					*keepaliveBacklog = openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.ValueInt64()
+				} else {
+					keepaliveBacklog = nil
+				}
+				keepalivePoolSize := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.IsNull() {
+					*keepalivePoolSize = openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.ValueInt64()
+				} else {
+					keepalivePoolSize = nil
+				}
+				password := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.Password.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Password.IsNull() {
+					*password = openidConnectItem.Config.ClusterCacheRedis.Password.ValueString()
+				} else {
+					password = nil
+				}
+				port1 := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.Port.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Port.IsNull() {
+					*port1 = openidConnectItem.Config.ClusterCacheRedis.Port.ValueInt64()
+				} else {
+					port1 = nil
+				}
+				readTimeout := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.IsNull() {
+					*readTimeout = openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.ValueInt64()
+				} else {
+					readTimeout = nil
+				}
+				sendTimeout := new(int64)
+				if !openidConnectItem.Config.ClusterCacheRedis.SendTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SendTimeout.IsNull() {
+					*sendTimeout = openidConnectItem.Config.ClusterCacheRedis.SendTimeout.ValueInt64()
+				} else {
+					sendTimeout = nil
+				}
+				sentinelMaster := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.IsNull() {
+					*sentinelMaster = openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.ValueString()
+				} else {
+					sentinelMaster = nil
+				}
+				var sentinelNodes []shared.KonnectApplicationAuthPluginSentinelNodes = []shared.KonnectApplicationAuthPluginSentinelNodes{}
+				for _, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
+					host1 := new(string)
+					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+						*host1 = sentinelNodesItem.Host.ValueString()
+					} else {
+						host1 = nil
+					}
+					port2 := new(int64)
+					if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+						*port2 = sentinelNodesItem.Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					sentinelNodes = append(sentinelNodes, shared.KonnectApplicationAuthPluginSentinelNodes{
+						Host: host1,
+						Port: port2,
+					})
+				}
+				sentinelPassword := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
+					*sentinelPassword = openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.ValueString()
+				} else {
+					sentinelPassword = nil
+				}
+				sentinelRole := new(shared.KonnectApplicationAuthPluginSentinelRole)
+				if !openidConnectItem.Config.ClusterCacheRedis.SentinelRole.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelRole.IsNull() {
+					*sentinelRole = shared.KonnectApplicationAuthPluginSentinelRole(openidConnectItem.Config.ClusterCacheRedis.SentinelRole.ValueString())
+				} else {
+					sentinelRole = nil
+				}
+				sentinelUsername := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.IsNull() {
+					*sentinelUsername = openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.ValueString()
+				} else {
+					sentinelUsername = nil
+				}
+				serverName := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.ServerName.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ServerName.IsNull() {
+					*serverName = openidConnectItem.Config.ClusterCacheRedis.ServerName.ValueString()
+				} else {
+					serverName = nil
+				}
+				ssl := new(bool)
+				if !openidConnectItem.Config.ClusterCacheRedis.Ssl.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Ssl.IsNull() {
+					*ssl = openidConnectItem.Config.ClusterCacheRedis.Ssl.ValueBool()
+				} else {
+					ssl = nil
+				}
+				sslVerify := new(bool)
+				if !openidConnectItem.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SslVerify.IsNull() {
+					*sslVerify = openidConnectItem.Config.ClusterCacheRedis.SslVerify.ValueBool()
+				} else {
+					sslVerify = nil
+				}
+				username := new(string)
+				if !openidConnectItem.Config.ClusterCacheRedis.Username.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Username.IsNull() {
+					*username = openidConnectItem.Config.ClusterCacheRedis.Username.ValueString()
+				} else {
+					username = nil
+				}
+				clusterCacheRedis := shared.KonnectApplicationAuthPluginClusterCacheRedis{
+					ClusterMaxRedirections: clusterMaxRedirections,
+					ClusterNodes:           clusterNodes,
+					ConnectTimeout:         connectTimeout,
+					ConnectionIsProxied:    connectionIsProxied,
+					Database:               database,
+					Host:                   host,
+					KeepaliveBacklog:       keepaliveBacklog,
+					KeepalivePoolSize:      keepalivePoolSize,
+					Password:               password,
+					Port:                   port1,
+					ReadTimeout:            readTimeout,
+					SendTimeout:            sendTimeout,
+					SentinelMaster:         sentinelMaster,
+					SentinelNodes:          sentinelNodes,
+					SentinelPassword:       sentinelPassword,
+					SentinelRole:           sentinelRole,
+					SentinelUsername:       sentinelUsername,
+					ServerName:             serverName,
+					Ssl:                    ssl,
+					SslVerify:              sslVerify,
+					Username:               username,
+				}
+				clusterCacheStrategy := new(shared.KonnectApplicationAuthPluginClusterCacheStrategy)
+				if !openidConnectItem.Config.ClusterCacheStrategy.IsUnknown() && !openidConnectItem.Config.ClusterCacheStrategy.IsNull() {
+					*clusterCacheStrategy = shared.KonnectApplicationAuthPluginClusterCacheStrategy(openidConnectItem.Config.ClusterCacheStrategy.ValueString())
+				} else {
+					clusterCacheStrategy = nil
+				}
+				var consumerBy []shared.KonnectApplicationAuthPluginConsumerBy = []shared.KonnectApplicationAuthPluginConsumerBy{}
+				for _, consumerByItem := range openidConnectItem.Config.ConsumerBy {
+					consumerBy = append(consumerBy, shared.KonnectApplicationAuthPluginConsumerBy(consumerByItem.ValueString()))
+				}
+				var consumerClaim []string = []string{}
+				for _, consumerClaimItem := range openidConnectItem.Config.ConsumerClaim {
+					consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
+				}
+				consumerOptional := new(bool)
+				if !openidConnectItem.Config.ConsumerOptional.IsUnknown() && !openidConnectItem.Config.ConsumerOptional.IsNull() {
+					*consumerOptional = openidConnectItem.Config.ConsumerOptional.ValueBool()
+				} else {
+					consumerOptional = nil
+				}
+				var credentialClaim []string = []string{}
+				for _, credentialClaimItem := range openidConnectItem.Config.CredentialClaim {
+					credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
+				}
+				var disableSession []shared.KonnectApplicationAuthPluginDisableSession = []shared.KonnectApplicationAuthPluginDisableSession{}
+				for _, disableSessionItem := range openidConnectItem.Config.DisableSession {
+					disableSession = append(disableSession, shared.KonnectApplicationAuthPluginDisableSession(disableSessionItem.ValueString()))
+				}
+				var discoveryHeadersNames []string = []string{}
+				for _, discoveryHeadersNamesItem := range openidConnectItem.Config.DiscoveryHeadersNames {
+					discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
+				}
+				var discoveryHeadersValues []string = []string{}
+				for _, discoveryHeadersValuesItem := range openidConnectItem.Config.DiscoveryHeadersValues {
+					discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
+				}
+				displayErrors := new(bool)
+				if !openidConnectItem.Config.DisplayErrors.IsUnknown() && !openidConnectItem.Config.DisplayErrors.IsNull() {
+					*displayErrors = openidConnectItem.Config.DisplayErrors.ValueBool()
+				} else {
+					displayErrors = nil
+				}
+				var domains []string = []string{}
+				for _, domainsItem := range openidConnectItem.Config.Domains {
+					domains = append(domains, domainsItem.ValueString())
+				}
+				downstreamAccessTokenHeader := new(string)
+				if !openidConnectItem.Config.DownstreamAccessTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamAccessTokenHeader.IsNull() {
+					*downstreamAccessTokenHeader = openidConnectItem.Config.DownstreamAccessTokenHeader.ValueString()
+				} else {
+					downstreamAccessTokenHeader = nil
+				}
+				downstreamAccessTokenJwkHeader := new(string)
+				if !openidConnectItem.Config.DownstreamAccessTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.DownstreamAccessTokenJwkHeader.IsNull() {
+					*downstreamAccessTokenJwkHeader = openidConnectItem.Config.DownstreamAccessTokenJwkHeader.ValueString()
+				} else {
+					downstreamAccessTokenJwkHeader = nil
+				}
+				var downstreamHeadersClaims []string = []string{}
+				for _, downstreamHeadersClaimsItem := range openidConnectItem.Config.DownstreamHeadersClaims {
+					downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
+				}
+				var downstreamHeadersNames []string = []string{}
+				for _, downstreamHeadersNamesItem := range openidConnectItem.Config.DownstreamHeadersNames {
+					downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
+				}
+				downstreamIDTokenHeader := new(string)
+				if !openidConnectItem.Config.DownstreamIDTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIDTokenHeader.IsNull() {
+					*downstreamIDTokenHeader = openidConnectItem.Config.DownstreamIDTokenHeader.ValueString()
+				} else {
+					downstreamIDTokenHeader = nil
+				}
+				downstreamIDTokenJwkHeader := new(string)
+				if !openidConnectItem.Config.DownstreamIDTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIDTokenJwkHeader.IsNull() {
+					*downstreamIDTokenJwkHeader = openidConnectItem.Config.DownstreamIDTokenJwkHeader.ValueString()
+				} else {
+					downstreamIDTokenJwkHeader = nil
+				}
+				downstreamIntrospectionHeader := new(string)
+				if !openidConnectItem.Config.DownstreamIntrospectionHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIntrospectionHeader.IsNull() {
+					*downstreamIntrospectionHeader = openidConnectItem.Config.DownstreamIntrospectionHeader.ValueString()
+				} else {
+					downstreamIntrospectionHeader = nil
+				}
+				downstreamIntrospectionJwtHeader := new(string)
+				if !openidConnectItem.Config.DownstreamIntrospectionJwtHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIntrospectionJwtHeader.IsNull() {
+					*downstreamIntrospectionJwtHeader = openidConnectItem.Config.DownstreamIntrospectionJwtHeader.ValueString()
+				} else {
+					downstreamIntrospectionJwtHeader = nil
+				}
+				downstreamRefreshTokenHeader := new(string)
+				if !openidConnectItem.Config.DownstreamRefreshTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamRefreshTokenHeader.IsNull() {
+					*downstreamRefreshTokenHeader = openidConnectItem.Config.DownstreamRefreshTokenHeader.ValueString()
+				} else {
+					downstreamRefreshTokenHeader = nil
+				}
+				downstreamSessionIDHeader := new(string)
+				if !openidConnectItem.Config.DownstreamSessionIDHeader.IsUnknown() && !openidConnectItem.Config.DownstreamSessionIDHeader.IsNull() {
+					*downstreamSessionIDHeader = openidConnectItem.Config.DownstreamSessionIDHeader.ValueString()
+				} else {
+					downstreamSessionIDHeader = nil
+				}
+				downstreamUserInfoHeader := new(string)
+				if !openidConnectItem.Config.DownstreamUserInfoHeader.IsUnknown() && !openidConnectItem.Config.DownstreamUserInfoHeader.IsNull() {
+					*downstreamUserInfoHeader = openidConnectItem.Config.DownstreamUserInfoHeader.ValueString()
+				} else {
+					downstreamUserInfoHeader = nil
+				}
+				downstreamUserInfoJwtHeader := new(string)
+				if !openidConnectItem.Config.DownstreamUserInfoJwtHeader.IsUnknown() && !openidConnectItem.Config.DownstreamUserInfoJwtHeader.IsNull() {
+					*downstreamUserInfoJwtHeader = openidConnectItem.Config.DownstreamUserInfoJwtHeader.ValueString()
+				} else {
+					downstreamUserInfoJwtHeader = nil
+				}
+				dpopProofLifetime := new(float64)
+				if !openidConnectItem.Config.DpopProofLifetime.IsUnknown() && !openidConnectItem.Config.DpopProofLifetime.IsNull() {
+					*dpopProofLifetime, _ = openidConnectItem.Config.DpopProofLifetime.ValueBigFloat().Float64()
+				} else {
+					dpopProofLifetime = nil
+				}
+				dpopUseNonce := new(bool)
+				if !openidConnectItem.Config.DpopUseNonce.IsUnknown() && !openidConnectItem.Config.DpopUseNonce.IsNull() {
+					*dpopUseNonce = openidConnectItem.Config.DpopUseNonce.ValueBool()
+				} else {
+					dpopUseNonce = nil
+				}
+				enableHsSignatures := new(bool)
+				if !openidConnectItem.Config.EnableHsSignatures.IsUnknown() && !openidConnectItem.Config.EnableHsSignatures.IsNull() {
+					*enableHsSignatures = openidConnectItem.Config.EnableHsSignatures.ValueBool()
+				} else {
+					enableHsSignatures = nil
+				}
+				endSessionEndpoint := new(string)
+				if !openidConnectItem.Config.EndSessionEndpoint.IsUnknown() && !openidConnectItem.Config.EndSessionEndpoint.IsNull() {
+					*endSessionEndpoint = openidConnectItem.Config.EndSessionEndpoint.ValueString()
+				} else {
+					endSessionEndpoint = nil
+				}
+				exposeErrorCode := new(bool)
+				if !openidConnectItem.Config.ExposeErrorCode.IsUnknown() && !openidConnectItem.Config.ExposeErrorCode.IsNull() {
+					*exposeErrorCode = openidConnectItem.Config.ExposeErrorCode.ValueBool()
+				} else {
+					exposeErrorCode = nil
+				}
+				var extraJwksUris []string = []string{}
+				for _, extraJwksUrisItem := range openidConnectItem.Config.ExtraJwksUris {
+					extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
+				}
+				forbiddenDestroySession := new(bool)
+				if !openidConnectItem.Config.ForbiddenDestroySession.IsUnknown() && !openidConnectItem.Config.ForbiddenDestroySession.IsNull() {
+					*forbiddenDestroySession = openidConnectItem.Config.ForbiddenDestroySession.ValueBool()
+				} else {
+					forbiddenDestroySession = nil
+				}
+				forbiddenErrorMessage := new(string)
+				if !openidConnectItem.Config.ForbiddenErrorMessage.IsUnknown() && !openidConnectItem.Config.ForbiddenErrorMessage.IsNull() {
+					*forbiddenErrorMessage = openidConnectItem.Config.ForbiddenErrorMessage.ValueString()
+				} else {
+					forbiddenErrorMessage = nil
+				}
+				var forbiddenRedirectURI []string = []string{}
+				for _, forbiddenRedirectURIItem := range openidConnectItem.Config.ForbiddenRedirectURI {
+					forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
+				}
+				var groupsClaim []string = []string{}
+				for _, groupsClaimItem := range openidConnectItem.Config.GroupsClaim {
+					groupsClaim = append(groupsClaim, groupsClaimItem.ValueString())
+				}
+				var groupsRequired []string = []string{}
+				for _, groupsRequiredItem := range openidConnectItem.Config.GroupsRequired {
+					groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+				}
+				hideCredentials := new(bool)
+				if !openidConnectItem.Config.HideCredentials.IsUnknown() && !openidConnectItem.Config.HideCredentials.IsNull() {
+					*hideCredentials = openidConnectItem.Config.HideCredentials.ValueBool()
+				} else {
+					hideCredentials = nil
+				}
+				httpProxy := new(string)
+				if !openidConnectItem.Config.HTTPProxy.IsUnknown() && !openidConnectItem.Config.HTTPProxy.IsNull() {
+					*httpProxy = openidConnectItem.Config.HTTPProxy.ValueString()
+				} else {
+					httpProxy = nil
+				}
+				httpProxyAuthorization := new(string)
+				if !openidConnectItem.Config.HTTPProxyAuthorization.IsUnknown() && !openidConnectItem.Config.HTTPProxyAuthorization.IsNull() {
+					*httpProxyAuthorization = openidConnectItem.Config.HTTPProxyAuthorization.ValueString()
+				} else {
+					httpProxyAuthorization = nil
+				}
+				httpVersion := new(float64)
+				if !openidConnectItem.Config.HTTPVersion.IsUnknown() && !openidConnectItem.Config.HTTPVersion.IsNull() {
+					*httpVersion, _ = openidConnectItem.Config.HTTPVersion.ValueBigFloat().Float64()
+				} else {
+					httpVersion = nil
+				}
+				httpsProxy := new(string)
+				if !openidConnectItem.Config.HTTPSProxy.IsUnknown() && !openidConnectItem.Config.HTTPSProxy.IsNull() {
+					*httpsProxy = openidConnectItem.Config.HTTPSProxy.ValueString()
+				} else {
+					httpsProxy = nil
+				}
+				httpsProxyAuthorization := new(string)
+				if !openidConnectItem.Config.HTTPSProxyAuthorization.IsUnknown() && !openidConnectItem.Config.HTTPSProxyAuthorization.IsNull() {
+					*httpsProxyAuthorization = openidConnectItem.Config.HTTPSProxyAuthorization.ValueString()
+				} else {
+					httpsProxyAuthorization = nil
+				}
+				idTokenParamName := new(string)
+				if !openidConnectItem.Config.IDTokenParamName.IsUnknown() && !openidConnectItem.Config.IDTokenParamName.IsNull() {
+					*idTokenParamName = openidConnectItem.Config.IDTokenParamName.ValueString()
+				} else {
+					idTokenParamName = nil
+				}
+				var idTokenParamType []shared.KonnectApplicationAuthPluginIDTokenParamType = []shared.KonnectApplicationAuthPluginIDTokenParamType{}
+				for _, idTokenParamTypeItem := range openidConnectItem.Config.IDTokenParamType {
+					idTokenParamType = append(idTokenParamType, shared.KonnectApplicationAuthPluginIDTokenParamType(idTokenParamTypeItem.ValueString()))
+				}
+				var ignoreSignature []shared.KonnectApplicationAuthPluginIgnoreSignature = []shared.KonnectApplicationAuthPluginIgnoreSignature{}
+				for _, ignoreSignatureItem := range openidConnectItem.Config.IgnoreSignature {
+					ignoreSignature = append(ignoreSignature, shared.KonnectApplicationAuthPluginIgnoreSignature(ignoreSignatureItem.ValueString()))
+				}
+				introspectJwtTokens := new(bool)
+				if !openidConnectItem.Config.IntrospectJwtTokens.IsUnknown() && !openidConnectItem.Config.IntrospectJwtTokens.IsNull() {
+					*introspectJwtTokens = openidConnectItem.Config.IntrospectJwtTokens.ValueBool()
+				} else {
+					introspectJwtTokens = nil
+				}
+				introspectionAccept := new(shared.KonnectApplicationAuthPluginIntrospectionAccept)
+				if !openidConnectItem.Config.IntrospectionAccept.IsUnknown() && !openidConnectItem.Config.IntrospectionAccept.IsNull() {
+					*introspectionAccept = shared.KonnectApplicationAuthPluginIntrospectionAccept(openidConnectItem.Config.IntrospectionAccept.ValueString())
+				} else {
+					introspectionAccept = nil
+				}
+				introspectionCheckActive := new(bool)
+				if !openidConnectItem.Config.IntrospectionCheckActive.IsUnknown() && !openidConnectItem.Config.IntrospectionCheckActive.IsNull() {
+					*introspectionCheckActive = openidConnectItem.Config.IntrospectionCheckActive.ValueBool()
+				} else {
+					introspectionCheckActive = nil
+				}
+				introspectionEndpoint := new(string)
+				if !openidConnectItem.Config.IntrospectionEndpoint.IsUnknown() && !openidConnectItem.Config.IntrospectionEndpoint.IsNull() {
+					*introspectionEndpoint = openidConnectItem.Config.IntrospectionEndpoint.ValueString()
+				} else {
+					introspectionEndpoint = nil
+				}
+				introspectionEndpointAuthMethod := new(shared.KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod)
+				if !openidConnectItem.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.IntrospectionEndpointAuthMethod.IsNull() {
+					*introspectionEndpointAuthMethod = shared.KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod(openidConnectItem.Config.IntrospectionEndpointAuthMethod.ValueString())
+				} else {
+					introspectionEndpointAuthMethod = nil
+				}
+				var introspectionHeadersClient []string = []string{}
+				for _, introspectionHeadersClientItem := range openidConnectItem.Config.IntrospectionHeadersClient {
+					introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
+				}
+				var introspectionHeadersNames []string = []string{}
+				for _, introspectionHeadersNamesItem := range openidConnectItem.Config.IntrospectionHeadersNames {
+					introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
+				}
+				var introspectionHeadersValues []string = []string{}
+				for _, introspectionHeadersValuesItem := range openidConnectItem.Config.IntrospectionHeadersValues {
+					introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
+				}
+				introspectionHint := new(string)
+				if !openidConnectItem.Config.IntrospectionHint.IsUnknown() && !openidConnectItem.Config.IntrospectionHint.IsNull() {
+					*introspectionHint = openidConnectItem.Config.IntrospectionHint.ValueString()
+				} else {
+					introspectionHint = nil
+				}
+				var introspectionPostArgsClient []string = []string{}
+				for _, introspectionPostArgsClientItem := range openidConnectItem.Config.IntrospectionPostArgsClient {
+					introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+				}
+				var introspectionPostArgsNames []string = []string{}
+				for _, introspectionPostArgsNamesItem := range openidConnectItem.Config.IntrospectionPostArgsNames {
+					introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
+				}
+				var introspectionPostArgsValues []string = []string{}
+				for _, introspectionPostArgsValuesItem := range openidConnectItem.Config.IntrospectionPostArgsValues {
+					introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
+				}
+				introspectionTokenParamName := new(string)
+				if !openidConnectItem.Config.IntrospectionTokenParamName.IsUnknown() && !openidConnectItem.Config.IntrospectionTokenParamName.IsNull() {
+					*introspectionTokenParamName = openidConnectItem.Config.IntrospectionTokenParamName.ValueString()
+				} else {
+					introspectionTokenParamName = nil
+				}
+				var issuer1 string
+				issuer1 = openidConnectItem.Config.Issuer.ValueString()
+
+				var issuersAllowed []string = []string{}
+				for _, issuersAllowedItem := range openidConnectItem.Config.IssuersAllowed {
+					issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
+				}
+				jwtSessionClaim := new(string)
+				if !openidConnectItem.Config.JwtSessionClaim.IsUnknown() && !openidConnectItem.Config.JwtSessionClaim.IsNull() {
+					*jwtSessionClaim = openidConnectItem.Config.JwtSessionClaim.ValueString()
+				} else {
+					jwtSessionClaim = nil
+				}
+				jwtSessionCookie := new(string)
+				if !openidConnectItem.Config.JwtSessionCookie.IsUnknown() && !openidConnectItem.Config.JwtSessionCookie.IsNull() {
+					*jwtSessionCookie = openidConnectItem.Config.JwtSessionCookie.ValueString()
+				} else {
+					jwtSessionCookie = nil
+				}
+				keepalive := new(bool)
+				if !openidConnectItem.Config.Keepalive.IsUnknown() && !openidConnectItem.Config.Keepalive.IsNull() {
+					*keepalive = openidConnectItem.Config.Keepalive.ValueBool()
+				} else {
+					keepalive = nil
+				}
+				leeway := new(float64)
+				if !openidConnectItem.Config.Leeway.IsUnknown() && !openidConnectItem.Config.Leeway.IsNull() {
+					*leeway, _ = openidConnectItem.Config.Leeway.ValueBigFloat().Float64()
+				} else {
+					leeway = nil
+				}
+				loginAction := new(shared.KonnectApplicationAuthPluginLoginAction)
+				if !openidConnectItem.Config.LoginAction.IsUnknown() && !openidConnectItem.Config.LoginAction.IsNull() {
+					*loginAction = shared.KonnectApplicationAuthPluginLoginAction(openidConnectItem.Config.LoginAction.ValueString())
+				} else {
+					loginAction = nil
+				}
+				var loginMethods []shared.KonnectApplicationAuthPluginLoginMethods = []shared.KonnectApplicationAuthPluginLoginMethods{}
+				for _, loginMethodsItem := range openidConnectItem.Config.LoginMethods {
+					loginMethods = append(loginMethods, shared.KonnectApplicationAuthPluginLoginMethods(loginMethodsItem.ValueString()))
+				}
+				loginRedirectMode := new(shared.KonnectApplicationAuthPluginLoginRedirectMode)
+				if !openidConnectItem.Config.LoginRedirectMode.IsUnknown() && !openidConnectItem.Config.LoginRedirectMode.IsNull() {
+					*loginRedirectMode = shared.KonnectApplicationAuthPluginLoginRedirectMode(openidConnectItem.Config.LoginRedirectMode.ValueString())
+				} else {
+					loginRedirectMode = nil
+				}
+				var loginRedirectURI []string = []string{}
+				for _, loginRedirectURIItem := range openidConnectItem.Config.LoginRedirectURI {
+					loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
+				}
+				var loginTokens []shared.KonnectApplicationAuthPluginLoginTokens = []shared.KonnectApplicationAuthPluginLoginTokens{}
+				for _, loginTokensItem := range openidConnectItem.Config.LoginTokens {
+					loginTokens = append(loginTokens, shared.KonnectApplicationAuthPluginLoginTokens(loginTokensItem.ValueString()))
+				}
+				var logoutMethods []shared.KonnectApplicationAuthPluginLogoutMethods = []shared.KonnectApplicationAuthPluginLogoutMethods{}
+				for _, logoutMethodsItem := range openidConnectItem.Config.LogoutMethods {
+					logoutMethods = append(logoutMethods, shared.KonnectApplicationAuthPluginLogoutMethods(logoutMethodsItem.ValueString()))
+				}
+				logoutPostArg := new(string)
+				if !openidConnectItem.Config.LogoutPostArg.IsUnknown() && !openidConnectItem.Config.LogoutPostArg.IsNull() {
+					*logoutPostArg = openidConnectItem.Config.LogoutPostArg.ValueString()
+				} else {
+					logoutPostArg = nil
+				}
+				logoutQueryArg := new(string)
+				if !openidConnectItem.Config.LogoutQueryArg.IsUnknown() && !openidConnectItem.Config.LogoutQueryArg.IsNull() {
+					*logoutQueryArg = openidConnectItem.Config.LogoutQueryArg.ValueString()
+				} else {
+					logoutQueryArg = nil
+				}
+				var logoutRedirectURI []string = []string{}
+				for _, logoutRedirectURIItem := range openidConnectItem.Config.LogoutRedirectURI {
+					logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
+				}
+				logoutRevoke := new(bool)
+				if !openidConnectItem.Config.LogoutRevoke.IsUnknown() && !openidConnectItem.Config.LogoutRevoke.IsNull() {
+					*logoutRevoke = openidConnectItem.Config.LogoutRevoke.ValueBool()
+				} else {
+					logoutRevoke = nil
+				}
+				logoutRevokeAccessToken := new(bool)
+				if !openidConnectItem.Config.LogoutRevokeAccessToken.IsUnknown() && !openidConnectItem.Config.LogoutRevokeAccessToken.IsNull() {
+					*logoutRevokeAccessToken = openidConnectItem.Config.LogoutRevokeAccessToken.ValueBool()
+				} else {
+					logoutRevokeAccessToken = nil
+				}
+				logoutRevokeRefreshToken := new(bool)
+				if !openidConnectItem.Config.LogoutRevokeRefreshToken.IsUnknown() && !openidConnectItem.Config.LogoutRevokeRefreshToken.IsNull() {
+					*logoutRevokeRefreshToken = openidConnectItem.Config.LogoutRevokeRefreshToken.ValueBool()
+				} else {
+					logoutRevokeRefreshToken = nil
+				}
+				logoutURISuffix := new(string)
+				if !openidConnectItem.Config.LogoutURISuffix.IsUnknown() && !openidConnectItem.Config.LogoutURISuffix.IsNull() {
+					*logoutURISuffix = openidConnectItem.Config.LogoutURISuffix.ValueString()
+				} else {
+					logoutURISuffix = nil
+				}
+				maxAge := new(float64)
+				if !openidConnectItem.Config.MaxAge.IsUnknown() && !openidConnectItem.Config.MaxAge.IsNull() {
+					*maxAge, _ = openidConnectItem.Config.MaxAge.ValueBigFloat().Float64()
+				} else {
+					maxAge = nil
+				}
+				mtlsIntrospectionEndpoint := new(string)
+				if !openidConnectItem.Config.MtlsIntrospectionEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsIntrospectionEndpoint.IsNull() {
+					*mtlsIntrospectionEndpoint = openidConnectItem.Config.MtlsIntrospectionEndpoint.ValueString()
+				} else {
+					mtlsIntrospectionEndpoint = nil
+				}
+				mtlsRevocationEndpoint := new(string)
+				if !openidConnectItem.Config.MtlsRevocationEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsRevocationEndpoint.IsNull() {
+					*mtlsRevocationEndpoint = openidConnectItem.Config.MtlsRevocationEndpoint.ValueString()
+				} else {
+					mtlsRevocationEndpoint = nil
+				}
+				mtlsTokenEndpoint := new(string)
+				if !openidConnectItem.Config.MtlsTokenEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsTokenEndpoint.IsNull() {
+					*mtlsTokenEndpoint = openidConnectItem.Config.MtlsTokenEndpoint.ValueString()
+				} else {
+					mtlsTokenEndpoint = nil
+				}
+				noProxy := new(string)
+				if !openidConnectItem.Config.NoProxy.IsUnknown() && !openidConnectItem.Config.NoProxy.IsNull() {
+					*noProxy = openidConnectItem.Config.NoProxy.ValueString()
+				} else {
+					noProxy = nil
+				}
+				var passwordParamType []shared.KonnectApplicationAuthPluginPasswordParamType = []shared.KonnectApplicationAuthPluginPasswordParamType{}
+				for _, passwordParamTypeItem := range openidConnectItem.Config.PasswordParamType {
+					passwordParamType = append(passwordParamType, shared.KonnectApplicationAuthPluginPasswordParamType(passwordParamTypeItem.ValueString()))
+				}
+				preserveQueryArgs := new(bool)
+				if !openidConnectItem.Config.PreserveQueryArgs.IsUnknown() && !openidConnectItem.Config.PreserveQueryArgs.IsNull() {
+					*preserveQueryArgs = openidConnectItem.Config.PreserveQueryArgs.ValueBool()
+				} else {
+					preserveQueryArgs = nil
+				}
+				proofOfPossessionAuthMethodsValidation := new(bool)
+				if !openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
+					*proofOfPossessionAuthMethodsValidation = openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.ValueBool()
+				} else {
+					proofOfPossessionAuthMethodsValidation = nil
+				}
+				proofOfPossessionDpop := new(shared.KonnectApplicationAuthPluginProofOfPossessionDpop)
+				if !openidConnectItem.Config.ProofOfPossessionDpop.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionDpop.IsNull() {
+					*proofOfPossessionDpop = shared.KonnectApplicationAuthPluginProofOfPossessionDpop(openidConnectItem.Config.ProofOfPossessionDpop.ValueString())
+				} else {
+					proofOfPossessionDpop = nil
+				}
+				proofOfPossessionMtls := new(shared.KonnectApplicationAuthPluginProofOfPossessionMtls)
+				if !openidConnectItem.Config.ProofOfPossessionMtls.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionMtls.IsNull() {
+					*proofOfPossessionMtls = shared.KonnectApplicationAuthPluginProofOfPossessionMtls(openidConnectItem.Config.ProofOfPossessionMtls.ValueString())
+				} else {
+					proofOfPossessionMtls = nil
+				}
+				pushedAuthorizationRequestEndpoint := new(string)
+				if !openidConnectItem.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !openidConnectItem.Config.PushedAuthorizationRequestEndpoint.IsNull() {
+					*pushedAuthorizationRequestEndpoint = openidConnectItem.Config.PushedAuthorizationRequestEndpoint.ValueString()
+				} else {
+					pushedAuthorizationRequestEndpoint = nil
+				}
+				pushedAuthorizationRequestEndpointAuthMethod := new(shared.KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod)
+				if !openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.IsNull() {
+					*pushedAuthorizationRequestEndpointAuthMethod = shared.KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod(openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
+				} else {
+					pushedAuthorizationRequestEndpointAuthMethod = nil
+				}
+				var redirectURI []string = []string{}
+				for _, redirectURIItem := range openidConnectItem.Config.RedirectURI {
+					redirectURI = append(redirectURI, redirectURIItem.ValueString())
+				}
+				clusterMaxRedirections1 := new(int64)
+				if !openidConnectItem.Config.Redis.ClusterMaxRedirections.IsUnknown() && !openidConnectItem.Config.Redis.ClusterMaxRedirections.IsNull() {
+					*clusterMaxRedirections1 = openidConnectItem.Config.Redis.ClusterMaxRedirections.ValueInt64()
+				} else {
+					clusterMaxRedirections1 = nil
+				}
+				var clusterNodes1 []shared.KonnectApplicationAuthPluginConfigClusterNodes = []shared.KonnectApplicationAuthPluginConfigClusterNodes{}
+				for _, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
+					ip1 := new(string)
+					if !clusterNodesItem1.IP.IsUnknown() && !clusterNodesItem1.IP.IsNull() {
+						*ip1 = clusterNodesItem1.IP.ValueString()
+					} else {
+						ip1 = nil
+					}
+					port3 := new(int64)
+					if !clusterNodesItem1.Port.IsUnknown() && !clusterNodesItem1.Port.IsNull() {
+						*port3 = clusterNodesItem1.Port.ValueInt64()
+					} else {
+						port3 = nil
+					}
+					clusterNodes1 = append(clusterNodes1, shared.KonnectApplicationAuthPluginConfigClusterNodes{
+						IP:   ip1,
+						Port: port3,
+					})
+				}
+				connectTimeout1 := new(int64)
+				if !openidConnectItem.Config.Redis.ConnectTimeout.IsUnknown() && !openidConnectItem.Config.Redis.ConnectTimeout.IsNull() {
+					*connectTimeout1 = openidConnectItem.Config.Redis.ConnectTimeout.ValueInt64()
+				} else {
+					connectTimeout1 = nil
+				}
+				connectionIsProxied1 := new(bool)
+				if !openidConnectItem.Config.Redis.ConnectionIsProxied.IsUnknown() && !openidConnectItem.Config.Redis.ConnectionIsProxied.IsNull() {
+					*connectionIsProxied1 = openidConnectItem.Config.Redis.ConnectionIsProxied.ValueBool()
+				} else {
+					connectionIsProxied1 = nil
+				}
+				database1 := new(int64)
+				if !openidConnectItem.Config.Redis.Database.IsUnknown() && !openidConnectItem.Config.Redis.Database.IsNull() {
+					*database1 = openidConnectItem.Config.Redis.Database.ValueInt64()
+				} else {
+					database1 = nil
+				}
+				host2 := new(string)
+				if !openidConnectItem.Config.Redis.Host.IsUnknown() && !openidConnectItem.Config.Redis.Host.IsNull() {
+					*host2 = openidConnectItem.Config.Redis.Host.ValueString()
+				} else {
+					host2 = nil
+				}
+				keepaliveBacklog1 := new(int64)
+				if !openidConnectItem.Config.Redis.KeepaliveBacklog.IsUnknown() && !openidConnectItem.Config.Redis.KeepaliveBacklog.IsNull() {
+					*keepaliveBacklog1 = openidConnectItem.Config.Redis.KeepaliveBacklog.ValueInt64()
+				} else {
+					keepaliveBacklog1 = nil
+				}
+				keepalivePoolSize1 := new(int64)
+				if !openidConnectItem.Config.Redis.KeepalivePoolSize.IsUnknown() && !openidConnectItem.Config.Redis.KeepalivePoolSize.IsNull() {
+					*keepalivePoolSize1 = openidConnectItem.Config.Redis.KeepalivePoolSize.ValueInt64()
+				} else {
+					keepalivePoolSize1 = nil
+				}
+				password1 := new(string)
+				if !openidConnectItem.Config.Redis.Password.IsUnknown() && !openidConnectItem.Config.Redis.Password.IsNull() {
+					*password1 = openidConnectItem.Config.Redis.Password.ValueString()
+				} else {
+					password1 = nil
+				}
+				port4 := new(int64)
+				if !openidConnectItem.Config.Redis.Port.IsUnknown() && !openidConnectItem.Config.Redis.Port.IsNull() {
+					*port4 = openidConnectItem.Config.Redis.Port.ValueInt64()
+				} else {
+					port4 = nil
+				}
+				prefix := new(string)
+				if !openidConnectItem.Config.Redis.Prefix.IsUnknown() && !openidConnectItem.Config.Redis.Prefix.IsNull() {
+					*prefix = openidConnectItem.Config.Redis.Prefix.ValueString()
+				} else {
+					prefix = nil
+				}
+				readTimeout1 := new(int64)
+				if !openidConnectItem.Config.Redis.ReadTimeout.IsUnknown() && !openidConnectItem.Config.Redis.ReadTimeout.IsNull() {
+					*readTimeout1 = openidConnectItem.Config.Redis.ReadTimeout.ValueInt64()
+				} else {
+					readTimeout1 = nil
+				}
+				sendTimeout1 := new(int64)
+				if !openidConnectItem.Config.Redis.SendTimeout.IsUnknown() && !openidConnectItem.Config.Redis.SendTimeout.IsNull() {
+					*sendTimeout1 = openidConnectItem.Config.Redis.SendTimeout.ValueInt64()
+				} else {
+					sendTimeout1 = nil
+				}
+				sentinelMaster1 := new(string)
+				if !openidConnectItem.Config.Redis.SentinelMaster.IsUnknown() && !openidConnectItem.Config.Redis.SentinelMaster.IsNull() {
+					*sentinelMaster1 = openidConnectItem.Config.Redis.SentinelMaster.ValueString()
+				} else {
+					sentinelMaster1 = nil
+				}
+				var sentinelNodes1 []shared.KonnectApplicationAuthPluginConfigSentinelNodes = []shared.KonnectApplicationAuthPluginConfigSentinelNodes{}
+				for _, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
+					host3 := new(string)
+					if !sentinelNodesItem1.Host.IsUnknown() && !sentinelNodesItem1.Host.IsNull() {
+						*host3 = sentinelNodesItem1.Host.ValueString()
+					} else {
+						host3 = nil
+					}
+					port5 := new(int64)
+					if !sentinelNodesItem1.Port.IsUnknown() && !sentinelNodesItem1.Port.IsNull() {
+						*port5 = sentinelNodesItem1.Port.ValueInt64()
+					} else {
+						port5 = nil
+					}
+					sentinelNodes1 = append(sentinelNodes1, shared.KonnectApplicationAuthPluginConfigSentinelNodes{
+						Host: host3,
+						Port: port5,
+					})
+				}
+				sentinelPassword1 := new(string)
+				if !openidConnectItem.Config.Redis.SentinelPassword.IsUnknown() && !openidConnectItem.Config.Redis.SentinelPassword.IsNull() {
+					*sentinelPassword1 = openidConnectItem.Config.Redis.SentinelPassword.ValueString()
+				} else {
+					sentinelPassword1 = nil
+				}
+				sentinelRole1 := new(shared.KonnectApplicationAuthPluginConfigSentinelRole)
+				if !openidConnectItem.Config.Redis.SentinelRole.IsUnknown() && !openidConnectItem.Config.Redis.SentinelRole.IsNull() {
+					*sentinelRole1 = shared.KonnectApplicationAuthPluginConfigSentinelRole(openidConnectItem.Config.Redis.SentinelRole.ValueString())
+				} else {
+					sentinelRole1 = nil
+				}
+				sentinelUsername1 := new(string)
+				if !openidConnectItem.Config.Redis.SentinelUsername.IsUnknown() && !openidConnectItem.Config.Redis.SentinelUsername.IsNull() {
+					*sentinelUsername1 = openidConnectItem.Config.Redis.SentinelUsername.ValueString()
+				} else {
+					sentinelUsername1 = nil
+				}
+				serverName1 := new(string)
+				if !openidConnectItem.Config.Redis.ServerName.IsUnknown() && !openidConnectItem.Config.Redis.ServerName.IsNull() {
+					*serverName1 = openidConnectItem.Config.Redis.ServerName.ValueString()
+				} else {
+					serverName1 = nil
+				}
+				socket := new(string)
+				if !openidConnectItem.Config.Redis.Socket.IsUnknown() && !openidConnectItem.Config.Redis.Socket.IsNull() {
+					*socket = openidConnectItem.Config.Redis.Socket.ValueString()
+				} else {
+					socket = nil
+				}
+				ssl1 := new(bool)
+				if !openidConnectItem.Config.Redis.Ssl.IsUnknown() && !openidConnectItem.Config.Redis.Ssl.IsNull() {
+					*ssl1 = openidConnectItem.Config.Redis.Ssl.ValueBool()
+				} else {
+					ssl1 = nil
+				}
+				sslVerify1 := new(bool)
+				if !openidConnectItem.Config.Redis.SslVerify.IsUnknown() && !openidConnectItem.Config.Redis.SslVerify.IsNull() {
+					*sslVerify1 = openidConnectItem.Config.Redis.SslVerify.ValueBool()
+				} else {
+					sslVerify1 = nil
+				}
+				username1 := new(string)
+				if !openidConnectItem.Config.Redis.Username.IsUnknown() && !openidConnectItem.Config.Redis.Username.IsNull() {
+					*username1 = openidConnectItem.Config.Redis.Username.ValueString()
+				} else {
+					username1 = nil
+				}
+				redis := shared.KonnectApplicationAuthPluginRedis{
+					ClusterMaxRedirections: clusterMaxRedirections1,
+					ClusterNodes:           clusterNodes1,
+					ConnectTimeout:         connectTimeout1,
+					ConnectionIsProxied:    connectionIsProxied1,
+					Database:               database1,
+					Host:                   host2,
+					KeepaliveBacklog:       keepaliveBacklog1,
+					KeepalivePoolSize:      keepalivePoolSize1,
+					Password:               password1,
+					Port:                   port4,
+					Prefix:                 prefix,
+					ReadTimeout:            readTimeout1,
+					SendTimeout:            sendTimeout1,
+					SentinelMaster:         sentinelMaster1,
+					SentinelNodes:          sentinelNodes1,
+					SentinelPassword:       sentinelPassword1,
+					SentinelRole:           sentinelRole1,
+					SentinelUsername:       sentinelUsername1,
+					ServerName:             serverName1,
+					Socket:                 socket,
+					Ssl:                    ssl1,
+					SslVerify:              sslVerify1,
+					Username:               username1,
+				}
+				rediscoveryLifetime := new(float64)
+				if !openidConnectItem.Config.RediscoveryLifetime.IsUnknown() && !openidConnectItem.Config.RediscoveryLifetime.IsNull() {
+					*rediscoveryLifetime, _ = openidConnectItem.Config.RediscoveryLifetime.ValueBigFloat().Float64()
+				} else {
+					rediscoveryLifetime = nil
+				}
+				refreshTokenParamName := new(string)
+				if !openidConnectItem.Config.RefreshTokenParamName.IsUnknown() && !openidConnectItem.Config.RefreshTokenParamName.IsNull() {
+					*refreshTokenParamName = openidConnectItem.Config.RefreshTokenParamName.ValueString()
+				} else {
+					refreshTokenParamName = nil
+				}
+				var refreshTokenParamType []shared.KonnectApplicationAuthPluginRefreshTokenParamType = []shared.KonnectApplicationAuthPluginRefreshTokenParamType{}
+				for _, refreshTokenParamTypeItem := range openidConnectItem.Config.RefreshTokenParamType {
+					refreshTokenParamType = append(refreshTokenParamType, shared.KonnectApplicationAuthPluginRefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
+				}
+				refreshTokens := new(bool)
+				if !openidConnectItem.Config.RefreshTokens.IsUnknown() && !openidConnectItem.Config.RefreshTokens.IsNull() {
+					*refreshTokens = openidConnectItem.Config.RefreshTokens.ValueBool()
+				} else {
+					refreshTokens = nil
+				}
+				requireProofKeyForCodeExchange := new(bool)
+				if !openidConnectItem.Config.RequireProofKeyForCodeExchange.IsUnknown() && !openidConnectItem.Config.RequireProofKeyForCodeExchange.IsNull() {
+					*requireProofKeyForCodeExchange = openidConnectItem.Config.RequireProofKeyForCodeExchange.ValueBool()
+				} else {
+					requireProofKeyForCodeExchange = nil
+				}
+				requirePushedAuthorizationRequests := new(bool)
+				if !openidConnectItem.Config.RequirePushedAuthorizationRequests.IsUnknown() && !openidConnectItem.Config.RequirePushedAuthorizationRequests.IsNull() {
+					*requirePushedAuthorizationRequests = openidConnectItem.Config.RequirePushedAuthorizationRequests.ValueBool()
+				} else {
+					requirePushedAuthorizationRequests = nil
+				}
+				requireSignedRequestObject := new(bool)
+				if !openidConnectItem.Config.RequireSignedRequestObject.IsUnknown() && !openidConnectItem.Config.RequireSignedRequestObject.IsNull() {
+					*requireSignedRequestObject = openidConnectItem.Config.RequireSignedRequestObject.ValueBool()
+				} else {
+					requireSignedRequestObject = nil
+				}
+				resolveDistributedClaims := new(bool)
+				if !openidConnectItem.Config.ResolveDistributedClaims.IsUnknown() && !openidConnectItem.Config.ResolveDistributedClaims.IsNull() {
+					*resolveDistributedClaims = openidConnectItem.Config.ResolveDistributedClaims.ValueBool()
+				} else {
+					resolveDistributedClaims = nil
+				}
+				responseMode := new(shared.KonnectApplicationAuthPluginResponseMode)
+				if !openidConnectItem.Config.ResponseMode.IsUnknown() && !openidConnectItem.Config.ResponseMode.IsNull() {
+					*responseMode = shared.KonnectApplicationAuthPluginResponseMode(openidConnectItem.Config.ResponseMode.ValueString())
+				} else {
+					responseMode = nil
+				}
+				var responseType []string = []string{}
+				for _, responseTypeItem := range openidConnectItem.Config.ResponseType {
+					responseType = append(responseType, responseTypeItem.ValueString())
+				}
+				reverify := new(bool)
+				if !openidConnectItem.Config.Reverify.IsUnknown() && !openidConnectItem.Config.Reverify.IsNull() {
+					*reverify = openidConnectItem.Config.Reverify.ValueBool()
+				} else {
+					reverify = nil
+				}
+				revocationEndpoint := new(string)
+				if !openidConnectItem.Config.RevocationEndpoint.IsUnknown() && !openidConnectItem.Config.RevocationEndpoint.IsNull() {
+					*revocationEndpoint = openidConnectItem.Config.RevocationEndpoint.ValueString()
+				} else {
+					revocationEndpoint = nil
+				}
+				revocationEndpointAuthMethod := new(shared.KonnectApplicationAuthPluginRevocationEndpointAuthMethod)
+				if !openidConnectItem.Config.RevocationEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.RevocationEndpointAuthMethod.IsNull() {
+					*revocationEndpointAuthMethod = shared.KonnectApplicationAuthPluginRevocationEndpointAuthMethod(openidConnectItem.Config.RevocationEndpointAuthMethod.ValueString())
+				} else {
+					revocationEndpointAuthMethod = nil
+				}
+				revocationTokenParamName := new(string)
+				if !openidConnectItem.Config.RevocationTokenParamName.IsUnknown() && !openidConnectItem.Config.RevocationTokenParamName.IsNull() {
+					*revocationTokenParamName = openidConnectItem.Config.RevocationTokenParamName.ValueString()
+				} else {
+					revocationTokenParamName = nil
+				}
+				var rolesClaim []string = []string{}
+				for _, rolesClaimItem := range openidConnectItem.Config.RolesClaim {
+					rolesClaim = append(rolesClaim, rolesClaimItem.ValueString())
+				}
+				var rolesRequired []string = []string{}
+				for _, rolesRequiredItem := range openidConnectItem.Config.RolesRequired {
+					rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
+				}
+				runOnPreflight := new(bool)
+				if !openidConnectItem.Config.RunOnPreflight.IsUnknown() && !openidConnectItem.Config.RunOnPreflight.IsNull() {
+					*runOnPreflight = openidConnectItem.Config.RunOnPreflight.ValueBool()
+				} else {
+					runOnPreflight = nil
+				}
+				var scopes []string = []string{}
+				for _, scopesItem := range openidConnectItem.Config.Scopes {
+					scopes = append(scopes, scopesItem.ValueString())
+				}
+				var scopesClaim []string = []string{}
+				for _, scopesClaimItem := range openidConnectItem.Config.ScopesClaim {
+					scopesClaim = append(scopesClaim, scopesClaimItem.ValueString())
+				}
+				var scopesRequired []string = []string{}
+				for _, scopesRequiredItem := range openidConnectItem.Config.ScopesRequired {
+					scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
+				}
+				searchUserInfo := new(bool)
+				if !openidConnectItem.Config.SearchUserInfo.IsUnknown() && !openidConnectItem.Config.SearchUserInfo.IsNull() {
+					*searchUserInfo = openidConnectItem.Config.SearchUserInfo.ValueBool()
+				} else {
+					searchUserInfo = nil
+				}
+				sessionAbsoluteTimeout := new(float64)
+				if !openidConnectItem.Config.SessionAbsoluteTimeout.IsUnknown() && !openidConnectItem.Config.SessionAbsoluteTimeout.IsNull() {
+					*sessionAbsoluteTimeout, _ = openidConnectItem.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
+				} else {
+					sessionAbsoluteTimeout = nil
+				}
+				sessionAudience := new(string)
+				if !openidConnectItem.Config.SessionAudience.IsUnknown() && !openidConnectItem.Config.SessionAudience.IsNull() {
+					*sessionAudience = openidConnectItem.Config.SessionAudience.ValueString()
+				} else {
+					sessionAudience = nil
+				}
+				sessionCookieDomain := new(string)
+				if !openidConnectItem.Config.SessionCookieDomain.IsUnknown() && !openidConnectItem.Config.SessionCookieDomain.IsNull() {
+					*sessionCookieDomain = openidConnectItem.Config.SessionCookieDomain.ValueString()
+				} else {
+					sessionCookieDomain = nil
+				}
+				sessionCookieHTTPOnly := new(bool)
+				if !openidConnectItem.Config.SessionCookieHTTPOnly.IsUnknown() && !openidConnectItem.Config.SessionCookieHTTPOnly.IsNull() {
+					*sessionCookieHTTPOnly = openidConnectItem.Config.SessionCookieHTTPOnly.ValueBool()
+				} else {
+					sessionCookieHTTPOnly = nil
+				}
+				sessionCookieName := new(string)
+				if !openidConnectItem.Config.SessionCookieName.IsUnknown() && !openidConnectItem.Config.SessionCookieName.IsNull() {
+					*sessionCookieName = openidConnectItem.Config.SessionCookieName.ValueString()
+				} else {
+					sessionCookieName = nil
+				}
+				sessionCookiePath := new(string)
+				if !openidConnectItem.Config.SessionCookiePath.IsUnknown() && !openidConnectItem.Config.SessionCookiePath.IsNull() {
+					*sessionCookiePath = openidConnectItem.Config.SessionCookiePath.ValueString()
+				} else {
+					sessionCookiePath = nil
+				}
+				sessionCookieSameSite := new(shared.KonnectApplicationAuthPluginSessionCookieSameSite)
+				if !openidConnectItem.Config.SessionCookieSameSite.IsUnknown() && !openidConnectItem.Config.SessionCookieSameSite.IsNull() {
+					*sessionCookieSameSite = shared.KonnectApplicationAuthPluginSessionCookieSameSite(openidConnectItem.Config.SessionCookieSameSite.ValueString())
+				} else {
+					sessionCookieSameSite = nil
+				}
+				sessionCookieSecure := new(bool)
+				if !openidConnectItem.Config.SessionCookieSecure.IsUnknown() && !openidConnectItem.Config.SessionCookieSecure.IsNull() {
+					*sessionCookieSecure = openidConnectItem.Config.SessionCookieSecure.ValueBool()
+				} else {
+					sessionCookieSecure = nil
+				}
+				sessionEnforceSameSubject := new(bool)
+				if !openidConnectItem.Config.SessionEnforceSameSubject.IsUnknown() && !openidConnectItem.Config.SessionEnforceSameSubject.IsNull() {
+					*sessionEnforceSameSubject = openidConnectItem.Config.SessionEnforceSameSubject.ValueBool()
+				} else {
+					sessionEnforceSameSubject = nil
+				}
+				sessionHashStorageKey := new(bool)
+				if !openidConnectItem.Config.SessionHashStorageKey.IsUnknown() && !openidConnectItem.Config.SessionHashStorageKey.IsNull() {
+					*sessionHashStorageKey = openidConnectItem.Config.SessionHashStorageKey.ValueBool()
+				} else {
+					sessionHashStorageKey = nil
+				}
+				sessionHashSubject := new(bool)
+				if !openidConnectItem.Config.SessionHashSubject.IsUnknown() && !openidConnectItem.Config.SessionHashSubject.IsNull() {
+					*sessionHashSubject = openidConnectItem.Config.SessionHashSubject.ValueBool()
+				} else {
+					sessionHashSubject = nil
+				}
+				sessionIdlingTimeout := new(float64)
+				if !openidConnectItem.Config.SessionIdlingTimeout.IsUnknown() && !openidConnectItem.Config.SessionIdlingTimeout.IsNull() {
+					*sessionIdlingTimeout, _ = openidConnectItem.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
+				} else {
+					sessionIdlingTimeout = nil
+				}
+				sessionMemcachedHost := new(string)
+				if !openidConnectItem.Config.SessionMemcachedHost.IsUnknown() && !openidConnectItem.Config.SessionMemcachedHost.IsNull() {
+					*sessionMemcachedHost = openidConnectItem.Config.SessionMemcachedHost.ValueString()
+				} else {
+					sessionMemcachedHost = nil
+				}
+				sessionMemcachedPort := new(int64)
+				if !openidConnectItem.Config.SessionMemcachedPort.IsUnknown() && !openidConnectItem.Config.SessionMemcachedPort.IsNull() {
+					*sessionMemcachedPort = openidConnectItem.Config.SessionMemcachedPort.ValueInt64()
+				} else {
+					sessionMemcachedPort = nil
+				}
+				sessionMemcachedPrefix := new(string)
+				if !openidConnectItem.Config.SessionMemcachedPrefix.IsUnknown() && !openidConnectItem.Config.SessionMemcachedPrefix.IsNull() {
+					*sessionMemcachedPrefix = openidConnectItem.Config.SessionMemcachedPrefix.ValueString()
+				} else {
+					sessionMemcachedPrefix = nil
+				}
+				sessionMemcachedSocket := new(string)
+				if !openidConnectItem.Config.SessionMemcachedSocket.IsUnknown() && !openidConnectItem.Config.SessionMemcachedSocket.IsNull() {
+					*sessionMemcachedSocket = openidConnectItem.Config.SessionMemcachedSocket.ValueString()
+				} else {
+					sessionMemcachedSocket = nil
+				}
+				sessionRemember := new(bool)
+				if !openidConnectItem.Config.SessionRemember.IsUnknown() && !openidConnectItem.Config.SessionRemember.IsNull() {
+					*sessionRemember = openidConnectItem.Config.SessionRemember.ValueBool()
+				} else {
+					sessionRemember = nil
+				}
+				sessionRememberAbsoluteTimeout := new(float64)
+				if !openidConnectItem.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !openidConnectItem.Config.SessionRememberAbsoluteTimeout.IsNull() {
+					*sessionRememberAbsoluteTimeout, _ = openidConnectItem.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
+				} else {
+					sessionRememberAbsoluteTimeout = nil
+				}
+				sessionRememberCookieName := new(string)
+				if !openidConnectItem.Config.SessionRememberCookieName.IsUnknown() && !openidConnectItem.Config.SessionRememberCookieName.IsNull() {
+					*sessionRememberCookieName = openidConnectItem.Config.SessionRememberCookieName.ValueString()
+				} else {
+					sessionRememberCookieName = nil
+				}
+				sessionRememberRollingTimeout := new(float64)
+				if !openidConnectItem.Config.SessionRememberRollingTimeout.IsUnknown() && !openidConnectItem.Config.SessionRememberRollingTimeout.IsNull() {
+					*sessionRememberRollingTimeout, _ = openidConnectItem.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
+				} else {
+					sessionRememberRollingTimeout = nil
+				}
+				var sessionRequestHeaders []shared.KonnectApplicationAuthPluginSessionRequestHeaders = []shared.KonnectApplicationAuthPluginSessionRequestHeaders{}
+				for _, sessionRequestHeadersItem := range openidConnectItem.Config.SessionRequestHeaders {
+					sessionRequestHeaders = append(sessionRequestHeaders, shared.KonnectApplicationAuthPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
+				}
+				var sessionResponseHeaders []shared.KonnectApplicationAuthPluginSessionResponseHeaders = []shared.KonnectApplicationAuthPluginSessionResponseHeaders{}
+				for _, sessionResponseHeadersItem := range openidConnectItem.Config.SessionResponseHeaders {
+					sessionResponseHeaders = append(sessionResponseHeaders, shared.KonnectApplicationAuthPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
+				}
+				sessionRollingTimeout := new(float64)
+				if !openidConnectItem.Config.SessionRollingTimeout.IsUnknown() && !openidConnectItem.Config.SessionRollingTimeout.IsNull() {
+					*sessionRollingTimeout, _ = openidConnectItem.Config.SessionRollingTimeout.ValueBigFloat().Float64()
+				} else {
+					sessionRollingTimeout = nil
+				}
+				sessionSecret := new(string)
+				if !openidConnectItem.Config.SessionSecret.IsUnknown() && !openidConnectItem.Config.SessionSecret.IsNull() {
+					*sessionSecret = openidConnectItem.Config.SessionSecret.ValueString()
+				} else {
+					sessionSecret = nil
+				}
+				sessionStorage := new(shared.KonnectApplicationAuthPluginSessionStorage)
+				if !openidConnectItem.Config.SessionStorage.IsUnknown() && !openidConnectItem.Config.SessionStorage.IsNull() {
+					*sessionStorage = shared.KonnectApplicationAuthPluginSessionStorage(openidConnectItem.Config.SessionStorage.ValueString())
+				} else {
+					sessionStorage = nil
+				}
+				sessionStoreMetadata := new(bool)
+				if !openidConnectItem.Config.SessionStoreMetadata.IsUnknown() && !openidConnectItem.Config.SessionStoreMetadata.IsNull() {
+					*sessionStoreMetadata = openidConnectItem.Config.SessionStoreMetadata.ValueBool()
+				} else {
+					sessionStoreMetadata = nil
+				}
+				sslVerify2 := new(bool)
+				if !openidConnectItem.Config.SslVerify.IsUnknown() && !openidConnectItem.Config.SslVerify.IsNull() {
+					*sslVerify2 = openidConnectItem.Config.SslVerify.ValueBool()
+				} else {
+					sslVerify2 = nil
+				}
+				timeout := new(float64)
+				if !openidConnectItem.Config.Timeout.IsUnknown() && !openidConnectItem.Config.Timeout.IsNull() {
+					*timeout, _ = openidConnectItem.Config.Timeout.ValueBigFloat().Float64()
+				} else {
+					timeout = nil
+				}
+				tlsClientAuthCertID := new(string)
+				if !openidConnectItem.Config.TLSClientAuthCertID.IsUnknown() && !openidConnectItem.Config.TLSClientAuthCertID.IsNull() {
+					*tlsClientAuthCertID = openidConnectItem.Config.TLSClientAuthCertID.ValueString()
+				} else {
+					tlsClientAuthCertID = nil
+				}
+				tlsClientAuthSslVerify := new(bool)
+				if !openidConnectItem.Config.TLSClientAuthSslVerify.IsUnknown() && !openidConnectItem.Config.TLSClientAuthSslVerify.IsNull() {
+					*tlsClientAuthSslVerify = openidConnectItem.Config.TLSClientAuthSslVerify.ValueBool()
+				} else {
+					tlsClientAuthSslVerify = nil
+				}
+				tokenCacheKeyIncludeScope := new(bool)
+				if !openidConnectItem.Config.TokenCacheKeyIncludeScope.IsUnknown() && !openidConnectItem.Config.TokenCacheKeyIncludeScope.IsNull() {
+					*tokenCacheKeyIncludeScope = openidConnectItem.Config.TokenCacheKeyIncludeScope.ValueBool()
+				} else {
+					tokenCacheKeyIncludeScope = nil
+				}
+				tokenEndpoint := new(string)
+				if !openidConnectItem.Config.TokenEndpoint.IsUnknown() && !openidConnectItem.Config.TokenEndpoint.IsNull() {
+					*tokenEndpoint = openidConnectItem.Config.TokenEndpoint.ValueString()
+				} else {
+					tokenEndpoint = nil
+				}
+				tokenEndpointAuthMethod := new(shared.KonnectApplicationAuthPluginTokenEndpointAuthMethod)
+				if !openidConnectItem.Config.TokenEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.TokenEndpointAuthMethod.IsNull() {
+					*tokenEndpointAuthMethod = shared.KonnectApplicationAuthPluginTokenEndpointAuthMethod(openidConnectItem.Config.TokenEndpointAuthMethod.ValueString())
+				} else {
+					tokenEndpointAuthMethod = nil
+				}
+				tokenExchangeEndpoint := new(string)
+				if !openidConnectItem.Config.TokenExchangeEndpoint.IsUnknown() && !openidConnectItem.Config.TokenExchangeEndpoint.IsNull() {
+					*tokenExchangeEndpoint = openidConnectItem.Config.TokenExchangeEndpoint.ValueString()
+				} else {
+					tokenExchangeEndpoint = nil
+				}
+				var tokenHeadersClient []string = []string{}
+				for _, tokenHeadersClientItem := range openidConnectItem.Config.TokenHeadersClient {
+					tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
+				}
+				var tokenHeadersGrants []shared.KonnectApplicationAuthPluginTokenHeadersGrants = []shared.KonnectApplicationAuthPluginTokenHeadersGrants{}
+				for _, tokenHeadersGrantsItem := range openidConnectItem.Config.TokenHeadersGrants {
+					tokenHeadersGrants = append(tokenHeadersGrants, shared.KonnectApplicationAuthPluginTokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
+				}
+				var tokenHeadersNames []string = []string{}
+				for _, tokenHeadersNamesItem := range openidConnectItem.Config.TokenHeadersNames {
+					tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
+				}
+				tokenHeadersPrefix := new(string)
+				if !openidConnectItem.Config.TokenHeadersPrefix.IsUnknown() && !openidConnectItem.Config.TokenHeadersPrefix.IsNull() {
+					*tokenHeadersPrefix = openidConnectItem.Config.TokenHeadersPrefix.ValueString()
+				} else {
+					tokenHeadersPrefix = nil
+				}
+				var tokenHeadersReplay []string = []string{}
+				for _, tokenHeadersReplayItem := range openidConnectItem.Config.TokenHeadersReplay {
+					tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
+				}
+				var tokenHeadersValues []string = []string{}
+				for _, tokenHeadersValuesItem := range openidConnectItem.Config.TokenHeadersValues {
+					tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
+				}
+				var tokenPostArgsClient []string = []string{}
+				for _, tokenPostArgsClientItem := range openidConnectItem.Config.TokenPostArgsClient {
+					tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
+				}
+				var tokenPostArgsNames []string = []string{}
+				for _, tokenPostArgsNamesItem := range openidConnectItem.Config.TokenPostArgsNames {
+					tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
+				}
+				var tokenPostArgsValues []string = []string{}
+				for _, tokenPostArgsValuesItem := range openidConnectItem.Config.TokenPostArgsValues {
+					tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
+				}
+				unauthorizedDestroySession := new(bool)
+				if !openidConnectItem.Config.UnauthorizedDestroySession.IsUnknown() && !openidConnectItem.Config.UnauthorizedDestroySession.IsNull() {
+					*unauthorizedDestroySession = openidConnectItem.Config.UnauthorizedDestroySession.ValueBool()
+				} else {
+					unauthorizedDestroySession = nil
+				}
+				unauthorizedErrorMessage := new(string)
+				if !openidConnectItem.Config.UnauthorizedErrorMessage.IsUnknown() && !openidConnectItem.Config.UnauthorizedErrorMessage.IsNull() {
+					*unauthorizedErrorMessage = openidConnectItem.Config.UnauthorizedErrorMessage.ValueString()
+				} else {
+					unauthorizedErrorMessage = nil
+				}
+				var unauthorizedRedirectURI []string = []string{}
+				for _, unauthorizedRedirectURIItem := range openidConnectItem.Config.UnauthorizedRedirectURI {
+					unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
+				}
+				var unexpectedRedirectURI []string = []string{}
+				for _, unexpectedRedirectURIItem := range openidConnectItem.Config.UnexpectedRedirectURI {
+					unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
+				}
+				upstreamAccessTokenHeader := new(string)
+				if !openidConnectItem.Config.UpstreamAccessTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamAccessTokenHeader.IsNull() {
+					*upstreamAccessTokenHeader = openidConnectItem.Config.UpstreamAccessTokenHeader.ValueString()
+				} else {
+					upstreamAccessTokenHeader = nil
+				}
+				upstreamAccessTokenJwkHeader := new(string)
+				if !openidConnectItem.Config.UpstreamAccessTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.UpstreamAccessTokenJwkHeader.IsNull() {
+					*upstreamAccessTokenJwkHeader = openidConnectItem.Config.UpstreamAccessTokenJwkHeader.ValueString()
+				} else {
+					upstreamAccessTokenJwkHeader = nil
+				}
+				var upstreamHeadersClaims []string = []string{}
+				for _, upstreamHeadersClaimsItem := range openidConnectItem.Config.UpstreamHeadersClaims {
+					upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
+				}
+				var upstreamHeadersNames []string = []string{}
+				for _, upstreamHeadersNamesItem := range openidConnectItem.Config.UpstreamHeadersNames {
+					upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
+				}
+				upstreamIDTokenHeader := new(string)
+				if !openidConnectItem.Config.UpstreamIDTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIDTokenHeader.IsNull() {
+					*upstreamIDTokenHeader = openidConnectItem.Config.UpstreamIDTokenHeader.ValueString()
+				} else {
+					upstreamIDTokenHeader = nil
+				}
+				upstreamIDTokenJwkHeader := new(string)
+				if !openidConnectItem.Config.UpstreamIDTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIDTokenJwkHeader.IsNull() {
+					*upstreamIDTokenJwkHeader = openidConnectItem.Config.UpstreamIDTokenJwkHeader.ValueString()
+				} else {
+					upstreamIDTokenJwkHeader = nil
+				}
+				upstreamIntrospectionHeader := new(string)
+				if !openidConnectItem.Config.UpstreamIntrospectionHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIntrospectionHeader.IsNull() {
+					*upstreamIntrospectionHeader = openidConnectItem.Config.UpstreamIntrospectionHeader.ValueString()
+				} else {
+					upstreamIntrospectionHeader = nil
+				}
+				upstreamIntrospectionJwtHeader := new(string)
+				if !openidConnectItem.Config.UpstreamIntrospectionJwtHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIntrospectionJwtHeader.IsNull() {
+					*upstreamIntrospectionJwtHeader = openidConnectItem.Config.UpstreamIntrospectionJwtHeader.ValueString()
+				} else {
+					upstreamIntrospectionJwtHeader = nil
+				}
+				upstreamRefreshTokenHeader := new(string)
+				if !openidConnectItem.Config.UpstreamRefreshTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamRefreshTokenHeader.IsNull() {
+					*upstreamRefreshTokenHeader = openidConnectItem.Config.UpstreamRefreshTokenHeader.ValueString()
+				} else {
+					upstreamRefreshTokenHeader = nil
+				}
+				upstreamSessionIDHeader := new(string)
+				if !openidConnectItem.Config.UpstreamSessionIDHeader.IsUnknown() && !openidConnectItem.Config.UpstreamSessionIDHeader.IsNull() {
+					*upstreamSessionIDHeader = openidConnectItem.Config.UpstreamSessionIDHeader.ValueString()
+				} else {
+					upstreamSessionIDHeader = nil
+				}
+				upstreamUserInfoHeader := new(string)
+				if !openidConnectItem.Config.UpstreamUserInfoHeader.IsUnknown() && !openidConnectItem.Config.UpstreamUserInfoHeader.IsNull() {
+					*upstreamUserInfoHeader = openidConnectItem.Config.UpstreamUserInfoHeader.ValueString()
+				} else {
+					upstreamUserInfoHeader = nil
+				}
+				upstreamUserInfoJwtHeader := new(string)
+				if !openidConnectItem.Config.UpstreamUserInfoJwtHeader.IsUnknown() && !openidConnectItem.Config.UpstreamUserInfoJwtHeader.IsNull() {
+					*upstreamUserInfoJwtHeader = openidConnectItem.Config.UpstreamUserInfoJwtHeader.ValueString()
+				} else {
+					upstreamUserInfoJwtHeader = nil
+				}
+				userinfoAccept := new(shared.KonnectApplicationAuthPluginUserinfoAccept)
+				if !openidConnectItem.Config.UserinfoAccept.IsUnknown() && !openidConnectItem.Config.UserinfoAccept.IsNull() {
+					*userinfoAccept = shared.KonnectApplicationAuthPluginUserinfoAccept(openidConnectItem.Config.UserinfoAccept.ValueString())
+				} else {
+					userinfoAccept = nil
+				}
+				userinfoEndpoint := new(string)
+				if !openidConnectItem.Config.UserinfoEndpoint.IsUnknown() && !openidConnectItem.Config.UserinfoEndpoint.IsNull() {
+					*userinfoEndpoint = openidConnectItem.Config.UserinfoEndpoint.ValueString()
+				} else {
+					userinfoEndpoint = nil
+				}
+				var userinfoHeadersClient []string = []string{}
+				for _, userinfoHeadersClientItem := range openidConnectItem.Config.UserinfoHeadersClient {
+					userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
+				}
+				var userinfoHeadersNames []string = []string{}
+				for _, userinfoHeadersNamesItem := range openidConnectItem.Config.UserinfoHeadersNames {
+					userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
+				}
+				var userinfoHeadersValues []string = []string{}
+				for _, userinfoHeadersValuesItem := range openidConnectItem.Config.UserinfoHeadersValues {
+					userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
+				}
+				var userinfoQueryArgsClient []string = []string{}
+				for _, userinfoQueryArgsClientItem := range openidConnectItem.Config.UserinfoQueryArgsClient {
+					userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
+				}
+				var userinfoQueryArgsNames []string = []string{}
+				for _, userinfoQueryArgsNamesItem := range openidConnectItem.Config.UserinfoQueryArgsNames {
+					userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
+				}
+				var userinfoQueryArgsValues []string = []string{}
+				for _, userinfoQueryArgsValuesItem := range openidConnectItem.Config.UserinfoQueryArgsValues {
+					userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
+				}
+				usingPseudoIssuer := new(bool)
+				if !openidConnectItem.Config.UsingPseudoIssuer.IsUnknown() && !openidConnectItem.Config.UsingPseudoIssuer.IsNull() {
+					*usingPseudoIssuer = openidConnectItem.Config.UsingPseudoIssuer.ValueBool()
+				} else {
+					usingPseudoIssuer = nil
+				}
+				verifyClaims := new(bool)
+				if !openidConnectItem.Config.VerifyClaims.IsUnknown() && !openidConnectItem.Config.VerifyClaims.IsNull() {
+					*verifyClaims = openidConnectItem.Config.VerifyClaims.ValueBool()
+				} else {
+					verifyClaims = nil
+				}
+				verifyNonce := new(bool)
+				if !openidConnectItem.Config.VerifyNonce.IsUnknown() && !openidConnectItem.Config.VerifyNonce.IsNull() {
+					*verifyNonce = openidConnectItem.Config.VerifyNonce.ValueBool()
+				} else {
+					verifyNonce = nil
+				}
+				verifyParameters := new(bool)
+				if !openidConnectItem.Config.VerifyParameters.IsUnknown() && !openidConnectItem.Config.VerifyParameters.IsNull() {
+					*verifyParameters = openidConnectItem.Config.VerifyParameters.ValueBool()
+				} else {
+					verifyParameters = nil
+				}
+				verifySignature := new(bool)
+				if !openidConnectItem.Config.VerifySignature.IsUnknown() && !openidConnectItem.Config.VerifySignature.IsNull() {
+					*verifySignature = openidConnectItem.Config.VerifySignature.ValueBool()
+				} else {
+					verifySignature = nil
+				}
+				config2 = &shared.KonnectApplicationAuthPluginConfigConfig{
+					Anonymous:                              anonymous,
+					Audience:                               audience,
+					AudienceClaim:                          audienceClaim,
+					AudienceRequired:                       audienceRequired,
+					AuthMethods:                            authMethods,
+					AuthenticatedGroupsClaim:               authenticatedGroupsClaim,
+					AuthorizationCookieDomain:              authorizationCookieDomain,
+					AuthorizationCookieHTTPOnly:            authorizationCookieHTTPOnly,
+					AuthorizationCookieName:                authorizationCookieName,
+					AuthorizationCookiePath:                authorizationCookiePath,
+					AuthorizationCookieSameSite:            authorizationCookieSameSite,
+					AuthorizationCookieSecure:              authorizationCookieSecure,
+					AuthorizationEndpoint:                  authorizationEndpoint,
+					AuthorizationQueryArgsClient:           authorizationQueryArgsClient,
+					AuthorizationQueryArgsNames:            authorizationQueryArgsNames,
+					AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
+					AuthorizationRollingTimeout:            authorizationRollingTimeout,
+					BearerTokenCookieName:                  bearerTokenCookieName,
+					BearerTokenParamType:                   bearerTokenParamType,
+					ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
+					CacheIntrospection:                     cacheIntrospection,
+					CacheTokenExchange:                     cacheTokenExchange,
+					CacheTokens:                            cacheTokens,
+					CacheTokensSalt:                        cacheTokensSalt,
+					CacheTTL:                               cacheTTL,
+					CacheTTLMax:                            cacheTTLMax,
+					CacheTTLMin:                            cacheTTLMin,
+					CacheTTLNeg:                            cacheTTLNeg,
+					CacheTTLResurrect:                      cacheTTLResurrect,
+					CacheUserInfo:                          cacheUserInfo,
+					ClaimsForbidden:                        claimsForbidden,
+					ClientAlg:                              clientAlg,
+					ClientArg:                              clientArg,
+					ClientAuth:                             clientAuth,
+					ClientCredentialsParamType:             clientCredentialsParamType,
+					ClientID:                               clientID,
+					ClientJwk:                              clientJwk,
+					ClientSecret:                           clientSecret,
+					ClusterCacheRedis:                      clusterCacheRedis,
+					ClusterCacheStrategy:                   clusterCacheStrategy,
+					ConsumerBy:                             consumerBy,
+					ConsumerClaim:                          consumerClaim,
+					ConsumerOptional:                       consumerOptional,
+					CredentialClaim:                        credentialClaim,
+					DisableSession:                         disableSession,
+					DiscoveryHeadersNames:                  discoveryHeadersNames,
+					DiscoveryHeadersValues:                 discoveryHeadersValues,
+					DisplayErrors:                          displayErrors,
+					Domains:                                domains,
+					DownstreamAccessTokenHeader:            downstreamAccessTokenHeader,
+					DownstreamAccessTokenJwkHeader:         downstreamAccessTokenJwkHeader,
+					DownstreamHeadersClaims:                downstreamHeadersClaims,
+					DownstreamHeadersNames:                 downstreamHeadersNames,
+					DownstreamIDTokenHeader:                downstreamIDTokenHeader,
+					DownstreamIDTokenJwkHeader:             downstreamIDTokenJwkHeader,
+					DownstreamIntrospectionHeader:          downstreamIntrospectionHeader,
+					DownstreamIntrospectionJwtHeader:       downstreamIntrospectionJwtHeader,
+					DownstreamRefreshTokenHeader:           downstreamRefreshTokenHeader,
+					DownstreamSessionIDHeader:              downstreamSessionIDHeader,
+					DownstreamUserInfoHeader:               downstreamUserInfoHeader,
+					DownstreamUserInfoJwtHeader:            downstreamUserInfoJwtHeader,
+					DpopProofLifetime:                      dpopProofLifetime,
+					DpopUseNonce:                           dpopUseNonce,
+					EnableHsSignatures:                     enableHsSignatures,
+					EndSessionEndpoint:                     endSessionEndpoint,
+					ExposeErrorCode:                        exposeErrorCode,
+					ExtraJwksUris:                          extraJwksUris,
+					ForbiddenDestroySession:                forbiddenDestroySession,
+					ForbiddenErrorMessage:                  forbiddenErrorMessage,
+					ForbiddenRedirectURI:                   forbiddenRedirectURI,
+					GroupsClaim:                            groupsClaim,
+					GroupsRequired:                         groupsRequired,
+					HideCredentials:                        hideCredentials,
+					HTTPProxy:                              httpProxy,
+					HTTPProxyAuthorization:                 httpProxyAuthorization,
+					HTTPVersion:                            httpVersion,
+					HTTPSProxy:                             httpsProxy,
+					HTTPSProxyAuthorization:                httpsProxyAuthorization,
+					IDTokenParamName:                       idTokenParamName,
+					IDTokenParamType:                       idTokenParamType,
+					IgnoreSignature:                        ignoreSignature,
+					IntrospectJwtTokens:                    introspectJwtTokens,
+					IntrospectionAccept:                    introspectionAccept,
+					IntrospectionCheckActive:               introspectionCheckActive,
+					IntrospectionEndpoint:                  introspectionEndpoint,
+					IntrospectionEndpointAuthMethod:        introspectionEndpointAuthMethod,
+					IntrospectionHeadersClient:             introspectionHeadersClient,
+					IntrospectionHeadersNames:              introspectionHeadersNames,
+					IntrospectionHeadersValues:             introspectionHeadersValues,
+					IntrospectionHint:                      introspectionHint,
+					IntrospectionPostArgsClient:            introspectionPostArgsClient,
+					IntrospectionPostArgsNames:             introspectionPostArgsNames,
+					IntrospectionPostArgsValues:            introspectionPostArgsValues,
+					IntrospectionTokenParamName:            introspectionTokenParamName,
+					Issuer:                                 issuer1,
+					IssuersAllowed:                         issuersAllowed,
+					JwtSessionClaim:                        jwtSessionClaim,
+					JwtSessionCookie:                       jwtSessionCookie,
+					Keepalive:                              keepalive,
+					Leeway:                                 leeway,
+					LoginAction:                            loginAction,
+					LoginMethods:                           loginMethods,
+					LoginRedirectMode:                      loginRedirectMode,
+					LoginRedirectURI:                       loginRedirectURI,
+					LoginTokens:                            loginTokens,
+					LogoutMethods:                          logoutMethods,
+					LogoutPostArg:                          logoutPostArg,
+					LogoutQueryArg:                         logoutQueryArg,
+					LogoutRedirectURI:                      logoutRedirectURI,
+					LogoutRevoke:                           logoutRevoke,
+					LogoutRevokeAccessToken:                logoutRevokeAccessToken,
+					LogoutRevokeRefreshToken:               logoutRevokeRefreshToken,
+					LogoutURISuffix:                        logoutURISuffix,
+					MaxAge:                                 maxAge,
+					MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
+					MtlsRevocationEndpoint:                 mtlsRevocationEndpoint,
+					MtlsTokenEndpoint:                      mtlsTokenEndpoint,
+					NoProxy:                                noProxy,
+					PasswordParamType:                      passwordParamType,
+					PreserveQueryArgs:                      preserveQueryArgs,
+					ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
+					ProofOfPossessionDpop:                  proofOfPossessionDpop,
+					ProofOfPossessionMtls:                  proofOfPossessionMtls,
+					PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
+					PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
+					RedirectURI:                        redirectURI,
+					Redis:                              redis,
+					RediscoveryLifetime:                rediscoveryLifetime,
+					RefreshTokenParamName:              refreshTokenParamName,
+					RefreshTokenParamType:              refreshTokenParamType,
+					RefreshTokens:                      refreshTokens,
+					RequireProofKeyForCodeExchange:     requireProofKeyForCodeExchange,
+					RequirePushedAuthorizationRequests: requirePushedAuthorizationRequests,
+					RequireSignedRequestObject:         requireSignedRequestObject,
+					ResolveDistributedClaims:           resolveDistributedClaims,
+					ResponseMode:                       responseMode,
+					ResponseType:                       responseType,
+					Reverify:                           reverify,
+					RevocationEndpoint:                 revocationEndpoint,
+					RevocationEndpointAuthMethod:       revocationEndpointAuthMethod,
+					RevocationTokenParamName:           revocationTokenParamName,
+					RolesClaim:                         rolesClaim,
+					RolesRequired:                      rolesRequired,
+					RunOnPreflight:                     runOnPreflight,
+					Scopes:                             scopes,
+					ScopesClaim:                        scopesClaim,
+					ScopesRequired:                     scopesRequired,
+					SearchUserInfo:                     searchUserInfo,
+					SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
+					SessionAudience:                    sessionAudience,
+					SessionCookieDomain:                sessionCookieDomain,
+					SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
+					SessionCookieName:                  sessionCookieName,
+					SessionCookiePath:                  sessionCookiePath,
+					SessionCookieSameSite:              sessionCookieSameSite,
+					SessionCookieSecure:                sessionCookieSecure,
+					SessionEnforceSameSubject:          sessionEnforceSameSubject,
+					SessionHashStorageKey:              sessionHashStorageKey,
+					SessionHashSubject:                 sessionHashSubject,
+					SessionIdlingTimeout:               sessionIdlingTimeout,
+					SessionMemcachedHost:               sessionMemcachedHost,
+					SessionMemcachedPort:               sessionMemcachedPort,
+					SessionMemcachedPrefix:             sessionMemcachedPrefix,
+					SessionMemcachedSocket:             sessionMemcachedSocket,
+					SessionRemember:                    sessionRemember,
+					SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
+					SessionRememberCookieName:          sessionRememberCookieName,
+					SessionRememberRollingTimeout:      sessionRememberRollingTimeout,
+					SessionRequestHeaders:              sessionRequestHeaders,
+					SessionResponseHeaders:             sessionResponseHeaders,
+					SessionRollingTimeout:              sessionRollingTimeout,
+					SessionSecret:                      sessionSecret,
+					SessionStorage:                     sessionStorage,
+					SessionStoreMetadata:               sessionStoreMetadata,
+					SslVerify:                          sslVerify2,
+					Timeout:                            timeout,
+					TLSClientAuthCertID:                tlsClientAuthCertID,
+					TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
+					TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
+					TokenEndpoint:                      tokenEndpoint,
+					TokenEndpointAuthMethod:            tokenEndpointAuthMethod,
+					TokenExchangeEndpoint:              tokenExchangeEndpoint,
+					TokenHeadersClient:                 tokenHeadersClient,
+					TokenHeadersGrants:                 tokenHeadersGrants,
+					TokenHeadersNames:                  tokenHeadersNames,
+					TokenHeadersPrefix:                 tokenHeadersPrefix,
+					TokenHeadersReplay:                 tokenHeadersReplay,
+					TokenHeadersValues:                 tokenHeadersValues,
+					TokenPostArgsClient:                tokenPostArgsClient,
+					TokenPostArgsNames:                 tokenPostArgsNames,
+					TokenPostArgsValues:                tokenPostArgsValues,
+					UnauthorizedDestroySession:         unauthorizedDestroySession,
+					UnauthorizedErrorMessage:           unauthorizedErrorMessage,
+					UnauthorizedRedirectURI:            unauthorizedRedirectURI,
+					UnexpectedRedirectURI:              unexpectedRedirectURI,
+					UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
+					UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
+					UpstreamHeadersClaims:              upstreamHeadersClaims,
+					UpstreamHeadersNames:               upstreamHeadersNames,
+					UpstreamIDTokenHeader:              upstreamIDTokenHeader,
+					UpstreamIDTokenJwkHeader:           upstreamIDTokenJwkHeader,
+					UpstreamIntrospectionHeader:        upstreamIntrospectionHeader,
+					UpstreamIntrospectionJwtHeader:     upstreamIntrospectionJwtHeader,
+					UpstreamRefreshTokenHeader:         upstreamRefreshTokenHeader,
+					UpstreamSessionIDHeader:            upstreamSessionIDHeader,
+					UpstreamUserInfoHeader:             upstreamUserInfoHeader,
+					UpstreamUserInfoJwtHeader:          upstreamUserInfoJwtHeader,
+					UserinfoAccept:                     userinfoAccept,
+					UserinfoEndpoint:                   userinfoEndpoint,
+					UserinfoHeadersClient:              userinfoHeadersClient,
+					UserinfoHeadersNames:               userinfoHeadersNames,
+					UserinfoHeadersValues:              userinfoHeadersValues,
+					UserinfoQueryArgsClient:            userinfoQueryArgsClient,
+					UserinfoQueryArgsNames:             userinfoQueryArgsNames,
+					UserinfoQueryArgsValues:            userinfoQueryArgsValues,
+					UsingPseudoIssuer:                  usingPseudoIssuer,
+					VerifyClaims:                       verifyClaims,
+					VerifyNonce:                        verifyNonce,
+					VerifyParameters:                   verifyParameters,
+					VerifySignature:                    verifySignature,
+				}
+			}
+			var strategyId1 string
+			strategyId1 = openidConnectItem.StrategyID.ValueString()
+
+			openidConnect = append(openidConnect, shared.OpenidConnect{
+				Config:     config2,
+				StrategyID: strategyId1,
+			})
+		}
+		v2Strategies = &shared.V2Strategies{
+			KeyAuth:       keyAuth,
+			OpenidConnect: openidConnect,
+		}
+	}
+	config := shared.KonnectApplicationAuthPluginConfig{
+		AuthType:     authType,
+		KeyNames:     keyNames,
+		Scope:        scope,
+		V2Strategies: v2Strategies,
+	}
+	var consumer *shared.KonnectApplicationAuthPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			authType = nil
+			id = nil
 		}
-		var keyNames []string = []string{}
-		for _, keyNamesItem := range r.Config.KeyNames {
-			keyNames = append(keyNames, keyNamesItem.ValueString())
+		consumer = &shared.KonnectApplicationAuthPluginConsumer{
+			ID: id,
 		}
-		scope := new(string)
-		if !r.Config.Scope.IsUnknown() && !r.Config.Scope.IsNull() {
-			*scope = r.Config.Scope.ValueString()
+	}
+	var consumerGroup *shared.KonnectApplicationAuthPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			scope = nil
+			id1 = nil
 		}
-		var v2Strategies *shared.CreateKonnectApplicationAuthPluginV2Strategies
-		if r.Config.V2Strategies != nil {
-			var keyAuth []shared.CreateKonnectApplicationAuthPluginKeyAuth = []shared.CreateKonnectApplicationAuthPluginKeyAuth{}
-			for _, keyAuthItem := range r.Config.V2Strategies.KeyAuth {
-				var keyNames1 []string = []string{}
-				for _, keyNamesItem1 := range keyAuthItem.Config.KeyNames {
-					keyNames1 = append(keyNames1, keyNamesItem1.ValueString())
-				}
-				config1 := shared.CreateKonnectApplicationAuthPluginConfigV2StrategiesConfig{
-					KeyNames: keyNames1,
-				}
-				var strategyID string
-				strategyID = keyAuthItem.StrategyID.ValueString()
-
-				keyAuth = append(keyAuth, shared.CreateKonnectApplicationAuthPluginKeyAuth{
-					Config:     config1,
-					StrategyID: strategyID,
-				})
-			}
-			var openidConnect []shared.CreateKonnectApplicationAuthPluginOpenidConnect = []shared.CreateKonnectApplicationAuthPluginOpenidConnect{}
-			for _, openidConnectItem := range r.Config.V2Strategies.OpenidConnect {
-				var config2 *shared.CreateKonnectApplicationAuthPluginConfigConfig
-				if openidConnectItem.Config != nil {
-					anonymous := new(string)
-					if !openidConnectItem.Config.Anonymous.IsUnknown() && !openidConnectItem.Config.Anonymous.IsNull() {
-						*anonymous = openidConnectItem.Config.Anonymous.ValueString()
-					} else {
-						anonymous = nil
-					}
-					var audience []string = []string{}
-					for _, audienceItem := range openidConnectItem.Config.Audience {
-						audience = append(audience, audienceItem.ValueString())
-					}
-					var audienceClaim []string = []string{}
-					for _, audienceClaimItem := range openidConnectItem.Config.AudienceClaim {
-						audienceClaim = append(audienceClaim, audienceClaimItem.ValueString())
-					}
-					var audienceRequired []string = []string{}
-					for _, audienceRequiredItem := range openidConnectItem.Config.AudienceRequired {
-						audienceRequired = append(audienceRequired, audienceRequiredItem.ValueString())
-					}
-					var authMethods []shared.CreateKonnectApplicationAuthPluginAuthMethods = []shared.CreateKonnectApplicationAuthPluginAuthMethods{}
-					for _, authMethodsItem := range openidConnectItem.Config.AuthMethods {
-						authMethods = append(authMethods, shared.CreateKonnectApplicationAuthPluginAuthMethods(authMethodsItem.ValueString()))
-					}
-					var authenticatedGroupsClaim []string = []string{}
-					for _, authenticatedGroupsClaimItem := range openidConnectItem.Config.AuthenticatedGroupsClaim {
-						authenticatedGroupsClaim = append(authenticatedGroupsClaim, authenticatedGroupsClaimItem.ValueString())
-					}
-					authorizationCookieDomain := new(string)
-					if !openidConnectItem.Config.AuthorizationCookieDomain.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieDomain.IsNull() {
-						*authorizationCookieDomain = openidConnectItem.Config.AuthorizationCookieDomain.ValueString()
-					} else {
-						authorizationCookieDomain = nil
-					}
-					authorizationCookieHTTPOnly := new(bool)
-					if !openidConnectItem.Config.AuthorizationCookieHTTPOnly.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieHTTPOnly.IsNull() {
-						*authorizationCookieHTTPOnly = openidConnectItem.Config.AuthorizationCookieHTTPOnly.ValueBool()
-					} else {
-						authorizationCookieHTTPOnly = nil
-					}
-					authorizationCookieName := new(string)
-					if !openidConnectItem.Config.AuthorizationCookieName.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieName.IsNull() {
-						*authorizationCookieName = openidConnectItem.Config.AuthorizationCookieName.ValueString()
-					} else {
-						authorizationCookieName = nil
-					}
-					authorizationCookiePath := new(string)
-					if !openidConnectItem.Config.AuthorizationCookiePath.IsUnknown() && !openidConnectItem.Config.AuthorizationCookiePath.IsNull() {
-						*authorizationCookiePath = openidConnectItem.Config.AuthorizationCookiePath.ValueString()
-					} else {
-						authorizationCookiePath = nil
-					}
-					authorizationCookieSameSite := new(shared.CreateKonnectApplicationAuthPluginAuthorizationCookieSameSite)
-					if !openidConnectItem.Config.AuthorizationCookieSameSite.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieSameSite.IsNull() {
-						*authorizationCookieSameSite = shared.CreateKonnectApplicationAuthPluginAuthorizationCookieSameSite(openidConnectItem.Config.AuthorizationCookieSameSite.ValueString())
-					} else {
-						authorizationCookieSameSite = nil
-					}
-					authorizationCookieSecure := new(bool)
-					if !openidConnectItem.Config.AuthorizationCookieSecure.IsUnknown() && !openidConnectItem.Config.AuthorizationCookieSecure.IsNull() {
-						*authorizationCookieSecure = openidConnectItem.Config.AuthorizationCookieSecure.ValueBool()
-					} else {
-						authorizationCookieSecure = nil
-					}
-					authorizationEndpoint := new(string)
-					if !openidConnectItem.Config.AuthorizationEndpoint.IsUnknown() && !openidConnectItem.Config.AuthorizationEndpoint.IsNull() {
-						*authorizationEndpoint = openidConnectItem.Config.AuthorizationEndpoint.ValueString()
-					} else {
-						authorizationEndpoint = nil
-					}
-					var authorizationQueryArgsClient []string = []string{}
-					for _, authorizationQueryArgsClientItem := range openidConnectItem.Config.AuthorizationQueryArgsClient {
-						authorizationQueryArgsClient = append(authorizationQueryArgsClient, authorizationQueryArgsClientItem.ValueString())
-					}
-					var authorizationQueryArgsNames []string = []string{}
-					for _, authorizationQueryArgsNamesItem := range openidConnectItem.Config.AuthorizationQueryArgsNames {
-						authorizationQueryArgsNames = append(authorizationQueryArgsNames, authorizationQueryArgsNamesItem.ValueString())
-					}
-					var authorizationQueryArgsValues []string = []string{}
-					for _, authorizationQueryArgsValuesItem := range openidConnectItem.Config.AuthorizationQueryArgsValues {
-						authorizationQueryArgsValues = append(authorizationQueryArgsValues, authorizationQueryArgsValuesItem.ValueString())
-					}
-					authorizationRollingTimeout := new(float64)
-					if !openidConnectItem.Config.AuthorizationRollingTimeout.IsUnknown() && !openidConnectItem.Config.AuthorizationRollingTimeout.IsNull() {
-						*authorizationRollingTimeout, _ = openidConnectItem.Config.AuthorizationRollingTimeout.ValueBigFloat().Float64()
-					} else {
-						authorizationRollingTimeout = nil
-					}
-					bearerTokenCookieName := new(string)
-					if !openidConnectItem.Config.BearerTokenCookieName.IsUnknown() && !openidConnectItem.Config.BearerTokenCookieName.IsNull() {
-						*bearerTokenCookieName = openidConnectItem.Config.BearerTokenCookieName.ValueString()
-					} else {
-						bearerTokenCookieName = nil
-					}
-					var bearerTokenParamType []shared.CreateKonnectApplicationAuthPluginBearerTokenParamType = []shared.CreateKonnectApplicationAuthPluginBearerTokenParamType{}
-					for _, bearerTokenParamTypeItem := range openidConnectItem.Config.BearerTokenParamType {
-						bearerTokenParamType = append(bearerTokenParamType, shared.CreateKonnectApplicationAuthPluginBearerTokenParamType(bearerTokenParamTypeItem.ValueString()))
-					}
-					byUsernameIgnoreCase := new(bool)
-					if !openidConnectItem.Config.ByUsernameIgnoreCase.IsUnknown() && !openidConnectItem.Config.ByUsernameIgnoreCase.IsNull() {
-						*byUsernameIgnoreCase = openidConnectItem.Config.ByUsernameIgnoreCase.ValueBool()
-					} else {
-						byUsernameIgnoreCase = nil
-					}
-					cacheIntrospection := new(bool)
-					if !openidConnectItem.Config.CacheIntrospection.IsUnknown() && !openidConnectItem.Config.CacheIntrospection.IsNull() {
-						*cacheIntrospection = openidConnectItem.Config.CacheIntrospection.ValueBool()
-					} else {
-						cacheIntrospection = nil
-					}
-					cacheTokenExchange := new(bool)
-					if !openidConnectItem.Config.CacheTokenExchange.IsUnknown() && !openidConnectItem.Config.CacheTokenExchange.IsNull() {
-						*cacheTokenExchange = openidConnectItem.Config.CacheTokenExchange.ValueBool()
-					} else {
-						cacheTokenExchange = nil
-					}
-					cacheTokens := new(bool)
-					if !openidConnectItem.Config.CacheTokens.IsUnknown() && !openidConnectItem.Config.CacheTokens.IsNull() {
-						*cacheTokens = openidConnectItem.Config.CacheTokens.ValueBool()
-					} else {
-						cacheTokens = nil
-					}
-					cacheTokensSalt := new(string)
-					if !openidConnectItem.Config.CacheTokensSalt.IsUnknown() && !openidConnectItem.Config.CacheTokensSalt.IsNull() {
-						*cacheTokensSalt = openidConnectItem.Config.CacheTokensSalt.ValueString()
-					} else {
-						cacheTokensSalt = nil
-					}
-					cacheTTL := new(float64)
-					if !openidConnectItem.Config.CacheTTL.IsUnknown() && !openidConnectItem.Config.CacheTTL.IsNull() {
-						*cacheTTL, _ = openidConnectItem.Config.CacheTTL.ValueBigFloat().Float64()
-					} else {
-						cacheTTL = nil
-					}
-					cacheTTLMax := new(float64)
-					if !openidConnectItem.Config.CacheTTLMax.IsUnknown() && !openidConnectItem.Config.CacheTTLMax.IsNull() {
-						*cacheTTLMax, _ = openidConnectItem.Config.CacheTTLMax.ValueBigFloat().Float64()
-					} else {
-						cacheTTLMax = nil
-					}
-					cacheTTLMin := new(float64)
-					if !openidConnectItem.Config.CacheTTLMin.IsUnknown() && !openidConnectItem.Config.CacheTTLMin.IsNull() {
-						*cacheTTLMin, _ = openidConnectItem.Config.CacheTTLMin.ValueBigFloat().Float64()
-					} else {
-						cacheTTLMin = nil
-					}
-					cacheTTLNeg := new(float64)
-					if !openidConnectItem.Config.CacheTTLNeg.IsUnknown() && !openidConnectItem.Config.CacheTTLNeg.IsNull() {
-						*cacheTTLNeg, _ = openidConnectItem.Config.CacheTTLNeg.ValueBigFloat().Float64()
-					} else {
-						cacheTTLNeg = nil
-					}
-					cacheTTLResurrect := new(float64)
-					if !openidConnectItem.Config.CacheTTLResurrect.IsUnknown() && !openidConnectItem.Config.CacheTTLResurrect.IsNull() {
-						*cacheTTLResurrect, _ = openidConnectItem.Config.CacheTTLResurrect.ValueBigFloat().Float64()
-					} else {
-						cacheTTLResurrect = nil
-					}
-					cacheUserInfo := new(bool)
-					if !openidConnectItem.Config.CacheUserInfo.IsUnknown() && !openidConnectItem.Config.CacheUserInfo.IsNull() {
-						*cacheUserInfo = openidConnectItem.Config.CacheUserInfo.ValueBool()
-					} else {
-						cacheUserInfo = nil
-					}
-					var claimsForbidden []string = []string{}
-					for _, claimsForbiddenItem := range openidConnectItem.Config.ClaimsForbidden {
-						claimsForbidden = append(claimsForbidden, claimsForbiddenItem.ValueString())
-					}
-					var clientAlg []shared.CreateKonnectApplicationAuthPluginClientAlg = []shared.CreateKonnectApplicationAuthPluginClientAlg{}
-					for _, clientAlgItem := range openidConnectItem.Config.ClientAlg {
-						clientAlg = append(clientAlg, shared.CreateKonnectApplicationAuthPluginClientAlg(clientAlgItem.ValueString()))
-					}
-					clientArg := new(string)
-					if !openidConnectItem.Config.ClientArg.IsUnknown() && !openidConnectItem.Config.ClientArg.IsNull() {
-						*clientArg = openidConnectItem.Config.ClientArg.ValueString()
-					} else {
-						clientArg = nil
-					}
-					var clientAuth []shared.CreateKonnectApplicationAuthPluginClientAuth = []shared.CreateKonnectApplicationAuthPluginClientAuth{}
-					for _, clientAuthItem := range openidConnectItem.Config.ClientAuth {
-						clientAuth = append(clientAuth, shared.CreateKonnectApplicationAuthPluginClientAuth(clientAuthItem.ValueString()))
-					}
-					var clientCredentialsParamType []shared.CreateKonnectApplicationAuthPluginClientCredentialsParamType = []shared.CreateKonnectApplicationAuthPluginClientCredentialsParamType{}
-					for _, clientCredentialsParamTypeItem := range openidConnectItem.Config.ClientCredentialsParamType {
-						clientCredentialsParamType = append(clientCredentialsParamType, shared.CreateKonnectApplicationAuthPluginClientCredentialsParamType(clientCredentialsParamTypeItem.ValueString()))
-					}
-					var clientID []string = []string{}
-					for _, clientIDItem := range openidConnectItem.Config.ClientID {
-						clientID = append(clientID, clientIDItem.ValueString())
-					}
-					var clientJwk []shared.CreateKonnectApplicationAuthPluginClientJwk = []shared.CreateKonnectApplicationAuthPluginClientJwk{}
-					for _, clientJwkItem := range openidConnectItem.Config.ClientJwk {
-						alg := new(string)
-						if !clientJwkItem.Alg.IsUnknown() && !clientJwkItem.Alg.IsNull() {
-							*alg = clientJwkItem.Alg.ValueString()
-						} else {
-							alg = nil
-						}
-						crv := new(string)
-						if !clientJwkItem.Crv.IsUnknown() && !clientJwkItem.Crv.IsNull() {
-							*crv = clientJwkItem.Crv.ValueString()
-						} else {
-							crv = nil
-						}
-						d := new(string)
-						if !clientJwkItem.D.IsUnknown() && !clientJwkItem.D.IsNull() {
-							*d = clientJwkItem.D.ValueString()
-						} else {
-							d = nil
-						}
-						dp := new(string)
-						if !clientJwkItem.Dp.IsUnknown() && !clientJwkItem.Dp.IsNull() {
-							*dp = clientJwkItem.Dp.ValueString()
-						} else {
-							dp = nil
-						}
-						dq := new(string)
-						if !clientJwkItem.Dq.IsUnknown() && !clientJwkItem.Dq.IsNull() {
-							*dq = clientJwkItem.Dq.ValueString()
-						} else {
-							dq = nil
-						}
-						e := new(string)
-						if !clientJwkItem.E.IsUnknown() && !clientJwkItem.E.IsNull() {
-							*e = clientJwkItem.E.ValueString()
-						} else {
-							e = nil
-						}
-						issuer := new(string)
-						if !clientJwkItem.Issuer.IsUnknown() && !clientJwkItem.Issuer.IsNull() {
-							*issuer = clientJwkItem.Issuer.ValueString()
-						} else {
-							issuer = nil
-						}
-						k := new(string)
-						if !clientJwkItem.K.IsUnknown() && !clientJwkItem.K.IsNull() {
-							*k = clientJwkItem.K.ValueString()
-						} else {
-							k = nil
-						}
-						var keyOps []string = []string{}
-						for _, keyOpsItem := range clientJwkItem.KeyOps {
-							keyOps = append(keyOps, keyOpsItem.ValueString())
-						}
-						kid := new(string)
-						if !clientJwkItem.Kid.IsUnknown() && !clientJwkItem.Kid.IsNull() {
-							*kid = clientJwkItem.Kid.ValueString()
-						} else {
-							kid = nil
-						}
-						kty := new(string)
-						if !clientJwkItem.Kty.IsUnknown() && !clientJwkItem.Kty.IsNull() {
-							*kty = clientJwkItem.Kty.ValueString()
-						} else {
-							kty = nil
-						}
-						n := new(string)
-						if !clientJwkItem.N.IsUnknown() && !clientJwkItem.N.IsNull() {
-							*n = clientJwkItem.N.ValueString()
-						} else {
-							n = nil
-						}
-						oth := new(string)
-						if !clientJwkItem.Oth.IsUnknown() && !clientJwkItem.Oth.IsNull() {
-							*oth = clientJwkItem.Oth.ValueString()
-						} else {
-							oth = nil
-						}
-						p := new(string)
-						if !clientJwkItem.P.IsUnknown() && !clientJwkItem.P.IsNull() {
-							*p = clientJwkItem.P.ValueString()
-						} else {
-							p = nil
-						}
-						q := new(string)
-						if !clientJwkItem.Q.IsUnknown() && !clientJwkItem.Q.IsNull() {
-							*q = clientJwkItem.Q.ValueString()
-						} else {
-							q = nil
-						}
-						qi := new(string)
-						if !clientJwkItem.Qi.IsUnknown() && !clientJwkItem.Qi.IsNull() {
-							*qi = clientJwkItem.Qi.ValueString()
-						} else {
-							qi = nil
-						}
-						r1 := new(string)
-						if !clientJwkItem.R.IsUnknown() && !clientJwkItem.R.IsNull() {
-							*r1 = clientJwkItem.R.ValueString()
-						} else {
-							r1 = nil
-						}
-						t := new(string)
-						if !clientJwkItem.T.IsUnknown() && !clientJwkItem.T.IsNull() {
-							*t = clientJwkItem.T.ValueString()
-						} else {
-							t = nil
-						}
-						use := new(string)
-						if !clientJwkItem.Use.IsUnknown() && !clientJwkItem.Use.IsNull() {
-							*use = clientJwkItem.Use.ValueString()
-						} else {
-							use = nil
-						}
-						x := new(string)
-						if !clientJwkItem.X.IsUnknown() && !clientJwkItem.X.IsNull() {
-							*x = clientJwkItem.X.ValueString()
-						} else {
-							x = nil
-						}
-						var x5c []string = []string{}
-						for _, x5cItem := range clientJwkItem.X5c {
-							x5c = append(x5c, x5cItem.ValueString())
-						}
-						x5t := new(string)
-						if !clientJwkItem.X5t.IsUnknown() && !clientJwkItem.X5t.IsNull() {
-							*x5t = clientJwkItem.X5t.ValueString()
-						} else {
-							x5t = nil
-						}
-						x5tNumberS256 := new(string)
-						if !clientJwkItem.X5tNumberS256.IsUnknown() && !clientJwkItem.X5tNumberS256.IsNull() {
-							*x5tNumberS256 = clientJwkItem.X5tNumberS256.ValueString()
-						} else {
-							x5tNumberS256 = nil
-						}
-						x5u := new(string)
-						if !clientJwkItem.X5u.IsUnknown() && !clientJwkItem.X5u.IsNull() {
-							*x5u = clientJwkItem.X5u.ValueString()
-						} else {
-							x5u = nil
-						}
-						y := new(string)
-						if !clientJwkItem.Y.IsUnknown() && !clientJwkItem.Y.IsNull() {
-							*y = clientJwkItem.Y.ValueString()
-						} else {
-							y = nil
-						}
-						clientJwk = append(clientJwk, shared.CreateKonnectApplicationAuthPluginClientJwk{
-							Alg:           alg,
-							Crv:           crv,
-							D:             d,
-							Dp:            dp,
-							Dq:            dq,
-							E:             e,
-							Issuer:        issuer,
-							K:             k,
-							KeyOps:        keyOps,
-							Kid:           kid,
-							Kty:           kty,
-							N:             n,
-							Oth:           oth,
-							P:             p,
-							Q:             q,
-							Qi:            qi,
-							R:             r1,
-							T:             t,
-							Use:           use,
-							X:             x,
-							X5c:           x5c,
-							X5t:           x5t,
-							X5tNumberS256: x5tNumberS256,
-							X5u:           x5u,
-							Y:             y,
-						})
-					}
-					var clientSecret []string = []string{}
-					for _, clientSecretItem := range openidConnectItem.Config.ClientSecret {
-						clientSecret = append(clientSecret, clientSecretItem.ValueString())
-					}
-					clusterMaxRedirections := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.IsNull() {
-						*clusterMaxRedirections = openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections.ValueInt64()
-					} else {
-						clusterMaxRedirections = nil
-					}
-					var clusterNodes []shared.CreateKonnectApplicationAuthPluginClusterNodes = []shared.CreateKonnectApplicationAuthPluginClusterNodes{}
-					for _, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-						ip := new(string)
-						if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-							*ip = clusterNodesItem.IP.ValueString()
-						} else {
-							ip = nil
-						}
-						port := new(int64)
-						if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-							*port = clusterNodesItem.Port.ValueInt64()
-						} else {
-							port = nil
-						}
-						clusterNodes = append(clusterNodes, shared.CreateKonnectApplicationAuthPluginClusterNodes{
-							IP:   ip,
-							Port: port,
-						})
-					}
-					connectTimeout := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.IsNull() {
-						*connectTimeout = openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout.ValueInt64()
-					} else {
-						connectTimeout = nil
-					}
-					connectionIsProxied := new(bool)
-					if !openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied = openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied.ValueBool()
-					} else {
-						connectionIsProxied = nil
-					}
-					database := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.Database.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Database.IsNull() {
-						*database = openidConnectItem.Config.ClusterCacheRedis.Database.ValueInt64()
-					} else {
-						database = nil
-					}
-					host := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.Host.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Host.IsNull() {
-						*host = openidConnectItem.Config.ClusterCacheRedis.Host.ValueString()
-					} else {
-						host = nil
-					}
-					keepaliveBacklog := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.IsNull() {
-						*keepaliveBacklog = openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog.ValueInt64()
-					} else {
-						keepaliveBacklog = nil
-					}
-					keepalivePoolSize := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.IsNull() {
-						*keepalivePoolSize = openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize.ValueInt64()
-					} else {
-						keepalivePoolSize = nil
-					}
-					password := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.Password.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Password.IsNull() {
-						*password = openidConnectItem.Config.ClusterCacheRedis.Password.ValueString()
-					} else {
-						password = nil
-					}
-					port1 := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.Port.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Port.IsNull() {
-						*port1 = openidConnectItem.Config.ClusterCacheRedis.Port.ValueInt64()
-					} else {
-						port1 = nil
-					}
-					readTimeout := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.IsNull() {
-						*readTimeout = openidConnectItem.Config.ClusterCacheRedis.ReadTimeout.ValueInt64()
-					} else {
-						readTimeout = nil
-					}
-					sendTimeout := new(int64)
-					if !openidConnectItem.Config.ClusterCacheRedis.SendTimeout.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SendTimeout.IsNull() {
-						*sendTimeout = openidConnectItem.Config.ClusterCacheRedis.SendTimeout.ValueInt64()
-					} else {
-						sendTimeout = nil
-					}
-					sentinelMaster := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.IsNull() {
-						*sentinelMaster = openidConnectItem.Config.ClusterCacheRedis.SentinelMaster.ValueString()
-					} else {
-						sentinelMaster = nil
-					}
-					var sentinelNodes []shared.CreateKonnectApplicationAuthPluginSentinelNodes = []shared.CreateKonnectApplicationAuthPluginSentinelNodes{}
-					for _, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-						host1 := new(string)
-						if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-							*host1 = sentinelNodesItem.Host.ValueString()
-						} else {
-							host1 = nil
-						}
-						port2 := new(int64)
-						if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-							*port2 = sentinelNodesItem.Port.ValueInt64()
-						} else {
-							port2 = nil
-						}
-						sentinelNodes = append(sentinelNodes, shared.CreateKonnectApplicationAuthPluginSentinelNodes{
-							Host: host1,
-							Port: port2,
-						})
-					}
-					sentinelPassword := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.IsNull() {
-						*sentinelPassword = openidConnectItem.Config.ClusterCacheRedis.SentinelPassword.ValueString()
-					} else {
-						sentinelPassword = nil
-					}
-					sentinelRole := new(shared.CreateKonnectApplicationAuthPluginSentinelRole)
-					if !openidConnectItem.Config.ClusterCacheRedis.SentinelRole.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelRole.IsNull() {
-						*sentinelRole = shared.CreateKonnectApplicationAuthPluginSentinelRole(openidConnectItem.Config.ClusterCacheRedis.SentinelRole.ValueString())
-					} else {
-						sentinelRole = nil
-					}
-					sentinelUsername := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.IsNull() {
-						*sentinelUsername = openidConnectItem.Config.ClusterCacheRedis.SentinelUsername.ValueString()
-					} else {
-						sentinelUsername = nil
-					}
-					serverName := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.ServerName.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.ServerName.IsNull() {
-						*serverName = openidConnectItem.Config.ClusterCacheRedis.ServerName.ValueString()
-					} else {
-						serverName = nil
-					}
-					ssl := new(bool)
-					if !openidConnectItem.Config.ClusterCacheRedis.Ssl.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Ssl.IsNull() {
-						*ssl = openidConnectItem.Config.ClusterCacheRedis.Ssl.ValueBool()
-					} else {
-						ssl = nil
-					}
-					sslVerify := new(bool)
-					if !openidConnectItem.Config.ClusterCacheRedis.SslVerify.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.SslVerify.IsNull() {
-						*sslVerify = openidConnectItem.Config.ClusterCacheRedis.SslVerify.ValueBool()
-					} else {
-						sslVerify = nil
-					}
-					username := new(string)
-					if !openidConnectItem.Config.ClusterCacheRedis.Username.IsUnknown() && !openidConnectItem.Config.ClusterCacheRedis.Username.IsNull() {
-						*username = openidConnectItem.Config.ClusterCacheRedis.Username.ValueString()
-					} else {
-						username = nil
-					}
-					clusterCacheRedis := shared.CreateKonnectApplicationAuthPluginClusterCacheRedis{
-						ClusterMaxRedirections: clusterMaxRedirections,
-						ClusterNodes:           clusterNodes,
-						ConnectTimeout:         connectTimeout,
-						ConnectionIsProxied:    connectionIsProxied,
-						Database:               database,
-						Host:                   host,
-						KeepaliveBacklog:       keepaliveBacklog,
-						KeepalivePoolSize:      keepalivePoolSize,
-						Password:               password,
-						Port:                   port1,
-						ReadTimeout:            readTimeout,
-						SendTimeout:            sendTimeout,
-						SentinelMaster:         sentinelMaster,
-						SentinelNodes:          sentinelNodes,
-						SentinelPassword:       sentinelPassword,
-						SentinelRole:           sentinelRole,
-						SentinelUsername:       sentinelUsername,
-						ServerName:             serverName,
-						Ssl:                    ssl,
-						SslVerify:              sslVerify,
-						Username:               username,
-					}
-					clusterCacheStrategy := new(shared.CreateKonnectApplicationAuthPluginClusterCacheStrategy)
-					if !openidConnectItem.Config.ClusterCacheStrategy.IsUnknown() && !openidConnectItem.Config.ClusterCacheStrategy.IsNull() {
-						*clusterCacheStrategy = shared.CreateKonnectApplicationAuthPluginClusterCacheStrategy(openidConnectItem.Config.ClusterCacheStrategy.ValueString())
-					} else {
-						clusterCacheStrategy = nil
-					}
-					var consumerBy []shared.CreateKonnectApplicationAuthPluginConsumerBy = []shared.CreateKonnectApplicationAuthPluginConsumerBy{}
-					for _, consumerByItem := range openidConnectItem.Config.ConsumerBy {
-						consumerBy = append(consumerBy, shared.CreateKonnectApplicationAuthPluginConsumerBy(consumerByItem.ValueString()))
-					}
-					var consumerClaim []string = []string{}
-					for _, consumerClaimItem := range openidConnectItem.Config.ConsumerClaim {
-						consumerClaim = append(consumerClaim, consumerClaimItem.ValueString())
-					}
-					consumerOptional := new(bool)
-					if !openidConnectItem.Config.ConsumerOptional.IsUnknown() && !openidConnectItem.Config.ConsumerOptional.IsNull() {
-						*consumerOptional = openidConnectItem.Config.ConsumerOptional.ValueBool()
-					} else {
-						consumerOptional = nil
-					}
-					var credentialClaim []string = []string{}
-					for _, credentialClaimItem := range openidConnectItem.Config.CredentialClaim {
-						credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
-					}
-					var disableSession []shared.CreateKonnectApplicationAuthPluginDisableSession = []shared.CreateKonnectApplicationAuthPluginDisableSession{}
-					for _, disableSessionItem := range openidConnectItem.Config.DisableSession {
-						disableSession = append(disableSession, shared.CreateKonnectApplicationAuthPluginDisableSession(disableSessionItem.ValueString()))
-					}
-					var discoveryHeadersNames []string = []string{}
-					for _, discoveryHeadersNamesItem := range openidConnectItem.Config.DiscoveryHeadersNames {
-						discoveryHeadersNames = append(discoveryHeadersNames, discoveryHeadersNamesItem.ValueString())
-					}
-					var discoveryHeadersValues []string = []string{}
-					for _, discoveryHeadersValuesItem := range openidConnectItem.Config.DiscoveryHeadersValues {
-						discoveryHeadersValues = append(discoveryHeadersValues, discoveryHeadersValuesItem.ValueString())
-					}
-					displayErrors := new(bool)
-					if !openidConnectItem.Config.DisplayErrors.IsUnknown() && !openidConnectItem.Config.DisplayErrors.IsNull() {
-						*displayErrors = openidConnectItem.Config.DisplayErrors.ValueBool()
-					} else {
-						displayErrors = nil
-					}
-					var domains []string = []string{}
-					for _, domainsItem := range openidConnectItem.Config.Domains {
-						domains = append(domains, domainsItem.ValueString())
-					}
-					downstreamAccessTokenHeader := new(string)
-					if !openidConnectItem.Config.DownstreamAccessTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamAccessTokenHeader.IsNull() {
-						*downstreamAccessTokenHeader = openidConnectItem.Config.DownstreamAccessTokenHeader.ValueString()
-					} else {
-						downstreamAccessTokenHeader = nil
-					}
-					downstreamAccessTokenJwkHeader := new(string)
-					if !openidConnectItem.Config.DownstreamAccessTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.DownstreamAccessTokenJwkHeader.IsNull() {
-						*downstreamAccessTokenJwkHeader = openidConnectItem.Config.DownstreamAccessTokenJwkHeader.ValueString()
-					} else {
-						downstreamAccessTokenJwkHeader = nil
-					}
-					var downstreamHeadersClaims []string = []string{}
-					for _, downstreamHeadersClaimsItem := range openidConnectItem.Config.DownstreamHeadersClaims {
-						downstreamHeadersClaims = append(downstreamHeadersClaims, downstreamHeadersClaimsItem.ValueString())
-					}
-					var downstreamHeadersNames []string = []string{}
-					for _, downstreamHeadersNamesItem := range openidConnectItem.Config.DownstreamHeadersNames {
-						downstreamHeadersNames = append(downstreamHeadersNames, downstreamHeadersNamesItem.ValueString())
-					}
-					downstreamIDTokenHeader := new(string)
-					if !openidConnectItem.Config.DownstreamIDTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIDTokenHeader.IsNull() {
-						*downstreamIDTokenHeader = openidConnectItem.Config.DownstreamIDTokenHeader.ValueString()
-					} else {
-						downstreamIDTokenHeader = nil
-					}
-					downstreamIDTokenJwkHeader := new(string)
-					if !openidConnectItem.Config.DownstreamIDTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIDTokenJwkHeader.IsNull() {
-						*downstreamIDTokenJwkHeader = openidConnectItem.Config.DownstreamIDTokenJwkHeader.ValueString()
-					} else {
-						downstreamIDTokenJwkHeader = nil
-					}
-					downstreamIntrospectionHeader := new(string)
-					if !openidConnectItem.Config.DownstreamIntrospectionHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIntrospectionHeader.IsNull() {
-						*downstreamIntrospectionHeader = openidConnectItem.Config.DownstreamIntrospectionHeader.ValueString()
-					} else {
-						downstreamIntrospectionHeader = nil
-					}
-					downstreamIntrospectionJwtHeader := new(string)
-					if !openidConnectItem.Config.DownstreamIntrospectionJwtHeader.IsUnknown() && !openidConnectItem.Config.DownstreamIntrospectionJwtHeader.IsNull() {
-						*downstreamIntrospectionJwtHeader = openidConnectItem.Config.DownstreamIntrospectionJwtHeader.ValueString()
-					} else {
-						downstreamIntrospectionJwtHeader = nil
-					}
-					downstreamRefreshTokenHeader := new(string)
-					if !openidConnectItem.Config.DownstreamRefreshTokenHeader.IsUnknown() && !openidConnectItem.Config.DownstreamRefreshTokenHeader.IsNull() {
-						*downstreamRefreshTokenHeader = openidConnectItem.Config.DownstreamRefreshTokenHeader.ValueString()
-					} else {
-						downstreamRefreshTokenHeader = nil
-					}
-					downstreamSessionIDHeader := new(string)
-					if !openidConnectItem.Config.DownstreamSessionIDHeader.IsUnknown() && !openidConnectItem.Config.DownstreamSessionIDHeader.IsNull() {
-						*downstreamSessionIDHeader = openidConnectItem.Config.DownstreamSessionIDHeader.ValueString()
-					} else {
-						downstreamSessionIDHeader = nil
-					}
-					downstreamUserInfoHeader := new(string)
-					if !openidConnectItem.Config.DownstreamUserInfoHeader.IsUnknown() && !openidConnectItem.Config.DownstreamUserInfoHeader.IsNull() {
-						*downstreamUserInfoHeader = openidConnectItem.Config.DownstreamUserInfoHeader.ValueString()
-					} else {
-						downstreamUserInfoHeader = nil
-					}
-					downstreamUserInfoJwtHeader := new(string)
-					if !openidConnectItem.Config.DownstreamUserInfoJwtHeader.IsUnknown() && !openidConnectItem.Config.DownstreamUserInfoJwtHeader.IsNull() {
-						*downstreamUserInfoJwtHeader = openidConnectItem.Config.DownstreamUserInfoJwtHeader.ValueString()
-					} else {
-						downstreamUserInfoJwtHeader = nil
-					}
-					dpopProofLifetime := new(float64)
-					if !openidConnectItem.Config.DpopProofLifetime.IsUnknown() && !openidConnectItem.Config.DpopProofLifetime.IsNull() {
-						*dpopProofLifetime, _ = openidConnectItem.Config.DpopProofLifetime.ValueBigFloat().Float64()
-					} else {
-						dpopProofLifetime = nil
-					}
-					dpopUseNonce := new(bool)
-					if !openidConnectItem.Config.DpopUseNonce.IsUnknown() && !openidConnectItem.Config.DpopUseNonce.IsNull() {
-						*dpopUseNonce = openidConnectItem.Config.DpopUseNonce.ValueBool()
-					} else {
-						dpopUseNonce = nil
-					}
-					enableHsSignatures := new(bool)
-					if !openidConnectItem.Config.EnableHsSignatures.IsUnknown() && !openidConnectItem.Config.EnableHsSignatures.IsNull() {
-						*enableHsSignatures = openidConnectItem.Config.EnableHsSignatures.ValueBool()
-					} else {
-						enableHsSignatures = nil
-					}
-					endSessionEndpoint := new(string)
-					if !openidConnectItem.Config.EndSessionEndpoint.IsUnknown() && !openidConnectItem.Config.EndSessionEndpoint.IsNull() {
-						*endSessionEndpoint = openidConnectItem.Config.EndSessionEndpoint.ValueString()
-					} else {
-						endSessionEndpoint = nil
-					}
-					exposeErrorCode := new(bool)
-					if !openidConnectItem.Config.ExposeErrorCode.IsUnknown() && !openidConnectItem.Config.ExposeErrorCode.IsNull() {
-						*exposeErrorCode = openidConnectItem.Config.ExposeErrorCode.ValueBool()
-					} else {
-						exposeErrorCode = nil
-					}
-					var extraJwksUris []string = []string{}
-					for _, extraJwksUrisItem := range openidConnectItem.Config.ExtraJwksUris {
-						extraJwksUris = append(extraJwksUris, extraJwksUrisItem.ValueString())
-					}
-					forbiddenDestroySession := new(bool)
-					if !openidConnectItem.Config.ForbiddenDestroySession.IsUnknown() && !openidConnectItem.Config.ForbiddenDestroySession.IsNull() {
-						*forbiddenDestroySession = openidConnectItem.Config.ForbiddenDestroySession.ValueBool()
-					} else {
-						forbiddenDestroySession = nil
-					}
-					forbiddenErrorMessage := new(string)
-					if !openidConnectItem.Config.ForbiddenErrorMessage.IsUnknown() && !openidConnectItem.Config.ForbiddenErrorMessage.IsNull() {
-						*forbiddenErrorMessage = openidConnectItem.Config.ForbiddenErrorMessage.ValueString()
-					} else {
-						forbiddenErrorMessage = nil
-					}
-					var forbiddenRedirectURI []string = []string{}
-					for _, forbiddenRedirectURIItem := range openidConnectItem.Config.ForbiddenRedirectURI {
-						forbiddenRedirectURI = append(forbiddenRedirectURI, forbiddenRedirectURIItem.ValueString())
-					}
-					var groupsClaim []string = []string{}
-					for _, groupsClaimItem := range openidConnectItem.Config.GroupsClaim {
-						groupsClaim = append(groupsClaim, groupsClaimItem.ValueString())
-					}
-					var groupsRequired []string = []string{}
-					for _, groupsRequiredItem := range openidConnectItem.Config.GroupsRequired {
-						groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
-					}
-					hideCredentials := new(bool)
-					if !openidConnectItem.Config.HideCredentials.IsUnknown() && !openidConnectItem.Config.HideCredentials.IsNull() {
-						*hideCredentials = openidConnectItem.Config.HideCredentials.ValueBool()
-					} else {
-						hideCredentials = nil
-					}
-					httpProxy := new(string)
-					if !openidConnectItem.Config.HTTPProxy.IsUnknown() && !openidConnectItem.Config.HTTPProxy.IsNull() {
-						*httpProxy = openidConnectItem.Config.HTTPProxy.ValueString()
-					} else {
-						httpProxy = nil
-					}
-					httpProxyAuthorization := new(string)
-					if !openidConnectItem.Config.HTTPProxyAuthorization.IsUnknown() && !openidConnectItem.Config.HTTPProxyAuthorization.IsNull() {
-						*httpProxyAuthorization = openidConnectItem.Config.HTTPProxyAuthorization.ValueString()
-					} else {
-						httpProxyAuthorization = nil
-					}
-					httpVersion := new(float64)
-					if !openidConnectItem.Config.HTTPVersion.IsUnknown() && !openidConnectItem.Config.HTTPVersion.IsNull() {
-						*httpVersion, _ = openidConnectItem.Config.HTTPVersion.ValueBigFloat().Float64()
-					} else {
-						httpVersion = nil
-					}
-					httpsProxy := new(string)
-					if !openidConnectItem.Config.HTTPSProxy.IsUnknown() && !openidConnectItem.Config.HTTPSProxy.IsNull() {
-						*httpsProxy = openidConnectItem.Config.HTTPSProxy.ValueString()
-					} else {
-						httpsProxy = nil
-					}
-					httpsProxyAuthorization := new(string)
-					if !openidConnectItem.Config.HTTPSProxyAuthorization.IsUnknown() && !openidConnectItem.Config.HTTPSProxyAuthorization.IsNull() {
-						*httpsProxyAuthorization = openidConnectItem.Config.HTTPSProxyAuthorization.ValueString()
-					} else {
-						httpsProxyAuthorization = nil
-					}
-					idTokenParamName := new(string)
-					if !openidConnectItem.Config.IDTokenParamName.IsUnknown() && !openidConnectItem.Config.IDTokenParamName.IsNull() {
-						*idTokenParamName = openidConnectItem.Config.IDTokenParamName.ValueString()
-					} else {
-						idTokenParamName = nil
-					}
-					var idTokenParamType []shared.CreateKonnectApplicationAuthPluginIDTokenParamType = []shared.CreateKonnectApplicationAuthPluginIDTokenParamType{}
-					for _, idTokenParamTypeItem := range openidConnectItem.Config.IDTokenParamType {
-						idTokenParamType = append(idTokenParamType, shared.CreateKonnectApplicationAuthPluginIDTokenParamType(idTokenParamTypeItem.ValueString()))
-					}
-					var ignoreSignature []shared.CreateKonnectApplicationAuthPluginIgnoreSignature = []shared.CreateKonnectApplicationAuthPluginIgnoreSignature{}
-					for _, ignoreSignatureItem := range openidConnectItem.Config.IgnoreSignature {
-						ignoreSignature = append(ignoreSignature, shared.CreateKonnectApplicationAuthPluginIgnoreSignature(ignoreSignatureItem.ValueString()))
-					}
-					introspectJwtTokens := new(bool)
-					if !openidConnectItem.Config.IntrospectJwtTokens.IsUnknown() && !openidConnectItem.Config.IntrospectJwtTokens.IsNull() {
-						*introspectJwtTokens = openidConnectItem.Config.IntrospectJwtTokens.ValueBool()
-					} else {
-						introspectJwtTokens = nil
-					}
-					introspectionAccept := new(shared.CreateKonnectApplicationAuthPluginIntrospectionAccept)
-					if !openidConnectItem.Config.IntrospectionAccept.IsUnknown() && !openidConnectItem.Config.IntrospectionAccept.IsNull() {
-						*introspectionAccept = shared.CreateKonnectApplicationAuthPluginIntrospectionAccept(openidConnectItem.Config.IntrospectionAccept.ValueString())
-					} else {
-						introspectionAccept = nil
-					}
-					introspectionCheckActive := new(bool)
-					if !openidConnectItem.Config.IntrospectionCheckActive.IsUnknown() && !openidConnectItem.Config.IntrospectionCheckActive.IsNull() {
-						*introspectionCheckActive = openidConnectItem.Config.IntrospectionCheckActive.ValueBool()
-					} else {
-						introspectionCheckActive = nil
-					}
-					introspectionEndpoint := new(string)
-					if !openidConnectItem.Config.IntrospectionEndpoint.IsUnknown() && !openidConnectItem.Config.IntrospectionEndpoint.IsNull() {
-						*introspectionEndpoint = openidConnectItem.Config.IntrospectionEndpoint.ValueString()
-					} else {
-						introspectionEndpoint = nil
-					}
-					introspectionEndpointAuthMethod := new(shared.CreateKonnectApplicationAuthPluginIntrospectionEndpointAuthMethod)
-					if !openidConnectItem.Config.IntrospectionEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.IntrospectionEndpointAuthMethod.IsNull() {
-						*introspectionEndpointAuthMethod = shared.CreateKonnectApplicationAuthPluginIntrospectionEndpointAuthMethod(openidConnectItem.Config.IntrospectionEndpointAuthMethod.ValueString())
-					} else {
-						introspectionEndpointAuthMethod = nil
-					}
-					var introspectionHeadersClient []string = []string{}
-					for _, introspectionHeadersClientItem := range openidConnectItem.Config.IntrospectionHeadersClient {
-						introspectionHeadersClient = append(introspectionHeadersClient, introspectionHeadersClientItem.ValueString())
-					}
-					var introspectionHeadersNames []string = []string{}
-					for _, introspectionHeadersNamesItem := range openidConnectItem.Config.IntrospectionHeadersNames {
-						introspectionHeadersNames = append(introspectionHeadersNames, introspectionHeadersNamesItem.ValueString())
-					}
-					var introspectionHeadersValues []string = []string{}
-					for _, introspectionHeadersValuesItem := range openidConnectItem.Config.IntrospectionHeadersValues {
-						introspectionHeadersValues = append(introspectionHeadersValues, introspectionHeadersValuesItem.ValueString())
-					}
-					introspectionHint := new(string)
-					if !openidConnectItem.Config.IntrospectionHint.IsUnknown() && !openidConnectItem.Config.IntrospectionHint.IsNull() {
-						*introspectionHint = openidConnectItem.Config.IntrospectionHint.ValueString()
-					} else {
-						introspectionHint = nil
-					}
-					var introspectionPostArgsClient []string = []string{}
-					for _, introspectionPostArgsClientItem := range openidConnectItem.Config.IntrospectionPostArgsClient {
-						introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
-					}
-					var introspectionPostArgsNames []string = []string{}
-					for _, introspectionPostArgsNamesItem := range openidConnectItem.Config.IntrospectionPostArgsNames {
-						introspectionPostArgsNames = append(introspectionPostArgsNames, introspectionPostArgsNamesItem.ValueString())
-					}
-					var introspectionPostArgsValues []string = []string{}
-					for _, introspectionPostArgsValuesItem := range openidConnectItem.Config.IntrospectionPostArgsValues {
-						introspectionPostArgsValues = append(introspectionPostArgsValues, introspectionPostArgsValuesItem.ValueString())
-					}
-					introspectionTokenParamName := new(string)
-					if !openidConnectItem.Config.IntrospectionTokenParamName.IsUnknown() && !openidConnectItem.Config.IntrospectionTokenParamName.IsNull() {
-						*introspectionTokenParamName = openidConnectItem.Config.IntrospectionTokenParamName.ValueString()
-					} else {
-						introspectionTokenParamName = nil
-					}
-					var issuer1 string
-					issuer1 = openidConnectItem.Config.Issuer.ValueString()
-
-					var issuersAllowed []string = []string{}
-					for _, issuersAllowedItem := range openidConnectItem.Config.IssuersAllowed {
-						issuersAllowed = append(issuersAllowed, issuersAllowedItem.ValueString())
-					}
-					jwtSessionClaim := new(string)
-					if !openidConnectItem.Config.JwtSessionClaim.IsUnknown() && !openidConnectItem.Config.JwtSessionClaim.IsNull() {
-						*jwtSessionClaim = openidConnectItem.Config.JwtSessionClaim.ValueString()
-					} else {
-						jwtSessionClaim = nil
-					}
-					jwtSessionCookie := new(string)
-					if !openidConnectItem.Config.JwtSessionCookie.IsUnknown() && !openidConnectItem.Config.JwtSessionCookie.IsNull() {
-						*jwtSessionCookie = openidConnectItem.Config.JwtSessionCookie.ValueString()
-					} else {
-						jwtSessionCookie = nil
-					}
-					keepalive := new(bool)
-					if !openidConnectItem.Config.Keepalive.IsUnknown() && !openidConnectItem.Config.Keepalive.IsNull() {
-						*keepalive = openidConnectItem.Config.Keepalive.ValueBool()
-					} else {
-						keepalive = nil
-					}
-					leeway := new(float64)
-					if !openidConnectItem.Config.Leeway.IsUnknown() && !openidConnectItem.Config.Leeway.IsNull() {
-						*leeway, _ = openidConnectItem.Config.Leeway.ValueBigFloat().Float64()
-					} else {
-						leeway = nil
-					}
-					loginAction := new(shared.CreateKonnectApplicationAuthPluginLoginAction)
-					if !openidConnectItem.Config.LoginAction.IsUnknown() && !openidConnectItem.Config.LoginAction.IsNull() {
-						*loginAction = shared.CreateKonnectApplicationAuthPluginLoginAction(openidConnectItem.Config.LoginAction.ValueString())
-					} else {
-						loginAction = nil
-					}
-					var loginMethods []shared.CreateKonnectApplicationAuthPluginLoginMethods = []shared.CreateKonnectApplicationAuthPluginLoginMethods{}
-					for _, loginMethodsItem := range openidConnectItem.Config.LoginMethods {
-						loginMethods = append(loginMethods, shared.CreateKonnectApplicationAuthPluginLoginMethods(loginMethodsItem.ValueString()))
-					}
-					loginRedirectMode := new(shared.CreateKonnectApplicationAuthPluginLoginRedirectMode)
-					if !openidConnectItem.Config.LoginRedirectMode.IsUnknown() && !openidConnectItem.Config.LoginRedirectMode.IsNull() {
-						*loginRedirectMode = shared.CreateKonnectApplicationAuthPluginLoginRedirectMode(openidConnectItem.Config.LoginRedirectMode.ValueString())
-					} else {
-						loginRedirectMode = nil
-					}
-					var loginRedirectURI []string = []string{}
-					for _, loginRedirectURIItem := range openidConnectItem.Config.LoginRedirectURI {
-						loginRedirectURI = append(loginRedirectURI, loginRedirectURIItem.ValueString())
-					}
-					var loginTokens []shared.CreateKonnectApplicationAuthPluginLoginTokens = []shared.CreateKonnectApplicationAuthPluginLoginTokens{}
-					for _, loginTokensItem := range openidConnectItem.Config.LoginTokens {
-						loginTokens = append(loginTokens, shared.CreateKonnectApplicationAuthPluginLoginTokens(loginTokensItem.ValueString()))
-					}
-					var logoutMethods []shared.CreateKonnectApplicationAuthPluginLogoutMethods = []shared.CreateKonnectApplicationAuthPluginLogoutMethods{}
-					for _, logoutMethodsItem := range openidConnectItem.Config.LogoutMethods {
-						logoutMethods = append(logoutMethods, shared.CreateKonnectApplicationAuthPluginLogoutMethods(logoutMethodsItem.ValueString()))
-					}
-					logoutPostArg := new(string)
-					if !openidConnectItem.Config.LogoutPostArg.IsUnknown() && !openidConnectItem.Config.LogoutPostArg.IsNull() {
-						*logoutPostArg = openidConnectItem.Config.LogoutPostArg.ValueString()
-					} else {
-						logoutPostArg = nil
-					}
-					logoutQueryArg := new(string)
-					if !openidConnectItem.Config.LogoutQueryArg.IsUnknown() && !openidConnectItem.Config.LogoutQueryArg.IsNull() {
-						*logoutQueryArg = openidConnectItem.Config.LogoutQueryArg.ValueString()
-					} else {
-						logoutQueryArg = nil
-					}
-					var logoutRedirectURI []string = []string{}
-					for _, logoutRedirectURIItem := range openidConnectItem.Config.LogoutRedirectURI {
-						logoutRedirectURI = append(logoutRedirectURI, logoutRedirectURIItem.ValueString())
-					}
-					logoutRevoke := new(bool)
-					if !openidConnectItem.Config.LogoutRevoke.IsUnknown() && !openidConnectItem.Config.LogoutRevoke.IsNull() {
-						*logoutRevoke = openidConnectItem.Config.LogoutRevoke.ValueBool()
-					} else {
-						logoutRevoke = nil
-					}
-					logoutRevokeAccessToken := new(bool)
-					if !openidConnectItem.Config.LogoutRevokeAccessToken.IsUnknown() && !openidConnectItem.Config.LogoutRevokeAccessToken.IsNull() {
-						*logoutRevokeAccessToken = openidConnectItem.Config.LogoutRevokeAccessToken.ValueBool()
-					} else {
-						logoutRevokeAccessToken = nil
-					}
-					logoutRevokeRefreshToken := new(bool)
-					if !openidConnectItem.Config.LogoutRevokeRefreshToken.IsUnknown() && !openidConnectItem.Config.LogoutRevokeRefreshToken.IsNull() {
-						*logoutRevokeRefreshToken = openidConnectItem.Config.LogoutRevokeRefreshToken.ValueBool()
-					} else {
-						logoutRevokeRefreshToken = nil
-					}
-					logoutURISuffix := new(string)
-					if !openidConnectItem.Config.LogoutURISuffix.IsUnknown() && !openidConnectItem.Config.LogoutURISuffix.IsNull() {
-						*logoutURISuffix = openidConnectItem.Config.LogoutURISuffix.ValueString()
-					} else {
-						logoutURISuffix = nil
-					}
-					maxAge := new(float64)
-					if !openidConnectItem.Config.MaxAge.IsUnknown() && !openidConnectItem.Config.MaxAge.IsNull() {
-						*maxAge, _ = openidConnectItem.Config.MaxAge.ValueBigFloat().Float64()
-					} else {
-						maxAge = nil
-					}
-					mtlsIntrospectionEndpoint := new(string)
-					if !openidConnectItem.Config.MtlsIntrospectionEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsIntrospectionEndpoint.IsNull() {
-						*mtlsIntrospectionEndpoint = openidConnectItem.Config.MtlsIntrospectionEndpoint.ValueString()
-					} else {
-						mtlsIntrospectionEndpoint = nil
-					}
-					mtlsRevocationEndpoint := new(string)
-					if !openidConnectItem.Config.MtlsRevocationEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsRevocationEndpoint.IsNull() {
-						*mtlsRevocationEndpoint = openidConnectItem.Config.MtlsRevocationEndpoint.ValueString()
-					} else {
-						mtlsRevocationEndpoint = nil
-					}
-					mtlsTokenEndpoint := new(string)
-					if !openidConnectItem.Config.MtlsTokenEndpoint.IsUnknown() && !openidConnectItem.Config.MtlsTokenEndpoint.IsNull() {
-						*mtlsTokenEndpoint = openidConnectItem.Config.MtlsTokenEndpoint.ValueString()
-					} else {
-						mtlsTokenEndpoint = nil
-					}
-					noProxy := new(string)
-					if !openidConnectItem.Config.NoProxy.IsUnknown() && !openidConnectItem.Config.NoProxy.IsNull() {
-						*noProxy = openidConnectItem.Config.NoProxy.ValueString()
-					} else {
-						noProxy = nil
-					}
-					var passwordParamType []shared.CreateKonnectApplicationAuthPluginPasswordParamType = []shared.CreateKonnectApplicationAuthPluginPasswordParamType{}
-					for _, passwordParamTypeItem := range openidConnectItem.Config.PasswordParamType {
-						passwordParamType = append(passwordParamType, shared.CreateKonnectApplicationAuthPluginPasswordParamType(passwordParamTypeItem.ValueString()))
-					}
-					preserveQueryArgs := new(bool)
-					if !openidConnectItem.Config.PreserveQueryArgs.IsUnknown() && !openidConnectItem.Config.PreserveQueryArgs.IsNull() {
-						*preserveQueryArgs = openidConnectItem.Config.PreserveQueryArgs.ValueBool()
-					} else {
-						preserveQueryArgs = nil
-					}
-					proofOfPossessionAuthMethodsValidation := new(bool)
-					if !openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.IsNull() {
-						*proofOfPossessionAuthMethodsValidation = openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation.ValueBool()
-					} else {
-						proofOfPossessionAuthMethodsValidation = nil
-					}
-					proofOfPossessionDpop := new(shared.CreateKonnectApplicationAuthPluginProofOfPossessionDpop)
-					if !openidConnectItem.Config.ProofOfPossessionDpop.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionDpop.IsNull() {
-						*proofOfPossessionDpop = shared.CreateKonnectApplicationAuthPluginProofOfPossessionDpop(openidConnectItem.Config.ProofOfPossessionDpop.ValueString())
-					} else {
-						proofOfPossessionDpop = nil
-					}
-					proofOfPossessionMtls := new(shared.CreateKonnectApplicationAuthPluginProofOfPossessionMtls)
-					if !openidConnectItem.Config.ProofOfPossessionMtls.IsUnknown() && !openidConnectItem.Config.ProofOfPossessionMtls.IsNull() {
-						*proofOfPossessionMtls = shared.CreateKonnectApplicationAuthPluginProofOfPossessionMtls(openidConnectItem.Config.ProofOfPossessionMtls.ValueString())
-					} else {
-						proofOfPossessionMtls = nil
-					}
-					pushedAuthorizationRequestEndpoint := new(string)
-					if !openidConnectItem.Config.PushedAuthorizationRequestEndpoint.IsUnknown() && !openidConnectItem.Config.PushedAuthorizationRequestEndpoint.IsNull() {
-						*pushedAuthorizationRequestEndpoint = openidConnectItem.Config.PushedAuthorizationRequestEndpoint.ValueString()
-					} else {
-						pushedAuthorizationRequestEndpoint = nil
-					}
-					pushedAuthorizationRequestEndpointAuthMethod := new(shared.CreateKonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod)
-					if !openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.IsNull() {
-						*pushedAuthorizationRequestEndpointAuthMethod = shared.CreateKonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod(openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod.ValueString())
-					} else {
-						pushedAuthorizationRequestEndpointAuthMethod = nil
-					}
-					var redirectURI []string = []string{}
-					for _, redirectURIItem := range openidConnectItem.Config.RedirectURI {
-						redirectURI = append(redirectURI, redirectURIItem.ValueString())
-					}
-					clusterMaxRedirections1 := new(int64)
-					if !openidConnectItem.Config.Redis.ClusterMaxRedirections.IsUnknown() && !openidConnectItem.Config.Redis.ClusterMaxRedirections.IsNull() {
-						*clusterMaxRedirections1 = openidConnectItem.Config.Redis.ClusterMaxRedirections.ValueInt64()
-					} else {
-						clusterMaxRedirections1 = nil
-					}
-					var clusterNodes1 []shared.CreateKonnectApplicationAuthPluginConfigClusterNodes = []shared.CreateKonnectApplicationAuthPluginConfigClusterNodes{}
-					for _, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-						ip1 := new(string)
-						if !clusterNodesItem1.IP.IsUnknown() && !clusterNodesItem1.IP.IsNull() {
-							*ip1 = clusterNodesItem1.IP.ValueString()
-						} else {
-							ip1 = nil
-						}
-						port3 := new(int64)
-						if !clusterNodesItem1.Port.IsUnknown() && !clusterNodesItem1.Port.IsNull() {
-							*port3 = clusterNodesItem1.Port.ValueInt64()
-						} else {
-							port3 = nil
-						}
-						clusterNodes1 = append(clusterNodes1, shared.CreateKonnectApplicationAuthPluginConfigClusterNodes{
-							IP:   ip1,
-							Port: port3,
-						})
-					}
-					connectTimeout1 := new(int64)
-					if !openidConnectItem.Config.Redis.ConnectTimeout.IsUnknown() && !openidConnectItem.Config.Redis.ConnectTimeout.IsNull() {
-						*connectTimeout1 = openidConnectItem.Config.Redis.ConnectTimeout.ValueInt64()
-					} else {
-						connectTimeout1 = nil
-					}
-					connectionIsProxied1 := new(bool)
-					if !openidConnectItem.Config.Redis.ConnectionIsProxied.IsUnknown() && !openidConnectItem.Config.Redis.ConnectionIsProxied.IsNull() {
-						*connectionIsProxied1 = openidConnectItem.Config.Redis.ConnectionIsProxied.ValueBool()
-					} else {
-						connectionIsProxied1 = nil
-					}
-					database1 := new(int64)
-					if !openidConnectItem.Config.Redis.Database.IsUnknown() && !openidConnectItem.Config.Redis.Database.IsNull() {
-						*database1 = openidConnectItem.Config.Redis.Database.ValueInt64()
-					} else {
-						database1 = nil
-					}
-					host2 := new(string)
-					if !openidConnectItem.Config.Redis.Host.IsUnknown() && !openidConnectItem.Config.Redis.Host.IsNull() {
-						*host2 = openidConnectItem.Config.Redis.Host.ValueString()
-					} else {
-						host2 = nil
-					}
-					keepaliveBacklog1 := new(int64)
-					if !openidConnectItem.Config.Redis.KeepaliveBacklog.IsUnknown() && !openidConnectItem.Config.Redis.KeepaliveBacklog.IsNull() {
-						*keepaliveBacklog1 = openidConnectItem.Config.Redis.KeepaliveBacklog.ValueInt64()
-					} else {
-						keepaliveBacklog1 = nil
-					}
-					keepalivePoolSize1 := new(int64)
-					if !openidConnectItem.Config.Redis.KeepalivePoolSize.IsUnknown() && !openidConnectItem.Config.Redis.KeepalivePoolSize.IsNull() {
-						*keepalivePoolSize1 = openidConnectItem.Config.Redis.KeepalivePoolSize.ValueInt64()
-					} else {
-						keepalivePoolSize1 = nil
-					}
-					password1 := new(string)
-					if !openidConnectItem.Config.Redis.Password.IsUnknown() && !openidConnectItem.Config.Redis.Password.IsNull() {
-						*password1 = openidConnectItem.Config.Redis.Password.ValueString()
-					} else {
-						password1 = nil
-					}
-					port4 := new(int64)
-					if !openidConnectItem.Config.Redis.Port.IsUnknown() && !openidConnectItem.Config.Redis.Port.IsNull() {
-						*port4 = openidConnectItem.Config.Redis.Port.ValueInt64()
-					} else {
-						port4 = nil
-					}
-					prefix := new(string)
-					if !openidConnectItem.Config.Redis.Prefix.IsUnknown() && !openidConnectItem.Config.Redis.Prefix.IsNull() {
-						*prefix = openidConnectItem.Config.Redis.Prefix.ValueString()
-					} else {
-						prefix = nil
-					}
-					readTimeout1 := new(int64)
-					if !openidConnectItem.Config.Redis.ReadTimeout.IsUnknown() && !openidConnectItem.Config.Redis.ReadTimeout.IsNull() {
-						*readTimeout1 = openidConnectItem.Config.Redis.ReadTimeout.ValueInt64()
-					} else {
-						readTimeout1 = nil
-					}
-					sendTimeout1 := new(int64)
-					if !openidConnectItem.Config.Redis.SendTimeout.IsUnknown() && !openidConnectItem.Config.Redis.SendTimeout.IsNull() {
-						*sendTimeout1 = openidConnectItem.Config.Redis.SendTimeout.ValueInt64()
-					} else {
-						sendTimeout1 = nil
-					}
-					sentinelMaster1 := new(string)
-					if !openidConnectItem.Config.Redis.SentinelMaster.IsUnknown() && !openidConnectItem.Config.Redis.SentinelMaster.IsNull() {
-						*sentinelMaster1 = openidConnectItem.Config.Redis.SentinelMaster.ValueString()
-					} else {
-						sentinelMaster1 = nil
-					}
-					var sentinelNodes1 []shared.CreateKonnectApplicationAuthPluginConfigSentinelNodes = []shared.CreateKonnectApplicationAuthPluginConfigSentinelNodes{}
-					for _, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-						host3 := new(string)
-						if !sentinelNodesItem1.Host.IsUnknown() && !sentinelNodesItem1.Host.IsNull() {
-							*host3 = sentinelNodesItem1.Host.ValueString()
-						} else {
-							host3 = nil
-						}
-						port5 := new(int64)
-						if !sentinelNodesItem1.Port.IsUnknown() && !sentinelNodesItem1.Port.IsNull() {
-							*port5 = sentinelNodesItem1.Port.ValueInt64()
-						} else {
-							port5 = nil
-						}
-						sentinelNodes1 = append(sentinelNodes1, shared.CreateKonnectApplicationAuthPluginConfigSentinelNodes{
-							Host: host3,
-							Port: port5,
-						})
-					}
-					sentinelPassword1 := new(string)
-					if !openidConnectItem.Config.Redis.SentinelPassword.IsUnknown() && !openidConnectItem.Config.Redis.SentinelPassword.IsNull() {
-						*sentinelPassword1 = openidConnectItem.Config.Redis.SentinelPassword.ValueString()
-					} else {
-						sentinelPassword1 = nil
-					}
-					sentinelRole1 := new(shared.CreateKonnectApplicationAuthPluginConfigSentinelRole)
-					if !openidConnectItem.Config.Redis.SentinelRole.IsUnknown() && !openidConnectItem.Config.Redis.SentinelRole.IsNull() {
-						*sentinelRole1 = shared.CreateKonnectApplicationAuthPluginConfigSentinelRole(openidConnectItem.Config.Redis.SentinelRole.ValueString())
-					} else {
-						sentinelRole1 = nil
-					}
-					sentinelUsername1 := new(string)
-					if !openidConnectItem.Config.Redis.SentinelUsername.IsUnknown() && !openidConnectItem.Config.Redis.SentinelUsername.IsNull() {
-						*sentinelUsername1 = openidConnectItem.Config.Redis.SentinelUsername.ValueString()
-					} else {
-						sentinelUsername1 = nil
-					}
-					serverName1 := new(string)
-					if !openidConnectItem.Config.Redis.ServerName.IsUnknown() && !openidConnectItem.Config.Redis.ServerName.IsNull() {
-						*serverName1 = openidConnectItem.Config.Redis.ServerName.ValueString()
-					} else {
-						serverName1 = nil
-					}
-					socket := new(string)
-					if !openidConnectItem.Config.Redis.Socket.IsUnknown() && !openidConnectItem.Config.Redis.Socket.IsNull() {
-						*socket = openidConnectItem.Config.Redis.Socket.ValueString()
-					} else {
-						socket = nil
-					}
-					ssl1 := new(bool)
-					if !openidConnectItem.Config.Redis.Ssl.IsUnknown() && !openidConnectItem.Config.Redis.Ssl.IsNull() {
-						*ssl1 = openidConnectItem.Config.Redis.Ssl.ValueBool()
-					} else {
-						ssl1 = nil
-					}
-					sslVerify1 := new(bool)
-					if !openidConnectItem.Config.Redis.SslVerify.IsUnknown() && !openidConnectItem.Config.Redis.SslVerify.IsNull() {
-						*sslVerify1 = openidConnectItem.Config.Redis.SslVerify.ValueBool()
-					} else {
-						sslVerify1 = nil
-					}
-					username1 := new(string)
-					if !openidConnectItem.Config.Redis.Username.IsUnknown() && !openidConnectItem.Config.Redis.Username.IsNull() {
-						*username1 = openidConnectItem.Config.Redis.Username.ValueString()
-					} else {
-						username1 = nil
-					}
-					redis := shared.CreateKonnectApplicationAuthPluginRedis{
-						ClusterMaxRedirections: clusterMaxRedirections1,
-						ClusterNodes:           clusterNodes1,
-						ConnectTimeout:         connectTimeout1,
-						ConnectionIsProxied:    connectionIsProxied1,
-						Database:               database1,
-						Host:                   host2,
-						KeepaliveBacklog:       keepaliveBacklog1,
-						KeepalivePoolSize:      keepalivePoolSize1,
-						Password:               password1,
-						Port:                   port4,
-						Prefix:                 prefix,
-						ReadTimeout:            readTimeout1,
-						SendTimeout:            sendTimeout1,
-						SentinelMaster:         sentinelMaster1,
-						SentinelNodes:          sentinelNodes1,
-						SentinelPassword:       sentinelPassword1,
-						SentinelRole:           sentinelRole1,
-						SentinelUsername:       sentinelUsername1,
-						ServerName:             serverName1,
-						Socket:                 socket,
-						Ssl:                    ssl1,
-						SslVerify:              sslVerify1,
-						Username:               username1,
-					}
-					rediscoveryLifetime := new(float64)
-					if !openidConnectItem.Config.RediscoveryLifetime.IsUnknown() && !openidConnectItem.Config.RediscoveryLifetime.IsNull() {
-						*rediscoveryLifetime, _ = openidConnectItem.Config.RediscoveryLifetime.ValueBigFloat().Float64()
-					} else {
-						rediscoveryLifetime = nil
-					}
-					refreshTokenParamName := new(string)
-					if !openidConnectItem.Config.RefreshTokenParamName.IsUnknown() && !openidConnectItem.Config.RefreshTokenParamName.IsNull() {
-						*refreshTokenParamName = openidConnectItem.Config.RefreshTokenParamName.ValueString()
-					} else {
-						refreshTokenParamName = nil
-					}
-					var refreshTokenParamType []shared.CreateKonnectApplicationAuthPluginRefreshTokenParamType = []shared.CreateKonnectApplicationAuthPluginRefreshTokenParamType{}
-					for _, refreshTokenParamTypeItem := range openidConnectItem.Config.RefreshTokenParamType {
-						refreshTokenParamType = append(refreshTokenParamType, shared.CreateKonnectApplicationAuthPluginRefreshTokenParamType(refreshTokenParamTypeItem.ValueString()))
-					}
-					refreshTokens := new(bool)
-					if !openidConnectItem.Config.RefreshTokens.IsUnknown() && !openidConnectItem.Config.RefreshTokens.IsNull() {
-						*refreshTokens = openidConnectItem.Config.RefreshTokens.ValueBool()
-					} else {
-						refreshTokens = nil
-					}
-					requireProofKeyForCodeExchange := new(bool)
-					if !openidConnectItem.Config.RequireProofKeyForCodeExchange.IsUnknown() && !openidConnectItem.Config.RequireProofKeyForCodeExchange.IsNull() {
-						*requireProofKeyForCodeExchange = openidConnectItem.Config.RequireProofKeyForCodeExchange.ValueBool()
-					} else {
-						requireProofKeyForCodeExchange = nil
-					}
-					requirePushedAuthorizationRequests := new(bool)
-					if !openidConnectItem.Config.RequirePushedAuthorizationRequests.IsUnknown() && !openidConnectItem.Config.RequirePushedAuthorizationRequests.IsNull() {
-						*requirePushedAuthorizationRequests = openidConnectItem.Config.RequirePushedAuthorizationRequests.ValueBool()
-					} else {
-						requirePushedAuthorizationRequests = nil
-					}
-					requireSignedRequestObject := new(bool)
-					if !openidConnectItem.Config.RequireSignedRequestObject.IsUnknown() && !openidConnectItem.Config.RequireSignedRequestObject.IsNull() {
-						*requireSignedRequestObject = openidConnectItem.Config.RequireSignedRequestObject.ValueBool()
-					} else {
-						requireSignedRequestObject = nil
-					}
-					resolveDistributedClaims := new(bool)
-					if !openidConnectItem.Config.ResolveDistributedClaims.IsUnknown() && !openidConnectItem.Config.ResolveDistributedClaims.IsNull() {
-						*resolveDistributedClaims = openidConnectItem.Config.ResolveDistributedClaims.ValueBool()
-					} else {
-						resolveDistributedClaims = nil
-					}
-					responseMode := new(shared.CreateKonnectApplicationAuthPluginResponseMode)
-					if !openidConnectItem.Config.ResponseMode.IsUnknown() && !openidConnectItem.Config.ResponseMode.IsNull() {
-						*responseMode = shared.CreateKonnectApplicationAuthPluginResponseMode(openidConnectItem.Config.ResponseMode.ValueString())
-					} else {
-						responseMode = nil
-					}
-					var responseType []string = []string{}
-					for _, responseTypeItem := range openidConnectItem.Config.ResponseType {
-						responseType = append(responseType, responseTypeItem.ValueString())
-					}
-					reverify := new(bool)
-					if !openidConnectItem.Config.Reverify.IsUnknown() && !openidConnectItem.Config.Reverify.IsNull() {
-						*reverify = openidConnectItem.Config.Reverify.ValueBool()
-					} else {
-						reverify = nil
-					}
-					revocationEndpoint := new(string)
-					if !openidConnectItem.Config.RevocationEndpoint.IsUnknown() && !openidConnectItem.Config.RevocationEndpoint.IsNull() {
-						*revocationEndpoint = openidConnectItem.Config.RevocationEndpoint.ValueString()
-					} else {
-						revocationEndpoint = nil
-					}
-					revocationEndpointAuthMethod := new(shared.CreateKonnectApplicationAuthPluginRevocationEndpointAuthMethod)
-					if !openidConnectItem.Config.RevocationEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.RevocationEndpointAuthMethod.IsNull() {
-						*revocationEndpointAuthMethod = shared.CreateKonnectApplicationAuthPluginRevocationEndpointAuthMethod(openidConnectItem.Config.RevocationEndpointAuthMethod.ValueString())
-					} else {
-						revocationEndpointAuthMethod = nil
-					}
-					revocationTokenParamName := new(string)
-					if !openidConnectItem.Config.RevocationTokenParamName.IsUnknown() && !openidConnectItem.Config.RevocationTokenParamName.IsNull() {
-						*revocationTokenParamName = openidConnectItem.Config.RevocationTokenParamName.ValueString()
-					} else {
-						revocationTokenParamName = nil
-					}
-					var rolesClaim []string = []string{}
-					for _, rolesClaimItem := range openidConnectItem.Config.RolesClaim {
-						rolesClaim = append(rolesClaim, rolesClaimItem.ValueString())
-					}
-					var rolesRequired []string = []string{}
-					for _, rolesRequiredItem := range openidConnectItem.Config.RolesRequired {
-						rolesRequired = append(rolesRequired, rolesRequiredItem.ValueString())
-					}
-					runOnPreflight := new(bool)
-					if !openidConnectItem.Config.RunOnPreflight.IsUnknown() && !openidConnectItem.Config.RunOnPreflight.IsNull() {
-						*runOnPreflight = openidConnectItem.Config.RunOnPreflight.ValueBool()
-					} else {
-						runOnPreflight = nil
-					}
-					var scopes []string = []string{}
-					for _, scopesItem := range openidConnectItem.Config.Scopes {
-						scopes = append(scopes, scopesItem.ValueString())
-					}
-					var scopesClaim []string = []string{}
-					for _, scopesClaimItem := range openidConnectItem.Config.ScopesClaim {
-						scopesClaim = append(scopesClaim, scopesClaimItem.ValueString())
-					}
-					var scopesRequired []string = []string{}
-					for _, scopesRequiredItem := range openidConnectItem.Config.ScopesRequired {
-						scopesRequired = append(scopesRequired, scopesRequiredItem.ValueString())
-					}
-					searchUserInfo := new(bool)
-					if !openidConnectItem.Config.SearchUserInfo.IsUnknown() && !openidConnectItem.Config.SearchUserInfo.IsNull() {
-						*searchUserInfo = openidConnectItem.Config.SearchUserInfo.ValueBool()
-					} else {
-						searchUserInfo = nil
-					}
-					sessionAbsoluteTimeout := new(float64)
-					if !openidConnectItem.Config.SessionAbsoluteTimeout.IsUnknown() && !openidConnectItem.Config.SessionAbsoluteTimeout.IsNull() {
-						*sessionAbsoluteTimeout, _ = openidConnectItem.Config.SessionAbsoluteTimeout.ValueBigFloat().Float64()
-					} else {
-						sessionAbsoluteTimeout = nil
-					}
-					sessionAudience := new(string)
-					if !openidConnectItem.Config.SessionAudience.IsUnknown() && !openidConnectItem.Config.SessionAudience.IsNull() {
-						*sessionAudience = openidConnectItem.Config.SessionAudience.ValueString()
-					} else {
-						sessionAudience = nil
-					}
-					sessionCookieDomain := new(string)
-					if !openidConnectItem.Config.SessionCookieDomain.IsUnknown() && !openidConnectItem.Config.SessionCookieDomain.IsNull() {
-						*sessionCookieDomain = openidConnectItem.Config.SessionCookieDomain.ValueString()
-					} else {
-						sessionCookieDomain = nil
-					}
-					sessionCookieHTTPOnly := new(bool)
-					if !openidConnectItem.Config.SessionCookieHTTPOnly.IsUnknown() && !openidConnectItem.Config.SessionCookieHTTPOnly.IsNull() {
-						*sessionCookieHTTPOnly = openidConnectItem.Config.SessionCookieHTTPOnly.ValueBool()
-					} else {
-						sessionCookieHTTPOnly = nil
-					}
-					sessionCookieName := new(string)
-					if !openidConnectItem.Config.SessionCookieName.IsUnknown() && !openidConnectItem.Config.SessionCookieName.IsNull() {
-						*sessionCookieName = openidConnectItem.Config.SessionCookieName.ValueString()
-					} else {
-						sessionCookieName = nil
-					}
-					sessionCookiePath := new(string)
-					if !openidConnectItem.Config.SessionCookiePath.IsUnknown() && !openidConnectItem.Config.SessionCookiePath.IsNull() {
-						*sessionCookiePath = openidConnectItem.Config.SessionCookiePath.ValueString()
-					} else {
-						sessionCookiePath = nil
-					}
-					sessionCookieSameSite := new(shared.CreateKonnectApplicationAuthPluginSessionCookieSameSite)
-					if !openidConnectItem.Config.SessionCookieSameSite.IsUnknown() && !openidConnectItem.Config.SessionCookieSameSite.IsNull() {
-						*sessionCookieSameSite = shared.CreateKonnectApplicationAuthPluginSessionCookieSameSite(openidConnectItem.Config.SessionCookieSameSite.ValueString())
-					} else {
-						sessionCookieSameSite = nil
-					}
-					sessionCookieSecure := new(bool)
-					if !openidConnectItem.Config.SessionCookieSecure.IsUnknown() && !openidConnectItem.Config.SessionCookieSecure.IsNull() {
-						*sessionCookieSecure = openidConnectItem.Config.SessionCookieSecure.ValueBool()
-					} else {
-						sessionCookieSecure = nil
-					}
-					sessionEnforceSameSubject := new(bool)
-					if !openidConnectItem.Config.SessionEnforceSameSubject.IsUnknown() && !openidConnectItem.Config.SessionEnforceSameSubject.IsNull() {
-						*sessionEnforceSameSubject = openidConnectItem.Config.SessionEnforceSameSubject.ValueBool()
-					} else {
-						sessionEnforceSameSubject = nil
-					}
-					sessionHashStorageKey := new(bool)
-					if !openidConnectItem.Config.SessionHashStorageKey.IsUnknown() && !openidConnectItem.Config.SessionHashStorageKey.IsNull() {
-						*sessionHashStorageKey = openidConnectItem.Config.SessionHashStorageKey.ValueBool()
-					} else {
-						sessionHashStorageKey = nil
-					}
-					sessionHashSubject := new(bool)
-					if !openidConnectItem.Config.SessionHashSubject.IsUnknown() && !openidConnectItem.Config.SessionHashSubject.IsNull() {
-						*sessionHashSubject = openidConnectItem.Config.SessionHashSubject.ValueBool()
-					} else {
-						sessionHashSubject = nil
-					}
-					sessionIdlingTimeout := new(float64)
-					if !openidConnectItem.Config.SessionIdlingTimeout.IsUnknown() && !openidConnectItem.Config.SessionIdlingTimeout.IsNull() {
-						*sessionIdlingTimeout, _ = openidConnectItem.Config.SessionIdlingTimeout.ValueBigFloat().Float64()
-					} else {
-						sessionIdlingTimeout = nil
-					}
-					sessionMemcachedHost := new(string)
-					if !openidConnectItem.Config.SessionMemcachedHost.IsUnknown() && !openidConnectItem.Config.SessionMemcachedHost.IsNull() {
-						*sessionMemcachedHost = openidConnectItem.Config.SessionMemcachedHost.ValueString()
-					} else {
-						sessionMemcachedHost = nil
-					}
-					sessionMemcachedPort := new(int64)
-					if !openidConnectItem.Config.SessionMemcachedPort.IsUnknown() && !openidConnectItem.Config.SessionMemcachedPort.IsNull() {
-						*sessionMemcachedPort = openidConnectItem.Config.SessionMemcachedPort.ValueInt64()
-					} else {
-						sessionMemcachedPort = nil
-					}
-					sessionMemcachedPrefix := new(string)
-					if !openidConnectItem.Config.SessionMemcachedPrefix.IsUnknown() && !openidConnectItem.Config.SessionMemcachedPrefix.IsNull() {
-						*sessionMemcachedPrefix = openidConnectItem.Config.SessionMemcachedPrefix.ValueString()
-					} else {
-						sessionMemcachedPrefix = nil
-					}
-					sessionMemcachedSocket := new(string)
-					if !openidConnectItem.Config.SessionMemcachedSocket.IsUnknown() && !openidConnectItem.Config.SessionMemcachedSocket.IsNull() {
-						*sessionMemcachedSocket = openidConnectItem.Config.SessionMemcachedSocket.ValueString()
-					} else {
-						sessionMemcachedSocket = nil
-					}
-					sessionRemember := new(bool)
-					if !openidConnectItem.Config.SessionRemember.IsUnknown() && !openidConnectItem.Config.SessionRemember.IsNull() {
-						*sessionRemember = openidConnectItem.Config.SessionRemember.ValueBool()
-					} else {
-						sessionRemember = nil
-					}
-					sessionRememberAbsoluteTimeout := new(float64)
-					if !openidConnectItem.Config.SessionRememberAbsoluteTimeout.IsUnknown() && !openidConnectItem.Config.SessionRememberAbsoluteTimeout.IsNull() {
-						*sessionRememberAbsoluteTimeout, _ = openidConnectItem.Config.SessionRememberAbsoluteTimeout.ValueBigFloat().Float64()
-					} else {
-						sessionRememberAbsoluteTimeout = nil
-					}
-					sessionRememberCookieName := new(string)
-					if !openidConnectItem.Config.SessionRememberCookieName.IsUnknown() && !openidConnectItem.Config.SessionRememberCookieName.IsNull() {
-						*sessionRememberCookieName = openidConnectItem.Config.SessionRememberCookieName.ValueString()
-					} else {
-						sessionRememberCookieName = nil
-					}
-					sessionRememberRollingTimeout := new(float64)
-					if !openidConnectItem.Config.SessionRememberRollingTimeout.IsUnknown() && !openidConnectItem.Config.SessionRememberRollingTimeout.IsNull() {
-						*sessionRememberRollingTimeout, _ = openidConnectItem.Config.SessionRememberRollingTimeout.ValueBigFloat().Float64()
-					} else {
-						sessionRememberRollingTimeout = nil
-					}
-					var sessionRequestHeaders []shared.CreateKonnectApplicationAuthPluginSessionRequestHeaders = []shared.CreateKonnectApplicationAuthPluginSessionRequestHeaders{}
-					for _, sessionRequestHeadersItem := range openidConnectItem.Config.SessionRequestHeaders {
-						sessionRequestHeaders = append(sessionRequestHeaders, shared.CreateKonnectApplicationAuthPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
-					}
-					var sessionResponseHeaders []shared.CreateKonnectApplicationAuthPluginSessionResponseHeaders = []shared.CreateKonnectApplicationAuthPluginSessionResponseHeaders{}
-					for _, sessionResponseHeadersItem := range openidConnectItem.Config.SessionResponseHeaders {
-						sessionResponseHeaders = append(sessionResponseHeaders, shared.CreateKonnectApplicationAuthPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
-					}
-					sessionRollingTimeout := new(float64)
-					if !openidConnectItem.Config.SessionRollingTimeout.IsUnknown() && !openidConnectItem.Config.SessionRollingTimeout.IsNull() {
-						*sessionRollingTimeout, _ = openidConnectItem.Config.SessionRollingTimeout.ValueBigFloat().Float64()
-					} else {
-						sessionRollingTimeout = nil
-					}
-					sessionSecret := new(string)
-					if !openidConnectItem.Config.SessionSecret.IsUnknown() && !openidConnectItem.Config.SessionSecret.IsNull() {
-						*sessionSecret = openidConnectItem.Config.SessionSecret.ValueString()
-					} else {
-						sessionSecret = nil
-					}
-					sessionStorage := new(shared.CreateKonnectApplicationAuthPluginSessionStorage)
-					if !openidConnectItem.Config.SessionStorage.IsUnknown() && !openidConnectItem.Config.SessionStorage.IsNull() {
-						*sessionStorage = shared.CreateKonnectApplicationAuthPluginSessionStorage(openidConnectItem.Config.SessionStorage.ValueString())
-					} else {
-						sessionStorage = nil
-					}
-					sessionStoreMetadata := new(bool)
-					if !openidConnectItem.Config.SessionStoreMetadata.IsUnknown() && !openidConnectItem.Config.SessionStoreMetadata.IsNull() {
-						*sessionStoreMetadata = openidConnectItem.Config.SessionStoreMetadata.ValueBool()
-					} else {
-						sessionStoreMetadata = nil
-					}
-					sslVerify2 := new(bool)
-					if !openidConnectItem.Config.SslVerify.IsUnknown() && !openidConnectItem.Config.SslVerify.IsNull() {
-						*sslVerify2 = openidConnectItem.Config.SslVerify.ValueBool()
-					} else {
-						sslVerify2 = nil
-					}
-					timeout := new(float64)
-					if !openidConnectItem.Config.Timeout.IsUnknown() && !openidConnectItem.Config.Timeout.IsNull() {
-						*timeout, _ = openidConnectItem.Config.Timeout.ValueBigFloat().Float64()
-					} else {
-						timeout = nil
-					}
-					tlsClientAuthCertID := new(string)
-					if !openidConnectItem.Config.TLSClientAuthCertID.IsUnknown() && !openidConnectItem.Config.TLSClientAuthCertID.IsNull() {
-						*tlsClientAuthCertID = openidConnectItem.Config.TLSClientAuthCertID.ValueString()
-					} else {
-						tlsClientAuthCertID = nil
-					}
-					tlsClientAuthSslVerify := new(bool)
-					if !openidConnectItem.Config.TLSClientAuthSslVerify.IsUnknown() && !openidConnectItem.Config.TLSClientAuthSslVerify.IsNull() {
-						*tlsClientAuthSslVerify = openidConnectItem.Config.TLSClientAuthSslVerify.ValueBool()
-					} else {
-						tlsClientAuthSslVerify = nil
-					}
-					tokenCacheKeyIncludeScope := new(bool)
-					if !openidConnectItem.Config.TokenCacheKeyIncludeScope.IsUnknown() && !openidConnectItem.Config.TokenCacheKeyIncludeScope.IsNull() {
-						*tokenCacheKeyIncludeScope = openidConnectItem.Config.TokenCacheKeyIncludeScope.ValueBool()
-					} else {
-						tokenCacheKeyIncludeScope = nil
-					}
-					tokenEndpoint := new(string)
-					if !openidConnectItem.Config.TokenEndpoint.IsUnknown() && !openidConnectItem.Config.TokenEndpoint.IsNull() {
-						*tokenEndpoint = openidConnectItem.Config.TokenEndpoint.ValueString()
-					} else {
-						tokenEndpoint = nil
-					}
-					tokenEndpointAuthMethod := new(shared.CreateKonnectApplicationAuthPluginTokenEndpointAuthMethod)
-					if !openidConnectItem.Config.TokenEndpointAuthMethod.IsUnknown() && !openidConnectItem.Config.TokenEndpointAuthMethod.IsNull() {
-						*tokenEndpointAuthMethod = shared.CreateKonnectApplicationAuthPluginTokenEndpointAuthMethod(openidConnectItem.Config.TokenEndpointAuthMethod.ValueString())
-					} else {
-						tokenEndpointAuthMethod = nil
-					}
-					tokenExchangeEndpoint := new(string)
-					if !openidConnectItem.Config.TokenExchangeEndpoint.IsUnknown() && !openidConnectItem.Config.TokenExchangeEndpoint.IsNull() {
-						*tokenExchangeEndpoint = openidConnectItem.Config.TokenExchangeEndpoint.ValueString()
-					} else {
-						tokenExchangeEndpoint = nil
-					}
-					var tokenHeadersClient []string = []string{}
-					for _, tokenHeadersClientItem := range openidConnectItem.Config.TokenHeadersClient {
-						tokenHeadersClient = append(tokenHeadersClient, tokenHeadersClientItem.ValueString())
-					}
-					var tokenHeadersGrants []shared.CreateKonnectApplicationAuthPluginTokenHeadersGrants = []shared.CreateKonnectApplicationAuthPluginTokenHeadersGrants{}
-					for _, tokenHeadersGrantsItem := range openidConnectItem.Config.TokenHeadersGrants {
-						tokenHeadersGrants = append(tokenHeadersGrants, shared.CreateKonnectApplicationAuthPluginTokenHeadersGrants(tokenHeadersGrantsItem.ValueString()))
-					}
-					var tokenHeadersNames []string = []string{}
-					for _, tokenHeadersNamesItem := range openidConnectItem.Config.TokenHeadersNames {
-						tokenHeadersNames = append(tokenHeadersNames, tokenHeadersNamesItem.ValueString())
-					}
-					tokenHeadersPrefix := new(string)
-					if !openidConnectItem.Config.TokenHeadersPrefix.IsUnknown() && !openidConnectItem.Config.TokenHeadersPrefix.IsNull() {
-						*tokenHeadersPrefix = openidConnectItem.Config.TokenHeadersPrefix.ValueString()
-					} else {
-						tokenHeadersPrefix = nil
-					}
-					var tokenHeadersReplay []string = []string{}
-					for _, tokenHeadersReplayItem := range openidConnectItem.Config.TokenHeadersReplay {
-						tokenHeadersReplay = append(tokenHeadersReplay, tokenHeadersReplayItem.ValueString())
-					}
-					var tokenHeadersValues []string = []string{}
-					for _, tokenHeadersValuesItem := range openidConnectItem.Config.TokenHeadersValues {
-						tokenHeadersValues = append(tokenHeadersValues, tokenHeadersValuesItem.ValueString())
-					}
-					var tokenPostArgsClient []string = []string{}
-					for _, tokenPostArgsClientItem := range openidConnectItem.Config.TokenPostArgsClient {
-						tokenPostArgsClient = append(tokenPostArgsClient, tokenPostArgsClientItem.ValueString())
-					}
-					var tokenPostArgsNames []string = []string{}
-					for _, tokenPostArgsNamesItem := range openidConnectItem.Config.TokenPostArgsNames {
-						tokenPostArgsNames = append(tokenPostArgsNames, tokenPostArgsNamesItem.ValueString())
-					}
-					var tokenPostArgsValues []string = []string{}
-					for _, tokenPostArgsValuesItem := range openidConnectItem.Config.TokenPostArgsValues {
-						tokenPostArgsValues = append(tokenPostArgsValues, tokenPostArgsValuesItem.ValueString())
-					}
-					unauthorizedDestroySession := new(bool)
-					if !openidConnectItem.Config.UnauthorizedDestroySession.IsUnknown() && !openidConnectItem.Config.UnauthorizedDestroySession.IsNull() {
-						*unauthorizedDestroySession = openidConnectItem.Config.UnauthorizedDestroySession.ValueBool()
-					} else {
-						unauthorizedDestroySession = nil
-					}
-					unauthorizedErrorMessage := new(string)
-					if !openidConnectItem.Config.UnauthorizedErrorMessage.IsUnknown() && !openidConnectItem.Config.UnauthorizedErrorMessage.IsNull() {
-						*unauthorizedErrorMessage = openidConnectItem.Config.UnauthorizedErrorMessage.ValueString()
-					} else {
-						unauthorizedErrorMessage = nil
-					}
-					var unauthorizedRedirectURI []string = []string{}
-					for _, unauthorizedRedirectURIItem := range openidConnectItem.Config.UnauthorizedRedirectURI {
-						unauthorizedRedirectURI = append(unauthorizedRedirectURI, unauthorizedRedirectURIItem.ValueString())
-					}
-					var unexpectedRedirectURI []string = []string{}
-					for _, unexpectedRedirectURIItem := range openidConnectItem.Config.UnexpectedRedirectURI {
-						unexpectedRedirectURI = append(unexpectedRedirectURI, unexpectedRedirectURIItem.ValueString())
-					}
-					upstreamAccessTokenHeader := new(string)
-					if !openidConnectItem.Config.UpstreamAccessTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamAccessTokenHeader.IsNull() {
-						*upstreamAccessTokenHeader = openidConnectItem.Config.UpstreamAccessTokenHeader.ValueString()
-					} else {
-						upstreamAccessTokenHeader = nil
-					}
-					upstreamAccessTokenJwkHeader := new(string)
-					if !openidConnectItem.Config.UpstreamAccessTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.UpstreamAccessTokenJwkHeader.IsNull() {
-						*upstreamAccessTokenJwkHeader = openidConnectItem.Config.UpstreamAccessTokenJwkHeader.ValueString()
-					} else {
-						upstreamAccessTokenJwkHeader = nil
-					}
-					var upstreamHeadersClaims []string = []string{}
-					for _, upstreamHeadersClaimsItem := range openidConnectItem.Config.UpstreamHeadersClaims {
-						upstreamHeadersClaims = append(upstreamHeadersClaims, upstreamHeadersClaimsItem.ValueString())
-					}
-					var upstreamHeadersNames []string = []string{}
-					for _, upstreamHeadersNamesItem := range openidConnectItem.Config.UpstreamHeadersNames {
-						upstreamHeadersNames = append(upstreamHeadersNames, upstreamHeadersNamesItem.ValueString())
-					}
-					upstreamIDTokenHeader := new(string)
-					if !openidConnectItem.Config.UpstreamIDTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIDTokenHeader.IsNull() {
-						*upstreamIDTokenHeader = openidConnectItem.Config.UpstreamIDTokenHeader.ValueString()
-					} else {
-						upstreamIDTokenHeader = nil
-					}
-					upstreamIDTokenJwkHeader := new(string)
-					if !openidConnectItem.Config.UpstreamIDTokenJwkHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIDTokenJwkHeader.IsNull() {
-						*upstreamIDTokenJwkHeader = openidConnectItem.Config.UpstreamIDTokenJwkHeader.ValueString()
-					} else {
-						upstreamIDTokenJwkHeader = nil
-					}
-					upstreamIntrospectionHeader := new(string)
-					if !openidConnectItem.Config.UpstreamIntrospectionHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIntrospectionHeader.IsNull() {
-						*upstreamIntrospectionHeader = openidConnectItem.Config.UpstreamIntrospectionHeader.ValueString()
-					} else {
-						upstreamIntrospectionHeader = nil
-					}
-					upstreamIntrospectionJwtHeader := new(string)
-					if !openidConnectItem.Config.UpstreamIntrospectionJwtHeader.IsUnknown() && !openidConnectItem.Config.UpstreamIntrospectionJwtHeader.IsNull() {
-						*upstreamIntrospectionJwtHeader = openidConnectItem.Config.UpstreamIntrospectionJwtHeader.ValueString()
-					} else {
-						upstreamIntrospectionJwtHeader = nil
-					}
-					upstreamRefreshTokenHeader := new(string)
-					if !openidConnectItem.Config.UpstreamRefreshTokenHeader.IsUnknown() && !openidConnectItem.Config.UpstreamRefreshTokenHeader.IsNull() {
-						*upstreamRefreshTokenHeader = openidConnectItem.Config.UpstreamRefreshTokenHeader.ValueString()
-					} else {
-						upstreamRefreshTokenHeader = nil
-					}
-					upstreamSessionIDHeader := new(string)
-					if !openidConnectItem.Config.UpstreamSessionIDHeader.IsUnknown() && !openidConnectItem.Config.UpstreamSessionIDHeader.IsNull() {
-						*upstreamSessionIDHeader = openidConnectItem.Config.UpstreamSessionIDHeader.ValueString()
-					} else {
-						upstreamSessionIDHeader = nil
-					}
-					upstreamUserInfoHeader := new(string)
-					if !openidConnectItem.Config.UpstreamUserInfoHeader.IsUnknown() && !openidConnectItem.Config.UpstreamUserInfoHeader.IsNull() {
-						*upstreamUserInfoHeader = openidConnectItem.Config.UpstreamUserInfoHeader.ValueString()
-					} else {
-						upstreamUserInfoHeader = nil
-					}
-					upstreamUserInfoJwtHeader := new(string)
-					if !openidConnectItem.Config.UpstreamUserInfoJwtHeader.IsUnknown() && !openidConnectItem.Config.UpstreamUserInfoJwtHeader.IsNull() {
-						*upstreamUserInfoJwtHeader = openidConnectItem.Config.UpstreamUserInfoJwtHeader.ValueString()
-					} else {
-						upstreamUserInfoJwtHeader = nil
-					}
-					userinfoAccept := new(shared.CreateKonnectApplicationAuthPluginUserinfoAccept)
-					if !openidConnectItem.Config.UserinfoAccept.IsUnknown() && !openidConnectItem.Config.UserinfoAccept.IsNull() {
-						*userinfoAccept = shared.CreateKonnectApplicationAuthPluginUserinfoAccept(openidConnectItem.Config.UserinfoAccept.ValueString())
-					} else {
-						userinfoAccept = nil
-					}
-					userinfoEndpoint := new(string)
-					if !openidConnectItem.Config.UserinfoEndpoint.IsUnknown() && !openidConnectItem.Config.UserinfoEndpoint.IsNull() {
-						*userinfoEndpoint = openidConnectItem.Config.UserinfoEndpoint.ValueString()
-					} else {
-						userinfoEndpoint = nil
-					}
-					var userinfoHeadersClient []string = []string{}
-					for _, userinfoHeadersClientItem := range openidConnectItem.Config.UserinfoHeadersClient {
-						userinfoHeadersClient = append(userinfoHeadersClient, userinfoHeadersClientItem.ValueString())
-					}
-					var userinfoHeadersNames []string = []string{}
-					for _, userinfoHeadersNamesItem := range openidConnectItem.Config.UserinfoHeadersNames {
-						userinfoHeadersNames = append(userinfoHeadersNames, userinfoHeadersNamesItem.ValueString())
-					}
-					var userinfoHeadersValues []string = []string{}
-					for _, userinfoHeadersValuesItem := range openidConnectItem.Config.UserinfoHeadersValues {
-						userinfoHeadersValues = append(userinfoHeadersValues, userinfoHeadersValuesItem.ValueString())
-					}
-					var userinfoQueryArgsClient []string = []string{}
-					for _, userinfoQueryArgsClientItem := range openidConnectItem.Config.UserinfoQueryArgsClient {
-						userinfoQueryArgsClient = append(userinfoQueryArgsClient, userinfoQueryArgsClientItem.ValueString())
-					}
-					var userinfoQueryArgsNames []string = []string{}
-					for _, userinfoQueryArgsNamesItem := range openidConnectItem.Config.UserinfoQueryArgsNames {
-						userinfoQueryArgsNames = append(userinfoQueryArgsNames, userinfoQueryArgsNamesItem.ValueString())
-					}
-					var userinfoQueryArgsValues []string = []string{}
-					for _, userinfoQueryArgsValuesItem := range openidConnectItem.Config.UserinfoQueryArgsValues {
-						userinfoQueryArgsValues = append(userinfoQueryArgsValues, userinfoQueryArgsValuesItem.ValueString())
-					}
-					usingPseudoIssuer := new(bool)
-					if !openidConnectItem.Config.UsingPseudoIssuer.IsUnknown() && !openidConnectItem.Config.UsingPseudoIssuer.IsNull() {
-						*usingPseudoIssuer = openidConnectItem.Config.UsingPseudoIssuer.ValueBool()
-					} else {
-						usingPseudoIssuer = nil
-					}
-					verifyClaims := new(bool)
-					if !openidConnectItem.Config.VerifyClaims.IsUnknown() && !openidConnectItem.Config.VerifyClaims.IsNull() {
-						*verifyClaims = openidConnectItem.Config.VerifyClaims.ValueBool()
-					} else {
-						verifyClaims = nil
-					}
-					verifyNonce := new(bool)
-					if !openidConnectItem.Config.VerifyNonce.IsUnknown() && !openidConnectItem.Config.VerifyNonce.IsNull() {
-						*verifyNonce = openidConnectItem.Config.VerifyNonce.ValueBool()
-					} else {
-						verifyNonce = nil
-					}
-					verifyParameters := new(bool)
-					if !openidConnectItem.Config.VerifyParameters.IsUnknown() && !openidConnectItem.Config.VerifyParameters.IsNull() {
-						*verifyParameters = openidConnectItem.Config.VerifyParameters.ValueBool()
-					} else {
-						verifyParameters = nil
-					}
-					verifySignature := new(bool)
-					if !openidConnectItem.Config.VerifySignature.IsUnknown() && !openidConnectItem.Config.VerifySignature.IsNull() {
-						*verifySignature = openidConnectItem.Config.VerifySignature.ValueBool()
-					} else {
-						verifySignature = nil
-					}
-					config2 = &shared.CreateKonnectApplicationAuthPluginConfigConfig{
-						Anonymous:                              anonymous,
-						Audience:                               audience,
-						AudienceClaim:                          audienceClaim,
-						AudienceRequired:                       audienceRequired,
-						AuthMethods:                            authMethods,
-						AuthenticatedGroupsClaim:               authenticatedGroupsClaim,
-						AuthorizationCookieDomain:              authorizationCookieDomain,
-						AuthorizationCookieHTTPOnly:            authorizationCookieHTTPOnly,
-						AuthorizationCookieName:                authorizationCookieName,
-						AuthorizationCookiePath:                authorizationCookiePath,
-						AuthorizationCookieSameSite:            authorizationCookieSameSite,
-						AuthorizationCookieSecure:              authorizationCookieSecure,
-						AuthorizationEndpoint:                  authorizationEndpoint,
-						AuthorizationQueryArgsClient:           authorizationQueryArgsClient,
-						AuthorizationQueryArgsNames:            authorizationQueryArgsNames,
-						AuthorizationQueryArgsValues:           authorizationQueryArgsValues,
-						AuthorizationRollingTimeout:            authorizationRollingTimeout,
-						BearerTokenCookieName:                  bearerTokenCookieName,
-						BearerTokenParamType:                   bearerTokenParamType,
-						ByUsernameIgnoreCase:                   byUsernameIgnoreCase,
-						CacheIntrospection:                     cacheIntrospection,
-						CacheTokenExchange:                     cacheTokenExchange,
-						CacheTokens:                            cacheTokens,
-						CacheTokensSalt:                        cacheTokensSalt,
-						CacheTTL:                               cacheTTL,
-						CacheTTLMax:                            cacheTTLMax,
-						CacheTTLMin:                            cacheTTLMin,
-						CacheTTLNeg:                            cacheTTLNeg,
-						CacheTTLResurrect:                      cacheTTLResurrect,
-						CacheUserInfo:                          cacheUserInfo,
-						ClaimsForbidden:                        claimsForbidden,
-						ClientAlg:                              clientAlg,
-						ClientArg:                              clientArg,
-						ClientAuth:                             clientAuth,
-						ClientCredentialsParamType:             clientCredentialsParamType,
-						ClientID:                               clientID,
-						ClientJwk:                              clientJwk,
-						ClientSecret:                           clientSecret,
-						ClusterCacheRedis:                      clusterCacheRedis,
-						ClusterCacheStrategy:                   clusterCacheStrategy,
-						ConsumerBy:                             consumerBy,
-						ConsumerClaim:                          consumerClaim,
-						ConsumerOptional:                       consumerOptional,
-						CredentialClaim:                        credentialClaim,
-						DisableSession:                         disableSession,
-						DiscoveryHeadersNames:                  discoveryHeadersNames,
-						DiscoveryHeadersValues:                 discoveryHeadersValues,
-						DisplayErrors:                          displayErrors,
-						Domains:                                domains,
-						DownstreamAccessTokenHeader:            downstreamAccessTokenHeader,
-						DownstreamAccessTokenJwkHeader:         downstreamAccessTokenJwkHeader,
-						DownstreamHeadersClaims:                downstreamHeadersClaims,
-						DownstreamHeadersNames:                 downstreamHeadersNames,
-						DownstreamIDTokenHeader:                downstreamIDTokenHeader,
-						DownstreamIDTokenJwkHeader:             downstreamIDTokenJwkHeader,
-						DownstreamIntrospectionHeader:          downstreamIntrospectionHeader,
-						DownstreamIntrospectionJwtHeader:       downstreamIntrospectionJwtHeader,
-						DownstreamRefreshTokenHeader:           downstreamRefreshTokenHeader,
-						DownstreamSessionIDHeader:              downstreamSessionIDHeader,
-						DownstreamUserInfoHeader:               downstreamUserInfoHeader,
-						DownstreamUserInfoJwtHeader:            downstreamUserInfoJwtHeader,
-						DpopProofLifetime:                      dpopProofLifetime,
-						DpopUseNonce:                           dpopUseNonce,
-						EnableHsSignatures:                     enableHsSignatures,
-						EndSessionEndpoint:                     endSessionEndpoint,
-						ExposeErrorCode:                        exposeErrorCode,
-						ExtraJwksUris:                          extraJwksUris,
-						ForbiddenDestroySession:                forbiddenDestroySession,
-						ForbiddenErrorMessage:                  forbiddenErrorMessage,
-						ForbiddenRedirectURI:                   forbiddenRedirectURI,
-						GroupsClaim:                            groupsClaim,
-						GroupsRequired:                         groupsRequired,
-						HideCredentials:                        hideCredentials,
-						HTTPProxy:                              httpProxy,
-						HTTPProxyAuthorization:                 httpProxyAuthorization,
-						HTTPVersion:                            httpVersion,
-						HTTPSProxy:                             httpsProxy,
-						HTTPSProxyAuthorization:                httpsProxyAuthorization,
-						IDTokenParamName:                       idTokenParamName,
-						IDTokenParamType:                       idTokenParamType,
-						IgnoreSignature:                        ignoreSignature,
-						IntrospectJwtTokens:                    introspectJwtTokens,
-						IntrospectionAccept:                    introspectionAccept,
-						IntrospectionCheckActive:               introspectionCheckActive,
-						IntrospectionEndpoint:                  introspectionEndpoint,
-						IntrospectionEndpointAuthMethod:        introspectionEndpointAuthMethod,
-						IntrospectionHeadersClient:             introspectionHeadersClient,
-						IntrospectionHeadersNames:              introspectionHeadersNames,
-						IntrospectionHeadersValues:             introspectionHeadersValues,
-						IntrospectionHint:                      introspectionHint,
-						IntrospectionPostArgsClient:            introspectionPostArgsClient,
-						IntrospectionPostArgsNames:             introspectionPostArgsNames,
-						IntrospectionPostArgsValues:            introspectionPostArgsValues,
-						IntrospectionTokenParamName:            introspectionTokenParamName,
-						Issuer:                                 issuer1,
-						IssuersAllowed:                         issuersAllowed,
-						JwtSessionClaim:                        jwtSessionClaim,
-						JwtSessionCookie:                       jwtSessionCookie,
-						Keepalive:                              keepalive,
-						Leeway:                                 leeway,
-						LoginAction:                            loginAction,
-						LoginMethods:                           loginMethods,
-						LoginRedirectMode:                      loginRedirectMode,
-						LoginRedirectURI:                       loginRedirectURI,
-						LoginTokens:                            loginTokens,
-						LogoutMethods:                          logoutMethods,
-						LogoutPostArg:                          logoutPostArg,
-						LogoutQueryArg:                         logoutQueryArg,
-						LogoutRedirectURI:                      logoutRedirectURI,
-						LogoutRevoke:                           logoutRevoke,
-						LogoutRevokeAccessToken:                logoutRevokeAccessToken,
-						LogoutRevokeRefreshToken:               logoutRevokeRefreshToken,
-						LogoutURISuffix:                        logoutURISuffix,
-						MaxAge:                                 maxAge,
-						MtlsIntrospectionEndpoint:              mtlsIntrospectionEndpoint,
-						MtlsRevocationEndpoint:                 mtlsRevocationEndpoint,
-						MtlsTokenEndpoint:                      mtlsTokenEndpoint,
-						NoProxy:                                noProxy,
-						PasswordParamType:                      passwordParamType,
-						PreserveQueryArgs:                      preserveQueryArgs,
-						ProofOfPossessionAuthMethodsValidation: proofOfPossessionAuthMethodsValidation,
-						ProofOfPossessionDpop:                  proofOfPossessionDpop,
-						ProofOfPossessionMtls:                  proofOfPossessionMtls,
-						PushedAuthorizationRequestEndpoint:     pushedAuthorizationRequestEndpoint,
-						PushedAuthorizationRequestEndpointAuthMethod: pushedAuthorizationRequestEndpointAuthMethod,
-						RedirectURI:                        redirectURI,
-						Redis:                              redis,
-						RediscoveryLifetime:                rediscoveryLifetime,
-						RefreshTokenParamName:              refreshTokenParamName,
-						RefreshTokenParamType:              refreshTokenParamType,
-						RefreshTokens:                      refreshTokens,
-						RequireProofKeyForCodeExchange:     requireProofKeyForCodeExchange,
-						RequirePushedAuthorizationRequests: requirePushedAuthorizationRequests,
-						RequireSignedRequestObject:         requireSignedRequestObject,
-						ResolveDistributedClaims:           resolveDistributedClaims,
-						ResponseMode:                       responseMode,
-						ResponseType:                       responseType,
-						Reverify:                           reverify,
-						RevocationEndpoint:                 revocationEndpoint,
-						RevocationEndpointAuthMethod:       revocationEndpointAuthMethod,
-						RevocationTokenParamName:           revocationTokenParamName,
-						RolesClaim:                         rolesClaim,
-						RolesRequired:                      rolesRequired,
-						RunOnPreflight:                     runOnPreflight,
-						Scopes:                             scopes,
-						ScopesClaim:                        scopesClaim,
-						ScopesRequired:                     scopesRequired,
-						SearchUserInfo:                     searchUserInfo,
-						SessionAbsoluteTimeout:             sessionAbsoluteTimeout,
-						SessionAudience:                    sessionAudience,
-						SessionCookieDomain:                sessionCookieDomain,
-						SessionCookieHTTPOnly:              sessionCookieHTTPOnly,
-						SessionCookieName:                  sessionCookieName,
-						SessionCookiePath:                  sessionCookiePath,
-						SessionCookieSameSite:              sessionCookieSameSite,
-						SessionCookieSecure:                sessionCookieSecure,
-						SessionEnforceSameSubject:          sessionEnforceSameSubject,
-						SessionHashStorageKey:              sessionHashStorageKey,
-						SessionHashSubject:                 sessionHashSubject,
-						SessionIdlingTimeout:               sessionIdlingTimeout,
-						SessionMemcachedHost:               sessionMemcachedHost,
-						SessionMemcachedPort:               sessionMemcachedPort,
-						SessionMemcachedPrefix:             sessionMemcachedPrefix,
-						SessionMemcachedSocket:             sessionMemcachedSocket,
-						SessionRemember:                    sessionRemember,
-						SessionRememberAbsoluteTimeout:     sessionRememberAbsoluteTimeout,
-						SessionRememberCookieName:          sessionRememberCookieName,
-						SessionRememberRollingTimeout:      sessionRememberRollingTimeout,
-						SessionRequestHeaders:              sessionRequestHeaders,
-						SessionResponseHeaders:             sessionResponseHeaders,
-						SessionRollingTimeout:              sessionRollingTimeout,
-						SessionSecret:                      sessionSecret,
-						SessionStorage:                     sessionStorage,
-						SessionStoreMetadata:               sessionStoreMetadata,
-						SslVerify:                          sslVerify2,
-						Timeout:                            timeout,
-						TLSClientAuthCertID:                tlsClientAuthCertID,
-						TLSClientAuthSslVerify:             tlsClientAuthSslVerify,
-						TokenCacheKeyIncludeScope:          tokenCacheKeyIncludeScope,
-						TokenEndpoint:                      tokenEndpoint,
-						TokenEndpointAuthMethod:            tokenEndpointAuthMethod,
-						TokenExchangeEndpoint:              tokenExchangeEndpoint,
-						TokenHeadersClient:                 tokenHeadersClient,
-						TokenHeadersGrants:                 tokenHeadersGrants,
-						TokenHeadersNames:                  tokenHeadersNames,
-						TokenHeadersPrefix:                 tokenHeadersPrefix,
-						TokenHeadersReplay:                 tokenHeadersReplay,
-						TokenHeadersValues:                 tokenHeadersValues,
-						TokenPostArgsClient:                tokenPostArgsClient,
-						TokenPostArgsNames:                 tokenPostArgsNames,
-						TokenPostArgsValues:                tokenPostArgsValues,
-						UnauthorizedDestroySession:         unauthorizedDestroySession,
-						UnauthorizedErrorMessage:           unauthorizedErrorMessage,
-						UnauthorizedRedirectURI:            unauthorizedRedirectURI,
-						UnexpectedRedirectURI:              unexpectedRedirectURI,
-						UpstreamAccessTokenHeader:          upstreamAccessTokenHeader,
-						UpstreamAccessTokenJwkHeader:       upstreamAccessTokenJwkHeader,
-						UpstreamHeadersClaims:              upstreamHeadersClaims,
-						UpstreamHeadersNames:               upstreamHeadersNames,
-						UpstreamIDTokenHeader:              upstreamIDTokenHeader,
-						UpstreamIDTokenJwkHeader:           upstreamIDTokenJwkHeader,
-						UpstreamIntrospectionHeader:        upstreamIntrospectionHeader,
-						UpstreamIntrospectionJwtHeader:     upstreamIntrospectionJwtHeader,
-						UpstreamRefreshTokenHeader:         upstreamRefreshTokenHeader,
-						UpstreamSessionIDHeader:            upstreamSessionIDHeader,
-						UpstreamUserInfoHeader:             upstreamUserInfoHeader,
-						UpstreamUserInfoJwtHeader:          upstreamUserInfoJwtHeader,
-						UserinfoAccept:                     userinfoAccept,
-						UserinfoEndpoint:                   userinfoEndpoint,
-						UserinfoHeadersClient:              userinfoHeadersClient,
-						UserinfoHeadersNames:               userinfoHeadersNames,
-						UserinfoHeadersValues:              userinfoHeadersValues,
-						UserinfoQueryArgsClient:            userinfoQueryArgsClient,
-						UserinfoQueryArgsNames:             userinfoQueryArgsNames,
-						UserinfoQueryArgsValues:            userinfoQueryArgsValues,
-						UsingPseudoIssuer:                  usingPseudoIssuer,
-						VerifyClaims:                       verifyClaims,
-						VerifyNonce:                        verifyNonce,
-						VerifyParameters:                   verifyParameters,
-						VerifySignature:                    verifySignature,
-					}
-				}
-				var strategyId1 string
-				strategyId1 = openidConnectItem.StrategyID.ValueString()
-
-				openidConnect = append(openidConnect, shared.CreateKonnectApplicationAuthPluginOpenidConnect{
-					Config:     config2,
-					StrategyID: strategyId1,
-				})
-			}
-			v2Strategies = &shared.CreateKonnectApplicationAuthPluginV2Strategies{
-				KeyAuth:       keyAuth,
-				OpenidConnect: openidConnect,
-			}
-		}
-		config = &shared.CreateKonnectApplicationAuthPluginConfig{
-			AuthType:     authType,
-			KeyNames:     keyNames,
-			Scope:        scope,
-			V2Strategies: v2Strategies,
+		consumerGroup = &shared.KonnectApplicationAuthPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -1997,884 +2018,862 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedCreateKonnect
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateKonnectApplicationAuthPluginOrdering
+	var ordering *shared.KonnectApplicationAuthPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateKonnectApplicationAuthPluginAfter
+		var after *shared.KonnectApplicationAuthPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateKonnectApplicationAuthPluginAfter{
+			after = &shared.KonnectApplicationAuthPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateKonnectApplicationAuthPluginBefore
+		var before *shared.KonnectApplicationAuthPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateKonnectApplicationAuthPluginBefore{
+			before = &shared.KonnectApplicationAuthPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateKonnectApplicationAuthPluginOrdering{
+		ordering = &shared.KonnectApplicationAuthPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateKonnectApplicationAuthPluginProtocols = []shared.CreateKonnectApplicationAuthPluginProtocols{}
+	var protocols []shared.KonnectApplicationAuthPluginProtocols = []shared.KonnectApplicationAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateKonnectApplicationAuthPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.KonnectApplicationAuthPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.KonnectApplicationAuthPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.KonnectApplicationAuthPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.KonnectApplicationAuthPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.KonnectApplicationAuthPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateKonnectApplicationAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateKonnectApplicationAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateKonnectApplicationAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateKonnectApplicationAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateKonnectApplicationAuthPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateKonnectApplicationAuthPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateKonnectApplicationAuthPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateKonnectApplicationAuthPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateKonnectApplicationAuthPlugin{
+	out := shared.KonnectApplicationAuthPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonnectApplicationAuthPlugin(resp *shared.KonnectApplicationAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.AuthType != nil {
+			r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
 		} else {
-			r.Config = &tfTypes.CreateKonnectApplicationAuthPluginConfig{}
-			if resp.Config.AuthType != nil {
-				r.Config.AuthType = types.StringValue(string(*resp.Config.AuthType))
-			} else {
-				r.Config.AuthType = types.StringNull()
+			r.Config.AuthType = types.StringNull()
+		}
+		r.Config.KeyNames = []types.String{}
+		for _, v := range resp.Config.KeyNames {
+			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+		}
+		r.Config.Scope = types.StringPointerValue(resp.Config.Scope)
+		if resp.Config.V2Strategies == nil {
+			r.Config.V2Strategies = nil
+		} else {
+			r.Config.V2Strategies = &tfTypes.V2Strategies{}
+			r.Config.V2Strategies.KeyAuth = []tfTypes.KonnectApplicationAuthPluginKeyAuth{}
+			if len(r.Config.V2Strategies.KeyAuth) > len(resp.Config.V2Strategies.KeyAuth) {
+				r.Config.V2Strategies.KeyAuth = r.Config.V2Strategies.KeyAuth[:len(resp.Config.V2Strategies.KeyAuth)]
 			}
-			r.Config.KeyNames = []types.String{}
-			for _, v := range resp.Config.KeyNames {
-				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+			for keyAuthCount, keyAuthItem := range resp.Config.V2Strategies.KeyAuth {
+				var keyAuth1 tfTypes.KonnectApplicationAuthPluginKeyAuth
+				keyAuth1.Config.KeyNames = []types.String{}
+				for _, v := range keyAuthItem.Config.KeyNames {
+					keyAuth1.Config.KeyNames = append(keyAuth1.Config.KeyNames, types.StringValue(v))
+				}
+				keyAuth1.StrategyID = types.StringValue(keyAuthItem.StrategyID)
+				if keyAuthCount+1 > len(r.Config.V2Strategies.KeyAuth) {
+					r.Config.V2Strategies.KeyAuth = append(r.Config.V2Strategies.KeyAuth, keyAuth1)
+				} else {
+					r.Config.V2Strategies.KeyAuth[keyAuthCount].Config = keyAuth1.Config
+					r.Config.V2Strategies.KeyAuth[keyAuthCount].StrategyID = keyAuth1.StrategyID
+				}
 			}
-			r.Config.Scope = types.StringPointerValue(resp.Config.Scope)
-			if resp.Config.V2Strategies == nil {
-				r.Config.V2Strategies = nil
-			} else {
-				r.Config.V2Strategies = &tfTypes.CreateKonnectApplicationAuthPluginV2Strategies{}
-				r.Config.V2Strategies.KeyAuth = []tfTypes.KonnectApplicationAuthPluginKeyAuth{}
-				if len(r.Config.V2Strategies.KeyAuth) > len(resp.Config.V2Strategies.KeyAuth) {
-					r.Config.V2Strategies.KeyAuth = r.Config.V2Strategies.KeyAuth[:len(resp.Config.V2Strategies.KeyAuth)]
-				}
-				for keyAuthCount, keyAuthItem := range resp.Config.V2Strategies.KeyAuth {
-					var keyAuth1 tfTypes.KonnectApplicationAuthPluginKeyAuth
-					keyAuth1.Config.KeyNames = []types.String{}
-					for _, v := range keyAuthItem.Config.KeyNames {
-						keyAuth1.Config.KeyNames = append(keyAuth1.Config.KeyNames, types.StringValue(v))
+			r.Config.V2Strategies.OpenidConnect = []tfTypes.OpenidConnect{}
+			if len(r.Config.V2Strategies.OpenidConnect) > len(resp.Config.V2Strategies.OpenidConnect) {
+				r.Config.V2Strategies.OpenidConnect = r.Config.V2Strategies.OpenidConnect[:len(resp.Config.V2Strategies.OpenidConnect)]
+			}
+			for openidConnectCount, openidConnectItem := range resp.Config.V2Strategies.OpenidConnect {
+				var openidConnect1 tfTypes.OpenidConnect
+				if openidConnectItem.Config == nil {
+					openidConnect1.Config = nil
+				} else {
+					openidConnect1.Config = &tfTypes.KonnectApplicationAuthPluginConfigConfig{}
+					openidConnect1.Config.Anonymous = types.StringPointerValue(openidConnectItem.Config.Anonymous)
+					openidConnect1.Config.Audience = []types.String{}
+					for _, v := range openidConnectItem.Config.Audience {
+						openidConnect1.Config.Audience = append(openidConnect1.Config.Audience, types.StringValue(v))
 					}
-					keyAuth1.StrategyID = types.StringValue(keyAuthItem.StrategyID)
-					if keyAuthCount+1 > len(r.Config.V2Strategies.KeyAuth) {
-						r.Config.V2Strategies.KeyAuth = append(r.Config.V2Strategies.KeyAuth, keyAuth1)
+					openidConnect1.Config.AudienceClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.AudienceClaim {
+						openidConnect1.Config.AudienceClaim = append(openidConnect1.Config.AudienceClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.AudienceRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.AudienceRequired {
+						openidConnect1.Config.AudienceRequired = append(openidConnect1.Config.AudienceRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthMethods {
+						openidConnect1.Config.AuthMethods = append(openidConnect1.Config.AuthMethods, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.AuthenticatedGroupsClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthenticatedGroupsClaim {
+						openidConnect1.Config.AuthenticatedGroupsClaim = append(openidConnect1.Config.AuthenticatedGroupsClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationCookieDomain = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieDomain)
+					openidConnect1.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieHTTPOnly)
+					openidConnect1.Config.AuthorizationCookieName = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieName)
+					openidConnect1.Config.AuthorizationCookiePath = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookiePath)
+					if openidConnectItem.Config.AuthorizationCookieSameSite != nil {
+						openidConnect1.Config.AuthorizationCookieSameSite = types.StringValue(string(*openidConnectItem.Config.AuthorizationCookieSameSite))
 					} else {
-						r.Config.V2Strategies.KeyAuth[keyAuthCount].Config = keyAuth1.Config
-						r.Config.V2Strategies.KeyAuth[keyAuthCount].StrategyID = keyAuth1.StrategyID
+						openidConnect1.Config.AuthorizationCookieSameSite = types.StringNull()
 					}
-				}
-				r.Config.V2Strategies.OpenidConnect = []tfTypes.OpenidConnect{}
-				if len(r.Config.V2Strategies.OpenidConnect) > len(resp.Config.V2Strategies.OpenidConnect) {
-					r.Config.V2Strategies.OpenidConnect = r.Config.V2Strategies.OpenidConnect[:len(resp.Config.V2Strategies.OpenidConnect)]
-				}
-				for openidConnectCount, openidConnectItem := range resp.Config.V2Strategies.OpenidConnect {
-					var openidConnect1 tfTypes.OpenidConnect
-					if openidConnectItem.Config == nil {
-						openidConnect1.Config = nil
+					openidConnect1.Config.AuthorizationCookieSecure = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieSecure)
+					openidConnect1.Config.AuthorizationEndpoint = types.StringPointerValue(openidConnectItem.Config.AuthorizationEndpoint)
+					openidConnect1.Config.AuthorizationQueryArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsClient {
+						openidConnect1.Config.AuthorizationQueryArgsClient = append(openidConnect1.Config.AuthorizationQueryArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationQueryArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsNames {
+						openidConnect1.Config.AuthorizationQueryArgsNames = append(openidConnect1.Config.AuthorizationQueryArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.AuthorizationQueryArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsValues {
+						openidConnect1.Config.AuthorizationQueryArgsValues = append(openidConnect1.Config.AuthorizationQueryArgsValues, types.StringValue(v))
+					}
+					if openidConnectItem.Config.AuthorizationRollingTimeout != nil {
+						openidConnect1.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.AuthorizationRollingTimeout)))
 					} else {
-						openidConnect1.Config = &tfTypes.CreateKonnectApplicationAuthPluginConfigConfig{}
-						openidConnect1.Config.Anonymous = types.StringPointerValue(openidConnectItem.Config.Anonymous)
-						openidConnect1.Config.Audience = []types.String{}
-						for _, v := range openidConnectItem.Config.Audience {
-							openidConnect1.Config.Audience = append(openidConnect1.Config.Audience, types.StringValue(v))
-						}
-						openidConnect1.Config.AudienceClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.AudienceClaim {
-							openidConnect1.Config.AudienceClaim = append(openidConnect1.Config.AudienceClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.AudienceRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.AudienceRequired {
-							openidConnect1.Config.AudienceRequired = append(openidConnect1.Config.AudienceRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthMethods {
-							openidConnect1.Config.AuthMethods = append(openidConnect1.Config.AuthMethods, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.AuthenticatedGroupsClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthenticatedGroupsClaim {
-							openidConnect1.Config.AuthenticatedGroupsClaim = append(openidConnect1.Config.AuthenticatedGroupsClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationCookieDomain = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieDomain)
-						openidConnect1.Config.AuthorizationCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieHTTPOnly)
-						openidConnect1.Config.AuthorizationCookieName = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookieName)
-						openidConnect1.Config.AuthorizationCookiePath = types.StringPointerValue(openidConnectItem.Config.AuthorizationCookiePath)
-						if openidConnectItem.Config.AuthorizationCookieSameSite != nil {
-							openidConnect1.Config.AuthorizationCookieSameSite = types.StringValue(string(*openidConnectItem.Config.AuthorizationCookieSameSite))
-						} else {
-							openidConnect1.Config.AuthorizationCookieSameSite = types.StringNull()
-						}
-						openidConnect1.Config.AuthorizationCookieSecure = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieSecure)
-						openidConnect1.Config.AuthorizationEndpoint = types.StringPointerValue(openidConnectItem.Config.AuthorizationEndpoint)
-						openidConnect1.Config.AuthorizationQueryArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsClient {
-							openidConnect1.Config.AuthorizationQueryArgsClient = append(openidConnect1.Config.AuthorizationQueryArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationQueryArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsNames {
-							openidConnect1.Config.AuthorizationQueryArgsNames = append(openidConnect1.Config.AuthorizationQueryArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.AuthorizationQueryArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.AuthorizationQueryArgsValues {
-							openidConnect1.Config.AuthorizationQueryArgsValues = append(openidConnect1.Config.AuthorizationQueryArgsValues, types.StringValue(v))
-						}
-						if openidConnectItem.Config.AuthorizationRollingTimeout != nil {
-							openidConnect1.Config.AuthorizationRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.AuthorizationRollingTimeout)))
-						} else {
-							openidConnect1.Config.AuthorizationRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.BearerTokenCookieName = types.StringPointerValue(openidConnectItem.Config.BearerTokenCookieName)
-						openidConnect1.Config.BearerTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.BearerTokenParamType {
-							openidConnect1.Config.BearerTokenParamType = append(openidConnect1.Config.BearerTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ByUsernameIgnoreCase = types.BoolPointerValue(openidConnectItem.Config.ByUsernameIgnoreCase)
-						openidConnect1.Config.CacheIntrospection = types.BoolPointerValue(openidConnectItem.Config.CacheIntrospection)
-						openidConnect1.Config.CacheTokenExchange = types.BoolPointerValue(openidConnectItem.Config.CacheTokenExchange)
-						openidConnect1.Config.CacheTokens = types.BoolPointerValue(openidConnectItem.Config.CacheTokens)
-						openidConnect1.Config.CacheTokensSalt = types.StringPointerValue(openidConnectItem.Config.CacheTokensSalt)
-						if openidConnectItem.Config.CacheTTL != nil {
-							openidConnect1.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTL)))
-						} else {
-							openidConnect1.Config.CacheTTL = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLMax != nil {
-							openidConnect1.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMax)))
-						} else {
-							openidConnect1.Config.CacheTTLMax = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLMin != nil {
-							openidConnect1.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMin)))
-						} else {
-							openidConnect1.Config.CacheTTLMin = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLNeg != nil {
-							openidConnect1.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLNeg)))
-						} else {
-							openidConnect1.Config.CacheTTLNeg = types.NumberNull()
-						}
-						if openidConnectItem.Config.CacheTTLResurrect != nil {
-							openidConnect1.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLResurrect)))
-						} else {
-							openidConnect1.Config.CacheTTLResurrect = types.NumberNull()
-						}
-						openidConnect1.Config.CacheUserInfo = types.BoolPointerValue(openidConnectItem.Config.CacheUserInfo)
-						openidConnect1.Config.ClaimsForbidden = []types.String{}
-						for _, v := range openidConnectItem.Config.ClaimsForbidden {
-							openidConnect1.Config.ClaimsForbidden = append(openidConnect1.Config.ClaimsForbidden, types.StringValue(v))
-						}
-						openidConnect1.Config.ClientAlg = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientAlg {
-							openidConnect1.Config.ClientAlg = append(openidConnect1.Config.ClientAlg, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientArg = types.StringPointerValue(openidConnectItem.Config.ClientArg)
-						openidConnect1.Config.ClientAuth = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientAuth {
-							openidConnect1.Config.ClientAuth = append(openidConnect1.Config.ClientAuth, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientCredentialsParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientCredentialsParamType {
-							openidConnect1.Config.ClientCredentialsParamType = append(openidConnect1.Config.ClientCredentialsParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ClientID = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientID {
-							openidConnect1.Config.ClientID = append(openidConnect1.Config.ClientID, types.StringValue(v))
-						}
-						openidConnect1.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
-						for clientJwkCount, clientJwkItem := range openidConnectItem.Config.ClientJwk {
-							var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
-							clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
-							clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
-							clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
-							clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
-							clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
-							clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
-							clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
-							clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
-							clientJwk1.KeyOps = []types.String{}
-							for _, v := range clientJwkItem.KeyOps {
-								clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
-							}
-							clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
-							clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
-							clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
-							clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
-							clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
-							clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
-							clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
-							clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
-							clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
-							clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
-							clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
-							clientJwk1.X5c = []types.String{}
-							for _, v := range clientJwkItem.X5c {
-								clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
-							}
-							clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
-							clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
-							clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
-							clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
-							if clientJwkCount+1 > len(openidConnect1.Config.ClientJwk) {
-								openidConnect1.Config.ClientJwk = append(openidConnect1.Config.ClientJwk, clientJwk1)
-							} else {
-								openidConnect1.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
-								openidConnect1.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
-								openidConnect1.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
-								openidConnect1.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
-								openidConnect1.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
-								openidConnect1.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
-								openidConnect1.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
-								openidConnect1.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
-								openidConnect1.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
-								openidConnect1.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
-								openidConnect1.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
-								openidConnect1.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
-								openidConnect1.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
-								openidConnect1.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
-								openidConnect1.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
-								openidConnect1.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
-								openidConnect1.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
-								openidConnect1.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
-								openidConnect1.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
-								openidConnect1.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
-								openidConnect1.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
-								openidConnect1.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
-							}
-						}
-						openidConnect1.Config.ClientSecret = []types.String{}
-						for _, v := range openidConnectItem.Config.ClientSecret {
-							openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
-						}
-						openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
-						openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
-						for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-							var clusterNodes1 tfTypes.ClusterNodes
-							clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-							clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-							if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes = append(openidConnect1.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
-							} else {
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-								openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-							}
-						}
-						openidConnect1.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout)
-						openidConnect1.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied)
-						openidConnect1.Config.ClusterCacheRedis.Database = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Database)
-						openidConnect1.Config.ClusterCacheRedis.Host = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Host)
-						openidConnect1.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog)
-						openidConnect1.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize)
-						openidConnect1.Config.ClusterCacheRedis.Password = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Password)
-						openidConnect1.Config.ClusterCacheRedis.Port = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Port)
-						openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
-						openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
-						openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
-						openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
-						for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-							var sentinelNodes1 tfTypes.SentinelNodes
-							sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-							sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-							if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes = append(openidConnect1.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
-							} else {
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-								openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-							}
-						}
-						openidConnect1.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelPassword)
-						if openidConnectItem.Config.ClusterCacheRedis.SentinelRole != nil {
-							openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.ClusterCacheRedis.SentinelRole))
-						} else {
-							openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
-						}
-						openidConnect1.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelUsername)
-						openidConnect1.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.ServerName)
-						openidConnect1.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.Ssl)
-						openidConnect1.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.SslVerify)
-						openidConnect1.Config.ClusterCacheRedis.Username = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Username)
-						if openidConnectItem.Config.ClusterCacheStrategy != nil {
-							openidConnect1.Config.ClusterCacheStrategy = types.StringValue(string(*openidConnectItem.Config.ClusterCacheStrategy))
-						} else {
-							openidConnect1.Config.ClusterCacheStrategy = types.StringNull()
-						}
-						openidConnect1.Config.ConsumerBy = []types.String{}
-						for _, v := range openidConnectItem.Config.ConsumerBy {
-							openidConnect1.Config.ConsumerBy = append(openidConnect1.Config.ConsumerBy, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.ConsumerClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.ConsumerClaim {
-							openidConnect1.Config.ConsumerClaim = append(openidConnect1.Config.ConsumerClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.ConsumerOptional = types.BoolPointerValue(openidConnectItem.Config.ConsumerOptional)
-						openidConnect1.Config.CredentialClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.CredentialClaim {
-							openidConnect1.Config.CredentialClaim = append(openidConnect1.Config.CredentialClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.DisableSession = []types.String{}
-						for _, v := range openidConnectItem.Config.DisableSession {
-							openidConnect1.Config.DisableSession = append(openidConnect1.Config.DisableSession, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.DiscoveryHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.DiscoveryHeadersNames {
-							openidConnect1.Config.DiscoveryHeadersNames = append(openidConnect1.Config.DiscoveryHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.DiscoveryHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.DiscoveryHeadersValues {
-							openidConnect1.Config.DiscoveryHeadersValues = append(openidConnect1.Config.DiscoveryHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.DisplayErrors = types.BoolPointerValue(openidConnectItem.Config.DisplayErrors)
-						openidConnect1.Config.Domains = []types.String{}
-						for _, v := range openidConnectItem.Config.Domains {
-							openidConnect1.Config.Domains = append(openidConnect1.Config.Domains, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenHeader)
-						openidConnect1.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenJwkHeader)
-						openidConnect1.Config.DownstreamHeadersClaims = []types.String{}
-						for _, v := range openidConnectItem.Config.DownstreamHeadersClaims {
-							openidConnect1.Config.DownstreamHeadersClaims = append(openidConnect1.Config.DownstreamHeadersClaims, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.DownstreamHeadersNames {
-							openidConnect1.Config.DownstreamHeadersNames = append(openidConnect1.Config.DownstreamHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.DownstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenHeader)
-						openidConnect1.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenJwkHeader)
-						openidConnect1.Config.DownstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionHeader)
-						openidConnect1.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionJwtHeader)
-						openidConnect1.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamRefreshTokenHeader)
-						openidConnect1.Config.DownstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamSessionIDHeader)
-						openidConnect1.Config.DownstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoHeader)
-						openidConnect1.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoJwtHeader)
-						if openidConnectItem.Config.DpopProofLifetime != nil {
-							openidConnect1.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.DpopProofLifetime)))
-						} else {
-							openidConnect1.Config.DpopProofLifetime = types.NumberNull()
-						}
-						openidConnect1.Config.DpopUseNonce = types.BoolPointerValue(openidConnectItem.Config.DpopUseNonce)
-						openidConnect1.Config.EnableHsSignatures = types.BoolPointerValue(openidConnectItem.Config.EnableHsSignatures)
-						openidConnect1.Config.EndSessionEndpoint = types.StringPointerValue(openidConnectItem.Config.EndSessionEndpoint)
-						openidConnect1.Config.ExposeErrorCode = types.BoolPointerValue(openidConnectItem.Config.ExposeErrorCode)
-						openidConnect1.Config.ExtraJwksUris = []types.String{}
-						for _, v := range openidConnectItem.Config.ExtraJwksUris {
-							openidConnect1.Config.ExtraJwksUris = append(openidConnect1.Config.ExtraJwksUris, types.StringValue(v))
-						}
-						openidConnect1.Config.ForbiddenDestroySession = types.BoolPointerValue(openidConnectItem.Config.ForbiddenDestroySession)
-						openidConnect1.Config.ForbiddenErrorMessage = types.StringPointerValue(openidConnectItem.Config.ForbiddenErrorMessage)
-						openidConnect1.Config.ForbiddenRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.ForbiddenRedirectURI {
-							openidConnect1.Config.ForbiddenRedirectURI = append(openidConnect1.Config.ForbiddenRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.GroupsClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.GroupsClaim {
-							openidConnect1.Config.GroupsClaim = append(openidConnect1.Config.GroupsClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.GroupsRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.GroupsRequired {
-							openidConnect1.Config.GroupsRequired = append(openidConnect1.Config.GroupsRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.HideCredentials = types.BoolPointerValue(openidConnectItem.Config.HideCredentials)
-						openidConnect1.Config.HTTPProxy = types.StringPointerValue(openidConnectItem.Config.HTTPProxy)
-						openidConnect1.Config.HTTPProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPProxyAuthorization)
-						if openidConnectItem.Config.HTTPVersion != nil {
-							openidConnect1.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.HTTPVersion)))
-						} else {
-							openidConnect1.Config.HTTPVersion = types.NumberNull()
-						}
-						openidConnect1.Config.HTTPSProxy = types.StringPointerValue(openidConnectItem.Config.HTTPSProxy)
-						openidConnect1.Config.HTTPSProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPSProxyAuthorization)
-						openidConnect1.Config.IDTokenParamName = types.StringPointerValue(openidConnectItem.Config.IDTokenParamName)
-						openidConnect1.Config.IDTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.IDTokenParamType {
-							openidConnect1.Config.IDTokenParamType = append(openidConnect1.Config.IDTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.IgnoreSignature = []types.String{}
-						for _, v := range openidConnectItem.Config.IgnoreSignature {
-							openidConnect1.Config.IgnoreSignature = append(openidConnect1.Config.IgnoreSignature, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.IntrospectJwtTokens = types.BoolPointerValue(openidConnectItem.Config.IntrospectJwtTokens)
-						if openidConnectItem.Config.IntrospectionAccept != nil {
-							openidConnect1.Config.IntrospectionAccept = types.StringValue(string(*openidConnectItem.Config.IntrospectionAccept))
-						} else {
-							openidConnect1.Config.IntrospectionAccept = types.StringNull()
-						}
-						openidConnect1.Config.IntrospectionCheckActive = types.BoolPointerValue(openidConnectItem.Config.IntrospectionCheckActive)
-						openidConnect1.Config.IntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.IntrospectionEndpoint)
-						if openidConnectItem.Config.IntrospectionEndpointAuthMethod != nil {
-							openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.IntrospectionEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.IntrospectionHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersClient {
-							openidConnect1.Config.IntrospectionHeadersClient = append(openidConnect1.Config.IntrospectionHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersNames {
-							openidConnect1.Config.IntrospectionHeadersNames = append(openidConnect1.Config.IntrospectionHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionHeadersValues {
-							openidConnect1.Config.IntrospectionHeadersValues = append(openidConnect1.Config.IntrospectionHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionHint = types.StringPointerValue(openidConnectItem.Config.IntrospectionHint)
-						openidConnect1.Config.IntrospectionPostArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
-							openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
-							openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionPostArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.IntrospectionPostArgsValues {
-							openidConnect1.Config.IntrospectionPostArgsValues = append(openidConnect1.Config.IntrospectionPostArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.IntrospectionTokenParamName = types.StringPointerValue(openidConnectItem.Config.IntrospectionTokenParamName)
-						openidConnect1.Config.Issuer = types.StringValue(openidConnectItem.Config.Issuer)
-						openidConnect1.Config.IssuersAllowed = []types.String{}
-						for _, v := range openidConnectItem.Config.IssuersAllowed {
-							openidConnect1.Config.IssuersAllowed = append(openidConnect1.Config.IssuersAllowed, types.StringValue(v))
-						}
-						openidConnect1.Config.JwtSessionClaim = types.StringPointerValue(openidConnectItem.Config.JwtSessionClaim)
-						openidConnect1.Config.JwtSessionCookie = types.StringPointerValue(openidConnectItem.Config.JwtSessionCookie)
-						openidConnect1.Config.Keepalive = types.BoolPointerValue(openidConnectItem.Config.Keepalive)
-						if openidConnectItem.Config.Leeway != nil {
-							openidConnect1.Config.Leeway = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Leeway)))
-						} else {
-							openidConnect1.Config.Leeway = types.NumberNull()
-						}
-						if openidConnectItem.Config.LoginAction != nil {
-							openidConnect1.Config.LoginAction = types.StringValue(string(*openidConnectItem.Config.LoginAction))
-						} else {
-							openidConnect1.Config.LoginAction = types.StringNull()
-						}
-						openidConnect1.Config.LoginMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginMethods {
-							openidConnect1.Config.LoginMethods = append(openidConnect1.Config.LoginMethods, types.StringValue(string(v)))
-						}
-						if openidConnectItem.Config.LoginRedirectMode != nil {
-							openidConnect1.Config.LoginRedirectMode = types.StringValue(string(*openidConnectItem.Config.LoginRedirectMode))
-						} else {
-							openidConnect1.Config.LoginRedirectMode = types.StringNull()
-						}
-						openidConnect1.Config.LoginRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginRedirectURI {
-							openidConnect1.Config.LoginRedirectURI = append(openidConnect1.Config.LoginRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.LoginTokens = []types.String{}
-						for _, v := range openidConnectItem.Config.LoginTokens {
-							openidConnect1.Config.LoginTokens = append(openidConnect1.Config.LoginTokens, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.LogoutMethods = []types.String{}
-						for _, v := range openidConnectItem.Config.LogoutMethods {
-							openidConnect1.Config.LogoutMethods = append(openidConnect1.Config.LogoutMethods, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.LogoutPostArg = types.StringPointerValue(openidConnectItem.Config.LogoutPostArg)
-						openidConnect1.Config.LogoutQueryArg = types.StringPointerValue(openidConnectItem.Config.LogoutQueryArg)
-						openidConnect1.Config.LogoutRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.LogoutRedirectURI {
-							openidConnect1.Config.LogoutRedirectURI = append(openidConnect1.Config.LogoutRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.LogoutRevoke = types.BoolPointerValue(openidConnectItem.Config.LogoutRevoke)
-						openidConnect1.Config.LogoutRevokeAccessToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeAccessToken)
-						openidConnect1.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeRefreshToken)
-						openidConnect1.Config.LogoutURISuffix = types.StringPointerValue(openidConnectItem.Config.LogoutURISuffix)
-						if openidConnectItem.Config.MaxAge != nil {
-							openidConnect1.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.MaxAge)))
-						} else {
-							openidConnect1.Config.MaxAge = types.NumberNull()
-						}
-						openidConnect1.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsIntrospectionEndpoint)
-						openidConnect1.Config.MtlsRevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsRevocationEndpoint)
-						openidConnect1.Config.MtlsTokenEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsTokenEndpoint)
-						openidConnect1.Config.NoProxy = types.StringPointerValue(openidConnectItem.Config.NoProxy)
-						openidConnect1.Config.PasswordParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.PasswordParamType {
-							openidConnect1.Config.PasswordParamType = append(openidConnect1.Config.PasswordParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.PreserveQueryArgs = types.BoolPointerValue(openidConnectItem.Config.PreserveQueryArgs)
-						openidConnect1.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation)
-						if openidConnectItem.Config.ProofOfPossessionDpop != nil {
-							openidConnect1.Config.ProofOfPossessionDpop = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionDpop))
-						} else {
-							openidConnect1.Config.ProofOfPossessionDpop = types.StringNull()
-						}
-						if openidConnectItem.Config.ProofOfPossessionMtls != nil {
-							openidConnect1.Config.ProofOfPossessionMtls = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionMtls))
-						} else {
-							openidConnect1.Config.ProofOfPossessionMtls = types.StringNull()
-						}
-						openidConnect1.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(openidConnectItem.Config.PushedAuthorizationRequestEndpoint)
-						if openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
-							openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.RedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.RedirectURI {
-							openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
-						openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
-						for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-							var clusterNodes3 tfTypes.ClusterNodes
-							clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
-							clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
-							if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
-								openidConnect1.Config.Redis.ClusterNodes = append(openidConnect1.Config.Redis.ClusterNodes, clusterNodes3)
-							} else {
-								openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
-								openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
-							}
-						}
-						openidConnect1.Config.Redis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ConnectTimeout)
-						openidConnect1.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.Redis.ConnectionIsProxied)
-						openidConnect1.Config.Redis.Database = types.Int64PointerValue(openidConnectItem.Config.Redis.Database)
-						openidConnect1.Config.Redis.Host = types.StringPointerValue(openidConnectItem.Config.Redis.Host)
-						openidConnect1.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepaliveBacklog)
-						openidConnect1.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepalivePoolSize)
-						openidConnect1.Config.Redis.Password = types.StringPointerValue(openidConnectItem.Config.Redis.Password)
-						openidConnect1.Config.Redis.Port = types.Int64PointerValue(openidConnectItem.Config.Redis.Port)
-						openidConnect1.Config.Redis.Prefix = types.StringPointerValue(openidConnectItem.Config.Redis.Prefix)
-						openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
-						openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
-						openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
-						openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
-						for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-							var sentinelNodes3 tfTypes.SentinelNodes
-							sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
-							sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
-							if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
-								openidConnect1.Config.Redis.SentinelNodes = append(openidConnect1.Config.Redis.SentinelNodes, sentinelNodes3)
-							} else {
-								openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
-								openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
-							}
-						}
-						openidConnect1.Config.Redis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelPassword)
-						if openidConnectItem.Config.Redis.SentinelRole != nil {
-							openidConnect1.Config.Redis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.Redis.SentinelRole))
-						} else {
-							openidConnect1.Config.Redis.SentinelRole = types.StringNull()
-						}
-						openidConnect1.Config.Redis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelUsername)
-						openidConnect1.Config.Redis.ServerName = types.StringPointerValue(openidConnectItem.Config.Redis.ServerName)
-						openidConnect1.Config.Redis.Socket = types.StringPointerValue(openidConnectItem.Config.Redis.Socket)
-						openidConnect1.Config.Redis.Ssl = types.BoolPointerValue(openidConnectItem.Config.Redis.Ssl)
-						openidConnect1.Config.Redis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.Redis.SslVerify)
-						openidConnect1.Config.Redis.Username = types.StringPointerValue(openidConnectItem.Config.Redis.Username)
-						if openidConnectItem.Config.RediscoveryLifetime != nil {
-							openidConnect1.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.RediscoveryLifetime)))
-						} else {
-							openidConnect1.Config.RediscoveryLifetime = types.NumberNull()
-						}
-						openidConnect1.Config.RefreshTokenParamName = types.StringPointerValue(openidConnectItem.Config.RefreshTokenParamName)
-						openidConnect1.Config.RefreshTokenParamType = []types.String{}
-						for _, v := range openidConnectItem.Config.RefreshTokenParamType {
-							openidConnect1.Config.RefreshTokenParamType = append(openidConnect1.Config.RefreshTokenParamType, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.RefreshTokens = types.BoolPointerValue(openidConnectItem.Config.RefreshTokens)
-						openidConnect1.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(openidConnectItem.Config.RequireProofKeyForCodeExchange)
-						openidConnect1.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(openidConnectItem.Config.RequirePushedAuthorizationRequests)
-						openidConnect1.Config.RequireSignedRequestObject = types.BoolPointerValue(openidConnectItem.Config.RequireSignedRequestObject)
-						openidConnect1.Config.ResolveDistributedClaims = types.BoolPointerValue(openidConnectItem.Config.ResolveDistributedClaims)
-						if openidConnectItem.Config.ResponseMode != nil {
-							openidConnect1.Config.ResponseMode = types.StringValue(string(*openidConnectItem.Config.ResponseMode))
-						} else {
-							openidConnect1.Config.ResponseMode = types.StringNull()
-						}
-						openidConnect1.Config.ResponseType = []types.String{}
-						for _, v := range openidConnectItem.Config.ResponseType {
-							openidConnect1.Config.ResponseType = append(openidConnect1.Config.ResponseType, types.StringValue(v))
-						}
-						openidConnect1.Config.Reverify = types.BoolPointerValue(openidConnectItem.Config.Reverify)
-						openidConnect1.Config.RevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.RevocationEndpoint)
-						if openidConnectItem.Config.RevocationEndpointAuthMethod != nil {
-							openidConnect1.Config.RevocationEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.RevocationEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.RevocationEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.RevocationTokenParamName = types.StringPointerValue(openidConnectItem.Config.RevocationTokenParamName)
-						openidConnect1.Config.RolesClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.RolesClaim {
-							openidConnect1.Config.RolesClaim = append(openidConnect1.Config.RolesClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.RolesRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.RolesRequired {
-							openidConnect1.Config.RolesRequired = append(openidConnect1.Config.RolesRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.RunOnPreflight = types.BoolPointerValue(openidConnectItem.Config.RunOnPreflight)
-						openidConnect1.Config.Scopes = []types.String{}
-						for _, v := range openidConnectItem.Config.Scopes {
-							openidConnect1.Config.Scopes = append(openidConnect1.Config.Scopes, types.StringValue(v))
-						}
-						openidConnect1.Config.ScopesClaim = []types.String{}
-						for _, v := range openidConnectItem.Config.ScopesClaim {
-							openidConnect1.Config.ScopesClaim = append(openidConnect1.Config.ScopesClaim, types.StringValue(v))
-						}
-						openidConnect1.Config.ScopesRequired = []types.String{}
-						for _, v := range openidConnectItem.Config.ScopesRequired {
-							openidConnect1.Config.ScopesRequired = append(openidConnect1.Config.ScopesRequired, types.StringValue(v))
-						}
-						openidConnect1.Config.SearchUserInfo = types.BoolPointerValue(openidConnectItem.Config.SearchUserInfo)
-						if openidConnectItem.Config.SessionAbsoluteTimeout != nil {
-							openidConnect1.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionAbsoluteTimeout)))
-						} else {
-							openidConnect1.Config.SessionAbsoluteTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionAudience = types.StringPointerValue(openidConnectItem.Config.SessionAudience)
-						openidConnect1.Config.SessionCookieDomain = types.StringPointerValue(openidConnectItem.Config.SessionCookieDomain)
-						openidConnect1.Config.SessionCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.SessionCookieHTTPOnly)
-						openidConnect1.Config.SessionCookieName = types.StringPointerValue(openidConnectItem.Config.SessionCookieName)
-						openidConnect1.Config.SessionCookiePath = types.StringPointerValue(openidConnectItem.Config.SessionCookiePath)
-						if openidConnectItem.Config.SessionCookieSameSite != nil {
-							openidConnect1.Config.SessionCookieSameSite = types.StringValue(string(*openidConnectItem.Config.SessionCookieSameSite))
-						} else {
-							openidConnect1.Config.SessionCookieSameSite = types.StringNull()
-						}
-						openidConnect1.Config.SessionCookieSecure = types.BoolPointerValue(openidConnectItem.Config.SessionCookieSecure)
-						openidConnect1.Config.SessionEnforceSameSubject = types.BoolPointerValue(openidConnectItem.Config.SessionEnforceSameSubject)
-						openidConnect1.Config.SessionHashStorageKey = types.BoolPointerValue(openidConnectItem.Config.SessionHashStorageKey)
-						openidConnect1.Config.SessionHashSubject = types.BoolPointerValue(openidConnectItem.Config.SessionHashSubject)
-						if openidConnectItem.Config.SessionIdlingTimeout != nil {
-							openidConnect1.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionIdlingTimeout)))
-						} else {
-							openidConnect1.Config.SessionIdlingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionMemcachedHost = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedHost)
-						openidConnect1.Config.SessionMemcachedPort = types.Int64PointerValue(openidConnectItem.Config.SessionMemcachedPort)
-						openidConnect1.Config.SessionMemcachedPrefix = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedPrefix)
-						openidConnect1.Config.SessionMemcachedSocket = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedSocket)
-						openidConnect1.Config.SessionRemember = types.BoolPointerValue(openidConnectItem.Config.SessionRemember)
-						if openidConnectItem.Config.SessionRememberAbsoluteTimeout != nil {
-							openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberAbsoluteTimeout)))
-						} else {
-							openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionRememberCookieName = types.StringPointerValue(openidConnectItem.Config.SessionRememberCookieName)
-						if openidConnectItem.Config.SessionRememberRollingTimeout != nil {
-							openidConnect1.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberRollingTimeout)))
-						} else {
-							openidConnect1.Config.SessionRememberRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionRequestHeaders = []types.String{}
-						for _, v := range openidConnectItem.Config.SessionRequestHeaders {
-							openidConnect1.Config.SessionRequestHeaders = append(openidConnect1.Config.SessionRequestHeaders, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.SessionResponseHeaders = []types.String{}
-						for _, v := range openidConnectItem.Config.SessionResponseHeaders {
-							openidConnect1.Config.SessionResponseHeaders = append(openidConnect1.Config.SessionResponseHeaders, types.StringValue(string(v)))
-						}
-						if openidConnectItem.Config.SessionRollingTimeout != nil {
-							openidConnect1.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRollingTimeout)))
-						} else {
-							openidConnect1.Config.SessionRollingTimeout = types.NumberNull()
-						}
-						openidConnect1.Config.SessionSecret = types.StringPointerValue(openidConnectItem.Config.SessionSecret)
-						if openidConnectItem.Config.SessionStorage != nil {
-							openidConnect1.Config.SessionStorage = types.StringValue(string(*openidConnectItem.Config.SessionStorage))
-						} else {
-							openidConnect1.Config.SessionStorage = types.StringNull()
-						}
-						openidConnect1.Config.SessionStoreMetadata = types.BoolPointerValue(openidConnectItem.Config.SessionStoreMetadata)
-						openidConnect1.Config.SslVerify = types.BoolPointerValue(openidConnectItem.Config.SslVerify)
-						if openidConnectItem.Config.Timeout != nil {
-							openidConnect1.Config.Timeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Timeout)))
-						} else {
-							openidConnect1.Config.Timeout = types.NumberNull()
-						}
-						openidConnect1.Config.TLSClientAuthCertID = types.StringPointerValue(openidConnectItem.Config.TLSClientAuthCertID)
-						openidConnect1.Config.TLSClientAuthSslVerify = types.BoolPointerValue(openidConnectItem.Config.TLSClientAuthSslVerify)
-						openidConnect1.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(openidConnectItem.Config.TokenCacheKeyIncludeScope)
-						openidConnect1.Config.TokenEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenEndpoint)
-						if openidConnectItem.Config.TokenEndpointAuthMethod != nil {
-							openidConnect1.Config.TokenEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.TokenEndpointAuthMethod))
-						} else {
-							openidConnect1.Config.TokenEndpointAuthMethod = types.StringNull()
-						}
-						openidConnect1.Config.TokenExchangeEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenExchangeEndpoint)
-						openidConnect1.Config.TokenHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersClient {
-							openidConnect1.Config.TokenHeadersClient = append(openidConnect1.Config.TokenHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersGrants = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersGrants {
-							openidConnect1.Config.TokenHeadersGrants = append(openidConnect1.Config.TokenHeadersGrants, types.StringValue(string(v)))
-						}
-						openidConnect1.Config.TokenHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersNames {
-							openidConnect1.Config.TokenHeadersNames = append(openidConnect1.Config.TokenHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersPrefix = types.StringPointerValue(openidConnectItem.Config.TokenHeadersPrefix)
-						openidConnect1.Config.TokenHeadersReplay = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersReplay {
-							openidConnect1.Config.TokenHeadersReplay = append(openidConnect1.Config.TokenHeadersReplay, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenHeadersValues {
-							openidConnect1.Config.TokenHeadersValues = append(openidConnect1.Config.TokenHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsClient {
-							openidConnect1.Config.TokenPostArgsClient = append(openidConnect1.Config.TokenPostArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsNames {
-							openidConnect1.Config.TokenPostArgsNames = append(openidConnect1.Config.TokenPostArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.TokenPostArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.TokenPostArgsValues {
-							openidConnect1.Config.TokenPostArgsValues = append(openidConnect1.Config.TokenPostArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UnauthorizedDestroySession = types.BoolPointerValue(openidConnectItem.Config.UnauthorizedDestroySession)
-						openidConnect1.Config.UnauthorizedErrorMessage = types.StringPointerValue(openidConnectItem.Config.UnauthorizedErrorMessage)
-						openidConnect1.Config.UnauthorizedRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.UnauthorizedRedirectURI {
-							openidConnect1.Config.UnauthorizedRedirectURI = append(openidConnect1.Config.UnauthorizedRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.UnexpectedRedirectURI = []types.String{}
-						for _, v := range openidConnectItem.Config.UnexpectedRedirectURI {
-							openidConnect1.Config.UnexpectedRedirectURI = append(openidConnect1.Config.UnexpectedRedirectURI, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenHeader)
-						openidConnect1.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenJwkHeader)
-						openidConnect1.Config.UpstreamHeadersClaims = []types.String{}
-						for _, v := range openidConnectItem.Config.UpstreamHeadersClaims {
-							openidConnect1.Config.UpstreamHeadersClaims = append(openidConnect1.Config.UpstreamHeadersClaims, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UpstreamHeadersNames {
-							openidConnect1.Config.UpstreamHeadersNames = append(openidConnect1.Config.UpstreamHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UpstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenHeader)
-						openidConnect1.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenJwkHeader)
-						openidConnect1.Config.UpstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionHeader)
-						openidConnect1.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionJwtHeader)
-						openidConnect1.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamRefreshTokenHeader)
-						openidConnect1.Config.UpstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamSessionIDHeader)
-						openidConnect1.Config.UpstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoHeader)
-						openidConnect1.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoJwtHeader)
-						if openidConnectItem.Config.UserinfoAccept != nil {
-							openidConnect1.Config.UserinfoAccept = types.StringValue(string(*openidConnectItem.Config.UserinfoAccept))
-						} else {
-							openidConnect1.Config.UserinfoAccept = types.StringNull()
-						}
-						openidConnect1.Config.UserinfoEndpoint = types.StringPointerValue(openidConnectItem.Config.UserinfoEndpoint)
-						openidConnect1.Config.UserinfoHeadersClient = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersClient {
-							openidConnect1.Config.UserinfoHeadersClient = append(openidConnect1.Config.UserinfoHeadersClient, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoHeadersNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersNames {
-							openidConnect1.Config.UserinfoHeadersNames = append(openidConnect1.Config.UserinfoHeadersNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoHeadersValues = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoHeadersValues {
-							openidConnect1.Config.UserinfoHeadersValues = append(openidConnect1.Config.UserinfoHeadersValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsClient = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsClient {
-							openidConnect1.Config.UserinfoQueryArgsClient = append(openidConnect1.Config.UserinfoQueryArgsClient, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsNames = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsNames {
-							openidConnect1.Config.UserinfoQueryArgsNames = append(openidConnect1.Config.UserinfoQueryArgsNames, types.StringValue(v))
-						}
-						openidConnect1.Config.UserinfoQueryArgsValues = []types.String{}
-						for _, v := range openidConnectItem.Config.UserinfoQueryArgsValues {
-							openidConnect1.Config.UserinfoQueryArgsValues = append(openidConnect1.Config.UserinfoQueryArgsValues, types.StringValue(v))
-						}
-						openidConnect1.Config.UsingPseudoIssuer = types.BoolPointerValue(openidConnectItem.Config.UsingPseudoIssuer)
-						openidConnect1.Config.VerifyClaims = types.BoolPointerValue(openidConnectItem.Config.VerifyClaims)
-						openidConnect1.Config.VerifyNonce = types.BoolPointerValue(openidConnectItem.Config.VerifyNonce)
-						openidConnect1.Config.VerifyParameters = types.BoolPointerValue(openidConnectItem.Config.VerifyParameters)
-						openidConnect1.Config.VerifySignature = types.BoolPointerValue(openidConnectItem.Config.VerifySignature)
+						openidConnect1.Config.AuthorizationRollingTimeout = types.NumberNull()
 					}
-					openidConnect1.StrategyID = types.StringValue(openidConnectItem.StrategyID)
-					if openidConnectCount+1 > len(r.Config.V2Strategies.OpenidConnect) {
-						r.Config.V2Strategies.OpenidConnect = append(r.Config.V2Strategies.OpenidConnect, openidConnect1)
+					openidConnect1.Config.BearerTokenCookieName = types.StringPointerValue(openidConnectItem.Config.BearerTokenCookieName)
+					openidConnect1.Config.BearerTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.BearerTokenParamType {
+						openidConnect1.Config.BearerTokenParamType = append(openidConnect1.Config.BearerTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ByUsernameIgnoreCase = types.BoolPointerValue(openidConnectItem.Config.ByUsernameIgnoreCase)
+					openidConnect1.Config.CacheIntrospection = types.BoolPointerValue(openidConnectItem.Config.CacheIntrospection)
+					openidConnect1.Config.CacheTokenExchange = types.BoolPointerValue(openidConnectItem.Config.CacheTokenExchange)
+					openidConnect1.Config.CacheTokens = types.BoolPointerValue(openidConnectItem.Config.CacheTokens)
+					openidConnect1.Config.CacheTokensSalt = types.StringPointerValue(openidConnectItem.Config.CacheTokensSalt)
+					if openidConnectItem.Config.CacheTTL != nil {
+						openidConnect1.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTL)))
 					} else {
-						r.Config.V2Strategies.OpenidConnect[openidConnectCount].Config = openidConnect1.Config
-						r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
+						openidConnect1.Config.CacheTTL = types.NumberNull()
 					}
+					if openidConnectItem.Config.CacheTTLMax != nil {
+						openidConnect1.Config.CacheTTLMax = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMax)))
+					} else {
+						openidConnect1.Config.CacheTTLMax = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLMin != nil {
+						openidConnect1.Config.CacheTTLMin = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLMin)))
+					} else {
+						openidConnect1.Config.CacheTTLMin = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLNeg != nil {
+						openidConnect1.Config.CacheTTLNeg = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLNeg)))
+					} else {
+						openidConnect1.Config.CacheTTLNeg = types.NumberNull()
+					}
+					if openidConnectItem.Config.CacheTTLResurrect != nil {
+						openidConnect1.Config.CacheTTLResurrect = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.CacheTTLResurrect)))
+					} else {
+						openidConnect1.Config.CacheTTLResurrect = types.NumberNull()
+					}
+					openidConnect1.Config.CacheUserInfo = types.BoolPointerValue(openidConnectItem.Config.CacheUserInfo)
+					openidConnect1.Config.ClaimsForbidden = []types.String{}
+					for _, v := range openidConnectItem.Config.ClaimsForbidden {
+						openidConnect1.Config.ClaimsForbidden = append(openidConnect1.Config.ClaimsForbidden, types.StringValue(v))
+					}
+					openidConnect1.Config.ClientAlg = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientAlg {
+						openidConnect1.Config.ClientAlg = append(openidConnect1.Config.ClientAlg, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientArg = types.StringPointerValue(openidConnectItem.Config.ClientArg)
+					openidConnect1.Config.ClientAuth = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientAuth {
+						openidConnect1.Config.ClientAuth = append(openidConnect1.Config.ClientAuth, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientCredentialsParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientCredentialsParamType {
+						openidConnect1.Config.ClientCredentialsParamType = append(openidConnect1.Config.ClientCredentialsParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ClientID = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientID {
+						openidConnect1.Config.ClientID = append(openidConnect1.Config.ClientID, types.StringValue(v))
+					}
+					openidConnect1.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
+					for clientJwkCount, clientJwkItem := range openidConnectItem.Config.ClientJwk {
+						var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
+						clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
+						clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
+						clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
+						clientJwk1.Dp = types.StringPointerValue(clientJwkItem.Dp)
+						clientJwk1.Dq = types.StringPointerValue(clientJwkItem.Dq)
+						clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
+						clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
+						clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
+						clientJwk1.KeyOps = []types.String{}
+						for _, v := range clientJwkItem.KeyOps {
+							clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
+						}
+						clientJwk1.Kid = types.StringPointerValue(clientJwkItem.Kid)
+						clientJwk1.Kty = types.StringPointerValue(clientJwkItem.Kty)
+						clientJwk1.N = types.StringPointerValue(clientJwkItem.N)
+						clientJwk1.Oth = types.StringPointerValue(clientJwkItem.Oth)
+						clientJwk1.P = types.StringPointerValue(clientJwkItem.P)
+						clientJwk1.Q = types.StringPointerValue(clientJwkItem.Q)
+						clientJwk1.Qi = types.StringPointerValue(clientJwkItem.Qi)
+						clientJwk1.R = types.StringPointerValue(clientJwkItem.R)
+						clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
+						clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
+						clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
+						clientJwk1.X5c = []types.String{}
+						for _, v := range clientJwkItem.X5c {
+							clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
+						}
+						clientJwk1.X5t = types.StringPointerValue(clientJwkItem.X5t)
+						clientJwk1.X5tNumberS256 = types.StringPointerValue(clientJwkItem.X5tNumberS256)
+						clientJwk1.X5u = types.StringPointerValue(clientJwkItem.X5u)
+						clientJwk1.Y = types.StringPointerValue(clientJwkItem.Y)
+						if clientJwkCount+1 > len(openidConnect1.Config.ClientJwk) {
+							openidConnect1.Config.ClientJwk = append(openidConnect1.Config.ClientJwk, clientJwk1)
+						} else {
+							openidConnect1.Config.ClientJwk[clientJwkCount].Alg = clientJwk1.Alg
+							openidConnect1.Config.ClientJwk[clientJwkCount].Crv = clientJwk1.Crv
+							openidConnect1.Config.ClientJwk[clientJwkCount].D = clientJwk1.D
+							openidConnect1.Config.ClientJwk[clientJwkCount].Dp = clientJwk1.Dp
+							openidConnect1.Config.ClientJwk[clientJwkCount].Dq = clientJwk1.Dq
+							openidConnect1.Config.ClientJwk[clientJwkCount].E = clientJwk1.E
+							openidConnect1.Config.ClientJwk[clientJwkCount].Issuer = clientJwk1.Issuer
+							openidConnect1.Config.ClientJwk[clientJwkCount].K = clientJwk1.K
+							openidConnect1.Config.ClientJwk[clientJwkCount].KeyOps = clientJwk1.KeyOps
+							openidConnect1.Config.ClientJwk[clientJwkCount].Kid = clientJwk1.Kid
+							openidConnect1.Config.ClientJwk[clientJwkCount].Kty = clientJwk1.Kty
+							openidConnect1.Config.ClientJwk[clientJwkCount].N = clientJwk1.N
+							openidConnect1.Config.ClientJwk[clientJwkCount].Oth = clientJwk1.Oth
+							openidConnect1.Config.ClientJwk[clientJwkCount].P = clientJwk1.P
+							openidConnect1.Config.ClientJwk[clientJwkCount].Q = clientJwk1.Q
+							openidConnect1.Config.ClientJwk[clientJwkCount].Qi = clientJwk1.Qi
+							openidConnect1.Config.ClientJwk[clientJwkCount].R = clientJwk1.R
+							openidConnect1.Config.ClientJwk[clientJwkCount].T = clientJwk1.T
+							openidConnect1.Config.ClientJwk[clientJwkCount].Use = clientJwk1.Use
+							openidConnect1.Config.ClientJwk[clientJwkCount].X = clientJwk1.X
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5c = clientJwk1.X5c
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5t = clientJwk1.X5t
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5tNumberS256 = clientJwk1.X5tNumberS256
+							openidConnect1.Config.ClientJwk[clientJwkCount].X5u = clientJwk1.X5u
+							openidConnect1.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
+						}
+					}
+					openidConnect1.Config.ClientSecret = []types.String{}
+					for _, v := range openidConnectItem.Config.ClientSecret {
+						openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
+					}
+					openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
+					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
+						var clusterNodes1 tfTypes.ClusterNodes
+						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+						if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes = append(openidConnect1.Config.ClusterCacheRedis.ClusterNodes, clusterNodes1)
+						} else {
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+							openidConnect1.Config.ClusterCacheRedis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+						}
+					}
+					openidConnect1.Config.ClusterCacheRedis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectTimeout)
+					openidConnect1.Config.ClusterCacheRedis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.ConnectionIsProxied)
+					openidConnect1.Config.ClusterCacheRedis.Database = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Database)
+					openidConnect1.Config.ClusterCacheRedis.Host = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Host)
+					openidConnect1.Config.ClusterCacheRedis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepaliveBacklog)
+					openidConnect1.Config.ClusterCacheRedis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.KeepalivePoolSize)
+					openidConnect1.Config.ClusterCacheRedis.Password = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Password)
+					openidConnect1.Config.ClusterCacheRedis.Port = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.Port)
+					openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
+					openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
+					openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
+					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
+						var sentinelNodes1 tfTypes.SentinelNodes
+						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+						if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes = append(openidConnect1.Config.ClusterCacheRedis.SentinelNodes, sentinelNodes1)
+						} else {
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+							openidConnect1.Config.ClusterCacheRedis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+						}
+					}
+					openidConnect1.Config.ClusterCacheRedis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelPassword)
+					if openidConnectItem.Config.ClusterCacheRedis.SentinelRole != nil {
+						openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.ClusterCacheRedis.SentinelRole))
+					} else {
+						openidConnect1.Config.ClusterCacheRedis.SentinelRole = types.StringNull()
+					}
+					openidConnect1.Config.ClusterCacheRedis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelUsername)
+					openidConnect1.Config.ClusterCacheRedis.ServerName = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.ServerName)
+					openidConnect1.Config.ClusterCacheRedis.Ssl = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.Ssl)
+					openidConnect1.Config.ClusterCacheRedis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.ClusterCacheRedis.SslVerify)
+					openidConnect1.Config.ClusterCacheRedis.Username = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.Username)
+					if openidConnectItem.Config.ClusterCacheStrategy != nil {
+						openidConnect1.Config.ClusterCacheStrategy = types.StringValue(string(*openidConnectItem.Config.ClusterCacheStrategy))
+					} else {
+						openidConnect1.Config.ClusterCacheStrategy = types.StringNull()
+					}
+					openidConnect1.Config.ConsumerBy = []types.String{}
+					for _, v := range openidConnectItem.Config.ConsumerBy {
+						openidConnect1.Config.ConsumerBy = append(openidConnect1.Config.ConsumerBy, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.ConsumerClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.ConsumerClaim {
+						openidConnect1.Config.ConsumerClaim = append(openidConnect1.Config.ConsumerClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.ConsumerOptional = types.BoolPointerValue(openidConnectItem.Config.ConsumerOptional)
+					openidConnect1.Config.CredentialClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.CredentialClaim {
+						openidConnect1.Config.CredentialClaim = append(openidConnect1.Config.CredentialClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.DisableSession = []types.String{}
+					for _, v := range openidConnectItem.Config.DisableSession {
+						openidConnect1.Config.DisableSession = append(openidConnect1.Config.DisableSession, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.DiscoveryHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.DiscoveryHeadersNames {
+						openidConnect1.Config.DiscoveryHeadersNames = append(openidConnect1.Config.DiscoveryHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.DiscoveryHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.DiscoveryHeadersValues {
+						openidConnect1.Config.DiscoveryHeadersValues = append(openidConnect1.Config.DiscoveryHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.DisplayErrors = types.BoolPointerValue(openidConnectItem.Config.DisplayErrors)
+					openidConnect1.Config.Domains = []types.String{}
+					for _, v := range openidConnectItem.Config.Domains {
+						openidConnect1.Config.Domains = append(openidConnect1.Config.Domains, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenHeader)
+					openidConnect1.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenJwkHeader)
+					openidConnect1.Config.DownstreamHeadersClaims = []types.String{}
+					for _, v := range openidConnectItem.Config.DownstreamHeadersClaims {
+						openidConnect1.Config.DownstreamHeadersClaims = append(openidConnect1.Config.DownstreamHeadersClaims, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.DownstreamHeadersNames {
+						openidConnect1.Config.DownstreamHeadersNames = append(openidConnect1.Config.DownstreamHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.DownstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenHeader)
+					openidConnect1.Config.DownstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIDTokenJwkHeader)
+					openidConnect1.Config.DownstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionHeader)
+					openidConnect1.Config.DownstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamIntrospectionJwtHeader)
+					openidConnect1.Config.DownstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamRefreshTokenHeader)
+					openidConnect1.Config.DownstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamSessionIDHeader)
+					openidConnect1.Config.DownstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoHeader)
+					openidConnect1.Config.DownstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamUserInfoJwtHeader)
+					if openidConnectItem.Config.DpopProofLifetime != nil {
+						openidConnect1.Config.DpopProofLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.DpopProofLifetime)))
+					} else {
+						openidConnect1.Config.DpopProofLifetime = types.NumberNull()
+					}
+					openidConnect1.Config.DpopUseNonce = types.BoolPointerValue(openidConnectItem.Config.DpopUseNonce)
+					openidConnect1.Config.EnableHsSignatures = types.BoolPointerValue(openidConnectItem.Config.EnableHsSignatures)
+					openidConnect1.Config.EndSessionEndpoint = types.StringPointerValue(openidConnectItem.Config.EndSessionEndpoint)
+					openidConnect1.Config.ExposeErrorCode = types.BoolPointerValue(openidConnectItem.Config.ExposeErrorCode)
+					openidConnect1.Config.ExtraJwksUris = []types.String{}
+					for _, v := range openidConnectItem.Config.ExtraJwksUris {
+						openidConnect1.Config.ExtraJwksUris = append(openidConnect1.Config.ExtraJwksUris, types.StringValue(v))
+					}
+					openidConnect1.Config.ForbiddenDestroySession = types.BoolPointerValue(openidConnectItem.Config.ForbiddenDestroySession)
+					openidConnect1.Config.ForbiddenErrorMessage = types.StringPointerValue(openidConnectItem.Config.ForbiddenErrorMessage)
+					openidConnect1.Config.ForbiddenRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.ForbiddenRedirectURI {
+						openidConnect1.Config.ForbiddenRedirectURI = append(openidConnect1.Config.ForbiddenRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.GroupsClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.GroupsClaim {
+						openidConnect1.Config.GroupsClaim = append(openidConnect1.Config.GroupsClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.GroupsRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.GroupsRequired {
+						openidConnect1.Config.GroupsRequired = append(openidConnect1.Config.GroupsRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.HideCredentials = types.BoolPointerValue(openidConnectItem.Config.HideCredentials)
+					openidConnect1.Config.HTTPProxy = types.StringPointerValue(openidConnectItem.Config.HTTPProxy)
+					openidConnect1.Config.HTTPProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPProxyAuthorization)
+					if openidConnectItem.Config.HTTPVersion != nil {
+						openidConnect1.Config.HTTPVersion = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.HTTPVersion)))
+					} else {
+						openidConnect1.Config.HTTPVersion = types.NumberNull()
+					}
+					openidConnect1.Config.HTTPSProxy = types.StringPointerValue(openidConnectItem.Config.HTTPSProxy)
+					openidConnect1.Config.HTTPSProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPSProxyAuthorization)
+					openidConnect1.Config.IDTokenParamName = types.StringPointerValue(openidConnectItem.Config.IDTokenParamName)
+					openidConnect1.Config.IDTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.IDTokenParamType {
+						openidConnect1.Config.IDTokenParamType = append(openidConnect1.Config.IDTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.IgnoreSignature = []types.String{}
+					for _, v := range openidConnectItem.Config.IgnoreSignature {
+						openidConnect1.Config.IgnoreSignature = append(openidConnect1.Config.IgnoreSignature, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.IntrospectJwtTokens = types.BoolPointerValue(openidConnectItem.Config.IntrospectJwtTokens)
+					if openidConnectItem.Config.IntrospectionAccept != nil {
+						openidConnect1.Config.IntrospectionAccept = types.StringValue(string(*openidConnectItem.Config.IntrospectionAccept))
+					} else {
+						openidConnect1.Config.IntrospectionAccept = types.StringNull()
+					}
+					openidConnect1.Config.IntrospectionCheckActive = types.BoolPointerValue(openidConnectItem.Config.IntrospectionCheckActive)
+					openidConnect1.Config.IntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.IntrospectionEndpoint)
+					if openidConnectItem.Config.IntrospectionEndpointAuthMethod != nil {
+						openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.IntrospectionEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.IntrospectionHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersClient {
+						openidConnect1.Config.IntrospectionHeadersClient = append(openidConnect1.Config.IntrospectionHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersNames {
+						openidConnect1.Config.IntrospectionHeadersNames = append(openidConnect1.Config.IntrospectionHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionHeadersValues {
+						openidConnect1.Config.IntrospectionHeadersValues = append(openidConnect1.Config.IntrospectionHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionHint = types.StringPointerValue(openidConnectItem.Config.IntrospectionHint)
+					openidConnect1.Config.IntrospectionPostArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
+						openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
+						openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionPostArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsValues {
+						openidConnect1.Config.IntrospectionPostArgsValues = append(openidConnect1.Config.IntrospectionPostArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionTokenParamName = types.StringPointerValue(openidConnectItem.Config.IntrospectionTokenParamName)
+					openidConnect1.Config.Issuer = types.StringValue(openidConnectItem.Config.Issuer)
+					openidConnect1.Config.IssuersAllowed = []types.String{}
+					for _, v := range openidConnectItem.Config.IssuersAllowed {
+						openidConnect1.Config.IssuersAllowed = append(openidConnect1.Config.IssuersAllowed, types.StringValue(v))
+					}
+					openidConnect1.Config.JwtSessionClaim = types.StringPointerValue(openidConnectItem.Config.JwtSessionClaim)
+					openidConnect1.Config.JwtSessionCookie = types.StringPointerValue(openidConnectItem.Config.JwtSessionCookie)
+					openidConnect1.Config.Keepalive = types.BoolPointerValue(openidConnectItem.Config.Keepalive)
+					if openidConnectItem.Config.Leeway != nil {
+						openidConnect1.Config.Leeway = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Leeway)))
+					} else {
+						openidConnect1.Config.Leeway = types.NumberNull()
+					}
+					if openidConnectItem.Config.LoginAction != nil {
+						openidConnect1.Config.LoginAction = types.StringValue(string(*openidConnectItem.Config.LoginAction))
+					} else {
+						openidConnect1.Config.LoginAction = types.StringNull()
+					}
+					openidConnect1.Config.LoginMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginMethods {
+						openidConnect1.Config.LoginMethods = append(openidConnect1.Config.LoginMethods, types.StringValue(string(v)))
+					}
+					if openidConnectItem.Config.LoginRedirectMode != nil {
+						openidConnect1.Config.LoginRedirectMode = types.StringValue(string(*openidConnectItem.Config.LoginRedirectMode))
+					} else {
+						openidConnect1.Config.LoginRedirectMode = types.StringNull()
+					}
+					openidConnect1.Config.LoginRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginRedirectURI {
+						openidConnect1.Config.LoginRedirectURI = append(openidConnect1.Config.LoginRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.LoginTokens = []types.String{}
+					for _, v := range openidConnectItem.Config.LoginTokens {
+						openidConnect1.Config.LoginTokens = append(openidConnect1.Config.LoginTokens, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.LogoutMethods = []types.String{}
+					for _, v := range openidConnectItem.Config.LogoutMethods {
+						openidConnect1.Config.LogoutMethods = append(openidConnect1.Config.LogoutMethods, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.LogoutPostArg = types.StringPointerValue(openidConnectItem.Config.LogoutPostArg)
+					openidConnect1.Config.LogoutQueryArg = types.StringPointerValue(openidConnectItem.Config.LogoutQueryArg)
+					openidConnect1.Config.LogoutRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.LogoutRedirectURI {
+						openidConnect1.Config.LogoutRedirectURI = append(openidConnect1.Config.LogoutRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.LogoutRevoke = types.BoolPointerValue(openidConnectItem.Config.LogoutRevoke)
+					openidConnect1.Config.LogoutRevokeAccessToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeAccessToken)
+					openidConnect1.Config.LogoutRevokeRefreshToken = types.BoolPointerValue(openidConnectItem.Config.LogoutRevokeRefreshToken)
+					openidConnect1.Config.LogoutURISuffix = types.StringPointerValue(openidConnectItem.Config.LogoutURISuffix)
+					if openidConnectItem.Config.MaxAge != nil {
+						openidConnect1.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.MaxAge)))
+					} else {
+						openidConnect1.Config.MaxAge = types.NumberNull()
+					}
+					openidConnect1.Config.MtlsIntrospectionEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsIntrospectionEndpoint)
+					openidConnect1.Config.MtlsRevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsRevocationEndpoint)
+					openidConnect1.Config.MtlsTokenEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsTokenEndpoint)
+					openidConnect1.Config.NoProxy = types.StringPointerValue(openidConnectItem.Config.NoProxy)
+					openidConnect1.Config.PasswordParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.PasswordParamType {
+						openidConnect1.Config.PasswordParamType = append(openidConnect1.Config.PasswordParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.PreserveQueryArgs = types.BoolPointerValue(openidConnectItem.Config.PreserveQueryArgs)
+					openidConnect1.Config.ProofOfPossessionAuthMethodsValidation = types.BoolPointerValue(openidConnectItem.Config.ProofOfPossessionAuthMethodsValidation)
+					if openidConnectItem.Config.ProofOfPossessionDpop != nil {
+						openidConnect1.Config.ProofOfPossessionDpop = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionDpop))
+					} else {
+						openidConnect1.Config.ProofOfPossessionDpop = types.StringNull()
+					}
+					if openidConnectItem.Config.ProofOfPossessionMtls != nil {
+						openidConnect1.Config.ProofOfPossessionMtls = types.StringValue(string(*openidConnectItem.Config.ProofOfPossessionMtls))
+					} else {
+						openidConnect1.Config.ProofOfPossessionMtls = types.StringNull()
+					}
+					openidConnect1.Config.PushedAuthorizationRequestEndpoint = types.StringPointerValue(openidConnectItem.Config.PushedAuthorizationRequestEndpoint)
+					if openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod != nil {
+						openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.PushedAuthorizationRequestEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.RedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.RedirectURI {
+						openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
+					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
+						var clusterNodes3 tfTypes.ClusterNodes
+						clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
+						clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
+						if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
+							openidConnect1.Config.Redis.ClusterNodes = append(openidConnect1.Config.Redis.ClusterNodes, clusterNodes3)
+						} else {
+							openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].IP = clusterNodes3.IP
+							openidConnect1.Config.Redis.ClusterNodes[clusterNodesCount1].Port = clusterNodes3.Port
+						}
+					}
+					openidConnect1.Config.Redis.ConnectTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ConnectTimeout)
+					openidConnect1.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(openidConnectItem.Config.Redis.ConnectionIsProxied)
+					openidConnect1.Config.Redis.Database = types.Int64PointerValue(openidConnectItem.Config.Redis.Database)
+					openidConnect1.Config.Redis.Host = types.StringPointerValue(openidConnectItem.Config.Redis.Host)
+					openidConnect1.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepaliveBacklog)
+					openidConnect1.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(openidConnectItem.Config.Redis.KeepalivePoolSize)
+					openidConnect1.Config.Redis.Password = types.StringPointerValue(openidConnectItem.Config.Redis.Password)
+					openidConnect1.Config.Redis.Port = types.Int64PointerValue(openidConnectItem.Config.Redis.Port)
+					openidConnect1.Config.Redis.Prefix = types.StringPointerValue(openidConnectItem.Config.Redis.Prefix)
+					openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
+					openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
+					openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
+					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
+						var sentinelNodes3 tfTypes.SentinelNodes
+						sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
+						sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
+						if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
+							openidConnect1.Config.Redis.SentinelNodes = append(openidConnect1.Config.Redis.SentinelNodes, sentinelNodes3)
+						} else {
+							openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Host = sentinelNodes3.Host
+							openidConnect1.Config.Redis.SentinelNodes[sentinelNodesCount1].Port = sentinelNodes3.Port
+						}
+					}
+					openidConnect1.Config.Redis.SentinelPassword = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelPassword)
+					if openidConnectItem.Config.Redis.SentinelRole != nil {
+						openidConnect1.Config.Redis.SentinelRole = types.StringValue(string(*openidConnectItem.Config.Redis.SentinelRole))
+					} else {
+						openidConnect1.Config.Redis.SentinelRole = types.StringNull()
+					}
+					openidConnect1.Config.Redis.SentinelUsername = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelUsername)
+					openidConnect1.Config.Redis.ServerName = types.StringPointerValue(openidConnectItem.Config.Redis.ServerName)
+					openidConnect1.Config.Redis.Socket = types.StringPointerValue(openidConnectItem.Config.Redis.Socket)
+					openidConnect1.Config.Redis.Ssl = types.BoolPointerValue(openidConnectItem.Config.Redis.Ssl)
+					openidConnect1.Config.Redis.SslVerify = types.BoolPointerValue(openidConnectItem.Config.Redis.SslVerify)
+					openidConnect1.Config.Redis.Username = types.StringPointerValue(openidConnectItem.Config.Redis.Username)
+					if openidConnectItem.Config.RediscoveryLifetime != nil {
+						openidConnect1.Config.RediscoveryLifetime = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.RediscoveryLifetime)))
+					} else {
+						openidConnect1.Config.RediscoveryLifetime = types.NumberNull()
+					}
+					openidConnect1.Config.RefreshTokenParamName = types.StringPointerValue(openidConnectItem.Config.RefreshTokenParamName)
+					openidConnect1.Config.RefreshTokenParamType = []types.String{}
+					for _, v := range openidConnectItem.Config.RefreshTokenParamType {
+						openidConnect1.Config.RefreshTokenParamType = append(openidConnect1.Config.RefreshTokenParamType, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.RefreshTokens = types.BoolPointerValue(openidConnectItem.Config.RefreshTokens)
+					openidConnect1.Config.RequireProofKeyForCodeExchange = types.BoolPointerValue(openidConnectItem.Config.RequireProofKeyForCodeExchange)
+					openidConnect1.Config.RequirePushedAuthorizationRequests = types.BoolPointerValue(openidConnectItem.Config.RequirePushedAuthorizationRequests)
+					openidConnect1.Config.RequireSignedRequestObject = types.BoolPointerValue(openidConnectItem.Config.RequireSignedRequestObject)
+					openidConnect1.Config.ResolveDistributedClaims = types.BoolPointerValue(openidConnectItem.Config.ResolveDistributedClaims)
+					if openidConnectItem.Config.ResponseMode != nil {
+						openidConnect1.Config.ResponseMode = types.StringValue(string(*openidConnectItem.Config.ResponseMode))
+					} else {
+						openidConnect1.Config.ResponseMode = types.StringNull()
+					}
+					openidConnect1.Config.ResponseType = []types.String{}
+					for _, v := range openidConnectItem.Config.ResponseType {
+						openidConnect1.Config.ResponseType = append(openidConnect1.Config.ResponseType, types.StringValue(v))
+					}
+					openidConnect1.Config.Reverify = types.BoolPointerValue(openidConnectItem.Config.Reverify)
+					openidConnect1.Config.RevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.RevocationEndpoint)
+					if openidConnectItem.Config.RevocationEndpointAuthMethod != nil {
+						openidConnect1.Config.RevocationEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.RevocationEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.RevocationEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.RevocationTokenParamName = types.StringPointerValue(openidConnectItem.Config.RevocationTokenParamName)
+					openidConnect1.Config.RolesClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.RolesClaim {
+						openidConnect1.Config.RolesClaim = append(openidConnect1.Config.RolesClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.RolesRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.RolesRequired {
+						openidConnect1.Config.RolesRequired = append(openidConnect1.Config.RolesRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.RunOnPreflight = types.BoolPointerValue(openidConnectItem.Config.RunOnPreflight)
+					openidConnect1.Config.Scopes = []types.String{}
+					for _, v := range openidConnectItem.Config.Scopes {
+						openidConnect1.Config.Scopes = append(openidConnect1.Config.Scopes, types.StringValue(v))
+					}
+					openidConnect1.Config.ScopesClaim = []types.String{}
+					for _, v := range openidConnectItem.Config.ScopesClaim {
+						openidConnect1.Config.ScopesClaim = append(openidConnect1.Config.ScopesClaim, types.StringValue(v))
+					}
+					openidConnect1.Config.ScopesRequired = []types.String{}
+					for _, v := range openidConnectItem.Config.ScopesRequired {
+						openidConnect1.Config.ScopesRequired = append(openidConnect1.Config.ScopesRequired, types.StringValue(v))
+					}
+					openidConnect1.Config.SearchUserInfo = types.BoolPointerValue(openidConnectItem.Config.SearchUserInfo)
+					if openidConnectItem.Config.SessionAbsoluteTimeout != nil {
+						openidConnect1.Config.SessionAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionAbsoluteTimeout)))
+					} else {
+						openidConnect1.Config.SessionAbsoluteTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionAudience = types.StringPointerValue(openidConnectItem.Config.SessionAudience)
+					openidConnect1.Config.SessionCookieDomain = types.StringPointerValue(openidConnectItem.Config.SessionCookieDomain)
+					openidConnect1.Config.SessionCookieHTTPOnly = types.BoolPointerValue(openidConnectItem.Config.SessionCookieHTTPOnly)
+					openidConnect1.Config.SessionCookieName = types.StringPointerValue(openidConnectItem.Config.SessionCookieName)
+					openidConnect1.Config.SessionCookiePath = types.StringPointerValue(openidConnectItem.Config.SessionCookiePath)
+					if openidConnectItem.Config.SessionCookieSameSite != nil {
+						openidConnect1.Config.SessionCookieSameSite = types.StringValue(string(*openidConnectItem.Config.SessionCookieSameSite))
+					} else {
+						openidConnect1.Config.SessionCookieSameSite = types.StringNull()
+					}
+					openidConnect1.Config.SessionCookieSecure = types.BoolPointerValue(openidConnectItem.Config.SessionCookieSecure)
+					openidConnect1.Config.SessionEnforceSameSubject = types.BoolPointerValue(openidConnectItem.Config.SessionEnforceSameSubject)
+					openidConnect1.Config.SessionHashStorageKey = types.BoolPointerValue(openidConnectItem.Config.SessionHashStorageKey)
+					openidConnect1.Config.SessionHashSubject = types.BoolPointerValue(openidConnectItem.Config.SessionHashSubject)
+					if openidConnectItem.Config.SessionIdlingTimeout != nil {
+						openidConnect1.Config.SessionIdlingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionIdlingTimeout)))
+					} else {
+						openidConnect1.Config.SessionIdlingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionMemcachedHost = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedHost)
+					openidConnect1.Config.SessionMemcachedPort = types.Int64PointerValue(openidConnectItem.Config.SessionMemcachedPort)
+					openidConnect1.Config.SessionMemcachedPrefix = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedPrefix)
+					openidConnect1.Config.SessionMemcachedSocket = types.StringPointerValue(openidConnectItem.Config.SessionMemcachedSocket)
+					openidConnect1.Config.SessionRemember = types.BoolPointerValue(openidConnectItem.Config.SessionRemember)
+					if openidConnectItem.Config.SessionRememberAbsoluteTimeout != nil {
+						openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberAbsoluteTimeout)))
+					} else {
+						openidConnect1.Config.SessionRememberAbsoluteTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionRememberCookieName = types.StringPointerValue(openidConnectItem.Config.SessionRememberCookieName)
+					if openidConnectItem.Config.SessionRememberRollingTimeout != nil {
+						openidConnect1.Config.SessionRememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRememberRollingTimeout)))
+					} else {
+						openidConnect1.Config.SessionRememberRollingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionRequestHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.SessionRequestHeaders {
+						openidConnect1.Config.SessionRequestHeaders = append(openidConnect1.Config.SessionRequestHeaders, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.SessionResponseHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.SessionResponseHeaders {
+						openidConnect1.Config.SessionResponseHeaders = append(openidConnect1.Config.SessionResponseHeaders, types.StringValue(string(v)))
+					}
+					if openidConnectItem.Config.SessionRollingTimeout != nil {
+						openidConnect1.Config.SessionRollingTimeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.SessionRollingTimeout)))
+					} else {
+						openidConnect1.Config.SessionRollingTimeout = types.NumberNull()
+					}
+					openidConnect1.Config.SessionSecret = types.StringPointerValue(openidConnectItem.Config.SessionSecret)
+					if openidConnectItem.Config.SessionStorage != nil {
+						openidConnect1.Config.SessionStorage = types.StringValue(string(*openidConnectItem.Config.SessionStorage))
+					} else {
+						openidConnect1.Config.SessionStorage = types.StringNull()
+					}
+					openidConnect1.Config.SessionStoreMetadata = types.BoolPointerValue(openidConnectItem.Config.SessionStoreMetadata)
+					openidConnect1.Config.SslVerify = types.BoolPointerValue(openidConnectItem.Config.SslVerify)
+					if openidConnectItem.Config.Timeout != nil {
+						openidConnect1.Config.Timeout = types.NumberValue(big.NewFloat(float64(*openidConnectItem.Config.Timeout)))
+					} else {
+						openidConnect1.Config.Timeout = types.NumberNull()
+					}
+					openidConnect1.Config.TLSClientAuthCertID = types.StringPointerValue(openidConnectItem.Config.TLSClientAuthCertID)
+					openidConnect1.Config.TLSClientAuthSslVerify = types.BoolPointerValue(openidConnectItem.Config.TLSClientAuthSslVerify)
+					openidConnect1.Config.TokenCacheKeyIncludeScope = types.BoolPointerValue(openidConnectItem.Config.TokenCacheKeyIncludeScope)
+					openidConnect1.Config.TokenEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenEndpoint)
+					if openidConnectItem.Config.TokenEndpointAuthMethod != nil {
+						openidConnect1.Config.TokenEndpointAuthMethod = types.StringValue(string(*openidConnectItem.Config.TokenEndpointAuthMethod))
+					} else {
+						openidConnect1.Config.TokenEndpointAuthMethod = types.StringNull()
+					}
+					openidConnect1.Config.TokenExchangeEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenExchangeEndpoint)
+					openidConnect1.Config.TokenHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersClient {
+						openidConnect1.Config.TokenHeadersClient = append(openidConnect1.Config.TokenHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersGrants = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersGrants {
+						openidConnect1.Config.TokenHeadersGrants = append(openidConnect1.Config.TokenHeadersGrants, types.StringValue(string(v)))
+					}
+					openidConnect1.Config.TokenHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersNames {
+						openidConnect1.Config.TokenHeadersNames = append(openidConnect1.Config.TokenHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersPrefix = types.StringPointerValue(openidConnectItem.Config.TokenHeadersPrefix)
+					openidConnect1.Config.TokenHeadersReplay = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersReplay {
+						openidConnect1.Config.TokenHeadersReplay = append(openidConnect1.Config.TokenHeadersReplay, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenHeadersValues {
+						openidConnect1.Config.TokenHeadersValues = append(openidConnect1.Config.TokenHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsClient {
+						openidConnect1.Config.TokenPostArgsClient = append(openidConnect1.Config.TokenPostArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsNames {
+						openidConnect1.Config.TokenPostArgsNames = append(openidConnect1.Config.TokenPostArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.TokenPostArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.TokenPostArgsValues {
+						openidConnect1.Config.TokenPostArgsValues = append(openidConnect1.Config.TokenPostArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UnauthorizedDestroySession = types.BoolPointerValue(openidConnectItem.Config.UnauthorizedDestroySession)
+					openidConnect1.Config.UnauthorizedErrorMessage = types.StringPointerValue(openidConnectItem.Config.UnauthorizedErrorMessage)
+					openidConnect1.Config.UnauthorizedRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.UnauthorizedRedirectURI {
+						openidConnect1.Config.UnauthorizedRedirectURI = append(openidConnect1.Config.UnauthorizedRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.UnexpectedRedirectURI = []types.String{}
+					for _, v := range openidConnectItem.Config.UnexpectedRedirectURI {
+						openidConnect1.Config.UnexpectedRedirectURI = append(openidConnect1.Config.UnexpectedRedirectURI, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenHeader)
+					openidConnect1.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenJwkHeader)
+					openidConnect1.Config.UpstreamHeadersClaims = []types.String{}
+					for _, v := range openidConnectItem.Config.UpstreamHeadersClaims {
+						openidConnect1.Config.UpstreamHeadersClaims = append(openidConnect1.Config.UpstreamHeadersClaims, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UpstreamHeadersNames {
+						openidConnect1.Config.UpstreamHeadersNames = append(openidConnect1.Config.UpstreamHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UpstreamIDTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenHeader)
+					openidConnect1.Config.UpstreamIDTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIDTokenJwkHeader)
+					openidConnect1.Config.UpstreamIntrospectionHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionHeader)
+					openidConnect1.Config.UpstreamIntrospectionJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamIntrospectionJwtHeader)
+					openidConnect1.Config.UpstreamRefreshTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamRefreshTokenHeader)
+					openidConnect1.Config.UpstreamSessionIDHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamSessionIDHeader)
+					openidConnect1.Config.UpstreamUserInfoHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoHeader)
+					openidConnect1.Config.UpstreamUserInfoJwtHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamUserInfoJwtHeader)
+					if openidConnectItem.Config.UserinfoAccept != nil {
+						openidConnect1.Config.UserinfoAccept = types.StringValue(string(*openidConnectItem.Config.UserinfoAccept))
+					} else {
+						openidConnect1.Config.UserinfoAccept = types.StringNull()
+					}
+					openidConnect1.Config.UserinfoEndpoint = types.StringPointerValue(openidConnectItem.Config.UserinfoEndpoint)
+					openidConnect1.Config.UserinfoHeadersClient = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersClient {
+						openidConnect1.Config.UserinfoHeadersClient = append(openidConnect1.Config.UserinfoHeadersClient, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoHeadersNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersNames {
+						openidConnect1.Config.UserinfoHeadersNames = append(openidConnect1.Config.UserinfoHeadersNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoHeadersValues = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoHeadersValues {
+						openidConnect1.Config.UserinfoHeadersValues = append(openidConnect1.Config.UserinfoHeadersValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsClient = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsClient {
+						openidConnect1.Config.UserinfoQueryArgsClient = append(openidConnect1.Config.UserinfoQueryArgsClient, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsNames = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsNames {
+						openidConnect1.Config.UserinfoQueryArgsNames = append(openidConnect1.Config.UserinfoQueryArgsNames, types.StringValue(v))
+					}
+					openidConnect1.Config.UserinfoQueryArgsValues = []types.String{}
+					for _, v := range openidConnectItem.Config.UserinfoQueryArgsValues {
+						openidConnect1.Config.UserinfoQueryArgsValues = append(openidConnect1.Config.UserinfoQueryArgsValues, types.StringValue(v))
+					}
+					openidConnect1.Config.UsingPseudoIssuer = types.BoolPointerValue(openidConnectItem.Config.UsingPseudoIssuer)
+					openidConnect1.Config.VerifyClaims = types.BoolPointerValue(openidConnectItem.Config.VerifyClaims)
+					openidConnect1.Config.VerifyNonce = types.BoolPointerValue(openidConnectItem.Config.VerifyNonce)
+					openidConnect1.Config.VerifyParameters = types.BoolPointerValue(openidConnectItem.Config.VerifyParameters)
+					openidConnect1.Config.VerifySignature = types.BoolPointerValue(openidConnectItem.Config.VerifySignature)
+				}
+				openidConnect1.StrategyID = types.StringValue(openidConnectItem.StrategyID)
+				if openidConnectCount+1 > len(r.Config.V2Strategies.OpenidConnect) {
+					r.Config.V2Strategies.OpenidConnect = append(r.Config.V2Strategies.OpenidConnect, openidConnect1)
+				} else {
+					r.Config.V2Strategies.OpenidConnect[openidConnectCount].Config = openidConnect1.Config
+					r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
 				}
 			}
 		}
@@ -2897,11 +2896,11 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -2910,7 +2909,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

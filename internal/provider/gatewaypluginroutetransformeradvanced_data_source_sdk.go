@@ -10,15 +10,10 @@ import (
 
 func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(resp *shared.RouteTransformerAdvancedPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateRouteTransformerAdvancedPluginConfig{}
-			r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
-			r.Config.Host = types.StringPointerValue(resp.Config.Host)
-			r.Config.Path = types.StringPointerValue(resp.Config.Path)
-			r.Config.Port = types.StringPointerValue(resp.Config.Port)
-		}
+		r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
+		r.Config.Host = types.StringPointerValue(resp.Config.Host)
+		r.Config.Path = types.StringPointerValue(resp.Config.Path)
+		r.Config.Port = types.StringPointerValue(resp.Config.Port)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -38,11 +33,11 @@ func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromShared
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -51,7 +46,7 @@ func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromShared
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

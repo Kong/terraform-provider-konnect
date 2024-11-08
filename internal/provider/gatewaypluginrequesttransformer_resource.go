@@ -37,20 +37,20 @@ type GatewayPluginRequestTransformerResource struct {
 
 // GatewayPluginRequestTransformerResourceModel describes the resource data model.
 type GatewayPluginRequestTransformerResourceModel struct {
-	Config         *tfTypes.CreateRequestTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                   `tfsdk:"created_at"`
-	Enabled        types.Bool                                    `tfsdk:"enabled"`
-	ID             types.String                                  `tfsdk:"id"`
-	InstanceName   types.String                                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                          `tfsdk:"service"`
-	Tags           []types.String                                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                   `tfsdk:"updated_at"`
+	Config         tfTypes.RequestTransformerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                            `tfsdk:"created_at"`
+	Enabled        types.Bool                             `tfsdk:"enabled"`
+	ID             types.String                           `tfsdk:"id"`
+	InstanceName   types.String                           `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Protocols      []types.String                         `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                   `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                   `tfsdk:"service"`
+	Tags           []types.String                         `tfsdk:"tags"`
+	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestTransformerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 		MarkdownDescription: "GatewayPluginRequestTransformer Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
@@ -223,6 +222,7 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -339,10 +339,10 @@ func (r *GatewayPluginRequestTransformerResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRequestTransformerPlugin := data.ToSharedCreateRequestTransformerPlugin()
+	requestTransformerPlugin := data.ToSharedRequestTransformerPluginInput()
 	request := operations.CreateRequesttransformerPluginRequest{
-		ControlPlaneID:                 controlPlaneID,
-		CreateRequestTransformerPlugin: createRequestTransformerPlugin,
+		ControlPlaneID:           controlPlaneID,
+		RequestTransformerPlugin: requestTransformerPlugin,
 	}
 	res, err := r.client.Plugins.CreateRequesttransformerPlugin(ctx, request)
 	if err != nil {
@@ -449,11 +449,11 @@ func (r *GatewayPluginRequestTransformerResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRequestTransformerPlugin := data.ToSharedCreateRequestTransformerPlugin()
+	requestTransformerPlugin := data.ToSharedRequestTransformerPluginInput()
 	request := operations.UpdateRequesttransformerPluginRequest{
-		PluginID:                       pluginID,
-		ControlPlaneID:                 controlPlaneID,
-		CreateRequestTransformerPlugin: createRequestTransformerPlugin,
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		RequestTransformerPlugin: requestTransformerPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRequesttransformerPlugin(ctx, request)
 	if err != nil {

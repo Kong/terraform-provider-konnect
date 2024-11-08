@@ -9,8 +9,8 @@ import (
 
 type CreateSamlPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateSamlPlugin *shared.CreateSamlPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	SamlPlugin     *shared.SamlPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateSamlPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateSamlPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateSamlPluginRequest) GetCreateSamlPlugin() *shared.CreateSamlPlugin {
+func (o *CreateSamlPluginRequest) GetSamlPlugin() *shared.SamlPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateSamlPlugin
+	return o.SamlPlugin
 }
 
 type CreateSamlPluginResponse struct {

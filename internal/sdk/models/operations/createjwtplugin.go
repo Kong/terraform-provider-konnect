@@ -9,8 +9,8 @@ import (
 
 type CreateJwtPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJwtPlugin *shared.CreateJwtPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JwtPlugin      *shared.JwtPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateJwtPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateJwtPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJwtPluginRequest) GetCreateJwtPlugin() *shared.CreateJwtPlugin {
+func (o *CreateJwtPluginRequest) GetJwtPlugin() *shared.JwtPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJwtPlugin
+	return o.JwtPlugin
 }
 
 type CreateJwtPluginResponse struct {

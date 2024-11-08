@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // LimitBy - The entity that is used when aggregating the limits.
@@ -313,6 +312,29 @@ func (o *RateLimitingPluginConfig) GetYear() *float64 {
 	return o.Year
 }
 
+// RateLimitingPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type RateLimitingPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type RateLimitingPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RateLimitingPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type RateLimitingPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -404,29 +426,6 @@ func (e *RateLimitingPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RateLimitingPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type RateLimitingPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RateLimitingPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type RateLimitingPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RateLimitingPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // RateLimitingPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type RateLimitingPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -451,29 +450,30 @@ func (o *RateLimitingPluginService) GetID() *string {
 	return o.ID
 }
 
+// RateLimitingPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RateLimitingPlugin struct {
-	Config *RateLimitingPluginConfig `json:"config,omitempty"`
+	Config RateLimitingPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                       `json:"enabled,omitempty"`
 	ID           *string                     `json:"id,omitempty"`
 	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         *string                     `const:"rate-limiting" json:"name,omitempty"`
+	name         string                      `const:"rate-limiting" json:"name"`
 	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *RateLimitingPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *RateLimitingPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (r RateLimitingPlugin) MarshalJSON() ([]byte, error) {
@@ -487,11 +487,25 @@ func (r *RateLimitingPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *RateLimitingPlugin) GetConfig() *RateLimitingPluginConfig {
+func (o *RateLimitingPlugin) GetConfig() RateLimitingPluginConfig {
+	if o == nil {
+		return RateLimitingPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RateLimitingPlugin) GetConsumer() *RateLimitingPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *RateLimitingPlugin) GetConsumerGroup() *RateLimitingPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *RateLimitingPlugin) GetCreatedAt() *int64 {
@@ -522,8 +536,8 @@ func (o *RateLimitingPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *RateLimitingPlugin) GetName() *string {
-	return types.String("rate-limiting")
+func (o *RateLimitingPlugin) GetName() string {
+	return "rate-limiting"
 }
 
 func (o *RateLimitingPlugin) GetOrdering() *RateLimitingPluginOrdering {
@@ -540,6 +554,20 @@ func (o *RateLimitingPlugin) GetProtocols() []RateLimitingPluginProtocols {
 	return o.Protocols
 }
 
+func (o *RateLimitingPlugin) GetRoute() *RateLimitingPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *RateLimitingPlugin) GetService() *RateLimitingPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *RateLimitingPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -554,30 +582,116 @@ func (o *RateLimitingPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *RateLimitingPlugin) GetConsumer() *RateLimitingPluginConsumer {
+// RateLimitingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type RateLimitingPluginInput struct {
+	Config RateLimitingPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                       `json:"enabled,omitempty"`
+	ID           *string                     `json:"id,omitempty"`
+	InstanceName *string                     `json:"instance_name,omitempty"`
+	name         string                      `const:"rate-limiting" json:"name"`
+	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *RateLimitingPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RateLimitingPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (r RateLimitingPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitingPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *RateLimitingPluginInput) GetConfig() RateLimitingPluginConfig {
+	if o == nil {
+		return RateLimitingPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RateLimitingPluginInput) GetConsumer() *RateLimitingPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *RateLimitingPlugin) GetConsumerGroup() *RateLimitingPluginConsumerGroup {
+func (o *RateLimitingPluginInput) GetConsumerGroup() *RateLimitingPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *RateLimitingPlugin) GetRoute() *RateLimitingPluginRoute {
+func (o *RateLimitingPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *RateLimitingPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *RateLimitingPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *RateLimitingPluginInput) GetName() string {
+	return "rate-limiting"
+}
+
+func (o *RateLimitingPluginInput) GetOrdering() *RateLimitingPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *RateLimitingPluginInput) GetProtocols() []RateLimitingPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *RateLimitingPluginInput) GetRoute() *RateLimitingPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *RateLimitingPlugin) GetService() *RateLimitingPluginService {
+func (o *RateLimitingPluginInput) GetService() *RateLimitingPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *RateLimitingPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

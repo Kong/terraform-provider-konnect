@@ -11,8 +11,8 @@ type UpdateRatelimitingPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateRateLimitingPlugin *shared.CreateRateLimitingPlugin `request:"mediaType=application/json"`
+	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RateLimitingPlugin *shared.RateLimitingPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRatelimitingPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateRatelimitingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRatelimitingPluginRequest) GetCreateRateLimitingPlugin() *shared.CreateRateLimitingPlugin {
+func (o *UpdateRatelimitingPluginRequest) GetRateLimitingPlugin() *shared.RateLimitingPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateRateLimitingPlugin
+	return o.RateLimitingPlugin
 }
 
 type UpdateRatelimitingPluginResponse struct {

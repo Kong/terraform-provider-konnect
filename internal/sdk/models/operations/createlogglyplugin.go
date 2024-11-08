@@ -9,8 +9,8 @@ import (
 
 type CreateLogglyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateLogglyPlugin *shared.CreateLogglyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LogglyPlugin   *shared.LogglyPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateLogglyPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateLogglyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateLogglyPluginRequest) GetCreateLogglyPlugin() *shared.CreateLogglyPlugin {
+func (o *CreateLogglyPluginRequest) GetLogglyPlugin() *shared.LogglyPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateLogglyPlugin
+	return o.LogglyPlugin
 }
 
 type CreateLogglyPluginResponse struct {

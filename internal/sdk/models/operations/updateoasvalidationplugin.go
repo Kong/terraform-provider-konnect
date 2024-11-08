@@ -11,8 +11,8 @@ type UpdateOasvalidationPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOasValidationPlugin *shared.CreateOasValidationPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OasValidationPlugin *shared.OasValidationPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOasvalidationPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateOasvalidationPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOasvalidationPluginRequest) GetCreateOasValidationPlugin() *shared.CreateOasValidationPlugin {
+func (o *UpdateOasvalidationPluginRequest) GetOasValidationPlugin() *shared.OasValidationPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOasValidationPlugin
+	return o.OasValidationPlugin
 }
 
 type UpdateOasvalidationPluginResponse struct {

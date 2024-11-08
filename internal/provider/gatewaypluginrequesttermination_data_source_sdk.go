@@ -10,17 +10,12 @@ import (
 
 func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedRequestTerminationPlugin(resp *shared.RequestTerminationPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateRequestTerminationPluginConfig{}
-			r.Config.Body = types.StringPointerValue(resp.Config.Body)
-			r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
-			r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
-			r.Config.Message = types.StringPointerValue(resp.Config.Message)
-			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
-			r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
-		}
+		r.Config.Body = types.StringPointerValue(resp.Config.Body)
+		r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
+		r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
+		r.Config.Message = types.StringPointerValue(resp.Config.Message)
+		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+		r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -40,11 +35,11 @@ func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedReques
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -53,7 +48,7 @@ func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedReques
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

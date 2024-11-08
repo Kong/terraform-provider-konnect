@@ -8,17 +8,21 @@ import (
 )
 
 func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroupInput() *shared.ConsumerGroupInput {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
 	} else {
-		name = nil
+		id = nil
 	}
+	var name string
+	name = r.Name.ValueString()
+
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ConsumerGroupInput{
+		ID:   id,
 		Name: name,
 		Tags: tags,
 	}
@@ -29,7 +33,7 @@ func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(resp 
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
+		r.Name = types.StringValue(resp.Name)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

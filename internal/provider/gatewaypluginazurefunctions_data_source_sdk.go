@@ -11,28 +11,23 @@ import (
 
 func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunctionsPlugin(resp *shared.AzureFunctionsPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
+		r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
+		r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
+		r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
+		r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
+		r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
+		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+		if resp.Config.Keepalive != nil {
+			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
 		} else {
-			r.Config = &tfTypes.CreateAzureFunctionsPluginConfig{}
-			r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
-			r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
-			r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
-			r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
-			r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
-			r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
-			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
-			r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Keepalive = types.NumberNull()
+		}
+		r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
+		if resp.Config.Timeout != nil {
+			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+		} else {
+			r.Config.Timeout = types.NumberNull()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -53,11 +48,11 @@ func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunct
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -66,7 +61,7 @@ func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunct
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

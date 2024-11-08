@@ -11,8 +11,8 @@ type UpdateJwedecryptPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJweDecryptPlugin *shared.CreateJweDecryptPlugin `request:"mediaType=application/json"`
+	ControlPlaneID   string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JweDecryptPlugin *shared.JweDecryptPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJwedecryptPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateJwedecryptPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateJwedecryptPluginRequest) GetCreateJweDecryptPlugin() *shared.CreateJweDecryptPlugin {
+func (o *UpdateJwedecryptPluginRequest) GetJweDecryptPlugin() *shared.JweDecryptPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJweDecryptPlugin
+	return o.JweDecryptPlugin
 }
 
 type UpdateJwedecryptPluginResponse struct {

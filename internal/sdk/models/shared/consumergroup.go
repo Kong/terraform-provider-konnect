@@ -6,7 +6,7 @@ type ConsumerGroup struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`
-	Name      *string  `json:"name,omitempty"`
+	Name      string   `json:"name"`
 	Tags      []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
@@ -26,9 +26,9 @@ func (o *ConsumerGroup) GetID() *string {
 	return o.ID
 }
 
-func (o *ConsumerGroup) GetName() *string {
+func (o *ConsumerGroup) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }

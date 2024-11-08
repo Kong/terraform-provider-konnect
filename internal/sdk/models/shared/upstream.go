@@ -248,15 +248,15 @@ func (o *Unhealthy) GetTimeouts() *int64 {
 }
 
 type Active struct {
-	Concurrency            *int64         `json:"concurrency,omitempty"`
-	Headers                map[string]any `json:"headers,omitempty"`
-	Healthy                *Healthy       `json:"healthy,omitempty"`
-	HTTPPath               *string        `json:"http_path,omitempty"`
-	HTTPSSni               *string        `json:"https_sni,omitempty"`
-	HTTPSVerifyCertificate *bool          `json:"https_verify_certificate,omitempty"`
-	Timeout                *float64       `json:"timeout,omitempty"`
-	Type                   *Type          `json:"type,omitempty"`
-	Unhealthy              *Unhealthy     `json:"unhealthy,omitempty"`
+	Concurrency            *int64            `json:"concurrency,omitempty"`
+	Headers                map[string]string `json:"headers,omitempty"`
+	Healthy                *Healthy          `json:"healthy,omitempty"`
+	HTTPPath               *string           `json:"http_path,omitempty"`
+	HTTPSSni               *string           `json:"https_sni,omitempty"`
+	HTTPSVerifyCertificate *bool             `json:"https_verify_certificate,omitempty"`
+	Timeout                *float64          `json:"timeout,omitempty"`
+	Type                   *Type             `json:"type,omitempty"`
+	Unhealthy              *Unhealthy        `json:"unhealthy,omitempty"`
 }
 
 func (o *Active) GetConcurrency() *int64 {
@@ -266,7 +266,7 @@ func (o *Active) GetConcurrency() *int64 {
 	return o.Concurrency
 }
 
-func (o *Active) GetHeaders() map[string]any {
+func (o *Active) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -465,6 +465,7 @@ func (o *Healthchecks) GetThreshold() *float64 {
 	return o.Threshold
 }
 
+// Upstream - The upstream object represents a virtual hostname and can be used to loadbalance incoming requests over multiple services (targets). So for example an upstream named `service.v1.xyz` for a Service object whose `host` is `service.v1.xyz`. Requests for this Service would be proxied to the targets defined within the upstream. An upstream also includes a [health checker][healthchecks], which is able to enable and disable targets based on their ability or inability to serve requests. The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
 type Upstream struct {
 	// Which load balancing algorithm to use.
 	Algorithm *UpstreamAlgorithm `json:"algorithm,omitempty"`
@@ -497,7 +498,7 @@ type Upstream struct {
 	HostHeader *string `json:"host_header,omitempty"`
 	ID         *string `json:"id,omitempty"`
 	// This is a hostname, which must be equal to the `host` of a Service.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
 	Slots *int64 `json:"slots,omitempty"`
 	// An optional set of strings associated with the Upstream for grouping and filtering.
@@ -620,9 +621,9 @@ func (o *Upstream) GetID() *string {
 	return o.ID
 }
 
-func (o *Upstream) GetName() *string {
+func (o *Upstream) GetName() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Name
 }
@@ -655,6 +656,7 @@ func (o *Upstream) GetUseSrvName() *bool {
 	return o.UseSrvName
 }
 
+// UpstreamInput - The upstream object represents a virtual hostname and can be used to loadbalance incoming requests over multiple services (targets). So for example an upstream named `service.v1.xyz` for a Service object whose `host` is `service.v1.xyz`. Requests for this Service would be proxied to the targets defined within the upstream. An upstream also includes a [health checker][healthchecks], which is able to enable and disable targets based on their ability or inability to serve requests. The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
 type UpstreamInput struct {
 	// Which load balancing algorithm to use.
 	Algorithm *UpstreamAlgorithm `json:"algorithm,omitempty"`
@@ -683,8 +685,9 @@ type UpstreamInput struct {
 	Healthchecks     *Healthchecks `json:"healthchecks,omitempty"`
 	// The hostname to be used as `Host` header when proxying requests through Kong.
 	HostHeader *string `json:"host_header,omitempty"`
+	ID         *string `json:"id,omitempty"`
 	// This is a hostname, which must be equal to the `host` of a Service.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 	// The number of slots in the load balancer algorithm. If `algorithm` is set to `round-robin`, this setting determines the maximum number of slots. If `algorithm` is set to `consistent-hashing`, this setting determines the actual number of slots in the algorithm. Accepts an integer in the range `10`-`65536`.
 	Slots *int64 `json:"slots,omitempty"`
 	// An optional set of strings associated with the Upstream for grouping and filtering.
@@ -791,9 +794,16 @@ func (o *UpstreamInput) GetHostHeader() *string {
 	return o.HostHeader
 }
 
-func (o *UpstreamInput) GetName() *string {
+func (o *UpstreamInput) GetID() *string {
 	if o == nil {
 		return nil
+	}
+	return o.ID
+}
+
+func (o *UpstreamInput) GetName() string {
+	if o == nil {
+		return ""
 	}
 	return o.Name
 }

@@ -3,13 +3,21 @@
 package shared
 
 type ConsumerGroupInput struct {
-	Name *string  `json:"name,omitempty"`
+	ID   *string  `json:"id,omitempty"`
+	Name string   `json:"name"`
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *ConsumerGroupInput) GetName() *string {
+func (o *ConsumerGroupInput) GetID() *string {
 	if o == nil {
 		return nil
+	}
+	return o.ID
+}
+
+func (o *ConsumerGroupInput) GetName() string {
+	if o == nil {
+		return ""
 	}
 	return o.Name
 }

@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
@@ -54,8 +53,7 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 				if len(resp.Healthchecks.Active.Headers) > 0 {
 					r.Healthchecks.Active.Headers = make(map[string]types.String)
 					for key, value := range resp.Healthchecks.Active.Headers {
-						result, _ := json.Marshal(value)
-						r.Healthchecks.Active.Headers[key] = types.StringValue(string(result))
+						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
 					}
 				}
 				if resp.Healthchecks.Active.Healthy == nil {
@@ -144,7 +142,7 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 		}
 		r.HostHeader = types.StringPointerValue(resp.HostHeader)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
+		r.Name = types.StringValue(resp.Name)
 		r.Slots = types.Int64PointerValue(resp.Slots)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {

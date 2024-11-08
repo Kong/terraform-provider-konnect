@@ -40,20 +40,20 @@ type GatewayPluginKafkaUpstreamResource struct {
 
 // GatewayPluginKafkaUpstreamResourceModel describes the resource data model.
 type GatewayPluginKafkaUpstreamResourceModel struct {
-	Config         *tfTypes.CreateKafkaUpstreamPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginKafkaUpstreamResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
@@ -287,6 +286,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -403,10 +403,10 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKafkaUpstreamPlugin := data.ToSharedCreateKafkaUpstreamPlugin()
+	kafkaUpstreamPlugin := data.ToSharedKafkaUpstreamPluginInput()
 	request := operations.CreateKafkaupstreamPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		CreateKafkaUpstreamPlugin: createKafkaUpstreamPlugin,
+		ControlPlaneID:      controlPlaneID,
+		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
 	}
 	res, err := r.client.Plugins.CreateKafkaupstreamPlugin(ctx, request)
 	if err != nil {
@@ -513,11 +513,11 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKafkaUpstreamPlugin := data.ToSharedCreateKafkaUpstreamPlugin()
+	kafkaUpstreamPlugin := data.ToSharedKafkaUpstreamPluginInput()
 	request := operations.UpdateKafkaupstreamPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		CreateKafkaUpstreamPlugin: createKafkaUpstreamPlugin,
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
 	}
 	res, err := r.client.Plugins.UpdateKafkaupstreamPlugin(ctx, request)
 	if err != nil {

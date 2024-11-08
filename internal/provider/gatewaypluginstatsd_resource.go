@@ -39,20 +39,20 @@ type GatewayPluginStatsdResource struct {
 
 // GatewayPluginStatsdResourceModel describes the resource data model.
 type GatewayPluginStatsdResourceModel struct {
-	Config         *tfTypes.CreateStatsdPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.StatsdPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginStatsdResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginStatsd Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_status_codes": schema.ListAttribute{
 						Computed:    true,
@@ -354,6 +353,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -470,10 +470,10 @@ func (r *GatewayPluginStatsdResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createStatsdPlugin := data.ToSharedCreateStatsdPlugin()
+	statsdPlugin := data.ToSharedStatsdPluginInput()
 	request := operations.CreateStatsdPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		CreateStatsdPlugin: createStatsdPlugin,
+		ControlPlaneID: controlPlaneID,
+		StatsdPlugin:   statsdPlugin,
 	}
 	res, err := r.client.Plugins.CreateStatsdPlugin(ctx, request)
 	if err != nil {
@@ -580,11 +580,11 @@ func (r *GatewayPluginStatsdResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createStatsdPlugin := data.ToSharedCreateStatsdPlugin()
+	statsdPlugin := data.ToSharedStatsdPluginInput()
 	request := operations.UpdateStatsdPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		CreateStatsdPlugin: createStatsdPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		StatsdPlugin:   statsdPlugin,
 	}
 	res, err := r.client.Plugins.UpdateStatsdPlugin(ctx, request)
 	if err != nil {

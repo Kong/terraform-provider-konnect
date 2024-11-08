@@ -8,73 +8,94 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginForwardProxyResourceModel) ToSharedCreateForwardProxyPlugin() *shared.CreateForwardProxyPlugin {
-	var config *shared.CreateForwardProxyPluginConfig
-	if r.Config != nil {
-		authPassword := new(string)
-		if !r.Config.AuthPassword.IsUnknown() && !r.Config.AuthPassword.IsNull() {
-			*authPassword = r.Config.AuthPassword.ValueString()
+func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPluginInput() *shared.ForwardProxyPluginInput {
+	authPassword := new(string)
+	if !r.Config.AuthPassword.IsUnknown() && !r.Config.AuthPassword.IsNull() {
+		*authPassword = r.Config.AuthPassword.ValueString()
+	} else {
+		authPassword = nil
+	}
+	authUsername := new(string)
+	if !r.Config.AuthUsername.IsUnknown() && !r.Config.AuthUsername.IsNull() {
+		*authUsername = r.Config.AuthUsername.ValueString()
+	} else {
+		authUsername = nil
+	}
+	httpProxyHost := new(string)
+	if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
+		*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
+	} else {
+		httpProxyHost = nil
+	}
+	httpProxyPort := new(int64)
+	if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
+		*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
+	} else {
+		httpProxyPort = nil
+	}
+	httpsProxyHost := new(string)
+	if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
+		*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
+	} else {
+		httpsProxyHost = nil
+	}
+	httpsProxyPort := new(int64)
+	if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
+		*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
+	} else {
+		httpsProxyPort = nil
+	}
+	httpsVerify := new(bool)
+	if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
+		*httpsVerify = r.Config.HTTPSVerify.ValueBool()
+	} else {
+		httpsVerify = nil
+	}
+	proxyScheme := new(shared.ProxyScheme)
+	if !r.Config.ProxyScheme.IsUnknown() && !r.Config.ProxyScheme.IsNull() {
+		*proxyScheme = shared.ProxyScheme(r.Config.ProxyScheme.ValueString())
+	} else {
+		proxyScheme = nil
+	}
+	xHeaders := new(shared.XHeaders)
+	if !r.Config.XHeaders.IsUnknown() && !r.Config.XHeaders.IsNull() {
+		*xHeaders = shared.XHeaders(r.Config.XHeaders.ValueString())
+	} else {
+		xHeaders = nil
+	}
+	config := shared.ForwardProxyPluginConfig{
+		AuthPassword:   authPassword,
+		AuthUsername:   authUsername,
+		HTTPProxyHost:  httpProxyHost,
+		HTTPProxyPort:  httpProxyPort,
+		HTTPSProxyHost: httpsProxyHost,
+		HTTPSProxyPort: httpsProxyPort,
+		HTTPSVerify:    httpsVerify,
+		ProxyScheme:    proxyScheme,
+		XHeaders:       xHeaders,
+	}
+	var consumer *shared.ForwardProxyPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			authPassword = nil
+			id = nil
 		}
-		authUsername := new(string)
-		if !r.Config.AuthUsername.IsUnknown() && !r.Config.AuthUsername.IsNull() {
-			*authUsername = r.Config.AuthUsername.ValueString()
+		consumer = &shared.ForwardProxyPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.ForwardProxyPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			authUsername = nil
+			id1 = nil
 		}
-		httpProxyHost := new(string)
-		if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
-			*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
-		} else {
-			httpProxyHost = nil
-		}
-		httpProxyPort := new(int64)
-		if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
-			*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
-		} else {
-			httpProxyPort = nil
-		}
-		httpsProxyHost := new(string)
-		if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
-			*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
-		} else {
-			httpsProxyHost = nil
-		}
-		httpsProxyPort := new(int64)
-		if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
-			*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
-		} else {
-			httpsProxyPort = nil
-		}
-		httpsVerify := new(bool)
-		if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
-			*httpsVerify = r.Config.HTTPSVerify.ValueBool()
-		} else {
-			httpsVerify = nil
-		}
-		proxyScheme := new(shared.CreateForwardProxyPluginProxyScheme)
-		if !r.Config.ProxyScheme.IsUnknown() && !r.Config.ProxyScheme.IsNull() {
-			*proxyScheme = shared.CreateForwardProxyPluginProxyScheme(r.Config.ProxyScheme.ValueString())
-		} else {
-			proxyScheme = nil
-		}
-		xHeaders := new(shared.CreateForwardProxyPluginXHeaders)
-		if !r.Config.XHeaders.IsUnknown() && !r.Config.XHeaders.IsNull() {
-			*xHeaders = shared.CreateForwardProxyPluginXHeaders(r.Config.XHeaders.ValueString())
-		} else {
-			xHeaders = nil
-		}
-		config = &shared.CreateForwardProxyPluginConfig{
-			AuthPassword:   authPassword,
-			AuthUsername:   authUsername,
-			HTTPProxyHost:  httpProxyHost,
-			HTTPProxyPort:  httpProxyPort,
-			HTTPSProxyHost: httpsProxyHost,
-			HTTPSProxyPort: httpsProxyPort,
-			HTTPSVerify:    httpsVerify,
-			ProxyScheme:    proxyScheme,
-			XHeaders:       xHeaders,
+		consumerGroup = &shared.ForwardProxyPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -83,133 +104,111 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedCreateForwardProxyPlugi
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateForwardProxyPluginOrdering
+	var ordering *shared.ForwardProxyPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateForwardProxyPluginAfter
+		var after *shared.ForwardProxyPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateForwardProxyPluginAfter{
+			after = &shared.ForwardProxyPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateForwardProxyPluginBefore
+		var before *shared.ForwardProxyPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateForwardProxyPluginBefore{
+			before = &shared.ForwardProxyPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateForwardProxyPluginOrdering{
+		ordering = &shared.ForwardProxyPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateForwardProxyPluginProtocols = []shared.CreateForwardProxyPluginProtocols{}
+	var protocols []shared.ForwardProxyPluginProtocols = []shared.ForwardProxyPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateForwardProxyPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.ForwardProxyPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.ForwardProxyPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.ForwardProxyPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.ForwardProxyPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.ForwardProxyPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateForwardProxyPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateForwardProxyPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateForwardProxyPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateForwardProxyPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateForwardProxyPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateForwardProxyPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateForwardProxyPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateForwardProxyPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateForwardProxyPlugin{
+	out := shared.ForwardProxyPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPlugin(resp *shared.ForwardProxyPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
+		r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
+		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+		if resp.Config.ProxyScheme != nil {
+			r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
 		} else {
-			r.Config = &tfTypes.CreateForwardProxyPluginConfig{}
-			r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
-			r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
-			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-			if resp.Config.ProxyScheme != nil {
-				r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
-			} else {
-				r.Config.ProxyScheme = types.StringNull()
-			}
-			if resp.Config.XHeaders != nil {
-				r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
-			} else {
-				r.Config.XHeaders = types.StringNull()
-			}
+			r.Config.ProxyScheme = types.StringNull()
+		}
+		if resp.Config.XHeaders != nil {
+			r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
+		} else {
+			r.Config.XHeaders = types.StringNull()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -230,11 +229,11 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -243,7 +242,7 @@ func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPl
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

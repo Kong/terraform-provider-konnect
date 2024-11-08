@@ -3,7 +3,6 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
@@ -30,8 +29,7 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route)
 		if len(resp.Headers) > 0 {
 			r.Headers = make(map[string]types.String)
 			for key, value := range resp.Headers {
-				result, _ := json.Marshal(value)
-				r.Headers[key] = types.StringValue(string(result))
+				r.Headers[key] = types.StringValue(value)
 			}
 		}
 		r.Hosts = []types.String{}

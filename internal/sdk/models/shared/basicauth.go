@@ -14,12 +14,20 @@ func (o *BasicAuthConsumer) GetID() *string {
 }
 
 type BasicAuth struct {
+	Consumer *BasicAuthConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64             `json:"created_at,omitempty"`
-	ID        *string            `json:"id,omitempty"`
-	Tags      []string           `json:"tags,omitempty"`
-	Username  *string            `json:"username,omitempty"`
-	Consumer  *BasicAuthConsumer `json:"consumer,omitempty"`
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Password  *string  `json:"password,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
+	Username  *string  `json:"username,omitempty"`
+}
+
+func (o *BasicAuth) GetConsumer() *BasicAuthConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *BasicAuth) GetCreatedAt() *int64 {
@@ -36,6 +44,13 @@ func (o *BasicAuth) GetID() *string {
 	return o.ID
 }
 
+func (o *BasicAuth) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
 func (o *BasicAuth) GetTags() []string {
 	if o == nil {
 		return nil
@@ -48,11 +63,4 @@ func (o *BasicAuth) GetUsername() *string {
 		return nil
 	}
 	return o.Username
-}
-
-func (o *BasicAuth) GetConsumer() *BasicAuthConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
 }

@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // NameidFormat - The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`
@@ -955,6 +954,29 @@ func (o *SamlPluginConfig) GetValidateAssertionSignature() *bool {
 	return o.ValidateAssertionSignature
 }
 
+// SamlPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type SamlPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *SamlPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type SamlPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *SamlPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type SamlPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -1046,29 +1068,6 @@ func (e *SamlPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// SamlPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type SamlPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SamlPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type SamlPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SamlPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // SamlPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type SamlPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -1093,29 +1092,30 @@ func (o *SamlPluginService) GetID() *string {
 	return o.ID
 }
 
+// SamlPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SamlPlugin struct {
-	Config *SamlPluginConfig `json:"config,omitempty"`
+	Config SamlPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *SamlPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *SamlPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool               `json:"enabled,omitempty"`
 	ID           *string             `json:"id,omitempty"`
 	InstanceName *string             `json:"instance_name,omitempty"`
-	name         *string             `const:"saml" json:"name,omitempty"`
+	name         string              `const:"saml" json:"name"`
 	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *SamlPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *SamlPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *SamlPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *SamlPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (s SamlPlugin) MarshalJSON() ([]byte, error) {
@@ -1129,11 +1129,25 @@ func (s *SamlPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SamlPlugin) GetConfig() *SamlPluginConfig {
+func (o *SamlPlugin) GetConfig() SamlPluginConfig {
+	if o == nil {
+		return SamlPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *SamlPlugin) GetConsumer() *SamlPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *SamlPlugin) GetConsumerGroup() *SamlPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *SamlPlugin) GetCreatedAt() *int64 {
@@ -1164,8 +1178,8 @@ func (o *SamlPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *SamlPlugin) GetName() *string {
-	return types.String("saml")
+func (o *SamlPlugin) GetName() string {
+	return "saml"
 }
 
 func (o *SamlPlugin) GetOrdering() *SamlPluginOrdering {
@@ -1182,6 +1196,20 @@ func (o *SamlPlugin) GetProtocols() []SamlPluginProtocols {
 	return o.Protocols
 }
 
+func (o *SamlPlugin) GetRoute() *SamlPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *SamlPlugin) GetService() *SamlPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *SamlPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -1196,30 +1224,116 @@ func (o *SamlPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *SamlPlugin) GetConsumer() *SamlPluginConsumer {
+// SamlPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type SamlPluginInput struct {
+	Config SamlPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *SamlPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *SamlPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool               `json:"enabled,omitempty"`
+	ID           *string             `json:"id,omitempty"`
+	InstanceName *string             `json:"instance_name,omitempty"`
+	name         string              `const:"saml" json:"name"`
+	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *SamlPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *SamlPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (s SamlPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SamlPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *SamlPluginInput) GetConfig() SamlPluginConfig {
+	if o == nil {
+		return SamlPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *SamlPluginInput) GetConsumer() *SamlPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *SamlPlugin) GetConsumerGroup() *SamlPluginConsumerGroup {
+func (o *SamlPluginInput) GetConsumerGroup() *SamlPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *SamlPlugin) GetRoute() *SamlPluginRoute {
+func (o *SamlPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *SamlPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *SamlPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *SamlPluginInput) GetName() string {
+	return "saml"
+}
+
+func (o *SamlPluginInput) GetOrdering() *SamlPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *SamlPluginInput) GetProtocols() []SamlPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *SamlPluginInput) GetRoute() *SamlPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *SamlPlugin) GetService() *SamlPluginService {
+func (o *SamlPluginInput) GetService() *SamlPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *SamlPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

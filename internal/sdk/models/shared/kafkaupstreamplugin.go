@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // KafkaUpstreamPluginMechanism - The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256`, or `SCRAM-SHA-512`.
@@ -372,6 +371,29 @@ func (o *KafkaUpstreamPluginConfig) GetTopic() *string {
 	return o.Topic
 }
 
+// KafkaUpstreamPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type KafkaUpstreamPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *KafkaUpstreamPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type KafkaUpstreamPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *KafkaUpstreamPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type KafkaUpstreamPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -463,29 +485,6 @@ func (e *KafkaUpstreamPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// KafkaUpstreamPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type KafkaUpstreamPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KafkaUpstreamPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type KafkaUpstreamPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KafkaUpstreamPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // KafkaUpstreamPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type KafkaUpstreamPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -510,29 +509,30 @@ func (o *KafkaUpstreamPluginService) GetID() *string {
 	return o.ID
 }
 
+// KafkaUpstreamPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KafkaUpstreamPlugin struct {
-	Config *KafkaUpstreamPluginConfig `json:"config,omitempty"`
+	Config KafkaUpstreamPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *KafkaUpstreamPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *KafkaUpstreamPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                        `json:"enabled,omitempty"`
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         *string                      `const:"kafka-upstream" json:"name,omitempty"`
+	name         string                       `const:"kafka-upstream" json:"name"`
 	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []KafkaUpstreamPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KafkaUpstreamPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *KafkaUpstreamPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *KafkaUpstreamPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *KafkaUpstreamPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (k KafkaUpstreamPlugin) MarshalJSON() ([]byte, error) {
@@ -546,11 +546,25 @@ func (k *KafkaUpstreamPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *KafkaUpstreamPlugin) GetConfig() *KafkaUpstreamPluginConfig {
+func (o *KafkaUpstreamPlugin) GetConfig() KafkaUpstreamPluginConfig {
+	if o == nil {
+		return KafkaUpstreamPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *KafkaUpstreamPlugin) GetConsumer() *KafkaUpstreamPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *KafkaUpstreamPlugin) GetConsumerGroup() *KafkaUpstreamPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *KafkaUpstreamPlugin) GetCreatedAt() *int64 {
@@ -581,8 +595,8 @@ func (o *KafkaUpstreamPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *KafkaUpstreamPlugin) GetName() *string {
-	return types.String("kafka-upstream")
+func (o *KafkaUpstreamPlugin) GetName() string {
+	return "kafka-upstream"
 }
 
 func (o *KafkaUpstreamPlugin) GetOrdering() *KafkaUpstreamPluginOrdering {
@@ -599,6 +613,20 @@ func (o *KafkaUpstreamPlugin) GetProtocols() []KafkaUpstreamPluginProtocols {
 	return o.Protocols
 }
 
+func (o *KafkaUpstreamPlugin) GetRoute() *KafkaUpstreamPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *KafkaUpstreamPlugin) GetService() *KafkaUpstreamPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *KafkaUpstreamPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -613,30 +641,116 @@ func (o *KafkaUpstreamPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *KafkaUpstreamPlugin) GetConsumer() *KafkaUpstreamPluginConsumer {
+// KafkaUpstreamPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type KafkaUpstreamPluginInput struct {
+	Config KafkaUpstreamPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *KafkaUpstreamPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *KafkaUpstreamPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                        `json:"enabled,omitempty"`
+	ID           *string                      `json:"id,omitempty"`
+	InstanceName *string                      `json:"instance_name,omitempty"`
+	name         string                       `const:"kafka-upstream" json:"name"`
+	Ordering     *KafkaUpstreamPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []KafkaUpstreamPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *KafkaUpstreamPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *KafkaUpstreamPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (k KafkaUpstreamPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(k, "", false)
+}
+
+func (k *KafkaUpstreamPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &k, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *KafkaUpstreamPluginInput) GetConfig() KafkaUpstreamPluginConfig {
+	if o == nil {
+		return KafkaUpstreamPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *KafkaUpstreamPluginInput) GetConsumer() *KafkaUpstreamPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *KafkaUpstreamPlugin) GetConsumerGroup() *KafkaUpstreamPluginConsumerGroup {
+func (o *KafkaUpstreamPluginInput) GetConsumerGroup() *KafkaUpstreamPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *KafkaUpstreamPlugin) GetRoute() *KafkaUpstreamPluginRoute {
+func (o *KafkaUpstreamPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *KafkaUpstreamPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *KafkaUpstreamPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *KafkaUpstreamPluginInput) GetName() string {
+	return "kafka-upstream"
+}
+
+func (o *KafkaUpstreamPluginInput) GetOrdering() *KafkaUpstreamPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *KafkaUpstreamPluginInput) GetProtocols() []KafkaUpstreamPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *KafkaUpstreamPluginInput) GetRoute() *KafkaUpstreamPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *KafkaUpstreamPlugin) GetService() *KafkaUpstreamPluginService {
+func (o *KafkaUpstreamPluginInput) GetService() *KafkaUpstreamPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *KafkaUpstreamPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

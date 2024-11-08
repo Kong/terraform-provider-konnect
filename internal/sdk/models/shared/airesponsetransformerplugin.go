@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // AiResponseTransformerPluginParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
@@ -673,6 +672,29 @@ func (o *AiResponseTransformerPluginConfig) GetTransformationExtractPattern() *s
 	return o.TransformationExtractPattern
 }
 
+// AiResponseTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type AiResponseTransformerPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AiResponseTransformerPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type AiResponseTransformerPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AiResponseTransformerPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type AiResponseTransformerPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -764,29 +786,6 @@ func (e *AiResponseTransformerPluginProtocols) UnmarshalJSON(data []byte) error 
 	}
 }
 
-// AiResponseTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type AiResponseTransformerPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AiResponseTransformerPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type AiResponseTransformerPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AiResponseTransformerPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // AiResponseTransformerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type AiResponseTransformerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -811,29 +810,30 @@ func (o *AiResponseTransformerPluginService) GetID() *string {
 	return o.ID
 }
 
+// AiResponseTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiResponseTransformerPlugin struct {
-	Config *AiResponseTransformerPluginConfig `json:"config,omitempty"`
+	Config AiResponseTransformerPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *AiResponseTransformerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AiResponseTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                                `json:"enabled,omitempty"`
 	ID           *string                              `json:"id,omitempty"`
 	InstanceName *string                              `json:"instance_name,omitempty"`
-	name         *string                              `const:"ai-response-transformer" json:"name,omitempty"`
+	name         string                               `const:"ai-response-transformer" json:"name"`
 	Ordering     *AiResponseTransformerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []AiResponseTransformerPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiResponseTransformerPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *AiResponseTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *AiResponseTransformerPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *AiResponseTransformerPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (a AiResponseTransformerPlugin) MarshalJSON() ([]byte, error) {
@@ -847,11 +847,25 @@ func (a *AiResponseTransformerPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AiResponseTransformerPlugin) GetConfig() *AiResponseTransformerPluginConfig {
+func (o *AiResponseTransformerPlugin) GetConfig() AiResponseTransformerPluginConfig {
+	if o == nil {
+		return AiResponseTransformerPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiResponseTransformerPlugin) GetConsumer() *AiResponseTransformerPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *AiResponseTransformerPlugin) GetConsumerGroup() *AiResponseTransformerPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *AiResponseTransformerPlugin) GetCreatedAt() *int64 {
@@ -882,8 +896,8 @@ func (o *AiResponseTransformerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiResponseTransformerPlugin) GetName() *string {
-	return types.String("ai-response-transformer")
+func (o *AiResponseTransformerPlugin) GetName() string {
+	return "ai-response-transformer"
 }
 
 func (o *AiResponseTransformerPlugin) GetOrdering() *AiResponseTransformerPluginOrdering {
@@ -900,6 +914,20 @@ func (o *AiResponseTransformerPlugin) GetProtocols() []AiResponseTransformerPlug
 	return o.Protocols
 }
 
+func (o *AiResponseTransformerPlugin) GetRoute() *AiResponseTransformerPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *AiResponseTransformerPlugin) GetService() *AiResponseTransformerPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *AiResponseTransformerPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -914,30 +942,116 @@ func (o *AiResponseTransformerPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiResponseTransformerPlugin) GetConsumer() *AiResponseTransformerPluginConsumer {
+// AiResponseTransformerPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type AiResponseTransformerPluginInput struct {
+	Config AiResponseTransformerPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *AiResponseTransformerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AiResponseTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                                `json:"enabled,omitempty"`
+	ID           *string                              `json:"id,omitempty"`
+	InstanceName *string                              `json:"instance_name,omitempty"`
+	name         string                               `const:"ai-response-transformer" json:"name"`
+	Ordering     *AiResponseTransformerPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []AiResponseTransformerPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *AiResponseTransformerPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiResponseTransformerPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (a AiResponseTransformerPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiResponseTransformerPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *AiResponseTransformerPluginInput) GetConfig() AiResponseTransformerPluginConfig {
+	if o == nil {
+		return AiResponseTransformerPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiResponseTransformerPluginInput) GetConsumer() *AiResponseTransformerPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *AiResponseTransformerPlugin) GetConsumerGroup() *AiResponseTransformerPluginConsumerGroup {
+func (o *AiResponseTransformerPluginInput) GetConsumerGroup() *AiResponseTransformerPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *AiResponseTransformerPlugin) GetRoute() *AiResponseTransformerPluginRoute {
+func (o *AiResponseTransformerPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *AiResponseTransformerPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiResponseTransformerPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *AiResponseTransformerPluginInput) GetName() string {
+	return "ai-response-transformer"
+}
+
+func (o *AiResponseTransformerPluginInput) GetOrdering() *AiResponseTransformerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *AiResponseTransformerPluginInput) GetProtocols() []AiResponseTransformerPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *AiResponseTransformerPluginInput) GetRoute() *AiResponseTransformerPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *AiResponseTransformerPlugin) GetService() *AiResponseTransformerPluginService {
+func (o *AiResponseTransformerPluginInput) GetService() *AiResponseTransformerPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *AiResponseTransformerPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

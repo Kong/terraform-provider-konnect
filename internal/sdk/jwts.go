@@ -148,8 +148,8 @@ func (s *JWTs) CreateJwtWithConsumer(ctx context.Context, request operations.Cre
 
 }
 
-// DeleteJwtWithConsumer - Delete a a JWT associated with a a Consumer
-// Delete a a JWT associated with a a Consumer using ID.
+// DeleteJwtWithConsumer - Delete a a JWT associated with a Consumer
+// Delete a a JWT associated with a Consumer using ID.
 func (s *JWTs) DeleteJwtWithConsumer(ctx context.Context, request operations.DeleteJwtWithConsumerRequest, opts ...operations.Option) (*operations.DeleteJwtWithConsumerResponse, error) {
 	hookCtx := hooks.HookContext{
 		Context:        ctx,

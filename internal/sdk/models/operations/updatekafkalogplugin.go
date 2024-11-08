@@ -11,8 +11,8 @@ type UpdateKafkalogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateKafkaLogPlugin *shared.CreateKafkaLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KafkaLogPlugin *shared.KafkaLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateKafkalogPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateKafkalogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateKafkalogPluginRequest) GetCreateKafkaLogPlugin() *shared.CreateKafkaLogPlugin {
+func (o *UpdateKafkalogPluginRequest) GetKafkaLogPlugin() *shared.KafkaLogPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateKafkaLogPlugin
+	return o.KafkaLogPlugin
 }
 
 type UpdateKafkalogPluginResponse struct {

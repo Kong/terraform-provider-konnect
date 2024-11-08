@@ -10,50 +10,45 @@ import (
 
 func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunctionPlugin(resp *shared.PostFunctionPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreatePostFunctionPluginConfig{}
-			r.Config.Access = []types.String{}
-			for _, v := range resp.Config.Access {
-				r.Config.Access = append(r.Config.Access, types.StringValue(v))
-			}
-			r.Config.BodyFilter = []types.String{}
-			for _, v := range resp.Config.BodyFilter {
-				r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
-			}
-			r.Config.Certificate = []types.String{}
-			for _, v := range resp.Config.Certificate {
-				r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
-			}
-			r.Config.HeaderFilter = []types.String{}
-			for _, v := range resp.Config.HeaderFilter {
-				r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
-			}
-			r.Config.Log = []types.String{}
-			for _, v := range resp.Config.Log {
-				r.Config.Log = append(r.Config.Log, types.StringValue(v))
-			}
-			r.Config.Rewrite = []types.String{}
-			for _, v := range resp.Config.Rewrite {
-				r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
-			}
-			r.Config.WsClientFrame = []types.String{}
-			for _, v := range resp.Config.WsClientFrame {
-				r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
-			}
-			r.Config.WsClose = []types.String{}
-			for _, v := range resp.Config.WsClose {
-				r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
-			}
-			r.Config.WsHandshake = []types.String{}
-			for _, v := range resp.Config.WsHandshake {
-				r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
-			}
-			r.Config.WsUpstreamFrame = []types.String{}
-			for _, v := range resp.Config.WsUpstreamFrame {
-				r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
-			}
+		r.Config.Access = []types.String{}
+		for _, v := range resp.Config.Access {
+			r.Config.Access = append(r.Config.Access, types.StringValue(v))
+		}
+		r.Config.BodyFilter = []types.String{}
+		for _, v := range resp.Config.BodyFilter {
+			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
+		}
+		r.Config.Certificate = []types.String{}
+		for _, v := range resp.Config.Certificate {
+			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
+		}
+		r.Config.HeaderFilter = []types.String{}
+		for _, v := range resp.Config.HeaderFilter {
+			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
+		}
+		r.Config.Log = []types.String{}
+		for _, v := range resp.Config.Log {
+			r.Config.Log = append(r.Config.Log, types.StringValue(v))
+		}
+		r.Config.Rewrite = []types.String{}
+		for _, v := range resp.Config.Rewrite {
+			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
+		}
+		r.Config.WsClientFrame = []types.String{}
+		for _, v := range resp.Config.WsClientFrame {
+			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
+		}
+		r.Config.WsClose = []types.String{}
+		for _, v := range resp.Config.WsClose {
+			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
+		}
+		r.Config.WsHandshake = []types.String{}
+		for _, v := range resp.Config.WsHandshake {
+			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
+		}
+		r.Config.WsUpstreamFrame = []types.String{}
+		for _, v := range resp.Config.WsUpstreamFrame {
+			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -74,11 +69,11 @@ func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunction
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -87,7 +82,7 @@ func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunction
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

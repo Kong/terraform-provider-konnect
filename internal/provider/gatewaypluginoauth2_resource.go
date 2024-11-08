@@ -36,20 +36,20 @@ type GatewayPluginOauth2Resource struct {
 
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
-	Config         *tfTypes.CreateOauth2PluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.Oauth2PluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2Resource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,8 +61,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"accept_http_if_already_terminated": schema.BoolAttribute{
 						Computed:    true,
@@ -202,6 +201,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -318,10 +318,10 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOauth2Plugin := data.ToSharedCreateOauth2Plugin()
+	oauth2Plugin := data.ToSharedOauth2PluginInput()
 	request := operations.CreateOauth2PluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		CreateOauth2Plugin: createOauth2Plugin,
+		ControlPlaneID: controlPlaneID,
+		Oauth2Plugin:   oauth2Plugin,
 	}
 	res, err := r.client.Plugins.CreateOauth2Plugin(ctx, request)
 	if err != nil {
@@ -428,11 +428,11 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOauth2Plugin := data.ToSharedCreateOauth2Plugin()
+	oauth2Plugin := data.ToSharedOauth2PluginInput()
 	request := operations.UpdateOauth2PluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		CreateOauth2Plugin: createOauth2Plugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		Oauth2Plugin:   oauth2Plugin,
 	}
 	res, err := r.client.Plugins.UpdateOauth2Plugin(ctx, request)
 	if err != nil {

@@ -19,8 +19,8 @@ func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.Prefix = types.StringPointerValue(resp.Prefix)
+		r.Name = types.StringValue(resp.Name)
+		r.Prefix = types.StringValue(resp.Prefix)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

@@ -34,20 +34,20 @@ type GatewayPluginGrpcWebResource struct {
 
 // GatewayPluginGrpcWebResourceModel describes the resource data model.
 type GatewayPluginGrpcWebResourceModel struct {
-	Config         *tfTypes.CreateGrpcWebPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering   `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.GrpcWebPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer        `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer        `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	ID             types.String                `tfsdk:"id"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer        `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer        `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginGrpcWebResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginGrpcWeb Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_origin_header": schema.StringAttribute{
 						Computed:    true,
@@ -118,6 +117,7 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -234,10 +234,10 @@ func (r *GatewayPluginGrpcWebResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createGrpcWebPlugin := data.ToSharedCreateGrpcWebPlugin()
+	grpcWebPlugin := data.ToSharedGrpcWebPluginInput()
 	request := operations.CreateGrpcwebPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		CreateGrpcWebPlugin: createGrpcWebPlugin,
+		ControlPlaneID: controlPlaneID,
+		GrpcWebPlugin:  grpcWebPlugin,
 	}
 	res, err := r.client.Plugins.CreateGrpcwebPlugin(ctx, request)
 	if err != nil {
@@ -344,11 +344,11 @@ func (r *GatewayPluginGrpcWebResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createGrpcWebPlugin := data.ToSharedCreateGrpcWebPlugin()
+	grpcWebPlugin := data.ToSharedGrpcWebPluginInput()
 	request := operations.UpdateGrpcwebPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		CreateGrpcWebPlugin: createGrpcWebPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		GrpcWebPlugin:  grpcWebPlugin,
 	}
 	res, err := r.client.Plugins.UpdateGrpcwebPlugin(ctx, request)
 	if err != nil {

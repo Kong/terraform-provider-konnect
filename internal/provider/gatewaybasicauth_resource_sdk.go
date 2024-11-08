@@ -9,6 +9,12 @@ import (
 )
 
 func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *shared.BasicAuthWithoutParents {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	password := new(string)
 	if !r.Password.IsUnknown() && !r.Password.IsNull() {
 		*password = r.Password.ValueString()
@@ -26,6 +32,7 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 		username = nil
 	}
 	out := shared.BasicAuthWithoutParents{
+		ID:       id,
 		Password: password,
 		Tags:     tags,
 		Username: username,
@@ -43,6 +50,7 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.Password = types.StringPointerValue(resp.Password)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

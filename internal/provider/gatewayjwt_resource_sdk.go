@@ -15,6 +15,12 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	} else {
 		algorithm = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
 		*key = r.Key.ValueString()
@@ -39,6 +45,7 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	}
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
+		ID:           id,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,
 		Secret:       secret,

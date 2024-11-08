@@ -37,20 +37,20 @@ type GatewayPluginRateLimitingResource struct {
 
 // GatewayPluginRateLimitingResourceModel describes the resource data model.
 type GatewayPluginRateLimitingResourceModel struct {
-	Config         *tfTypes.CreateRateLimitingPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                    `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering        `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         tfTypes.RateLimitingPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                      `tfsdk:"created_at"`
+	Enabled        types.Bool                       `tfsdk:"enabled"`
+	ID             types.String                     `tfsdk:"id"`
+	InstanceName   types.String                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering       `tfsdk:"ordering"`
+	Protocols      []types.String                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
+	Tags           []types.String                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRateLimitingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginRateLimiting Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"day": schema.NumberAttribute{
 						Computed:    true,
@@ -257,6 +256,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -373,10 +373,10 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRateLimitingPlugin := data.ToSharedCreateRateLimitingPlugin()
+	rateLimitingPlugin := data.ToSharedRateLimitingPluginInput()
 	request := operations.CreateRatelimitingPluginRequest{
-		ControlPlaneID:           controlPlaneID,
-		CreateRateLimitingPlugin: createRateLimitingPlugin,
+		ControlPlaneID:     controlPlaneID,
+		RateLimitingPlugin: rateLimitingPlugin,
 	}
 	res, err := r.client.Plugins.CreateRatelimitingPlugin(ctx, request)
 	if err != nil {
@@ -483,11 +483,11 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRateLimitingPlugin := data.ToSharedCreateRateLimitingPlugin()
+	rateLimitingPlugin := data.ToSharedRateLimitingPluginInput()
 	request := operations.UpdateRatelimitingPluginRequest{
-		PluginID:                 pluginID,
-		ControlPlaneID:           controlPlaneID,
-		CreateRateLimitingPlugin: createRateLimitingPlugin,
+		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
+		RateLimitingPlugin: rateLimitingPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRatelimitingPlugin(ctx, request)
 	if err != nil {

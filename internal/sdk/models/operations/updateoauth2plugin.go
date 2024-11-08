@@ -11,8 +11,8 @@ type UpdateOauth2PluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOauth2Plugin *shared.CreateOauth2Plugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	Oauth2Plugin   *shared.Oauth2PluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOauth2PluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateOauth2PluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOauth2PluginRequest) GetCreateOauth2Plugin() *shared.CreateOauth2Plugin {
+func (o *UpdateOauth2PluginRequest) GetOauth2Plugin() *shared.Oauth2PluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOauth2Plugin
+	return o.Oauth2Plugin
 }
 
 type UpdateOauth2PluginResponse struct {

@@ -3,9 +3,17 @@
 package shared
 
 type BasicAuthWithoutParents struct {
+	ID       *string  `json:"id,omitempty"`
 	Password *string  `json:"password,omitempty"`
 	Tags     []string `json:"tags,omitempty"`
 	Username *string  `json:"username,omitempty"`
+}
+
+func (o *BasicAuthWithoutParents) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *BasicAuthWithoutParents) GetPassword() *string {

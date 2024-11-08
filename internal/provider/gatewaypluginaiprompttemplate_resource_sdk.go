@@ -8,45 +8,66 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedCreateAiPromptTemplatePlugin() *shared.CreateAiPromptTemplatePlugin {
-	var config *shared.CreateAiPromptTemplatePluginConfig
-	if r.Config != nil {
-		allowUntemplatedRequests := new(bool)
-		if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
-			*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
-		} else {
-			allowUntemplatedRequests = nil
-		}
-		logOriginalRequest := new(bool)
-		if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
-			*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
-		} else {
-			logOriginalRequest = nil
-		}
-		maxRequestBodySize := new(int64)
-		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
-		} else {
-			maxRequestBodySize = nil
-		}
-		var templates []shared.CreateAiPromptTemplatePluginTemplates = []shared.CreateAiPromptTemplatePluginTemplates{}
-		for _, templatesItem := range r.Config.Templates {
-			var name string
-			name = templatesItem.Name.ValueString()
+func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedAiPromptTemplatePluginInput() *shared.AiPromptTemplatePluginInput {
+	allowUntemplatedRequests := new(bool)
+	if !r.Config.AllowUntemplatedRequests.IsUnknown() && !r.Config.AllowUntemplatedRequests.IsNull() {
+		*allowUntemplatedRequests = r.Config.AllowUntemplatedRequests.ValueBool()
+	} else {
+		allowUntemplatedRequests = nil
+	}
+	logOriginalRequest := new(bool)
+	if !r.Config.LogOriginalRequest.IsUnknown() && !r.Config.LogOriginalRequest.IsNull() {
+		*logOriginalRequest = r.Config.LogOriginalRequest.ValueBool()
+	} else {
+		logOriginalRequest = nil
+	}
+	maxRequestBodySize := new(int64)
+	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+	} else {
+		maxRequestBodySize = nil
+	}
+	var templates []shared.Templates = []shared.Templates{}
+	for _, templatesItem := range r.Config.Templates {
+		var name string
+		name = templatesItem.Name.ValueString()
 
-			var template string
-			template = templatesItem.Template.ValueString()
+		var template string
+		template = templatesItem.Template.ValueString()
 
-			templates = append(templates, shared.CreateAiPromptTemplatePluginTemplates{
-				Name:     name,
-				Template: template,
-			})
+		templates = append(templates, shared.Templates{
+			Name:     name,
+			Template: template,
+		})
+	}
+	config := shared.AiPromptTemplatePluginConfig{
+		AllowUntemplatedRequests: allowUntemplatedRequests,
+		LogOriginalRequest:       logOriginalRequest,
+		MaxRequestBodySize:       maxRequestBodySize,
+		Templates:                templates,
+	}
+	var consumer *shared.AiPromptTemplatePluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
 		}
-		config = &shared.CreateAiPromptTemplatePluginConfig{
-			AllowUntemplatedRequests: allowUntemplatedRequests,
-			LogOriginalRequest:       logOriginalRequest,
-			MaxRequestBodySize:       maxRequestBodySize,
-			Templates:                templates,
+		consumer = &shared.AiPromptTemplatePluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.AiPromptTemplatePluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumerGroup = &shared.AiPromptTemplatePluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -55,133 +76,111 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) ToSharedCreateAiPromptTempl
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateAiPromptTemplatePluginOrdering
+	var ordering *shared.AiPromptTemplatePluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateAiPromptTemplatePluginAfter
+		var after *shared.AiPromptTemplatePluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateAiPromptTemplatePluginAfter{
+			after = &shared.AiPromptTemplatePluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateAiPromptTemplatePluginBefore
+		var before *shared.AiPromptTemplatePluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateAiPromptTemplatePluginBefore{
+			before = &shared.AiPromptTemplatePluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateAiPromptTemplatePluginOrdering{
+		ordering = &shared.AiPromptTemplatePluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateAiPromptTemplatePluginProtocols = []shared.CreateAiPromptTemplatePluginProtocols{}
+	var protocols []shared.AiPromptTemplatePluginProtocols = []shared.AiPromptTemplatePluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateAiPromptTemplatePluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.AiPromptTemplatePluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.AiPromptTemplatePluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.AiPromptTemplatePluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.AiPromptTemplatePluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.AiPromptTemplatePluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateAiPromptTemplatePluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateAiPromptTemplatePluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateAiPromptTemplatePluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateAiPromptTemplatePluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateAiPromptTemplatePluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateAiPromptTemplatePluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateAiPromptTemplatePluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateAiPromptTemplatePluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateAiPromptTemplatePlugin{
+	out := shared.AiPromptTemplatePluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTemplatePlugin(resp *shared.AiPromptTemplatePlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateAiPromptTemplatePluginConfig{}
-			r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
-			r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
-			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-			r.Config.Templates = []tfTypes.Templates{}
-			if len(r.Config.Templates) > len(resp.Config.Templates) {
-				r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
-			}
-			for templatesCount, templatesItem := range resp.Config.Templates {
-				var templates1 tfTypes.Templates
-				templates1.Name = types.StringValue(templatesItem.Name)
-				templates1.Template = types.StringValue(templatesItem.Template)
-				if templatesCount+1 > len(r.Config.Templates) {
-					r.Config.Templates = append(r.Config.Templates, templates1)
-				} else {
-					r.Config.Templates[templatesCount].Name = templates1.Name
-					r.Config.Templates[templatesCount].Template = templates1.Template
-				}
+		r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
+		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
+		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+		r.Config.Templates = []tfTypes.Templates{}
+		if len(r.Config.Templates) > len(resp.Config.Templates) {
+			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
+		}
+		for templatesCount, templatesItem := range resp.Config.Templates {
+			var templates1 tfTypes.Templates
+			templates1.Name = types.StringValue(templatesItem.Name)
+			templates1.Template = types.StringValue(templatesItem.Template)
+			if templatesCount+1 > len(r.Config.Templates) {
+				r.Config.Templates = append(r.Config.Templates, templates1)
+			} else {
+				r.Config.Templates[templatesCount].Name = templates1.Name
+				r.Config.Templates[templatesCount].Template = templates1.Template
 			}
 		}
 		if resp.Consumer == nil {
@@ -203,11 +202,11 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -216,7 +215,7 @@ func (r *GatewayPluginAiPromptTemplateResourceModel) RefreshFromSharedAiPromptTe
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

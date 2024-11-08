@@ -11,32 +11,27 @@ import (
 
 func (r *GatewayPluginMockingDataSourceModel) RefreshFromSharedMockingPlugin(resp *shared.MockingPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateMockingPluginConfig{}
-			r.Config.APISpecification = types.StringPointerValue(resp.Config.APISpecification)
-			r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
-			r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
-			r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
-			r.Config.IncludedStatusCodes = []types.Int64{}
-			for _, v := range resp.Config.IncludedStatusCodes {
-				r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
-			}
-			if resp.Config.MaxDelayTime != nil {
-				r.Config.MaxDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxDelayTime)))
-			} else {
-				r.Config.MaxDelayTime = types.NumberNull()
-			}
-			if resp.Config.MinDelayTime != nil {
-				r.Config.MinDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MinDelayTime)))
-			} else {
-				r.Config.MinDelayTime = types.NumberNull()
-			}
-			r.Config.RandomDelay = types.BoolPointerValue(resp.Config.RandomDelay)
-			r.Config.RandomExamples = types.BoolPointerValue(resp.Config.RandomExamples)
-			r.Config.RandomStatusCode = types.BoolPointerValue(resp.Config.RandomStatusCode)
+		r.Config.APISpecification = types.StringPointerValue(resp.Config.APISpecification)
+		r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
+		r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
+		r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
+		r.Config.IncludedStatusCodes = []types.Int64{}
+		for _, v := range resp.Config.IncludedStatusCodes {
+			r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
 		}
+		if resp.Config.MaxDelayTime != nil {
+			r.Config.MaxDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxDelayTime)))
+		} else {
+			r.Config.MaxDelayTime = types.NumberNull()
+		}
+		if resp.Config.MinDelayTime != nil {
+			r.Config.MinDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MinDelayTime)))
+		} else {
+			r.Config.MinDelayTime = types.NumberNull()
+		}
+		r.Config.RandomDelay = types.BoolPointerValue(resp.Config.RandomDelay)
+		r.Config.RandomExamples = types.BoolPointerValue(resp.Config.RandomExamples)
+		r.Config.RandomStatusCode = types.BoolPointerValue(resp.Config.RandomStatusCode)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -56,11 +51,11 @@ func (r *GatewayPluginMockingDataSourceModel) RefreshFromSharedMockingPlugin(res
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -69,7 +64,7 @@ func (r *GatewayPluginMockingDataSourceModel) RefreshFromSharedMockingPlugin(res
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

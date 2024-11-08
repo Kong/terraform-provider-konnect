@@ -68,6 +68,7 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,

@@ -13,7 +13,7 @@ func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(resp *shared.Key) {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Jwk = types.StringPointerValue(resp.Jwk)
-		r.Kid = types.StringPointerValue(resp.Kid)
+		r.Kid = types.StringValue(resp.Kid)
 		r.Name = types.StringPointerValue(resp.Name)
 		if resp.Pem == nil {
 			r.Pem = nil

@@ -37,20 +37,20 @@ type GatewayPluginAwsLambdaResource struct {
 
 // GatewayPluginAwsLambdaResourceModel describes the resource data model.
 type GatewayPluginAwsLambdaResourceModel struct {
-	Config         *tfTypes.CreateAwsLambdaPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         tfTypes.AwsLambdaPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                   `tfsdk:"created_at"`
+	Enabled        types.Bool                    `tfsdk:"enabled"`
+	ID             types.String                  `tfsdk:"id"`
+	InstanceName   types.String                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
+	Protocols      []types.String                `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
+	Tags           []types.String                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAwsLambdaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginAwsLambda Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
 						Computed:    true,
@@ -268,6 +267,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -384,10 +384,10 @@ func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
+	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
 	request := operations.CreateAwslambdaPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: awsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.CreateAwslambdaPlugin(ctx, request)
 	if err != nil {
@@ -494,11 +494,11 @@ func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
+	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
 	request := operations.UpdateAwslambdaPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: awsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAwslambdaPlugin(ctx, request)
 	if err != nil {

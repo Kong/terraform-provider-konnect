@@ -3,9 +3,17 @@
 package shared
 
 type HMACAuthWithoutParents struct {
+	ID       *string  `json:"id,omitempty"`
 	Secret   *string  `json:"secret,omitempty"`
 	Tags     []string `json:"tags,omitempty"`
 	Username *string  `json:"username,omitempty"`
+}
+
+func (o *HMACAuthWithoutParents) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *HMACAuthWithoutParents) GetSecret() *string {

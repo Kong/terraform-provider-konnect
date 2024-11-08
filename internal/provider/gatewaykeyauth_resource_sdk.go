@@ -9,6 +9,12 @@ import (
 )
 
 func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
 		*key = r.Key.ValueString()
@@ -20,6 +26,7 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.KeyAuthWithoutParents{
+		ID:   id,
 		Key:  key,
 		Tags: tags,
 	}

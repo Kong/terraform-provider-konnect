@@ -38,20 +38,20 @@ type GatewayPluginSyslogResource struct {
 
 // GatewayPluginSyslogResourceModel describes the resource data model.
 type GatewayPluginSyslogResourceModel struct {
-	Config         *tfTypes.CreateSyslogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.SyslogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginSyslogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,8 +63,7 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginSyslog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"client_errors_severity": schema.StringAttribute{
 						Computed:    true,
@@ -213,6 +212,7 @@ func (r *GatewayPluginSyslogResource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -329,10 +329,10 @@ func (r *GatewayPluginSyslogResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createSyslogPlugin := data.ToSharedCreateSyslogPlugin()
+	syslogPlugin := data.ToSharedSyslogPluginInput()
 	request := operations.CreateSyslogPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		CreateSyslogPlugin: createSyslogPlugin,
+		ControlPlaneID: controlPlaneID,
+		SyslogPlugin:   syslogPlugin,
 	}
 	res, err := r.client.Plugins.CreateSyslogPlugin(ctx, request)
 	if err != nil {
@@ -439,11 +439,11 @@ func (r *GatewayPluginSyslogResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createSyslogPlugin := data.ToSharedCreateSyslogPlugin()
+	syslogPlugin := data.ToSharedSyslogPluginInput()
 	request := operations.UpdateSyslogPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		CreateSyslogPlugin: createSyslogPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SyslogPlugin:   syslogPlugin,
 	}
 	res, err := r.client.Plugins.UpdateSyslogPlugin(ctx, request)
 	if err != nil {

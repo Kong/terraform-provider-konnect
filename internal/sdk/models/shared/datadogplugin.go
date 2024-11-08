@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // ConsumerIdentifier - Authenticated user detail
@@ -371,6 +370,29 @@ func (o *DatadogPluginConfig) GetStatusTag() *string {
 	return o.StatusTag
 }
 
+// DatadogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type DatadogPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *DatadogPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type DatadogPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *DatadogPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type DatadogPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -462,29 +484,6 @@ func (e *DatadogPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// DatadogPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type DatadogPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *DatadogPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type DatadogPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *DatadogPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // DatadogPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type DatadogPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -509,29 +508,30 @@ func (o *DatadogPluginService) GetID() *string {
 	return o.ID
 }
 
+// DatadogPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type DatadogPlugin struct {
-	Config *DatadogPluginConfig `json:"config,omitempty"`
+	Config DatadogPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *DatadogPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *DatadogPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                  `json:"enabled,omitempty"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
-	name         *string                `const:"datadog" json:"name,omitempty"`
+	name         string                 `const:"datadog" json:"name"`
 	Ordering     *DatadogPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []DatadogPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *DatadogPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *DatadogPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *DatadogPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *DatadogPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (d DatadogPlugin) MarshalJSON() ([]byte, error) {
@@ -545,11 +545,25 @@ func (d *DatadogPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *DatadogPlugin) GetConfig() *DatadogPluginConfig {
+func (o *DatadogPlugin) GetConfig() DatadogPluginConfig {
+	if o == nil {
+		return DatadogPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *DatadogPlugin) GetConsumer() *DatadogPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *DatadogPlugin) GetConsumerGroup() *DatadogPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *DatadogPlugin) GetCreatedAt() *int64 {
@@ -580,8 +594,8 @@ func (o *DatadogPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *DatadogPlugin) GetName() *string {
-	return types.String("datadog")
+func (o *DatadogPlugin) GetName() string {
+	return "datadog"
 }
 
 func (o *DatadogPlugin) GetOrdering() *DatadogPluginOrdering {
@@ -598,6 +612,20 @@ func (o *DatadogPlugin) GetProtocols() []DatadogPluginProtocols {
 	return o.Protocols
 }
 
+func (o *DatadogPlugin) GetRoute() *DatadogPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *DatadogPlugin) GetService() *DatadogPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *DatadogPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -612,30 +640,116 @@ func (o *DatadogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *DatadogPlugin) GetConsumer() *DatadogPluginConsumer {
+// DatadogPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type DatadogPluginInput struct {
+	Config DatadogPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *DatadogPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *DatadogPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                  `json:"enabled,omitempty"`
+	ID           *string                `json:"id,omitempty"`
+	InstanceName *string                `json:"instance_name,omitempty"`
+	name         string                 `const:"datadog" json:"name"`
+	Ordering     *DatadogPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []DatadogPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *DatadogPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *DatadogPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (d DatadogPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DatadogPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DatadogPluginInput) GetConfig() DatadogPluginConfig {
+	if o == nil {
+		return DatadogPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *DatadogPluginInput) GetConsumer() *DatadogPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *DatadogPlugin) GetConsumerGroup() *DatadogPluginConsumerGroup {
+func (o *DatadogPluginInput) GetConsumerGroup() *DatadogPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *DatadogPlugin) GetRoute() *DatadogPluginRoute {
+func (o *DatadogPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *DatadogPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *DatadogPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *DatadogPluginInput) GetName() string {
+	return "datadog"
+}
+
+func (o *DatadogPluginInput) GetOrdering() *DatadogPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *DatadogPluginInput) GetProtocols() []DatadogPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *DatadogPluginInput) GetRoute() *DatadogPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *DatadogPlugin) GetService() *DatadogPluginService {
+func (o *DatadogPluginInput) GetService() *DatadogPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *DatadogPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

@@ -39,20 +39,20 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         *tfTypes.CreateSamlPluginConfig  `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer             `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer             `tfsdk:"service"`
-	Tags           []types.String                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
+	Config         tfTypes.SamlPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginSamlResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -551,6 +550,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -667,10 +667,10 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createSamlPlugin := data.ToSharedCreateSamlPlugin()
+	samlPlugin := data.ToSharedSamlPluginInput()
 	request := operations.CreateSamlPluginRequest{
-		ControlPlaneID:   controlPlaneID,
-		CreateSamlPlugin: createSamlPlugin,
+		ControlPlaneID: controlPlaneID,
+		SamlPlugin:     samlPlugin,
 	}
 	res, err := r.client.Plugins.CreateSamlPlugin(ctx, request)
 	if err != nil {
@@ -777,11 +777,11 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createSamlPlugin := data.ToSharedCreateSamlPlugin()
+	samlPlugin := data.ToSharedSamlPluginInput()
 	request := operations.UpdateSamlPluginRequest{
-		PluginID:         pluginID,
-		ControlPlaneID:   controlPlaneID,
-		CreateSamlPlugin: createSamlPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SamlPlugin:     samlPlugin,
 	}
 	res, err := r.client.Plugins.UpdateSamlPlugin(ctx, request)
 	if err != nil {

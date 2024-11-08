@@ -9,8 +9,8 @@ import (
 
 type CreateBasicauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateBasicAuthPlugin *shared.CreateBasicAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID  string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	BasicAuthPlugin *shared.BasicAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateBasicauthPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateBasicauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateBasicauthPluginRequest) GetCreateBasicAuthPlugin() *shared.CreateBasicAuthPlugin {
+func (o *CreateBasicauthPluginRequest) GetBasicAuthPlugin() *shared.BasicAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateBasicAuthPlugin
+	return o.BasicAuthPlugin
 }
 
 type CreateBasicauthPluginResponse struct {

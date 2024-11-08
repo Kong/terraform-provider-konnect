@@ -36,20 +36,20 @@ type GatewayPluginLdapAuthResource struct {
 
 // GatewayPluginLdapAuthResourceModel describes the resource data model.
 type GatewayPluginLdapAuthResourceModel struct {
-	Config         *tfTypes.CreateLdapAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering    `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         tfTypes.LdapAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer         `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer         `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLdapAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,8 +61,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginLdapAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -178,6 +177,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -294,10 +294,10 @@ func (r *GatewayPluginLdapAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createLdapAuthPlugin := data.ToSharedCreateLdapAuthPlugin()
+	ldapAuthPlugin := data.ToSharedLdapAuthPluginInput()
 	request := operations.CreateLdapauthPluginRequest{
-		ControlPlaneID:       controlPlaneID,
-		CreateLdapAuthPlugin: createLdapAuthPlugin,
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: ldapAuthPlugin,
 	}
 	res, err := r.client.Plugins.CreateLdapauthPlugin(ctx, request)
 	if err != nil {
@@ -404,11 +404,11 @@ func (r *GatewayPluginLdapAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createLdapAuthPlugin := data.ToSharedCreateLdapAuthPlugin()
+	ldapAuthPlugin := data.ToSharedLdapAuthPluginInput()
 	request := operations.UpdateLdapauthPluginRequest{
-		PluginID:             pluginID,
-		ControlPlaneID:       controlPlaneID,
-		CreateLdapAuthPlugin: createLdapAuthPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: ldapAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateLdapauthPlugin(ctx, request)
 	if err != nil {

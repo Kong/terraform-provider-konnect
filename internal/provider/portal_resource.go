@@ -141,7 +141,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used for this resource.`,
+				Description: `Contains a unique identifier used by the API for this resource.`,
 			},
 			"is_public": schema.BoolAttribute{
 				Computed:    true,

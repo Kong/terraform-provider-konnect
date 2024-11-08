@@ -68,6 +68,7 @@ func (e *Algorithm) UnmarshalJSON(data []byte) error {
 
 type JWTWithoutParents struct {
 	Algorithm    *Algorithm `json:"algorithm,omitempty"`
+	ID           *string    `json:"id,omitempty"`
 	Key          *string    `json:"key,omitempty"`
 	RsaPublicKey *string    `json:"rsa_public_key,omitempty"`
 	Secret       *string    `json:"secret,omitempty"`
@@ -79,6 +80,13 @@ func (o *JWTWithoutParents) GetAlgorithm() *Algorithm {
 		return nil
 	}
 	return o.Algorithm
+}
+
+func (o *JWTWithoutParents) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *JWTWithoutParents) GetKey() *string {

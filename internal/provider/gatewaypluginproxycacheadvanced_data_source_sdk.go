@@ -10,112 +10,107 @@ import (
 
 func (r *GatewayPluginProxyCacheAdvancedDataSourceModel) RefreshFromSharedProxyCacheAdvancedPlugin(resp *shared.ProxyCacheAdvancedPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.BypassOnErr = types.BoolPointerValue(resp.Config.BypassOnErr)
+		r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
+		r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
+		r.Config.ContentType = []types.String{}
+		for _, v := range resp.Config.ContentType {
+			r.Config.ContentType = append(r.Config.ContentType, types.StringValue(v))
+		}
+		r.Config.IgnoreURICase = types.BoolPointerValue(resp.Config.IgnoreURICase)
+		if resp.Config.Memory == nil {
+			r.Config.Memory = nil
 		} else {
-			r.Config = &tfTypes.CreateProxyCacheAdvancedPluginConfig{}
-			r.Config.BypassOnErr = types.BoolPointerValue(resp.Config.BypassOnErr)
-			r.Config.CacheControl = types.BoolPointerValue(resp.Config.CacheControl)
-			r.Config.CacheTTL = types.Int64PointerValue(resp.Config.CacheTTL)
-			r.Config.ContentType = []types.String{}
-			for _, v := range resp.Config.ContentType {
-				r.Config.ContentType = append(r.Config.ContentType, types.StringValue(v))
+			r.Config.Memory = &tfTypes.Memory{}
+			r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
+		}
+		if resp.Config.Redis == nil {
+			r.Config.Redis = nil
+		} else {
+			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
-			r.Config.IgnoreURICase = types.BoolPointerValue(resp.Config.IgnoreURICase)
-			if resp.Config.Memory == nil {
-				r.Config.Memory = nil
-			} else {
-				r.Config.Memory = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginMemory{}
-				r.Config.Memory.DictionaryName = types.StringPointerValue(resp.Config.Memory.DictionaryName)
-			}
-			if resp.Config.Redis == nil {
-				r.Config.Redis = nil
-			} else {
-				r.Config.Redis = &tfTypes.CreateGraphqlProxyCacheAdvancedPluginRedis{}
-				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-				r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
-				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-				}
-				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.ClusterNodes
-					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
-						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
-					} else {
-						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-					}
-				}
-				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
-				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
-				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
-				r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
-				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
-				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
-				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-				r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
-				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-				}
-				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.SentinelNodes
-					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
-						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
-					} else {
-						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-					}
-				}
-				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
-				if resp.Config.Redis.SentinelRole != nil {
-					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+				var clusterNodes1 tfTypes.ClusterNodes
+				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
 				} else {
-					r.Config.Redis.SentinelRole = types.StringNull()
+					r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+					r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
 				}
-				r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
-				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 			}
-			r.Config.RequestMethod = []types.String{}
-			for _, v := range resp.Config.RequestMethod {
-				r.Config.RequestMethod = append(r.Config.RequestMethod, types.StringValue(string(v)))
+			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
+			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
+			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
+			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
+			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
-			r.Config.ResponseCode = []types.Int64{}
-			for _, v := range resp.Config.ResponseCode {
-				r.Config.ResponseCode = append(r.Config.ResponseCode, types.Int64Value(v))
+			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+				var sentinelNodes1 tfTypes.SentinelNodes
+				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+				} else {
+					r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+					r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+				}
 			}
-			if resp.Config.ResponseHeaders == nil {
-				r.Config.ResponseHeaders = nil
+			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
+			if resp.Config.Redis.SentinelRole != nil {
+				r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
 			} else {
-				r.Config.ResponseHeaders = &tfTypes.CreateProxyCachePluginResponseHeaders{}
-				r.Config.ResponseHeaders.Age = types.BoolPointerValue(resp.Config.ResponseHeaders.Age)
-				r.Config.ResponseHeaders.XCacheKey = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheKey)
-				r.Config.ResponseHeaders.XCacheStatus = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheStatus)
+				r.Config.Redis.SentinelRole = types.StringNull()
 			}
-			r.Config.StorageTTL = types.Int64PointerValue(resp.Config.StorageTTL)
-			if resp.Config.Strategy != nil {
-				r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
-			} else {
-				r.Config.Strategy = types.StringNull()
-			}
-			r.Config.VaryHeaders = []types.String{}
-			for _, v := range resp.Config.VaryHeaders {
-				r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
-			}
-			r.Config.VaryQueryParams = []types.String{}
-			for _, v := range resp.Config.VaryQueryParams {
-				r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
-			}
+			r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
+			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+		}
+		r.Config.RequestMethod = []types.String{}
+		for _, v := range resp.Config.RequestMethod {
+			r.Config.RequestMethod = append(r.Config.RequestMethod, types.StringValue(string(v)))
+		}
+		r.Config.ResponseCode = []types.Int64{}
+		for _, v := range resp.Config.ResponseCode {
+			r.Config.ResponseCode = append(r.Config.ResponseCode, types.Int64Value(v))
+		}
+		if resp.Config.ResponseHeaders == nil {
+			r.Config.ResponseHeaders = nil
+		} else {
+			r.Config.ResponseHeaders = &tfTypes.ResponseHeaders{}
+			r.Config.ResponseHeaders.Age = types.BoolPointerValue(resp.Config.ResponseHeaders.Age)
+			r.Config.ResponseHeaders.XCacheKey = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheKey)
+			r.Config.ResponseHeaders.XCacheStatus = types.BoolPointerValue(resp.Config.ResponseHeaders.XCacheStatus)
+		}
+		r.Config.StorageTTL = types.Int64PointerValue(resp.Config.StorageTTL)
+		if resp.Config.Strategy != nil {
+			r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
+		} else {
+			r.Config.Strategy = types.StringNull()
+		}
+		r.Config.VaryHeaders = []types.String{}
+		for _, v := range resp.Config.VaryHeaders {
+			r.Config.VaryHeaders = append(r.Config.VaryHeaders, types.StringValue(v))
+		}
+		r.Config.VaryQueryParams = []types.String{}
+		for _, v := range resp.Config.VaryQueryParams {
+			r.Config.VaryQueryParams = append(r.Config.VaryQueryParams, types.StringValue(v))
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -136,11 +131,11 @@ func (r *GatewayPluginProxyCacheAdvancedDataSourceModel) RefreshFromSharedProxyC
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -149,7 +144,7 @@ func (r *GatewayPluginProxyCacheAdvancedDataSourceModel) RefreshFromSharedProxyC
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

@@ -36,20 +36,20 @@ type GatewayPluginXMLThreatProtectionResource struct {
 
 // GatewayPluginXMLThreatProtectionResourceModel describes the resource data model.
 type GatewayPluginXMLThreatProtectionResourceModel struct {
-	Config         *tfTypes.CreateXMLThreatProtectionPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                           `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                   `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                    `tfsdk:"created_at"`
-	Enabled        types.Bool                                     `tfsdk:"enabled"`
-	ID             types.String                                   `tfsdk:"id"`
-	InstanceName   types.String                                   `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering               `tfsdk:"ordering"`
-	Protocols      []types.String                                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                           `tfsdk:"service"`
-	Tags           []types.String                                 `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                    `tfsdk:"updated_at"`
+	Config         tfTypes.XMLThreatProtectionPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                    `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                    `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                    `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginXMLThreatProtectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,8 +61,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 		MarkdownDescription: "GatewayPluginXMLThreatProtection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_dtd": schema.BoolAttribute{
 						Computed:    true,
@@ -225,6 +224,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Schema(ctx context.Context, r
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -341,10 +341,10 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createXMLThreatProtectionPlugin := data.ToSharedCreateXMLThreatProtectionPlugin()
+	xmlThreatProtectionPlugin := data.ToSharedXMLThreatProtectionPluginInput()
 	request := operations.CreateXmlthreatprotectionPluginRequest{
-		ControlPlaneID:                  controlPlaneID,
-		CreateXMLThreatProtectionPlugin: createXMLThreatProtectionPlugin,
+		ControlPlaneID:            controlPlaneID,
+		XMLThreatProtectionPlugin: xmlThreatProtectionPlugin,
 	}
 	res, err := r.client.Plugins.CreateXmlthreatprotectionPlugin(ctx, request)
 	if err != nil {
@@ -451,11 +451,11 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createXMLThreatProtectionPlugin := data.ToSharedCreateXMLThreatProtectionPlugin()
+	xmlThreatProtectionPlugin := data.ToSharedXMLThreatProtectionPluginInput()
 	request := operations.UpdateXmlthreatprotectionPluginRequest{
-		PluginID:                        pluginID,
-		ControlPlaneID:                  controlPlaneID,
-		CreateXMLThreatProtectionPlugin: createXMLThreatProtectionPlugin,
+		PluginID:                  pluginID,
+		ControlPlaneID:            controlPlaneID,
+		XMLThreatProtectionPlugin: xmlThreatProtectionPlugin,
 	}
 	res, err := r.client.Plugins.UpdateXmlthreatprotectionPlugin(ctx, request)
 	if err != nil {

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: c2ca30fe645c22013c1b47f368878d2c
+  docChecksum: deaf380d62ee8a24f7fb89df87ff204f
   docVersion: 2.0.0
   speakeasyVersion: 1.430.0
   generationVersion: 2.449.0
@@ -897,9 +897,24 @@ generatedFiles:
   - internal/provider/teamrole_resource_sdk.go
   - internal/provider/teamuser_resource.go
   - internal/provider/teamuser_resource_sdk.go
+  - internal/provider/types/account_key.go
   - internal/provider/types/acl_consumer.go
+  - internal/provider/types/acl_plugin_after.go
+  - internal/provider/types/acl_plugin_config.go
+  - internal/provider/types/acl_plugin_ordering.go
+  - internal/provider/types/acme_plugin_config.go
+  - internal/provider/types/acme_plugin_redis.go
+  - internal/provider/types/acme_plugin_vault.go
   - internal/provider/types/active.go
+  - internal/provider/types/add.go
   - internal/provider/types/ai_prompt_decorator_plugin_append.go
+  - internal/provider/types/ai_prompt_decorator_plugin_config.go
+  - internal/provider/types/ai_prompt_guard_plugin_config.go
+  - internal/provider/types/ai_prompt_template_plugin_config.go
+  - internal/provider/types/ai_proxy_plugin_config.go
+  - internal/provider/types/ai_request_transformer_plugin_config.go
+  - internal/provider/types/ai_response_transformer_plugin_config.go
+  - internal/provider/types/allow.go
   - internal/provider/types/api_product_portal.go
   - internal/provider/types/api_product_version_auth_strategy.go
   - internal/provider/types/api_product_version_portal.go
@@ -915,13 +930,23 @@ generatedFiles:
   - internal/provider/types/appearance_image.go
   - internal/provider/types/appearance_images.go
   - internal/provider/types/appearance_theme_color_variables.go
+  - internal/provider/types/auth.go
   - internal/provider/types/auth_strategy.go
   - internal/provider/types/auth_strategy_client_credentials.go
   - internal/provider/types/auth_strategy_key_auth.go
+  - internal/provider/types/authentication.go
+  - internal/provider/types/aws_lambda_plugin_config.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
+  - internal/provider/types/azure_functions_plugin_config.go
+  - internal/provider/types/basic_auth_plugin_config.go
+  - internal/provider/types/bedrock.go
+  - internal/provider/types/binary.go
   - internal/provider/types/bootstrap_servers.go
+  - internal/provider/types/bot_detection_plugin_config.go
   - internal/provider/types/button.go
+  - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
+  - internal/provider/types/client.go
   - internal/provider/types/cluster_nodes.go
   - internal/provider/types/config.go
   - internal/provider/types/configuration_data_plane_group.go
@@ -929,143 +954,66 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
   - internal/provider/types/configuration_data_plane_group_config.go
-  - internal/provider/types/create_acl_plugin_after.go
-  - internal/provider/types/create_acl_plugin_config.go
-  - internal/provider/types/create_acl_plugin_ordering.go
-  - internal/provider/types/create_acme_plugin_account_key.go
-  - internal/provider/types/create_acme_plugin_config.go
-  - internal/provider/types/create_acme_plugin_consul.go
-  - internal/provider/types/create_acme_plugin_extra_options.go
-  - internal/provider/types/create_acme_plugin_redis.go
-  - internal/provider/types/create_acme_plugin_shm.go
-  - internal/provider/types/create_acme_plugin_storage_config.go
-  - internal/provider/types/create_acme_plugin_vault.go
-  - internal/provider/types/create_ai_prompt_decorator_plugin_config.go
-  - internal/provider/types/create_ai_prompt_decorator_plugin_prompts.go
-  - internal/provider/types/create_ai_prompt_guard_plugin_config.go
-  - internal/provider/types/create_ai_prompt_template_plugin_config.go
-  - internal/provider/types/create_ai_proxy_plugin_auth.go
-  - internal/provider/types/create_ai_proxy_plugin_bedrock.go
-  - internal/provider/types/create_ai_proxy_plugin_config.go
-  - internal/provider/types/create_ai_proxy_plugin_gemini.go
-  - internal/provider/types/create_ai_proxy_plugin_logging.go
-  - internal/provider/types/create_ai_proxy_plugin_model.go
-  - internal/provider/types/create_ai_proxy_plugin_options.go
-  - internal/provider/types/create_ai_request_transformer_plugin_config.go
-  - internal/provider/types/create_ai_request_transformer_plugin_llm.go
-  - internal/provider/types/create_ai_response_transformer_plugin_config.go
-  - internal/provider/types/create_aws_lambda_plugin_config.go
-  - internal/provider/types/create_azure_functions_plugin_config.go
-  - internal/provider/types/create_basic_auth_plugin_config.go
-  - internal/provider/types/create_bot_detection_plugin_config.go
-  - internal/provider/types/create_canary_plugin_config.go
-  - internal/provider/types/create_correlation_id_plugin_config.go
-  - internal/provider/types/create_cors_plugin_config.go
-  - internal/provider/types/create_datadog_plugin_config.go
-  - internal/provider/types/create_datadog_plugin_queue.go
-  - internal/provider/types/create_degraphql_plugin_config.go
-  - internal/provider/types/create_exit_transformer_plugin_config.go
-  - internal/provider/types/create_file_log_plugin_config.go
-  - internal/provider/types/create_forward_proxy_plugin_config.go
-  - internal/provider/types/create_graphql_proxy_cache_advanced_plugin_config.go
-  - internal/provider/types/create_graphql_proxy_cache_advanced_plugin_memory.go
-  - internal/provider/types/create_graphql_proxy_cache_advanced_plugin_redis.go
-  - internal/provider/types/create_graphql_rate_limiting_advanced_plugin_config.go
-  - internal/provider/types/create_grpc_gateway_plugin_config.go
-  - internal/provider/types/create_grpc_web_plugin_config.go
-  - internal/provider/types/create_hmac_auth_plugin_config.go
-  - internal/provider/types/create_http_log_plugin_config.go
-  - internal/provider/types/create_ip_restriction_plugin_config.go
-  - internal/provider/types/create_jq_plugin_config.go
-  - internal/provider/types/create_jq_plugin_request_jq_program_options.go
-  - internal/provider/types/create_jwe_decrypt_plugin_config.go
-  - internal/provider/types/create_jwt_plugin_config.go
-  - internal/provider/types/create_jwt_signer_plugin_config.go
-  - internal/provider/types/create_kafka_log_plugin_authentication.go
-  - internal/provider/types/create_kafka_log_plugin_config.go
-  - internal/provider/types/create_kafka_log_plugin_security.go
-  - internal/provider/types/create_kafka_upstream_plugin_config.go
-  - internal/provider/types/create_key_auth_plugin_config.go
-  - internal/provider/types/create_konnect_application_auth_plugin_config.go
-  - internal/provider/types/create_konnect_application_auth_plugin_config_config.go
-  - internal/provider/types/create_konnect_application_auth_plugin_redis.go
-  - internal/provider/types/create_konnect_application_auth_plugin_v2_strategies.go
-  - internal/provider/types/create_ldap_auth_advanced_plugin_config.go
-  - internal/provider/types/create_ldap_auth_plugin_config.go
-  - internal/provider/types/create_loggly_plugin_config.go
-  - internal/provider/types/create_mocking_plugin_config.go
-  - internal/provider/types/create_mtls_auth_plugin_config.go
-  - internal/provider/types/create_oas_validation_plugin_config.go
-  - internal/provider/types/create_oauth2_introspection_plugin_config.go
-  - internal/provider/types/create_oauth2_plugin_config.go
-  - internal/provider/types/create_opa_plugin_config.go
-  - internal/provider/types/create_openid_connect_plugin_config.go
-  - internal/provider/types/create_opentelemetry_plugin_config.go
-  - internal/provider/types/create_opentelemetry_plugin_propagation.go
-  - internal/provider/types/create_post_function_plugin_config.go
-  - internal/provider/types/create_prometheus_plugin_config.go
-  - internal/provider/types/create_proxy_cache_advanced_plugin_config.go
-  - internal/provider/types/create_proxy_cache_plugin_config.go
-  - internal/provider/types/create_proxy_cache_plugin_response_headers.go
-  - internal/provider/types/create_rate_limiting_advanced_plugin_config.go
-  - internal/provider/types/create_rate_limiting_plugin_config.go
-  - internal/provider/types/create_rate_limiting_plugin_redis.go
-  - internal/provider/types/create_request_size_limiting_plugin_config.go
-  - internal/provider/types/create_request_termination_plugin_config.go
-  - internal/provider/types/create_request_transformer_advanced_plugin_add.go
-  - internal/provider/types/create_request_transformer_advanced_plugin_allow.go
-  - internal/provider/types/create_request_transformer_advanced_plugin_config.go
-  - internal/provider/types/create_request_transformer_advanced_plugin_replace.go
-  - internal/provider/types/create_request_transformer_plugin_add.go
-  - internal/provider/types/create_request_transformer_plugin_config.go
-  - internal/provider/types/create_request_transformer_plugin_replace.go
-  - internal/provider/types/create_request_validator_plugin_config.go
-  - internal/provider/types/create_response_ratelimiting_plugin_config.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_add.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_allow.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_config.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_remove.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_rename.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_replace.go
-  - internal/provider/types/create_response_transformer_advanced_plugin_transform.go
-  - internal/provider/types/create_response_transformer_plugin_add.go
-  - internal/provider/types/create_response_transformer_plugin_config.go
-  - internal/provider/types/create_response_transformer_plugin_remove.go
-  - internal/provider/types/create_route_by_header_plugin_config.go
-  - internal/provider/types/create_route_transformer_advanced_plugin_config.go
-  - internal/provider/types/create_saml_plugin_config.go
-  - internal/provider/types/create_session_plugin_config.go
-  - internal/provider/types/create_statsd_advanced_plugin_config.go
-  - internal/provider/types/create_statsd_plugin_config.go
-  - internal/provider/types/create_syslog_plugin_config.go
-  - internal/provider/types/create_tcp_log_plugin_config.go
-  - internal/provider/types/create_tls_handshake_modifier_plugin_config.go
-  - internal/provider/types/create_tls_metadata_headers_plugin_config.go
-  - internal/provider/types/create_udp_log_plugin_config.go
-  - internal/provider/types/create_upstream_timeout_plugin_config.go
-  - internal/provider/types/create_vault_auth_plugin_config.go
-  - internal/provider/types/create_websocket_size_limit_plugin_config.go
-  - internal/provider/types/create_websocket_validator_plugin_binary.go
-  - internal/provider/types/create_websocket_validator_plugin_client.go
-  - internal/provider/types/create_websocket_validator_plugin_config.go
-  - internal/provider/types/create_xml_threat_protection_plugin_config.go
-  - internal/provider/types/create_zipkin_plugin_config.go
+  - internal/provider/types/consul.go
+  - internal/provider/types/correlation_id_plugin_config.go
+  - internal/provider/types/cors_plugin_config.go
   - internal/provider/types/custom_domain_state_metadata.go
+  - internal/provider/types/datadog_plugin_config.go
   - internal/provider/types/dcr_provider.go
+  - internal/provider/types/degraphql_plugin_config.go
+  - internal/provider/types/exit_transformer_plugin_config.go
+  - internal/provider/types/extra_options.go
+  - internal/provider/types/file_log_plugin_config.go
+  - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/gateway_service.go
   - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/gemini.go
+  - internal/provider/types/graphql_proxy_cache_advanced_plugin_config.go
+  - internal/provider/types/graphql_rate_limiting_advanced_plugin_config.go
+  - internal/provider/types/grpc_gateway_plugin_config.go
+  - internal/provider/types/grpc_web_plugin_config.go
   - internal/provider/types/healthchecks.go
   - internal/provider/types/healthy.go
+  - internal/provider/types/hmac_auth_plugin_config.go
+  - internal/provider/types/http_log_plugin_config.go
+  - internal/provider/types/ip_restriction_plugin_config.go
+  - internal/provider/types/jq_plugin_config.go
+  - internal/provider/types/jwe_decrypt_plugin_config.go
+  - internal/provider/types/jwt_plugin_config.go
+  - internal/provider/types/jwt_signer_plugin_config.go
+  - internal/provider/types/kafka_log_plugin_config.go
+  - internal/provider/types/kafka_log_plugin_security.go
+  - internal/provider/types/kafka_upstream_plugin_config.go
+  - internal/provider/types/key_auth_plugin_config.go
   - internal/provider/types/konnect_application_auth_plugin_client_jwk.go
+  - internal/provider/types/konnect_application_auth_plugin_config.go
+  - internal/provider/types/konnect_application_auth_plugin_config_config.go
   - internal/provider/types/konnect_application_auth_plugin_key_auth.go
+  - internal/provider/types/konnect_application_auth_plugin_redis.go
+  - internal/provider/types/ldap_auth_advanced_plugin_config.go
+  - internal/provider/types/ldap_auth_plugin_config.go
+  - internal/provider/types/llm.go
+  - internal/provider/types/logging.go
+  - internal/provider/types/loggly_plugin_config.go
+  - internal/provider/types/memory.go
   - internal/provider/types/metadata.go
   - internal/provider/types/metrics.go
+  - internal/provider/types/mocking_plugin_config.go
+  - internal/provider/types/model.go
+  - internal/provider/types/mtls_auth_plugin_config.go
   - internal/provider/types/network_firewall_config.go
   - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/nullable_appearance_fonts.go
   - internal/provider/types/nullable_appearance_text_variables.go
   - internal/provider/types/nullable_appearance_theme_variables.go
+  - internal/provider/types/oas_validation_plugin_config.go
+  - internal/provider/types/oauth2_introspection_plugin_config.go
+  - internal/provider/types/oauth2_plugin_config.go
+  - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/openid_connect.go
+  - internal/provider/types/openid_connect_plugin_config.go
+  - internal/provider/types/opentelemetry_plugin_config.go
+  - internal/provider/types/options_obj.go
   - internal/provider/types/page_meta.go
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
@@ -1074,21 +1022,73 @@ generatedFiles:
   - internal/provider/types/portal.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
+  - internal/provider/types/post_function_plugin_config.go
+  - internal/provider/types/prometheus_plugin_config.go
+  - internal/provider/types/prompts.go
+  - internal/provider/types/propagation.go
   - internal/provider/types/provider_account.go
+  - internal/provider/types/proxy_cache_advanced_plugin_config.go
+  - internal/provider/types/proxy_cache_plugin_config.go
   - internal/provider/types/proxy_url.go
+  - internal/provider/types/queue.go
+  - internal/provider/types/rate_limiting_advanced_plugin_config.go
+  - internal/provider/types/rate_limiting_plugin_config.go
+  - internal/provider/types/rate_limiting_plugin_redis.go
+  - internal/provider/types/redis.go
+  - internal/provider/types/replace.go
+  - internal/provider/types/request_jq_program_options.go
+  - internal/provider/types/request_size_limiting_plugin_config.go
+  - internal/provider/types/request_termination_plugin_config.go
+  - internal/provider/types/request_transformer_advanced_plugin_add.go
+  - internal/provider/types/request_transformer_advanced_plugin_config.go
+  - internal/provider/types/request_transformer_advanced_plugin_replace.go
+  - internal/provider/types/request_transformer_plugin_config.go
+  - internal/provider/types/request_validator_plugin_config.go
+  - internal/provider/types/response_headers.go
+  - internal/provider/types/response_ratelimiting_plugin_config.go
+  - internal/provider/types/response_transformer_advanced_plugin_add.go
+  - internal/provider/types/response_transformer_advanced_plugin_allow.go
+  - internal/provider/types/response_transformer_advanced_plugin_config.go
+  - internal/provider/types/response_transformer_advanced_plugin_remove.go
+  - internal/provider/types/response_transformer_advanced_plugin_rename.go
+  - internal/provider/types/response_transformer_advanced_plugin_replace.go
+  - internal/provider/types/response_transformer_plugin_add.go
+  - internal/provider/types/response_transformer_plugin_config.go
+  - internal/provider/types/response_transformer_plugin_remove.go
+  - internal/provider/types/route_by_header_plugin_config.go
+  - internal/provider/types/route_transformer_advanced_plugin_config.go
   - internal/provider/types/rules.go
+  - internal/provider/types/saml_plugin_config.go
   - internal/provider/types/section.go
   - internal/provider/types/sentinel_nodes.go
   - internal/provider/types/serverless_control_plane.go
+  - internal/provider/types/session_plugin_config.go
+  - internal/provider/types/shm.go
   - internal/provider/types/static_tags.go
+  - internal/provider/types/statsd_advanced_plugin_config.go
+  - internal/provider/types/statsd_plugin_config.go
   - internal/provider/types/statsd_plugin_metrics.go
+  - internal/provider/types/storage_config.go
+  - internal/provider/types/syslog_plugin_config.go
+  - internal/provider/types/tcp_log_plugin_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
+  - internal/provider/types/tls_handshake_modifier_plugin_config.go
+  - internal/provider/types/tls_metadata_headers_plugin_config.go
+  - internal/provider/types/transform.go
   - internal/provider/types/transit_gateway_attachment_config.go
   - internal/provider/types/transit_gateway_dns_config.go
+  - internal/provider/types/udp_log_plugin_config.go
   - internal/provider/types/unhealthy.go
   - internal/provider/types/upstream_healthy.go
+  - internal/provider/types/upstream_timeout_plugin_config.go
   - internal/provider/types/upstream_unhealthy.go
+  - internal/provider/types/v2_strategies.go
+  - internal/provider/types/vault_auth_plugin_config.go
+  - internal/provider/types/websocket_size_limit_plugin_config.go
+  - internal/provider/types/websocket_validator_plugin_config.go
+  - internal/provider/types/xml_threat_protection_plugin_config.go
+  - internal/provider/types/zipkin_plugin_config.go
   - internal/provider/utils.go
   - internal/sdk/.gitattributes
   - internal/sdk/.gitignore
@@ -1663,105 +1663,26 @@ generatedFiles:
   - internal/sdk/models/shared/correlationidplugin.go
   - internal/sdk/models/shared/corsplugin.go
   - internal/sdk/models/shared/cpregion.go
-  - internal/sdk/models/shared/createaclplugin.go
-  - internal/sdk/models/shared/createacmeplugin.go
-  - internal/sdk/models/shared/createaipromptdecoratorplugin.go
-  - internal/sdk/models/shared/createaipromptguardplugin.go
-  - internal/sdk/models/shared/createaiprompttemplateplugin.go
-  - internal/sdk/models/shared/createaiproxyplugin.go
-  - internal/sdk/models/shared/createairequesttransformerplugin.go
-  - internal/sdk/models/shared/createairesponsetransformerplugin.go
   - internal/sdk/models/shared/createapiproductdocumentdto.go
   - internal/sdk/models/shared/createapiproductdto.go
   - internal/sdk/models/shared/createapiproductversiondto.go
   - internal/sdk/models/shared/createapiproductversionspecdto.go
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
-  - internal/sdk/models/shared/createawslambdaplugin.go
-  - internal/sdk/models/shared/createazurefunctionsplugin.go
-  - internal/sdk/models/shared/createbasicauthplugin.go
-  - internal/sdk/models/shared/createbotdetectionplugin.go
-  - internal/sdk/models/shared/createcanaryplugin.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
-  - internal/sdk/models/shared/createcorrelationidplugin.go
-  - internal/sdk/models/shared/createcorsplugin.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
-  - internal/sdk/models/shared/createdatadogplugin.go
-  - internal/sdk/models/shared/createdegraphqlplugin.go
-  - internal/sdk/models/shared/createexittransformerplugin.go
-  - internal/sdk/models/shared/createfilelogplugin.go
-  - internal/sdk/models/shared/createforwardproxyplugin.go
-  - internal/sdk/models/shared/creategraphqlproxycacheadvancedplugin.go
-  - internal/sdk/models/shared/creategraphqlratelimitingadvancedplugin.go
-  - internal/sdk/models/shared/creategrpcgatewayplugin.go
-  - internal/sdk/models/shared/creategrpcwebplugin.go
-  - internal/sdk/models/shared/createhmacauthplugin.go
-  - internal/sdk/models/shared/createhttplogplugin.go
-  - internal/sdk/models/shared/createiprestrictionplugin.go
-  - internal/sdk/models/shared/createjqplugin.go
-  - internal/sdk/models/shared/createjwedecryptplugin.go
-  - internal/sdk/models/shared/createjwtplugin.go
-  - internal/sdk/models/shared/createjwtsignerplugin.go
-  - internal/sdk/models/shared/createkafkalogplugin.go
-  - internal/sdk/models/shared/createkafkaupstreamplugin.go
-  - internal/sdk/models/shared/createkeyauthencplugin.go
-  - internal/sdk/models/shared/createkeyauthplugin.go
-  - internal/sdk/models/shared/createkonnectapplicationauthplugin.go
-  - internal/sdk/models/shared/createldapauthadvancedplugin.go
-  - internal/sdk/models/shared/createldapauthplugin.go
-  - internal/sdk/models/shared/createlogglyplugin.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
-  - internal/sdk/models/shared/createmockingplugin.go
-  - internal/sdk/models/shared/createmtlsauthplugin.go
   - internal/sdk/models/shared/createnetworkrequest.go
-  - internal/sdk/models/shared/createoasvalidationplugin.go
-  - internal/sdk/models/shared/createoauth2introspectionplugin.go
-  - internal/sdk/models/shared/createoauth2plugin.go
-  - internal/sdk/models/shared/createopaplugin.go
-  - internal/sdk/models/shared/createopenidconnectplugin.go
-  - internal/sdk/models/shared/createopentelemetryplugin.go
   - internal/sdk/models/shared/createpluginschemas.go
   - internal/sdk/models/shared/createportalrequest.go
   - internal/sdk/models/shared/createportalresponse.go
-  - internal/sdk/models/shared/createpostfunctionplugin.go
-  - internal/sdk/models/shared/createprefunctionplugin.go
-  - internal/sdk/models/shared/createprometheusplugin.go
-  - internal/sdk/models/shared/createproxycacheadvancedplugin.go
-  - internal/sdk/models/shared/createproxycacheplugin.go
-  - internal/sdk/models/shared/createratelimitingadvancedplugin.go
-  - internal/sdk/models/shared/createratelimitingplugin.go
-  - internal/sdk/models/shared/createrequestsizelimitingplugin.go
-  - internal/sdk/models/shared/createrequestterminationplugin.go
-  - internal/sdk/models/shared/createrequesttransformeradvancedplugin.go
-  - internal/sdk/models/shared/createrequesttransformerplugin.go
-  - internal/sdk/models/shared/createrequestvalidatorplugin.go
-  - internal/sdk/models/shared/createresponseratelimitingplugin.go
-  - internal/sdk/models/shared/createresponsetransformeradvancedplugin.go
-  - internal/sdk/models/shared/createresponsetransformerplugin.go
-  - internal/sdk/models/shared/createroutebyheaderplugin.go
-  - internal/sdk/models/shared/createroutetransformeradvancedplugin.go
-  - internal/sdk/models/shared/createsamlplugin.go
   - internal/sdk/models/shared/createserverlesscloudgatewayrequest.go
-  - internal/sdk/models/shared/createsessionplugin.go
-  - internal/sdk/models/shared/createstatsdadvancedplugin.go
-  - internal/sdk/models/shared/createstatsdplugin.go
-  - internal/sdk/models/shared/createsyslogplugin.go
   - internal/sdk/models/shared/createsystemaccount.go
   - internal/sdk/models/shared/createsystemaccountaccesstoken.go
-  - internal/sdk/models/shared/createtcplogplugin.go
   - internal/sdk/models/shared/createteam.go
-  - internal/sdk/models/shared/createtlshandshakemodifierplugin.go
-  - internal/sdk/models/shared/createtlsmetadataheadersplugin.go
   - internal/sdk/models/shared/createtransitgatewayrequest.go
-  - internal/sdk/models/shared/createudplogplugin.go
-  - internal/sdk/models/shared/createupstreamtimeoutplugin.go
-  - internal/sdk/models/shared/createvaultauthplugin.go
-  - internal/sdk/models/shared/createwebsocketsizelimitplugin.go
-  - internal/sdk/models/shared/createwebsocketvalidatorplugin.go
-  - internal/sdk/models/shared/createxmlthreatprotectionplugin.go
-  - internal/sdk/models/shared/createzipkinplugin.go
   - internal/sdk/models/shared/customdomain.go
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/datadogplugin.go
@@ -2688,9 +2609,13 @@ examples:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 812329}
+        "201":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
   delete-ca_certificate:
     "":
       parameters:
@@ -2709,23 +2634,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 834989}
+        "200":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
   upsert-ca_certificate:
     "":
       parameters:
         path:
           CACertificateId: "3c31f18a-f27a-4f9b-8cd4-bf841554612f"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 10999}
+        "200":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f260"}
   create-certificate:
     speakeasy-default-create-certificate:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 143829}
+        "201":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----"}
   delete-certificate:
     "":
       parameters:
@@ -2744,23 +2679,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 173775}
+        "200":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----"}
   upsert-certificate:
     "":
       parameters:
         path:
           CertificateId: "ddf3cdaa-3329-4961-822a-ce6dbd38eff7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 45220}
+        "200":
+          application/json: {"cert": "-----BEGIN CERTIFICATE-----\ncertificate-content\n-----END CERTIFICATE-----", "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "-----BEGIN PRIVATE KEY-----\nprivate-key-content\n-----END PRIVATE KEY-----"}
   create-consumer_group:
     speakeasy-default-create-consumer-group:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 933383}
+        "201":
+          application/json: {"name": "<value>"}
   delete-consumer_group:
     "":
       parameters:
@@ -2779,15 +2724,20 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 945866}
+        "200": {}
   upsert-consumer_group:
     "":
       parameters:
         path:
           ConsumerGroupId: ""
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "<value>"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 153550}
+        "200":
+          application/json: {"name": "<value>"}
   add-consumer-to-group:
     speakeasy-default-add-consumer-to-group:
       parameters:
@@ -2808,9 +2758,13 @@ examples:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"custom_id": "4200", "id": "8a388226-80e8-4027-a486-25e4f7db5d21", "tags": ["silver-tier"], "username": "bob-the-builder"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 848959}
+        "201":
+          application/json: {"custom_id": "4200", "id": "8a388226-80e8-4027-a486-25e4f7db5d21", "tags": ["silver-tier"], "username": "bob-the-builder"}
   delete-consumer:
     "":
       parameters:
@@ -2829,21 +2783,32 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 616749}
+        "200":
+          application/json: {"custom_id": "4200", "id": "8a388226-80e8-4027-a486-25e4f7db5d21", "tags": ["silver-tier"], "username": "bob-the-builder"}
   upsert-consumer:
     "":
       parameters:
         path:
           ConsumerId: "c1059869-6fa7-4329-a5f5-5946d14ca2c5"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"custom_id": "4200", "id": "8a388226-80e8-4027-a486-25e4f7db5d21", "tags": ["silver-tier"], "username": "bob-the-builder"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 246381}
+        "200":
+          application/json: {"custom_id": "4200", "id": "8a388226-80e8-4027-a486-25e4f7db5d21", "tags": ["silver-tier"], "username": "bob-the-builder"}
   create-acl-with-consumer:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"group": "foo", "id": "b1f34145-0343-41a4-9602-4c69dec2f269"}
+      responses:
+        "201":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "group": "foo", "id": "b1f34145-0343-41a4-9602-4c69dec2f269"}
   delete-acl-with-consumer:
     "":
       parameters:
@@ -2858,12 +2823,20 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
           ACLId: "f28acbfa-c866-4587-b688-0208ac24df21"
+      responses:
+        "200":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "group": "foo", "id": "b1f34145-0343-41a4-9602-4c69dec2f269"}
   create-basic-auth-with-consumer:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
+      responses:
+        "201":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
   delete-basic-auth-with-consumer:
     "":
       parameters:
@@ -2878,12 +2851,20 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
           BasicAuthId: "80db1b58-ca7c-4d21-b92a-64eb07725872"
+      responses:
+        "200":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "password": "hashedsoopersecretvalue", "username": "darius"}
   create-hmac-auth-with-consumer:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"id": "75695322-e8a0-4109-aed4-5416b0308d85", "secret": "wQazJ304DW5huJklHgUfjfiSyCyTAEDZ", "username": "xerxes"}
+      responses:
+        "201":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "75695322-e8a0-4109-aed4-5416b0308d85", "secret": "wQazJ304DW5huJklHgUfjfiSyCyTAEDZ", "username": "xerxes"}
   delete-hmac-auth-with-consumer:
     "":
       parameters:
@@ -2898,12 +2879,20 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
           HMACAuthId: "70e7b00b-72f2-471b-a5ce-9c4171775360"
+      responses:
+        "200":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "75695322-e8a0-4109-aed4-5416b0308d85", "secret": "wQazJ304DW5huJklHgUfjfiSyCyTAEDZ", "username": "xerxes"}
   create-jwt-with-consumer:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"algorithm": "HS256", "id": "75695322-e8a0-4109-aed4-5416b0308d85", "key": "YJdmaDvVTJxtcWRCvkMikc8oELgAVNcz", "secret": "C50k0bcahDhLNhLKSUBSR1OMiFGzNZ7X"}
+      responses:
+        "201":
+          application/json: {"algorithm": "HS256", "consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "75695322-e8a0-4109-aed4-5416b0308d85", "key": "YJdmaDvVTJxtcWRCvkMikc8oELgAVNcz", "secret": "C50k0bcahDhLNhLKSUBSR1OMiFGzNZ7X"}
   delete-jwt-with-consumer:
     "":
       parameters:
@@ -2918,12 +2907,20 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
           JWTId: "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"
+      responses:
+        "200":
+          application/json: {"algorithm": "HS256", "consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "75695322-e8a0-4109-aed4-5416b0308d85", "key": "YJdmaDvVTJxtcWRCvkMikc8oELgAVNcz", "secret": "C50k0bcahDhLNhLKSUBSR1OMiFGzNZ7X"}
   create-key-auth-with-consumer:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
+      responses:
+        "201":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
   delete-key-auth-with-consumer:
     "":
       parameters:
@@ -2938,14 +2935,21 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
           KeyAuthId: ""
+      responses:
+        "200":
+          application/json: {"consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "key": "IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo"}
   create-key-set:
     speakeasy-default-create-key-set:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"id": "b58c7d9d-e54f-444c-b24d-cdfc4159f61e", "name": "example-key-set", "tags": ["idp-keys"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 454928}
+        "201":
+          application/json: {"id": "b58c7d9d-e54f-444c-b24d-cdfc4159f61e", "name": "example-key-set", "tags": ["idp-keys"]}
   delete-key-set:
     "":
       parameters:
@@ -2964,23 +2968,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 321714}
+        "200":
+          application/json: {"id": "b58c7d9d-e54f-444c-b24d-cdfc4159f61e", "name": "example-key-set", "tags": ["idp-keys"]}
   upsert-key-set:
     "":
       parameters:
         path:
           KeySetId: "6cc34248-50b4-4a81-9201-3bdf7a83f712"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"id": "b58c7d9d-e54f-444c-b24d-cdfc4159f61e", "name": "example-key-set", "tags": ["idp-keys"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 666641}
+        "200":
+          application/json: {"id": "b58c7d9d-e54f-444c-b24d-cdfc4159f61e", "name": "example-key-set", "tags": ["idp-keys"]}
   create-key:
     speakeasy-default-create-key:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"id": "d958f66b-8e99-44d2-b0b4-edd5bbf24658", "jwk": "{\"alg\":\"RSA\",  \"kid\": \"42\",  ...}", "kid": "42", "name": "a-key", "pem": {"private_key": "-----BEGIN", "public_key": "-----BEGIN"}, "set": {"id": "b86b331c-dcd0-4b3e-97ce-47c5a9543031"}}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 907390}
+        "201":
+          application/json: {"id": "d958f66b-8e99-44d2-b0b4-edd5bbf24658", "jwk": "{\"alg\":\"RSA\",  \"kid\": \"42\",  ...}", "kid": "42", "name": "a-key", "pem": {"private_key": "-----BEGIN", "public_key": "-----BEGIN"}, "set": {"id": "b86b331c-dcd0-4b3e-97ce-47c5a9543031"}}
   delete-key:
     "":
       parameters:
@@ -2999,15 +3013,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 265510}
+        "200":
+          application/json: {"id": "d958f66b-8e99-44d2-b0b4-edd5bbf24658", "jwk": "{\"alg\":\"RSA\",  \"kid\": \"42\",  ...}", "kid": "42", "name": "a-key", "pem": {"private_key": "-----BEGIN", "public_key": "-----BEGIN"}, "set": {"id": "b86b331c-dcd0-4b3e-97ce-47c5a9543031"}}
   upsert-key:
     "":
       parameters:
         path:
           KeyId: "bba22c06-a632-42be-a018-1b9ff357b5b9"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"id": "d958f66b-8e99-44d2-b0b4-edd5bbf24658", "jwk": "{\"alg\":\"RSA\",  \"kid\": \"42\",  ...}", "kid": "42", "name": "a-key", "pem": {"private_key": "-----BEGIN", "public_key": "-----BEGIN"}, "set": {"id": "b86b331c-dcd0-4b3e-97ce-47c5a9543031"}}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 385247}
+        "200":
+          application/json: {"id": "d958f66b-8e99-44d2-b0b4-edd5bbf24658", "jwk": "{\"alg\":\"RSA\",  \"kid\": \"42\",  ...}", "kid": "42", "name": "a-key", "pem": {"private_key": "-----BEGIN", "public_key": "-----BEGIN"}, "set": {"id": "b86b331c-dcd0-4b3e-97ce-47c5a9543031"}}
   create-plugin-schemas:
     speakeasy-default-create-plugin-schemas:
       parameters:
@@ -3076,9 +3096,13 @@ examples:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 130029}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-plugin:
     "":
       parameters:
@@ -3097,15 +3121,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 929065}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   upsert-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 114024}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-acl-plugin:
     "":
       parameters:
@@ -3124,15 +3154,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 629505}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-acl-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 398732}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-acme-plugin:
     "":
       parameters:
@@ -3151,15 +3187,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 142349}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-acme-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 361475}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-aipromptdecorator-plugin:
     "":
       parameters:
@@ -3178,15 +3220,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 679068}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-aipromptdecorator-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 507885}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-aipromptguard-plugin:
     "":
       parameters:
@@ -3205,15 +3253,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 73764}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-aipromptguard-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 337772}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-aiprompttemplate-plugin:
     "":
       parameters:
@@ -3232,15 +3286,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 156428}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-aiprompttemplate-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 320899}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-aiproxy-plugin:
     "":
       parameters:
@@ -3259,15 +3319,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 777322}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-aiproxy-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 244183}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-airequesttransformer-plugin:
     "":
       parameters:
@@ -3286,15 +3352,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 102442}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-airequesttransformer-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 590113}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-airesponsetransformer-plugin:
     "":
       parameters:
@@ -3313,15 +3385,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 906560}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-airesponsetransformer-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 287995}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-awslambda-plugin:
     "":
       parameters:
@@ -3340,15 +3418,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 781584}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-awslambda-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 622710}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-azurefunctions-plugin:
     "":
       parameters:
@@ -3367,15 +3451,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 594459}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-azurefunctions-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 689832}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-basicauth-plugin:
     "":
       parameters:
@@ -3394,15 +3484,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 607247}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-basicauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 225103}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-botdetection-plugin:
     "":
       parameters:
@@ -3421,15 +3517,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 442064}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-botdetection-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 968921}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-canary-plugin:
     "":
       parameters:
@@ -3448,15 +3550,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 454356}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-canary-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 38571}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-correlationid-plugin:
     "":
       parameters:
@@ -3475,15 +3583,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 188898}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-correlationid-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 401203}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-cors-plugin:
     "":
       parameters:
@@ -3502,15 +3616,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 464115}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-cors-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 675653}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-datadog-plugin:
     "":
       parameters:
@@ -3529,15 +3649,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 374222}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-datadog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 883338}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-degraphql-plugin:
     "":
       parameters:
@@ -3556,15 +3682,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 660394}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-degraphql-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 217127}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-exittransformer-plugin:
     "":
       parameters:
@@ -3583,15 +3715,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 281271}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-exittransformer-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 381009}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-filelog-plugin:
     "":
       parameters:
@@ -3610,15 +3748,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 83708}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-filelog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 550354}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-forwardproxy-plugin:
     "":
       parameters:
@@ -3637,15 +3781,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 751925}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-forwardproxy-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 198810}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-graphqlproxycacheadvanced-plugin:
     "":
       parameters:
@@ -3664,15 +3814,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 335386}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-graphqlproxycacheadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 250726}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-graphqlratelimitingadvanced-plugin:
     "":
       parameters:
@@ -3691,15 +3847,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 737153}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-graphqlratelimitingadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 861199}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-grpcgateway-plugin:
     "":
       parameters:
@@ -3718,15 +3880,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 40557}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-grpcgateway-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 373764}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-grpcweb-plugin:
     "":
       parameters:
@@ -3745,15 +3913,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 539949}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-grpcweb-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 994579}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-hmacauth-plugin:
     "":
       parameters:
@@ -3772,15 +3946,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 724026}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-hmacauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 911301}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-httplog-plugin:
     "":
       parameters:
@@ -3799,15 +3979,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 113757}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-httplog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 547127}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-iprestriction-plugin:
     "":
       parameters:
@@ -3826,15 +4012,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 453032}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-iprestriction-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 729081}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-jq-plugin:
     "":
       parameters:
@@ -3853,15 +4045,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 449086}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-jq-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 984795}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-jwedecrypt-plugin:
     "":
       parameters:
@@ -3880,15 +4078,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 121273}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-jwedecrypt-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 103795}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-jwt-plugin:
     "":
       parameters:
@@ -3907,15 +4111,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 813889}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-jwt-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 673839}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-jwtsigner-plugin:
     "":
       parameters:
@@ -3934,15 +4144,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 978819}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-jwtsigner-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 950877}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-kafkalog-plugin:
     "":
       parameters:
@@ -3961,15 +4177,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 456294}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-kafkalog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 557713}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-kafkaupstream-plugin:
     "":
       parameters:
@@ -3988,15 +4210,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 477436}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-kafkaupstream-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 375638}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-keyauth-plugin:
     "":
       parameters:
@@ -4015,15 +4243,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 709328}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-keyauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 277850}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-keyauthenc-plugin:
     "":
       parameters:
@@ -4042,15 +4276,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 195275}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-keyauthenc-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 176157}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-konnectapplicationauth-plugin:
     "":
       parameters:
@@ -4069,15 +4309,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 869866}
+        "200":
+          application/json: {"config": {"key_names": ["apikey"]}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-konnectapplicationauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"key_names": ["apikey"]}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 310218}
+        "200":
+          application/json: {"config": {"key_names": ["apikey"]}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-ldapauth-plugin:
     "":
       parameters:
@@ -4096,15 +4342,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 48974}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-ldapauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 503827}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-ldapauthadvanced-plugin:
     "":
       parameters:
@@ -4123,15 +4375,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 502179}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-ldapauthadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 999064}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-loggly-plugin:
     "":
       parameters:
@@ -4150,15 +4408,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 152935}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-loggly-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 797364}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-mocking-plugin:
     "":
       parameters:
@@ -4177,15 +4441,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 533967}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-mocking-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 352959}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-mtlsauth-plugin:
     "":
       parameters:
@@ -4204,15 +4474,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 59405}
+        "200":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-mtlsauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 447054}
+        "200":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-oasvalidation-plugin:
     "":
       parameters:
@@ -4231,15 +4507,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 377120}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-oasvalidation-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 153040}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-oauth2-plugin:
     "":
       parameters:
@@ -4258,15 +4540,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 717818}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-oauth2-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 294492}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-oauth2introspection-plugin:
     "":
       parameters:
@@ -4285,15 +4573,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 9170}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-oauth2introspection-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 36517}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-opa-plugin:
     "":
       parameters:
@@ -4312,15 +4606,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 296571}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-opa-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 864983}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-openidconnect-plugin:
     "":
       parameters:
@@ -4339,15 +4639,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 392586}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-openidconnect-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 420425}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-opentelemetry-plugin:
     "":
       parameters:
@@ -4366,15 +4672,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 201934}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-opentelemetry-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 162327}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-postfunction-plugin:
     "":
       parameters:
@@ -4393,15 +4705,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 62418}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-postfunction-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 313413}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-prefunction-plugin:
     "":
       parameters:
@@ -4420,15 +4738,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 151600}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-prefunction-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 641134}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-prometheus-plugin:
     "":
       parameters:
@@ -4447,15 +4771,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 168069}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-prometheus-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 784896}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-proxycache-plugin:
     "":
       parameters:
@@ -4474,15 +4804,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 230134}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-proxycache-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 465356}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-proxycacheadvanced-plugin:
     "":
       parameters:
@@ -4501,15 +4837,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 758275}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-proxycacheadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 629033}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-ratelimiting-plugin:
     "":
       parameters:
@@ -4528,15 +4870,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 517349}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-ratelimiting-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 666578}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-ratelimitingadvanced-plugin:
     "":
       parameters:
@@ -4555,15 +4903,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 638119}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-ratelimitingadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 168928}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-requestsizelimiting-plugin:
     "":
       parameters:
@@ -4582,15 +4936,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 748551}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-requestsizelimiting-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 751371}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-requesttermination-plugin:
     "":
       parameters:
@@ -4609,15 +4969,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 697897}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-requesttermination-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 687217}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-requesttransformer-plugin:
     "":
       parameters:
@@ -4636,15 +5002,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 189647}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-requesttransformer-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 942313}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-requesttransformeradvanced-plugin:
     "":
       parameters:
@@ -4663,15 +5035,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 254381}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-requesttransformeradvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 40610}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-requestvalidator-plugin:
     "":
       parameters:
@@ -4690,15 +5068,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 861094}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-requestvalidator-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 518512}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-responseratelimiting-plugin:
     "":
       parameters:
@@ -4717,15 +5101,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 407331}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-responseratelimiting-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 670177}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-responsetransformer-plugin:
     "":
       parameters:
@@ -4744,15 +5134,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 448524}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-responsetransformer-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 478345}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-responsetransformeradvanced-plugin:
     "":
       parameters:
@@ -4771,15 +5167,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 912219}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-responsetransformeradvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 334000}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-routebyheader-plugin:
     "":
       parameters:
@@ -4798,15 +5200,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 681874}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-routebyheader-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 673939}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-routetransformeradvanced-plugin:
     "":
       parameters:
@@ -4825,15 +5233,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 548866}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-routetransformeradvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 748000}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-saml-plugin:
     "":
       parameters:
@@ -4852,15 +5266,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 299413}
+        "200":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-saml-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 290222}
+        "200":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-session-plugin:
     "":
       parameters:
@@ -4879,15 +5299,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 426945}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-session-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 863822}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-statsd-plugin:
     "":
       parameters:
@@ -4906,15 +5332,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 582005}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-statsd-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 872907}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-statsdadvanced-plugin:
     "":
       parameters:
@@ -4933,15 +5365,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 637297}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-statsdadvanced-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 225198}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-syslog-plugin:
     "":
       parameters:
@@ -4960,15 +5398,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 301428}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-syslog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 231815}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-tcplog-plugin:
     "":
       parameters:
@@ -4987,15 +5431,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 69003}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-tcplog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 587993}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-tlshandshakemodifier-plugin:
     "":
       parameters:
@@ -5014,15 +5464,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 953528}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-tlshandshakemodifier-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 53357}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-tlsmetadataheaders-plugin:
     "":
       parameters:
@@ -5041,15 +5497,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 638532}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-tlsmetadataheaders-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 614012}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-udplog-plugin:
     "":
       parameters:
@@ -5068,15 +5530,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 653554}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-udplog-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 897301}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-upstreamtimeout-plugin:
     "":
       parameters:
@@ -5095,15 +5563,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 485536}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-upstreamtimeout-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 757626}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-vaultauth-plugin:
     "":
       parameters:
@@ -5122,15 +5596,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 195207}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-vaultauth-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 130868}
+        "200":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-websocketsizelimit-plugin:
     "":
       parameters:
@@ -5149,15 +5629,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 66143}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-websocketsizelimit-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 649664}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-websocketvalidator-plugin:
     "":
       parameters:
@@ -5176,15 +5662,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 674257}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-websocketvalidator-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 86199}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-xmlthreatprotection-plugin:
     "":
       parameters:
@@ -5203,15 +5695,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 350911}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-xmlthreatprotection-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 162612}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   delete-zipkin-plugin:
     "":
       parameters:
@@ -5230,647 +5728,969 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 589898}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   update-zipkin-plugin:
     "":
       parameters:
         path:
           PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 354105}
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-acl-plugin:
     speakeasy-default-create-acl-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 868922}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-acme-plugin:
     speakeasy-default-create-acme-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 10644}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-aipromptdecorator-plugin:
     speakeasy-default-create-aipromptdecorator-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 190029}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-aipromptguard-plugin:
     speakeasy-default-create-aipromptguard-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 745070}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-aiprompttemplate-plugin:
     speakeasy-default-create-aiprompttemplate-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 774826}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-aiproxy-plugin:
     speakeasy-default-create-aiproxy-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 633208}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-airequesttransformer-plugin:
     speakeasy-default-create-airequesttransformer-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 171917}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-airesponsetransformer-plugin:
     speakeasy-default-create-airesponsetransformer-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 770913}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-awslambda-plugin:
     speakeasy-default-create-awslambda-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 836187}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-azurefunctions-plugin:
     speakeasy-default-create-azurefunctions-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 245137}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-basicauth-plugin:
     speakeasy-default-create-basicauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 416796}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-botdetection-plugin:
     speakeasy-default-create-botdetection-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 795298}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-canary-plugin:
     speakeasy-default-create-canary-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 661288}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-correlationid-plugin:
     speakeasy-default-create-correlationid-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 200541}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-cors-plugin:
     speakeasy-default-create-cors-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 529865}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-datadog-plugin:
     speakeasy-default-create-datadog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 646114}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-degraphql-plugin:
     speakeasy-default-create-degraphql-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 856501}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-exittransformer-plugin:
     speakeasy-default-create-exittransformer-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 350768}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-filelog-plugin:
     speakeasy-default-create-filelog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 525789}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-forwardproxy-plugin:
     speakeasy-default-create-forwardproxy-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 643269}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-graphqlproxycacheadvanced-plugin:
     speakeasy-default-create-graphqlproxycacheadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 901937}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-graphqlratelimitingadvanced-plugin:
     speakeasy-default-create-graphqlratelimitingadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 63156}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-grpcgateway-plugin:
     speakeasy-default-create-grpcgateway-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 498560}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-grpcweb-plugin:
     speakeasy-default-create-grpcweb-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 87902}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-hmacauth-plugin:
     speakeasy-default-create-hmacauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 737757}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-httplog-plugin:
     speakeasy-default-create-httplog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 861466}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-iprestriction-plugin:
     speakeasy-default-create-iprestriction-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 752423}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-jq-plugin:
     speakeasy-default-create-jq-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 697664}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-jwedecrypt-plugin:
     speakeasy-default-create-jwedecrypt-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 487760}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-jwt-plugin:
     speakeasy-default-create-jwt-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 585814}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-jwtsigner-plugin:
     speakeasy-default-create-jwtsigner-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 391420}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-kafkalog-plugin:
     speakeasy-default-create-kafkalog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 926249}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-kafkaupstream-plugin:
     speakeasy-default-create-kafkaupstream-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 194604}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-keyauth-plugin:
     speakeasy-default-create-keyauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 789167}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-keyauthenc-plugin:
     speakeasy-default-create-keyauthenc-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 252781}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-konnectapplicationauth-plugin:
     speakeasy-default-create-konnectapplicationauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"key_names": ["apikey"]}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 803992}
+        "201":
+          application/json: {"config": {"key_names": ["apikey"]}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-ldapauth-plugin:
     speakeasy-default-create-ldapauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 557231}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-ldapauthadvanced-plugin:
     speakeasy-default-create-ldapauthadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 968737}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-loggly-plugin:
     speakeasy-default-create-loggly-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 603964}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-mocking-plugin:
     speakeasy-default-create-mocking-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 753099}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-mtlsauth-plugin:
     speakeasy-default-create-mtlsauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 446252}
+        "201":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-oasvalidation-plugin:
     speakeasy-default-create-oasvalidation-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 142134}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-oauth2-plugin:
     speakeasy-default-create-oauth2-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 253178}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-oauth2introspection-plugin:
     speakeasy-default-create-oauth2introspection-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 88105}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-opa-plugin:
     speakeasy-default-create-opa-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 403300}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-openidconnect-plugin:
     speakeasy-default-create-openidconnect-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 967222}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-opentelemetry-plugin:
     speakeasy-default-create-opentelemetry-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 191030}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-postfunction-plugin:
     speakeasy-default-create-postfunction-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 490108}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-prefunction-plugin:
     speakeasy-default-create-prefunction-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 246793}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-prometheus-plugin:
     speakeasy-default-create-prometheus-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 81807}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-proxycache-plugin:
     speakeasy-default-create-proxycache-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 977470}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-proxycacheadvanced-plugin:
     speakeasy-default-create-proxycacheadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 282710}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-ratelimiting-plugin:
     speakeasy-default-create-ratelimiting-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 710442}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-ratelimitingadvanced-plugin:
     speakeasy-default-create-ratelimitingadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 986061}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-requestsizelimiting-plugin:
     speakeasy-default-create-requestsizelimiting-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 628263}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-requesttermination-plugin:
     speakeasy-default-create-requesttermination-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 792725}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-requesttransformer-plugin:
     speakeasy-default-create-requesttransformer-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 24861}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-requesttransformeradvanced-plugin:
     speakeasy-default-create-requesttransformeradvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 545968}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-requestvalidator-plugin:
     speakeasy-default-create-requestvalidator-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 618807}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-responseratelimiting-plugin:
     speakeasy-default-create-responseratelimiting-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 638232}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-responsetransformer-plugin:
     speakeasy-default-create-responsetransformer-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 632074}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-responsetransformeradvanced-plugin:
     speakeasy-default-create-responsetransformeradvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 331145}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-routebyheader-plugin:
     speakeasy-default-create-routebyheader-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 438092}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-routetransformeradvanced-plugin:
     speakeasy-default-create-routetransformeradvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 427558}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-saml-plugin:
     speakeasy-default-create-saml-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 246204}
+        "201":
+          application/json: {"config": {"anonymous": "<value>"}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-session-plugin:
     speakeasy-default-create-session-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 885621}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-statsd-plugin:
     speakeasy-default-create-statsd-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 289002}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-statsdadvanced-plugin:
     speakeasy-default-create-statsdadvanced-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 489705}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-syslog-plugin:
     speakeasy-default-create-syslog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 257739}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-tcplog-plugin:
     speakeasy-default-create-tcplog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 625257}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-tlshandshakemodifier-plugin:
     speakeasy-default-create-tlshandshakemodifier-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 555227}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-tlsmetadataheaders-plugin:
     speakeasy-default-create-tlsmetadataheaders-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 556029}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-udplog-plugin:
     speakeasy-default-create-udplog-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 497553}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-upstreamtimeout-plugin:
     speakeasy-default-create-upstreamtimeout-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 105262}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-vaultauth-plugin:
     speakeasy-default-create-vaultauth-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 995340}
+        "201":
+          application/json: {"config": {"anonymous": "<value>", "hide_credentials": false, "run_on_preflight": true}, "enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-websocketsizelimit-plugin:
     speakeasy-default-create-websocketsizelimit-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 422489}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-websocketvalidator-plugin:
     speakeasy-default-create-websocketvalidator-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 741341}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-xmlthreatprotection-plugin:
     speakeasy-default-create-xmlthreatprotection-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 102983}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   create-zipkin-plugin:
     speakeasy-default-create-zipkin-plugin:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 880195}
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "protocols": ["grpc", "grpcs", "http", "https"]}
   fetch-plugin-schema:
     speakeasy-default-fetch-plugin-schema:
       parameters:
@@ -5882,9 +6702,13 @@ examples:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 811488}
+        "201":
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
   delete-route:
     "":
       parameters:
@@ -5903,23 +6727,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 248766}
+        "200":
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
   upsert-route:
     "":
       parameters:
         path:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 298474}
+        "200":
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
   create-service:
     speakeasy-default-create-service:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 320387}
+        "201":
+          application/json: {"host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http"}
   delete-service:
     "":
       parameters:
@@ -5938,23 +6772,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 795989}
+        "200":
+          application/json: {"host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http"}
   upsert-service:
     "":
       parameters:
         path:
           ServiceId: "7fca84d6-7d37-4a74-a7b0-93e576089a41"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 739524}
+        "200":
+          application/json: {"host": "example.internal", "id": "49fd316e-c457-481c-9fc7-8079153e4f3c", "name": "example-service", "path": "/", "port": 80, "protocol": "http"}
   create-sni:
     speakeasy-default-create-sni:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"certificate": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "id": "36c4566c-14cc-4132-9011-4139fcbbe50a", "name": "some.example.org"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 805552}
+        "201":
+          application/json: {"certificate": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "id": "36c4566c-14cc-4132-9011-4139fcbbe50a", "name": "some.example.org"}
   delete-sni:
     "":
       parameters:
@@ -5973,23 +6817,33 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 786293}
+        "200":
+          application/json: {"certificate": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "id": "36c4566c-14cc-4132-9011-4139fcbbe50a", "name": "some.example.org"}
   upsert-sni:
     "":
       parameters:
         path:
           SNIId: "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"certificate": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "id": "36c4566c-14cc-4132-9011-4139fcbbe50a", "name": "some.example.org"}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 145107}
+        "200":
+          application/json: {"certificate": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}, "id": "36c4566c-14cc-4132-9011-4139fcbbe50a", "name": "some.example.org"}
   create-upstream:
     speakeasy-default-create-upstream:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"algorithm": "round-robin", "hash_fallback": "none", "hash_on": "none", "hash_on_cookie_path": "/", "healthchecks": {"active": {"concurrency": 10, "healthy": {"http_statuses": [200, 302], "interval": 0, "successes": 0}, "http_path": "/", "https_verify_certificate": true, "timeout": 1, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505], "interval": 0, "tcp_failures": 0, "timeouts": 0}}, "passive": {"healthy": {"http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308], "successes": 0}, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 500, 503], "tcp_failures": 0, "timeouts": 0}}, "threshold": 0}, "id": "6eed5e9c-5398-4026-9a4c-d48f18a2431e", "name": "api.example.internal", "slots": 10000}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 670650}
+        "201":
+          application/json: {"algorithm": "round-robin", "hash_fallback": "none", "hash_on": "none", "hash_on_cookie_path": "/", "healthchecks": {"active": {"concurrency": 10, "healthy": {"http_statuses": [200, 302], "interval": 0, "successes": 0}, "http_path": "/", "https_verify_certificate": true, "timeout": 1, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505], "interval": 0, "tcp_failures": 0, "timeouts": 0}}, "passive": {"healthy": {"http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308], "successes": 0}, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 500, 503], "tcp_failures": 0, "timeouts": 0}}, "threshold": 0}, "id": "6eed5e9c-5398-4026-9a4c-d48f18a2431e", "name": "api.example.internal", "slots": 10000}
   delete-upstream:
     "":
       parameters:
@@ -6008,21 +6862,32 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 104017}
+        "200":
+          application/json: {"algorithm": "round-robin", "hash_fallback": "none", "hash_on": "none", "hash_on_cookie_path": "/", "healthchecks": {"active": {"concurrency": 10, "healthy": {"http_statuses": [200, 302], "interval": 0, "successes": 0}, "http_path": "/", "https_verify_certificate": true, "timeout": 1, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505], "interval": 0, "tcp_failures": 0, "timeouts": 0}}, "passive": {"healthy": {"http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308], "successes": 0}, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 500, 503], "tcp_failures": 0, "timeouts": 0}}, "threshold": 0}, "id": "6eed5e9c-5398-4026-9a4c-d48f18a2431e", "name": "api.example.internal", "slots": 10000}
   upsert-upstream:
     "":
       parameters:
         path:
           UpstreamId: "426d620c-7058-4ae6-aacc-f85a3204a2c5"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"algorithm": "round-robin", "hash_fallback": "none", "hash_on": "none", "hash_on_cookie_path": "/", "healthchecks": {"active": {"concurrency": 10, "healthy": {"http_statuses": [200, 302], "interval": 0, "successes": 0}, "http_path": "/", "https_verify_certificate": true, "timeout": 1, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505], "interval": 0, "tcp_failures": 0, "timeouts": 0}}, "passive": {"healthy": {"http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308], "successes": 0}, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 500, 503], "tcp_failures": 0, "timeouts": 0}}, "threshold": 0}, "id": "6eed5e9c-5398-4026-9a4c-d48f18a2431e", "name": "api.example.internal", "slots": 10000}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 59493}
+        "200":
+          application/json: {"algorithm": "round-robin", "hash_fallback": "none", "hash_on": "none", "hash_on_cookie_path": "/", "healthchecks": {"active": {"concurrency": 10, "healthy": {"http_statuses": [200, 302], "interval": 0, "successes": 0}, "http_path": "/", "https_verify_certificate": true, "timeout": 1, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505], "interval": 0, "tcp_failures": 0, "timeouts": 0}}, "passive": {"healthy": {"http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308], "successes": 0}, "type": "http", "unhealthy": {"http_failures": 0, "http_statuses": [429, 500, 503], "tcp_failures": 0, "timeouts": 0}}, "threshold": 0}, "id": "6eed5e9c-5398-4026-9a4c-d48f18a2431e", "name": "api.example.internal", "slots": 10000}
   create-target-with-upstream:
     "":
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           UpstreamIdForTarget: "5a078780-5d4c-4aae-984a-bdc6f52113d8"
+      requestBody:
+        application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "target": "203.0.113.42", "weight": 100}
+      responses:
+        "201":
+          application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
   delete-target-with-upstream:
     "":
       parameters:
@@ -6037,14 +6902,21 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
           UpstreamIdForTarget: "5a078780-5d4c-4aae-984a-bdc6f52113d8"
           TargetId: "5a078780-5d4c-4aae-984a-bdc6f52113d8"
+      responses:
+        "200":
+          application/json: {"id": "089292a7-ba3d-4d88-acf0-97b4b2e2621a", "target": "203.0.113.42", "upstream": {"id": "5f1d7e76-2fed-4806-a6af-869984f025cb"}, "weight": 100}
   create-vault:
     speakeasy-default-create-vault:
       parameters:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"prefix": "ENV_PREFIX"}, "description": "environment variable based vault", "id": "2747d1e5-8246-4f65-a939-b392f1ee17f8", "name": "env", "prefix": "env", "tags": ["foo", "bar"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 954798}
+        "201":
+          application/json: {"config": {"prefix": "ENV_PREFIX"}, "description": "environment variable based vault", "id": "2747d1e5-8246-4f65-a939-b392f1ee17f8", "name": "env", "prefix": "env", "tags": ["foo", "bar"]}
   delete-vault:
     "":
       parameters:
@@ -6063,15 +6935,21 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 429820}
+        "200":
+          application/json: {"config": {"prefix": "ENV_PREFIX"}, "description": "environment variable based vault", "id": "2747d1e5-8246-4f65-a939-b392f1ee17f8", "name": "env", "prefix": "env", "tags": ["foo", "bar"]}
   upsert-vault:
     "":
       parameters:
         path:
           VaultId: "9d4d6d19-77c6-428e-a965-9bc9647633e9"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"config": {"prefix": "ENV_PREFIX"}, "description": "environment variable based vault", "id": "2747d1e5-8246-4f65-a939-b392f1ee17f8", "name": "env", "prefix": "env", "tags": ["foo", "bar"]}
       responses:
         "401":
           application/json: {"message": "<value>", "status": 63413}
+        "200":
+          application/json: {"config": {"prefix": "ENV_PREFIX"}, "description": "environment variable based vault", "id": "2747d1e5-8246-4f65-a939-b392f1ee17f8", "name": "env", "prefix": "env", "tags": ["foo", "bar"]}
   create-dataplane-certificate:
     speakeasy-default-create-dataplane-certificate:
       parameters:

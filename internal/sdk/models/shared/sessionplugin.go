@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // CookieSameSite - Determines whether and how a cookie may be sent with cross-site requests.
@@ -389,6 +388,29 @@ func (o *SessionPluginConfig) GetStorage() *SessionPluginStorage {
 	return o.Storage
 }
 
+// SessionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type SessionPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *SessionPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type SessionPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *SessionPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type SessionPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -480,29 +502,6 @@ func (e *SessionPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// SessionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type SessionPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SessionPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type SessionPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SessionPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // SessionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type SessionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -527,29 +526,30 @@ func (o *SessionPluginService) GetID() *string {
 	return o.ID
 }
 
+// SessionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SessionPlugin struct {
-	Config *SessionPluginConfig `json:"config,omitempty"`
+	Config SessionPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *SessionPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *SessionPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                  `json:"enabled,omitempty"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
-	name         *string                `const:"session" json:"name,omitempty"`
+	name         string                 `const:"session" json:"name"`
 	Ordering     *SessionPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *SessionPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *SessionPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *SessionPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *SessionPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (s SessionPlugin) MarshalJSON() ([]byte, error) {
@@ -563,11 +563,25 @@ func (s *SessionPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *SessionPlugin) GetConfig() *SessionPluginConfig {
+func (o *SessionPlugin) GetConfig() SessionPluginConfig {
+	if o == nil {
+		return SessionPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *SessionPlugin) GetConsumer() *SessionPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *SessionPlugin) GetConsumerGroup() *SessionPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *SessionPlugin) GetCreatedAt() *int64 {
@@ -598,8 +612,8 @@ func (o *SessionPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *SessionPlugin) GetName() *string {
-	return types.String("session")
+func (o *SessionPlugin) GetName() string {
+	return "session"
 }
 
 func (o *SessionPlugin) GetOrdering() *SessionPluginOrdering {
@@ -616,6 +630,20 @@ func (o *SessionPlugin) GetProtocols() []SessionPluginProtocols {
 	return o.Protocols
 }
 
+func (o *SessionPlugin) GetRoute() *SessionPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *SessionPlugin) GetService() *SessionPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *SessionPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -630,30 +658,116 @@ func (o *SessionPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *SessionPlugin) GetConsumer() *SessionPluginConsumer {
+// SessionPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type SessionPluginInput struct {
+	Config SessionPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *SessionPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *SessionPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                  `json:"enabled,omitempty"`
+	ID           *string                `json:"id,omitempty"`
+	InstanceName *string                `json:"instance_name,omitempty"`
+	name         string                 `const:"session" json:"name"`
+	Ordering     *SessionPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *SessionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *SessionPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (s SessionPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SessionPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *SessionPluginInput) GetConfig() SessionPluginConfig {
+	if o == nil {
+		return SessionPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *SessionPluginInput) GetConsumer() *SessionPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *SessionPlugin) GetConsumerGroup() *SessionPluginConsumerGroup {
+func (o *SessionPluginInput) GetConsumerGroup() *SessionPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *SessionPlugin) GetRoute() *SessionPluginRoute {
+func (o *SessionPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *SessionPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *SessionPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *SessionPluginInput) GetName() string {
+	return "session"
+}
+
+func (o *SessionPluginInput) GetOrdering() *SessionPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *SessionPluginInput) GetProtocols() []SessionPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *SessionPluginInput) GetRoute() *SessionPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *SessionPlugin) GetService() *SessionPluginService {
+func (o *SessionPluginInput) GetService() *SessionPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *SessionPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

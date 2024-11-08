@@ -11,8 +11,8 @@ type UpdateAcmePluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAcmePlugin *shared.CreateAcmePlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AcmePlugin     *shared.AcmePluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAcmePluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateAcmePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAcmePluginRequest) GetCreateAcmePlugin() *shared.CreateAcmePlugin {
+func (o *UpdateAcmePluginRequest) GetAcmePlugin() *shared.AcmePluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAcmePlugin
+	return o.AcmePlugin
 }
 
 type UpdateAcmePluginResponse struct {

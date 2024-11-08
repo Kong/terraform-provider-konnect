@@ -11,8 +11,8 @@ type UpdateBasicauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateBasicAuthPlugin *shared.CreateBasicAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID  string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	BasicAuthPlugin *shared.BasicAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateBasicauthPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateBasicauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateBasicauthPluginRequest) GetCreateBasicAuthPlugin() *shared.CreateBasicAuthPlugin {
+func (o *UpdateBasicauthPluginRequest) GetBasicAuthPlugin() *shared.BasicAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateBasicAuthPlugin
+	return o.BasicAuthPlugin
 }
 
 type UpdateBasicauthPluginResponse struct {

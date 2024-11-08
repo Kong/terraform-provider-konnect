@@ -14,12 +14,19 @@ func (o *KeyAuthConsumer) GetID() *string {
 }
 
 type KeyAuth struct {
+	Consumer *KeyAuthConsumer `json:"consumer,omitempty"`
 	// Unix epoch when the resource was created.
-	CreatedAt *int64           `json:"created_at,omitempty"`
-	ID        *string          `json:"id,omitempty"`
-	Key       *string          `json:"key,omitempty"`
-	Tags      []string         `json:"tags,omitempty"`
-	Consumer  *KeyAuthConsumer `json:"consumer,omitempty"`
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Key       *string  `json:"key,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
+}
+
+func (o *KeyAuth) GetConsumer() *KeyAuthConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *KeyAuth) GetCreatedAt() *int64 {
@@ -48,11 +55,4 @@ func (o *KeyAuth) GetTags() []string {
 		return nil
 	}
 	return o.Tags
-}
-
-func (o *KeyAuth) GetConsumer() *KeyAuthConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
 }

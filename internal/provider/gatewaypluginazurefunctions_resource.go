@@ -34,20 +34,20 @@ type GatewayPluginAzureFunctionsResource struct {
 
 // GatewayPluginAzureFunctionsResourceModel describes the resource data model.
 type GatewayPluginAzureFunctionsResourceModel struct {
-	Config         *tfTypes.CreateAzureFunctionsPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                      `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                      `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                      `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                      `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         tfTypes.AzureFunctionsPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAzureFunctionsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginAzureFunctions Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"apikey": schema.StringAttribute{
 						Computed:    true,
@@ -153,6 +152,7 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -269,10 +269,10 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAzureFunctionsPlugin := data.ToSharedCreateAzureFunctionsPlugin()
+	azureFunctionsPlugin := data.ToSharedAzureFunctionsPluginInput()
 	request := operations.CreateAzurefunctionsPluginRequest{
-		ControlPlaneID:             controlPlaneID,
-		CreateAzureFunctionsPlugin: createAzureFunctionsPlugin,
+		ControlPlaneID:       controlPlaneID,
+		AzureFunctionsPlugin: azureFunctionsPlugin,
 	}
 	res, err := r.client.Plugins.CreateAzurefunctionsPlugin(ctx, request)
 	if err != nil {
@@ -379,11 +379,11 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAzureFunctionsPlugin := data.ToSharedCreateAzureFunctionsPlugin()
+	azureFunctionsPlugin := data.ToSharedAzureFunctionsPluginInput()
 	request := operations.UpdateAzurefunctionsPluginRequest{
-		PluginID:                   pluginID,
-		ControlPlaneID:             controlPlaneID,
-		CreateAzureFunctionsPlugin: createAzureFunctionsPlugin,
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		AzureFunctionsPlugin: azureFunctionsPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAzurefunctionsPlugin(ctx, request)
 	if err != nil {

@@ -39,20 +39,20 @@ type GatewayPluginDatadogResource struct {
 
 // GatewayPluginDatadogResourceModel describes the resource data model.
 type GatewayPluginDatadogResourceModel struct {
-	Config         *tfTypes.CreateDatadogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer               `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer               `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering   `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer               `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer               `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         tfTypes.DatadogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer        `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer        `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                 `tfsdk:"created_at"`
+	Enabled        types.Bool                  `tfsdk:"enabled"`
+	ID             types.String                `tfsdk:"id"`
+	InstanceName   types.String                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
+	Protocols      []types.String              `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer        `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer        `tfsdk:"service"`
+	Tags           []types.String              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginDatadogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginDatadog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"consumer_tag": schema.StringAttribute{
 						Computed:    true,
@@ -279,6 +278,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -395,10 +395,10 @@ func (r *GatewayPluginDatadogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createDatadogPlugin := data.ToSharedCreateDatadogPlugin()
+	datadogPlugin := data.ToSharedDatadogPluginInput()
 	request := operations.CreateDatadogPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		CreateDatadogPlugin: createDatadogPlugin,
+		ControlPlaneID: controlPlaneID,
+		DatadogPlugin:  datadogPlugin,
 	}
 	res, err := r.client.Plugins.CreateDatadogPlugin(ctx, request)
 	if err != nil {
@@ -505,11 +505,11 @@ func (r *GatewayPluginDatadogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createDatadogPlugin := data.ToSharedCreateDatadogPlugin()
+	datadogPlugin := data.ToSharedDatadogPluginInput()
 	request := operations.UpdateDatadogPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		CreateDatadogPlugin: createDatadogPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		DatadogPlugin:  datadogPlugin,
 	}
 	res, err := r.client.Plugins.UpdateDatadogPlugin(ctx, request)
 	if err != nil {

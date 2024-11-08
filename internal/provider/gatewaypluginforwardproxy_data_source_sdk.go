@@ -10,27 +10,22 @@ import (
 
 func (r *GatewayPluginForwardProxyDataSourceModel) RefreshFromSharedForwardProxyPlugin(resp *shared.ForwardProxyPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
+		r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
+		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+		if resp.Config.ProxyScheme != nil {
+			r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
 		} else {
-			r.Config = &tfTypes.CreateForwardProxyPluginConfig{}
-			r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
-			r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
-			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-			if resp.Config.ProxyScheme != nil {
-				r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
-			} else {
-				r.Config.ProxyScheme = types.StringNull()
-			}
-			if resp.Config.XHeaders != nil {
-				r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
-			} else {
-				r.Config.XHeaders = types.StringNull()
-			}
+			r.Config.ProxyScheme = types.StringNull()
+		}
+		if resp.Config.XHeaders != nil {
+			r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
+		} else {
+			r.Config.XHeaders = types.StringNull()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -51,11 +46,11 @@ func (r *GatewayPluginForwardProxyDataSourceModel) RefreshFromSharedForwardProxy
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -64,7 +59,7 @@ func (r *GatewayPluginForwardProxyDataSourceModel) RefreshFromSharedForwardProxy
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

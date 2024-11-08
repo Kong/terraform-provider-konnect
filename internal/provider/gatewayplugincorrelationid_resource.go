@@ -36,20 +36,20 @@ type GatewayPluginCorrelationIDResource struct {
 
 // GatewayPluginCorrelationIDResourceModel describes the resource data model.
 type GatewayPluginCorrelationIDResourceModel struct {
-	Config         *tfTypes.CreateCorrelationIDPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         tfTypes.CorrelationIDPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginCorrelationIDResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,8 +61,7 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginCorrelationID Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"echo_downstream": schema.BoolAttribute{
 						Computed:    true,
@@ -127,6 +126,7 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -243,10 +243,10 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCorrelationIDPlugin := data.ToSharedCreateCorrelationIDPlugin()
+	correlationIDPlugin := data.ToSharedCorrelationIDPluginInput()
 	request := operations.CreateCorrelationidPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		CreateCorrelationIDPlugin: createCorrelationIDPlugin,
+		ControlPlaneID:      controlPlaneID,
+		CorrelationIDPlugin: correlationIDPlugin,
 	}
 	res, err := r.client.Plugins.CreateCorrelationidPlugin(ctx, request)
 	if err != nil {
@@ -353,11 +353,11 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createCorrelationIDPlugin := data.ToSharedCreateCorrelationIDPlugin()
+	correlationIDPlugin := data.ToSharedCorrelationIDPluginInput()
 	request := operations.UpdateCorrelationidPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		CreateCorrelationIDPlugin: createCorrelationIDPlugin,
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		CorrelationIDPlugin: correlationIDPlugin,
 	}
 	res, err := r.client.Plugins.UpdateCorrelationidPlugin(ctx, request)
 	if err != nil {

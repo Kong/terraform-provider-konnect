@@ -18,6 +18,7 @@ func (r *GatewayBasicAuthDataSourceModel) RefreshFromSharedBasicAuth(resp *share
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
+		r.Password = types.StringPointerValue(resp.Password)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

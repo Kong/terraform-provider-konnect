@@ -34,6 +34,7 @@ type GatewayBasicAuthDataSourceModel struct {
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`
 	ID             types.String         `tfsdk:"id"`
+	Password       types.String         `tfsdk:"password"`
 	Tags           []types.String       `tfsdk:"tags"`
 	Username       types.String         `tfsdk:"username"`
 }
@@ -70,6 +71,9 @@ func (r *GatewayBasicAuthDataSource) Schema(ctx context.Context, req datasource.
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
+				Computed: true,
+			},
+			"password": schema.StringAttribute{
 				Computed: true,
 			},
 			"tags": schema.ListAttribute{

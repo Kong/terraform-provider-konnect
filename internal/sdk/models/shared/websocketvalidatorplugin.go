@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
 )
 
 // WebsocketValidatorPluginConfigClientType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -246,6 +245,29 @@ func (o *WebsocketValidatorPluginConfig) GetUpstream() *WebsocketValidatorPlugin
 	return o.Upstream
 }
 
+// WebsocketValidatorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type WebsocketValidatorPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *WebsocketValidatorPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type WebsocketValidatorPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *WebsocketValidatorPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type WebsocketValidatorPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -337,29 +359,6 @@ func (e *WebsocketValidatorPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// WebsocketValidatorPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type WebsocketValidatorPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *WebsocketValidatorPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type WebsocketValidatorPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *WebsocketValidatorPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // WebsocketValidatorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type WebsocketValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -384,29 +383,30 @@ func (o *WebsocketValidatorPluginService) GetID() *string {
 	return o.ID
 }
 
+// WebsocketValidatorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type WebsocketValidatorPlugin struct {
-	Config *WebsocketValidatorPluginConfig `json:"config,omitempty"`
+	Config WebsocketValidatorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *WebsocketValidatorPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *WebsocketValidatorPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                             `json:"enabled,omitempty"`
 	ID           *string                           `json:"id,omitempty"`
 	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         *string                           `const:"websocket-validator" json:"name,omitempty"`
+	name         string                            `const:"websocket-validator" json:"name"`
 	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *WebsocketValidatorPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *WebsocketValidatorPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (w WebsocketValidatorPlugin) MarshalJSON() ([]byte, error) {
@@ -420,11 +420,25 @@ func (w *WebsocketValidatorPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *WebsocketValidatorPlugin) GetConfig() *WebsocketValidatorPluginConfig {
+func (o *WebsocketValidatorPlugin) GetConfig() WebsocketValidatorPluginConfig {
+	if o == nil {
+		return WebsocketValidatorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *WebsocketValidatorPlugin) GetConsumer() *WebsocketValidatorPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *WebsocketValidatorPlugin) GetConsumerGroup() *WebsocketValidatorPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *WebsocketValidatorPlugin) GetCreatedAt() *int64 {
@@ -455,8 +469,8 @@ func (o *WebsocketValidatorPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *WebsocketValidatorPlugin) GetName() *string {
-	return types.String("websocket-validator")
+func (o *WebsocketValidatorPlugin) GetName() string {
+	return "websocket-validator"
 }
 
 func (o *WebsocketValidatorPlugin) GetOrdering() *WebsocketValidatorPluginOrdering {
@@ -473,6 +487,20 @@ func (o *WebsocketValidatorPlugin) GetProtocols() []WebsocketValidatorPluginProt
 	return o.Protocols
 }
 
+func (o *WebsocketValidatorPlugin) GetRoute() *WebsocketValidatorPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *WebsocketValidatorPlugin) GetService() *WebsocketValidatorPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *WebsocketValidatorPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -487,30 +515,116 @@ func (o *WebsocketValidatorPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *WebsocketValidatorPlugin) GetConsumer() *WebsocketValidatorPluginConsumer {
+// WebsocketValidatorPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type WebsocketValidatorPluginInput struct {
+	Config WebsocketValidatorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *WebsocketValidatorPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *WebsocketValidatorPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                             `json:"enabled,omitempty"`
+	ID           *string                           `json:"id,omitempty"`
+	InstanceName *string                           `json:"instance_name,omitempty"`
+	name         string                            `const:"websocket-validator" json:"name"`
+	Ordering     *WebsocketValidatorPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (w WebsocketValidatorPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(w, "", false)
+}
+
+func (w *WebsocketValidatorPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &w, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *WebsocketValidatorPluginInput) GetConfig() WebsocketValidatorPluginConfig {
+	if o == nil {
+		return WebsocketValidatorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *WebsocketValidatorPluginInput) GetConsumer() *WebsocketValidatorPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *WebsocketValidatorPlugin) GetConsumerGroup() *WebsocketValidatorPluginConsumerGroup {
+func (o *WebsocketValidatorPluginInput) GetConsumerGroup() *WebsocketValidatorPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *WebsocketValidatorPlugin) GetRoute() *WebsocketValidatorPluginRoute {
+func (o *WebsocketValidatorPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *WebsocketValidatorPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *WebsocketValidatorPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *WebsocketValidatorPluginInput) GetName() string {
+	return "websocket-validator"
+}
+
+func (o *WebsocketValidatorPluginInput) GetOrdering() *WebsocketValidatorPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *WebsocketValidatorPluginInput) GetProtocols() []WebsocketValidatorPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *WebsocketValidatorPluginInput) GetRoute() *WebsocketValidatorPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *WebsocketValidatorPlugin) GetService() *WebsocketValidatorPluginService {
+func (o *WebsocketValidatorPluginInput) GetService() *WebsocketValidatorPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *WebsocketValidatorPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

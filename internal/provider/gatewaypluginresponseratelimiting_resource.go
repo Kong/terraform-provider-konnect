@@ -39,20 +39,20 @@ type GatewayPluginResponseRatelimitingResource struct {
 
 // GatewayPluginResponseRatelimitingResourceModel describes the resource data model.
 type GatewayPluginResponseRatelimitingResourceModel struct {
-	Config         *tfTypes.CreateResponseRatelimitingPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                            `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                            `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                     `tfsdk:"created_at"`
-	Enabled        types.Bool                                      `tfsdk:"enabled"`
-	ID             types.String                                    `tfsdk:"id"`
-	InstanceName   types.String                                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering                `tfsdk:"ordering"`
-	Protocols      []types.String                                  `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                            `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                            `tfsdk:"service"`
-	Tags           []types.String                                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                     `tfsdk:"updated_at"`
+	Config         tfTypes.ResponseRatelimitingPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginResponseRatelimitingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayPluginResponseRatelimiting Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"block_on_first_violation": schema.BoolAttribute{
 						Computed:    true,
@@ -219,6 +218,7 @@ func (r *GatewayPluginResponseRatelimitingResource) Schema(ctx context.Context, 
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -335,10 +335,10 @@ func (r *GatewayPluginResponseRatelimitingResource) Create(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createResponseRatelimitingPlugin := data.ToSharedCreateResponseRatelimitingPlugin()
+	responseRatelimitingPlugin := data.ToSharedResponseRatelimitingPluginInput()
 	request := operations.CreateResponseratelimitingPluginRequest{
-		ControlPlaneID:                   controlPlaneID,
-		CreateResponseRatelimitingPlugin: createResponseRatelimitingPlugin,
+		ControlPlaneID:             controlPlaneID,
+		ResponseRatelimitingPlugin: responseRatelimitingPlugin,
 	}
 	res, err := r.client.Plugins.CreateResponseratelimitingPlugin(ctx, request)
 	if err != nil {
@@ -445,11 +445,11 @@ func (r *GatewayPluginResponseRatelimitingResource) Update(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createResponseRatelimitingPlugin := data.ToSharedCreateResponseRatelimitingPlugin()
+	responseRatelimitingPlugin := data.ToSharedResponseRatelimitingPluginInput()
 	request := operations.UpdateResponseratelimitingPluginRequest{
-		PluginID:                         pluginID,
-		ControlPlaneID:                   controlPlaneID,
-		CreateResponseRatelimitingPlugin: createResponseRatelimitingPlugin,
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		ResponseRatelimitingPlugin: responseRatelimitingPlugin,
 	}
 	res, err := r.client.Plugins.UpdateResponseratelimitingPlugin(ctx, request)
 	if err != nil {
