@@ -1488,11 +1488,6 @@ components:
         - name
         - cidr_blocks
         - transit_gateway_attachment_config
-        - id
-        - state
-        - entity_version
-        - created_at
-        - updated_at
       title: AWS Transit Gateway
     CreateAzureTransitGateway:
       type: object
@@ -1506,11 +1501,6 @@ components:
       required:
         - name
         - transit_gateway_attachment_config
-        - id
-        - state
-        - entity_version
-        - created_at
-        - updated_at
       title: Azure Transit Gateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
