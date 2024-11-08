@@ -14,10 +14,69 @@ GatewayPluginProxyCache Resource
 
 ```terraform
 resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
+  config = {
+    cache_control = false
+    cache_ttl     = 8
+    content_type = [
+      "..."
+    ]
+    ignore_uri_case = false
+    memory = {
+      dictionary_name = "...my_dictionary_name..."
+    }
+    request_method = [
+      "POST"
+    ]
+    response_code = [
+      411
+    ]
+    response_headers = {
+      age            = false
+      x_cache_key    = true
+      x_cache_status = false
+    }
+    storage_ttl = 2
+    strategy    = "memory"
+    vary_headers = [
+      "..."
+    ]
+    vary_query_params = [
+      "..."
+    ]
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = false
+  enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "https"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -61,7 +120,7 @@ Optional:
 - `response_code` (List of Number) Upstream response status code considered cacheable.
 - `response_headers` (Attributes) Caching related diagnostic headers that should be included in cached responses (see [below for nested schema](#nestedatt--config--response_headers))
 - `storage_ttl` (Number) Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
-- `strategy` (String) The backing data store in which to hold cache entities. must be one of ["memory"]
+- `strategy` (String) The backing data store in which to hold cache entities. must be "memory"
 - `vary_headers` (List of String) Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 - `vary_query_params` (List of String) Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
 

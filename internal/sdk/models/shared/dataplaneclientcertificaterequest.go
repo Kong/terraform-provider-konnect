@@ -2,6 +2,7 @@
 
 package shared
 
+// DataPlaneClientCertificateRequest - Request body for creating a dp-client-certificate.
 type DataPlaneClientCertificateRequest struct {
 	// JSON escaped string of the certificate.
 	Cert string `json:"cert"`

@@ -41,6 +41,7 @@ func (o *Item) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
+// PluginSchemas - A response for a single custom plugin schema.
 type PluginSchemas struct {
 	Item *Item `json:"item,omitempty"`
 }

@@ -67,29 +67,29 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "CloudGatewayNetwork Resource",
 		Attributes: map[string]schema.Attribute{
 			"availability_zones": schema.ListAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
 				ElementType: types.StringType,
-				Description: `List of availability zones that the network is attached to. Requires replacement if changed. `,
+				Description: `List of availability zones that the network is attached to. Requires replacement if changed.`,
 			},
 			"cidr_block": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `CIDR block configuration for the network. Requires replacement if changed. `,
+				Description: `CIDR block configuration for the network. Requires replacement if changed.`,
 			},
 			"cloud_gateway_provider_account_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"configuration_reference_count": schema.Int64Attribute{
 				Computed:    true,
@@ -104,23 +104,21 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 			},
 			"ddos_protection": schema.BoolAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `Whether DDOS protection is enabled for the network. Requires replacement if changed. `,
+				Description: `Whether DDOS protection is enabled for the network. Requires replacement if changed.`,
 			},
 			"default": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
-					`automatically by Konnect when an organization is linked to a provider account.` + "\n" +
-					``,
+					`automatically by Konnect when an organization is linked to a provider account.`,
 			},
 			"entity_version": schema.Int64Attribute{
-				Computed: true,
-				MarkdownDescription: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
 			},
 			"firewall": schema.SingleNestedAttribute{
 				Computed: true,
@@ -162,12 +160,12 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				Description: `Metadata describing attributes returned by cloud-provider for the network.`,
 			},
 			"region": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Region ID for cloud provider region. Requires replacement if changed. `,
+				Description: `Region ID for cloud provider region. Requires replacement if changed.`,
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,

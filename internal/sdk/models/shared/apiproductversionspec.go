@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// APIProductVersionSpec - API product version specification
 type APIProductVersionSpec struct {
 	// The API product version specification identifier.
 	ID string `json:"id"`

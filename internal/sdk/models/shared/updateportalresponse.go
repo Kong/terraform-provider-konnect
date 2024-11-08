@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// UpdatePortalResponse - Details about the portal being updated.
 type UpdatePortalResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`

@@ -14,10 +14,43 @@ GatewayPluginWebsocketSizeLimit Resource
 
 ```terraform
 resource "konnect_gateway_plugin_websocket_size_limit" "my_gatewaypluginwebsocketsizelimit" {
+  config = {
+    client_max_payload   = 33127457
+    upstream_max_payload = 17682985
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "https"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// CreatePortalResponse - Details about the portal that was created.
 type CreatePortalResponse struct {
 	// Contains a unique identifier used for this resource.
 	ID string `json:"id"`

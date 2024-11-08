@@ -20,6 +20,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
@@ -98,6 +99,9 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"consumer_identifier": schema.StringAttribute{
 									Computed:    true,
@@ -206,12 +210,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 								Optional:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
-									int64validator.OneOf(
-										[]int64{
-											-1,
-											1,
-										}...,
-									),
+									int64validator.OneOf(-1, 1),
 								},
 							},
 							"initial_retry_delay": schema.NumberAttribute{
@@ -283,7 +282,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 					"workspace_identifier_default": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are ` + "`" + `workspace_id` + "`" + `, ` + "`" + `workspace_name` + "`" + `.   . must be one of ["workspace_id", "workspace_name"]`,
+						Description: `The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are ` + "`" + `workspace_id` + "`" + `, ` + "`" + `workspace_name` + "`" + `. must be one of ["workspace_id", "workspace_name"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"workspace_id",
@@ -315,11 +314,11 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

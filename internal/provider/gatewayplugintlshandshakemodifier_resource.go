@@ -67,11 +67,9 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 					"tls_client_certificate": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `TLS Client Certificate. must be one of ["REQUEST"]`,
+						Description: `TLS Client Certificate. must be "REQUEST"`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"REQUEST",
-							),
+							stringvalidator.OneOf("REQUEST"),
 						},
 					},
 				},
@@ -98,11 +96,11 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Schema(ctx context.Context, 
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

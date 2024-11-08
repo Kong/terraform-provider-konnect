@@ -14,10 +14,56 @@ GatewayPluginAiPromptDecorator Resource
 
 ```terraform
 resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptdecorator" {
+  config = {
+    max_request_body_size = 3
+    prompts = {
+      append = [
+        {
+          content = "...my_content..."
+          role    = "user"
+        }
+      ]
+      prepend = [
+        {
+          content = "...my_content..."
+          role    = "system"
+        }
+      ]
+    }
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = true
+  enabled          = false
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "tls"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 

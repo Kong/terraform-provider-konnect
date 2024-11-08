@@ -2,6 +2,7 @@
 
 package shared
 
+// UpdatePortalAppearanceRequest - Update a portal's appearance settings
 type UpdatePortalAppearanceRequest struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName *PortalTheme `json:"theme_name,omitempty"`

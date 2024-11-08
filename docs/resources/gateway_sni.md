@@ -14,9 +14,14 @@ GatewaySNI Resource
 
 ```terraform
 resource "konnect_gateway_sni" "my_gatewaysni" {
+  certificate = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  name             = "Dr. Ismael Hilpert"
-  sni_id           = "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
+  name             = "...my_name..."
+  tags = [
+    "..."
+  ]
 }
 ```
 

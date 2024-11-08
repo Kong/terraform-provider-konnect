@@ -14,10 +14,50 @@ GatewayPluginTCPLog Resource
 
 ```terraform
 resource "konnect_gateway_plugin_tcp_log" "my_gatewayplugintcplog" {
+  config = {
+    custom_fields_by_lua = {
+      "see" : jsonencode("documentation"),
+    }
+    host      = "...my_host..."
+    keepalive = 1.57
+    port      = 54956
+    timeout   = 5.53
+    tls       = false
+    tls_sni   = "...my_tls_sni..."
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "https"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 

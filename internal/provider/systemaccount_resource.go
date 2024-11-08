@@ -67,12 +67,12 @@ func (r *SystemAccountResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"konnect_managed": schema.BoolAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `The system account is managed by Konnect (true/false). Requires replacement if changed. `,
+				Description: `The system account is managed by Konnect (true/false). Requires replacement if changed.`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

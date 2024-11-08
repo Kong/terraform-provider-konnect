@@ -11,6 +11,7 @@ generation:
     requestResponseComponentNamesFeb2024: true
   auth:
     oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
   baseServerURL: ""
 terraform:
   version: 1.0.0

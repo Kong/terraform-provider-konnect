@@ -26,10 +26,10 @@ resource "konnect_portal_auth" "my_portalauth" {
   oidc_client_secret = "...my_oidc_client_secret..."
   oidc_issuer        = "...my_oidc_issuer..."
   oidc_scopes = [
-    "...",
+    "..."
   ]
   oidc_team_mapping_enabled = true
-  portal_id                 = "36bfade7-13bb-49ef-95ea-a178b8394fb7"
+  portal_id                 = "7767e05c-f054-40cb-8b51-1f99bda85654"
 }
 ```
 

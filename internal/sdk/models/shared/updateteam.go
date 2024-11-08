@@ -2,6 +2,7 @@
 
 package shared
 
+// UpdateTeam - The request schema for the update team request.
 type UpdateTeam struct {
 	// The name of the team.
 	Name *string `json:"name,omitempty"`

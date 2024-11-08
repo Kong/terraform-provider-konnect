@@ -70,6 +70,7 @@ func (e *APIProductVersionPublishStatus1) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// APIProductVersion - API product
 type APIProductVersion struct {
 	// The API product version identifier.
 	ID string `json:"id"`

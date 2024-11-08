@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// APIProduct - API product
 type APIProduct struct {
 	// The API product ID.
 	ID string `json:"id"`

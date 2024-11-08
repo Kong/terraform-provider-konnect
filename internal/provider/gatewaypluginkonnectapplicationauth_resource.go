@@ -98,6 +98,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"config": schema.SingleNestedAttribute{
 											Computed: true,
@@ -131,6 +134,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"config": schema.SingleNestedAttribute{
 											Computed: true,
@@ -342,6 +348,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
 														Attributes: map[string]schema.Attribute{
 															"alg": schema.StringAttribute{
 																Computed: true,
@@ -468,6 +477,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"ip": schema.StringAttribute{
 																		Computed:    true,
@@ -563,6 +575,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"host": schema.StringAttribute{
 																		Computed:    true,
@@ -1173,6 +1188,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"ip": schema.StringAttribute{
 																		Computed:    true,
@@ -1273,6 +1291,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"host": schema.StringAttribute{
 																		Computed:    true,
@@ -1936,11 +1957,11 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

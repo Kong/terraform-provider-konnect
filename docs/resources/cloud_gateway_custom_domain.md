@@ -14,9 +14,8 @@ CloudGatewayCustomDomain Resource
 
 ```terraform
 resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
-  control_plane_geo = "us"
+  control_plane_geo = "au"
   control_plane_id  = "0949471e-b759-45ba-87ab-ee63fb781388"
-  custom_domain_id  = "39ed3790-085d-4605-9627-f96d86aaf425"
   domain            = "example.com"
 }
 ```
@@ -26,7 +25,7 @@ resource "konnect_cloud_gateway_custom_domain" "my_cloudgatewaycustomdomain" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. Requires replacement if changed. ; must be one of ["us", "eu", "au"]
+- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]; Requires replacement if changed.
 - `control_plane_id` (String) Requires replacement if changed.
 - `domain` (String) Domain name of the custom domain. Requires replacement if changed.
 

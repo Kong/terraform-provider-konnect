@@ -20,6 +20,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -127,6 +128,9 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"ip": schema.StringAttribute{
 											Computed:    true,
@@ -222,6 +226,9 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"host": schema.StringAttribute{
 											Computed:    true,
@@ -346,11 +353,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

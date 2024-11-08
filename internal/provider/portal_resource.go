@@ -131,7 +131,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Default:     stringdefault.StaticString("false"),
-				Description: `If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. must be one of ["true", "false"]; Default: "false"`,
+				Description: `If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"true",
@@ -154,8 +154,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					``,
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

@@ -61,12 +61,12 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 		Attributes: map[string]schema.Attribute{
 			"algorithm": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `Requires replacement if changed. ; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]`,
+				Description: `must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"HS256",
@@ -94,18 +94,18 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"consumer_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `Consumer ID for nested entities. Requires replacement if changed. `,
+				Description: `Consumer ID for nested entities. Requires replacement if changed.`,
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -116,40 +116,40 @@ func (r *GatewayJWTResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"key": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"rsa_public_key": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"secret": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"tags": schema.ListAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 		},
 	}

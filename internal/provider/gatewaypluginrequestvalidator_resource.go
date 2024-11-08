@@ -20,6 +20,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect/internal/validators/boolvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
 )
 
@@ -86,6 +87,9 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"explode": schema.BoolAttribute{
 									Computed:    true,
@@ -186,11 +190,11 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,

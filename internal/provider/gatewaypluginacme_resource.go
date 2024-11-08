@@ -161,11 +161,9 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Description: `RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. must be one of ["2048", "3072", "4096"]`,
 						Validators: []validator.Int64{
 							int64validator.OneOf(
-								[]int64{
-									2048,
-									3072,
-									4096,
-								}...,
+								2048,
+								3072,
+								4096,
 							),
 						},
 					},
@@ -425,11 +423,11 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
