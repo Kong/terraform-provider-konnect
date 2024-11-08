@@ -39,6 +39,18 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 				dataplaneGroupConfig1.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances = types.Int64Value(dataplaneGroupConfigItem.Autoscale.ConfigurationDataPlaneGroupAutoscaleStatic.RequestedInstances)
 			}
 			dataplaneGroupConfig1.CloudGatewayNetworkID = types.StringValue(dataplaneGroupConfigItem.CloudGatewayNetworkID)
+			dataplaneGroupConfig1.Environment = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+			for environmentCount, environmentItem := range dataplaneGroupConfigItem.Environment {
+				var environment1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+				environment1.Name = types.StringValue(environmentItem.Name)
+				environment1.Value = types.StringValue(environmentItem.Value)
+				if environmentCount+1 > len(dataplaneGroupConfig1.Environment) {
+					dataplaneGroupConfig1.Environment = append(dataplaneGroupConfig1.Environment, environment1)
+				} else {
+					dataplaneGroupConfig1.Environment[environmentCount].Name = environment1.Name
+					dataplaneGroupConfig1.Environment[environmentCount].Value = environment1.Value
+				}
+			}
 			dataplaneGroupConfig1.Provider = types.StringValue(string(dataplaneGroupConfigItem.Provider))
 			dataplaneGroupConfig1.Region = types.StringValue(dataplaneGroupConfigItem.Region)
 			if dataplaneGroupConfigCount+1 > len(r.DataplaneGroupConfig) {
@@ -46,6 +58,7 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 			} else {
 				r.DataplaneGroupConfig[dataplaneGroupConfigCount].Autoscale = dataplaneGroupConfig1.Autoscale
 				r.DataplaneGroupConfig[dataplaneGroupConfigCount].CloudGatewayNetworkID = dataplaneGroupConfig1.CloudGatewayNetworkID
+				r.DataplaneGroupConfig[dataplaneGroupConfigCount].Environment = dataplaneGroupConfig1.Environment
 				r.DataplaneGroupConfig[dataplaneGroupConfigCount].Provider = dataplaneGroupConfig1.Provider
 				r.DataplaneGroupConfig[dataplaneGroupConfigCount].Region = dataplaneGroupConfig1.Region
 			}
@@ -74,6 +87,18 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 			for _, v := range dataplaneGroupsItem.EgressIPAddresses {
 				dataplaneGroups1.EgressIPAddresses = append(dataplaneGroups1.EgressIPAddresses, types.StringValue(v))
 			}
+			dataplaneGroups1.Environment = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+			for environmentCount1, environmentItem1 := range dataplaneGroupsItem.Environment {
+				var environment3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+				environment3.Name = types.StringValue(environmentItem1.Name)
+				environment3.Value = types.StringValue(environmentItem1.Value)
+				if environmentCount1+1 > len(dataplaneGroups1.Environment) {
+					dataplaneGroups1.Environment = append(dataplaneGroups1.Environment, environment3)
+				} else {
+					dataplaneGroups1.Environment[environmentCount1].Name = environment3.Name
+					dataplaneGroups1.Environment[environmentCount1].Value = environment3.Value
+				}
+			}
 			dataplaneGroups1.ID = types.StringValue(dataplaneGroupsItem.ID)
 			dataplaneGroups1.PrivateIPAddresses = []types.String{}
 			for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
@@ -90,6 +115,7 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 				r.DataplaneGroups[dataplaneGroupsCount].CloudGatewayNetworkID = dataplaneGroups1.CloudGatewayNetworkID
 				r.DataplaneGroups[dataplaneGroupsCount].CreatedAt = dataplaneGroups1.CreatedAt
 				r.DataplaneGroups[dataplaneGroupsCount].EgressIPAddresses = dataplaneGroups1.EgressIPAddresses
+				r.DataplaneGroups[dataplaneGroupsCount].Environment = dataplaneGroups1.Environment
 				r.DataplaneGroups[dataplaneGroupsCount].ID = dataplaneGroups1.ID
 				r.DataplaneGroups[dataplaneGroupsCount].PrivateIPAddresses = dataplaneGroups1.PrivateIPAddresses
 				r.DataplaneGroups[dataplaneGroupsCount].Provider = dataplaneGroups1.Provider

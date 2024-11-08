@@ -25,12 +25,19 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 	var cidrBlock string
 	cidrBlock = r.CidrBlock.ValueString()
 
+	state := new(shared.NetworkCreateState)
+	if !r.State.IsUnknown() && !r.State.IsNull() {
+		*state = shared.NetworkCreateState(r.State.ValueString())
+	} else {
+		state = nil
+	}
 	out := shared.CreateNetworkRequest{
 		Name:                          name,
 		CloudGatewayProviderAccountID: cloudGatewayProviderAccountID,
 		Region:                        region,
 		AvailabilityZones:             availabilityZones,
 		CidrBlock:                     cidrBlock,
+		State:                         state,
 	}
 	return &out
 }

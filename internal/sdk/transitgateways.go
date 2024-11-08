@@ -199,12 +199,12 @@ func (s *TransitGateways) CreateTransitGateway(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.TransitGateway
+			var out shared.TransitGatewayResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.TransitGateway = &out
+			res.TransitGatewayResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -433,12 +433,12 @@ func (s *TransitGateways) GetTransitGateway(ctx context.Context, request operati
 				return nil, err
 			}
 
-			var out shared.TransitGateway
+			var out shared.TransitGatewayResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.TransitGateway = &out
+			res.TransitGatewayResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

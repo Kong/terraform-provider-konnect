@@ -10763,6 +10763,7 @@ components:
       example: aws
       enum:
         - aws
+        - azure
       title: Provider Name
     ConfigurationDataPlaneGroupAutoscale:
       oneOf:
@@ -10809,6 +10810,34 @@ components:
         - kind
         - base_rps
       title: Configuration Autoscale Autopilot
+    ConfigurationDataPlaneGroupEnvironment:
+      description: Array of environment variables to set for a data-plane group.
+      type: array
+      items:
+        $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironmentField'
+      title: Configuration Data-Plane Group Environment
+    ConfigurationDataPlaneGroupEnvironmentField:
+      description: Environment variable name and value to set for a data-plane group.
+      type: object
+      properties:
+        name:
+          description: |
+            Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.
+          type: string
+          format: '^KONG_[a-zA-Z_]+[a-zA-Z0-9_]*'
+          example: KONG_LOG_LEVEL
+          maxLength: 120
+          minLength: 6
+        value:
+          description: Value assigned to the environment variable field for the data-plane group.
+          type: string
+          example: INFO
+          maxLength: 120
+          minLength: 1
+      required:
+        - name
+        - value
+      title: Configuration Data-Plane Group Environment Field
     ConfigurationDataPlaneGroupConfig:
       description: 'Object that describes where a data-plane group will be deployed to, along with how many instances.'
       type: object
@@ -10821,6 +10850,8 @@ components:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
         - autoscale
@@ -10846,6 +10877,8 @@ components:
           $ref: '#/components/schemas/ProviderRegionId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
         cloud_gateway_network_id:
           $ref: '#/components/schemas/NetworkId'
         state:
@@ -10965,6 +10998,8 @@ components:
           $ref: '#/components/schemas/NetworkId'
         autoscale:
           $ref: '#/components/schemas/ConfigurationDataPlaneGroupAutoscale'
+        environment:
+          $ref: '#/components/schemas/ConfigurationDataPlaneGroupEnvironment'
       additionalProperties: false
       required:
         - autoscale
@@ -11003,6 +11038,14 @@ components:
         - created_at
         - updated_at
       title: Cloud Gateway Provider Account
+    NetworkCreateState:
+      description: Initial state for creating a network.
+      type: string
+      default: initializing
+      enum:
+        - initializing
+        - offline
+      title: Network Create State
     NetworkState:
       description: State of the network.
       enum:
@@ -11134,6 +11177,8 @@ components:
           $ref: '#/components/schemas/NetworkAvailabilityZones'
         cidr_block:
           $ref: '#/components/schemas/NetworkCIDRBlock'
+        state:
+          $ref: '#/components/schemas/NetworkCreateState'
       additionalProperties: false
       required:
         - name
@@ -11162,49 +11207,58 @@ components:
         - terminated
       readOnly: true
       title: Transit Gateway State
-    BaseTransitGatewayAttachmentConfig:
+    AwsTransitGatewayAttachmentConfig:
       type: object
       properties:
         kind:
-          description: |
-            Kind of transit gateway attachment to create, dictating which cloud provider to peer with and required
-            parameters to create a transit gateway attachment in that cloud provider.
           enum:
             - aws-transit-gateway-attachment
-      discriminator:
-        propertyName: kind
-        mapping:
-          aws-transit-gateway-attachment: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          title: AWS Transit Gateway Attachment Type
+        transit_gateway_id:
+          description: AWS Transit Gateway ID to create attachment to.
+          type: string
+          title: Transit Gateway ID
+        ram_share_arn:
+          description: Resource Share ARN to verify request to create transit gateway attachment.
+          type: string
+          title: RAM Share ARN
+      additionalProperties: false
       required:
         - kind
-      title: Base Transit Gateway Attachment Config
-    AwsTransitGatewayAttachmentConfig:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGatewayAttachmentConfig'
-        - type: object
-          additionalProperties: false
-          properties:
-            kind:
-              enum:
-                - aws-transit-gateway-attachment
-              title: AWS Transit Gateway Attachment Type
-            transit_gateway_id:
-              description: AWS Transit Gateway ID to create attachment to.
-              type: string
-              title: Transit Gateway ID
-            ram_share_arn:
-              description: Resource Share ARN to verify request to create transit gateway attachment.
-              type: string
-              title: RAM Share ARN
-          required:
-            - kind
-            - transit_gateway_id
-            - ram_share_arn
+        - transit_gateway_id
+        - ram_share_arn
       title: AWS Transit Gateway Attachment Config
-    TransitGatewayAttachmentConfig:
-      oneOf:
-        - $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
-      title: Transit Gateway Attachment Config
+    AzureVNETPeeringAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - azure-vnet-peering-attachment
+          title: Azure VNET Peering Attachment Type
+        tenant_id:
+          description: Tenant ID for the Azure VNET Peering attachment.
+          type: string
+          title: Tenant ID
+        subscription_id:
+          description: Subscription ID for the Azure VNET Peering attachment.
+          type: string
+          title: Subscription ID
+        resource_group_name:
+          description: Resource Group Name for the Azure VNET Peering attachment.
+          type: string
+          title: Resource Group Name
+        vnet_name:
+          description: VNET Name for the Azure VNET Peering attachment.
+          type: string
+          title: VNET Name
+      additionalProperties: false
+      required:
+        - kind
+        - tenant_id
+        - subscription_id
+        - resource_group_name
+        - vnet_name
+      title: Azure VNET Peering Attachment Config
     TransitGatewayDnsConfig:
       description: |
         List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
@@ -11253,21 +11307,20 @@ components:
         - 100.64.0.0/10
         - 172.16.0.0/12
       title: Transit Gateway CIDR Blocks
-    TransitGateway:
-      x-speakeasy-entity: CloudGatewayTransitGateway
-      description: Object containing information about a transit gateway.
+    BaseTransitGateway:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+      required:
+        - name
+    BaseTransitGatewayResponse:
       type: object
       properties:
         id:
           $ref: '#/components/schemas/TransitGatewayId'
-        name:
-          $ref: '#/components/schemas/TransitGatewayName'
-        cidr_blocks:
-          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-        transit_gateway_attachment_config:
-          $ref: '#/components/schemas/TransitGatewayAttachmentConfig'
-        dns_config:
-          $ref: '#/components/schemas/TransitGatewayDnsConfig'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
         entity_version:
@@ -11291,32 +11344,80 @@ components:
           readOnly: true
       required:
         - id
-        - name
-        - cidr_blocks
-        - transit_gateway_attachment_config
         - dns_config
         - state
         - entity_version
         - created_at
         - updated_at
-      title: Transit Gateway
+    AwsTransitGateway:
+      allOf:
+        - $ref: '#/components/schemas/BaseTransitGateway'
+        - title: AWS Transit Gateway
+          type: object
+          properties:
+            cidr_blocks:
+              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+            transit_gateway_attachment_config:
+              $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+          required:
+            - cidr_blocks
+            - transit_gateway_attachment_config
+      x-flatten-allOf: true
+    AwsTransitGatewayResponse:
+      allOf:
+        - $ref: '#/components/schemas/AwsTransitGateway'
+        - required:
+            - dns_config
+        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
+      x-flatten-allOf: true
+    AzureTransitGateway:
+      allOf:
+        - $ref: '#/components/schemas/BaseTransitGateway'
+        - title: Azure Transit Gateway
+          type: object
+          properties:
+            transit_gateway_attachment_config:
+              $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+          required:
+            - transit_gateway_attachment_config
+      x-flatten-allOf: true
+    AzureTransitGatewayResponse:
+      allOf:
+        - $ref: '#/components/schemas/AzureTransitGateway'
+        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
+      x-flatten-allOf: true
+    TransitGatewayResponse:
+      oneOf:
+        - $ref: '#/components/schemas/AwsTransitGatewayResponse'
+        - $ref: '#/components/schemas/AzureTransitGatewayResponse'
+    CreateAwsTransitGateway:
+      allOf:
+        - $ref: '#/components/schemas/AwsTransitGateway'
+        - required:
+            - id
+            - name
+            - state
+            - entity_version
+            - created_at
+            - updated_at
+      x-flatten-allOf: true
+    CreateAzureTransitGateway:
+      allOf:
+        - $ref: '#/components/schemas/AzureTransitGateway'
+        - required:
+            - id
+            - name
+            - state
+            - entity_version
+            - created_at
+            - updated_at
+      x-flatten-allOf: true
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
-      properties:
-        name:
-          $ref: '#/components/schemas/TransitGatewayName'
-        cidr_blocks:
-          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-        transit_gateway_attachment_config:
-          $ref: '#/components/schemas/TransitGatewayAttachmentConfig'
-        dns_config:
-          $ref: '#/components/schemas/TransitGatewayDnsConfig'
-      additionalProperties: false
-      required:
-        - name
-        - cidr_blocks
-        - transit_gateway_attachment_config
+      oneOf:
+        - $ref: '#/components/schemas/CreateAwsTransitGateway'
+        - $ref: '#/components/schemas/CreateAzureTransitGateway'
       title: CreateTransitGatewayRequest
     CustomDomainState:
       description: State of the custom domain.
@@ -25768,13 +25869,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransitGateway'
+            $ref: '#/components/schemas/TransitGatewayResponse'
     RetrieveTransitGatewayResponse:
       description: Response format for retrieving a transit gateway.
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/TransitGateway'
+            $ref: '#/components/schemas/TransitGatewayResponse'
     ListProviderAccountsResponse:
       description: A paginated list for a collection of provider accounts.
       content:

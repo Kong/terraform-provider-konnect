@@ -39,7 +39,7 @@ type CreateTransitGatewayResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Response format for creating a transit gateway.
-	TransitGateway *shared.TransitGateway
+	TransitGatewayResponse *shared.TransitGatewayResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -73,11 +73,11 @@ func (o *CreateTransitGatewayResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateTransitGatewayResponse) GetTransitGateway() *shared.TransitGateway {
+func (o *CreateTransitGatewayResponse) GetTransitGatewayResponse() *shared.TransitGatewayResponse {
 	if o == nil {
 		return nil
 	}
-	return o.TransitGateway
+	return o.TransitGatewayResponse
 }
 
 func (o *CreateTransitGatewayResponse) GetBadRequestError() *shared.BadRequestError {

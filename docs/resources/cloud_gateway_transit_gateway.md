@@ -14,28 +14,48 @@ CloudGatewayTransitGateway Resource
 
 ```terraform
 resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway" {
-  cidr_blocks = [
-    "..."
-  ]
-  dns_config = [
-    {
-      domain_proxy_list = [
-        "..."
-      ]
-      remote_dns_server_ip_addresses = [
-        "..."
-      ]
-    }
-  ]
-  name       = "us-east-2 transit gateway"
-  network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
-  transit_gateway_attachment_config = {
-    aws_transit_gateway_attachment_config = {
+  aws_transit_gateway = {
+    cidr_blocks = [
+      "..."
+    ]
+    dns_config = [
+      {
+        domain_proxy_list = [
+          "..."
+        ]
+        remote_dns_server_ip_addresses = [
+          "..."
+        ]
+      }
+    ]
+    name = "us-east-2 transit gateway"
+    transit_gateway_attachment_config = {
       kind               = "aws-transit-gateway-attachment"
       ram_share_arn      = "...my_ram_share_arn..."
       transit_gateway_id = "...my_transit_gateway_id..."
     }
   }
+  azure_transit_gateway = {
+    dns_config = [
+      {
+        domain_proxy_list = [
+          "..."
+        ]
+        remote_dns_server_ip_addresses = [
+          "..."
+        ]
+      }
+    ]
+    name = "us-east-2 transit gateway"
+    transit_gateway_attachment_config = {
+      kind                = "azure-vnet-peering-attachment"
+      resource_group_name = "...my_resource_group_name..."
+      subscription_id     = "...my_subscription_id..."
+      tenant_id           = "...my_tenant_id..."
+      vnet_name           = "...my_vnet_name..."
+    }
+  }
+  network_id = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
 }
 ```
 
@@ -44,55 +64,174 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Required
 
+- `network_id` (String) The network to operate on. Requires replacement if changed.
+
+### Optional
+
+- `aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway))
+- `azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway))
+
+### Read-Only
+
+- `aws_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response))
+- `azure_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String) The ID of this resource.
+- `name` (String) Human-readable name of the transit gateway.
+
+<a id="nestedatt--aws_transit_gateway"></a>
+### Nested Schema for `aws_transit_gateway`
+
+Required:
+
 - `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
 network.
 Requires replacement if changed.
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
-- `network_id` (String) The network to operate on. Requires replacement if changed.
-- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--transit_gateway_attachment_config))
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway--transit_gateway_attachment_config))
 
-### Optional
+Optional:
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--dns_config))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway--dns_config))
 
-### Read-Only
+<a id="nestedatt--aws_transit_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_transit_gateway.transit_gateway_attachment_config`
 
-- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
-- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
-transit gateway.
-- `id` (String) The ID of this resource.
-- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
-- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+Required:
 
-<a id="nestedatt--transit_gateway_attachment_config"></a>
-### Nested Schema for `transit_gateway_attachment_config`
-
-Optional:
-
-- `aws_transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--transit_gateway_attachment_config--aws_transit_gateway_attachment_config))
-
-<a id="nestedatt--transit_gateway_attachment_config--aws_transit_gateway_attachment_config"></a>
-### Nested Schema for `transit_gateway_attachment_config.aws_transit_gateway_attachment_config`
-
-Optional:
-
-- `kind` (String) Not Null; must be "aws-transit-gateway-attachment"; Requires replacement if changed.
-- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Not Null; Requires replacement if changed.
-- `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Not Null; Requires replacement if changed.
+- `kind` (String) must be "aws-transit-gateway-attachment"; Requires replacement if changed.
+- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed.
+- `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Requires replacement if changed.
 
 
+<a id="nestedatt--aws_transit_gateway--dns_config"></a>
+### Nested Schema for `aws_transit_gateway.dns_config`
 
-<a id="nestedatt--dns_config"></a>
-### Nested Schema for `dns_config`
-
-Optional:
+Required:
 
 - `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
 for a transit gateway.
-Not Null; Requires replacement if changed.
-- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Not Null; Requires replacement if changed.
+Requires replacement if changed.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.
+
+
+
+<a id="nestedatt--azure_transit_gateway"></a>
+### Nested Schema for `azure_transit_gateway`
+
+Required:
+
+- `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway--transit_gateway_attachment_config))
+
+Optional:
+
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment.
+Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway--dns_config))
+
+<a id="nestedatt--azure_transit_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `azure_transit_gateway.transit_gateway_attachment_config`
+
+Required:
+
+- `kind` (String) must be "azure-vnet-peering-attachment"; Requires replacement if changed.
+- `resource_group_name` (String) Resource Group Name for the Azure VNET Peering attachment. Requires replacement if changed.
+- `subscription_id` (String) Subscription ID for the Azure VNET Peering attachment. Requires replacement if changed.
+- `tenant_id` (String) Tenant ID for the Azure VNET Peering attachment. Requires replacement if changed.
+- `vnet_name` (String) VNET Name for the Azure VNET Peering attachment. Requires replacement if changed.
+
+
+<a id="nestedatt--azure_transit_gateway--dns_config"></a>
+### Nested Schema for `azure_transit_gateway.dns_config`
+
+Required:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+Requires replacement if changed.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.
+
+
+
+<a id="nestedatt--aws_transit_gateway_response"></a>
+### Nested Schema for `aws_transit_gateway_response`
+
+Read-Only:
+
+- `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
+network.
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment. (see [below for nested schema](#nestedatt--aws_transit_gateway_response--dns_config))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String)
+- `name` (String) Human-readable name of the transit gateway.
+- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+
+<a id="nestedatt--aws_transit_gateway_response--dns_config"></a>
+### Nested Schema for `aws_transit_gateway_response.dns_config`
+
+Read-Only:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_transit_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String) must be "aws-transit-gateway-attachment"
+- `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
+- `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to.
+
+
+
+<a id="nestedatt--azure_transit_gateway_response"></a>
+### Nested Schema for `azure_transit_gateway_response`
+
+Read-Only:
+
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment. (see [below for nested schema](#nestedatt--azure_transit_gateway_response--dns_config))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String)
+- `name` (String) Human-readable name of the transit gateway.
+- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+
+<a id="nestedatt--azure_transit_gateway_response--dns_config"></a>
+### Nested Schema for `azure_transit_gateway_response.dns_config`
+
+Read-Only:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `azure_transit_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String) must be "azure-vnet-peering-attachment"
+- `resource_group_name` (String) Resource Group Name for the Azure VNET Peering attachment.
+- `subscription_id` (String) Subscription ID for the Azure VNET Peering attachment.
+- `tenant_id` (String) Tenant ID for the Azure VNET Peering attachment.
+- `vnet_name` (String) VNET Name for the Azure VNET Peering attachment.
 
 ## Import
 

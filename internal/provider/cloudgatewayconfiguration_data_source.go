@@ -113,6 +113,22 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
 						},
+						"environment": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										Computed:    true,
+										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `Value assigned to the environment variable field for the data-plane group.`,
+									},
+								},
+							},
+							Description: `Array of environment variables to set for a data-plane group.`,
+						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
 							Description: `Name of cloud provider.`,
@@ -179,6 +195,22 @@ func (r *CloudGatewayConfigurationDataSource) Schema(ctx context.Context, req da
 							Computed:    true,
 							ElementType: types.StringType,
 							Description: `List of egress IP addresses for the network that this data-plane group runs on.`,
+						},
+						"environment": schema.ListNestedAttribute{
+							Computed: true,
+							NestedObject: schema.NestedAttributeObject{
+								Attributes: map[string]schema.Attribute{
+									"name": schema.StringAttribute{
+										Computed:    true,
+										Description: `Name of the environment variable field to set for the data-plane group. Must be prefixed by KONG_.`,
+									},
+									"value": schema.StringAttribute{
+										Computed:    true,
+										Description: `Value assigned to the environment variable field for the data-plane group.`,
+									},
+								},
+							},
+							Description: `Array of environment variables to set for a data-plane group.`,
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,

@@ -11,7 +11,8 @@ import (
 type ProviderName string
 
 const (
-	ProviderNameAws ProviderName = "aws"
+	ProviderNameAws   ProviderName = "aws"
+	ProviderNameAzure ProviderName = "azure"
 )
 
 func (e ProviderName) ToPointer() *ProviderName {
@@ -24,6 +25,8 @@ func (e *ProviderName) UnmarshalJSON(data []byte) error {
 	}
 	switch v {
 	case "aws":
+		fallthrough
+	case "azure":
 		*e = ProviderName(v)
 		return nil
 	default:

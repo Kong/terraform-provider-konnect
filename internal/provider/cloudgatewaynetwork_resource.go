@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -136,16 +137,18 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				Description: `Region ID for cloud provider region. Requires replacement if changed.`,
 			},
 			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the network. must be one of ["created", "initializing", "offline", "ready", "terminating", "terminated"]`,
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString("initializing"),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Initial state for creating a network. Default: "initializing"; must be one of ["initializing", "offline"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"created",
 						"initializing",
 						"offline",
-						"ready",
-						"terminating",
-						"terminated",
 					),
 				},
 			},
