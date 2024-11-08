@@ -12007,8 +12007,7 @@ components:
           description: The name of the API product version specification
           type: string
           example: oas.yaml
-          pattern: .+(\.yaml|\.yml|\.json)
-          x-speakeasy-plan-validators: OpenApiSpecFilenameValidator
+          pattern: '^.+(?:\.yaml|\.yml|\.json)$'
         content:
           description: The contents of the API product version specification
           example: My YAML or JSON formatted OAS content
