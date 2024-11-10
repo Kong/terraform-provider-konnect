@@ -15,4 +15,15 @@ func initHooks(h *Hooks) {
 	// h.registerBeforeRequestHook(exampleHook)
 	// h.registerAfterErrorHook(exampleHook)
 	// h.registerAfterSuccessHook(exampleHook)
+
+	h.registerBeforeRequestHook(&HTTPDumpRequestHook{
+		Enabled: true,
+	})
+
+	h.registerAfterSuccessHook(&HTTPDumpResponseHook{
+		Enabled: true,
+	})
+	h.registerAfterErrorHook(&HTTPDumpResponseErrorHook{
+		Enabled: true,
+	})
 }

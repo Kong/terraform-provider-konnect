@@ -14,6 +14,7 @@
 ### Bug Fixes
 
 * Fix OpenAPI filename validation in API Products when using variables
+* 🚨 Setting `scopes = []` in the OpenID Connect plugin is now respected. This means that the default has changed from `['openid']` to `[]`.
 
 ## 1.0.0
 > Released on 2024/09/11

@@ -2194,7 +2194,7 @@ type OpenidConnectPluginConfig struct {
 	// Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
 	RunOnPreflight *bool `json:"run_on_preflight,omitempty"`
 	// The scopes passed to the authorization and token endpoints.
-	Scopes []string `json:"scopes,omitempty"`
+	Scopes []string `json:"scopes"`
 	// The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 	ScopesClaim []string `json:"scopes_claim,omitempty"`
 	// The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
@@ -3357,7 +3357,7 @@ func (o *OpenidConnectPluginConfig) GetRunOnPreflight() *bool {
 
 func (o *OpenidConnectPluginConfig) GetScopes() []string {
 	if o == nil {
-		return nil
+		return []string{}
 	}
 	return o.Scopes
 }

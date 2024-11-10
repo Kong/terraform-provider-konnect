@@ -12418,7 +12418,6 @@ components:
           type: array
           items:
             type: string
-            default: openid
           example:
             - email
             - openid
@@ -12516,7 +12515,6 @@ components:
           type: array
           items:
             type: string
-            default: openid
         oidc_claim_mappings:
           $ref: '#/components/schemas/PortalClaimMappings'
       example:
@@ -21121,6 +21119,8 @@ components:
             verify_signature:
               description: Verify signature of tokens.
               type: boolean
+          required:
+            - scopes
           shorthand_fields:
             authorization_cookie_httponly:
               type: boolean
@@ -26417,7 +26417,6 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-
 
 
 
