@@ -1389,8 +1389,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `Specifies whether to run this plugin on pre-flight (` + "`" + `OPTIONS` + "`" + `) requests.`,
 					},
 					"scopes": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
+						Required:    true,
 						ElementType: types.StringType,
 						Description: `The scopes passed to the authorization and token endpoints.`,
 					},
