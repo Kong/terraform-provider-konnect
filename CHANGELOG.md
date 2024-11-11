@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.1.0
-> Released on 2024/11/??
+> Released on 2024/11/11
 
 ### 🚨 Significant Changes
 * The `konnect_cloud_gateway_transit_gateway` resource structure has had a bug fix that enables both AWS and Azure support. Unfortunately, this has changed the resource structure and you will need to recreate any transit gateway attachments.
