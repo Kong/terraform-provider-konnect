@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.1
+> Released on 2024/11/11
+
+### Bug Fixes
+
+* Switched `CLUSTER_TYPE_HYBRID` to a deprecation rather than a hard removal as changing the `type` results in resource replacement
+
 ## 2.0.0
 > Released on 2024/11/11
 
