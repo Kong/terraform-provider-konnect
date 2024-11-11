@@ -1,9 +1,0 @@
-overlay: 1.0.0
-info:
-  title: |
-    Remove all default values to allow new provider versions to be used with old Gateway versions
-  version: 0.0.0
-actions:
-  # Need a specific selector so that we don't delete properties named "default"
-  - target: $..properties[*].default
-    remove: true

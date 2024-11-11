@@ -4,6 +4,59 @@ const path = require("path");
 const traverse = require("traverse");
 const toolkit = require("oas-toolkit");
 
+function removeDefaults(doc) {
+  doc = traverse(doc).clone();
+
+  // Remove default values, unless it's a foreign key or an empty array
+  return traverse(doc).forEach(function () {
+    // Remove default values from all properties
+    const isPropertyDefault =
+      this.key === "default" && this.parent.parent.key === "properties";
+    const isArrayDefault =
+      this.key === "default" && this.parent.key === "items";
+    if (isPropertyDefault || isArrayDefault) {
+      this.remove();
+    }
+  });
+}
+
+function addCustomDefaults(doc) {
+  doc = traverse(doc).clone();
+
+  // Remove default values, unless it's a foreign key or an empty array
+  return traverse(doc).forEach(function () {
+    // Fix OIDC scopes default value
+    if (this.path[2] == "OpenidConnectPluginConfig") {
+      if (this.path[this.path.length - 1] == "config") {
+        if (!this.node["required"]) {
+          this.node["required"] = [];
+        }
+        this.node["required"].push("scopes");
+      }
+
+      if (this.path[6] == "scopes") {
+        const isArrayItemsDefault =
+          this.key === "default" && this.parent.key === "items";
+
+        if (
+          isArrayItemsDefault &&
+          this.parent.parent &&
+          this.parent.parent.key == "scopes"
+        ) {
+          this.remove();
+        }
+        if (
+          this.parent &&
+          this.parent.key == "scopes" &&
+          this.key == "default"
+        ) {
+          this.update([]);
+        }
+      }
+    }
+  });
+}
+
 function filterOperations(doc, callback, log) {
   doc = traverse(doc).clone();
 
@@ -23,7 +76,7 @@ function filterOperations(doc, callback, log) {
   });
 }
 
-function removeNodeWithKey(doc, key){
+function removeNodeWithKey(doc, key) {
   doc = traverse(doc).clone();
 
   return traverse(doc).forEach(function () {
@@ -36,38 +89,44 @@ function removeNodeWithKey(doc, key){
 function isEmptyOperation(node) {
   const allowedKeys = Object.keys(node).filter((k) =>
     ["get", "post", "put", "patch", "delete"].includes(k)
-  ); 
+  );
   return allowedKeys.length == 0;
 }
 async function main() {
-    const sdkName = process.env.SDK_NAME;
-    const baseDir = `${__dirname}/..`;
-    const tfFile = `${baseDir}/build/complete/${sdkName}/public.yaml`;
-    complete = yaml.load(await fs.readFile(tfFile));
+  const sdkName = process.env.SDK_NAME;
+  const baseDir = `${__dirname}/..`;
+  const tfFile = `${baseDir}/build/complete/${sdkName}/public.yaml`;
+  complete = yaml.load(await fs.readFile(tfFile));
 
-    let tf = complete;
+  let tf = complete;
 
-    if (process.env.REQUIRE_SPEAKEASY_ENTITY_OPERATION === "1") {
-      // Filter down paths to the groups that we need
-      tf = filterOperations(complete, function (node) {
-        const pluginOperations = [
-          "create-plugin",
-          "delete-plugin",
-          "get-plugin",
-          "fetch-plugin-schema",
-          "upsert-plugin",
-        ];
-        return node["x-speakeasy-entity-operation"] || pluginOperations.includes(node.operationId);
-      });
-    }
+  if (process.env.REQUIRE_SPEAKEASY_ENTITY_OPERATION === "1") {
+    // Filter down paths to the groups that we need
+    tf = filterOperations(complete, function (node) {
+      const pluginOperations = [
+        "create-plugin",
+        "delete-plugin",
+        "get-plugin",
+        "fetch-plugin-schema",
+        "upsert-plugin",
+      ];
+      return (
+        node["x-speakeasy-entity-operation"] ||
+        pluginOperations.includes(node.operationId)
+      );
+    });
+  }
 
-    tf = removeNodeWithKey(tf, 'x-examples');
-    tf = removeNodeWithKey(tf, 'examples');
+  tf = removeDefaults(tf);
+  tf = addCustomDefaults(tf);
 
-    // Remove unused components from each spec
-    tf = toolkit.components.removeUnusedComponents(tf);
+  tf = removeNodeWithKey(tf, "x-examples");
+  tf = removeNodeWithKey(tf, "examples");
 
-    await fs.writeFile(tfFile, yaml.dump(tf));
+  // Remove unused components from each spec
+  tf = toolkit.components.removeUnusedComponents(tf);
+
+  await fs.writeFile(tfFile, yaml.dump(tf));
 }
 
 if (require.main === module) {
