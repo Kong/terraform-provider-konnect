@@ -1,5 +1,7 @@
 package hooks
 
+import "os"
+
 /*
  * This file is only ever generated once on the first generation and then is free to be modified.
  * Any hooks you wish to add should be registered in the initHooks function. Feel free to define
@@ -9,21 +11,18 @@ package hooks
  */
 
 func initHooks(h *Hooks) {
-	// exampleHook := &ExampleHook{}
 
-	// h.registerSDKInitHook(exampleHook)
-	// h.registerBeforeRequestHook(exampleHook)
-	// h.registerAfterErrorHook(exampleHook)
-	// h.registerAfterSuccessHook(exampleHook)
+	// Domain customization - enable usage with non-prod domains
+	h.registerBeforeRequestHook(&CustomizeKongDomainHook{})
 
+	// Debug hooks - dump request/response
 	h.registerBeforeRequestHook(&HTTPDumpRequestHook{
-		Enabled: true,
+		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_REQUEST") == "true",
 	})
-
 	h.registerAfterSuccessHook(&HTTPDumpResponseHook{
-		Enabled: true,
+		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE") == "true",
 	})
 	h.registerAfterErrorHook(&HTTPDumpResponseErrorHook{
-		Enabled: true,
+		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE_ERROR") == "true",
 	})
 }
