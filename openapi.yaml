@@ -10210,6 +10210,7 @@ components:
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
+            - CLUSTER_TYPE_HYBRID
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
           type: string
@@ -10302,6 +10303,7 @@ components:
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
+                - CLUSTER_TYPE_HYBRID
               readOnly: true
             auth_type:
               description: The auth type value of the cluster associated with the Runtime Group.
@@ -26407,6 +26409,7 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
 
 
 
