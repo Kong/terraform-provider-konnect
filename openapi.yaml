@@ -11428,23 +11428,13 @@ components:
       allOf:
         - $ref: '#/components/schemas/AwsTransitGateway'
         - required:
-            - id
             - name
-            - state
-            - entity_version
-            - created_at
-            - updated_at
       x-flatten-allOf: true
     CreateAzureTransitGateway:
       allOf:
         - $ref: '#/components/schemas/AzureTransitGateway'
         - required:
-            - id
             - name
-            - state
-            - entity_version
-            - created_at
-            - updated_at
       x-flatten-allOf: true
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
