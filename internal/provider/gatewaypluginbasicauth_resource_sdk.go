@@ -4,35 +4,56 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBasicAuthResourceModel) ToSharedCreateBasicAuthPlugin() *shared.CreateBasicAuthPlugin {
-	var config *shared.CreateBasicAuthPluginConfig
-	if r.Config != nil {
-		anonymous := new(string)
-		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-			*anonymous = r.Config.Anonymous.ValueString()
+func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPluginInput() *shared.BasicAuthPluginInput {
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	hideCredentials := new(bool)
+	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+		*hideCredentials = r.Config.HideCredentials.ValueBool()
+	} else {
+		hideCredentials = nil
+	}
+	realm := new(string)
+	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+		*realm = r.Config.Realm.ValueString()
+	} else {
+		realm = nil
+	}
+	config := shared.BasicAuthPluginConfig{
+		Anonymous:       anonymous,
+		HideCredentials: hideCredentials,
+		Realm:           realm,
+	}
+	var consumer *shared.BasicAuthPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			anonymous = nil
+			id = nil
 		}
-		hideCredentials := new(bool)
-		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-			*hideCredentials = r.Config.HideCredentials.ValueBool()
+		consumer = &shared.BasicAuthPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.BasicAuthPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			hideCredentials = nil
+			id1 = nil
 		}
-		realm := new(string)
-		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-			*realm = r.Config.Realm.ValueString()
-		} else {
-			realm = nil
-		}
-		config = &shared.CreateBasicAuthPluginConfig{
-			Anonymous:       anonymous,
-			HideCredentials: hideCredentials,
-			Realm:           realm,
+		consumerGroup = &shared.BasicAuthPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -41,120 +62,98 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedCreateBasicAuthPlugin() *s
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateBasicAuthPluginOrdering
+	var ordering *shared.BasicAuthPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateBasicAuthPluginAfter
+		var after *shared.BasicAuthPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateBasicAuthPluginAfter{
+			after = &shared.BasicAuthPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateBasicAuthPluginBefore
+		var before *shared.BasicAuthPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateBasicAuthPluginBefore{
+			before = &shared.BasicAuthPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateBasicAuthPluginOrdering{
+		ordering = &shared.BasicAuthPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateBasicAuthPluginProtocols = []shared.CreateBasicAuthPluginProtocols{}
+	var protocols []shared.BasicAuthPluginProtocols = []shared.BasicAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateBasicAuthPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.BasicAuthPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.BasicAuthPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.BasicAuthPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.BasicAuthPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.BasicAuthPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateBasicAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateBasicAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateBasicAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateBasicAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateBasicAuthPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateBasicAuthPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateBasicAuthPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateBasicAuthPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateBasicAuthPlugin{
+	out := shared.BasicAuthPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(resp *shared.BasicAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateBasicAuthPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		}
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -174,11 +173,11 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(r
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -187,7 +186,7 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(r
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

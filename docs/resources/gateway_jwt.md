@@ -14,13 +14,16 @@ GatewayJWT Resource
 
 ```terraform
 resource "konnect_gateway_jwt" "my_gatewayjwt" {
-  algorithm        = "HS256"
+  algorithm        = "PS384"
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  jwt_id           = "4a7f5faa-8c96-46d6-8214-c87573ef2ac4"
+  id               = "...my_id..."
   key              = "...my_key..."
   rsa_public_key   = "...my_rsa_public_key..."
   secret           = "...my_secret..."
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -34,7 +37,8 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 
 ### Optional
 
-- `algorithm` (String) Requires replacement if changed. ; must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]
+- `algorithm` (String) must be one of ["HS256", "HS384", "HS512", "RS256", "RS384", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]; Requires replacement if changed.
+- `id` (String) Requires replacement if changed.
 - `key` (String) Requires replacement if changed.
 - `rsa_public_key` (String) Requires replacement if changed.
 - `secret` (String) Requires replacement if changed.
@@ -44,7 +48,6 @@ resource "konnect_gateway_jwt" "my_gatewayjwt" {
 
 - `consumer` (Attributes) (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`

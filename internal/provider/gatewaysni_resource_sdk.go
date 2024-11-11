@@ -4,52 +4,47 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
+	id := new(string)
+	if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
+		*id = r.Certificate.ID.ValueString()
 	} else {
-		name = nil
+		id = nil
 	}
+	certificate := shared.SNICertificate{
+		ID: id,
+	}
+	id1 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id1 = r.ID.ValueString()
+	} else {
+		id1 = nil
+	}
+	var name string
+	name = r.Name.ValueString()
+
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var certificate *shared.SNICertificate
-	if r.Certificate != nil {
-		id := new(string)
-		if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
-			*id = r.Certificate.ID.ValueString()
-		} else {
-			id = nil
-		}
-		certificate = &shared.SNICertificate{
-			ID: id,
-		}
-	}
 	out := shared.SNIInput{
+		Certificate: certificate,
+		ID:          id1,
 		Name:        name,
 		Tags:        tags,
-		Certificate: certificate,
 	}
 	return &out
 }
 
 func (r *GatewaySNIResourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 	if resp != nil {
-		if resp.Certificate == nil {
-			r.Certificate = nil
-		} else {
-			r.Certificate = &tfTypes.ACLConsumer{}
-			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
-		}
+		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
+		r.Name = types.StringValue(resp.Name)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

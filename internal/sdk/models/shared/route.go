@@ -139,6 +139,18 @@ func (e *RouteProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// RouteService - The Service this Route is associated to. This is where the Route proxies traffic to.
+type RouteService struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *RouteService) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type Sources struct {
 	IP   *string `json:"ip,omitempty"`
 	Port *int64  `json:"port,omitempty"`
@@ -158,25 +170,14 @@ func (o *Sources) GetPort() *int64 {
 	return o.Port
 }
 
-// RouteService - The Service this Route is associated to. This is where the Route proxies traffic to.
-type RouteService struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RouteService) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
+// Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
 type Route struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
 	Destinations []Destinations `json:"destinations,omitempty"`
 	// One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
-	Headers map[string]any `json:"headers,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
 	// A list of domain names that match this Route. Note that the hosts value is case sensitive.
 	Hosts []string `json:"hosts,omitempty"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
@@ -200,6 +201,8 @@ type Route struct {
 	RequestBuffering *bool `json:"request_buffering,omitempty"`
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
+	// The Service this Route is associated to. This is where the Route proxies traffic to.
+	Service *RouteService `json:"service,omitempty"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -210,8 +213,6 @@ type Route struct {
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service,omitempty"`
 }
 
 func (o *Route) GetCreatedAt() *int64 {
@@ -228,7 +229,7 @@ func (o *Route) GetDestinations() []Destinations {
 	return o.Destinations
 }
 
-func (o *Route) GetHeaders() map[string]any {
+func (o *Route) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -319,6 +320,13 @@ func (o *Route) GetResponseBuffering() *bool {
 	return o.ResponseBuffering
 }
 
+func (o *Route) GetService() *RouteService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *Route) GetSnis() []string {
 	if o == nil {
 		return nil
@@ -354,22 +362,17 @@ func (o *Route) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *Route) GetService() *RouteService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
+// RouteInput - Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
 type RouteInput struct {
 	// A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
 	Destinations []Destinations `json:"destinations,omitempty"`
 	// One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
-	Headers map[string]any `json:"headers,omitempty"`
+	Headers map[string]string `json:"headers,omitempty"`
 	// A list of domain names that match this Route. Note that the hosts value is case sensitive.
 	Hosts []string `json:"hosts,omitempty"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *HTTPSRedirectStatusCode `json:"https_redirect_status_code,omitempty"`
+	ID                      *string                  `json:"id,omitempty"`
 	// A list of HTTP methods that match this Route.
 	Methods []string `json:"methods,omitempty"`
 	// The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
@@ -388,6 +391,8 @@ type RouteInput struct {
 	RequestBuffering *bool `json:"request_buffering,omitempty"`
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
+	// The Service this Route is associated to. This is where the Route proxies traffic to.
+	Service *RouteService `json:"service,omitempty"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -396,8 +401,6 @@ type RouteInput struct {
 	StripPath *bool `json:"strip_path,omitempty"`
 	// An optional set of strings associated with the Route for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
-	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service,omitempty"`
 }
 
 func (o *RouteInput) GetDestinations() []Destinations {
@@ -407,7 +410,7 @@ func (o *RouteInput) GetDestinations() []Destinations {
 	return o.Destinations
 }
 
-func (o *RouteInput) GetHeaders() map[string]any {
+func (o *RouteInput) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -426,6 +429,13 @@ func (o *RouteInput) GetHTTPSRedirectStatusCode() *HTTPSRedirectStatusCode {
 		return nil
 	}
 	return o.HTTPSRedirectStatusCode
+}
+
+func (o *RouteInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *RouteInput) GetMethods() []string {
@@ -491,6 +501,13 @@ func (o *RouteInput) GetResponseBuffering() *bool {
 	return o.ResponseBuffering
 }
 
+func (o *RouteInput) GetService() *RouteService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *RouteInput) GetSnis() []string {
 	if o == nil {
 		return nil
@@ -517,11 +534,4 @@ func (o *RouteInput) GetTags() []string {
 		return nil
 	}
 	return o.Tags
-}
-
-func (o *RouteInput) GetService() *RouteService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
 }

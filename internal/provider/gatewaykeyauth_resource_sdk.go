@@ -4,11 +4,17 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.KeyAuthWithoutParents {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
 		*key = r.Key.ValueString()
@@ -20,6 +26,7 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.KeyAuthWithoutParents{
+		ID:   id,
 		Key:  key,
 		Tags: tags,
 	}

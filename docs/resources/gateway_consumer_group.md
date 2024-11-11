@@ -14,9 +14,12 @@ GatewayConsumerGroup Resource
 
 ```terraform
 resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
-  consumer_group_id = ""
-  control_plane_id  = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  name              = "Claire Gleichner"
+  control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  id               = "...my_id..."
+  name             = "...my_name..."
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,10 +29,10 @@ resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
 ### Required
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `name` (String)
 
 ### Optional
 
-- `name` (String)
 - `tags` (List of String)
 
 ### Read-Only

@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateKafkaupstreamPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateKafkaUpstreamPlugin *shared.CreateKafkaUpstreamPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KafkaUpstreamPlugin *shared.KafkaUpstreamPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateKafkaupstreamPluginRequest) GetCreateKafkaUpstreamPlugin() *shared.CreateKafkaUpstreamPlugin {
+func (o *CreateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() *shared.KafkaUpstreamPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateKafkaUpstreamPlugin
+	return o.KafkaUpstreamPlugin
 }
 
 type CreateKafkaupstreamPluginResponse struct {

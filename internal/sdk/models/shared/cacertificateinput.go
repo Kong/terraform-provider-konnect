@@ -2,18 +2,20 @@
 
 package shared
 
+// CACertificateInput - A CA certificate object represents a trusted CA. These objects are used by Kong to verify the validity of a client or server certificate.
 type CACertificateInput struct {
 	// PEM-encoded public certificate of the CA.
-	Cert *string `json:"cert,omitempty"`
+	Cert string `json:"cert"`
 	// SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
 	CertDigest *string `json:"cert_digest,omitempty"`
+	ID         *string `json:"id,omitempty"`
 	// An optional set of strings associated with the Certificate for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *CACertificateInput) GetCert() *string {
+func (o *CACertificateInput) GetCert() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Cert
 }
@@ -23,6 +25,13 @@ func (o *CACertificateInput) GetCertDigest() *string {
 		return nil
 	}
 	return o.CertDigest
+}
+
+func (o *CACertificateInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 func (o *CACertificateInput) GetTags() []string {

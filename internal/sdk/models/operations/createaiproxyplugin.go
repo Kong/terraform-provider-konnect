@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateAiproxyPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAiProxyPlugin *shared.CreateAiProxyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiProxyPlugin  *shared.AiProxyPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAiproxyPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAiproxyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAiproxyPluginRequest) GetCreateAiProxyPlugin() *shared.CreateAiProxyPlugin {
+func (o *CreateAiproxyPluginRequest) GetAiProxyPlugin() *shared.AiProxyPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAiProxyPlugin
+	return o.AiProxyPlugin
 }
 
 type CreateAiproxyPluginResponse struct {

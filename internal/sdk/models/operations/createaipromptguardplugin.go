@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateAipromptguardPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAiPromptGuardPlugin *shared.CreateAiPromptGuardPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiPromptGuardPlugin *shared.AiPromptGuardPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAipromptguardPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAipromptguardPluginRequest) GetCreateAiPromptGuardPlugin() *shared.CreateAiPromptGuardPlugin {
+func (o *CreateAipromptguardPluginRequest) GetAiPromptGuardPlugin() *shared.AiPromptGuardPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAiPromptGuardPlugin
+	return o.AiPromptGuardPlugin
 }
 
 type CreateAipromptguardPluginResponse struct {

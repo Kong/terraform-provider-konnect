@@ -16,7 +16,14 @@ APIProductVersion Resource
 resource "konnect_api_product_version" "my_apiproductversion" {
   api_product_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
   deprecated     = false
-  name           = "v1"
+  gateway_service = {
+    control_plane_id = "e4d9ebb1-26b4-426a-b00e-cb67044f3baf"
+    id               = "09b4786a-3e48-4631-8f6b-62d1d8e1a7f3"
+  }
+  labels = {
+    env = "test"
+  }
+  name = "v1"
 }
 ```
 
@@ -39,7 +46,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) The API product version identifier
+- `id` (String) The API product version identifier.
 - `portals` (Attributes List) The list of portals which this API product version is configured for (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 

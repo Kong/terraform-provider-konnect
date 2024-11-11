@@ -2,6 +2,7 @@
 
 package shared
 
+// UpdatePortalRequest - Update a portal's settings.
 type UpdatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name *string `json:"name,omitempty"`
@@ -24,6 +25,8 @@ type UpdatePortalRequest struct {
 	// Default strategy ID applied on applications for the portal
 	DefaultApplicationAuthStrategyID *string `json:"default_application_auth_strategy_id,omitempty"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Labels are intended to store **INTERNAL** metadata.
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//

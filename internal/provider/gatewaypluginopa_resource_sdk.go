@@ -4,91 +4,112 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOpaResourceModel) ToSharedCreateOpaPlugin() *shared.CreateOpaPlugin {
-	var config *shared.CreateOpaPluginConfig
-	if r.Config != nil {
-		includeBodyInOpaInput := new(bool)
-		if !r.Config.IncludeBodyInOpaInput.IsUnknown() && !r.Config.IncludeBodyInOpaInput.IsNull() {
-			*includeBodyInOpaInput = r.Config.IncludeBodyInOpaInput.ValueBool()
+func (r *GatewayPluginOpaResourceModel) ToSharedOpaPluginInput() *shared.OpaPluginInput {
+	includeBodyInOpaInput := new(bool)
+	if !r.Config.IncludeBodyInOpaInput.IsUnknown() && !r.Config.IncludeBodyInOpaInput.IsNull() {
+		*includeBodyInOpaInput = r.Config.IncludeBodyInOpaInput.ValueBool()
+	} else {
+		includeBodyInOpaInput = nil
+	}
+	includeConsumerInOpaInput := new(bool)
+	if !r.Config.IncludeConsumerInOpaInput.IsUnknown() && !r.Config.IncludeConsumerInOpaInput.IsNull() {
+		*includeConsumerInOpaInput = r.Config.IncludeConsumerInOpaInput.ValueBool()
+	} else {
+		includeConsumerInOpaInput = nil
+	}
+	includeParsedJSONBodyInOpaInput := new(bool)
+	if !r.Config.IncludeParsedJSONBodyInOpaInput.IsUnknown() && !r.Config.IncludeParsedJSONBodyInOpaInput.IsNull() {
+		*includeParsedJSONBodyInOpaInput = r.Config.IncludeParsedJSONBodyInOpaInput.ValueBool()
+	} else {
+		includeParsedJSONBodyInOpaInput = nil
+	}
+	includeRouteInOpaInput := new(bool)
+	if !r.Config.IncludeRouteInOpaInput.IsUnknown() && !r.Config.IncludeRouteInOpaInput.IsNull() {
+		*includeRouteInOpaInput = r.Config.IncludeRouteInOpaInput.ValueBool()
+	} else {
+		includeRouteInOpaInput = nil
+	}
+	includeServiceInOpaInput := new(bool)
+	if !r.Config.IncludeServiceInOpaInput.IsUnknown() && !r.Config.IncludeServiceInOpaInput.IsNull() {
+		*includeServiceInOpaInput = r.Config.IncludeServiceInOpaInput.ValueBool()
+	} else {
+		includeServiceInOpaInput = nil
+	}
+	includeURICapturesInOpaInput := new(bool)
+	if !r.Config.IncludeURICapturesInOpaInput.IsUnknown() && !r.Config.IncludeURICapturesInOpaInput.IsNull() {
+		*includeURICapturesInOpaInput = r.Config.IncludeURICapturesInOpaInput.ValueBool()
+	} else {
+		includeURICapturesInOpaInput = nil
+	}
+	opaHost := new(string)
+	if !r.Config.OpaHost.IsUnknown() && !r.Config.OpaHost.IsNull() {
+		*opaHost = r.Config.OpaHost.ValueString()
+	} else {
+		opaHost = nil
+	}
+	opaPath := new(string)
+	if !r.Config.OpaPath.IsUnknown() && !r.Config.OpaPath.IsNull() {
+		*opaPath = r.Config.OpaPath.ValueString()
+	} else {
+		opaPath = nil
+	}
+	opaPort := new(int64)
+	if !r.Config.OpaPort.IsUnknown() && !r.Config.OpaPort.IsNull() {
+		*opaPort = r.Config.OpaPort.ValueInt64()
+	} else {
+		opaPort = nil
+	}
+	opaProtocol := new(shared.OpaProtocol)
+	if !r.Config.OpaProtocol.IsUnknown() && !r.Config.OpaProtocol.IsNull() {
+		*opaProtocol = shared.OpaProtocol(r.Config.OpaProtocol.ValueString())
+	} else {
+		opaProtocol = nil
+	}
+	sslVerify := new(bool)
+	if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
+		*sslVerify = r.Config.SslVerify.ValueBool()
+	} else {
+		sslVerify = nil
+	}
+	config := shared.OpaPluginConfig{
+		IncludeBodyInOpaInput:           includeBodyInOpaInput,
+		IncludeConsumerInOpaInput:       includeConsumerInOpaInput,
+		IncludeParsedJSONBodyInOpaInput: includeParsedJSONBodyInOpaInput,
+		IncludeRouteInOpaInput:          includeRouteInOpaInput,
+		IncludeServiceInOpaInput:        includeServiceInOpaInput,
+		IncludeURICapturesInOpaInput:    includeURICapturesInOpaInput,
+		OpaHost:                         opaHost,
+		OpaPath:                         opaPath,
+		OpaPort:                         opaPort,
+		OpaProtocol:                     opaProtocol,
+		SslVerify:                       sslVerify,
+	}
+	var consumer *shared.OpaPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			includeBodyInOpaInput = nil
+			id = nil
 		}
-		includeConsumerInOpaInput := new(bool)
-		if !r.Config.IncludeConsumerInOpaInput.IsUnknown() && !r.Config.IncludeConsumerInOpaInput.IsNull() {
-			*includeConsumerInOpaInput = r.Config.IncludeConsumerInOpaInput.ValueBool()
+		consumer = &shared.OpaPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.OpaPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			includeConsumerInOpaInput = nil
+			id1 = nil
 		}
-		includeParsedJSONBodyInOpaInput := new(bool)
-		if !r.Config.IncludeParsedJSONBodyInOpaInput.IsUnknown() && !r.Config.IncludeParsedJSONBodyInOpaInput.IsNull() {
-			*includeParsedJSONBodyInOpaInput = r.Config.IncludeParsedJSONBodyInOpaInput.ValueBool()
-		} else {
-			includeParsedJSONBodyInOpaInput = nil
-		}
-		includeRouteInOpaInput := new(bool)
-		if !r.Config.IncludeRouteInOpaInput.IsUnknown() && !r.Config.IncludeRouteInOpaInput.IsNull() {
-			*includeRouteInOpaInput = r.Config.IncludeRouteInOpaInput.ValueBool()
-		} else {
-			includeRouteInOpaInput = nil
-		}
-		includeServiceInOpaInput := new(bool)
-		if !r.Config.IncludeServiceInOpaInput.IsUnknown() && !r.Config.IncludeServiceInOpaInput.IsNull() {
-			*includeServiceInOpaInput = r.Config.IncludeServiceInOpaInput.ValueBool()
-		} else {
-			includeServiceInOpaInput = nil
-		}
-		includeURICapturesInOpaInput := new(bool)
-		if !r.Config.IncludeURICapturesInOpaInput.IsUnknown() && !r.Config.IncludeURICapturesInOpaInput.IsNull() {
-			*includeURICapturesInOpaInput = r.Config.IncludeURICapturesInOpaInput.ValueBool()
-		} else {
-			includeURICapturesInOpaInput = nil
-		}
-		opaHost := new(string)
-		if !r.Config.OpaHost.IsUnknown() && !r.Config.OpaHost.IsNull() {
-			*opaHost = r.Config.OpaHost.ValueString()
-		} else {
-			opaHost = nil
-		}
-		opaPath := new(string)
-		if !r.Config.OpaPath.IsUnknown() && !r.Config.OpaPath.IsNull() {
-			*opaPath = r.Config.OpaPath.ValueString()
-		} else {
-			opaPath = nil
-		}
-		opaPort := new(int64)
-		if !r.Config.OpaPort.IsUnknown() && !r.Config.OpaPort.IsNull() {
-			*opaPort = r.Config.OpaPort.ValueInt64()
-		} else {
-			opaPort = nil
-		}
-		opaProtocol := new(shared.CreateOpaPluginOpaProtocol)
-		if !r.Config.OpaProtocol.IsUnknown() && !r.Config.OpaProtocol.IsNull() {
-			*opaProtocol = shared.CreateOpaPluginOpaProtocol(r.Config.OpaProtocol.ValueString())
-		} else {
-			opaProtocol = nil
-		}
-		sslVerify := new(bool)
-		if !r.Config.SslVerify.IsUnknown() && !r.Config.SslVerify.IsNull() {
-			*sslVerify = r.Config.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
-		}
-		config = &shared.CreateOpaPluginConfig{
-			IncludeBodyInOpaInput:           includeBodyInOpaInput,
-			IncludeConsumerInOpaInput:       includeConsumerInOpaInput,
-			IncludeParsedJSONBodyInOpaInput: includeParsedJSONBodyInOpaInput,
-			IncludeRouteInOpaInput:          includeRouteInOpaInput,
-			IncludeServiceInOpaInput:        includeServiceInOpaInput,
-			IncludeURICapturesInOpaInput:    includeURICapturesInOpaInput,
-			OpaHost:                         opaHost,
-			OpaPath:                         opaPath,
-			OpaPort:                         opaPort,
-			OpaProtocol:                     opaProtocol,
-			SslVerify:                       sslVerify,
+		consumerGroup = &shared.OpaPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -97,132 +118,110 @@ func (r *GatewayPluginOpaResourceModel) ToSharedCreateOpaPlugin() *shared.Create
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateOpaPluginOrdering
+	var ordering *shared.OpaPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateOpaPluginAfter
+		var after *shared.OpaPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateOpaPluginAfter{
+			after = &shared.OpaPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateOpaPluginBefore
+		var before *shared.OpaPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateOpaPluginBefore{
+			before = &shared.OpaPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateOpaPluginOrdering{
+		ordering = &shared.OpaPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateOpaPluginProtocols = []shared.CreateOpaPluginProtocols{}
+	var protocols []shared.OpaPluginProtocols = []shared.OpaPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateOpaPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.OpaPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.OpaPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.OpaPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.OpaPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.OpaPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateOpaPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateOpaPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateOpaPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateOpaPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateOpaPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateOpaPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateOpaPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateOpaPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateOpaPlugin{
+	out := shared.OpaPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(resp *shared.OpaPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.IncludeBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeBodyInOpaInput)
+		r.Config.IncludeConsumerInOpaInput = types.BoolPointerValue(resp.Config.IncludeConsumerInOpaInput)
+		r.Config.IncludeParsedJSONBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeParsedJSONBodyInOpaInput)
+		r.Config.IncludeRouteInOpaInput = types.BoolPointerValue(resp.Config.IncludeRouteInOpaInput)
+		r.Config.IncludeServiceInOpaInput = types.BoolPointerValue(resp.Config.IncludeServiceInOpaInput)
+		r.Config.IncludeURICapturesInOpaInput = types.BoolPointerValue(resp.Config.IncludeURICapturesInOpaInput)
+		r.Config.OpaHost = types.StringPointerValue(resp.Config.OpaHost)
+		r.Config.OpaPath = types.StringPointerValue(resp.Config.OpaPath)
+		r.Config.OpaPort = types.Int64PointerValue(resp.Config.OpaPort)
+		if resp.Config.OpaProtocol != nil {
+			r.Config.OpaProtocol = types.StringValue(string(*resp.Config.OpaProtocol))
 		} else {
-			r.Config = &tfTypes.CreateOpaPluginConfig{}
-			r.Config.IncludeBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeBodyInOpaInput)
-			r.Config.IncludeConsumerInOpaInput = types.BoolPointerValue(resp.Config.IncludeConsumerInOpaInput)
-			r.Config.IncludeParsedJSONBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeParsedJSONBodyInOpaInput)
-			r.Config.IncludeRouteInOpaInput = types.BoolPointerValue(resp.Config.IncludeRouteInOpaInput)
-			r.Config.IncludeServiceInOpaInput = types.BoolPointerValue(resp.Config.IncludeServiceInOpaInput)
-			r.Config.IncludeURICapturesInOpaInput = types.BoolPointerValue(resp.Config.IncludeURICapturesInOpaInput)
-			r.Config.OpaHost = types.StringPointerValue(resp.Config.OpaHost)
-			r.Config.OpaPath = types.StringPointerValue(resp.Config.OpaPath)
-			r.Config.OpaPort = types.Int64PointerValue(resp.Config.OpaPort)
-			if resp.Config.OpaProtocol != nil {
-				r.Config.OpaProtocol = types.StringValue(string(*resp.Config.OpaProtocol))
-			} else {
-				r.Config.OpaProtocol = types.StringNull()
-			}
-			r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
+			r.Config.OpaProtocol = types.StringNull()
 		}
+		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -242,11 +241,11 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(resp *shared.
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -255,7 +254,7 @@ func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(resp *shared.
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

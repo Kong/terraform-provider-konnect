@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateSessionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateSessionPlugin *shared.CreateSessionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	SessionPlugin  *shared.SessionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateSessionPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateSessionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateSessionPluginRequest) GetCreateSessionPlugin() *shared.CreateSessionPlugin {
+func (o *CreateSessionPluginRequest) GetSessionPlugin() *shared.SessionPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateSessionPlugin
+	return o.SessionPlugin
 }
 
 type CreateSessionPluginResponse struct {

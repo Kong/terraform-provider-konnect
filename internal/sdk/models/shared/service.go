@@ -70,6 +70,7 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 	}
 }
 
+// Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.
 type Service struct {
 	// Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 	CaCertificates []string `json:"ca_certificates,omitempty"`
@@ -82,16 +83,16 @@ type Service struct {
 	// Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The host of the upstream server. Note that the host value is case sensitive.
-	Host *string `json:"host,omitempty"`
+	Host string  `json:"host"`
 	ID   *string `json:"id,omitempty"`
 	// The Service name.
 	Name *string `json:"name,omitempty"`
 	// The path to be used in requests to the upstream server.
 	Path *string `json:"path,omitempty"`
 	// The upstream server port.
-	Port *int64 `json:"port,omitempty"`
+	Port int64 `json:"port"`
 	// The protocol used to communicate with the upstream.
-	Protocol *Protocol `json:"protocol,omitempty"`
+	Protocol Protocol `json:"protocol"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// The number of retries to execute upon failure to proxy.
@@ -143,9 +144,9 @@ func (o *Service) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *Service) GetHost() *string {
+func (o *Service) GetHost() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Host
 }
@@ -171,16 +172,16 @@ func (o *Service) GetPath() *string {
 	return o.Path
 }
 
-func (o *Service) GetPort() *int64 {
+func (o *Service) GetPort() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Port
 }
 
-func (o *Service) GetProtocol() *Protocol {
+func (o *Service) GetProtocol() Protocol {
 	if o == nil {
-		return nil
+		return Protocol("")
 	}
 	return o.Protocol
 }
@@ -234,6 +235,7 @@ func (o *Service) GetWriteTimeout() *int64 {
 	return o.WriteTimeout
 }
 
+// ServiceInput - Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.
 type ServiceInput struct {
 	// Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 	CaCertificates []string `json:"ca_certificates,omitempty"`
@@ -244,15 +246,16 @@ type ServiceInput struct {
 	// Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The host of the upstream server. Note that the host value is case sensitive.
-	Host *string `json:"host,omitempty"`
+	Host string  `json:"host"`
+	ID   *string `json:"id,omitempty"`
 	// The Service name.
 	Name *string `json:"name,omitempty"`
 	// The path to be used in requests to the upstream server.
 	Path *string `json:"path,omitempty"`
 	// The upstream server port.
-	Port *int64 `json:"port,omitempty"`
+	Port int64 `json:"port"`
 	// The protocol used to communicate with the upstream.
-	Protocol *Protocol `json:"protocol,omitempty"`
+	Protocol Protocol `json:"protocol"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// The number of retries to execute upon failure to proxy.
@@ -295,11 +298,18 @@ func (o *ServiceInput) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *ServiceInput) GetHost() *string {
+func (o *ServiceInput) GetHost() string {
+	if o == nil {
+		return ""
+	}
+	return o.Host
+}
+
+func (o *ServiceInput) GetID() *string {
 	if o == nil {
 		return nil
 	}
-	return o.Host
+	return o.ID
 }
 
 func (o *ServiceInput) GetName() *string {
@@ -316,16 +326,16 @@ func (o *ServiceInput) GetPath() *string {
 	return o.Path
 }
 
-func (o *ServiceInput) GetPort() *int64 {
+func (o *ServiceInput) GetPort() int64 {
 	if o == nil {
-		return nil
+		return 0
 	}
 	return o.Port
 }
 
-func (o *ServiceInput) GetProtocol() *Protocol {
+func (o *ServiceInput) GetProtocol() Protocol {
 	if o == nil {
-		return nil
+		return Protocol("")
 	}
 	return o.Protocol
 }

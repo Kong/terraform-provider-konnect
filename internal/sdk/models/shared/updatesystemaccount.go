@@ -2,6 +2,7 @@
 
 package shared
 
+// UpdateSystemAccount - The request schema for the update system account request.
 type UpdateSystemAccount struct {
 	// Name of the system account.
 	Name *string `json:"name,omitempty"`

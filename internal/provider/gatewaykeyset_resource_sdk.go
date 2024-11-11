@@ -4,10 +4,16 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayKeySetResourceModel) ToSharedKeySetInput() *shared.KeySetInput {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -19,6 +25,7 @@ func (r *GatewayKeySetResourceModel) ToSharedKeySetInput() *shared.KeySetInput {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.KeySetInput{
+		ID:   id,
 		Name: name,
 		Tags: tags,
 	}

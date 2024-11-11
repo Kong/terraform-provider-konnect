@@ -14,11 +14,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -60,16 +60,15 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 			"certificate_id": schema.StringAttribute{
 				Computed: true,
 				MarkdownDescription: `Certificate ID for the certificate representing this domain and stored on data-planes for this` + "\n" +
-					`control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.` + "\n" +
-					``,
+					`control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.`,
 			},
 			"control_plane_geo": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. Requires replacement if changed. ; must be one of ["us", "eu", "au"]`,
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"us",
@@ -79,12 +78,12 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed:    true,
@@ -94,18 +93,17 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				},
 			},
 			"domain": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Domain name of the custom domain. Requires replacement if changed. `,
+				Description: `Domain name of the custom domain. Requires replacement if changed.`,
 			},
 			"entity_version": schema.Int64Attribute{
 				Computed: true,
 				MarkdownDescription: `Monotonically-increasing version count of the custom domain, to indicate the order of updates to the custom` + "\n" +
-					`domain.` + "\n" +
-					``,
+					`domain.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -113,8 +111,7 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 			"sni_id": schema.StringAttribute{
 				Computed: true,
 				MarkdownDescription: `Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved` + "\n" +
-					`via the control-planes API for this custom domain's control-plane.` + "\n" +
-					``,
+					`via the control-planes API for this custom domain's control-plane.`,
 			},
 			"state": schema.StringAttribute{
 				Computed:    true,
@@ -134,17 +131,15 @@ func (r *CloudGatewayCustomDomainResource) Schema(ctx context.Context, req resou
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
 					"reason": schema.StringAttribute{
-						Computed: true,
-						MarkdownDescription: `Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.` + "\n" +
-							``,
+						Computed:    true,
+						Description: `Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.`,
 					},
 					"reported_status": schema.StringAttribute{
 						Computed:    true,
 						Description: `Reported status of the custom domain from backing infrastructure.`,
 					},
 				},
-				MarkdownDescription: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.` + "\n" +
-					``,
+				Description: `Metadata describing the backing state of the custom domain and why it may be in an erroneous state.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

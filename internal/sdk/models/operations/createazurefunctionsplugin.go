@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateAzurefunctionsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID             string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAzureFunctionsPlugin *shared.CreateAzureFunctionsPlugin `request:"mediaType=application/json"`
+	ControlPlaneID       string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AzureFunctionsPlugin *shared.AzureFunctionsPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAzurefunctionsPluginRequest) GetCreateAzureFunctionsPlugin() *shared.CreateAzureFunctionsPlugin {
+func (o *CreateAzurefunctionsPluginRequest) GetAzureFunctionsPlugin() *shared.AzureFunctionsPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAzureFunctionsPlugin
+	return o.AzureFunctionsPlugin
 }
 
 type CreateAzurefunctionsPluginResponse struct {

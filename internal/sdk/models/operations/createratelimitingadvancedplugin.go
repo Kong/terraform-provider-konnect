@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateRatelimitingadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                   string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateRateLimitingAdvancedPlugin *shared.CreateRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID             string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RateLimitingAdvancedPlugin *shared.RateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateRatelimitingadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRatelimitingadvancedPluginRequest) GetCreateRateLimitingAdvancedPlugin() *shared.CreateRateLimitingAdvancedPlugin {
+func (o *CreateRatelimitingadvancedPluginRequest) GetRateLimitingAdvancedPlugin() *shared.RateLimitingAdvancedPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateRateLimitingAdvancedPlugin
+	return o.RateLimitingAdvancedPlugin
 }
 
 type CreateRatelimitingadvancedPluginResponse struct {

@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,20 +34,20 @@ type GatewayPluginPrometheusResource struct {
 
 // GatewayPluginPrometheusResourceModel describes the resource data model.
 type GatewayPluginPrometheusResourceModel struct {
-	Config         *tfTypes.CreatePrometheusPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                  `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                  `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering      `tfsdk:"ordering"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                  `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                  `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         tfTypes.PrometheusPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer           `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer           `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                    `tfsdk:"created_at"`
+	Enabled        types.Bool                     `tfsdk:"enabled"`
+	ID             types.String                   `tfsdk:"id"`
+	InstanceName   types.String                   `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering     `tfsdk:"ordering"`
+	Protocols      []types.String                 `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer           `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer           `tfsdk:"service"`
+	Tags           []types.String                 `tfsdk:"tags"`
+	UpdatedAt      types.Int64                    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginPrometheusResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginPrometheus Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ai_metrics": schema.BoolAttribute{
 						Computed:    true,
@@ -116,11 +115,11 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -133,6 +132,7 @@ func (r *GatewayPluginPrometheusResource) Schema(ctx context.Context, req resour
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -249,10 +249,10 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createPrometheusPlugin := data.ToSharedCreatePrometheusPlugin()
+	prometheusPlugin := data.ToSharedPrometheusPluginInput()
 	request := operations.CreatePrometheusPluginRequest{
-		ControlPlaneID:         controlPlaneID,
-		CreatePrometheusPlugin: createPrometheusPlugin,
+		ControlPlaneID:   controlPlaneID,
+		PrometheusPlugin: prometheusPlugin,
 	}
 	res, err := r.client.Plugins.CreatePrometheusPlugin(ctx, request)
 	if err != nil {
@@ -359,11 +359,11 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createPrometheusPlugin := data.ToSharedCreatePrometheusPlugin()
+	prometheusPlugin := data.ToSharedPrometheusPluginInput()
 	request := operations.UpdatePrometheusPluginRequest{
-		PluginID:               pluginID,
-		ControlPlaneID:         controlPlaneID,
-		CreatePrometheusPlugin: createPrometheusPlugin,
+		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
+		PrometheusPlugin: prometheusPlugin,
 	}
 	res, err := r.client.Plugins.UpdatePrometheusPlugin(ctx, request)
 	if err != nil {

@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateProxycacheadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateProxyCacheAdvancedPlugin *shared.CreateProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ProxyCacheAdvancedPlugin *shared.ProxyCacheAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateProxycacheadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateProxycacheadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateProxycacheadvancedPluginRequest) GetCreateProxyCacheAdvancedPlugin() *shared.CreateProxyCacheAdvancedPlugin {
+func (o *CreateProxycacheadvancedPluginRequest) GetProxyCacheAdvancedPlugin() *shared.ProxyCacheAdvancedPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateProxyCacheAdvancedPlugin
+	return o.ProxyCacheAdvancedPlugin
 }
 
 type CreateProxycacheadvancedPluginResponse struct {

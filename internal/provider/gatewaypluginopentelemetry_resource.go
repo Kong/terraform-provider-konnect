@@ -18,11 +18,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -40,20 +40,20 @@ type GatewayPluginOpentelemetryResource struct {
 
 // GatewayPluginOpentelemetryResourceModel describes the resource data model.
 type GatewayPluginOpentelemetryResourceModel struct {
-	Config         *tfTypes.CreateOpentelemetryPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                     `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                     `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         tfTypes.OpentelemetryPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                       `tfsdk:"created_at"`
+	Enabled        types.Bool                        `tfsdk:"enabled"`
+	ID             types.String                      `tfsdk:"id"`
+	InstanceName   types.String                      `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
+	Protocols      []types.String                    `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
+	Tags           []types.String                    `tfsdk:"tags"`
+	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOpentelemetryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,8 +65,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOpentelemetry Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
 						Computed:    true,
@@ -174,12 +173,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								Optional:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
-									int64validator.OneOf(
-										[]int64{
-											-1,
-											1,
-										}...,
-									),
+									int64validator.OneOf(-1, 1),
 								},
 							},
 							"initial_retry_delay": schema.NumberAttribute{
@@ -283,11 +277,11 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -300,6 +294,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -416,10 +411,10 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOpentelemetryPlugin := data.ToSharedCreateOpentelemetryPlugin()
+	opentelemetryPlugin := data.ToSharedOpentelemetryPluginInput()
 	request := operations.CreateOpentelemetryPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		CreateOpentelemetryPlugin: createOpentelemetryPlugin,
+		ControlPlaneID:      controlPlaneID,
+		OpentelemetryPlugin: opentelemetryPlugin,
 	}
 	res, err := r.client.Plugins.CreateOpentelemetryPlugin(ctx, request)
 	if err != nil {
@@ -526,11 +521,11 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createOpentelemetryPlugin := data.ToSharedCreateOpentelemetryPlugin()
+	opentelemetryPlugin := data.ToSharedOpentelemetryPluginInput()
 	request := operations.UpdateOpentelemetryPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		CreateOpentelemetryPlugin: createOpentelemetryPlugin,
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		OpentelemetryPlugin: opentelemetryPlugin,
 	}
 	res, err := r.client.Plugins.UpdateOpentelemetryPlugin(ctx, request)
 	if err != nil {

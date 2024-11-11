@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateBotdetectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateBotDetectionPlugin *shared.CreateBotDetectionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	BotDetectionPlugin *shared.BotDetectionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateBotdetectionPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateBotdetectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateBotdetectionPluginRequest) GetCreateBotDetectionPlugin() *shared.CreateBotDetectionPlugin {
+func (o *UpdateBotdetectionPluginRequest) GetBotDetectionPlugin() *shared.BotDetectionPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateBotDetectionPlugin
+	return o.BotDetectionPlugin
 }
 
 type UpdateBotdetectionPluginResponse struct {

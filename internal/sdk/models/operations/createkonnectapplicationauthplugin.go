@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateKonnectapplicationauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                     string                                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateKonnectApplicationAuthPlugin *shared.CreateKonnectApplicationAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID               string                                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KonnectApplicationAuthPlugin *shared.KonnectApplicationAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateKonnectapplicationauthPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateKonnectapplicationauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateKonnectapplicationauthPluginRequest) GetCreateKonnectApplicationAuthPlugin() *shared.CreateKonnectApplicationAuthPlugin {
+func (o *CreateKonnectapplicationauthPluginRequest) GetKonnectApplicationAuthPlugin() *shared.KonnectApplicationAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateKonnectApplicationAuthPlugin
+	return o.KonnectApplicationAuthPlugin
 }
 
 type CreateKonnectapplicationauthPluginResponse struct {

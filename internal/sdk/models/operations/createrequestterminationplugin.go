@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateRequestterminationPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateRequestTerminationPlugin *shared.CreateRequestTerminationPlugin `request:"mediaType=application/json"`
+	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestTerminationPlugin *shared.RequestTerminationPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequestterminationPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateRequestterminationPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequestterminationPluginRequest) GetCreateRequestTerminationPlugin() *shared.CreateRequestTerminationPlugin {
+func (o *CreateRequestterminationPluginRequest) GetRequestTerminationPlugin() *shared.RequestTerminationPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateRequestTerminationPlugin
+	return o.RequestTerminationPlugin
 }
 
 type CreateRequestterminationPluginResponse struct {

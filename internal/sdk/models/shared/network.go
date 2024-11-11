@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -23,10 +23,6 @@ type Network struct {
 	AvailabilityZones []string `json:"availability_zones"`
 	// CIDR block configuration for the network.
 	CidrBlock string `json:"cidr_block"`
-	// Firewall configuration for a network.
-	Firewall *NetworkFirewallConfig `json:"firewall,omitempty"`
-	// Whether DDOS protection is enabled for the network.
-	DdosProtection *bool `json:"ddos_protection,omitempty"`
 	// State of the network.
 	State NetworkState `json:"state"`
 	// Metadata describing attributes returned by cloud-provider for the network.
@@ -102,20 +98,6 @@ func (o *Network) GetCidrBlock() string {
 		return ""
 	}
 	return o.CidrBlock
-}
-
-func (o *Network) GetFirewall() *NetworkFirewallConfig {
-	if o == nil {
-		return nil
-	}
-	return o.Firewall
-}
-
-func (o *Network) GetDdosProtection() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DdosProtection
 }
 
 func (o *Network) GetState() NetworkState {

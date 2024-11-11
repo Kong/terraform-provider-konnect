@@ -12,9 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
 
@@ -75,8 +75,7 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					``,
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -91,9 +90,8 @@ func (r *TeamResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Returns True if a user belongs to a ` + "`" + `system_team` + "`" + `. System teams are teams that can manage Konnect objects, like "Organization Admin", or "Service"`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `A Unix timestamp representation of the most recent change to the team object in Konnect.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `A Unix timestamp representation of the most recent change to the team object in Konnect.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},

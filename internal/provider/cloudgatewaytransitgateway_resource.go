@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -18,15 +19,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
-	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/internal/validators/listvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -44,16 +40,14 @@ type CloudGatewayTransitGatewayResource struct {
 
 // CloudGatewayTransitGatewayResourceModel describes the resource data model.
 type CloudGatewayTransitGatewayResourceModel struct {
-	CidrBlocks                     []types.String                         `tfsdk:"cidr_blocks"`
-	CreatedAt                      types.String                           `tfsdk:"created_at"`
-	DNSConfig                      []tfTypes.TransitGatewayDNSConfig      `tfsdk:"dns_config"`
-	EntityVersion                  types.Int64                            `tfsdk:"entity_version"`
-	ID                             types.String                           `tfsdk:"id"`
-	Name                           types.String                           `tfsdk:"name"`
-	NetworkID                      types.String                           `tfsdk:"network_id"`
-	State                          types.String                           `tfsdk:"state"`
-	TransitGatewayAttachmentConfig tfTypes.TransitGatewayAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`
-	UpdatedAt                      types.String                           `tfsdk:"updated_at"`
+	AWSTransitGateway           *tfTypes.AWSTransitGateway           `tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
+	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGateway         *tfTypes.AzureTransitGateway         `tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
+	ID                          types.String                         `tfsdk:"id"`
+	Name                        types.String                         `tfsdk:"name"`
+	NetworkID                   types.String                         `tfsdk:"network_id"`
 }
 
 func (r *CloudGatewayTransitGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,176 +58,432 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "CloudGatewayTransitGateway Resource",
 		Attributes: map[string]schema.Attribute{
-			"cidr_blocks": schema.ListAttribute{
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
-				Required:    true,
-				ElementType: types.StringType,
-				MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
-					`network.` + "\n" +
-					`` + "\n" +
-					`Requires replacement if changed. `,
-			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
-			"dns_config": schema.ListNestedAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.List{
-					listplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-				},
+			"aws_transit_gateway": schema.SingleNestedAttribute{
 				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"domain_proxy_list": schema.ListAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.List{
-								listplanmodifier.RequiresReplaceIfConfigured(),
-								speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-							},
-							Optional:    true,
-							ElementType: types.StringType,
-							MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
-								`for a transit gateway.` + "\n" +
-								`` + "\n" +
-								`Requires replacement if changed. ; Not Null`,
-							Validators: []validator.List{
-								speakeasy_listvalidators.NotNull(),
-							},
-						},
-						"remote_dns_server_ip_addresses": schema.ListAttribute{
-							Computed: true,
-							PlanModifiers: []planmodifier.List{
-								listplanmodifier.RequiresReplaceIfConfigured(),
-								speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
-							},
-							Optional:    true,
-							ElementType: types.StringType,
-							Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed. ; Not Null`,
-							Validators: []validator.List{
-								speakeasy_listvalidators.NotNull(),
-							},
-						},
-					},
-				},
-				MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
-					`attachment.` + "\n" +
-					`` + "\n" +
-					`Requires replacement if changed. `,
-			},
-			"entity_version": schema.Int64Attribute{
-				Computed: true,
-				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
-					`transit gateway.` + "\n" +
-					``,
-			},
-			"id": schema.StringAttribute{
-				Computed: true,
-			},
-			"name": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Required:    true,
-				Description: `Human-readable name of the transit gateway. Requires replacement if changed. `,
-			},
-			"network_id": schema.StringAttribute{
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-				},
-				Required:    true,
-				Description: `The network to operate on. Requires replacement if changed. `,
-			},
-			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"created",
-						"initializing",
-						"ready",
-						"terminating",
-						"terminated",
-					),
-				},
-			},
-			"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
-				Required: true,
 				Attributes: map[string]schema.Attribute{
-					"aws_transit_gateway_attachment_config": schema.SingleNestedAttribute{
-						Computed: true,
+					"cidr_blocks": schema.ListAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						NestedObject: schema.NestedAttributeObject{
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.` + "\n" +
+										`Requires replacement if changed.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"name": schema.StringAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Required: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
-							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed: true,
+								Required: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Optional:    true,
-								Description: `Requires replacement if changed. ; Not Null; must be one of ["aws-transit-gateway-attachment"]`,
+								Description: `must be "aws-transit-gateway-attachment"; Requires replacement if changed.`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
 										"aws-transit-gateway-attachment",
 									),
 								},
 							},
 							"ram_share_arn": schema.StringAttribute{
-								Computed: true,
+								Required: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Optional:    true,
-								Description: `Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed. ; Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-								},
+								Description: `Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed.`,
 							},
 							"transit_gateway_id": schema.StringAttribute{
-								Computed: true,
+								Required: true,
 								PlanModifiers: []planmodifier.String{
 									stringplanmodifier.RequiresReplaceIfConfigured(),
-									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Optional:    true,
-								Description: `AWS Transit Gateway ID to create attachment to. Requires replacement if changed. ; Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
+								Description: `AWS Transit Gateway ID to create attachment to. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+					},
+				},
+				Description: `Requires replacement if changed.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+					}...),
+				},
+			},
+			"aws_transit_gateway_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"cidr_blocks": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
 								},
 							},
 						},
-						Description: `Requires replacement if changed. `,
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"created",
+								"initializing",
+								"ready",
+								"terminating",
+								"terminated",
+							),
+						},
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed:    true,
+								Description: `must be "aws-transit-gateway-attachment"`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"aws-transit-gateway-attachment",
+									),
+								},
+							},
+							"ram_share_arn": schema.StringAttribute{
+								Computed:    true,
+								Description: `Resource Share ARN to verify request to create transit gateway attachment.`,
+							},
+							"transit_gateway_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `AWS Transit Gateway ID to create attachment to.`,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
 					},
 				},
-				Description: `Requires replacement if changed. `,
 				Validators: []validator.Object{
-					validators.ExactlyOneChild(),
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+					}...),
 				},
 			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
+			"azure_transit_gateway": schema.SingleNestedAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
 				},
+				Attributes: map[string]schema.Attribute{
+					"dns_config": schema.ListNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						NestedObject: schema.NestedAttributeObject{
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.` + "\n" +
+										`Requires replacement if changed.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"name": schema.StringAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "azure-vnet-peering-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-vnet-peering-attachment",
+									),
+								},
+							},
+							"resource_group_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Resource Group Name for the Azure VNET Peering attachment. Requires replacement if changed.`,
+							},
+							"subscription_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Subscription ID for the Azure VNET Peering attachment. Requires replacement if changed.`,
+							},
+							"tenant_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Tenant ID for the Azure VNET Peering attachment. Requires replacement if changed.`,
+							},
+							"vnet_name": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `VNET Name for the Azure VNET Peering attachment. Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+					},
+				},
+				Description: `Requires replacement if changed.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+					}...),
+				},
+			},
+			"azure_transit_gateway_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"created",
+								"initializing",
+								"ready",
+								"terminating",
+								"terminated",
+							),
+						},
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed:    true,
+								Description: `must be "azure-vnet-peering-attachment"`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"azure-vnet-peering-attachment",
+									),
+								},
+							},
+							"resource_group_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `Resource Group Name for the Azure VNET Peering attachment.`,
+							},
+							"subscription_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Subscription ID for the Azure VNET Peering attachment.`,
+							},
+							"tenant_id": schema.StringAttribute{
+								Computed:    true,
+								Description: `Tenant ID for the Azure VNET Peering attachment.`,
+							},
+							"vnet_name": schema.StringAttribute{
+								Computed:    true,
+								Description: `VNET Name for the Azure VNET Peering attachment.`,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+					}...),
+				},
+			},
+			"entity_version": schema.Int64Attribute{
+				Computed: true,
+				MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+					`transit gateway.`,
+			},
+			"id": schema.StringAttribute{
+				Computed: true,
+			},
+			"name": schema.StringAttribute{
+				Computed:    true,
+				Description: `Human-readable name of the transit gateway.`,
+			},
+			"network_id": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Description: `The network to operate on. Requires replacement if changed.`,
 			},
 		},
 	}
@@ -301,11 +551,11 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.TransitGateway != nil) {
+	if !(res.TransitGatewayResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGateway(res.TransitGateway)
+	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
@@ -360,11 +610,11 @@ func (r *CloudGatewayTransitGatewayResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.TransitGateway != nil) {
+	if !(res.TransitGatewayResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGateway(res.TransitGateway)
+	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -4,23 +4,26 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	jwk := new(string)
 	if !r.Jwk.IsUnknown() && !r.Jwk.IsNull() {
 		*jwk = r.Jwk.ValueString()
 	} else {
 		jwk = nil
 	}
-	kid := new(string)
-	if !r.Kid.IsUnknown() && !r.Kid.IsNull() {
-		*kid = r.Kid.ValueString()
-	} else {
-		kid = nil
-	}
+	var kid string
+	kid = r.Kid.ValueString()
+
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -48,14 +51,14 @@ func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 	}
 	var set *shared.Set
 	if r.Set != nil {
-		id := new(string)
+		id1 := new(string)
 		if !r.Set.ID.IsUnknown() && !r.Set.ID.IsNull() {
-			*id = r.Set.ID.ValueString()
+			*id1 = r.Set.ID.ValueString()
 		} else {
-			id = nil
+			id1 = nil
 		}
 		set = &shared.Set{
-			ID: id,
+			ID: id1,
 		}
 	}
 	var tags []string = []string{}
@@ -63,6 +66,7 @@ func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.KeyInput{
+		ID:   id,
 		Jwk:  jwk,
 		Kid:  kid,
 		Name: name,
@@ -78,7 +82,7 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Jwk = types.StringPointerValue(resp.Jwk)
-		r.Kid = types.StringPointerValue(resp.Kid)
+		r.Kid = types.StringValue(resp.Kid)
 		r.Name = types.StringPointerValue(resp.Name)
 		if resp.Pem == nil {
 			r.Pem = nil

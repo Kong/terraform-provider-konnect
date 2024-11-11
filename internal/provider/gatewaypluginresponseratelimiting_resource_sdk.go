@@ -5,132 +5,153 @@ package provider
 import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedCreateResponseRatelimitingPlugin() *shared.CreateResponseRatelimitingPlugin {
-	var config *shared.CreateResponseRatelimitingPluginConfig
-	if r.Config != nil {
-		blockOnFirstViolation := new(bool)
-		if !r.Config.BlockOnFirstViolation.IsUnknown() && !r.Config.BlockOnFirstViolation.IsNull() {
-			*blockOnFirstViolation = r.Config.BlockOnFirstViolation.ValueBool()
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPluginInput() *shared.ResponseRatelimitingPluginInput {
+	blockOnFirstViolation := new(bool)
+	if !r.Config.BlockOnFirstViolation.IsUnknown() && !r.Config.BlockOnFirstViolation.IsNull() {
+		*blockOnFirstViolation = r.Config.BlockOnFirstViolation.ValueBool()
+	} else {
+		blockOnFirstViolation = nil
+	}
+	faultTolerant := new(bool)
+	if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
+		*faultTolerant = r.Config.FaultTolerant.ValueBool()
+	} else {
+		faultTolerant = nil
+	}
+	headerName := new(string)
+	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+		*headerName = r.Config.HeaderName.ValueString()
+	} else {
+		headerName = nil
+	}
+	hideClientHeaders := new(bool)
+	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
+		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
+	} else {
+		hideClientHeaders = nil
+	}
+	limitBy := new(shared.ResponseRatelimitingPluginLimitBy)
+	if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
+		*limitBy = shared.ResponseRatelimitingPluginLimitBy(r.Config.LimitBy.ValueString())
+	} else {
+		limitBy = nil
+	}
+	limits := make(map[string]interface{})
+	for limitsKey, limitsValue := range r.Config.Limits {
+		var limitsInst interface{}
+		_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
+		limits[limitsKey] = limitsInst
+	}
+	policy := new(shared.ResponseRatelimitingPluginPolicy)
+	if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
+		*policy = shared.ResponseRatelimitingPluginPolicy(r.Config.Policy.ValueString())
+	} else {
+		policy = nil
+	}
+	var redis *shared.ResponseRatelimitingPluginRedis
+	if r.Config.Redis != nil {
+		database := new(int64)
+		if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
+			*database = r.Config.Redis.Database.ValueInt64()
 		} else {
-			blockOnFirstViolation = nil
+			database = nil
 		}
-		faultTolerant := new(bool)
-		if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
-			*faultTolerant = r.Config.FaultTolerant.ValueBool()
+		host := new(string)
+		if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
+			*host = r.Config.Redis.Host.ValueString()
 		} else {
-			faultTolerant = nil
+			host = nil
 		}
-		headerName := new(string)
-		if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-			*headerName = r.Config.HeaderName.ValueString()
+		password := new(string)
+		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
+			*password = r.Config.Redis.Password.ValueString()
 		} else {
-			headerName = nil
+			password = nil
 		}
-		hideClientHeaders := new(bool)
-		if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
-			*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
+		port := new(int64)
+		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
+			*port = r.Config.Redis.Port.ValueInt64()
 		} else {
-			hideClientHeaders = nil
+			port = nil
 		}
-		limitBy := new(shared.CreateResponseRatelimitingPluginLimitBy)
-		if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
-			*limitBy = shared.CreateResponseRatelimitingPluginLimitBy(r.Config.LimitBy.ValueString())
+		serverName := new(string)
+		if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
+			*serverName = r.Config.Redis.ServerName.ValueString()
 		} else {
-			limitBy = nil
+			serverName = nil
 		}
-		limits := make(map[string]interface{})
-		for limitsKey, limitsValue := range r.Config.Limits {
-			var limitsInst interface{}
-			_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
-			limits[limitsKey] = limitsInst
-		}
-		policy := new(shared.CreateResponseRatelimitingPluginPolicy)
-		if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
-			*policy = shared.CreateResponseRatelimitingPluginPolicy(r.Config.Policy.ValueString())
+		ssl := new(bool)
+		if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
+			*ssl = r.Config.Redis.Ssl.ValueBool()
 		} else {
-			policy = nil
+			ssl = nil
 		}
-		var redis *shared.CreateResponseRatelimitingPluginRedis
-		if r.Config.Redis != nil {
-			database := new(int64)
-			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
-				*database = r.Config.Redis.Database.ValueInt64()
-			} else {
-				database = nil
-			}
-			host := new(string)
-			if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
-				*host = r.Config.Redis.Host.ValueString()
-			} else {
-				host = nil
-			}
-			password := new(string)
-			if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-				*password = r.Config.Redis.Password.ValueString()
-			} else {
-				password = nil
-			}
-			port := new(int64)
-			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-				*port = r.Config.Redis.Port.ValueInt64()
-			} else {
-				port = nil
-			}
-			serverName := new(string)
-			if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
-				*serverName = r.Config.Redis.ServerName.ValueString()
-			} else {
-				serverName = nil
-			}
-			ssl := new(bool)
-			if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
-				*ssl = r.Config.Redis.Ssl.ValueBool()
-			} else {
-				ssl = nil
-			}
-			sslVerify := new(bool)
-			if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-				*sslVerify = r.Config.Redis.SslVerify.ValueBool()
-			} else {
-				sslVerify = nil
-			}
-			timeout := new(int64)
-			if !r.Config.Redis.Timeout.IsUnknown() && !r.Config.Redis.Timeout.IsNull() {
-				*timeout = r.Config.Redis.Timeout.ValueInt64()
-			} else {
-				timeout = nil
-			}
-			username := new(string)
-			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-				*username = r.Config.Redis.Username.ValueString()
-			} else {
-				username = nil
-			}
-			redis = &shared.CreateResponseRatelimitingPluginRedis{
-				Database:   database,
-				Host:       host,
-				Password:   password,
-				Port:       port,
-				ServerName: serverName,
-				Ssl:        ssl,
-				SslVerify:  sslVerify,
-				Timeout:    timeout,
-				Username:   username,
-			}
+		sslVerify := new(bool)
+		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
+			*sslVerify = r.Config.Redis.SslVerify.ValueBool()
+		} else {
+			sslVerify = nil
 		}
-		config = &shared.CreateResponseRatelimitingPluginConfig{
-			BlockOnFirstViolation: blockOnFirstViolation,
-			FaultTolerant:         faultTolerant,
-			HeaderName:            headerName,
-			HideClientHeaders:     hideClientHeaders,
-			LimitBy:               limitBy,
-			Limits:                limits,
-			Policy:                policy,
-			Redis:                 redis,
+		timeout := new(int64)
+		if !r.Config.Redis.Timeout.IsUnknown() && !r.Config.Redis.Timeout.IsNull() {
+			*timeout = r.Config.Redis.Timeout.ValueInt64()
+		} else {
+			timeout = nil
+		}
+		username := new(string)
+		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
+			*username = r.Config.Redis.Username.ValueString()
+		} else {
+			username = nil
+		}
+		redis = &shared.ResponseRatelimitingPluginRedis{
+			Database:   database,
+			Host:       host,
+			Password:   password,
+			Port:       port,
+			ServerName: serverName,
+			Ssl:        ssl,
+			SslVerify:  sslVerify,
+			Timeout:    timeout,
+			Username:   username,
+		}
+	}
+	config := shared.ResponseRatelimitingPluginConfig{
+		BlockOnFirstViolation: blockOnFirstViolation,
+		FaultTolerant:         faultTolerant,
+		HeaderName:            headerName,
+		HideClientHeaders:     hideClientHeaders,
+		LimitBy:               limitBy,
+		Limits:                limits,
+		Policy:                policy,
+		Redis:                 redis,
+	}
+	var consumer *shared.ResponseRatelimitingPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.ResponseRatelimitingPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.ResponseRatelimitingPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumerGroup = &shared.ResponseRatelimitingPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -139,151 +160,129 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedCreateResponseR
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateResponseRatelimitingPluginOrdering
+	var ordering *shared.ResponseRatelimitingPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateResponseRatelimitingPluginAfter
+		var after *shared.ResponseRatelimitingPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateResponseRatelimitingPluginAfter{
+			after = &shared.ResponseRatelimitingPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateResponseRatelimitingPluginBefore
+		var before *shared.ResponseRatelimitingPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateResponseRatelimitingPluginBefore{
+			before = &shared.ResponseRatelimitingPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateResponseRatelimitingPluginOrdering{
+		ordering = &shared.ResponseRatelimitingPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateResponseRatelimitingPluginProtocols = []shared.CreateResponseRatelimitingPluginProtocols{}
+	var protocols []shared.ResponseRatelimitingPluginProtocols = []shared.ResponseRatelimitingPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateResponseRatelimitingPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.ResponseRatelimitingPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.ResponseRatelimitingPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.ResponseRatelimitingPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.ResponseRatelimitingPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.ResponseRatelimitingPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateResponseRatelimitingPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateResponseRatelimitingPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateResponseRatelimitingPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateResponseRatelimitingPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateResponseRatelimitingPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateResponseRatelimitingPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateResponseRatelimitingPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateResponseRatelimitingPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateResponseRatelimitingPlugin{
+	out := shared.ResponseRatelimitingPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedResponseRatelimitingPlugin(resp *shared.ResponseRatelimitingPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
+		r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
+		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
+		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+		if resp.Config.LimitBy != nil {
+			r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
 		} else {
-			r.Config = &tfTypes.CreateResponseRatelimitingPluginConfig{}
-			r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
-			r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
-			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
-			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-			if resp.Config.LimitBy != nil {
-				r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
-			} else {
-				r.Config.LimitBy = types.StringNull()
+			r.Config.LimitBy = types.StringNull()
+		}
+		if len(resp.Config.Limits) > 0 {
+			r.Config.Limits = make(map[string]types.String)
+			for key, value := range resp.Config.Limits {
+				result, _ := json.Marshal(value)
+				r.Config.Limits[key] = types.StringValue(string(result))
 			}
-			if len(resp.Config.Limits) > 0 {
-				r.Config.Limits = make(map[string]types.String)
-				for key, value := range resp.Config.Limits {
-					result, _ := json.Marshal(value)
-					r.Config.Limits[key] = types.StringValue(string(result))
-				}
-			}
-			if resp.Config.Policy != nil {
-				r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
-			} else {
-				r.Config.Policy = types.StringNull()
-			}
-			if resp.Config.Redis == nil {
-				r.Config.Redis = nil
-			} else {
-				r.Config.Redis = &tfTypes.CreateRateLimitingPluginRedis{}
-				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
-				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
-			}
+		}
+		if resp.Config.Policy != nil {
+			r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
+		} else {
+			r.Config.Policy = types.StringNull()
+		}
+		if resp.Config.Redis == nil {
+			r.Config.Redis = nil
+		} else {
+			r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+			r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
+			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -304,11 +303,11 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -317,7 +316,7 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

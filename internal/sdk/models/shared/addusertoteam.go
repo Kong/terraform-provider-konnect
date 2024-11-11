@@ -2,6 +2,7 @@
 
 package shared
 
+// AddUserToTeam - The request schema for adding a user to a team.
 type AddUserToTeam struct {
 	// The user ID for the user being added to a team.
 	UserID string `json:"id"`

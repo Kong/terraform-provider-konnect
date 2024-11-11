@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateLdapauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateLdapAuthPlugin *shared.CreateLdapAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LdapAuthPlugin *shared.LdapAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateLdapauthPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateLdapauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateLdapauthPluginRequest) GetCreateLdapAuthPlugin() *shared.CreateLdapAuthPlugin {
+func (o *UpdateLdapauthPluginRequest) GetLdapAuthPlugin() *shared.LdapAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateLdapAuthPlugin
+	return o.LdapAuthPlugin
 }
 
 type UpdateLdapauthPluginResponse struct {

@@ -14,10 +14,74 @@ GatewayPluginStatsdAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvanced" {
+  config = {
+    allow_status_codes = [
+      "..."
+    ]
+    consumer_identifier_default = "username"
+    host                        = "...my_host..."
+    hostname_in_prefix          = false
+    metrics = [
+      {
+        consumer_identifier  = "custom_id"
+        name                 = "status_count_per_user"
+        sample_rate          = 2.11
+        service_identifier   = "service_id"
+        stat_type            = "timer"
+        workspace_identifier = "workspace_name"
+      }
+    ]
+    port   = 36120
+    prefix = "...my_prefix..."
+    queue = {
+      concurrency_limit    = 1
+      initial_retry_delay  = 603656.13
+      max_batch_size       = 216641
+      max_bytes            = 3
+      max_coalescing_delay = 1405.3
+      max_entries          = 814148
+      max_retry_delay      = 686342.11
+      max_retry_time       = 8.95
+    }
+    service_identifier_default   = "service_host"
+    udp_packet_size              = 19205.04
+    use_tcp                      = false
+    workspace_identifier_default = "workspace_id"
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "http"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +90,11 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -63,7 +127,7 @@ Optional:
 - `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]
 - `udp_packet_size` (Number) Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).
 - `use_tcp` (Boolean) Use TCP instead of UDP.
-- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`.   . must be one of ["workspace_id", "workspace_name"]
+- `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. must be one of ["workspace_id", "workspace_name"]
 
 <a id="nestedatt--config--metrics"></a>
 ### Nested Schema for `config.metrics`

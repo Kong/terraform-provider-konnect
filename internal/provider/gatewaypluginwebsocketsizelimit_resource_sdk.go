@@ -4,28 +4,49 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedCreateWebsocketSizeLimitPlugin() *shared.CreateWebsocketSizeLimitPlugin {
-	var config *shared.CreateWebsocketSizeLimitPluginConfig
-	if r.Config != nil {
-		clientMaxPayload := new(int64)
-		if !r.Config.ClientMaxPayload.IsUnknown() && !r.Config.ClientMaxPayload.IsNull() {
-			*clientMaxPayload = r.Config.ClientMaxPayload.ValueInt64()
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimitPluginInput() *shared.WebsocketSizeLimitPluginInput {
+	clientMaxPayload := new(int64)
+	if !r.Config.ClientMaxPayload.IsUnknown() && !r.Config.ClientMaxPayload.IsNull() {
+		*clientMaxPayload = r.Config.ClientMaxPayload.ValueInt64()
+	} else {
+		clientMaxPayload = nil
+	}
+	upstreamMaxPayload := new(int64)
+	if !r.Config.UpstreamMaxPayload.IsUnknown() && !r.Config.UpstreamMaxPayload.IsNull() {
+		*upstreamMaxPayload = r.Config.UpstreamMaxPayload.ValueInt64()
+	} else {
+		upstreamMaxPayload = nil
+	}
+	config := shared.WebsocketSizeLimitPluginConfig{
+		ClientMaxPayload:   clientMaxPayload,
+		UpstreamMaxPayload: upstreamMaxPayload,
+	}
+	var consumer *shared.WebsocketSizeLimitPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			clientMaxPayload = nil
+			id = nil
 		}
-		upstreamMaxPayload := new(int64)
-		if !r.Config.UpstreamMaxPayload.IsUnknown() && !r.Config.UpstreamMaxPayload.IsNull() {
-			*upstreamMaxPayload = r.Config.UpstreamMaxPayload.ValueInt64()
+		consumer = &shared.WebsocketSizeLimitPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.WebsocketSizeLimitPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			upstreamMaxPayload = nil
+			id1 = nil
 		}
-		config = &shared.CreateWebsocketSizeLimitPluginConfig{
-			ClientMaxPayload:   clientMaxPayload,
-			UpstreamMaxPayload: upstreamMaxPayload,
+		consumerGroup = &shared.WebsocketSizeLimitPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -34,119 +55,97 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedCreateWebsocketSi
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateWebsocketSizeLimitPluginOrdering
+	var ordering *shared.WebsocketSizeLimitPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateWebsocketSizeLimitPluginAfter
+		var after *shared.WebsocketSizeLimitPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateWebsocketSizeLimitPluginAfter{
+			after = &shared.WebsocketSizeLimitPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateWebsocketSizeLimitPluginBefore
+		var before *shared.WebsocketSizeLimitPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateWebsocketSizeLimitPluginBefore{
+			before = &shared.WebsocketSizeLimitPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateWebsocketSizeLimitPluginOrdering{
+		ordering = &shared.WebsocketSizeLimitPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateWebsocketSizeLimitPluginProtocols = []shared.CreateWebsocketSizeLimitPluginProtocols{}
+	var protocols []shared.WebsocketSizeLimitPluginProtocols = []shared.WebsocketSizeLimitPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateWebsocketSizeLimitPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.WebsocketSizeLimitPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.WebsocketSizeLimitPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.WebsocketSizeLimitPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.WebsocketSizeLimitPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.WebsocketSizeLimitPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateWebsocketSizeLimitPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateWebsocketSizeLimitPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateWebsocketSizeLimitPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateWebsocketSizeLimitPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateWebsocketSizeLimitPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateWebsocketSizeLimitPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateWebsocketSizeLimitPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateWebsocketSizeLimitPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateWebsocketSizeLimitPlugin{
+	out := shared.WebsocketSizeLimitPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocketSizeLimitPlugin(resp *shared.WebsocketSizeLimitPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateWebsocketSizeLimitPluginConfig{}
-			r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
-			r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
-		}
+		r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
+		r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -166,11 +165,11 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocke
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -179,7 +178,7 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocke
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

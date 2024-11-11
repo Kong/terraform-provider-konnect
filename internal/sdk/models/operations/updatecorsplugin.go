@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateCorsPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateCorsPlugin *shared.CreateCorsPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CorsPlugin     *shared.CorsPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateCorsPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateCorsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateCorsPluginRequest) GetCreateCorsPlugin() *shared.CreateCorsPlugin {
+func (o *UpdateCorsPluginRequest) GetCorsPlugin() *shared.CorsPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateCorsPlugin
+	return o.CorsPlugin
 }
 
 type UpdateCorsPluginResponse struct {

@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateOpaPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOpaPlugin *shared.CreateOpaPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpaPlugin      *shared.OpaPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateOpaPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateOpaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOpaPluginRequest) GetCreateOpaPlugin() *shared.CreateOpaPlugin {
+func (o *CreateOpaPluginRequest) GetOpaPlugin() *shared.OpaPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOpaPlugin
+	return o.OpaPlugin
 }
 
 type CreateOpaPluginResponse struct {

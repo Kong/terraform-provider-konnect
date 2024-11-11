@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateZipkinPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateZipkinPlugin *shared.CreateZipkinPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ZipkinPlugin   *shared.ZipkinPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateZipkinPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateZipkinPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateZipkinPluginRequest) GetCreateZipkinPlugin() *shared.CreateZipkinPlugin {
+func (o *CreateZipkinPluginRequest) GetZipkinPlugin() *shared.ZipkinPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateZipkinPlugin
+	return o.ZipkinPlugin
 }
 
 type CreateZipkinPluginResponse struct {

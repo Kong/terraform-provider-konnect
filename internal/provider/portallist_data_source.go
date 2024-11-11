@@ -9,9 +9,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -97,7 +97,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 						},
 						"id": schema.StringAttribute{
 							Computed:    true,
-							Description: `Contains a unique identifier used for this resource.`,
+							Description: `Contains a unique identifier used by the API for this resource.`,
 						},
 						"is_public": schema.BoolAttribute{
 							Computed:    true,
@@ -108,8 +108,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							ElementType: types.StringType,
 							MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 								`` + "\n" +
-								`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-								``,
+								`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 						},
 						"name": schema.StringAttribute{
 							Computed:    true,
@@ -172,8 +171,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 					`  - custom_domain` + "\n" +
 					`  - custom_client_domain` + "\n" +
 					`  - created_at` + "\n" +
-					`  - updated_at` + "\n" +
-					``,
+					`  - updated_at`,
 			},
 		},
 	}

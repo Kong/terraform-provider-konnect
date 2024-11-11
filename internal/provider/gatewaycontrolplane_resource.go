@@ -15,11 +15,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -40,7 +39,7 @@ type GatewayControlPlaneResourceModel struct {
 	AuthType     types.String            `tfsdk:"auth_type"`
 	CloudGateway types.Bool              `tfsdk:"cloud_gateway"`
 	ClusterType  types.String            `tfsdk:"cluster_type"`
-	Config       *tfTypes.Config         `tfsdk:"config"`
+	Config       tfTypes.Config          `tfsdk:"config"`
 	Description  types.String            `tfsdk:"description"`
 	ID           types.String            `tfsdk:"id"`
 	Labels       map[string]types.String `tfsdk:"labels"`
@@ -67,22 +66,21 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"cloud_gateway": schema.BoolAttribute{
+				Optional: true,
 				PlanModifiers: []planmodifier.Bool{
 					boolplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Optional:    true,
-				Description: `Whether this control-plane can be used for cloud-gateways. Requires replacement if changed. `,
+				Description: `Whether this control-plane can be used for cloud-gateways. Requires replacement if changed.`,
 			},
 			"cluster_type": schema.StringAttribute{
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Optional:    true,
-				Description: `The ClusterType value of the cluster associated with the Control Plane. Requires replacement if changed. ; must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_HYBRID", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS"]`,
+				Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"CLUSTER_TYPE_CONTROL_PLANE",
-						"CLUSTER_TYPE_HYBRID",
 						"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
 						"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
 						"CLUSTER_TYPE_SERVERLESS",
@@ -91,22 +89,59 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 			},
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.Object{
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
-				},
 				Attributes: map[string]schema.Attribute{
-					"control_plane_endpoint": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+					"auth_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The auth type value of the cluster associated with the Runtime Group. must be one of ["pinned_client_certs", "pki_client_certs"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"pinned_client_certs",
+								"pki_client_certs",
+							),
 						},
+					},
+					"cloud_gateway": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether the Control Plane can be used for cloud-gateways.`,
+					},
+					"cluster_type": schema.StringAttribute{
+						Computed:    true,
+						Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"CLUSTER_TYPE_CONTROL_PLANE",
+								"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
+								"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
+								"CLUSTER_TYPE_SERVERLESS",
+							),
+						},
+					},
+					"control_plane_endpoint": schema.StringAttribute{
+						Computed:    true,
 						Description: `Control Plane Endpoint.`,
 					},
-					"telemetry_endpoint": schema.StringAttribute{
+					"proxy_urls": schema.SetNestedAttribute{
 						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"host": schema.StringAttribute{
+									Computed:    true,
+									Description: `Hostname of the proxy URL.`,
+								},
+								"port": schema.Int64Attribute{
+									Computed:    true,
+									Description: `Port of the proxy URL.`,
+								},
+								"protocol": schema.StringAttribute{
+									Computed:    true,
+									Description: `Protocol of the proxy URL.`,
+								},
+							},
 						},
+						Description: `Array of proxy URLs associated with reaching the data-planes connected to a control-plane.`,
+					},
+					"telemetry_endpoint": schema.StringAttribute{
+						Computed:    true,
 						Description: `Telemetry Endpoint.`,
 					},
 				},
@@ -122,7 +157,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Description: `The control plane ID`,
+				Description: `The control plane ID.`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -130,8 +165,7 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				ElementType: types.StringType,
 				MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 					`` + "\n" +
-					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-					``,
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"name": schema.StringAttribute{
 				Required:    true,

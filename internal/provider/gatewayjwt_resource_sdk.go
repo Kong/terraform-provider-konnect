@@ -4,8 +4,8 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithoutParents {
@@ -14,6 +14,12 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 		*algorithm = shared.Algorithm(r.Algorithm.ValueString())
 	} else {
 		algorithm = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
 	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
@@ -39,6 +45,7 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	}
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
+		ID:           id,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,
 		Secret:       secret,

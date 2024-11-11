@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreatePrometheusPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreatePrometheusPlugin *shared.CreatePrometheusPlugin `request:"mediaType=application/json"`
+	ControlPlaneID   string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PrometheusPlugin *shared.PrometheusPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreatePrometheusPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreatePrometheusPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreatePrometheusPluginRequest) GetCreatePrometheusPlugin() *shared.CreatePrometheusPlugin {
+func (o *CreatePrometheusPluginRequest) GetPrometheusPlugin() *shared.PrometheusPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreatePrometheusPlugin
+	return o.PrometheusPlugin
 }
 
 type CreatePrometheusPluginResponse struct {

@@ -14,10 +14,72 @@ GatewayPluginDatadog Resource
 
 ```terraform
 resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
+  config = {
+    consumer_tag  = "...my_consumer_tag..."
+    flush_timeout = 5.18
+    host          = "...my_host..."
+    metrics = [
+      {
+        consumer_identifier = "username"
+        name                = "request_size"
+        sample_rate         = 0.12
+        stat_type           = "timer"
+        tags = [
+          "..."
+        ]
+      }
+    ]
+    port   = 19191
+    prefix = "...my_prefix..."
+    queue = {
+      concurrency_limit    = 1
+      initial_retry_delay  = 632515.49
+      max_batch_size       = 689907
+      max_bytes            = 2
+      max_coalescing_delay = 645.74
+      max_entries          = 470545
+      max_retry_delay      = 272290.78
+      max_retry_time       = 9.63
+    }
+    queue_size       = 10
+    retry_count      = 2
+    service_name_tag = "...my_service_name_tag..."
+    status_tag       = "...my_status_tag..."
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "ws"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +88,11 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.

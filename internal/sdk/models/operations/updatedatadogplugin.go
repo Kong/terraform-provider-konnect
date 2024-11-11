@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateDatadogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateDatadogPlugin *shared.CreateDatadogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	DatadogPlugin  *shared.DatadogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateDatadogPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateDatadogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateDatadogPluginRequest) GetCreateDatadogPlugin() *shared.CreateDatadogPlugin {
+func (o *UpdateDatadogPluginRequest) GetDatadogPlugin() *shared.DatadogPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateDatadogPlugin
+	return o.DatadogPlugin
 }
 
 type UpdateDatadogPluginResponse struct {

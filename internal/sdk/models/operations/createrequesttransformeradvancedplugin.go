@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateRequesttransformeradvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                         string                                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateRequestTransformerAdvancedPlugin *shared.CreateRequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                   string                                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestTransformerAdvancedPlugin *shared.RequestTransformerAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateRequesttransformeradvancedPluginRequest) GetControlPlaneID() stri
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequesttransformeradvancedPluginRequest) GetCreateRequestTransformerAdvancedPlugin() *shared.CreateRequestTransformerAdvancedPlugin {
+func (o *CreateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() *shared.RequestTransformerAdvancedPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateRequestTransformerAdvancedPlugin
+	return o.RequestTransformerAdvancedPlugin
 }
 
 type CreateRequesttransformeradvancedPluginResponse struct {

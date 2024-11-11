@@ -14,16 +14,52 @@ GatewayRoute Resource
 
 ```terraform
 resource "konnect_gateway_route" "my_gatewayroute" {
-  control_plane_id           = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  https_redirect_status_code = "302"
-  name                       = "Vincent Conroy"
-  path_handling              = "v1"
-  preserve_host              = false
-  regex_priority             = 8
-  request_buffering          = true
-  response_buffering         = false
-  route_id                   = "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
-  strip_path                 = true
+  control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  destinations = [
+    {
+      ip   = "...my_ip..."
+      port = 8
+    }
+  ]
+  headers = {
+    env = "test"
+  }
+  hosts = [
+    "..."
+  ]
+  https_redirect_status_code = 307
+  id                         = "...my_id..."
+  methods = [
+    "..."
+  ]
+  name          = "...my_name..."
+  path_handling = "v0"
+  paths = [
+    "..."
+  ]
+  preserve_host = false
+  protocols = [
+    "tcp"
+  ]
+  regex_priority     = 9
+  request_buffering  = true
+  response_buffering = false
+  service = {
+    id = "...my_id..."
+  }
+  snis = [
+    "..."
+  ]
+  sources = [
+    {
+      ip   = "...my_ip..."
+      port = 0
+    }
+  ]
+  strip_path = true
+  tags = [
+    "..."
+  ]
 }
 ```
 

@@ -17,10 +17,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -38,20 +39,20 @@ type GatewayPluginZipkinResource struct {
 
 // GatewayPluginZipkinResourceModel describes the resource data model.
 type GatewayPluginZipkinResourceModel struct {
-	Config         *tfTypes.CreateZipkinPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.ZipkinPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                `tfsdk:"created_at"`
+	Enabled        types.Bool                 `tfsdk:"enabled"`
+	ID             types.String               `tfsdk:"id"`
+	InstanceName   types.String               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
+	Protocols      []types.String             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
+	Tags           []types.String             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginZipkinResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,8 +64,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginZipkin Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -207,12 +207,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Optional:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited. must be one of ["-1", "1"]`,
 								Validators: []validator.Int64{
-									int64validator.OneOf(
-										[]int64{
-											-1,
-											1,
-										}...,
-									),
+									int64validator.OneOf(-1, 1),
 								},
 							},
 							"initial_retry_delay": schema.NumberAttribute{
@@ -269,7 +264,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"sample_ratio": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests. `,
+						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
 					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -283,6 +278,9 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"name": schema.StringAttribute{
 									Computed:    true,
@@ -314,12 +312,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `The length in bytes of each request's Trace ID. must be one of ["8", "16"]`,
 						Validators: []validator.Int64{
-							int64validator.OneOf(
-								[]int64{
-									8,
-									16,
-								}...,
-							),
+							int64validator.OneOf(8, 16),
 						},
 					},
 				},
@@ -346,11 +339,11 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -363,6 +356,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -479,10 +473,10 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createZipkinPlugin := data.ToSharedCreateZipkinPlugin()
+	zipkinPlugin := data.ToSharedZipkinPluginInput()
 	request := operations.CreateZipkinPluginRequest{
-		ControlPlaneID:     controlPlaneID,
-		CreateZipkinPlugin: createZipkinPlugin,
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   zipkinPlugin,
 	}
 	res, err := r.client.Plugins.CreateZipkinPlugin(ctx, request)
 	if err != nil {
@@ -589,11 +583,11 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createZipkinPlugin := data.ToSharedCreateZipkinPlugin()
+	zipkinPlugin := data.ToSharedZipkinPluginInput()
 	request := operations.UpdateZipkinPluginRequest{
-		PluginID:           pluginID,
-		ControlPlaneID:     controlPlaneID,
-		CreateZipkinPlugin: createZipkinPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		ZipkinPlugin:   zipkinPlugin,
 	}
 	res, err := r.client.Plugins.UpdateZipkinPlugin(ctx, request)
 	if err != nil {

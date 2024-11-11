@@ -2,6 +2,9 @@
 
 package shared
 
+// CreateTeam - The request schema for the create team request.
+//
+// If you pass the same `name` and `description` of an existing team in the request, a team with the same `name` and `description` will be created. The two teams will have different `team_id` values to differentiate them.
 type CreateTeam struct {
 	// A name for the team being created.
 	Name string `json:"name"`

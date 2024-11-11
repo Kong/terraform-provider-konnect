@@ -14,11 +14,14 @@ GatewayBasicAuth Resource
 
 ```terraform
 resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
-  basic_auth_id    = "80db1b58-ca7c-4d21-b92a-64eb07725872"
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  id               = "...my_id..."
   password         = "...my_password..."
-  username         = "Tyrel.Schneider72"
+  tags = [
+    "..."
+  ]
+  username = "...my_username..."
 }
 ```
 
@@ -32,6 +35,7 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
 
 ### Optional
 
+- `id` (String) Requires replacement if changed.
 - `password` (String, Sensitive) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
 - `username` (String) Requires replacement if changed.
@@ -40,7 +44,6 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
 
 - `consumer` (Attributes) (see [below for nested schema](#nestedatt--consumer))
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String) The ID of this resource.
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`

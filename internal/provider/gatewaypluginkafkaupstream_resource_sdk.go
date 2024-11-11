@@ -4,215 +4,236 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedCreateKafkaUpstreamPlugin() *shared.CreateKafkaUpstreamPlugin {
-	var config *shared.CreateKafkaUpstreamPluginConfig
-	if r.Config != nil {
-		var authentication *shared.CreateKafkaUpstreamPluginAuthentication
-		if r.Config.Authentication != nil {
-			mechanism := new(shared.CreateKafkaUpstreamPluginMechanism)
-			if !r.Config.Authentication.Mechanism.IsUnknown() && !r.Config.Authentication.Mechanism.IsNull() {
-				*mechanism = shared.CreateKafkaUpstreamPluginMechanism(r.Config.Authentication.Mechanism.ValueString())
-			} else {
-				mechanism = nil
-			}
-			password := new(string)
-			if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
-				*password = r.Config.Authentication.Password.ValueString()
-			} else {
-				password = nil
-			}
-			strategy := new(shared.CreateKafkaUpstreamPluginStrategy)
-			if !r.Config.Authentication.Strategy.IsUnknown() && !r.Config.Authentication.Strategy.IsNull() {
-				*strategy = shared.CreateKafkaUpstreamPluginStrategy(r.Config.Authentication.Strategy.ValueString())
-			} else {
-				strategy = nil
-			}
-			tokenauth := new(bool)
-			if !r.Config.Authentication.Tokenauth.IsUnknown() && !r.Config.Authentication.Tokenauth.IsNull() {
-				*tokenauth = r.Config.Authentication.Tokenauth.ValueBool()
-			} else {
-				tokenauth = nil
-			}
-			user := new(string)
-			if !r.Config.Authentication.User.IsUnknown() && !r.Config.Authentication.User.IsNull() {
-				*user = r.Config.Authentication.User.ValueString()
-			} else {
-				user = nil
-			}
-			authentication = &shared.CreateKafkaUpstreamPluginAuthentication{
-				Mechanism: mechanism,
-				Password:  password,
-				Strategy:  strategy,
-				Tokenauth: tokenauth,
-				User:      user,
-			}
+func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPluginInput() *shared.KafkaUpstreamPluginInput {
+	var authentication *shared.KafkaUpstreamPluginAuthentication
+	if r.Config.Authentication != nil {
+		mechanism := new(shared.KafkaUpstreamPluginMechanism)
+		if !r.Config.Authentication.Mechanism.IsUnknown() && !r.Config.Authentication.Mechanism.IsNull() {
+			*mechanism = shared.KafkaUpstreamPluginMechanism(r.Config.Authentication.Mechanism.ValueString())
+		} else {
+			mechanism = nil
 		}
-		var bootstrapServers []shared.CreateKafkaUpstreamPluginBootstrapServers = []shared.CreateKafkaUpstreamPluginBootstrapServers{}
-		for _, bootstrapServersItem := range r.Config.BootstrapServers {
-			var host string
-			host = bootstrapServersItem.Host.ValueString()
+		password := new(string)
+		if !r.Config.Authentication.Password.IsUnknown() && !r.Config.Authentication.Password.IsNull() {
+			*password = r.Config.Authentication.Password.ValueString()
+		} else {
+			password = nil
+		}
+		strategy := new(shared.KafkaUpstreamPluginStrategy)
+		if !r.Config.Authentication.Strategy.IsUnknown() && !r.Config.Authentication.Strategy.IsNull() {
+			*strategy = shared.KafkaUpstreamPluginStrategy(r.Config.Authentication.Strategy.ValueString())
+		} else {
+			strategy = nil
+		}
+		tokenauth := new(bool)
+		if !r.Config.Authentication.Tokenauth.IsUnknown() && !r.Config.Authentication.Tokenauth.IsNull() {
+			*tokenauth = r.Config.Authentication.Tokenauth.ValueBool()
+		} else {
+			tokenauth = nil
+		}
+		user := new(string)
+		if !r.Config.Authentication.User.IsUnknown() && !r.Config.Authentication.User.IsNull() {
+			*user = r.Config.Authentication.User.ValueString()
+		} else {
+			user = nil
+		}
+		authentication = &shared.KafkaUpstreamPluginAuthentication{
+			Mechanism: mechanism,
+			Password:  password,
+			Strategy:  strategy,
+			Tokenauth: tokenauth,
+			User:      user,
+		}
+	}
+	var bootstrapServers []shared.KafkaUpstreamPluginBootstrapServers = []shared.KafkaUpstreamPluginBootstrapServers{}
+	for _, bootstrapServersItem := range r.Config.BootstrapServers {
+		var host string
+		host = bootstrapServersItem.Host.ValueString()
 
-			var port int64
-			port = bootstrapServersItem.Port.ValueInt64()
+		var port int64
+		port = bootstrapServersItem.Port.ValueInt64()
 
-			bootstrapServers = append(bootstrapServers, shared.CreateKafkaUpstreamPluginBootstrapServers{
-				Host: host,
-				Port: port,
-			})
-		}
-		clusterName := new(string)
-		if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
-			*clusterName = r.Config.ClusterName.ValueString()
+		bootstrapServers = append(bootstrapServers, shared.KafkaUpstreamPluginBootstrapServers{
+			Host: host,
+			Port: port,
+		})
+	}
+	clusterName := new(string)
+	if !r.Config.ClusterName.IsUnknown() && !r.Config.ClusterName.IsNull() {
+		*clusterName = r.Config.ClusterName.ValueString()
+	} else {
+		clusterName = nil
+	}
+	forwardBody := new(bool)
+	if !r.Config.ForwardBody.IsUnknown() && !r.Config.ForwardBody.IsNull() {
+		*forwardBody = r.Config.ForwardBody.ValueBool()
+	} else {
+		forwardBody = nil
+	}
+	forwardHeaders := new(bool)
+	if !r.Config.ForwardHeaders.IsUnknown() && !r.Config.ForwardHeaders.IsNull() {
+		*forwardHeaders = r.Config.ForwardHeaders.ValueBool()
+	} else {
+		forwardHeaders = nil
+	}
+	forwardMethod := new(bool)
+	if !r.Config.ForwardMethod.IsUnknown() && !r.Config.ForwardMethod.IsNull() {
+		*forwardMethod = r.Config.ForwardMethod.ValueBool()
+	} else {
+		forwardMethod = nil
+	}
+	forwardURI := new(bool)
+	if !r.Config.ForwardURI.IsUnknown() && !r.Config.ForwardURI.IsNull() {
+		*forwardURI = r.Config.ForwardURI.ValueBool()
+	} else {
+		forwardURI = nil
+	}
+	keepalive := new(int64)
+	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+		*keepalive = r.Config.Keepalive.ValueInt64()
+	} else {
+		keepalive = nil
+	}
+	keepaliveEnabled := new(bool)
+	if !r.Config.KeepaliveEnabled.IsUnknown() && !r.Config.KeepaliveEnabled.IsNull() {
+		*keepaliveEnabled = r.Config.KeepaliveEnabled.ValueBool()
+	} else {
+		keepaliveEnabled = nil
+	}
+	producerAsync := new(bool)
+	if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {
+		*producerAsync = r.Config.ProducerAsync.ValueBool()
+	} else {
+		producerAsync = nil
+	}
+	producerAsyncBufferingLimitsMessagesInMemory := new(int64)
+	if !r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.IsUnknown() && !r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.IsNull() {
+		*producerAsyncBufferingLimitsMessagesInMemory = r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.ValueInt64()
+	} else {
+		producerAsyncBufferingLimitsMessagesInMemory = nil
+	}
+	producerAsyncFlushTimeout := new(int64)
+	if !r.Config.ProducerAsyncFlushTimeout.IsUnknown() && !r.Config.ProducerAsyncFlushTimeout.IsNull() {
+		*producerAsyncFlushTimeout = r.Config.ProducerAsyncFlushTimeout.ValueInt64()
+	} else {
+		producerAsyncFlushTimeout = nil
+	}
+	producerRequestAcks := new(shared.KafkaUpstreamPluginProducerRequestAcks)
+	if !r.Config.ProducerRequestAcks.IsUnknown() && !r.Config.ProducerRequestAcks.IsNull() {
+		*producerRequestAcks = shared.KafkaUpstreamPluginProducerRequestAcks(r.Config.ProducerRequestAcks.ValueInt64())
+	} else {
+		producerRequestAcks = nil
+	}
+	producerRequestLimitsBytesPerRequest := new(int64)
+	if !r.Config.ProducerRequestLimitsBytesPerRequest.IsUnknown() && !r.Config.ProducerRequestLimitsBytesPerRequest.IsNull() {
+		*producerRequestLimitsBytesPerRequest = r.Config.ProducerRequestLimitsBytesPerRequest.ValueInt64()
+	} else {
+		producerRequestLimitsBytesPerRequest = nil
+	}
+	producerRequestLimitsMessagesPerRequest := new(int64)
+	if !r.Config.ProducerRequestLimitsMessagesPerRequest.IsUnknown() && !r.Config.ProducerRequestLimitsMessagesPerRequest.IsNull() {
+		*producerRequestLimitsMessagesPerRequest = r.Config.ProducerRequestLimitsMessagesPerRequest.ValueInt64()
+	} else {
+		producerRequestLimitsMessagesPerRequest = nil
+	}
+	producerRequestRetriesBackoffTimeout := new(int64)
+	if !r.Config.ProducerRequestRetriesBackoffTimeout.IsUnknown() && !r.Config.ProducerRequestRetriesBackoffTimeout.IsNull() {
+		*producerRequestRetriesBackoffTimeout = r.Config.ProducerRequestRetriesBackoffTimeout.ValueInt64()
+	} else {
+		producerRequestRetriesBackoffTimeout = nil
+	}
+	producerRequestRetriesMaxAttempts := new(int64)
+	if !r.Config.ProducerRequestRetriesMaxAttempts.IsUnknown() && !r.Config.ProducerRequestRetriesMaxAttempts.IsNull() {
+		*producerRequestRetriesMaxAttempts = r.Config.ProducerRequestRetriesMaxAttempts.ValueInt64()
+	} else {
+		producerRequestRetriesMaxAttempts = nil
+	}
+	producerRequestTimeout := new(int64)
+	if !r.Config.ProducerRequestTimeout.IsUnknown() && !r.Config.ProducerRequestTimeout.IsNull() {
+		*producerRequestTimeout = r.Config.ProducerRequestTimeout.ValueInt64()
+	} else {
+		producerRequestTimeout = nil
+	}
+	var security *shared.KafkaUpstreamPluginSecurity
+	if r.Config.Security != nil {
+		certificateID := new(string)
+		if !r.Config.Security.CertificateID.IsUnknown() && !r.Config.Security.CertificateID.IsNull() {
+			*certificateID = r.Config.Security.CertificateID.ValueString()
 		} else {
-			clusterName = nil
+			certificateID = nil
 		}
-		forwardBody := new(bool)
-		if !r.Config.ForwardBody.IsUnknown() && !r.Config.ForwardBody.IsNull() {
-			*forwardBody = r.Config.ForwardBody.ValueBool()
+		ssl := new(bool)
+		if !r.Config.Security.Ssl.IsUnknown() && !r.Config.Security.Ssl.IsNull() {
+			*ssl = r.Config.Security.Ssl.ValueBool()
 		} else {
-			forwardBody = nil
+			ssl = nil
 		}
-		forwardHeaders := new(bool)
-		if !r.Config.ForwardHeaders.IsUnknown() && !r.Config.ForwardHeaders.IsNull() {
-			*forwardHeaders = r.Config.ForwardHeaders.ValueBool()
+		security = &shared.KafkaUpstreamPluginSecurity{
+			CertificateID: certificateID,
+			Ssl:           ssl,
+		}
+	}
+	timeout := new(int64)
+	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+		*timeout = r.Config.Timeout.ValueInt64()
+	} else {
+		timeout = nil
+	}
+	topic := new(string)
+	if !r.Config.Topic.IsUnknown() && !r.Config.Topic.IsNull() {
+		*topic = r.Config.Topic.ValueString()
+	} else {
+		topic = nil
+	}
+	config := shared.KafkaUpstreamPluginConfig{
+		Authentication:   authentication,
+		BootstrapServers: bootstrapServers,
+		ClusterName:      clusterName,
+		ForwardBody:      forwardBody,
+		ForwardHeaders:   forwardHeaders,
+		ForwardMethod:    forwardMethod,
+		ForwardURI:       forwardURI,
+		Keepalive:        keepalive,
+		KeepaliveEnabled: keepaliveEnabled,
+		ProducerAsync:    producerAsync,
+		ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
+		ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,
+		ProducerRequestAcks:                          producerRequestAcks,
+		ProducerRequestLimitsBytesPerRequest:         producerRequestLimitsBytesPerRequest,
+		ProducerRequestLimitsMessagesPerRequest:      producerRequestLimitsMessagesPerRequest,
+		ProducerRequestRetriesBackoffTimeout:         producerRequestRetriesBackoffTimeout,
+		ProducerRequestRetriesMaxAttempts:            producerRequestRetriesMaxAttempts,
+		ProducerRequestTimeout:                       producerRequestTimeout,
+		Security:                                     security,
+		Timeout:                                      timeout,
+		Topic:                                        topic,
+	}
+	var consumer *shared.KafkaUpstreamPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			forwardHeaders = nil
+			id = nil
 		}
-		forwardMethod := new(bool)
-		if !r.Config.ForwardMethod.IsUnknown() && !r.Config.ForwardMethod.IsNull() {
-			*forwardMethod = r.Config.ForwardMethod.ValueBool()
+		consumer = &shared.KafkaUpstreamPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.KafkaUpstreamPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			forwardMethod = nil
+			id1 = nil
 		}
-		forwardURI := new(bool)
-		if !r.Config.ForwardURI.IsUnknown() && !r.Config.ForwardURI.IsNull() {
-			*forwardURI = r.Config.ForwardURI.ValueBool()
-		} else {
-			forwardURI = nil
-		}
-		keepalive := new(int64)
-		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive = r.Config.Keepalive.ValueInt64()
-		} else {
-			keepalive = nil
-		}
-		keepaliveEnabled := new(bool)
-		if !r.Config.KeepaliveEnabled.IsUnknown() && !r.Config.KeepaliveEnabled.IsNull() {
-			*keepaliveEnabled = r.Config.KeepaliveEnabled.ValueBool()
-		} else {
-			keepaliveEnabled = nil
-		}
-		producerAsync := new(bool)
-		if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {
-			*producerAsync = r.Config.ProducerAsync.ValueBool()
-		} else {
-			producerAsync = nil
-		}
-		producerAsyncBufferingLimitsMessagesInMemory := new(int64)
-		if !r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.IsUnknown() && !r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.IsNull() {
-			*producerAsyncBufferingLimitsMessagesInMemory = r.Config.ProducerAsyncBufferingLimitsMessagesInMemory.ValueInt64()
-		} else {
-			producerAsyncBufferingLimitsMessagesInMemory = nil
-		}
-		producerAsyncFlushTimeout := new(int64)
-		if !r.Config.ProducerAsyncFlushTimeout.IsUnknown() && !r.Config.ProducerAsyncFlushTimeout.IsNull() {
-			*producerAsyncFlushTimeout = r.Config.ProducerAsyncFlushTimeout.ValueInt64()
-		} else {
-			producerAsyncFlushTimeout = nil
-		}
-		producerRequestAcks := new(shared.CreateKafkaUpstreamPluginProducerRequestAcks)
-		if !r.Config.ProducerRequestAcks.IsUnknown() && !r.Config.ProducerRequestAcks.IsNull() {
-			*producerRequestAcks = shared.CreateKafkaUpstreamPluginProducerRequestAcks(r.Config.ProducerRequestAcks.ValueInt64())
-		} else {
-			producerRequestAcks = nil
-		}
-		producerRequestLimitsBytesPerRequest := new(int64)
-		if !r.Config.ProducerRequestLimitsBytesPerRequest.IsUnknown() && !r.Config.ProducerRequestLimitsBytesPerRequest.IsNull() {
-			*producerRequestLimitsBytesPerRequest = r.Config.ProducerRequestLimitsBytesPerRequest.ValueInt64()
-		} else {
-			producerRequestLimitsBytesPerRequest = nil
-		}
-		producerRequestLimitsMessagesPerRequest := new(int64)
-		if !r.Config.ProducerRequestLimitsMessagesPerRequest.IsUnknown() && !r.Config.ProducerRequestLimitsMessagesPerRequest.IsNull() {
-			*producerRequestLimitsMessagesPerRequest = r.Config.ProducerRequestLimitsMessagesPerRequest.ValueInt64()
-		} else {
-			producerRequestLimitsMessagesPerRequest = nil
-		}
-		producerRequestRetriesBackoffTimeout := new(int64)
-		if !r.Config.ProducerRequestRetriesBackoffTimeout.IsUnknown() && !r.Config.ProducerRequestRetriesBackoffTimeout.IsNull() {
-			*producerRequestRetriesBackoffTimeout = r.Config.ProducerRequestRetriesBackoffTimeout.ValueInt64()
-		} else {
-			producerRequestRetriesBackoffTimeout = nil
-		}
-		producerRequestRetriesMaxAttempts := new(int64)
-		if !r.Config.ProducerRequestRetriesMaxAttempts.IsUnknown() && !r.Config.ProducerRequestRetriesMaxAttempts.IsNull() {
-			*producerRequestRetriesMaxAttempts = r.Config.ProducerRequestRetriesMaxAttempts.ValueInt64()
-		} else {
-			producerRequestRetriesMaxAttempts = nil
-		}
-		producerRequestTimeout := new(int64)
-		if !r.Config.ProducerRequestTimeout.IsUnknown() && !r.Config.ProducerRequestTimeout.IsNull() {
-			*producerRequestTimeout = r.Config.ProducerRequestTimeout.ValueInt64()
-		} else {
-			producerRequestTimeout = nil
-		}
-		var security *shared.CreateKafkaUpstreamPluginSecurity
-		if r.Config.Security != nil {
-			certificateID := new(string)
-			if !r.Config.Security.CertificateID.IsUnknown() && !r.Config.Security.CertificateID.IsNull() {
-				*certificateID = r.Config.Security.CertificateID.ValueString()
-			} else {
-				certificateID = nil
-			}
-			ssl := new(bool)
-			if !r.Config.Security.Ssl.IsUnknown() && !r.Config.Security.Ssl.IsNull() {
-				*ssl = r.Config.Security.Ssl.ValueBool()
-			} else {
-				ssl = nil
-			}
-			security = &shared.CreateKafkaUpstreamPluginSecurity{
-				CertificateID: certificateID,
-				Ssl:           ssl,
-			}
-		}
-		timeout := new(int64)
-		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout = r.Config.Timeout.ValueInt64()
-		} else {
-			timeout = nil
-		}
-		topic := new(string)
-		if !r.Config.Topic.IsUnknown() && !r.Config.Topic.IsNull() {
-			*topic = r.Config.Topic.ValueString()
-		} else {
-			topic = nil
-		}
-		config = &shared.CreateKafkaUpstreamPluginConfig{
-			Authentication:   authentication,
-			BootstrapServers: bootstrapServers,
-			ClusterName:      clusterName,
-			ForwardBody:      forwardBody,
-			ForwardHeaders:   forwardHeaders,
-			ForwardMethod:    forwardMethod,
-			ForwardURI:       forwardURI,
-			Keepalive:        keepalive,
-			KeepaliveEnabled: keepaliveEnabled,
-			ProducerAsync:    producerAsync,
-			ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
-			ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,
-			ProducerRequestAcks:                          producerRequestAcks,
-			ProducerRequestLimitsBytesPerRequest:         producerRequestLimitsBytesPerRequest,
-			ProducerRequestLimitsMessagesPerRequest:      producerRequestLimitsMessagesPerRequest,
-			ProducerRequestRetriesBackoffTimeout:         producerRequestRetriesBackoffTimeout,
-			ProducerRequestRetriesMaxAttempts:            producerRequestRetriesMaxAttempts,
-			ProducerRequestTimeout:                       producerRequestTimeout,
-			Security:                                     security,
-			Timeout:                                      timeout,
-			Topic:                                        topic,
+		consumerGroup = &shared.KafkaUpstreamPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -221,179 +242,157 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedCreateKafkaUpstreamPlu
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateKafkaUpstreamPluginOrdering
+	var ordering *shared.KafkaUpstreamPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateKafkaUpstreamPluginAfter
+		var after *shared.KafkaUpstreamPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateKafkaUpstreamPluginAfter{
+			after = &shared.KafkaUpstreamPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateKafkaUpstreamPluginBefore
+		var before *shared.KafkaUpstreamPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateKafkaUpstreamPluginBefore{
+			before = &shared.KafkaUpstreamPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateKafkaUpstreamPluginOrdering{
+		ordering = &shared.KafkaUpstreamPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateKafkaUpstreamPluginProtocols = []shared.CreateKafkaUpstreamPluginProtocols{}
+	var protocols []shared.KafkaUpstreamPluginProtocols = []shared.KafkaUpstreamPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateKafkaUpstreamPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.KafkaUpstreamPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.KafkaUpstreamPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.KafkaUpstreamPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.KafkaUpstreamPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.KafkaUpstreamPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateKafkaUpstreamPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateKafkaUpstreamPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateKafkaUpstreamPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateKafkaUpstreamPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateKafkaUpstreamPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateKafkaUpstreamPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateKafkaUpstreamPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateKafkaUpstreamPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateKafkaUpstreamPlugin{
+	out := shared.KafkaUpstreamPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstreamPlugin(resp *shared.KafkaUpstreamPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.Authentication == nil {
+			r.Config.Authentication = nil
 		} else {
-			r.Config = &tfTypes.CreateKafkaUpstreamPluginConfig{}
-			if resp.Config.Authentication == nil {
-				r.Config.Authentication = nil
+			r.Config.Authentication = &tfTypes.Authentication{}
+			if resp.Config.Authentication.Mechanism != nil {
+				r.Config.Authentication.Mechanism = types.StringValue(string(*resp.Config.Authentication.Mechanism))
 			} else {
-				r.Config.Authentication = &tfTypes.CreateKafkaLogPluginAuthentication{}
-				if resp.Config.Authentication.Mechanism != nil {
-					r.Config.Authentication.Mechanism = types.StringValue(string(*resp.Config.Authentication.Mechanism))
-				} else {
-					r.Config.Authentication.Mechanism = types.StringNull()
-				}
-				r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
-				if resp.Config.Authentication.Strategy != nil {
-					r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
-				} else {
-					r.Config.Authentication.Strategy = types.StringNull()
-				}
-				r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
-				r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
+				r.Config.Authentication.Mechanism = types.StringNull()
 			}
-			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-			}
-			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers1 tfTypes.BootstrapServers
-				bootstrapServers1.Host = types.StringValue(bootstrapServersItem.Host)
-				bootstrapServers1.Port = types.Int64Value(bootstrapServersItem.Port)
-				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers1)
-				} else {
-					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers1.Host
-					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers1.Port
-				}
-			}
-			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-			r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
-			r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
-			r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
-			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
-			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
-			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
-			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
-			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
-			if resp.Config.ProducerRequestAcks != nil {
-				r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
+			r.Config.Authentication.Password = types.StringPointerValue(resp.Config.Authentication.Password)
+			if resp.Config.Authentication.Strategy != nil {
+				r.Config.Authentication.Strategy = types.StringValue(string(*resp.Config.Authentication.Strategy))
 			} else {
-				r.Config.ProducerRequestAcks = types.Int64Null()
+				r.Config.Authentication.Strategy = types.StringNull()
 			}
-			r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
-			r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
-			r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
-			r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
-			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
-			if resp.Config.Security == nil {
-				r.Config.Security = nil
-			} else {
-				r.Config.Security = &tfTypes.CreateKafkaLogPluginSecurity{}
-				r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
-				r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
-			}
-			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
+			r.Config.Authentication.Tokenauth = types.BoolPointerValue(resp.Config.Authentication.Tokenauth)
+			r.Config.Authentication.User = types.StringPointerValue(resp.Config.Authentication.User)
 		}
+		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+		}
+		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+			var bootstrapServers1 tfTypes.BootstrapServers
+			bootstrapServers1.Host = types.StringValue(bootstrapServersItem.Host)
+			bootstrapServers1.Port = types.Int64Value(bootstrapServersItem.Port)
+			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers1)
+			} else {
+				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers1.Host
+				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers1.Port
+			}
+		}
+		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+		r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
+		r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
+		r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
+		r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
+		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
+		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
+		r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
+		if resp.Config.ProducerRequestAcks != nil {
+			r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
+		} else {
+			r.Config.ProducerRequestAcks = types.Int64Null()
+		}
+		r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
+		r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
+		r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
+		r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
+		r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
+		if resp.Config.Security == nil {
+			r.Config.Security = nil
+		} else {
+			r.Config.Security = &tfTypes.KafkaLogPluginSecurity{}
+			r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
+			r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
+		}
+		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+		r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -413,11 +412,11 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -426,7 +425,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

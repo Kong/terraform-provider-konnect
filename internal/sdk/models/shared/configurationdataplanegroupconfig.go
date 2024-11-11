@@ -10,6 +10,8 @@ type ConfigurationDataPlaneGroupConfig struct {
 	Region                string                               `json:"region"`
 	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
 	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
+	// Array of environment variables to set for a data-plane group.
+	Environment []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
 }
 
 func (o *ConfigurationDataPlaneGroupConfig) GetProvider() ProviderName {
@@ -38,4 +40,11 @@ func (o *ConfigurationDataPlaneGroupConfig) GetAutoscale() ConfigurationDataPlan
 		return ConfigurationDataPlaneGroupAutoscale{}
 	}
 	return o.Autoscale
+}
+
+func (o *ConfigurationDataPlaneGroupConfig) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
 }

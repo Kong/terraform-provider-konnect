@@ -5,10 +5,10 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/hooks"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
 	"net/http"
 	"time"
 )
@@ -43,6 +43,9 @@ func Float32(f float32) *float32 { return &f }
 
 // Float64 provides a helper function to return a pointer to a float64
 func Float64(f float64) *float64 { return &f }
+
+// Pointer provides a helper function to return a pointer to a type
+func Pointer[T any](v T) *T { return &v }
 
 type sdkConfiguration struct {
 	Client            HTTPClient
@@ -142,7 +145,6 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
-	//
 	//
 	//
 	//
@@ -287,8 +289,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.404.3",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.404.3 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			GenVersion:        "2.449.0",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.449.0 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}

@@ -4,8 +4,8 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithoutParents {
@@ -15,12 +15,19 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 	} else {
 		group = nil
 	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ACLWithoutParents{
 		Group: group,
+		ID:    id,
 		Tags:  tags,
 	}
 	return &out

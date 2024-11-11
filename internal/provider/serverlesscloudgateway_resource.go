@@ -16,13 +16,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/mapplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/mapplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -58,50 +58,50 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "ServerlessCloudGateway Resource",
 		Attributes: map[string]schema.Attribute{
 			"cluster_cert": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The cluster certificate (public key). Requires replacement if changed. `,
+				Description: `The cluster certificate (public key). Requires replacement if changed.`,
 			},
 			"cluster_cert_key": schema.StringAttribute{
+				Required:  true,
+				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Sensitive:   true,
-				Description: `The cluster certificate key (private key). Requires replacement if changed. `,
+				Description: `The cluster certificate key (private key). Requires replacement if changed.`,
 			},
 			"control_plane": schema.SingleNestedAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
-				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
+						Required: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Required:    true,
-						Description: `ID of the serverless cloud gateway CP. Requires replacement if changed. `,
+						Description: `ID of the serverless cloud gateway CP. Requires replacement if changed.`,
 					},
 					"prefix": schema.StringAttribute{
+						Required: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Required:    true,
-						Description: `The prefix of the serverless cloud gateway CP. Requires replacement if changed. `,
+						Description: `The prefix of the serverless cloud gateway CP. Requires replacement if changed.`,
 					},
 					"region": schema.StringAttribute{
+						Required: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Required:    true,
-						Description: `The control plane region. Requires replacement if changed. ; must be one of ["us", "eu", "au"]`,
+						Description: `The control plane region. must be one of ["us", "eu", "au"]; Requires replacement if changed.`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"us",
@@ -111,7 +111,7 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 						},
 					},
 				},
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"created_at": schema.StringAttribute{
 				Computed: true,
@@ -125,13 +125,13 @@ func (r *ServerlessCloudGatewayResource) Schema(ctx context.Context, req resourc
 			},
 			"labels": schema.MapAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Map{
 					mapplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 				},
-				Optional:    true,
 				ElementType: types.StringType,
-				Description: `Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'. Requires replacement if changed. `,
+				Description: `Labels to facilitate tagged search on serverless cloud gateways. Keys must be of length 1-63 characters, and cannot start with 'kong', 'konnect', 'mesh', 'kic', or '_'. Requires replacement if changed.`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,

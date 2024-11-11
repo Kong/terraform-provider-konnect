@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateResponseratelimitingPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                   string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateResponseRatelimitingPlugin *shared.CreateResponseRatelimitingPlugin `request:"mediaType=application/json"`
+	ControlPlaneID             string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ResponseRatelimitingPlugin *shared.ResponseRatelimitingPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateResponseratelimitingPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateResponseratelimitingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateResponseratelimitingPluginRequest) GetCreateResponseRatelimitingPlugin() *shared.CreateResponseRatelimitingPlugin {
+func (o *CreateResponseratelimitingPluginRequest) GetResponseRatelimitingPlugin() *shared.ResponseRatelimitingPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateResponseRatelimitingPlugin
+	return o.ResponseRatelimitingPlugin
 }
 
 type CreateResponseratelimitingPluginResponse struct {

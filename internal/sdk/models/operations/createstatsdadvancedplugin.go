@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateStatsdadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID             string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateStatsdAdvancedPlugin *shared.CreateStatsdAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID       string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StatsdAdvancedPlugin *shared.StatsdAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateStatsdadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateStatsdadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateStatsdadvancedPluginRequest) GetCreateStatsdAdvancedPlugin() *shared.CreateStatsdAdvancedPlugin {
+func (o *CreateStatsdadvancedPluginRequest) GetStatsdAdvancedPlugin() *shared.StatsdAdvancedPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateStatsdAdvancedPlugin
+	return o.StatsdAdvancedPlugin
 }
 
 type CreateStatsdadvancedPluginResponse struct {

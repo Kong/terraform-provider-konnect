@@ -4,9 +4,9 @@ package shared
 
 // PortalAuthenticationSettingsResponse - The developer authentication settings for a portal.
 type PortalAuthenticationSettingsResponse struct {
-	// The organization has basic auth enabled.
+	// The portal has basic auth enabled or disabled.
 	BasicAuthEnabled bool `json:"basic_auth_enabled"`
-	// The organization has OIDC disabled.
+	// The portal has OIDC enabled or disabled.
 	OidcAuthEnabled bool `json:"oidc_auth_enabled"`
 	// IdP groups determine the Portal Teams a developer has.
 	OidcTeamMappingEnabled bool `json:"oidc_team_mapping_enabled"`

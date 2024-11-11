@@ -12,7 +12,6 @@ type InvalidRules string
 
 const (
 	InvalidRulesRequired                               InvalidRules = "required"
-	InvalidRulesMaxLength                              InvalidRules = "max_length"
 	InvalidRulesIsArray                                InvalidRules = "is_array"
 	InvalidRulesIsBase64                               InvalidRules = "is_base64"
 	InvalidRulesIsBoolean                              InvalidRules = "is_boolean"
@@ -44,8 +43,6 @@ func (e *InvalidRules) UnmarshalJSON(data []byte) error {
 	}
 	switch v {
 	case "required":
-		fallthrough
-	case "max_length":
 		fallthrough
 	case "is_array":
 		fallthrough

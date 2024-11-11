@@ -14,11 +14,11 @@ GatewayControlPlaneMembership Resource
 
 ```terraform
 resource "konnect_gateway_control_plane_membership" "my_gatewaycontrolplanemembership" {
-  id = "e54c8364-5efc-4546-b665-9f241f3372c5"
+  id = "...my_id..."
   members = [
     {
-      id = "c0c27972-2126-494b-9744-0aa1ad80e6f6"
-    },
+      id = "...my_id..."
+    }
   ]
 }
 ```
@@ -29,14 +29,11 @@ resource "konnect_gateway_control_plane_membership" "my_gatewaycontrolplanemembe
 ### Required
 
 - `id` (String) ID of a control plane group. Requires replacement if changed.
-
-### Optional
-
 - `members` (Attributes List) Requires replacement if changed. (see [below for nested schema](#nestedatt--members))
 
 <a id="nestedatt--members"></a>
 ### Nested Schema for `members`
 
-Optional:
+Required:
 
 - `id` (String) Requires replacement if changed.

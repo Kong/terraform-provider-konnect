@@ -14,9 +14,11 @@ Team Resource
 
 ```terraform
 resource "konnect_team" "my_team" {
-  description = "The developers for the IDM API."
-  name        = "IDM - Developers"
-  team_id     = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+  description = "The Identity Management (IDM) team."
+  labels = {
+    env = "test"
+  }
+  name = "IDM - Developers"
 }
 ```
 

@@ -5,8 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type ExitTransformerPluginConfig struct {
@@ -36,6 +35,29 @@ func (o *ExitTransformerPluginConfig) GetHandleUnknown() *bool {
 		return nil
 	}
 	return o.HandleUnknown
+}
+
+// ExitTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type ExitTransformerPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ExitTransformerPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type ExitTransformerPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ExitTransformerPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 type ExitTransformerPluginAfter struct {
@@ -129,29 +151,6 @@ func (e *ExitTransformerPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// ExitTransformerPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type ExitTransformerPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *ExitTransformerPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type ExitTransformerPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *ExitTransformerPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // ExitTransformerPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type ExitTransformerPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -176,29 +175,30 @@ func (o *ExitTransformerPluginService) GetID() *string {
 	return o.ID
 }
 
+// ExitTransformerPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ExitTransformerPlugin struct {
-	Config *ExitTransformerPluginConfig `json:"config,omitempty"`
+	Config ExitTransformerPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *ExitTransformerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *ExitTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                          `json:"enabled,omitempty"`
 	ID           *string                        `json:"id,omitempty"`
 	InstanceName *string                        `json:"instance_name,omitempty"`
-	name         *string                        `const:"exit-transformer" json:"name,omitempty"`
+	name         string                         `const:"exit-transformer" json:"name"`
 	Ordering     *ExitTransformerPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []ExitTransformerPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *ExitTransformerPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *ExitTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *ExitTransformerPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *ExitTransformerPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (e ExitTransformerPlugin) MarshalJSON() ([]byte, error) {
@@ -212,11 +212,25 @@ func (e *ExitTransformerPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ExitTransformerPlugin) GetConfig() *ExitTransformerPluginConfig {
+func (o *ExitTransformerPlugin) GetConfig() ExitTransformerPluginConfig {
+	if o == nil {
+		return ExitTransformerPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *ExitTransformerPlugin) GetConsumer() *ExitTransformerPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *ExitTransformerPlugin) GetConsumerGroup() *ExitTransformerPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *ExitTransformerPlugin) GetCreatedAt() *int64 {
@@ -247,8 +261,8 @@ func (o *ExitTransformerPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *ExitTransformerPlugin) GetName() *string {
-	return types.String("exit-transformer")
+func (o *ExitTransformerPlugin) GetName() string {
+	return "exit-transformer"
 }
 
 func (o *ExitTransformerPlugin) GetOrdering() *ExitTransformerPluginOrdering {
@@ -265,6 +279,20 @@ func (o *ExitTransformerPlugin) GetProtocols() []ExitTransformerPluginProtocols 
 	return o.Protocols
 }
 
+func (o *ExitTransformerPlugin) GetRoute() *ExitTransformerPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *ExitTransformerPlugin) GetService() *ExitTransformerPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *ExitTransformerPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -279,30 +307,116 @@ func (o *ExitTransformerPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *ExitTransformerPlugin) GetConsumer() *ExitTransformerPluginConsumer {
+// ExitTransformerPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type ExitTransformerPluginInput struct {
+	Config ExitTransformerPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *ExitTransformerPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *ExitTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                          `json:"enabled,omitempty"`
+	ID           *string                        `json:"id,omitempty"`
+	InstanceName *string                        `json:"instance_name,omitempty"`
+	name         string                         `const:"exit-transformer" json:"name"`
+	Ordering     *ExitTransformerPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []ExitTransformerPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *ExitTransformerPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *ExitTransformerPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (e ExitTransformerPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(e, "", false)
+}
+
+func (e *ExitTransformerPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &e, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *ExitTransformerPluginInput) GetConfig() ExitTransformerPluginConfig {
+	if o == nil {
+		return ExitTransformerPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *ExitTransformerPluginInput) GetConsumer() *ExitTransformerPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *ExitTransformerPlugin) GetConsumerGroup() *ExitTransformerPluginConsumerGroup {
+func (o *ExitTransformerPluginInput) GetConsumerGroup() *ExitTransformerPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *ExitTransformerPlugin) GetRoute() *ExitTransformerPluginRoute {
+func (o *ExitTransformerPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *ExitTransformerPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *ExitTransformerPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *ExitTransformerPluginInput) GetName() string {
+	return "exit-transformer"
+}
+
+func (o *ExitTransformerPluginInput) GetOrdering() *ExitTransformerPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *ExitTransformerPluginInput) GetProtocols() []ExitTransformerPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *ExitTransformerPluginInput) GetRoute() *ExitTransformerPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *ExitTransformerPlugin) GetService() *ExitTransformerPluginService {
+func (o *ExitTransformerPluginInput) GetService() *ExitTransformerPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *ExitTransformerPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

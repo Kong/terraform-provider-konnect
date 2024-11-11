@@ -14,10 +14,51 @@ GatewayPluginForwardProxy Resource
 
 ```terraform
 resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
+  config = {
+    auth_password    = "...my_auth_password..."
+    auth_username    = "...my_auth_username..."
+    http_proxy_host  = "...my_http_proxy_host..."
+    http_proxy_port  = 61130
+    https_proxy_host = "...my_https_proxy_host..."
+    https_proxy_port = 38011
+    https_verify     = false
+    proxy_scheme     = "http"
+    x_headers        = "transparent"
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "ws"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +67,11 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
@@ -61,7 +102,7 @@ by basic authentication.
 - `https_proxy_host` (String) A string representing a host name, such as example.com.
 - `https_proxy_port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `https_verify` (Boolean) Whether the server certificate will be verified according to the CA certificates specified in lua_ssl_trusted_certificate.
-- `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. must be one of ["http"]
+- `proxy_scheme` (String) The proxy scheme to use when connecting. Only `http` is supported. must be "http"
 - `x_headers` (String) Determines how to handle headers when forwarding the request. must be one of ["append", "transparent", "delete"]
 
 

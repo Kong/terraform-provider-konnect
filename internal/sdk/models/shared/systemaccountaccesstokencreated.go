@@ -3,10 +3,11 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
 
+// SystemAccountAccessTokenCreated - A response including a single system account access token with the token.
 type SystemAccountAccessTokenCreated struct {
 	// ID of the system account access token.
 	ID *string `json:"id,omitempty"`

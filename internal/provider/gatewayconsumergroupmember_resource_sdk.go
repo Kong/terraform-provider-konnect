@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 func (r *GatewayConsumerGroupMemberResourceModel) ToOperationsAddConsumerToGroupRequestBody() *operations.AddConsumerToGroupRequestBody {

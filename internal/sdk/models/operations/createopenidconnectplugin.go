@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateOpenidconnectPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOpenidConnectPlugin *shared.CreateOpenidConnectPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpenidConnectPlugin *shared.OpenidConnectPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOpenidconnectPluginRequest) GetCreateOpenidConnectPlugin() *shared.CreateOpenidConnectPlugin {
+func (o *CreateOpenidconnectPluginRequest) GetOpenidConnectPlugin() *shared.OpenidConnectPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOpenidConnectPlugin
+	return o.OpenidConnectPlugin
 }
 
 type CreateOpenidconnectPluginResponse struct {

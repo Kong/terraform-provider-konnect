@@ -5,31 +5,52 @@ package provider
 import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedCreateRouteByHeaderPlugin() *shared.CreateRouteByHeaderPlugin {
-	var config *shared.CreateRouteByHeaderPluginConfig
-	if r.Config != nil {
-		var rules []shared.CreateRouteByHeaderPluginRules = []shared.CreateRouteByHeaderPluginRules{}
-		for _, rulesItem := range r.Config.Rules {
-			condition := make(map[string]interface{})
-			for conditionKey, conditionValue := range rulesItem.Condition {
-				var conditionInst interface{}
-				_ = json.Unmarshal([]byte(conditionValue.ValueString()), &conditionInst)
-				condition[conditionKey] = conditionInst
-			}
-			var upstreamName string
-			upstreamName = rulesItem.UpstreamName.ValueString()
-
-			rules = append(rules, shared.CreateRouteByHeaderPluginRules{
-				Condition:    condition,
-				UpstreamName: upstreamName,
-			})
+func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInput() *shared.RouteByHeaderPluginInput {
+	var rules []shared.Rules = []shared.Rules{}
+	for _, rulesItem := range r.Config.Rules {
+		condition := make(map[string]interface{})
+		for conditionKey, conditionValue := range rulesItem.Condition {
+			var conditionInst interface{}
+			_ = json.Unmarshal([]byte(conditionValue.ValueString()), &conditionInst)
+			condition[conditionKey] = conditionInst
 		}
-		config = &shared.CreateRouteByHeaderPluginConfig{
-			Rules: rules,
+		var upstreamName string
+		upstreamName = rulesItem.UpstreamName.ValueString()
+
+		rules = append(rules, shared.Rules{
+			Condition:    condition,
+			UpstreamName: upstreamName,
+		})
+	}
+	config := shared.RouteByHeaderPluginConfig{
+		Rules: rules,
+	}
+	var consumer *shared.RouteByHeaderPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.RouteByHeaderPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.RouteByHeaderPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumerGroup = &shared.RouteByHeaderPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -38,136 +59,114 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedCreateRouteByHeaderPlu
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateRouteByHeaderPluginOrdering
+	var ordering *shared.RouteByHeaderPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateRouteByHeaderPluginAfter
+		var after *shared.RouteByHeaderPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateRouteByHeaderPluginAfter{
+			after = &shared.RouteByHeaderPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateRouteByHeaderPluginBefore
+		var before *shared.RouteByHeaderPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateRouteByHeaderPluginBefore{
+			before = &shared.RouteByHeaderPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateRouteByHeaderPluginOrdering{
+		ordering = &shared.RouteByHeaderPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateRouteByHeaderPluginProtocols = []shared.CreateRouteByHeaderPluginProtocols{}
+	var protocols []shared.RouteByHeaderPluginProtocols = []shared.RouteByHeaderPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateRouteByHeaderPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.RouteByHeaderPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.RouteByHeaderPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.RouteByHeaderPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.RouteByHeaderPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.RouteByHeaderPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateRouteByHeaderPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateRouteByHeaderPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateRouteByHeaderPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateRouteByHeaderPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateRouteByHeaderPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateRouteByHeaderPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateRouteByHeaderPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateRouteByHeaderPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateRouteByHeaderPlugin{
+	out := shared.RouteByHeaderPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateRouteByHeaderPluginConfig{}
-			r.Config.Rules = []tfTypes.Rules{}
-			if len(r.Config.Rules) > len(resp.Config.Rules) {
-				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
+		r.Config.Rules = []tfTypes.Rules{}
+		if len(r.Config.Rules) > len(resp.Config.Rules) {
+			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
+		}
+		for rulesCount, rulesItem := range resp.Config.Rules {
+			var rules1 tfTypes.Rules
+			if len(rulesItem.Condition) > 0 {
+				rules1.Condition = make(map[string]types.String)
+				for key, value := range rulesItem.Condition {
+					result, _ := json.Marshal(value)
+					rules1.Condition[key] = types.StringValue(string(result))
+				}
 			}
-			for rulesCount, rulesItem := range resp.Config.Rules {
-				var rules1 tfTypes.Rules
-				if len(rulesItem.Condition) > 0 {
-					rules1.Condition = make(map[string]types.String)
-					for key, value := range rulesItem.Condition {
-						result, _ := json.Marshal(value)
-						rules1.Condition[key] = types.StringValue(string(result))
-					}
-				}
-				rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
-				if rulesCount+1 > len(r.Config.Rules) {
-					r.Config.Rules = append(r.Config.Rules, rules1)
-				} else {
-					r.Config.Rules[rulesCount].Condition = rules1.Condition
-					r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
-				}
+			rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
+			if rulesCount+1 > len(r.Config.Rules) {
+				r.Config.Rules = append(r.Config.Rules, rules1)
+			} else {
+				r.Config.Rules[rulesCount].Condition = rules1.Condition
+				r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
 			}
 		}
 		if resp.Consumer == nil {
@@ -189,11 +188,11 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -202,7 +201,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

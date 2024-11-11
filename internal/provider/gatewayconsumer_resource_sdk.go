@@ -4,7 +4,7 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerInput {
@@ -13,6 +13,12 @@ func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerI
 		*customID = r.CustomID.ValueString()
 	} else {
 		customID = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
@@ -26,6 +32,7 @@ func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerI
 	}
 	out := shared.ConsumerInput{
 		CustomID: customID,
+		ID:       id,
 		Tags:     tags,
 		Username: username,
 	}

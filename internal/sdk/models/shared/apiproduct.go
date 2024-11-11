@@ -3,10 +3,11 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
 
+// APIProduct - API product
 type APIProduct struct {
 	// The API product ID.
 	ID string `json:"id"`

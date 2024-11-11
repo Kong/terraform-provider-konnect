@@ -9,9 +9,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -59,7 +59,7 @@ func (r *CloudGatewayProviderAccountListDataSource) Schema(ctx context.Context, 
 						},
 						"provider": schema.StringAttribute{
 							Computed:    true,
-							Description: `Name of cloud provider. must be one of ["aws"]`,
+							Description: `Name of cloud provider.`,
 						},
 						"provider_account_id": schema.StringAttribute{
 							Computed:    true,

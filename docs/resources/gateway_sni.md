@@ -14,9 +14,15 @@ GatewaySNI Resource
 
 ```terraform
 resource "konnect_gateway_sni" "my_gatewaysni" {
+  certificate = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  name             = "Dr. Ismael Hilpert"
-  sni_id           = "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"
+  id               = "...my_id..."
+  name             = "...my_name..."
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -25,12 +31,12 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
 
 ### Required
 
+- `certificate` (Attributes) The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object. (see [below for nested schema](#nestedatt--certificate))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `name` (String) The SNI name to associate with the given certificate.
 
 ### Optional
 
-- `certificate` (Attributes) The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object. (see [below for nested schema](#nestedatt--certificate))
-- `name` (String) The SNI name to associate with the given certificate.
 - `tags` (List of String) An optional set of strings associated with the SNIs for grouping and filtering.
 
 ### Read-Only

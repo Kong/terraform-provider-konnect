@@ -14,10 +14,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
 
@@ -79,7 +79,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			"metadata": schema.SingleNestedAttribute{
 				Computed:    true,
 				Optional:    true,
-				Attributes:  map[string]schema.Attribute{},
 				Description: `metadata of the document`,
 			},
 			"parent_document_id": schema.StringAttribute{
@@ -97,7 +96,7 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 			},
 			"status": schema.StringAttribute{
 				Required:    true,
-				Description: `document publish status. must be one of ["published", "unpublished"]`,
+				Description: `must be one of ["published", "unpublished"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"published",

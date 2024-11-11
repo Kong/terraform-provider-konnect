@@ -15,17 +15,19 @@ Portal Resource
 ```terraform
 resource "konnect_portal" "my_portal" {
   auto_approve_applications            = false
-  auto_approve_developers              = true
-  custom_client_domain                 = "lively-countess.com"
-  custom_domain                        = "gifted-stencil.net"
+  auto_approve_developers              = false
+  custom_client_domain                 = "key-self-confidence.name"
+  custom_domain                        = "measly-conservation.info"
   default_application_auth_strategy_id = "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
   description                          = "...my_description..."
   display_name                         = "...my_display_name..."
-  force                                = "false"
-  is_public                            = true
-  name                                 = "Debbie Bayer"
-  portal_id                            = "18b60361-72bf-4616-87fe-317afd6b4d94"
-  rbac_enabled                         = false
+  force                                = "true"
+  is_public                            = false
+  labels = {
+    env = "test"
+  }
+  name         = "...my_name..."
+  rbac_enabled = true
 }
 ```
 
@@ -45,7 +47,7 @@ resource "konnect_portal" "my_portal" {
 - `default_application_auth_strategy_id` (String) Default strategy ID applied on applications for the portal
 - `description` (String) The description of the portal.
 - `display_name` (String) The display name of the portal. This value will be the portal's `name` in Portal API.
-- `force` (String) If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. must be one of ["true", "false"]; Default: "false"
+- `force` (String) If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]
 - `is_public` (Boolean) Whether the portal catalog can be accessed publicly without any developer authentication. Developer accounts and applications cannot be created if the portal is public.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
@@ -58,6 +60,6 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `default_domain` (String) The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 - `developer_count` (Number) Number of developers using the portal.
-- `id` (String) Contains a unique identifier used for this resource.
+- `id` (String) Contains a unique identifier used by the API for this resource.
 - `published_product_count` (Number) Number of api products published to the portal
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

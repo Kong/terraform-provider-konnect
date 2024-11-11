@@ -5,8 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type Templates struct {
@@ -67,6 +66,29 @@ func (o *AiPromptTemplatePluginConfig) GetTemplates() []Templates {
 		return nil
 	}
 	return o.Templates
+}
+
+// AiPromptTemplatePluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type AiPromptTemplatePluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AiPromptTemplatePluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type AiPromptTemplatePluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *AiPromptTemplatePluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
 }
 
 type AiPromptTemplatePluginAfter struct {
@@ -160,29 +182,6 @@ func (e *AiPromptTemplatePluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AiPromptTemplatePluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type AiPromptTemplatePluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AiPromptTemplatePluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type AiPromptTemplatePluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *AiPromptTemplatePluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // AiPromptTemplatePluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type AiPromptTemplatePluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -207,29 +206,30 @@ func (o *AiPromptTemplatePluginService) GetID() *string {
 	return o.ID
 }
 
+// AiPromptTemplatePlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiPromptTemplatePlugin struct {
-	Config *AiPromptTemplatePluginConfig `json:"config,omitempty"`
+	Config AiPromptTemplatePluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *AiPromptTemplatePluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AiPromptTemplatePluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                           `json:"enabled,omitempty"`
 	ID           *string                         `json:"id,omitempty"`
 	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         *string                         `const:"ai-prompt-template" json:"name,omitempty"`
+	name         string                          `const:"ai-prompt-template" json:"name"`
 	Ordering     *AiPromptTemplatePluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []AiPromptTemplatePluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiPromptTemplatePluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *AiPromptTemplatePluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *AiPromptTemplatePluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *AiPromptTemplatePluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (a AiPromptTemplatePlugin) MarshalJSON() ([]byte, error) {
@@ -243,11 +243,25 @@ func (a *AiPromptTemplatePlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *AiPromptTemplatePlugin) GetConfig() *AiPromptTemplatePluginConfig {
+func (o *AiPromptTemplatePlugin) GetConfig() AiPromptTemplatePluginConfig {
+	if o == nil {
+		return AiPromptTemplatePluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiPromptTemplatePlugin) GetConsumer() *AiPromptTemplatePluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *AiPromptTemplatePlugin) GetConsumerGroup() *AiPromptTemplatePluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *AiPromptTemplatePlugin) GetCreatedAt() *int64 {
@@ -278,8 +292,8 @@ func (o *AiPromptTemplatePlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *AiPromptTemplatePlugin) GetName() *string {
-	return types.String("ai-prompt-template")
+func (o *AiPromptTemplatePlugin) GetName() string {
+	return "ai-prompt-template"
 }
 
 func (o *AiPromptTemplatePlugin) GetOrdering() *AiPromptTemplatePluginOrdering {
@@ -296,6 +310,20 @@ func (o *AiPromptTemplatePlugin) GetProtocols() []AiPromptTemplatePluginProtocol
 	return o.Protocols
 }
 
+func (o *AiPromptTemplatePlugin) GetRoute() *AiPromptTemplatePluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *AiPromptTemplatePlugin) GetService() *AiPromptTemplatePluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *AiPromptTemplatePlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -310,30 +338,116 @@ func (o *AiPromptTemplatePlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *AiPromptTemplatePlugin) GetConsumer() *AiPromptTemplatePluginConsumer {
+// AiPromptTemplatePluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type AiPromptTemplatePluginInput struct {
+	Config AiPromptTemplatePluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *AiPromptTemplatePluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *AiPromptTemplatePluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                           `json:"enabled,omitempty"`
+	ID           *string                         `json:"id,omitempty"`
+	InstanceName *string                         `json:"instance_name,omitempty"`
+	name         string                          `const:"ai-prompt-template" json:"name"`
+	Ordering     *AiPromptTemplatePluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []AiPromptTemplatePluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *AiPromptTemplatePluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiPromptTemplatePluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (a AiPromptTemplatePluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AiPromptTemplatePluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *AiPromptTemplatePluginInput) GetConfig() AiPromptTemplatePluginConfig {
+	if o == nil {
+		return AiPromptTemplatePluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiPromptTemplatePluginInput) GetConsumer() *AiPromptTemplatePluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *AiPromptTemplatePlugin) GetConsumerGroup() *AiPromptTemplatePluginConsumerGroup {
+func (o *AiPromptTemplatePluginInput) GetConsumerGroup() *AiPromptTemplatePluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *AiPromptTemplatePlugin) GetRoute() *AiPromptTemplatePluginRoute {
+func (o *AiPromptTemplatePluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *AiPromptTemplatePluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *AiPromptTemplatePluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *AiPromptTemplatePluginInput) GetName() string {
+	return "ai-prompt-template"
+}
+
+func (o *AiPromptTemplatePluginInput) GetOrdering() *AiPromptTemplatePluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *AiPromptTemplatePluginInput) GetProtocols() []AiPromptTemplatePluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *AiPromptTemplatePluginInput) GetRoute() *AiPromptTemplatePluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *AiPromptTemplatePlugin) GetService() *AiPromptTemplatePluginService {
+func (o *AiPromptTemplatePluginInput) GetService() *AiPromptTemplatePluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *AiPromptTemplatePluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

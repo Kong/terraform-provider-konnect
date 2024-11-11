@@ -17,9 +17,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -37,20 +37,20 @@ type GatewayPluginAwsLambdaResource struct {
 
 // GatewayPluginAwsLambdaResourceModel describes the resource data model.
 type GatewayPluginAwsLambdaResourceModel struct {
-	Config         *tfTypes.CreateAwsLambdaPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         tfTypes.AwsLambdaPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                   `tfsdk:"created_at"`
+	Enabled        types.Bool                    `tfsdk:"enabled"`
+	ID             types.String                  `tfsdk:"id"`
+	InstanceName   types.String                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
+	Protocols      []types.String                `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
+	Tags           []types.String                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAwsLambdaResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,8 +62,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginAwsLambda Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
 						Computed:    true,
@@ -75,10 +74,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 						Optional:    true,
 						Description: `Identifier to select the IMDS protocol version to use: ` + "`" + `v1` + "`" + ` or ` + "`" + `v2` + "`" + `. must be one of ["v1", "v2"]`,
 						Validators: []validator.String{
-							stringvalidator.OneOf(
-								"v1",
-								"v2",
-							),
+							stringvalidator.OneOf("v1", "v2"),
 						},
 					},
 					"aws_key": schema.StringAttribute{
@@ -99,7 +95,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"aws_secret": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The AWS secret credential to be used when invoking the function. `,
+						Description: `The AWS secret credential to be used when invoking the function.`,
 					},
 					"aws_sts_endpoint_url": schema.StringAttribute{
 						Computed:    true,
@@ -134,7 +130,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 					"forward_request_body": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request. `,
+						Description: `An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.`,
 					},
 					"forward_request_headers": schema.BoolAttribute{
 						Computed:    true,
@@ -254,11 +250,11 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -271,6 +267,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -387,10 +384,10 @@ func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
+	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
 	request := operations.CreateAwslambdaPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: awsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.CreateAwslambdaPlugin(ctx, request)
 	if err != nil {
@@ -497,11 +494,11 @@ func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createAwsLambdaPlugin := data.ToSharedCreateAwsLambdaPlugin()
+	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
 	request := operations.UpdateAwslambdaPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		CreateAwsLambdaPlugin: createAwsLambdaPlugin,
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: awsLambdaPlugin,
 	}
 	res, err := r.client.Plugins.UpdateAwslambdaPlugin(ctx, request)
 	if err != nil {

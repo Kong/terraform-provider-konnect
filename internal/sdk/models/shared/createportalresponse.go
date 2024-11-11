@@ -3,12 +3,13 @@
 package shared
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
 
+// CreatePortalResponse - Details about the portal that was created.
 type CreatePortalResponse struct {
-	// Contains a unique identifier used for this resource.
+	// Contains a unique identifier used by the API for this resource.
 	ID string `json:"id"`
 	// An ISO-8601 timestamp representation of entity creation date.
 	CreatedAt time.Time `json:"created_at"`

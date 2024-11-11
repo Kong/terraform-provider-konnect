@@ -2,6 +2,10 @@
 
 package shared
 
+import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+)
+
 // CreateNetworkRequest - Request schema for creating a network.
 type CreateNetworkRequest struct {
 	// Human-readable name of the network.
@@ -13,10 +17,19 @@ type CreateNetworkRequest struct {
 	AvailabilityZones []string `json:"availability_zones"`
 	// CIDR block configuration for the network.
 	CidrBlock string `json:"cidr_block"`
-	// Firewall configuration for a network.
-	Firewall *NetworkFirewallConfig `json:"firewall,omitempty"`
-	// Whether DDOS protection is enabled for the network.
-	DdosProtection *bool `json:"ddos_protection,omitempty"`
+	// Initial state for creating a network.
+	State *NetworkCreateState `default:"initializing" json:"state"`
+}
+
+func (c CreateNetworkRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CreateNetworkRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *CreateNetworkRequest) GetName() string {
@@ -54,16 +67,9 @@ func (o *CreateNetworkRequest) GetCidrBlock() string {
 	return o.CidrBlock
 }
 
-func (o *CreateNetworkRequest) GetFirewall() *NetworkFirewallConfig {
+func (o *CreateNetworkRequest) GetState() *NetworkCreateState {
 	if o == nil {
 		return nil
 	}
-	return o.Firewall
-}
-
-func (o *CreateNetworkRequest) GetDdosProtection() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.DdosProtection
+	return o.State
 }

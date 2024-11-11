@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateTlsmetadataheadersPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateTLSMetadataHeadersPlugin *shared.CreateTLSMetadataHeadersPlugin `request:"mediaType=application/json"`
+	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TLSMetadataHeadersPlugin *shared.TLSMetadataHeadersPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateTlsmetadataheadersPluginRequest) GetCreateTLSMetadataHeadersPlugin() *shared.CreateTLSMetadataHeadersPlugin {
+func (o *CreateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateTLSMetadataHeadersPlugin
+	return o.TLSMetadataHeadersPlugin
 }
 
 type CreateTlsmetadataheadersPluginResponse struct {

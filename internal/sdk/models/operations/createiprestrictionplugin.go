@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateIprestrictionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateIPRestrictionPlugin *shared.CreateIPRestrictionPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	IPRestrictionPlugin *shared.IPRestrictionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateIprestrictionPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateIprestrictionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateIprestrictionPluginRequest) GetCreateIPRestrictionPlugin() *shared.CreateIPRestrictionPlugin {
+func (o *CreateIprestrictionPluginRequest) GetIPRestrictionPlugin() *shared.IPRestrictionPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateIPRestrictionPlugin
+	return o.IPRestrictionPlugin
 }
 
 type CreateIprestrictionPluginResponse struct {

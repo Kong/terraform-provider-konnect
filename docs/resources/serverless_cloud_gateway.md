@@ -21,7 +21,9 @@ resource "konnect_serverless_cloud_gateway" "my_serverlesscloudgateway" {
     prefix = "518da50bf7"
     region = "us"
   }
-  control_plane_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+  labels = {
+    env = "test"
+  }
 }
 ```
 
@@ -51,7 +53,7 @@ Required:
 
 - `id` (String) ID of the serverless cloud gateway CP. Requires replacement if changed.
 - `prefix` (String) The prefix of the serverless cloud gateway CP. Requires replacement if changed.
-- `region` (String) The control plane region. Requires replacement if changed. ; must be one of ["us", "eu", "au"]
+- `region` (String) The control plane region. must be one of ["us", "eu", "au"]; Requires replacement if changed.
 
 ## Import
 

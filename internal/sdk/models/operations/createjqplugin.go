@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateJqPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJqPlugin *shared.CreateJqPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JqPlugin       *shared.JqPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateJqPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateJqPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJqPluginRequest) GetCreateJqPlugin() *shared.CreateJqPlugin {
+func (o *CreateJqPluginRequest) GetJqPlugin() *shared.JqPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJqPlugin
+	return o.JqPlugin
 }
 
 type CreateJqPluginResponse struct {

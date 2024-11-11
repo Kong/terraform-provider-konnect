@@ -15,14 +15,13 @@ CloudGatewayNetwork Resource
 ```terraform
 resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
   availability_zones = [
-    "...",
+    "..."
   ]
   cidr_block                        = "10.0.0.0/8"
   cloud_gateway_provider_account_id = "929b2449-c69f-44c4-b6ad-9ecec6f811ae"
-  ddos_protection                   = false
   name                              = "us-east-2 network"
-  network_id                        = "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
   region                            = "us-east-2"
+  state                             = "initializing"
 }
 ```
 
@@ -39,8 +38,7 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
 
 ### Optional
 
-- `ddos_protection` (Boolean) Whether DDOS protection is enabled for the network. Requires replacement if changed.
-- `firewall` (Attributes) Firewall configuration for a network. (see [below for nested schema](#nestedatt--firewall))
+- `state` (String) Initial state for creating a network. Default: "initializing"; must be one of ["initializing", "offline"]; Requires replacement if changed.
 
 ### Read-Only
 
@@ -51,18 +49,8 @@ automatically by Konnect when an organization is linked to a provider account.
 - `entity_version` (Number) Monotonically-increasing version count of the network, to indicate the order of updates to the network.
 - `id` (String) The ID of this resource.
 - `provider_metadata` (Attributes) Metadata describing attributes returned by cloud-provider for the network. (see [below for nested schema](#nestedatt--provider_metadata))
-- `state` (String) State of the network. must be one of ["created", "initializing", "offline", "ready", "terminating", "terminated"]
 - `transit_gateway_count` (Number) The number of transit gateways attached to this network.
 - `updated_at` (String) An RFC-3339 timestamp representation of network update date.
-
-<a id="nestedatt--firewall"></a>
-### Nested Schema for `firewall`
-
-Optional:
-
-- `allowed_cidr_blocks` (List of String) List of allowed CIDR blocks to access a network.
-- `denied_cidr_blocks` (List of String) List of denied CIDR blocks to access a network.
-
 
 <a id="nestedatt--provider_metadata"></a>
 ### Nested Schema for `provider_metadata`

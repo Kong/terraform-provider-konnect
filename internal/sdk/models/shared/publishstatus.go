@@ -7,7 +7,6 @@ import (
 	"fmt"
 )
 
-// PublishStatus - document publish status
 type PublishStatus string
 
 const (

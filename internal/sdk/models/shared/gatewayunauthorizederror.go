@@ -2,6 +2,7 @@
 
 package shared
 
+// GatewayUnauthorizedError - Unauthorized
 type GatewayUnauthorizedError struct {
 	Message string `json:"message"`
 	Status  int64  `json:"status"`

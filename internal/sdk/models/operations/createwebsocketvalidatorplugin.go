@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateWebsocketvalidatorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                 string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateWebsocketValidatorPlugin *shared.CreateWebsocketValidatorPlugin `request:"mediaType=application/json"`
+	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	WebsocketValidatorPlugin *shared.WebsocketValidatorPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateWebsocketvalidatorPluginRequest) GetCreateWebsocketValidatorPlugin() *shared.CreateWebsocketValidatorPlugin {
+func (o *CreateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() *shared.WebsocketValidatorPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateWebsocketValidatorPlugin
+	return o.WebsocketValidatorPlugin
 }
 
 type CreateWebsocketvalidatorPluginResponse struct {

@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,20 +34,20 @@ type GatewayPluginLdapAuthAdvancedResource struct {
 
 // GatewayPluginLdapAuthAdvancedResourceModel describes the resource data model.
 type GatewayPluginLdapAuthAdvancedResourceModel struct {
-	Config         *tfTypes.CreateLdapAuthAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                        `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                        `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                 `tfsdk:"created_at"`
-	Enabled        types.Bool                                  `tfsdk:"enabled"`
-	ID             types.String                                `tfsdk:"id"`
-	InstanceName   types.String                                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering            `tfsdk:"ordering"`
-	Protocols      []types.String                              `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                        `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                        `tfsdk:"service"`
-	Tags           []types.String                              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                 `tfsdk:"updated_at"`
+	Config         tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLdapAuthAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginLdapAuthAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -203,11 +202,11 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -220,6 +219,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -336,10 +336,10 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createLdapAuthAdvancedPlugin := data.ToSharedCreateLdapAuthAdvancedPlugin()
+	ldapAuthAdvancedPlugin := data.ToSharedLdapAuthAdvancedPluginInput()
 	request := operations.CreateLdapauthadvancedPluginRequest{
-		ControlPlaneID:               controlPlaneID,
-		CreateLdapAuthAdvancedPlugin: createLdapAuthAdvancedPlugin,
+		ControlPlaneID:         controlPlaneID,
+		LdapAuthAdvancedPlugin: ldapAuthAdvancedPlugin,
 	}
 	res, err := r.client.Plugins.CreateLdapauthadvancedPlugin(ctx, request)
 	if err != nil {
@@ -446,11 +446,11 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createLdapAuthAdvancedPlugin := data.ToSharedCreateLdapAuthAdvancedPlugin()
+	ldapAuthAdvancedPlugin := data.ToSharedLdapAuthAdvancedPluginInput()
 	request := operations.UpdateLdapauthadvancedPluginRequest{
-		PluginID:                     pluginID,
-		ControlPlaneID:               controlPlaneID,
-		CreateLdapAuthAdvancedPlugin: createLdapAuthAdvancedPlugin,
+		PluginID:               pluginID,
+		ControlPlaneID:         controlPlaneID,
+		LdapAuthAdvancedPlugin: ldapAuthAdvancedPlugin,
 	}
 	res, err := r.client.Plugins.UpdateLdapauthadvancedPlugin(ctx, request)
 	if err != nil {

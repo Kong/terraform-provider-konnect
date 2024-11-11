@@ -109,6 +109,20 @@ The examples directory contains sample usage for all supported resources. For a 
 
 The examples in this repo reference resources that are expected to exist in your manifests e.g. `konnect_gateway_control_plane.tfdemo.id`. Update the references to match the names that you have given your resources.
 
+## Data Providers
+
+We are currently working on official data source support (see [#10](https://github.com/Kong/terraform-provider-konnect/issues/10)). Until this is ready, you can use the `http` data source to call the Konnect API directly.
+
+```hcl
+data "http" "production_cp" {
+  url    = "https://us.api.konghq.com/v2/control-planes?page%5Bsize%5D=1&page%5Bnumber%5D=1&filter%5Bname%5D%5Beq%5D=production"
+  request_headers = {
+    Accept           = "application/json"
+    Authorization    = "Bearer ${var.konnect_personal_access_token}"
+  }
+}
+```
+
 <!-- No SDK Installation -->
 <!-- No SDK Example Usage -->
 <!-- No SDK Available Operations -->

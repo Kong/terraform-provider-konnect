@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,13 +34,13 @@ type GatewaySNIResource struct {
 
 // GatewaySNIResourceModel describes the resource data model.
 type GatewaySNIResourceModel struct {
-	Certificate    *tfTypes.ACLConsumer `tfsdk:"certificate"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Name           types.String         `tfsdk:"name"`
-	Tags           []types.String       `tfsdk:"tags"`
-	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
+	Certificate    tfTypes.ACLConsumer `tfsdk:"certificate"`
+	ControlPlaneID types.String        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64         `tfsdk:"created_at"`
+	ID             types.String        `tfsdk:"id"`
+	Name           types.String        `tfsdk:"name"`
+	Tags           []types.String      `tfsdk:"tags"`
+	UpdatedAt      types.Int64         `tfsdk:"updated_at"`
 }
 
 func (r *GatewaySNIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -52,8 +52,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 		MarkdownDescription: "GatewaySNI Resource",
 		Attributes: map[string]schema.Attribute{
 			"certificate": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -63,11 +62,11 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.`,
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -75,10 +74,10 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"name": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Required:    true,
 				Description: `The SNI name to associate with the given certificate.`,
 			},
 			"tags": schema.ListAttribute{

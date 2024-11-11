@@ -4,68 +4,89 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *shared.CreateKeyAuthPlugin {
-	var config *shared.CreateKeyAuthPluginConfig
-	if r.Config != nil {
-		anonymous := new(string)
-		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-			*anonymous = r.Config.Anonymous.ValueString()
+func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPluginInput() *shared.KeyAuthPluginInput {
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	hideCredentials := new(bool)
+	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+		*hideCredentials = r.Config.HideCredentials.ValueBool()
+	} else {
+		hideCredentials = nil
+	}
+	keyInBody := new(bool)
+	if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
+		*keyInBody = r.Config.KeyInBody.ValueBool()
+	} else {
+		keyInBody = nil
+	}
+	keyInHeader := new(bool)
+	if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
+		*keyInHeader = r.Config.KeyInHeader.ValueBool()
+	} else {
+		keyInHeader = nil
+	}
+	keyInQuery := new(bool)
+	if !r.Config.KeyInQuery.IsUnknown() && !r.Config.KeyInQuery.IsNull() {
+		*keyInQuery = r.Config.KeyInQuery.ValueBool()
+	} else {
+		keyInQuery = nil
+	}
+	var keyNames []string = []string{}
+	for _, keyNamesItem := range r.Config.KeyNames {
+		keyNames = append(keyNames, keyNamesItem.ValueString())
+	}
+	realm := new(string)
+	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+		*realm = r.Config.Realm.ValueString()
+	} else {
+		realm = nil
+	}
+	runOnPreflight := new(bool)
+	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
+		*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
+	} else {
+		runOnPreflight = nil
+	}
+	config := shared.KeyAuthPluginConfig{
+		Anonymous:       anonymous,
+		HideCredentials: hideCredentials,
+		KeyInBody:       keyInBody,
+		KeyInHeader:     keyInHeader,
+		KeyInQuery:      keyInQuery,
+		KeyNames:        keyNames,
+		Realm:           realm,
+		RunOnPreflight:  runOnPreflight,
+	}
+	var consumer *shared.KeyAuthPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			anonymous = nil
+			id = nil
 		}
-		hideCredentials := new(bool)
-		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-			*hideCredentials = r.Config.HideCredentials.ValueBool()
+		consumer = &shared.KeyAuthPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.KeyAuthPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			hideCredentials = nil
+			id1 = nil
 		}
-		keyInBody := new(bool)
-		if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
-			*keyInBody = r.Config.KeyInBody.ValueBool()
-		} else {
-			keyInBody = nil
-		}
-		keyInHeader := new(bool)
-		if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
-			*keyInHeader = r.Config.KeyInHeader.ValueBool()
-		} else {
-			keyInHeader = nil
-		}
-		keyInQuery := new(bool)
-		if !r.Config.KeyInQuery.IsUnknown() && !r.Config.KeyInQuery.IsNull() {
-			*keyInQuery = r.Config.KeyInQuery.ValueBool()
-		} else {
-			keyInQuery = nil
-		}
-		var keyNames []string = []string{}
-		for _, keyNamesItem := range r.Config.KeyNames {
-			keyNames = append(keyNames, keyNamesItem.ValueString())
-		}
-		realm := new(string)
-		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-			*realm = r.Config.Realm.ValueString()
-		} else {
-			realm = nil
-		}
-		runOnPreflight := new(bool)
-		if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
-			*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
-		} else {
-			runOnPreflight = nil
-		}
-		config = &shared.CreateKeyAuthPluginConfig{
-			Anonymous:       anonymous,
-			HideCredentials: hideCredentials,
-			KeyInBody:       keyInBody,
-			KeyInHeader:     keyInHeader,
-			KeyInQuery:      keyInQuery,
-			KeyNames:        keyNames,
-			Realm:           realm,
-			RunOnPreflight:  runOnPreflight,
+		consumerGroup = &shared.KeyAuthPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -74,128 +95,106 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedCreateKeyAuthPlugin() *share
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateKeyAuthPluginOrdering
+	var ordering *shared.KeyAuthPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateKeyAuthPluginAfter
+		var after *shared.KeyAuthPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateKeyAuthPluginAfter{
+			after = &shared.KeyAuthPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateKeyAuthPluginBefore
+		var before *shared.KeyAuthPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateKeyAuthPluginBefore{
+			before = &shared.KeyAuthPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateKeyAuthPluginOrdering{
+		ordering = &shared.KeyAuthPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateKeyAuthPluginProtocols = []shared.CreateKeyAuthPluginProtocols{}
+	var protocols []shared.KeyAuthPluginProtocols = []shared.KeyAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateKeyAuthPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.KeyAuthPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.KeyAuthPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.KeyAuthPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.KeyAuthPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.KeyAuthPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateKeyAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateKeyAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateKeyAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateKeyAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateKeyAuthPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateKeyAuthPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateKeyAuthPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateKeyAuthPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateKeyAuthPlugin{
+	out := shared.KeyAuthPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(resp *shared.KeyAuthPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateKeyAuthPluginConfig{}
-			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
-			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
-			r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
-			r.Config.KeyNames = []types.String{}
-			for _, v := range resp.Config.KeyNames {
-				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
-			}
-			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+		r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
+		r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
+		r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
+		r.Config.KeyNames = []types.String{}
+		for _, v := range resp.Config.KeyNames {
+			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
 		}
+		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -215,11 +214,11 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(resp 
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -228,7 +227,7 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(resp 
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

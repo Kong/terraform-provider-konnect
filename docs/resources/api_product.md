@@ -15,9 +15,11 @@ APIProduct Resource
 ```terraform
 resource "konnect_api_product" "my_apiproduct" {
   description = "Text describing the API product"
-  name        = "My Name"
+  labels = {
+    env = "test"
+  }
+  name = "API Product"
   portal_ids = [
-    "25a2624c-49fc-4764-99e1-224ed819f200",
   ]
 }
 ```
@@ -40,7 +42,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
-- `id` (String) API product identifier
+- `id` (String) The API product ID.
 - `portals` (Attributes List) The list of portals which this API product is published to (see [below for nested schema](#nestedatt--portals))
 - `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 - `version_count` (Number) The number of product versions attached to this API product

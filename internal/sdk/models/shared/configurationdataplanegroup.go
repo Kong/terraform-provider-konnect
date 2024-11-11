@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"time"
 )
 
@@ -52,9 +52,11 @@ type ConfigurationDataPlaneGroup struct {
 	// Name of cloud provider.
 	Provider ProviderName `json:"provider"`
 	// Region ID for cloud provider region.
-	Region                string                               `json:"region"`
-	Autoscale             ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
-	CloudGatewayNetworkID string                               `json:"cloud_gateway_network_id"`
+	Region    string                               `json:"region"`
+	Autoscale ConfigurationDataPlaneGroupAutoscale `json:"autoscale"`
+	// Array of environment variables to set for a data-plane group.
+	Environment           []ConfigurationDataPlaneGroupEnvironmentField `json:"environment,omitempty"`
+	CloudGatewayNetworkID string                                        `json:"cloud_gateway_network_id"`
 	// State of the data-plane group.
 	State State `json:"state"`
 	// List of private IP addresses of the internal load balancer that proxies traffic to this data-plane group.
@@ -106,6 +108,13 @@ func (o *ConfigurationDataPlaneGroup) GetAutoscale() ConfigurationDataPlaneGroup
 		return ConfigurationDataPlaneGroupAutoscale{}
 	}
 	return o.Autoscale
+}
+
+func (o *ConfigurationDataPlaneGroup) GetEnvironment() []ConfigurationDataPlaneGroupEnvironmentField {
+	if o == nil {
+		return nil
+	}
+	return o.Environment
 }
 
 func (o *ConfigurationDataPlaneGroup) GetCloudGatewayNetworkID() string {

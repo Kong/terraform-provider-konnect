@@ -4,172 +4,193 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"math/big"
 )
 
-func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedCreateXMLThreatProtectionPlugin() *shared.CreateXMLThreatProtectionPlugin {
-	var config *shared.CreateXMLThreatProtectionPluginConfig
-	if r.Config != nil {
-		allowDtd := new(bool)
-		if !r.Config.AllowDtd.IsUnknown() && !r.Config.AllowDtd.IsNull() {
-			*allowDtd = r.Config.AllowDtd.ValueBool()
+func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtectionPluginInput() *shared.XMLThreatProtectionPluginInput {
+	allowDtd := new(bool)
+	if !r.Config.AllowDtd.IsUnknown() && !r.Config.AllowDtd.IsNull() {
+		*allowDtd = r.Config.AllowDtd.ValueBool()
+	} else {
+		allowDtd = nil
+	}
+	var allowedContentTypes []string = []string{}
+	for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
+		allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
+	}
+	attribute := new(int64)
+	if !r.Config.Attribute.IsUnknown() && !r.Config.Attribute.IsNull() {
+		*attribute = r.Config.Attribute.ValueInt64()
+	} else {
+		attribute = nil
+	}
+	blaMaxAmplification := new(float64)
+	if !r.Config.BlaMaxAmplification.IsUnknown() && !r.Config.BlaMaxAmplification.IsNull() {
+		*blaMaxAmplification, _ = r.Config.BlaMaxAmplification.ValueBigFloat().Float64()
+	} else {
+		blaMaxAmplification = nil
+	}
+	blaThreshold := new(int64)
+	if !r.Config.BlaThreshold.IsUnknown() && !r.Config.BlaThreshold.IsNull() {
+		*blaThreshold = r.Config.BlaThreshold.ValueInt64()
+	} else {
+		blaThreshold = nil
+	}
+	buffer := new(int64)
+	if !r.Config.Buffer.IsUnknown() && !r.Config.Buffer.IsNull() {
+		*buffer = r.Config.Buffer.ValueInt64()
+	} else {
+		buffer = nil
+	}
+	var checkedContentTypes []string = []string{}
+	for _, checkedContentTypesItem := range r.Config.CheckedContentTypes {
+		checkedContentTypes = append(checkedContentTypes, checkedContentTypesItem.ValueString())
+	}
+	comment := new(int64)
+	if !r.Config.Comment.IsUnknown() && !r.Config.Comment.IsNull() {
+		*comment = r.Config.Comment.ValueInt64()
+	} else {
+		comment = nil
+	}
+	document := new(int64)
+	if !r.Config.Document.IsUnknown() && !r.Config.Document.IsNull() {
+		*document = r.Config.Document.ValueInt64()
+	} else {
+		document = nil
+	}
+	entity := new(int64)
+	if !r.Config.Entity.IsUnknown() && !r.Config.Entity.IsNull() {
+		*entity = r.Config.Entity.ValueInt64()
+	} else {
+		entity = nil
+	}
+	entityname := new(int64)
+	if !r.Config.Entityname.IsUnknown() && !r.Config.Entityname.IsNull() {
+		*entityname = r.Config.Entityname.ValueInt64()
+	} else {
+		entityname = nil
+	}
+	entityproperty := new(int64)
+	if !r.Config.Entityproperty.IsUnknown() && !r.Config.Entityproperty.IsNull() {
+		*entityproperty = r.Config.Entityproperty.ValueInt64()
+	} else {
+		entityproperty = nil
+	}
+	localname := new(int64)
+	if !r.Config.Localname.IsUnknown() && !r.Config.Localname.IsNull() {
+		*localname = r.Config.Localname.ValueInt64()
+	} else {
+		localname = nil
+	}
+	maxAttributes := new(int64)
+	if !r.Config.MaxAttributes.IsUnknown() && !r.Config.MaxAttributes.IsNull() {
+		*maxAttributes = r.Config.MaxAttributes.ValueInt64()
+	} else {
+		maxAttributes = nil
+	}
+	maxChildren := new(int64)
+	if !r.Config.MaxChildren.IsUnknown() && !r.Config.MaxChildren.IsNull() {
+		*maxChildren = r.Config.MaxChildren.ValueInt64()
+	} else {
+		maxChildren = nil
+	}
+	maxDepth := new(int64)
+	if !r.Config.MaxDepth.IsUnknown() && !r.Config.MaxDepth.IsNull() {
+		*maxDepth = r.Config.MaxDepth.ValueInt64()
+	} else {
+		maxDepth = nil
+	}
+	maxNamespaces := new(int64)
+	if !r.Config.MaxNamespaces.IsUnknown() && !r.Config.MaxNamespaces.IsNull() {
+		*maxNamespaces = r.Config.MaxNamespaces.ValueInt64()
+	} else {
+		maxNamespaces = nil
+	}
+	namespaceAware := new(bool)
+	if !r.Config.NamespaceAware.IsUnknown() && !r.Config.NamespaceAware.IsNull() {
+		*namespaceAware = r.Config.NamespaceAware.ValueBool()
+	} else {
+		namespaceAware = nil
+	}
+	namespaceuri := new(int64)
+	if !r.Config.Namespaceuri.IsUnknown() && !r.Config.Namespaceuri.IsNull() {
+		*namespaceuri = r.Config.Namespaceuri.ValueInt64()
+	} else {
+		namespaceuri = nil
+	}
+	pidata := new(int64)
+	if !r.Config.Pidata.IsUnknown() && !r.Config.Pidata.IsNull() {
+		*pidata = r.Config.Pidata.ValueInt64()
+	} else {
+		pidata = nil
+	}
+	pitarget := new(int64)
+	if !r.Config.Pitarget.IsUnknown() && !r.Config.Pitarget.IsNull() {
+		*pitarget = r.Config.Pitarget.ValueInt64()
+	} else {
+		pitarget = nil
+	}
+	prefix := new(int64)
+	if !r.Config.Prefix.IsUnknown() && !r.Config.Prefix.IsNull() {
+		*prefix = r.Config.Prefix.ValueInt64()
+	} else {
+		prefix = nil
+	}
+	text := new(int64)
+	if !r.Config.Text.IsUnknown() && !r.Config.Text.IsNull() {
+		*text = r.Config.Text.ValueInt64()
+	} else {
+		text = nil
+	}
+	config := shared.XMLThreatProtectionPluginConfig{
+		AllowDtd:            allowDtd,
+		AllowedContentTypes: allowedContentTypes,
+		Attribute:           attribute,
+		BlaMaxAmplification: blaMaxAmplification,
+		BlaThreshold:        blaThreshold,
+		Buffer:              buffer,
+		CheckedContentTypes: checkedContentTypes,
+		Comment:             comment,
+		Document:            document,
+		Entity:              entity,
+		Entityname:          entityname,
+		Entityproperty:      entityproperty,
+		Localname:           localname,
+		MaxAttributes:       maxAttributes,
+		MaxChildren:         maxChildren,
+		MaxDepth:            maxDepth,
+		MaxNamespaces:       maxNamespaces,
+		NamespaceAware:      namespaceAware,
+		Namespaceuri:        namespaceuri,
+		Pidata:              pidata,
+		Pitarget:            pitarget,
+		Prefix:              prefix,
+		Text:                text,
+	}
+	var consumer *shared.XMLThreatProtectionPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			allowDtd = nil
+			id = nil
 		}
-		var allowedContentTypes []string = []string{}
-		for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
-			allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
+		consumer = &shared.XMLThreatProtectionPluginConsumer{
+			ID: id,
 		}
-		attribute := new(int64)
-		if !r.Config.Attribute.IsUnknown() && !r.Config.Attribute.IsNull() {
-			*attribute = r.Config.Attribute.ValueInt64()
+	}
+	var consumerGroup *shared.XMLThreatProtectionPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			attribute = nil
+			id1 = nil
 		}
-		blaMaxAmplification := new(float64)
-		if !r.Config.BlaMaxAmplification.IsUnknown() && !r.Config.BlaMaxAmplification.IsNull() {
-			*blaMaxAmplification, _ = r.Config.BlaMaxAmplification.ValueBigFloat().Float64()
-		} else {
-			blaMaxAmplification = nil
-		}
-		blaThreshold := new(int64)
-		if !r.Config.BlaThreshold.IsUnknown() && !r.Config.BlaThreshold.IsNull() {
-			*blaThreshold = r.Config.BlaThreshold.ValueInt64()
-		} else {
-			blaThreshold = nil
-		}
-		buffer := new(int64)
-		if !r.Config.Buffer.IsUnknown() && !r.Config.Buffer.IsNull() {
-			*buffer = r.Config.Buffer.ValueInt64()
-		} else {
-			buffer = nil
-		}
-		var checkedContentTypes []string = []string{}
-		for _, checkedContentTypesItem := range r.Config.CheckedContentTypes {
-			checkedContentTypes = append(checkedContentTypes, checkedContentTypesItem.ValueString())
-		}
-		comment := new(int64)
-		if !r.Config.Comment.IsUnknown() && !r.Config.Comment.IsNull() {
-			*comment = r.Config.Comment.ValueInt64()
-		} else {
-			comment = nil
-		}
-		document := new(int64)
-		if !r.Config.Document.IsUnknown() && !r.Config.Document.IsNull() {
-			*document = r.Config.Document.ValueInt64()
-		} else {
-			document = nil
-		}
-		entity := new(int64)
-		if !r.Config.Entity.IsUnknown() && !r.Config.Entity.IsNull() {
-			*entity = r.Config.Entity.ValueInt64()
-		} else {
-			entity = nil
-		}
-		entityname := new(int64)
-		if !r.Config.Entityname.IsUnknown() && !r.Config.Entityname.IsNull() {
-			*entityname = r.Config.Entityname.ValueInt64()
-		} else {
-			entityname = nil
-		}
-		entityproperty := new(int64)
-		if !r.Config.Entityproperty.IsUnknown() && !r.Config.Entityproperty.IsNull() {
-			*entityproperty = r.Config.Entityproperty.ValueInt64()
-		} else {
-			entityproperty = nil
-		}
-		localname := new(int64)
-		if !r.Config.Localname.IsUnknown() && !r.Config.Localname.IsNull() {
-			*localname = r.Config.Localname.ValueInt64()
-		} else {
-			localname = nil
-		}
-		maxAttributes := new(int64)
-		if !r.Config.MaxAttributes.IsUnknown() && !r.Config.MaxAttributes.IsNull() {
-			*maxAttributes = r.Config.MaxAttributes.ValueInt64()
-		} else {
-			maxAttributes = nil
-		}
-		maxChildren := new(int64)
-		if !r.Config.MaxChildren.IsUnknown() && !r.Config.MaxChildren.IsNull() {
-			*maxChildren = r.Config.MaxChildren.ValueInt64()
-		} else {
-			maxChildren = nil
-		}
-		maxDepth := new(int64)
-		if !r.Config.MaxDepth.IsUnknown() && !r.Config.MaxDepth.IsNull() {
-			*maxDepth = r.Config.MaxDepth.ValueInt64()
-		} else {
-			maxDepth = nil
-		}
-		maxNamespaces := new(int64)
-		if !r.Config.MaxNamespaces.IsUnknown() && !r.Config.MaxNamespaces.IsNull() {
-			*maxNamespaces = r.Config.MaxNamespaces.ValueInt64()
-		} else {
-			maxNamespaces = nil
-		}
-		namespaceAware := new(bool)
-		if !r.Config.NamespaceAware.IsUnknown() && !r.Config.NamespaceAware.IsNull() {
-			*namespaceAware = r.Config.NamespaceAware.ValueBool()
-		} else {
-			namespaceAware = nil
-		}
-		namespaceuri := new(int64)
-		if !r.Config.Namespaceuri.IsUnknown() && !r.Config.Namespaceuri.IsNull() {
-			*namespaceuri = r.Config.Namespaceuri.ValueInt64()
-		} else {
-			namespaceuri = nil
-		}
-		pidata := new(int64)
-		if !r.Config.Pidata.IsUnknown() && !r.Config.Pidata.IsNull() {
-			*pidata = r.Config.Pidata.ValueInt64()
-		} else {
-			pidata = nil
-		}
-		pitarget := new(int64)
-		if !r.Config.Pitarget.IsUnknown() && !r.Config.Pitarget.IsNull() {
-			*pitarget = r.Config.Pitarget.ValueInt64()
-		} else {
-			pitarget = nil
-		}
-		prefix := new(int64)
-		if !r.Config.Prefix.IsUnknown() && !r.Config.Prefix.IsNull() {
-			*prefix = r.Config.Prefix.ValueInt64()
-		} else {
-			prefix = nil
-		}
-		text := new(int64)
-		if !r.Config.Text.IsUnknown() && !r.Config.Text.IsNull() {
-			*text = r.Config.Text.ValueInt64()
-		} else {
-			text = nil
-		}
-		config = &shared.CreateXMLThreatProtectionPluginConfig{
-			AllowDtd:            allowDtd,
-			AllowedContentTypes: allowedContentTypes,
-			Attribute:           attribute,
-			BlaMaxAmplification: blaMaxAmplification,
-			BlaThreshold:        blaThreshold,
-			Buffer:              buffer,
-			CheckedContentTypes: checkedContentTypes,
-			Comment:             comment,
-			Document:            document,
-			Entity:              entity,
-			Entityname:          entityname,
-			Entityproperty:      entityproperty,
-			Localname:           localname,
-			MaxAttributes:       maxAttributes,
-			MaxChildren:         maxChildren,
-			MaxDepth:            maxDepth,
-			MaxNamespaces:       maxNamespaces,
-			NamespaceAware:      namespaceAware,
-			Namespaceuri:        namespaceuri,
-			Pidata:              pidata,
-			Pitarget:            pitarget,
-			Prefix:              prefix,
-			Text:                text,
+		consumerGroup = &shared.XMLThreatProtectionPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -178,150 +199,128 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedCreateXMLThreatP
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateXMLThreatProtectionPluginOrdering
+	var ordering *shared.XMLThreatProtectionPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateXMLThreatProtectionPluginAfter
+		var after *shared.XMLThreatProtectionPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateXMLThreatProtectionPluginAfter{
+			after = &shared.XMLThreatProtectionPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateXMLThreatProtectionPluginBefore
+		var before *shared.XMLThreatProtectionPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateXMLThreatProtectionPluginBefore{
+			before = &shared.XMLThreatProtectionPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateXMLThreatProtectionPluginOrdering{
+		ordering = &shared.XMLThreatProtectionPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateXMLThreatProtectionPluginProtocols = []shared.CreateXMLThreatProtectionPluginProtocols{}
+	var protocols []shared.XMLThreatProtectionPluginProtocols = []shared.XMLThreatProtectionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateXMLThreatProtectionPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.XMLThreatProtectionPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.XMLThreatProtectionPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.XMLThreatProtectionPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.XMLThreatProtectionPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.XMLThreatProtectionPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateXMLThreatProtectionPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateXMLThreatProtectionPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateXMLThreatProtectionPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateXMLThreatProtectionPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateXMLThreatProtectionPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateXMLThreatProtectionPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateXMLThreatProtectionPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateXMLThreatProtectionPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateXMLThreatProtectionPlugin{
+	out := shared.XMLThreatProtectionPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThreatProtectionPlugin(resp *shared.XMLThreatProtectionPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
-		} else {
-			r.Config = &tfTypes.CreateXMLThreatProtectionPluginConfig{}
-			r.Config.AllowDtd = types.BoolPointerValue(resp.Config.AllowDtd)
-			r.Config.AllowedContentTypes = []types.String{}
-			for _, v := range resp.Config.AllowedContentTypes {
-				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
-			}
-			r.Config.Attribute = types.Int64PointerValue(resp.Config.Attribute)
-			if resp.Config.BlaMaxAmplification != nil {
-				r.Config.BlaMaxAmplification = types.NumberValue(big.NewFloat(float64(*resp.Config.BlaMaxAmplification)))
-			} else {
-				r.Config.BlaMaxAmplification = types.NumberNull()
-			}
-			r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
-			r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
-			r.Config.CheckedContentTypes = []types.String{}
-			for _, v := range resp.Config.CheckedContentTypes {
-				r.Config.CheckedContentTypes = append(r.Config.CheckedContentTypes, types.StringValue(v))
-			}
-			r.Config.Comment = types.Int64PointerValue(resp.Config.Comment)
-			r.Config.Document = types.Int64PointerValue(resp.Config.Document)
-			r.Config.Entity = types.Int64PointerValue(resp.Config.Entity)
-			r.Config.Entityname = types.Int64PointerValue(resp.Config.Entityname)
-			r.Config.Entityproperty = types.Int64PointerValue(resp.Config.Entityproperty)
-			r.Config.Localname = types.Int64PointerValue(resp.Config.Localname)
-			r.Config.MaxAttributes = types.Int64PointerValue(resp.Config.MaxAttributes)
-			r.Config.MaxChildren = types.Int64PointerValue(resp.Config.MaxChildren)
-			r.Config.MaxDepth = types.Int64PointerValue(resp.Config.MaxDepth)
-			r.Config.MaxNamespaces = types.Int64PointerValue(resp.Config.MaxNamespaces)
-			r.Config.NamespaceAware = types.BoolPointerValue(resp.Config.NamespaceAware)
-			r.Config.Namespaceuri = types.Int64PointerValue(resp.Config.Namespaceuri)
-			r.Config.Pidata = types.Int64PointerValue(resp.Config.Pidata)
-			r.Config.Pitarget = types.Int64PointerValue(resp.Config.Pitarget)
-			r.Config.Prefix = types.Int64PointerValue(resp.Config.Prefix)
-			r.Config.Text = types.Int64PointerValue(resp.Config.Text)
+		r.Config.AllowDtd = types.BoolPointerValue(resp.Config.AllowDtd)
+		r.Config.AllowedContentTypes = []types.String{}
+		for _, v := range resp.Config.AllowedContentTypes {
+			r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
 		}
+		r.Config.Attribute = types.Int64PointerValue(resp.Config.Attribute)
+		if resp.Config.BlaMaxAmplification != nil {
+			r.Config.BlaMaxAmplification = types.NumberValue(big.NewFloat(float64(*resp.Config.BlaMaxAmplification)))
+		} else {
+			r.Config.BlaMaxAmplification = types.NumberNull()
+		}
+		r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
+		r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
+		r.Config.CheckedContentTypes = []types.String{}
+		for _, v := range resp.Config.CheckedContentTypes {
+			r.Config.CheckedContentTypes = append(r.Config.CheckedContentTypes, types.StringValue(v))
+		}
+		r.Config.Comment = types.Int64PointerValue(resp.Config.Comment)
+		r.Config.Document = types.Int64PointerValue(resp.Config.Document)
+		r.Config.Entity = types.Int64PointerValue(resp.Config.Entity)
+		r.Config.Entityname = types.Int64PointerValue(resp.Config.Entityname)
+		r.Config.Entityproperty = types.Int64PointerValue(resp.Config.Entityproperty)
+		r.Config.Localname = types.Int64PointerValue(resp.Config.Localname)
+		r.Config.MaxAttributes = types.Int64PointerValue(resp.Config.MaxAttributes)
+		r.Config.MaxChildren = types.Int64PointerValue(resp.Config.MaxChildren)
+		r.Config.MaxDepth = types.Int64PointerValue(resp.Config.MaxDepth)
+		r.Config.MaxNamespaces = types.Int64PointerValue(resp.Config.MaxNamespaces)
+		r.Config.NamespaceAware = types.BoolPointerValue(resp.Config.NamespaceAware)
+		r.Config.Namespaceuri = types.Int64PointerValue(resp.Config.Namespaceuri)
+		r.Config.Pidata = types.Int64PointerValue(resp.Config.Pidata)
+		r.Config.Pitarget = types.Int64PointerValue(resp.Config.Pitarget)
+		r.Config.Prefix = types.Int64PointerValue(resp.Config.Prefix)
+		r.Config.Text = types.Int64PointerValue(resp.Config.Text)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -341,11 +340,11 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -354,7 +353,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

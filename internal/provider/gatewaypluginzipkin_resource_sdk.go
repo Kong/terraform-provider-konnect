@@ -4,219 +4,240 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"math/big"
 )
 
-func (r *GatewayPluginZipkinResourceModel) ToSharedCreateZipkinPlugin() *shared.CreateZipkinPlugin {
-	var config *shared.CreateZipkinPluginConfig
-	if r.Config != nil {
-		connectTimeout := new(int64)
-		if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
-			*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+func (r *GatewayPluginZipkinResourceModel) ToSharedZipkinPluginInput() *shared.ZipkinPluginInput {
+	connectTimeout := new(int64)
+	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
+		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+	} else {
+		connectTimeout = nil
+	}
+	defaultHeaderType := new(shared.DefaultHeaderType)
+	if !r.Config.DefaultHeaderType.IsUnknown() && !r.Config.DefaultHeaderType.IsNull() {
+		*defaultHeaderType = shared.DefaultHeaderType(r.Config.DefaultHeaderType.ValueString())
+	} else {
+		defaultHeaderType = nil
+	}
+	defaultServiceName := new(string)
+	if !r.Config.DefaultServiceName.IsUnknown() && !r.Config.DefaultServiceName.IsNull() {
+		*defaultServiceName = r.Config.DefaultServiceName.ValueString()
+	} else {
+		defaultServiceName = nil
+	}
+	headerType := new(shared.ZipkinPluginHeaderType)
+	if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
+		*headerType = shared.ZipkinPluginHeaderType(r.Config.HeaderType.ValueString())
+	} else {
+		headerType = nil
+	}
+	httpEndpoint := new(string)
+	if !r.Config.HTTPEndpoint.IsUnknown() && !r.Config.HTTPEndpoint.IsNull() {
+		*httpEndpoint = r.Config.HTTPEndpoint.ValueString()
+	} else {
+		httpEndpoint = nil
+	}
+	httpResponseHeaderForTraceid := new(string)
+	if !r.Config.HTTPResponseHeaderForTraceid.IsUnknown() && !r.Config.HTTPResponseHeaderForTraceid.IsNull() {
+		*httpResponseHeaderForTraceid = r.Config.HTTPResponseHeaderForTraceid.ValueString()
+	} else {
+		httpResponseHeaderForTraceid = nil
+	}
+	httpSpanName := new(shared.HTTPSpanName)
+	if !r.Config.HTTPSpanName.IsUnknown() && !r.Config.HTTPSpanName.IsNull() {
+		*httpSpanName = shared.HTTPSpanName(r.Config.HTTPSpanName.ValueString())
+	} else {
+		httpSpanName = nil
+	}
+	includeCredential := new(bool)
+	if !r.Config.IncludeCredential.IsUnknown() && !r.Config.IncludeCredential.IsNull() {
+		*includeCredential = r.Config.IncludeCredential.ValueBool()
+	} else {
+		includeCredential = nil
+	}
+	localServiceName := new(string)
+	if !r.Config.LocalServiceName.IsUnknown() && !r.Config.LocalServiceName.IsNull() {
+		*localServiceName = r.Config.LocalServiceName.ValueString()
+	} else {
+		localServiceName = nil
+	}
+	phaseDurationFlavor := new(shared.PhaseDurationFlavor)
+	if !r.Config.PhaseDurationFlavor.IsUnknown() && !r.Config.PhaseDurationFlavor.IsNull() {
+		*phaseDurationFlavor = shared.PhaseDurationFlavor(r.Config.PhaseDurationFlavor.ValueString())
+	} else {
+		phaseDurationFlavor = nil
+	}
+	var propagation *shared.ZipkinPluginPropagation
+	if r.Config.Propagation != nil {
+		var clear []string = []string{}
+		for _, clearItem := range r.Config.Propagation.Clear {
+			clear = append(clear, clearItem.ValueString())
+		}
+		defaultFormat := shared.ZipkinPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
+		var extract []shared.ZipkinPluginExtract = []shared.ZipkinPluginExtract{}
+		for _, extractItem := range r.Config.Propagation.Extract {
+			extract = append(extract, shared.ZipkinPluginExtract(extractItem.ValueString()))
+		}
+		var inject []shared.ZipkinPluginInject = []shared.ZipkinPluginInject{}
+		for _, injectItem := range r.Config.Propagation.Inject {
+			inject = append(inject, shared.ZipkinPluginInject(injectItem.ValueString()))
+		}
+		propagation = &shared.ZipkinPluginPropagation{
+			Clear:         clear,
+			DefaultFormat: defaultFormat,
+			Extract:       extract,
+			Inject:        inject,
+		}
+	}
+	var queue *shared.ZipkinPluginQueue
+	if r.Config.Queue != nil {
+		concurrencyLimit := new(shared.ZipkinPluginConcurrencyLimit)
+		if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
+			*concurrencyLimit = shared.ZipkinPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
 		} else {
-			connectTimeout = nil
+			concurrencyLimit = nil
 		}
-		defaultHeaderType := new(shared.CreateZipkinPluginDefaultHeaderType)
-		if !r.Config.DefaultHeaderType.IsUnknown() && !r.Config.DefaultHeaderType.IsNull() {
-			*defaultHeaderType = shared.CreateZipkinPluginDefaultHeaderType(r.Config.DefaultHeaderType.ValueString())
+		initialRetryDelay := new(float64)
+		if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
+			*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
 		} else {
-			defaultHeaderType = nil
+			initialRetryDelay = nil
 		}
-		defaultServiceName := new(string)
-		if !r.Config.DefaultServiceName.IsUnknown() && !r.Config.DefaultServiceName.IsNull() {
-			*defaultServiceName = r.Config.DefaultServiceName.ValueString()
+		maxBatchSize := new(int64)
+		if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
+			*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
 		} else {
-			defaultServiceName = nil
+			maxBatchSize = nil
 		}
-		headerType := new(shared.CreateZipkinPluginHeaderType)
-		if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
-			*headerType = shared.CreateZipkinPluginHeaderType(r.Config.HeaderType.ValueString())
+		maxBytes := new(int64)
+		if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
+			*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
 		} else {
-			headerType = nil
+			maxBytes = nil
 		}
-		httpEndpoint := new(string)
-		if !r.Config.HTTPEndpoint.IsUnknown() && !r.Config.HTTPEndpoint.IsNull() {
-			*httpEndpoint = r.Config.HTTPEndpoint.ValueString()
+		maxCoalescingDelay := new(float64)
+		if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
+			*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
 		} else {
-			httpEndpoint = nil
+			maxCoalescingDelay = nil
 		}
-		httpResponseHeaderForTraceid := new(string)
-		if !r.Config.HTTPResponseHeaderForTraceid.IsUnknown() && !r.Config.HTTPResponseHeaderForTraceid.IsNull() {
-			*httpResponseHeaderForTraceid = r.Config.HTTPResponseHeaderForTraceid.ValueString()
+		maxEntries := new(int64)
+		if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
+			*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
 		} else {
-			httpResponseHeaderForTraceid = nil
+			maxEntries = nil
 		}
-		httpSpanName := new(shared.CreateZipkinPluginHTTPSpanName)
-		if !r.Config.HTTPSpanName.IsUnknown() && !r.Config.HTTPSpanName.IsNull() {
-			*httpSpanName = shared.CreateZipkinPluginHTTPSpanName(r.Config.HTTPSpanName.ValueString())
+		maxRetryDelay := new(float64)
+		if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
+			*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
 		} else {
-			httpSpanName = nil
+			maxRetryDelay = nil
 		}
-		includeCredential := new(bool)
-		if !r.Config.IncludeCredential.IsUnknown() && !r.Config.IncludeCredential.IsNull() {
-			*includeCredential = r.Config.IncludeCredential.ValueBool()
+		maxRetryTime := new(float64)
+		if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
+			*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
 		} else {
-			includeCredential = nil
+			maxRetryTime = nil
 		}
-		localServiceName := new(string)
-		if !r.Config.LocalServiceName.IsUnknown() && !r.Config.LocalServiceName.IsNull() {
-			*localServiceName = r.Config.LocalServiceName.ValueString()
-		} else {
-			localServiceName = nil
+		queue = &shared.ZipkinPluginQueue{
+			ConcurrencyLimit:   concurrencyLimit,
+			InitialRetryDelay:  initialRetryDelay,
+			MaxBatchSize:       maxBatchSize,
+			MaxBytes:           maxBytes,
+			MaxCoalescingDelay: maxCoalescingDelay,
+			MaxEntries:         maxEntries,
+			MaxRetryDelay:      maxRetryDelay,
+			MaxRetryTime:       maxRetryTime,
 		}
-		phaseDurationFlavor := new(shared.CreateZipkinPluginPhaseDurationFlavor)
-		if !r.Config.PhaseDurationFlavor.IsUnknown() && !r.Config.PhaseDurationFlavor.IsNull() {
-			*phaseDurationFlavor = shared.CreateZipkinPluginPhaseDurationFlavor(r.Config.PhaseDurationFlavor.ValueString())
-		} else {
-			phaseDurationFlavor = nil
-		}
-		var propagation *shared.CreateZipkinPluginPropagation
-		if r.Config.Propagation != nil {
-			var clear []string = []string{}
-			for _, clearItem := range r.Config.Propagation.Clear {
-				clear = append(clear, clearItem.ValueString())
-			}
-			defaultFormat := shared.CreateZipkinPluginDefaultFormat(r.Config.Propagation.DefaultFormat.ValueString())
-			var extract []shared.CreateZipkinPluginExtract = []shared.CreateZipkinPluginExtract{}
-			for _, extractItem := range r.Config.Propagation.Extract {
-				extract = append(extract, shared.CreateZipkinPluginExtract(extractItem.ValueString()))
-			}
-			var inject []shared.CreateZipkinPluginInject = []shared.CreateZipkinPluginInject{}
-			for _, injectItem := range r.Config.Propagation.Inject {
-				inject = append(inject, shared.CreateZipkinPluginInject(injectItem.ValueString()))
-			}
-			propagation = &shared.CreateZipkinPluginPropagation{
-				Clear:         clear,
-				DefaultFormat: defaultFormat,
-				Extract:       extract,
-				Inject:        inject,
-			}
-		}
-		var queue *shared.CreateZipkinPluginQueue
-		if r.Config.Queue != nil {
-			concurrencyLimit := new(shared.CreateZipkinPluginConcurrencyLimit)
-			if !r.Config.Queue.ConcurrencyLimit.IsUnknown() && !r.Config.Queue.ConcurrencyLimit.IsNull() {
-				*concurrencyLimit = shared.CreateZipkinPluginConcurrencyLimit(r.Config.Queue.ConcurrencyLimit.ValueInt64())
-			} else {
-				concurrencyLimit = nil
-			}
-			initialRetryDelay := new(float64)
-			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
-			} else {
-				initialRetryDelay = nil
-			}
-			maxBatchSize := new(int64)
-			if !r.Config.Queue.MaxBatchSize.IsUnknown() && !r.Config.Queue.MaxBatchSize.IsNull() {
-				*maxBatchSize = r.Config.Queue.MaxBatchSize.ValueInt64()
-			} else {
-				maxBatchSize = nil
-			}
-			maxBytes := new(int64)
-			if !r.Config.Queue.MaxBytes.IsUnknown() && !r.Config.Queue.MaxBytes.IsNull() {
-				*maxBytes = r.Config.Queue.MaxBytes.ValueInt64()
-			} else {
-				maxBytes = nil
-			}
-			maxCoalescingDelay := new(float64)
-			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-				*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
-			} else {
-				maxCoalescingDelay = nil
-			}
-			maxEntries := new(int64)
-			if !r.Config.Queue.MaxEntries.IsUnknown() && !r.Config.Queue.MaxEntries.IsNull() {
-				*maxEntries = r.Config.Queue.MaxEntries.ValueInt64()
-			} else {
-				maxEntries = nil
-			}
-			maxRetryDelay := new(float64)
-			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-				*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
-			} else {
-				maxRetryDelay = nil
-			}
-			maxRetryTime := new(float64)
-			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-				*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
-			} else {
-				maxRetryTime = nil
-			}
-			queue = &shared.CreateZipkinPluginQueue{
-				ConcurrencyLimit:   concurrencyLimit,
-				InitialRetryDelay:  initialRetryDelay,
-				MaxBatchSize:       maxBatchSize,
-				MaxBytes:           maxBytes,
-				MaxCoalescingDelay: maxCoalescingDelay,
-				MaxEntries:         maxEntries,
-				MaxRetryDelay:      maxRetryDelay,
-				MaxRetryTime:       maxRetryTime,
-			}
-		}
-		readTimeout := new(int64)
-		if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
-			*readTimeout = r.Config.ReadTimeout.ValueInt64()
-		} else {
-			readTimeout = nil
-		}
-		sampleRatio := new(float64)
-		if !r.Config.SampleRatio.IsUnknown() && !r.Config.SampleRatio.IsNull() {
-			*sampleRatio, _ = r.Config.SampleRatio.ValueBigFloat().Float64()
-		} else {
-			sampleRatio = nil
-		}
-		sendTimeout := new(int64)
-		if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
-			*sendTimeout = r.Config.SendTimeout.ValueInt64()
-		} else {
-			sendTimeout = nil
-		}
-		var staticTags []shared.CreateZipkinPluginStaticTags = []shared.CreateZipkinPluginStaticTags{}
-		for _, staticTagsItem := range r.Config.StaticTags {
-			var name string
-			name = staticTagsItem.Name.ValueString()
+	}
+	readTimeout := new(int64)
+	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
+		*readTimeout = r.Config.ReadTimeout.ValueInt64()
+	} else {
+		readTimeout = nil
+	}
+	sampleRatio := new(float64)
+	if !r.Config.SampleRatio.IsUnknown() && !r.Config.SampleRatio.IsNull() {
+		*sampleRatio, _ = r.Config.SampleRatio.ValueBigFloat().Float64()
+	} else {
+		sampleRatio = nil
+	}
+	sendTimeout := new(int64)
+	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
+		*sendTimeout = r.Config.SendTimeout.ValueInt64()
+	} else {
+		sendTimeout = nil
+	}
+	var staticTags []shared.StaticTags = []shared.StaticTags{}
+	for _, staticTagsItem := range r.Config.StaticTags {
+		var name string
+		name = staticTagsItem.Name.ValueString()
 
-			var value string
-			value = staticTagsItem.Value.ValueString()
+		var value string
+		value = staticTagsItem.Value.ValueString()
 
-			staticTags = append(staticTags, shared.CreateZipkinPluginStaticTags{
-				Name:  name,
-				Value: value,
-			})
-		}
-		tagsHeader := new(string)
-		if !r.Config.TagsHeader.IsUnknown() && !r.Config.TagsHeader.IsNull() {
-			*tagsHeader = r.Config.TagsHeader.ValueString()
+		staticTags = append(staticTags, shared.StaticTags{
+			Name:  name,
+			Value: value,
+		})
+	}
+	tagsHeader := new(string)
+	if !r.Config.TagsHeader.IsUnknown() && !r.Config.TagsHeader.IsNull() {
+		*tagsHeader = r.Config.TagsHeader.ValueString()
+	} else {
+		tagsHeader = nil
+	}
+	traceidByteCount := new(shared.TraceidByteCount)
+	if !r.Config.TraceidByteCount.IsUnknown() && !r.Config.TraceidByteCount.IsNull() {
+		*traceidByteCount = shared.TraceidByteCount(r.Config.TraceidByteCount.ValueInt64())
+	} else {
+		traceidByteCount = nil
+	}
+	config := shared.ZipkinPluginConfig{
+		ConnectTimeout:               connectTimeout,
+		DefaultHeaderType:            defaultHeaderType,
+		DefaultServiceName:           defaultServiceName,
+		HeaderType:                   headerType,
+		HTTPEndpoint:                 httpEndpoint,
+		HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
+		HTTPSpanName:                 httpSpanName,
+		IncludeCredential:            includeCredential,
+		LocalServiceName:             localServiceName,
+		PhaseDurationFlavor:          phaseDurationFlavor,
+		Propagation:                  propagation,
+		Queue:                        queue,
+		ReadTimeout:                  readTimeout,
+		SampleRatio:                  sampleRatio,
+		SendTimeout:                  sendTimeout,
+		StaticTags:                   staticTags,
+		TagsHeader:                   tagsHeader,
+		TraceidByteCount:             traceidByteCount,
+	}
+	var consumer *shared.ZipkinPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			tagsHeader = nil
+			id = nil
 		}
-		traceidByteCount := new(shared.CreateZipkinPluginTraceidByteCount)
-		if !r.Config.TraceidByteCount.IsUnknown() && !r.Config.TraceidByteCount.IsNull() {
-			*traceidByteCount = shared.CreateZipkinPluginTraceidByteCount(r.Config.TraceidByteCount.ValueInt64())
+		consumer = &shared.ZipkinPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.ZipkinPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			traceidByteCount = nil
+			id1 = nil
 		}
-		config = &shared.CreateZipkinPluginConfig{
-			ConnectTimeout:               connectTimeout,
-			DefaultHeaderType:            defaultHeaderType,
-			DefaultServiceName:           defaultServiceName,
-			HeaderType:                   headerType,
-			HTTPEndpoint:                 httpEndpoint,
-			HTTPResponseHeaderForTraceid: httpResponseHeaderForTraceid,
-			HTTPSpanName:                 httpSpanName,
-			IncludeCredential:            includeCredential,
-			LocalServiceName:             localServiceName,
-			PhaseDurationFlavor:          phaseDurationFlavor,
-			Propagation:                  propagation,
-			Queue:                        queue,
-			ReadTimeout:                  readTimeout,
-			SampleRatio:                  sampleRatio,
-			SendTimeout:                  sendTimeout,
-			StaticTags:                   staticTags,
-			TagsHeader:                   tagsHeader,
-			TraceidByteCount:             traceidByteCount,
+		consumerGroup = &shared.ZipkinPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -225,221 +246,199 @@ func (r *GatewayPluginZipkinResourceModel) ToSharedCreateZipkinPlugin() *shared.
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateZipkinPluginOrdering
+	var ordering *shared.ZipkinPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateZipkinPluginAfter
+		var after *shared.ZipkinPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateZipkinPluginAfter{
+			after = &shared.ZipkinPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateZipkinPluginBefore
+		var before *shared.ZipkinPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateZipkinPluginBefore{
+			before = &shared.ZipkinPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateZipkinPluginOrdering{
+		ordering = &shared.ZipkinPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateZipkinPluginProtocols = []shared.CreateZipkinPluginProtocols{}
+	var protocols []shared.ZipkinPluginProtocols = []shared.ZipkinPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateZipkinPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.ZipkinPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.ZipkinPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.ZipkinPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.ZipkinPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.ZipkinPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateZipkinPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateZipkinPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateZipkinPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateZipkinPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateZipkinPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateZipkinPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateZipkinPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateZipkinPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateZipkinPlugin{
+	out := shared.ZipkinPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(resp *shared.ZipkinPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+		if resp.Config.DefaultHeaderType != nil {
+			r.Config.DefaultHeaderType = types.StringValue(string(*resp.Config.DefaultHeaderType))
 		} else {
-			r.Config = &tfTypes.CreateZipkinPluginConfig{}
-			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-			if resp.Config.DefaultHeaderType != nil {
-				r.Config.DefaultHeaderType = types.StringValue(string(*resp.Config.DefaultHeaderType))
+			r.Config.DefaultHeaderType = types.StringNull()
+		}
+		r.Config.DefaultServiceName = types.StringPointerValue(resp.Config.DefaultServiceName)
+		if resp.Config.HeaderType != nil {
+			r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
+		} else {
+			r.Config.HeaderType = types.StringNull()
+		}
+		r.Config.HTTPEndpoint = types.StringPointerValue(resp.Config.HTTPEndpoint)
+		r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
+		if resp.Config.HTTPSpanName != nil {
+			r.Config.HTTPSpanName = types.StringValue(string(*resp.Config.HTTPSpanName))
+		} else {
+			r.Config.HTTPSpanName = types.StringNull()
+		}
+		r.Config.IncludeCredential = types.BoolPointerValue(resp.Config.IncludeCredential)
+		r.Config.LocalServiceName = types.StringPointerValue(resp.Config.LocalServiceName)
+		if resp.Config.PhaseDurationFlavor != nil {
+			r.Config.PhaseDurationFlavor = types.StringValue(string(*resp.Config.PhaseDurationFlavor))
+		} else {
+			r.Config.PhaseDurationFlavor = types.StringNull()
+		}
+		if resp.Config.Propagation == nil {
+			r.Config.Propagation = nil
+		} else {
+			r.Config.Propagation = &tfTypes.Propagation{}
+			r.Config.Propagation.Clear = []types.String{}
+			for _, v := range resp.Config.Propagation.Clear {
+				r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+			}
+			r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+			r.Config.Propagation.Extract = []types.String{}
+			for _, v := range resp.Config.Propagation.Extract {
+				r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+			}
+			r.Config.Propagation.Inject = []types.String{}
+			for _, v := range resp.Config.Propagation.Inject {
+				r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+			}
+		}
+		if resp.Config.Queue == nil {
+			r.Config.Queue = nil
+		} else {
+			r.Config.Queue = &tfTypes.Queue{}
+			if resp.Config.Queue.ConcurrencyLimit != nil {
+				r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
 			} else {
-				r.Config.DefaultHeaderType = types.StringNull()
+				r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 			}
-			r.Config.DefaultServiceName = types.StringPointerValue(resp.Config.DefaultServiceName)
-			if resp.Config.HeaderType != nil {
-				r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
+			if resp.Config.Queue.InitialRetryDelay != nil {
+				r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
 			} else {
-				r.Config.HeaderType = types.StringNull()
+				r.Config.Queue.InitialRetryDelay = types.NumberNull()
 			}
-			r.Config.HTTPEndpoint = types.StringPointerValue(resp.Config.HTTPEndpoint)
-			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
-			if resp.Config.HTTPSpanName != nil {
-				r.Config.HTTPSpanName = types.StringValue(string(*resp.Config.HTTPSpanName))
+			r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
+			r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
+			if resp.Config.Queue.MaxCoalescingDelay != nil {
+				r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
 			} else {
-				r.Config.HTTPSpanName = types.StringNull()
+				r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
 			}
-			r.Config.IncludeCredential = types.BoolPointerValue(resp.Config.IncludeCredential)
-			r.Config.LocalServiceName = types.StringPointerValue(resp.Config.LocalServiceName)
-			if resp.Config.PhaseDurationFlavor != nil {
-				r.Config.PhaseDurationFlavor = types.StringValue(string(*resp.Config.PhaseDurationFlavor))
+			r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
+			if resp.Config.Queue.MaxRetryDelay != nil {
+				r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
 			} else {
-				r.Config.PhaseDurationFlavor = types.StringNull()
+				r.Config.Queue.MaxRetryDelay = types.NumberNull()
 			}
-			if resp.Config.Propagation == nil {
-				r.Config.Propagation = nil
+			if resp.Config.Queue.MaxRetryTime != nil {
+				r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
 			} else {
-				r.Config.Propagation = &tfTypes.CreateOpentelemetryPluginPropagation{}
-				r.Config.Propagation.Clear = []types.String{}
-				for _, v := range resp.Config.Propagation.Clear {
-					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
-				}
-				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
-				r.Config.Propagation.Extract = []types.String{}
-				for _, v := range resp.Config.Propagation.Extract {
-					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
-				}
-				r.Config.Propagation.Inject = []types.String{}
-				for _, v := range resp.Config.Propagation.Inject {
-					r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
-				}
+				r.Config.Queue.MaxRetryTime = types.NumberNull()
 			}
-			if resp.Config.Queue == nil {
-				r.Config.Queue = nil
+		}
+		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+		if resp.Config.SampleRatio != nil {
+			r.Config.SampleRatio = types.NumberValue(big.NewFloat(float64(*resp.Config.SampleRatio)))
+		} else {
+			r.Config.SampleRatio = types.NumberNull()
+		}
+		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+		if len(r.Config.StaticTags) > len(resp.Config.StaticTags) {
+			r.Config.StaticTags = r.Config.StaticTags[:len(resp.Config.StaticTags)]
+		}
+		for staticTagsCount, staticTagsItem := range resp.Config.StaticTags {
+			var staticTags1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+			staticTags1.Name = types.StringValue(staticTagsItem.Name)
+			staticTags1.Value = types.StringValue(staticTagsItem.Value)
+			if staticTagsCount+1 > len(r.Config.StaticTags) {
+				r.Config.StaticTags = append(r.Config.StaticTags, staticTags1)
 			} else {
-				r.Config.Queue = &tfTypes.CreateDatadogPluginQueue{}
-				if resp.Config.Queue.ConcurrencyLimit != nil {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
-				} else {
-					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
-				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
-				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
-				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
-				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.StaticTags[staticTagsCount].Name = staticTags1.Name
+				r.Config.StaticTags[staticTagsCount].Value = staticTags1.Value
 			}
-			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-			if resp.Config.SampleRatio != nil {
-				r.Config.SampleRatio = types.NumberValue(big.NewFloat(float64(*resp.Config.SampleRatio)))
-			} else {
-				r.Config.SampleRatio = types.NumberNull()
-			}
-			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-			r.Config.StaticTags = []tfTypes.StaticTags{}
-			if len(r.Config.StaticTags) > len(resp.Config.StaticTags) {
-				r.Config.StaticTags = r.Config.StaticTags[:len(resp.Config.StaticTags)]
-			}
-			for staticTagsCount, staticTagsItem := range resp.Config.StaticTags {
-				var staticTags1 tfTypes.StaticTags
-				staticTags1.Name = types.StringValue(staticTagsItem.Name)
-				staticTags1.Value = types.StringValue(staticTagsItem.Value)
-				if staticTagsCount+1 > len(r.Config.StaticTags) {
-					r.Config.StaticTags = append(r.Config.StaticTags, staticTags1)
-				} else {
-					r.Config.StaticTags[staticTagsCount].Name = staticTags1.Name
-					r.Config.StaticTags[staticTagsCount].Value = staticTags1.Value
-				}
-			}
-			r.Config.TagsHeader = types.StringPointerValue(resp.Config.TagsHeader)
-			if resp.Config.TraceidByteCount != nil {
-				r.Config.TraceidByteCount = types.Int64Value(int64(*resp.Config.TraceidByteCount))
-			} else {
-				r.Config.TraceidByteCount = types.Int64Null()
-			}
+		}
+		r.Config.TagsHeader = types.StringPointerValue(resp.Config.TagsHeader)
+		if resp.Config.TraceidByteCount != nil {
+			r.Config.TraceidByteCount = types.Int64Value(int64(*resp.Config.TraceidByteCount))
+		} else {
+			r.Config.TraceidByteCount = types.Int64Null()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -460,11 +459,11 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(resp *s
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -473,7 +472,7 @@ func (r *GatewayPluginZipkinResourceModel) RefreshFromSharedZipkinPlugin(resp *s
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

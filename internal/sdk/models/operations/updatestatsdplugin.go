@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateStatsdPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateStatsdPlugin *shared.CreateStatsdPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StatsdPlugin   *shared.StatsdPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateStatsdPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateStatsdPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateStatsdPluginRequest) GetCreateStatsdPlugin() *shared.CreateStatsdPlugin {
+func (o *UpdateStatsdPluginRequest) GetStatsdPlugin() *shared.StatsdPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateStatsdPlugin
+	return o.StatsdPlugin
 }
 
 type UpdateStatsdPluginResponse struct {

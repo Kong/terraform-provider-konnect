@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateOasvalidationPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOasValidationPlugin *shared.CreateOasValidationPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OasValidationPlugin *shared.OasValidationPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateOasvalidationPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateOasvalidationPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOasvalidationPluginRequest) GetCreateOasValidationPlugin() *shared.CreateOasValidationPlugin {
+func (o *CreateOasvalidationPluginRequest) GetOasValidationPlugin() *shared.OasValidationPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOasValidationPlugin
+	return o.OasValidationPlugin
 }
 
 type CreateOasvalidationPluginResponse struct {

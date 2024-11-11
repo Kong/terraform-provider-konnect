@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateJwtPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateJwtPlugin *shared.CreateJwtPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JwtPlugin      *shared.JwtPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJwtPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateJwtPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateJwtPluginRequest) GetCreateJwtPlugin() *shared.CreateJwtPlugin {
+func (o *UpdateJwtPluginRequest) GetJwtPlugin() *shared.JwtPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateJwtPlugin
+	return o.JwtPlugin
 }
 
 type UpdateJwtPluginResponse struct {

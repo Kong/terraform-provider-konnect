@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateKonnectapplicationauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                     string                                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateKonnectApplicationAuthPlugin *shared.CreateKonnectApplicationAuthPlugin `request:"mediaType=application/json"`
+	ControlPlaneID               string                                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KonnectApplicationAuthPlugin *shared.KonnectApplicationAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateKonnectapplicationauthPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateKonnectapplicationauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateKonnectapplicationauthPluginRequest) GetCreateKonnectApplicationAuthPlugin() *shared.CreateKonnectApplicationAuthPlugin {
+func (o *UpdateKonnectapplicationauthPluginRequest) GetKonnectApplicationAuthPlugin() *shared.KonnectApplicationAuthPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateKonnectApplicationAuthPlugin
+	return o.KonnectApplicationAuthPlugin
 }
 
 type UpdateKonnectapplicationauthPluginResponse struct {

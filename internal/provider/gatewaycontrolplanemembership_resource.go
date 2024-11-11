@@ -8,13 +8,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -32,8 +33,8 @@ type GatewayControlPlaneMembershipResource struct {
 
 // GatewayControlPlaneMembershipResourceModel describes the resource data model.
 type GatewayControlPlaneMembershipResourceModel struct {
-	ID      types.String          `tfsdk:"id"`
-	Members []tfTypes.ACLConsumer `tfsdk:"members"`
+	ID      types.String      `tfsdk:"id"`
+	Members []tfTypes.Members `tfsdk:"members"`
 }
 
 func (r *GatewayControlPlaneMembershipResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -45,29 +46,32 @@ func (r *GatewayControlPlaneMembershipResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayControlPlaneMembership Resource",
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `ID of a control plane group. Requires replacement if changed. `,
+				Description: `ID of a control plane group. Requires replacement if changed.`,
 			},
 			"members": schema.ListNestedAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						objectplanmodifier.RequiresReplaceIfConfigured(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"id": schema.StringAttribute{
+							Required: true,
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplaceIfConfigured(),
 							},
-							Optional:    true,
-							Description: `Requires replacement if changed. `,
+							Description: `Requires replacement if changed.`,
 						},
 					},
 				},
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 		},
 	}

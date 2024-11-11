@@ -15,10 +15,13 @@ GatewayTarget Resource
 ```terraform
 resource "konnect_gateway_target" "my_gatewaytarget" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  target           = "...my_target..."
-  target_id        = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
-  upstream_id      = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
-  weight           = 7
+  id               = "...my_id..."
+  tags = [
+    "..."
+  ]
+  target      = "...my_target..."
+  upstream_id = "5a078780-5d4c-4aae-984a-bdc6f52113d8"
+  weight      = 5
 }
 ```
 
@@ -32,6 +35,7 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 
 ### Optional
 
+- `id` (String) Requires replacement if changed.
 - `tags` (List of String) An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.
 - `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Requires replacement if changed.
@@ -39,7 +43,6 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 ### Read-Only
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `id` (String) The ID of this resource.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 - `upstream` (Attributes) (see [below for nested schema](#nestedatt--upstream))
 

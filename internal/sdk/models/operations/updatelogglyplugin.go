@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateLogglyPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateLogglyPlugin *shared.CreateLogglyPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LogglyPlugin   *shared.LogglyPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateLogglyPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateLogglyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateLogglyPluginRequest) GetCreateLogglyPlugin() *shared.CreateLogglyPlugin {
+func (o *UpdateLogglyPluginRequest) GetLogglyPlugin() *shared.LogglyPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateLogglyPlugin
+	return o.LogglyPlugin
 }
 
 type UpdateLogglyPluginResponse struct {

@@ -14,9 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,20 +34,20 @@ type GatewayPluginDegraphqlResource struct {
 
 // GatewayPluginDegraphqlResourceModel describes the resource data model.
 type GatewayPluginDegraphqlResourceModel struct {
-	Config         *tfTypes.CreateDegraphqlPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering     `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         tfTypes.DegraphqlPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer          `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer          `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                   `tfsdk:"created_at"`
+	Enabled        types.Bool                    `tfsdk:"enabled"`
+	ID             types.String                  `tfsdk:"id"`
+	InstanceName   types.String                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering    `tfsdk:"ordering"`
+	Protocols      []types.String                `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer          `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer          `tfsdk:"service"`
+	Tags           []types.String                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginDegraphqlResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,8 +59,7 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginDegraphql Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"graphql_server_path": schema.StringAttribute{
 						Computed:    true,
@@ -91,11 +90,11 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -108,6 +107,7 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -224,10 +224,10 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createDegraphqlPlugin := data.ToSharedCreateDegraphqlPlugin()
+	degraphqlPlugin := data.ToSharedDegraphqlPluginInput()
 	request := operations.CreateDegraphqlPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		CreateDegraphqlPlugin: createDegraphqlPlugin,
+		ControlPlaneID:  controlPlaneID,
+		DegraphqlPlugin: degraphqlPlugin,
 	}
 	res, err := r.client.Plugins.CreateDegraphqlPlugin(ctx, request)
 	if err != nil {
@@ -334,11 +334,11 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createDegraphqlPlugin := data.ToSharedCreateDegraphqlPlugin()
+	degraphqlPlugin := data.ToSharedDegraphqlPluginInput()
 	request := operations.UpdateDegraphqlPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		CreateDegraphqlPlugin: createDegraphqlPlugin,
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		DegraphqlPlugin: degraphqlPlugin,
 	}
 	res, err := r.client.Plugins.UpdateDegraphqlPlugin(ctx, request)
 	if err != nil {

@@ -34,6 +34,7 @@ func (o *Set) GetID() *string {
 	return o.ID
 }
 
+// A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 type Key struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64  `json:"created_at,omitempty"`
@@ -41,7 +42,7 @@ type Key struct {
 	// A JSON Web Key represented as a string.
 	Jwk *string `json:"jwk,omitempty"`
 	// A unique identifier for a key.
-	Kid *string `json:"kid,omitempty"`
+	Kid string `json:"kid"`
 	// The name to associate with the given keys.
 	Name *string `json:"name,omitempty"`
 	// A keypair in PEM format.
@@ -75,9 +76,9 @@ func (o *Key) GetJwk() *string {
 	return o.Jwk
 }
 
-func (o *Key) GetKid() *string {
+func (o *Key) GetKid() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Kid
 }
@@ -117,11 +118,13 @@ func (o *Key) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
+// KeyInput - A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 type KeyInput struct {
+	ID *string `json:"id,omitempty"`
 	// A JSON Web Key represented as a string.
 	Jwk *string `json:"jwk,omitempty"`
 	// A unique identifier for a key.
-	Kid *string `json:"kid,omitempty"`
+	Kid string `json:"kid"`
 	// The name to associate with the given keys.
 	Name *string `json:"name,omitempty"`
 	// A keypair in PEM format.
@@ -132,6 +135,13 @@ type KeyInput struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
+func (o *KeyInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 func (o *KeyInput) GetJwk() *string {
 	if o == nil {
 		return nil
@@ -139,9 +149,9 @@ func (o *KeyInput) GetJwk() *string {
 	return o.Jwk
 }
 
-func (o *KeyInput) GetKid() *string {
+func (o *KeyInput) GetKid() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Kid
 }

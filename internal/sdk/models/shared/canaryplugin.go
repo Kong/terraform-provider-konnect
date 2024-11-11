@@ -5,8 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // Hash algorithm to be used for canary release.
@@ -173,6 +172,29 @@ func (o *CanaryPluginConfig) GetUpstreamURI() *string {
 	return o.UpstreamURI
 }
 
+// CanaryPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+type CanaryPluginConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CanaryPluginConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+type CanaryPluginConsumerGroup struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *CanaryPluginConsumerGroup) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type CanaryPluginAfter struct {
 	Access []string `json:"access,omitempty"`
 }
@@ -264,29 +286,6 @@ func (e *CanaryPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// CanaryPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type CanaryPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CanaryPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type CanaryPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CanaryPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
 // CanaryPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 type CanaryPluginRoute struct {
 	ID *string `json:"id,omitempty"`
@@ -311,29 +310,30 @@ func (o *CanaryPluginService) GetID() *string {
 	return o.ID
 }
 
+// CanaryPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CanaryPlugin struct {
-	Config *CanaryPluginConfig `json:"config,omitempty"`
+	Config CanaryPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *CanaryPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CanaryPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
 	Enabled      *bool                 `json:"enabled,omitempty"`
 	ID           *string               `json:"id,omitempty"`
 	InstanceName *string               `json:"instance_name,omitempty"`
-	name         *string               `const:"canary" json:"name,omitempty"`
+	name         string                `const:"canary" json:"name"`
 	Ordering     *CanaryPluginOrdering `json:"ordering,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []CanaryPluginProtocols `json:"protocols,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CanaryPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *CanaryPluginConsumerGroup `json:"consumer_group,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
 	Route *CanaryPluginRoute `json:"route,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
 	Service *CanaryPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+	// Unix epoch when the resource was last updated.
+	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
 func (c CanaryPlugin) MarshalJSON() ([]byte, error) {
@@ -347,11 +347,25 @@ func (c *CanaryPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *CanaryPlugin) GetConfig() *CanaryPluginConfig {
+func (o *CanaryPlugin) GetConfig() CanaryPluginConfig {
+	if o == nil {
+		return CanaryPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *CanaryPlugin) GetConsumer() *CanaryPluginConsumer {
 	if o == nil {
 		return nil
 	}
-	return o.Config
+	return o.Consumer
+}
+
+func (o *CanaryPlugin) GetConsumerGroup() *CanaryPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
 }
 
 func (o *CanaryPlugin) GetCreatedAt() *int64 {
@@ -382,8 +396,8 @@ func (o *CanaryPlugin) GetInstanceName() *string {
 	return o.InstanceName
 }
 
-func (o *CanaryPlugin) GetName() *string {
-	return types.String("canary")
+func (o *CanaryPlugin) GetName() string {
+	return "canary"
 }
 
 func (o *CanaryPlugin) GetOrdering() *CanaryPluginOrdering {
@@ -400,6 +414,20 @@ func (o *CanaryPlugin) GetProtocols() []CanaryPluginProtocols {
 	return o.Protocols
 }
 
+func (o *CanaryPlugin) GetRoute() *CanaryPluginRoute {
+	if o == nil {
+		return nil
+	}
+	return o.Route
+}
+
+func (o *CanaryPlugin) GetService() *CanaryPluginService {
+	if o == nil {
+		return nil
+	}
+	return o.Service
+}
+
 func (o *CanaryPlugin) GetTags() []string {
 	if o == nil {
 		return nil
@@ -414,30 +442,116 @@ func (o *CanaryPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *CanaryPlugin) GetConsumer() *CanaryPluginConsumer {
+// CanaryPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
+type CanaryPluginInput struct {
+	Config CanaryPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer      *CanaryPluginConsumer      `json:"consumer,omitempty"`
+	ConsumerGroup *CanaryPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// Whether the plugin is applied.
+	Enabled      *bool                 `json:"enabled,omitempty"`
+	ID           *string               `json:"id,omitempty"`
+	InstanceName *string               `json:"instance_name,omitempty"`
+	name         string                `const:"canary" json:"name"`
+	Ordering     *CanaryPluginOrdering `json:"ordering,omitempty"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
+	Protocols []CanaryPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+	Route *CanaryPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *CanaryPluginService `json:"service,omitempty"`
+	// An optional set of strings associated with the Plugin for grouping and filtering.
+	Tags []string `json:"tags,omitempty"`
+}
+
+func (c CanaryPluginInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(c, "", false)
+}
+
+func (c *CanaryPluginInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &c, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *CanaryPluginInput) GetConfig() CanaryPluginConfig {
+	if o == nil {
+		return CanaryPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *CanaryPluginInput) GetConsumer() *CanaryPluginConsumer {
 	if o == nil {
 		return nil
 	}
 	return o.Consumer
 }
 
-func (o *CanaryPlugin) GetConsumerGroup() *CanaryPluginConsumerGroup {
+func (o *CanaryPluginInput) GetConsumerGroup() *CanaryPluginConsumerGroup {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerGroup
 }
 
-func (o *CanaryPlugin) GetRoute() *CanaryPluginRoute {
+func (o *CanaryPluginInput) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *CanaryPluginInput) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *CanaryPluginInput) GetInstanceName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.InstanceName
+}
+
+func (o *CanaryPluginInput) GetName() string {
+	return "canary"
+}
+
+func (o *CanaryPluginInput) GetOrdering() *CanaryPluginOrdering {
+	if o == nil {
+		return nil
+	}
+	return o.Ordering
+}
+
+func (o *CanaryPluginInput) GetProtocols() []CanaryPluginProtocols {
+	if o == nil {
+		return nil
+	}
+	return o.Protocols
+}
+
+func (o *CanaryPluginInput) GetRoute() *CanaryPluginRoute {
 	if o == nil {
 		return nil
 	}
 	return o.Route
 }
 
-func (o *CanaryPlugin) GetService() *CanaryPluginService {
+func (o *CanaryPluginInput) GetService() *CanaryPluginService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
+}
+
+func (o *CanaryPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
 }

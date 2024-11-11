@@ -14,11 +14,14 @@ APIProductDocument Resource
 
 ```terraform
 resource "konnect_api_product_document" "my_apiproductdocument" {
-  api_product_id     = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-  content            = "## My Markdown"
+  api_product_id = "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+  content        = "## My Markdown"
+  metadata = {
+    # ...
+  }
   parent_document_id = "dd4e1b98-3629-4dd3-acc0-759a726ffee2"
   slug               = "path-for-seo"
-  status             = "published"
+  status             = "unpublished"
   title              = "How to create a document in Konnect DocumentHub"
 }
 ```
@@ -30,7 +33,7 @@ resource "konnect_api_product_document" "my_apiproductdocument" {
 
 - `api_product_id` (String) The API product identifier
 - `slug` (String) document slug. must be unique accross documents belonging to an api product
-- `status` (String) document publish status. must be one of ["published", "unpublished"]
+- `status` (String) must be one of ["published", "unpublished"]
 - `title` (String) document title
 
 ### Optional

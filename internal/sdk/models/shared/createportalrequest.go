@@ -2,6 +2,7 @@
 
 package shared
 
+// CreatePortalRequest - Create a portal.
 type CreatePortalRequest struct {
 	// The name of the portal, used to distinguish it from other portals. Name must be unique.
 	Name string `json:"name"`

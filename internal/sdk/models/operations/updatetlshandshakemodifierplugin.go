@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateTlshandshakemodifierPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                   string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateTLSHandshakeModifierPlugin *shared.CreateTLSHandshakeModifierPlugin `request:"mediaType=application/json"`
+	ControlPlaneID             string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TLSHandshakeModifierPlugin *shared.TLSHandshakeModifierPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateTlshandshakemodifierPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateTlshandshakemodifierPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateTlshandshakemodifierPluginRequest) GetCreateTLSHandshakeModifierPlugin() *shared.CreateTLSHandshakeModifierPlugin {
+func (o *UpdateTlshandshakemodifierPluginRequest) GetTLSHandshakeModifierPlugin() *shared.TLSHandshakeModifierPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateTLSHandshakeModifierPlugin
+	return o.TLSHandshakeModifierPlugin
 }
 
 type UpdateTlshandshakemodifierPluginResponse struct {

@@ -14,10 +14,84 @@ GatewayPluginGraphqlProxyCacheAdvanced Resource
 
 ```terraform
 resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugingraphqlproxycacheadvanced" {
+  config = {
+    bypass_on_err = true
+    cache_ttl     = 7
+    memory = {
+      dictionary_name = "...my_dictionary_name..."
+    }
+    redis = {
+      cluster_max_redirections = 8
+      cluster_nodes = [
+        {
+          ip   = "...my_ip..."
+          port = 438
+        }
+      ]
+      connect_timeout       = 974295670
+      connection_is_proxied = true
+      database              = 0
+      host                  = "...my_host..."
+      keepalive_backlog     = 329763938
+      keepalive_pool_size   = 353109135
+      password              = "...my_password..."
+      port                  = 47126
+      read_timeout          = 1749476727
+      send_timeout          = 2078135811
+      sentinel_master       = "...my_sentinel_master..."
+      sentinel_nodes = [
+        {
+          host = "...my_host..."
+          port = 41845
+        }
+      ]
+      sentinel_password = "...my_sentinel_password..."
+      sentinel_role     = "any"
+      sentinel_username = "...my_sentinel_username..."
+      server_name       = "...my_server_name..."
+      ssl               = true
+      ssl_verify        = false
+      username          = "...my_username..."
+    }
+    strategy = "memory"
+    vary_headers = [
+      "..."
+    ]
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "grpcs"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +100,11 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.

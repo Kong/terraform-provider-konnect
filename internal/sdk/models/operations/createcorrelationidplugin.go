@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateCorrelationidPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateCorrelationIDPlugin *shared.CreateCorrelationIDPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CorrelationIDPlugin *shared.CorrelationIDPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateCorrelationidPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateCorrelationidPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCorrelationidPluginRequest) GetCreateCorrelationIDPlugin() *shared.CreateCorrelationIDPlugin {
+func (o *CreateCorrelationidPluginRequest) GetCorrelationIDPlugin() *shared.CorrelationIDPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateCorrelationIDPlugin
+	return o.CorrelationIDPlugin
 }
 
 type CreateCorrelationidPluginResponse struct {

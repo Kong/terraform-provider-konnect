@@ -14,10 +14,62 @@ GatewayPluginOauth2 Resource
 
 ```terraform
 resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
+  config = {
+    accept_http_if_already_terminated = true
+    anonymous                         = "...my_anonymous..."
+    auth_header_name                  = "...my_auth_header_name..."
+    enable_authorization_code         = true
+    enable_client_credentials         = false
+    enable_implicit_grant             = true
+    enable_password_grant             = true
+    global_credentials                = true
+    hide_credentials                  = false
+    mandatory_scope                   = false
+    persistent_refresh_token          = true
+    pkce                              = "strict"
+    provision_key                     = "...my_provision_key..."
+    realm                             = "...my_realm..."
+    refresh_token_ttl                 = 43385286.36
+    reuse_refresh_token               = true
+    scopes = [
+      "..."
+    ]
+    token_expiration = 5.01
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "wss"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +78,11 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.

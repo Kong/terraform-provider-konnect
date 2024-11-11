@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateUdplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateUDPLogPlugin *shared.CreateUDPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	UDPLogPlugin   *shared.UDPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateUdplogPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateUdplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateUdplogPluginRequest) GetCreateUDPLogPlugin() *shared.CreateUDPLogPlugin {
+func (o *UpdateUdplogPluginRequest) GetUDPLogPlugin() *shared.UDPLogPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateUDPLogPlugin
+	return o.UDPLogPlugin
 }
 
 type UpdateUdplogPluginResponse struct {

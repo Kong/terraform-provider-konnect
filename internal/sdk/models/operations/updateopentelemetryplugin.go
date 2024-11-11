@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateOpentelemetryPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateOpentelemetryPlugin *shared.CreateOpentelemetryPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpentelemetryPlugin *shared.OpentelemetryPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOpentelemetryPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateOpentelemetryPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOpentelemetryPluginRequest) GetCreateOpentelemetryPlugin() *shared.CreateOpentelemetryPlugin {
+func (o *UpdateOpentelemetryPluginRequest) GetOpentelemetryPlugin() *shared.OpentelemetryPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateOpentelemetryPlugin
+	return o.OpentelemetryPlugin
 }
 
 type UpdateOpentelemetryPluginResponse struct {

@@ -3,23 +3,24 @@
 package shared
 
 type Members struct {
-	ID *string `json:"id,omitempty"`
+	ID string `json:"id"`
 }
 
-func (o *Members) GetID() *string {
+func (o *Members) GetID() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.ID
 }
 
+// GroupMembership - Request body for adding a list of child control planes to a control plane group membership.
 type GroupMembership struct {
-	Members []Members `json:"members,omitempty"`
+	Members []Members `json:"members"`
 }
 
 func (o *GroupMembership) GetMembers() []Members {
 	if o == nil {
-		return nil
+		return []Members{}
 	}
 	return o.Members
 }

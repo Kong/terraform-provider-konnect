@@ -5,56 +5,77 @@ package provider
 import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSyslogResourceModel) ToSharedCreateSyslogPlugin() *shared.CreateSyslogPlugin {
-	var config *shared.CreateSyslogPluginConfig
-	if r.Config != nil {
-		clientErrorsSeverity := new(shared.CreateSyslogPluginClientErrorsSeverity)
-		if !r.Config.ClientErrorsSeverity.IsUnknown() && !r.Config.ClientErrorsSeverity.IsNull() {
-			*clientErrorsSeverity = shared.CreateSyslogPluginClientErrorsSeverity(r.Config.ClientErrorsSeverity.ValueString())
+func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPluginInput() *shared.SyslogPluginInput {
+	clientErrorsSeverity := new(shared.SyslogPluginClientErrorsSeverity)
+	if !r.Config.ClientErrorsSeverity.IsUnknown() && !r.Config.ClientErrorsSeverity.IsNull() {
+		*clientErrorsSeverity = shared.SyslogPluginClientErrorsSeverity(r.Config.ClientErrorsSeverity.ValueString())
+	} else {
+		clientErrorsSeverity = nil
+	}
+	customFieldsByLua := make(map[string]interface{})
+	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+		var customFieldsByLuaInst interface{}
+		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+	}
+	facility := new(shared.Facility)
+	if !r.Config.Facility.IsUnknown() && !r.Config.Facility.IsNull() {
+		*facility = shared.Facility(r.Config.Facility.ValueString())
+	} else {
+		facility = nil
+	}
+	logLevel := new(shared.SyslogPluginLogLevel)
+	if !r.Config.LogLevel.IsUnknown() && !r.Config.LogLevel.IsNull() {
+		*logLevel = shared.SyslogPluginLogLevel(r.Config.LogLevel.ValueString())
+	} else {
+		logLevel = nil
+	}
+	serverErrorsSeverity := new(shared.SyslogPluginServerErrorsSeverity)
+	if !r.Config.ServerErrorsSeverity.IsUnknown() && !r.Config.ServerErrorsSeverity.IsNull() {
+		*serverErrorsSeverity = shared.SyslogPluginServerErrorsSeverity(r.Config.ServerErrorsSeverity.ValueString())
+	} else {
+		serverErrorsSeverity = nil
+	}
+	successfulSeverity := new(shared.SyslogPluginSuccessfulSeverity)
+	if !r.Config.SuccessfulSeverity.IsUnknown() && !r.Config.SuccessfulSeverity.IsNull() {
+		*successfulSeverity = shared.SyslogPluginSuccessfulSeverity(r.Config.SuccessfulSeverity.ValueString())
+	} else {
+		successfulSeverity = nil
+	}
+	config := shared.SyslogPluginConfig{
+		ClientErrorsSeverity: clientErrorsSeverity,
+		CustomFieldsByLua:    customFieldsByLua,
+		Facility:             facility,
+		LogLevel:             logLevel,
+		ServerErrorsSeverity: serverErrorsSeverity,
+		SuccessfulSeverity:   successfulSeverity,
+	}
+	var consumer *shared.SyslogPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			clientErrorsSeverity = nil
+			id = nil
 		}
-		customFieldsByLua := make(map[string]interface{})
-		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-			var customFieldsByLuaInst interface{}
-			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		consumer = &shared.SyslogPluginConsumer{
+			ID: id,
 		}
-		facility := new(shared.CreateSyslogPluginFacility)
-		if !r.Config.Facility.IsUnknown() && !r.Config.Facility.IsNull() {
-			*facility = shared.CreateSyslogPluginFacility(r.Config.Facility.ValueString())
+	}
+	var consumerGroup *shared.SyslogPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			facility = nil
+			id1 = nil
 		}
-		logLevel := new(shared.CreateSyslogPluginLogLevel)
-		if !r.Config.LogLevel.IsUnknown() && !r.Config.LogLevel.IsNull() {
-			*logLevel = shared.CreateSyslogPluginLogLevel(r.Config.LogLevel.ValueString())
-		} else {
-			logLevel = nil
-		}
-		serverErrorsSeverity := new(shared.CreateSyslogPluginServerErrorsSeverity)
-		if !r.Config.ServerErrorsSeverity.IsUnknown() && !r.Config.ServerErrorsSeverity.IsNull() {
-			*serverErrorsSeverity = shared.CreateSyslogPluginServerErrorsSeverity(r.Config.ServerErrorsSeverity.ValueString())
-		} else {
-			serverErrorsSeverity = nil
-		}
-		successfulSeverity := new(shared.CreateSyslogPluginSuccessfulSeverity)
-		if !r.Config.SuccessfulSeverity.IsUnknown() && !r.Config.SuccessfulSeverity.IsNull() {
-			*successfulSeverity = shared.CreateSyslogPluginSuccessfulSeverity(r.Config.SuccessfulSeverity.ValueString())
-		} else {
-			successfulSeverity = nil
-		}
-		config = &shared.CreateSyslogPluginConfig{
-			ClientErrorsSeverity: clientErrorsSeverity,
-			CustomFieldsByLua:    customFieldsByLua,
-			Facility:             facility,
-			LogLevel:             logLevel,
-			ServerErrorsSeverity: serverErrorsSeverity,
-			SuccessfulSeverity:   successfulSeverity,
+		consumerGroup = &shared.SyslogPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -63,148 +84,126 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedCreateSyslogPlugin() *shared.
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateSyslogPluginOrdering
+	var ordering *shared.SyslogPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateSyslogPluginAfter
+		var after *shared.SyslogPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateSyslogPluginAfter{
+			after = &shared.SyslogPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateSyslogPluginBefore
+		var before *shared.SyslogPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateSyslogPluginBefore{
+			before = &shared.SyslogPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateSyslogPluginOrdering{
+		ordering = &shared.SyslogPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateSyslogPluginProtocols = []shared.CreateSyslogPluginProtocols{}
+	var protocols []shared.SyslogPluginProtocols = []shared.SyslogPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateSyslogPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.SyslogPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.SyslogPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.SyslogPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.SyslogPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.SyslogPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateSyslogPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateSyslogPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateSyslogPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateSyslogPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateSyslogPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateSyslogPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateSyslogPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateSyslogPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateSyslogPlugin{
+	out := shared.SyslogPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *shared.SyslogPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.ClientErrorsSeverity != nil {
+			r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
 		} else {
-			r.Config = &tfTypes.CreateSyslogPluginConfig{}
-			if resp.Config.ClientErrorsSeverity != nil {
-				r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
-			} else {
-				r.Config.ClientErrorsSeverity = types.StringNull()
+			r.Config.ClientErrorsSeverity = types.StringNull()
+		}
+		if len(resp.Config.CustomFieldsByLua) > 0 {
+			r.Config.CustomFieldsByLua = make(map[string]types.String)
+			for key, value := range resp.Config.CustomFieldsByLua {
+				result, _ := json.Marshal(value)
+				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
 			}
-			if len(resp.Config.CustomFieldsByLua) > 0 {
-				r.Config.CustomFieldsByLua = make(map[string]types.String)
-				for key, value := range resp.Config.CustomFieldsByLua {
-					result, _ := json.Marshal(value)
-					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
-				}
-			}
-			if resp.Config.Facility != nil {
-				r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
-			} else {
-				r.Config.Facility = types.StringNull()
-			}
-			if resp.Config.LogLevel != nil {
-				r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
-			} else {
-				r.Config.LogLevel = types.StringNull()
-			}
-			if resp.Config.ServerErrorsSeverity != nil {
-				r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
-			} else {
-				r.Config.ServerErrorsSeverity = types.StringNull()
-			}
-			if resp.Config.SuccessfulSeverity != nil {
-				r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
-			} else {
-				r.Config.SuccessfulSeverity = types.StringNull()
-			}
+		}
+		if resp.Config.Facility != nil {
+			r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
+		} else {
+			r.Config.Facility = types.StringNull()
+		}
+		if resp.Config.LogLevel != nil {
+			r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
+		} else {
+			r.Config.LogLevel = types.StringNull()
+		}
+		if resp.Config.ServerErrorsSeverity != nil {
+			r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
+		} else {
+			r.Config.ServerErrorsSeverity = types.StringNull()
+		}
+		if resp.Config.SuccessfulSeverity != nil {
+			r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
+		} else {
+			r.Config.SuccessfulSeverity = types.StringNull()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -225,11 +224,11 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *s
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -238,7 +237,7 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *s
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

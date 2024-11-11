@@ -19,18 +19,18 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/mapplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/objectplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
-	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/internal/validators/listvalidators"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_mapplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/mapplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -69,24 +69,23 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				Description: `At least one published product version is using this auth strategy.`,
 			},
 			"display_name": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(256),
 				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
-				Description: `Contains a unique identifier used for this resource.`,
+				Description: `Contains a unique identifier used by the API for this resource.`,
 			},
 			"key_auth": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
-				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
 						Computed: true,
@@ -97,29 +96,29 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"key_auth": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
 									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
-								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"key_names": schema.ListAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
 										ElementType: types.StringType,
-										Description: `The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed. `,
+										Description: `The names of the headers containing the API key. You can specify multiple header names. Requires replacement if changed.`,
 										Validators: []validator.List{
 											listvalidator.SizeAtLeast(1),
 											listvalidator.SizeAtMost(10),
@@ -129,14 +128,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								MarkdownDescription: `The most basic mode to configure an Application Auth Strategy for an API Product Version. ` + "\n" +
 									`Using this mode will allow developers to generate API keys that will authenticate their application requests. ` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.` + "\n" +
-									`` + "\n" +
-									`Requires replacement if changed. ; Not Null`,
+									`Not Null; Requires replacement if changed.`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `JSON-B object containing the configuration for the Key Auth strategy. Requires replacement if changed. ; Not Null`,
+						Description: `JSON-B object containing the configuration for the Key Auth strategy. Not Null; Requires replacement if changed.`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -162,8 +160,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
-									``,
+								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthBetween(1, 256),
 								},
@@ -173,7 +170,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used for this resource.`,
+								Description: `Contains a unique identifier used by the API for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -201,14 +198,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"display_name": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
-						MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. ; Not Null`,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
@@ -219,32 +214,29 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used for this resource.`,
+						Description: `Contains a unique identifier used by the API for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.Map{
 							mapplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 						},
-						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
 							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. `,
+							`Requires replacement if changed.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
-						MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. ; Not Null`,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
@@ -252,17 +244,15 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional:    true,
-						Description: `Requires replacement if changed. ; Not Null; must be one of ["key_auth"]`,
+						Description: `Not Null; must be "key_auth"; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
-							stringvalidator.OneOf(
-								"key_auth",
-							),
+							stringvalidator.OneOf("key_auth"),
 						},
 					},
 					"updated_at": schema.StringAttribute{
@@ -276,7 +266,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 				},
-				Description: `Request for creating a Key Auth Application Auth Strategy. Requires replacement if changed. `,
+				Description: `Request for creating a Key Auth Application Auth Strategy. Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("openid_connect"),
@@ -284,20 +274,19 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"name": schema.StringAttribute{
-				Computed: true,
-				MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-					``,
+				Computed:    true,
+				Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 256),
 				},
 			},
 			"openid_connect": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
-				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"active": schema.BoolAttribute{
 						Computed: true,
@@ -308,41 +297,41 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"configs": schema.SingleNestedAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.Object{
 							objectplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"openid_connect": schema.SingleNestedAttribute{
 								Computed: true,
+								Optional: true,
 								PlanModifiers: []planmodifier.Object{
 									objectplanmodifier.RequiresReplaceIfConfigured(),
 									speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 								},
-								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"additional_properties": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
-										Description: `Parsed as JSON.`,
+										Description: `Requires replacement if changed.; Parsed as JSON.`,
 										Validators: []validator.String{
 											validators.IsValidJSON(),
 										},
 									},
 									"auth_methods": schema.ListAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Requires replacement if changed. ; Not Null`,
+										Description: `Not Null; Requires replacement if changed.`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(10),
@@ -350,13 +339,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									},
 									"credential_claim": schema.ListAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Requires replacement if changed. ; Not Null`,
+										Description: `Not Null; Requires replacement if changed.`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(10),
@@ -364,12 +353,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									},
 									"issuer": schema.StringAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.String{
 											stringplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
-										Description: `Requires replacement if changed. ; Not Null`,
+										Description: `Not Null; Requires replacement if changed.`,
 										Validators: []validator.String{
 											speakeasy_stringvalidators.NotNull(),
 											stringvalidator.UTF8LengthAtMost(256),
@@ -377,27 +366,26 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									},
 									"labels": schema.MapAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.Map{
 											mapplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
 										ElementType: types.StringType,
 										MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 											`` + "\n" +
 											`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-											`` + "\n" +
-											`Requires replacement if changed. `,
+											`Requires replacement if changed.`,
 									},
 									"scopes": schema.ListAttribute{
 										Computed: true,
+										Optional: true,
 										PlanModifiers: []planmodifier.List{
 											listplanmodifier.RequiresReplaceIfConfigured(),
 											speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 										},
-										Optional:    true,
 										ElementType: types.StringType,
-										Description: `Requires replacement if changed. ; Not Null`,
+										Description: `Not Null; Requires replacement if changed.`,
 										Validators: []validator.List{
 											speakeasy_listvalidators.NotNull(),
 											listvalidator.SizeAtMost(50),
@@ -408,14 +396,13 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 									`Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. ` + "\n" +
 									`Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. ` + "\n" +
 									`An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.` + "\n" +
-									`` + "\n" +
-									`Requires replacement if changed. ; Not Null`,
+									`Not Null; Requires replacement if changed.`,
 								Validators: []validator.Object{
 									speakeasy_objectvalidators.NotNull(),
 								},
 							},
 						},
-						Description: `JSON-B object containing the configuration for the OIDC strategy. Requires replacement if changed. ; Not Null`,
+						Description: `JSON-B object containing the configuration for the OIDC strategy. Not Null; Requires replacement if changed.`,
 						Validators: []validator.Object{
 							speakeasy_objectvalidators.NotNull(),
 						},
@@ -441,8 +428,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								MarkdownDescription: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.` + "\n" +
-									``,
+								Description: `The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.`,
 								Validators: []validator.String{
 									stringvalidator.UTF8LengthBetween(1, 256),
 								},
@@ -452,7 +438,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 								PlanModifiers: []planmodifier.String{
 									speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 								},
-								Description: `Contains a unique identifier used for this resource.`,
+								Description: `Contains a unique identifier used by the API for this resource.`,
 							},
 							"name": schema.StringAttribute{
 								Computed: true,
@@ -480,23 +466,21 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"dcr_provider_id": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional:    true,
-						Description: `Requires replacement if changed. `,
+						Description: `Requires replacement if changed.`,
 					},
 					"display_name": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
-						MarkdownDescription: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. ; Not Null`,
+						Description: `The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthAtMost(256),
@@ -507,32 +491,29 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						PlanModifiers: []planmodifier.String{
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Description: `Contains a unique identifier used for this resource.`,
+						Description: `Contains a unique identifier used by the API for this resource.`,
 					},
 					"labels": schema.MapAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.Map{
 							mapplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_mapplanmodifier.SuppressDiff(speakeasy_mapplanmodifier.ExplicitSuppress),
 						},
-						Optional:    true,
 						ElementType: types.StringType,
 						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
 							`` + "\n" +
 							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. `,
+							`Requires replacement if changed.`,
 					},
 					"name": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional: true,
-						MarkdownDescription: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.` + "\n" +
-							`` + "\n" +
-							`Requires replacement if changed. ; Not Null`,
+						Description: `The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI. Not Null; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.UTF8LengthBetween(1, 256),
@@ -540,12 +521,12 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplaceIfConfigured(),
 							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 						},
-						Optional:    true,
-						Description: `Requires replacement if changed. ; Not Null; must be one of ["openid_connect"]`,
+						Description: `Not Null; must be "openid_connect"; Requires replacement if changed.`,
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf(
@@ -564,7 +545,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 				},
-				Description: `Payload for creating an OIDC Application Auth Strategy. Requires replacement if changed. `,
+				Description: `Payload for creating an OIDC Application Auth Strategy. Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),

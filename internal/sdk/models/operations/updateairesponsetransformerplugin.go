@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateAiresponsetransformerPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                    string                                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAiResponseTransformerPlugin *shared.CreateAiResponseTransformerPlugin `request:"mediaType=application/json"`
+	ControlPlaneID              string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiResponseTransformerPlugin *shared.AiResponseTransformerPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAiresponsetransformerPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateAiresponsetransformerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAiresponsetransformerPluginRequest) GetCreateAiResponseTransformerPlugin() *shared.CreateAiResponseTransformerPlugin {
+func (o *UpdateAiresponsetransformerPluginRequest) GetAiResponseTransformerPlugin() *shared.AiResponseTransformerPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAiResponseTransformerPlugin
+	return o.AiResponseTransformerPlugin
 }
 
 type UpdateAiresponsetransformerPluginResponse struct {

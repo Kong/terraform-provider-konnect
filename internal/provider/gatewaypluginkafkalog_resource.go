@@ -18,12 +18,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
-	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/internal/validators/int64validators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -41,20 +42,20 @@ type GatewayPluginKafkaLogResource struct {
 
 // GatewayPluginKafkaLogResourceModel describes the resource data model.
 type GatewayPluginKafkaLogResourceModel struct {
-	Config         *tfTypes.CreateKafkaLogPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering    `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         tfTypes.KafkaLogPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                  `tfsdk:"created_at"`
+	Enabled        types.Bool                   `tfsdk:"enabled"`
+	ID             types.String                 `tfsdk:"id"`
+	InstanceName   types.String                 `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
+	Protocols      []types.String               `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer         `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer         `tfsdk:"service"`
+	Tags           []types.String               `tfsdk:"tags"`
+	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginKafkaLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -66,8 +67,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginKafkaLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
@@ -93,11 +93,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"strategy": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The authentication strategy for the plugin, the only option for the value is ` + "`" + `sasl` + "`" + `. must be one of ["sasl"]`,
+								Description: `The authentication strategy for the plugin, the only option for the value is ` + "`" + `sasl` + "`" + `. must be "sasl"`,
 								Validators: []validator.String{
-									stringvalidator.OneOf(
-										"sasl",
-									),
+									stringvalidator.OneOf("sasl"),
 								},
 							},
 							"tokenauth": schema.BoolAttribute{
@@ -116,6 +114,9 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"host": schema.StringAttribute{
 									Computed:    true,
@@ -180,13 +181,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 						Optional:    true,
 						Description: `The number of acknowledgments the producer requires the leader to have received before considering a request complete. Allowed values: 0 for no acknowledgments; 1 for only the leader; and -1 for the full ISR (In-Sync Replica set). must be one of ["-1", "0", "1"]`,
 						Validators: []validator.Int64{
-							int64validator.OneOf(
-								[]int64{
-									-1,
-									0,
-									1,
-								}...,
-							),
+							int64validator.OneOf(-1, 0, 1),
 						},
 					},
 					"producer_request_limits_bytes_per_request": schema.Int64Attribute{
@@ -264,11 +259,11 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -281,6 +276,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -397,10 +393,10 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKafkaLogPlugin := data.ToSharedCreateKafkaLogPlugin()
+	kafkaLogPlugin := data.ToSharedKafkaLogPluginInput()
 	request := operations.CreateKafkalogPluginRequest{
-		ControlPlaneID:       controlPlaneID,
-		CreateKafkaLogPlugin: createKafkaLogPlugin,
+		ControlPlaneID: controlPlaneID,
+		KafkaLogPlugin: kafkaLogPlugin,
 	}
 	res, err := r.client.Plugins.CreateKafkalogPlugin(ctx, request)
 	if err != nil {
@@ -507,11 +503,11 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKafkaLogPlugin := data.ToSharedCreateKafkaLogPlugin()
+	kafkaLogPlugin := data.ToSharedKafkaLogPluginInput()
 	request := operations.UpdateKafkalogPluginRequest{
-		PluginID:             pluginID,
-		ControlPlaneID:       controlPlaneID,
-		CreateKafkaLogPlugin: createKafkaLogPlugin,
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		KafkaLogPlugin: kafkaLogPlugin,
 	}
 	res, err := r.client.Plugins.UpdateKafkalogPlugin(ctx, request)
 	if err != nil {

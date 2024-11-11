@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.0.0
+> Released on 2024/11/11
+
+### 🚨 BREAKING CHANGES
+* The `konnect_cloud_gateway_transit_gateway` resource structure has had a bug fix that enables both AWS and Azure support. This has changed the resource structure and you will need to recreate any transit gateway attachments.
+* `CLUSTER_TYPE_HYBRID` is an internal cluster name which has now been removed from the provider. Use `CLUSTER_TYPE_CONTROL_PLANE` instead. This is a state-only update, and will not impact your life infrastructure.
+* Setting `scopes = []` in the OpenID Connect plugin is now respected. This means that the default has changed from `['openid']` to `[]`.
+
+### Features
+
+* Updated Kong Gateway plugin schemas to 3.8.x
+* Added support for Azure Cloud Gateways deployments
+
+### Bug Fixes
+
+* Fix OpenAPI filename validation in API Products when using variables
+
 ## 1.0.0
 > Released on 2024/09/11
 

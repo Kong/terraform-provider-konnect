@@ -12,12 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfReflect "github.com/kong/terraform-provider-konnect/internal/provider/reflect"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 	"github.com/kong/terraform-provider-konnect/src/utils"
+	tfReflect "github.com/kong/terraform-provider-konnect/v2/internal/provider/reflect"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -408,21 +408,21 @@ func tagsToStringSlice(s []string) []basetypes.StringValue {
 	return x
 }
 
-func orderingToValue(o *shared.Ordering) *tfTypes.CreateACLPluginOrdering {
+func orderingToValue(o *shared.Ordering) *tfTypes.ACLPluginOrdering {
 	if o == nil {
 		return nil
 	}
 
-	x := &tfTypes.CreateACLPluginOrdering{}
+	x := &tfTypes.ACLPluginOrdering{}
 
 	if o.After != nil {
-		x.After = &tfTypes.CreateACLPluginAfter{
+		x.After = &tfTypes.ACLPluginAfter{
 			Access: tagsToStringSlice(o.After.Access),
 		}
 	}
 
 	if o.Before != nil {
-		x.Before = &tfTypes.CreateACLPluginAfter{
+		x.Before = &tfTypes.ACLPluginAfter{
 			Access: tagsToStringSlice(o.Before.Access),
 		}
 	}
@@ -433,7 +433,7 @@ func orderingToValue(o *shared.Ordering) *tfTypes.CreateACLPluginOrdering {
 func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
 
 	r.ID = types.StringPointerValue(resp.ID)
-	r.Name = types.StringPointerValue(resp.Name)
+	r.Name = types.StringValue(*resp.Name)
 	r.Consumer = pointerToId(resp.Consumer)
 	r.ConsumerGroup = pointerToId(resp.ConsumerGroup)
 	r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

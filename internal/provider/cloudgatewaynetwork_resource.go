@@ -9,20 +9,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/boolplanmodifier"
-	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/listplanmodifier"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/internal/planmodifiers/stringplanmodifier"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -45,10 +44,8 @@ type CloudGatewayNetworkResourceModel struct {
 	CloudGatewayProviderAccountID types.String                    `tfsdk:"cloud_gateway_provider_account_id"`
 	ConfigurationReferenceCount   types.Int64                     `tfsdk:"configuration_reference_count"`
 	CreatedAt                     types.String                    `tfsdk:"created_at"`
-	DdosProtection                types.Bool                      `tfsdk:"ddos_protection"`
 	Default                       types.Bool                      `tfsdk:"default"`
 	EntityVersion                 types.Int64                     `tfsdk:"entity_version"`
-	Firewall                      *tfTypes.NetworkFirewallConfig  `tfsdk:"firewall"`
 	ID                            types.String                    `tfsdk:"id"`
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
@@ -67,29 +64,29 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "CloudGatewayNetwork Resource",
 		Attributes: map[string]schema.Attribute{
 			"availability_zones": schema.ListAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
 				ElementType: types.StringType,
-				Description: `List of availability zones that the network is attached to. Requires replacement if changed. `,
+				Description: `List of availability zones that the network is attached to. Requires replacement if changed.`,
 			},
 			"cidr_block": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `CIDR block configuration for the network. Requires replacement if changed. `,
+				Description: `CIDR block configuration for the network. Requires replacement if changed.`,
 			},
 			"cloud_gateway_provider_account_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Requires replacement if changed. `,
+				Description: `Requires replacement if changed.`,
 			},
 			"configuration_reference_count": schema.Int64Attribute{
 				Computed:    true,
@@ -102,44 +99,14 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 					validators.IsRFC3339(),
 				},
 			},
-			"ddos_protection": schema.BoolAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.Bool{
-					boolplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
-				},
-				Optional:    true,
-				Description: `Whether DDOS protection is enabled for the network. Requires replacement if changed. `,
-			},
 			"default": schema.BoolAttribute{
 				Computed: true,
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
-					`automatically by Konnect when an organization is linked to a provider account.` + "\n" +
-					``,
+					`automatically by Konnect when an organization is linked to a provider account.`,
 			},
 			"entity_version": schema.Int64Attribute{
-				Computed: true,
-				MarkdownDescription: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.` + "\n" +
-					``,
-			},
-			"firewall": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"allowed_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `List of allowed CIDR blocks to access a network.`,
-					},
-					"denied_cidr_blocks": schema.ListAttribute{
-						Computed:    true,
-						Optional:    true,
-						ElementType: types.StringType,
-						Description: `List of denied CIDR blocks to access a network.`,
-					},
-				},
-				Description: `Firewall configuration for a network.`,
+				Computed:    true,
+				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -162,24 +129,26 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				Description: `Metadata describing attributes returned by cloud-provider for the network.`,
 			},
 			"region": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
-				Required:    true,
-				Description: `Region ID for cloud provider region. Requires replacement if changed. `,
+				Description: `Region ID for cloud provider region. Requires replacement if changed.`,
 			},
 			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the network. must be one of ["created", "initializing", "offline", "ready", "terminating", "terminated"]`,
+				Computed: true,
+				Optional: true,
+				Default:  stringdefault.StaticString("initializing"),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
+				Description: `Initial state for creating a network. Default: "initializing"; must be one of ["initializing", "offline"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
-						"created",
 						"initializing",
 						"offline",
-						"ready",
-						"terminating",
-						"terminated",
 					),
 				},
 			},

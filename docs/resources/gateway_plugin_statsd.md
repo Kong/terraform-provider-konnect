@@ -14,10 +14,78 @@ GatewayPluginStatsd Resource
 
 ```terraform
 resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
+  config = {
+    allow_status_codes = [
+      "..."
+    ]
+    consumer_identifier_default = "username"
+    flush_timeout               = 5.68
+    host                        = "...my_host..."
+    hostname_in_prefix          = true
+    metrics = [
+      {
+        consumer_identifier  = "username"
+        name                 = "shdict_usage"
+        sample_rate          = 3.92
+        service_identifier   = "service_name"
+        stat_type            = "set"
+        workspace_identifier = "workspace_name"
+      }
+    ]
+    port   = 6303
+    prefix = "...my_prefix..."
+    queue = {
+      concurrency_limit    = 0
+      initial_retry_delay  = 75641.56
+      max_batch_size       = 347740
+      max_bytes            = 9
+      max_coalescing_delay = 1430.25
+      max_entries          = 139203
+      max_retry_delay      = 226190.6
+      max_retry_time       = 1.03
+    }
+    queue_size                   = 10
+    retry_count                  = 8
+    service_identifier_default   = "service_host"
+    tag_style                    = "librato"
+    udp_packet_size              = 61921
+    use_tcp                      = false
+    workspace_identifier_default = "workspace_name"
+  }
+  consumer = {
+    id = "...my_id..."
+  }
+  consumer_group = {
+    id = "...my_id..."
+  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-  enabled          = false
+  enabled          = true
+  id               = "...my_id..."
   instance_name    = "...my_instance_name..."
-  plugin_id        = "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+  ordering = {
+    after = {
+      access = [
+        "..."
+      ]
+    }
+    before = {
+      access = [
+        "..."
+      ]
+    }
+  }
+  protocols = [
+    "udp"
+  ]
+  route = {
+    id = "...my_id..."
+  }
+  service = {
+    id = "...my_id..."
+  }
+  tags = [
+    "..."
+  ]
 }
 ```
 
@@ -26,11 +94,11 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 
 ### Required
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
 - `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.

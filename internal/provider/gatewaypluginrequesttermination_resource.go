@@ -16,9 +16,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -36,20 +36,20 @@ type GatewayPluginRequestTerminationResource struct {
 
 // GatewayPluginRequestTerminationResourceModel describes the resource data model.
 type GatewayPluginRequestTerminationResourceModel struct {
-	Config         *tfTypes.CreateRequestTerminationPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                          `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                          `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                   `tfsdk:"created_at"`
-	Enabled        types.Bool                                    `tfsdk:"enabled"`
-	ID             types.String                                  `tfsdk:"id"`
-	InstanceName   types.String                                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                          `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                          `tfsdk:"service"`
-	Tags           []types.String                                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                   `tfsdk:"updated_at"`
+	Config         tfTypes.RequestTerminationPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                            `tfsdk:"created_at"`
+	Enabled        types.Bool                             `tfsdk:"enabled"`
+	ID             types.String                           `tfsdk:"id"`
+	InstanceName   types.String                           `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Protocols      []types.String                         `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                   `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                   `tfsdk:"service"`
+	Tags           []types.String                         `tfsdk:"tags"`
+	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestTerminationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,8 +61,7 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 		MarkdownDescription: "GatewayPluginRequestTermination Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"body": schema.StringAttribute{
 						Computed:    true,
@@ -121,11 +120,11 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -138,6 +137,7 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -254,10 +254,10 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRequestTerminationPlugin := data.ToSharedCreateRequestTerminationPlugin()
+	requestTerminationPlugin := data.ToSharedRequestTerminationPluginInput()
 	request := operations.CreateRequestterminationPluginRequest{
-		ControlPlaneID:                 controlPlaneID,
-		CreateRequestTerminationPlugin: createRequestTerminationPlugin,
+		ControlPlaneID:           controlPlaneID,
+		RequestTerminationPlugin: requestTerminationPlugin,
 	}
 	res, err := r.client.Plugins.CreateRequestterminationPlugin(ctx, request)
 	if err != nil {
@@ -364,11 +364,11 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createRequestTerminationPlugin := data.ToSharedCreateRequestTerminationPlugin()
+	requestTerminationPlugin := data.ToSharedRequestTerminationPluginInput()
 	request := operations.UpdateRequestterminationPluginRequest{
-		PluginID:                       pluginID,
-		ControlPlaneID:                 controlPlaneID,
-		CreateRequestTerminationPlugin: createRequestTerminationPlugin,
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		RequestTerminationPlugin: requestTerminationPlugin,
 	}
 	res, err := r.client.Plugins.UpdateRequestterminationPlugin(ctx, request)
 	if err != nil {

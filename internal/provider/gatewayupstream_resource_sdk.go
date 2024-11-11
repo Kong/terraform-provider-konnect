@@ -3,10 +3,9 @@
 package provider
 
 import (
-	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"math/big"
 )
 
@@ -99,10 +98,11 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 			} else {
 				concurrency = nil
 			}
-			headers := make(map[string]interface{})
+			headers := make(map[string]string)
 			for headersKey, headersValue := range r.Healthchecks.Active.Headers {
-				var headersInst interface{}
-				_ = json.Unmarshal([]byte(headersValue.ValueString()), &headersInst)
+				var headersInst string
+				headersInst = headersValue.ValueString()
+
 				headers[headersKey] = headersInst
 			}
 			var healthy *shared.Healthy
@@ -289,12 +289,15 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 	} else {
 		hostHeader = nil
 	}
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
+	id1 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id1 = r.ID.ValueString()
 	} else {
-		name = nil
+		id1 = nil
 	}
+	var name string
+	name = r.Name.ValueString()
+
 	slots := new(int64)
 	if !r.Slots.IsUnknown() && !r.Slots.IsNull() {
 		*slots = r.Slots.ValueInt64()
@@ -326,6 +329,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 		HashOnURICapture:       hashOnURICapture,
 		Healthchecks:           healthchecks,
 		HostHeader:             hostHeader,
+		ID:                     id1,
 		Name:                   name,
 		Slots:                  slots,
 		Tags:                   tags,
@@ -378,8 +382,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 				if len(resp.Healthchecks.Active.Headers) > 0 {
 					r.Healthchecks.Active.Headers = make(map[string]types.String)
 					for key, value := range resp.Healthchecks.Active.Headers {
-						result, _ := json.Marshal(value)
-						r.Healthchecks.Active.Headers[key] = types.StringValue(string(result))
+						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
 					}
 				}
 				if resp.Healthchecks.Active.Healthy == nil {
@@ -468,7 +471,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 		}
 		r.HostHeader = types.StringPointerValue(resp.HostHeader)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Name = types.StringPointerValue(resp.Name)
+		r.Name = types.StringValue(resp.Name)
 		r.Slots = types.Int64PointerValue(resp.Slots)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {

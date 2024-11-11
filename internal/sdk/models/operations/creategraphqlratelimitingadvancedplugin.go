@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateGraphqlratelimitingadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                          string                                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateGraphqlRateLimitingAdvancedPlugin *shared.CreateGraphqlRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
+	ControlPlaneID                    string                                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	GraphqlRateLimitingAdvancedPlugin *shared.GraphqlRateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() str
 	return o.ControlPlaneID
 }
 
-func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetCreateGraphqlRateLimitingAdvancedPlugin() *shared.CreateGraphqlRateLimitingAdvancedPlugin {
+func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateGraphqlRateLimitingAdvancedPlugin
+	return o.GraphqlRateLimitingAdvancedPlugin
 }
 
 type CreateGraphqlratelimitingadvancedPluginResponse struct {

@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateRoutebyheaderPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateRouteByHeaderPlugin *shared.CreateRouteByHeaderPlugin `request:"mediaType=application/json"`
+	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RouteByHeaderPlugin *shared.RouteByHeaderPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRoutebyheaderPluginRequest) GetCreateRouteByHeaderPlugin() *shared.CreateRouteByHeaderPlugin {
+func (o *CreateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() *shared.RouteByHeaderPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateRouteByHeaderPlugin
+	return o.RouteByHeaderPlugin
 }
 
 type CreateRoutebyheaderPluginResponse struct {

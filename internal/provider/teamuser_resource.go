@@ -11,8 +11,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -43,18 +43,18 @@ func (r *TeamUserResource) Schema(ctx context.Context, req resource.SchemaReques
 		MarkdownDescription: "TeamUser Resource",
 		Attributes: map[string]schema.Attribute{
 			"team_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `ID of the team. Requires replacement if changed. `,
+				Description: `ID of the team. Requires replacement if changed.`,
 			},
 			"user_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `User ID. Requires replacement if changed. `,
+				Description: `The user ID for the user being added to a team. Requires replacement if changed.`,
 			},
 		},
 	}

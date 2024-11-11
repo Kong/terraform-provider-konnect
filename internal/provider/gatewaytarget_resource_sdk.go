@@ -4,12 +4,18 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"math/big"
 )
 
 func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.TargetWithoutParents {
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -27,6 +33,7 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 		weight = nil
 	}
 	out := shared.TargetWithoutParents{
+		ID:     id,
 		Tags:   tags,
 		Target: target,
 		Weight: weight,

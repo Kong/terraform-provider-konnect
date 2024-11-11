@@ -17,11 +17,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/internal/validators/stringvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -39,20 +39,20 @@ type GatewayPluginKonnectApplicationAuthResource struct {
 
 // GatewayPluginKonnectApplicationAuthResourceModel describes the resource data model.
 type GatewayPluginKonnectApplicationAuthResourceModel struct {
-	Config         *tfTypes.CreateKonnectApplicationAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                              `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                              `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                       `tfsdk:"created_at"`
-	Enabled        types.Bool                                        `tfsdk:"enabled"`
-	ID             types.String                                      `tfsdk:"id"`
-	InstanceName   types.String                                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.CreateACLPluginOrdering                  `tfsdk:"ordering"`
-	Protocols      []types.String                                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                              `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                              `tfsdk:"service"`
-	Tags           []types.String                                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                       `tfsdk:"updated_at"`
+	Config         tfTypes.KonnectApplicationAuthPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLConsumer                       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLConsumer                       `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                `tfsdk:"created_at"`
+	Enabled        types.Bool                                 `tfsdk:"enabled"`
+	ID             types.String                               `tfsdk:"id"`
+	InstanceName   types.String                               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
+	Protocols      []types.String                             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLConsumer                       `tfsdk:"route"`
+	Service        *tfTypes.ACLConsumer                       `tfsdk:"service"`
+	Tags           []types.String                             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginKonnectApplicationAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,8 +64,7 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 		MarkdownDescription: "GatewayPluginKonnectApplicationAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"auth_type": schema.StringAttribute{
 						Computed:    true,
@@ -98,6 +97,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"config": schema.SingleNestedAttribute{
 											Computed: true,
@@ -131,6 +133,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
+									Validators: []validator.Object{
+										speakeasy_objectvalidators.NotNull(),
+									},
 									Attributes: map[string]schema.Attribute{
 										"config": schema.SingleNestedAttribute{
 											Computed: true,
@@ -342,6 +347,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
 														Attributes: map[string]schema.Attribute{
 															"alg": schema.StringAttribute{
 																Computed: true,
@@ -468,6 +476,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"ip": schema.StringAttribute{
 																		Computed:    true,
@@ -563,6 +574,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"host": schema.StringAttribute{
 																		Computed:    true,
@@ -1173,6 +1187,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"ip": schema.StringAttribute{
 																		Computed:    true,
@@ -1273,6 +1290,9 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
+																Validators: []validator.Object{
+																	speakeasy_objectvalidators.NotNull(),
+																},
 																Attributes: map[string]schema.Attribute{
 																	"host": schema.StringAttribute{
 																		Computed:    true,
@@ -1936,11 +1956,11 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 				},
 			},
 			"control_plane_id": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Required:    true,
-				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed. `,
+				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
@@ -1953,6 +1973,7 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Schema(ctx context.Context
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				Optional: true,
 			},
 			"instance_name": schema.StringAttribute{
 				Computed: true,
@@ -2069,10 +2090,10 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Create(ctx context.Context
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKonnectApplicationAuthPlugin := data.ToSharedCreateKonnectApplicationAuthPlugin()
+	konnectApplicationAuthPlugin := data.ToSharedKonnectApplicationAuthPluginInput()
 	request := operations.CreateKonnectapplicationauthPluginRequest{
-		ControlPlaneID:                     controlPlaneID,
-		CreateKonnectApplicationAuthPlugin: createKonnectApplicationAuthPlugin,
+		ControlPlaneID:               controlPlaneID,
+		KonnectApplicationAuthPlugin: konnectApplicationAuthPlugin,
 	}
 	res, err := r.client.Plugins.CreateKonnectapplicationauthPlugin(ctx, request)
 	if err != nil {
@@ -2179,11 +2200,11 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Update(ctx context.Context
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	createKonnectApplicationAuthPlugin := data.ToSharedCreateKonnectApplicationAuthPlugin()
+	konnectApplicationAuthPlugin := data.ToSharedKonnectApplicationAuthPluginInput()
 	request := operations.UpdateKonnectapplicationauthPluginRequest{
-		PluginID:                           pluginID,
-		ControlPlaneID:                     controlPlaneID,
-		CreateKonnectApplicationAuthPlugin: createKonnectApplicationAuthPlugin,
+		PluginID:                     pluginID,
+		ControlPlaneID:               controlPlaneID,
+		KonnectApplicationAuthPlugin: konnectApplicationAuthPlugin,
 	}
 	res, err := r.client.Plugins.UpdateKonnectapplicationauthPlugin(ctx, request)
 	if err != nil {

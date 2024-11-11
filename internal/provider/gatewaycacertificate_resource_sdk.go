@@ -4,21 +4,24 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared.CACertificateInput {
-	cert := new(string)
-	if !r.Cert.IsUnknown() && !r.Cert.IsNull() {
-		*cert = r.Cert.ValueString()
-	} else {
-		cert = nil
-	}
+	var cert string
+	cert = r.Cert.ValueString()
+
 	certDigest := new(string)
 	if !r.CertDigest.IsUnknown() && !r.CertDigest.IsNull() {
 		*certDigest = r.CertDigest.ValueString()
 	} else {
 		certDigest = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
@@ -27,6 +30,7 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared
 	out := shared.CACertificateInput{
 		Cert:       cert,
 		CertDigest: certDigest,
+		ID:         id,
 		Tags:       tags,
 	}
 	return &out
@@ -34,7 +38,7 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared
 
 func (r *GatewayCACertificateResourceModel) RefreshFromSharedCACertificate(resp *shared.CACertificate) {
 	if resp != nil {
-		r.Cert = types.StringPointerValue(resp.Cert)
+		r.Cert = types.StringValue(resp.Cert)
 		r.CertDigest = types.StringPointerValue(resp.CertDigest)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)

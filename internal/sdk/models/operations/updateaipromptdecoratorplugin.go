@@ -3,7 +3,7 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
@@ -11,8 +11,8 @@ type UpdateAipromptdecoratorPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateAiPromptDecoratorPlugin *shared.CreateAiPromptDecoratorPlugin `request:"mediaType=application/json"`
+	ControlPlaneID          string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiPromptDecoratorPlugin *shared.AiPromptDecoratorPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
@@ -29,11 +29,11 @@ func (o *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetCreateAiPromptDecoratorPlugin() *shared.CreateAiPromptDecoratorPlugin {
+func (o *UpdateAipromptdecoratorPluginRequest) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateAiPromptDecoratorPlugin
+	return o.AiPromptDecoratorPlugin
 }
 
 type UpdateAipromptdecoratorPluginResponse struct {

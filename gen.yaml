@@ -11,9 +11,10 @@ generation:
     requestResponseComponentNamesFeb2024: true
   auth:
     oAuth2ClientCredentialsEnabled: false
+    oAuth2PasswordEnabled: false
   baseServerURL: ""
 terraform:
-  version: 1.0.0
+  version: 2.0.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalResources:

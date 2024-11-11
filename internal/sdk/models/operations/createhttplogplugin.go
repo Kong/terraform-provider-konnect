@@ -3,14 +3,14 @@
 package operations
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
 
 type CreateHttplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CreateHTTPLogPlugin *shared.CreateHTTPLogPlugin `request:"mediaType=application/json"`
+	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	HTTPLogPlugin  *shared.HTTPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateHttplogPluginRequest) GetControlPlaneID() string {
@@ -20,11 +20,11 @@ func (o *CreateHttplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateHttplogPluginRequest) GetCreateHTTPLogPlugin() *shared.CreateHTTPLogPlugin {
+func (o *CreateHttplogPluginRequest) GetHTTPLogPlugin() *shared.HTTPLogPluginInput {
 	if o == nil {
 		return nil
 	}
-	return o.CreateHTTPLogPlugin
+	return o.HTTPLogPlugin
 }
 
 type CreateHttplogPluginResponse struct {

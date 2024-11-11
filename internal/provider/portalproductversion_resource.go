@@ -16,10 +16,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/validators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -104,11 +104,9 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 							Attributes: map[string]schema.Attribute{
 								"credential_type": schema.StringAttribute{
 									Computed:    true,
-									Description: `must be one of ["key_auth"]`,
+									Description: `must be "key_auth"`,
 									Validators: []validator.String{
-										stringvalidator.OneOf(
-											"key_auth",
-										),
+										stringvalidator.OneOf("key_auth"),
 									},
 								},
 								"id": schema.StringAttribute{
@@ -126,9 +124,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 								}...),
 							},
 						},
-					},
-					Validators: []validator.Object{
-						validators.ExactlyOneChild(),
 					},
 				},
 				Description: `A list of authentication strategies`,
@@ -169,7 +164,7 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 			},
 			"portal_id": schema.StringAttribute{
 				Required:    true,
-				Description: `portal identifier`,
+				Description: `ID of the portal.`,
 			},
 			"product_version_id": schema.StringAttribute{
 				Required:    true,
@@ -504,12 +499,12 @@ func (r *PortalProductVersionResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "portal_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7",  "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "portal_id": "",  "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}': `+err.Error())
 		return
 	}
 
 	if len(data.PortalID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '"5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"`)
+		resp.Diagnostics.AddError("Missing required field", `The field portal_id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("portal_id"), data.PortalID)...)

@@ -4,21 +4,42 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedCreateTLSHandshakeModifierPlugin() *shared.CreateTLSHandshakeModifierPlugin {
-	var config *shared.CreateTLSHandshakeModifierPluginConfig
-	if r.Config != nil {
-		tlsClientCertificate := new(shared.CreateTLSHandshakeModifierPluginTLSClientCertificate)
-		if !r.Config.TLSClientCertificate.IsUnknown() && !r.Config.TLSClientCertificate.IsNull() {
-			*tlsClientCertificate = shared.CreateTLSHandshakeModifierPluginTLSClientCertificate(r.Config.TLSClientCertificate.ValueString())
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeModifierPluginInput() *shared.TLSHandshakeModifierPluginInput {
+	tlsClientCertificate := new(shared.TLSClientCertificate)
+	if !r.Config.TLSClientCertificate.IsUnknown() && !r.Config.TLSClientCertificate.IsNull() {
+		*tlsClientCertificate = shared.TLSClientCertificate(r.Config.TLSClientCertificate.ValueString())
+	} else {
+		tlsClientCertificate = nil
+	}
+	config := shared.TLSHandshakeModifierPluginConfig{
+		TLSClientCertificate: tlsClientCertificate,
+	}
+	var consumer *shared.TLSHandshakeModifierPluginConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
 		} else {
-			tlsClientCertificate = nil
+			id = nil
 		}
-		config = &shared.CreateTLSHandshakeModifierPluginConfig{
-			TLSClientCertificate: tlsClientCertificate,
+		consumer = &shared.TLSHandshakeModifierPluginConsumer{
+			ID: id,
+		}
+	}
+	var consumerGroup *shared.TLSHandshakeModifierPluginConsumerGroup
+	if r.ConsumerGroup != nil {
+		id1 := new(string)
+		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
+			*id1 = r.ConsumerGroup.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumerGroup = &shared.TLSHandshakeModifierPluginConsumerGroup{
+			ID: id1,
 		}
 	}
 	enabled := new(bool)
@@ -27,121 +48,99 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedCreateTLSHandsh
 	} else {
 		enabled = nil
 	}
+	id2 := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id2 = r.ID.ValueString()
+	} else {
+		id2 = nil
+	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
 		*instanceName = r.InstanceName.ValueString()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.CreateTLSHandshakeModifierPluginOrdering
+	var ordering *shared.TLSHandshakeModifierPluginOrdering
 	if r.Ordering != nil {
-		var after *shared.CreateTLSHandshakeModifierPluginAfter
+		var after *shared.TLSHandshakeModifierPluginAfter
 		if r.Ordering.After != nil {
 			var access []string = []string{}
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
-			after = &shared.CreateTLSHandshakeModifierPluginAfter{
+			after = &shared.TLSHandshakeModifierPluginAfter{
 				Access: access,
 			}
 		}
-		var before *shared.CreateTLSHandshakeModifierPluginBefore
+		var before *shared.TLSHandshakeModifierPluginBefore
 		if r.Ordering.Before != nil {
 			var access1 []string = []string{}
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
-			before = &shared.CreateTLSHandshakeModifierPluginBefore{
+			before = &shared.TLSHandshakeModifierPluginBefore{
 				Access: access1,
 			}
 		}
-		ordering = &shared.CreateTLSHandshakeModifierPluginOrdering{
+		ordering = &shared.TLSHandshakeModifierPluginOrdering{
 			After:  after,
 			Before: before,
 		}
 	}
-	var protocols []shared.CreateTLSHandshakeModifierPluginProtocols = []shared.CreateTLSHandshakeModifierPluginProtocols{}
+	var protocols []shared.TLSHandshakeModifierPluginProtocols = []shared.TLSHandshakeModifierPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.CreateTLSHandshakeModifierPluginProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.TLSHandshakeModifierPluginProtocols(protocolsItem.ValueString()))
+	}
+	var route *shared.TLSHandshakeModifierPluginRoute
+	if r.Route != nil {
+		id3 := new(string)
+		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
+			*id3 = r.Route.ID.ValueString()
+		} else {
+			id3 = nil
+		}
+		route = &shared.TLSHandshakeModifierPluginRoute{
+			ID: id3,
+		}
+	}
+	var service *shared.TLSHandshakeModifierPluginService
+	if r.Service != nil {
+		id4 := new(string)
+		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
+			*id4 = r.Service.ID.ValueString()
+		} else {
+			id4 = nil
+		}
+		service = &shared.TLSHandshakeModifierPluginService{
+			ID: id4,
+		}
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var consumer *shared.CreateTLSHandshakeModifierPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.CreateTLSHandshakeModifierPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.CreateTLSHandshakeModifierPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.CreateTLSHandshakeModifierPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	var route *shared.CreateTLSHandshakeModifierPluginRoute
-	if r.Route != nil {
-		id2 := new(string)
-		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id2 = r.Route.ID.ValueString()
-		} else {
-			id2 = nil
-		}
-		route = &shared.CreateTLSHandshakeModifierPluginRoute{
-			ID: id2,
-		}
-	}
-	var service *shared.CreateTLSHandshakeModifierPluginService
-	if r.Service != nil {
-		id3 := new(string)
-		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id3 = r.Service.ID.ValueString()
-		} else {
-			id3 = nil
-		}
-		service = &shared.CreateTLSHandshakeModifierPluginService{
-			ID: id3,
-		}
-	}
-	out := shared.CreateTLSHandshakeModifierPlugin{
+	out := shared.TLSHandshakeModifierPluginInput{
 		Config:        config,
+		Consumer:      consumer,
+		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
+		ID:            id2,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Protocols:     protocols,
-		Tags:          tags,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Route:         route,
 		Service:       service,
+		Tags:          tags,
 	}
 	return &out
 }
 
 func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(resp *shared.TLSHandshakeModifierPlugin) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = nil
+		if resp.Config.TLSClientCertificate != nil {
+			r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
 		} else {
-			r.Config = &tfTypes.CreateTLSHandshakeModifierPluginConfig{}
-			if resp.Config.TLSClientCertificate != nil {
-				r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
-			} else {
-				r.Config.TLSClientCertificate = types.StringNull()
-			}
+			r.Config.TLSClientCertificate = types.StringNull()
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -162,11 +161,11 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHan
 		if resp.Ordering == nil {
 			r.Ordering = nil
 		} else {
-			r.Ordering = &tfTypes.CreateACLPluginOrdering{}
+			r.Ordering = &tfTypes.ACLPluginOrdering{}
 			if resp.Ordering.After == nil {
 				r.Ordering.After = nil
 			} else {
-				r.Ordering.After = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.After = &tfTypes.ACLPluginAfter{}
 				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
@@ -175,7 +174,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHan
 			if resp.Ordering.Before == nil {
 				r.Ordering.Before = nil
 			} else {
-				r.Ordering.Before = &tfTypes.CreateACLPluginAfter{}
+				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
 				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))

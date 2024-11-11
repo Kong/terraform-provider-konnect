@@ -1,0 +1,27 @@
+speakeasyVersion: 1.430.0
+sources:
+    kong:
+        sourceNamespace: kong
+        sourceRevisionDigest: sha256:ee715b82a58b23752a3e6dcb66c6e94880a9bb5042fd99b8492ba55f9f9fb596
+        sourceBlobDigest: sha256:94eeafdddf4d22b09b01b2bf8673e5b6ebbd026f5e349371831eff1d29164fec
+        tags:
+            - latest
+targets:
+    terraform:
+        source: kong
+        sourceNamespace: kong
+        sourceRevisionDigest: sha256:ee715b82a58b23752a3e6dcb66c6e94880a9bb5042fd99b8492ba55f9f9fb596
+        sourceBlobDigest: sha256:94eeafdddf4d22b09b01b2bf8673e5b6ebbd026f5e349371831eff1d29164fec
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: 1.430.0
+    sources:
+        kong:
+            inputs:
+                - location: openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/kong/kong/kong
+    targets:
+        terraform:
+            target: terraform
+            source: kong
