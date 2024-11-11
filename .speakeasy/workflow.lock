@@ -2,16 +2,16 @@ speakeasyVersion: 1.430.0
 sources:
     kong:
         sourceNamespace: kong
-        sourceRevisionDigest: sha256:ee715b82a58b23752a3e6dcb66c6e94880a9bb5042fd99b8492ba55f9f9fb596
-        sourceBlobDigest: sha256:94eeafdddf4d22b09b01b2bf8673e5b6ebbd026f5e349371831eff1d29164fec
+        sourceRevisionDigest: sha256:cfa69dcbf62acfcc6611041325238e835c1cfab3096b8507f72475e461fd7034
+        sourceBlobDigest: sha256:42ad154bc63dbacfcca1953464e8b7b9816b4a8388d6de53a36f2b3442fd304d
         tags:
             - latest
 targets:
     terraform:
         source: kong
         sourceNamespace: kong
-        sourceRevisionDigest: sha256:ee715b82a58b23752a3e6dcb66c6e94880a9bb5042fd99b8492ba55f9f9fb596
-        sourceBlobDigest: sha256:94eeafdddf4d22b09b01b2bf8673e5b6ebbd026f5e349371831eff1d29164fec
+        sourceRevisionDigest: sha256:cfa69dcbf62acfcc6611041325238e835c1cfab3096b8507f72475e461fd7034
+        sourceBlobDigest: sha256:42ad154bc63dbacfcca1953464e8b7b9816b4a8388d6de53a36f2b3442fd304d
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: 1.430.0
