@@ -5,7 +5,7 @@
 
 ### 🚨 BREAKING CHANGES
 * The `konnect_cloud_gateway_transit_gateway` resource structure has had a bug fix that enables both AWS and Azure support. This has changed the resource structure and you will need to recreate any transit gateway attachments.
-* `CLUSTER_TYPE_HYBRID` is an internal cluster name which has now been removed from the provider. Use `CLUSTER_TYPE_CONTROL_PLANE` instead. This is a state-only update, and will not impact your life infrastructure.
+* `CLUSTER_TYPE_HYBRID` is an internal cluster name which has now been removed from the provider. Use `CLUSTER_TYPE_CONTROL_PLANE` instead. 
 * Setting `scopes = []` in the OpenID Connect plugin is now respected. This means that the default has changed from `['openid']` to `[]`.
 
 ### Features
