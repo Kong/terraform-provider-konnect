@@ -6,7 +6,7 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework-validators/helpers/validatordiag"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/types"
 )
 
 var _ validator.String = DateValidator{}

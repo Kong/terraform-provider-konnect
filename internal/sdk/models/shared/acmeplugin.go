@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // AccountKey - The private key associated with the account.

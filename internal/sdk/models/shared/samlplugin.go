@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // NameidFormat - The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`

@@ -7,7 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/cenkalti/backoff/v4"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
 	"net/http"
 	"net/url"
 	"strconv"

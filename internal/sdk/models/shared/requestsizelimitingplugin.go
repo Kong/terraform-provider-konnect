@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // SizeUnit - Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0.

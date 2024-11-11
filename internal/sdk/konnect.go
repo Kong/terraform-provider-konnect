@@ -5,10 +5,10 @@ package sdk
 import (
 	"context"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/hooks"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/retry"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/hooks"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/retry"
 	"net/http"
 	"time"
 )
@@ -290,7 +290,7 @@ func New(opts ...SDKOption) *Konnect {
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
 			GenVersion:        "2.449.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.449.0 2.0.0 github.com/kong/terraform-provider-konnect/internal/sdk",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.449.0 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}

@@ -14,8 +14,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.

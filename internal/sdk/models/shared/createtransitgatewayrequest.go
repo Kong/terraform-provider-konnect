@@ -5,7 +5,7 @@ package shared
 import (
 	"errors"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 type AzureTransitGateway struct {

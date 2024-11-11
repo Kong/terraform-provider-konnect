@@ -17,10 +17,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/internal/validators/objectvalidators"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.

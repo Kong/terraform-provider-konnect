@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // DefaultHeaderType - Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.

@@ -5,7 +5,7 @@ package shared
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/internal/utils"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
 // Oauth2IntrospectionPluginConsumerBy - A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`.

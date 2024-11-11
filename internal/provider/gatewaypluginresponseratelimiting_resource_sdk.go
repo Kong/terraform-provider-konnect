@@ -5,8 +5,8 @@ package provider
 import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	tfTypes "github.com/kong/terraform-provider-konnect/internal/provider/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPluginInput() *shared.ResponseRatelimitingPluginInput {

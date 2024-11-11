@@ -1,4 +1,4 @@
-module github.com/kong/terraform-provider-konnect
+module github.com/kong/terraform-provider-konnect/v2
 
 go 1.22.0
 
@@ -9,6 +9,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v1.12.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.13.0
 	github.com/hashicorp/terraform-plugin-go v0.24.0
+	github.com/kong/terraform-provider-konnect v1.0.0
 )
 
 require (

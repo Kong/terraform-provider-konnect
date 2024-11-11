@@ -5,7 +5,7 @@ package provider
 import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault) {

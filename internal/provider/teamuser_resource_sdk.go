@@ -3,7 +3,7 @@
 package provider
 
 import (
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *TeamUserResourceModel) ToSharedAddUserToTeam() *shared.AddUserToTeam {
