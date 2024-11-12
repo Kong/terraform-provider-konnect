@@ -33,7 +33,7 @@ resource "konnect_gateway_upstream" "my_gatewayupstream" {
     active = {
       concurrency = 6
       headers = {
-        env = "test"
+        key = "value",
       }
       healthy = {
         http_statuses = [

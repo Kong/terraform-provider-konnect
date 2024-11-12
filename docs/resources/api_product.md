@@ -16,7 +16,7 @@ APIProduct Resource
 resource "konnect_api_product" "my_apiproduct" {
   description = "Text describing the API product"
   labels = {
-    env = "test"
+    key = "value",
   }
   name = "API Product"
   portal_ids = [
