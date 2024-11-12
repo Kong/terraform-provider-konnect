@@ -5623,7 +5623,6 @@ components:
           items:
             type: string
           $ref: '#/components/schemas/Tags'
-          nullable: true
         consumer_groups:
           $ref: '#/components/schemas/ConsumerGroups'
         created_at:

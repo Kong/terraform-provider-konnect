@@ -15639,7 +15639,6 @@ components:
           items:
             type: string
           $ref: '#/components/schemas/Tags'
-          nullable: true
         consumer_groups:
           $ref: '#/components/schemas/ConsumerGroups'
         created_at:
@@ -19104,7 +19103,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -19129,7 +19127,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
@@ -19160,7 +19157,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
       example:
@@ -19189,7 +19185,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
       example:
@@ -19223,7 +19218,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19272,7 +19266,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19307,7 +19300,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19355,7 +19347,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
       example:
@@ -19384,7 +19375,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
       example:
@@ -19443,7 +19433,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         algorithm: HS256
         consumer:
@@ -19493,7 +19482,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         algorithm: HS256
         id: 75695322-e8a0-4109-aed4-5416b0308d85
@@ -19545,7 +19533,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19587,7 +19574,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -19612,7 +19598,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
@@ -19636,7 +19621,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19692,7 +19676,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19742,7 +19725,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         ca_certificate:
           id: b2f34145-0343-41a4-9602-4c69dec2f260
@@ -19777,7 +19759,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         ca_certificate:
           id: b2f34145-0343-41a4-9602-4c69dec2f260
@@ -19898,7 +19879,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19996,7 +19976,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20168,7 +20147,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20321,7 +20299,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20363,7 +20340,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20396,7 +20372,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20488,7 +20463,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: boolean
@@ -20538,7 +20512,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -20583,7 +20556,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -20853,7 +20825,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -20965,7 +20936,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
