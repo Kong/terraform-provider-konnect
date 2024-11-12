@@ -48,7 +48,7 @@ type Key struct {
 	// A keypair in PEM format.
 	Pem *Pem `json:"pem,omitempty"`
 	// The id (an UUID) of the key-set with which to associate the key.
-	Set *Set `json:"set,omitempty"`
+	Set *Set `json:"set"`
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -130,7 +130,7 @@ type KeyInput struct {
 	// A keypair in PEM format.
 	Pem *Pem `json:"pem,omitempty"`
 	// The id (an UUID) of the key-set with which to associate the key.
-	Set *Set `json:"set,omitempty"`
+	Set *Set `json:"set"`
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

@@ -7,11 +7,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -45,7 +47,7 @@ type GatewayTargetResourceModel struct {
 	Tags           []types.String       `tfsdk:"tags"`
 	Target         types.String         `tfsdk:"target"`
 	UpdatedAt      types.Number         `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLConsumer `tfsdk:"upstream"`
+	Upstream       *tfTypes.ACLConsumer `tfsdk:"upstream" tfPlanOnly:"true"`
 	UpstreamID     types.String         `tfsdk:"upstream_id"`
 	Weight         types.Int64          `tfsdk:"weight"`
 }
@@ -103,6 +105,9 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"upstream": schema.SingleNestedAttribute{
 				Computed: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

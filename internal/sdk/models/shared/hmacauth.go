@@ -14,7 +14,7 @@ func (o *HMACAuthConsumer) GetID() *string {
 }
 
 type HMACAuth struct {
-	Consumer *HMACAuthConsumer `json:"consumer,omitempty"`
+	Consumer *HMACAuthConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`

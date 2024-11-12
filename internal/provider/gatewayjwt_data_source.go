@@ -30,7 +30,7 @@ type GatewayJWTDataSource struct {
 // GatewayJWTDataSourceModel describes the data model.
 type GatewayJWTDataSourceModel struct {
 	Algorithm      types.String         `tfsdk:"algorithm"`
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer"`
+	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
 	ConsumerID     types.String         `tfsdk:"consumer_id"`
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`

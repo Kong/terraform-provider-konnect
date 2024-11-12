@@ -202,7 +202,7 @@ type Route struct {
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
 	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service,omitempty"`
+	Service *RouteService `json:"service"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -392,7 +392,7 @@ type RouteInput struct {
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
 	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service,omitempty"`
+	Service *RouteService `json:"service"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".

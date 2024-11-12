@@ -30,8 +30,8 @@ type GatewayPluginLdapAuthDataSource struct {
 // GatewayPluginLdapAuthDataSourceModel describes the data model.
 type GatewayPluginLdapAuthDataSourceModel struct {
 	Config         tfTypes.LdapAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group"`
+	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                  `tfsdk:"created_at"`
 	Enabled        types.Bool                   `tfsdk:"enabled"`
@@ -39,8 +39,8 @@ type GatewayPluginLdapAuthDataSourceModel struct {
 	InstanceName   types.String                 `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
 	Protocols      []types.String               `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer         `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer         `tfsdk:"service"`
+	Route          *tfTypes.ACLConsumer         `tfsdk:"route" tfPlanOnly:"true"`
+	Service        *tfTypes.ACLConsumer         `tfsdk:"service" tfPlanOnly:"true"`
 	Tags           []types.String               `tfsdk:"tags"`
 	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
 }

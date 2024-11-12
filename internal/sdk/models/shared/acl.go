@@ -14,7 +14,7 @@ func (o *ACLConsumer) GetID() *string {
 }
 
 type ACL struct {
-	Consumer *ACLConsumer `json:"consumer,omitempty"`
+	Consumer *ACLConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	Group     *string  `json:"group,omitempty"`

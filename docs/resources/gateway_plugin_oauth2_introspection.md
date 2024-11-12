@@ -22,7 +22,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
       "..."
     ]
     custom_introspection_headers = {
-      "see" : jsonencode("documentation"),
+      key = jsonencode("value"),
     }
     hide_credentials   = true
     introspect_request = false

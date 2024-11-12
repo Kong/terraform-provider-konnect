@@ -470,7 +470,7 @@ type Upstream struct {
 	// Which load balancing algorithm to use.
 	Algorithm *UpstreamAlgorithm `json:"algorithm,omitempty"`
 	// If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.
-	ClientCertificate *UpstreamClientCertificate `json:"client_certificate,omitempty"`
+	ClientCertificate *UpstreamClientCertificate `json:"client_certificate"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`.
@@ -661,7 +661,7 @@ type UpstreamInput struct {
 	// Which load balancing algorithm to use.
 	Algorithm *UpstreamAlgorithm `json:"algorithm,omitempty"`
 	// If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.
-	ClientCertificate *UpstreamClientCertificate `json:"client_certificate,omitempty"`
+	ClientCertificate *UpstreamClientCertificate `json:"client_certificate"`
 	// What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`.
 	HashFallback *HashFallback `json:"hash_fallback,omitempty"`
 	// The header name to take the value from as hash input. Only required when `hash_fallback` is set to `header`.

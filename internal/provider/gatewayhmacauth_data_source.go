@@ -29,7 +29,7 @@ type GatewayHMACAuthDataSource struct {
 
 // GatewayHMACAuthDataSourceModel describes the data model.
 type GatewayHMACAuthDataSourceModel struct {
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer"`
+	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
 	ConsumerID     types.String         `tfsdk:"consumer_id"`
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`

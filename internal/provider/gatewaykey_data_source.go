@@ -36,7 +36,7 @@ type GatewayKeyDataSourceModel struct {
 	Kid            types.String         `tfsdk:"kid"`
 	Name           types.String         `tfsdk:"name"`
 	Pem            *tfTypes.Pem         `tfsdk:"pem"`
-	Set            *tfTypes.ACLConsumer `tfsdk:"set"`
+	Set            *tfTypes.ACLConsumer `tfsdk:"set" tfPlanOnly:"true"`
 	Tags           []types.String       `tfsdk:"tags"`
 	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }

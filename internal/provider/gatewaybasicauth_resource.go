@@ -7,10 +7,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -37,7 +39,7 @@ type GatewayBasicAuthResource struct {
 
 // GatewayBasicAuthResourceModel describes the resource data model.
 type GatewayBasicAuthResourceModel struct {
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer"`
+	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
 	ConsumerID     types.String         `tfsdk:"consumer_id"`
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`
@@ -57,6 +59,9 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 		Attributes: map[string]schema.Attribute{
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

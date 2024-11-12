@@ -643,8 +643,8 @@ func (o *ProxyCacheAdvancedPluginService) GetID() *string {
 type ProxyCacheAdvancedPlugin struct {
 	Config ProxyCacheAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *ProxyCacheAdvancedPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *ProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *ProxyCacheAdvancedPluginConsumer      `json:"consumer"`
+	ConsumerGroup *ProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -656,9 +656,9 @@ type ProxyCacheAdvancedPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []ProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *ProxyCacheAdvancedPluginRoute `json:"route,omitempty"`
+	Route *ProxyCacheAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ProxyCacheAdvancedPluginService `json:"service,omitempty"`
+	Service *ProxyCacheAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -775,8 +775,8 @@ func (o *ProxyCacheAdvancedPlugin) GetUpdatedAt() *int64 {
 type ProxyCacheAdvancedPluginInput struct {
 	Config ProxyCacheAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *ProxyCacheAdvancedPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *ProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *ProxyCacheAdvancedPluginConsumer      `json:"consumer"`
+	ConsumerGroup *ProxyCacheAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                             `json:"enabled,omitempty"`
 	ID           *string                           `json:"id,omitempty"`
@@ -786,9 +786,9 @@ type ProxyCacheAdvancedPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []ProxyCacheAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *ProxyCacheAdvancedPluginRoute `json:"route,omitempty"`
+	Route *ProxyCacheAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ProxyCacheAdvancedPluginService `json:"service,omitempty"`
+	Service *ProxyCacheAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }
