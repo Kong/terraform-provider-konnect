@@ -360,8 +360,8 @@ func (o *XMLThreatProtectionPluginService) GetID() *string {
 type XMLThreatProtectionPlugin struct {
 	Config XMLThreatProtectionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer"`
+	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -373,9 +373,9 @@ type XMLThreatProtectionPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *XMLThreatProtectionPluginRoute `json:"route,omitempty"`
+	Route *XMLThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *XMLThreatProtectionPluginService `json:"service,omitempty"`
+	Service *XMLThreatProtectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -492,8 +492,8 @@ func (o *XMLThreatProtectionPlugin) GetUpdatedAt() *int64 {
 type XMLThreatProtectionPluginInput struct {
 	Config XMLThreatProtectionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer"`
+	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                              `json:"enabled,omitempty"`
 	ID           *string                            `json:"id,omitempty"`
@@ -503,9 +503,9 @@ type XMLThreatProtectionPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *XMLThreatProtectionPluginRoute `json:"route,omitempty"`
+	Route *XMLThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *XMLThreatProtectionPluginService `json:"service,omitempty"`
+	Service *XMLThreatProtectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

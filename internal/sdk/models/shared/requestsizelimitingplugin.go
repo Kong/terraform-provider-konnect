@@ -210,8 +210,8 @@ func (o *RequestSizeLimitingPluginService) GetID() *string {
 type RequestSizeLimitingPlugin struct {
 	Config RequestSizeLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestSizeLimitingPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *RequestSizeLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *RequestSizeLimitingPluginConsumer      `json:"consumer"`
+	ConsumerGroup *RequestSizeLimitingPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -223,9 +223,9 @@ type RequestSizeLimitingPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RequestSizeLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestSizeLimitingPluginRoute `json:"route,omitempty"`
+	Route *RequestSizeLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestSizeLimitingPluginService `json:"service,omitempty"`
+	Service *RequestSizeLimitingPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -342,8 +342,8 @@ func (o *RequestSizeLimitingPlugin) GetUpdatedAt() *int64 {
 type RequestSizeLimitingPluginInput struct {
 	Config RequestSizeLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestSizeLimitingPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *RequestSizeLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *RequestSizeLimitingPluginConsumer      `json:"consumer"`
+	ConsumerGroup *RequestSizeLimitingPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                              `json:"enabled,omitempty"`
 	ID           *string                            `json:"id,omitempty"`
@@ -353,9 +353,9 @@ type RequestSizeLimitingPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RequestSizeLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestSizeLimitingPluginRoute `json:"route,omitempty"`
+	Route *RequestSizeLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestSizeLimitingPluginService `json:"service,omitempty"`
+	Service *RequestSizeLimitingPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

@@ -30,7 +30,7 @@ type GatewayUpstreamDataSource struct {
 // GatewayUpstreamDataSourceModel describes the data model.
 type GatewayUpstreamDataSourceModel struct {
 	Algorithm              types.String          `tfsdk:"algorithm"`
-	ClientCertificate      *tfTypes.ACLConsumer  `tfsdk:"client_certificate"`
+	ClientCertificate      *tfTypes.ACLConsumer  `tfsdk:"client_certificate" tfPlanOnly:"true"`
 	ControlPlaneID         types.String          `tfsdk:"control_plane_id"`
 	CreatedAt              types.Int64           `tfsdk:"created_at"`
 	HashFallback           types.String          `tfsdk:"hash_fallback"`

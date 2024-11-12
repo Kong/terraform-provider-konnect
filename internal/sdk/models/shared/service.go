@@ -75,7 +75,7 @@ type Service struct {
 	// Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 	CaCertificates []string `json:"ca_certificates,omitempty"`
 	// Certificate to be used as client certificate while TLS handshaking to the upstream server.
-	ClientCertificate *ClientCertificate `json:"client_certificate,omitempty"`
+	ClientCertificate *ClientCertificate `json:"client_certificate"`
 	// The timeout in milliseconds for establishing a connection to the upstream server.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// Unix epoch when the resource was created.
@@ -240,7 +240,7 @@ type ServiceInput struct {
 	// Array of `CA Certificate` object UUIDs that are used to build the trust store while verifying upstream server's TLS certificate. If set to `null` when Nginx default is respected. If default CA list in Nginx are not specified and TLS verification is enabled, then handshake with upstream server will always fail (because no CA are trusted).
 	CaCertificates []string `json:"ca_certificates,omitempty"`
 	// Certificate to be used as client certificate while TLS handshaking to the upstream server.
-	ClientCertificate *ClientCertificate `json:"client_certificate,omitempty"`
+	ClientCertificate *ClientCertificate `json:"client_certificate"`
 	// The timeout in milliseconds for establishing a connection to the upstream server.
 	ConnectTimeout *int64 `json:"connect_timeout,omitempty"`
 	// Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.

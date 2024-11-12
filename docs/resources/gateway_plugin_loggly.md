@@ -17,7 +17,7 @@ resource "konnect_gateway_plugin_loggly" "my_gatewaypluginloggly" {
   config = {
     client_errors_severity = "alert"
     custom_fields_by_lua = {
-      "see" : jsonencode("documentation"),
+      key = jsonencode("value"),
     }
     host                   = "...my_host..."
     key                    = "...my_key..."

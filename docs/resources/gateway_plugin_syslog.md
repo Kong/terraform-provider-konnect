@@ -17,7 +17,7 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
   config = {
     client_errors_severity = "emerg"
     custom_fields_by_lua = {
-      "see" : jsonencode("documentation"),
+      key = jsonencode("value"),
     }
     facility               = "local7"
     log_level              = "info"

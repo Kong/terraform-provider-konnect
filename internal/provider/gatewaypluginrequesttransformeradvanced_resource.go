@@ -8,9 +8,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -38,8 +40,8 @@ type GatewayPluginRequestTransformerAdvancedResource struct {
 // GatewayPluginRequestTransformerAdvancedResourceModel describes the resource data model.
 type GatewayPluginRequestTransformerAdvancedResourceModel struct {
 	Config         tfTypes.RequestTransformerAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                           `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer                           `tfsdk:"consumer_group"`
+	Consumer       *tfTypes.ACLConsumer                           `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerGroup  *tfTypes.ACLConsumer                           `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String                                   `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                                    `tfsdk:"created_at"`
 	Enabled        types.Bool                                     `tfsdk:"enabled"`
@@ -47,8 +49,8 @@ type GatewayPluginRequestTransformerAdvancedResourceModel struct {
 	InstanceName   types.String                                   `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering                     `tfsdk:"ordering"`
 	Protocols      []types.String                                 `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                           `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer                           `tfsdk:"service"`
+	Route          *tfTypes.ACLConsumer                           `tfsdk:"route" tfPlanOnly:"true"`
+	Service        *tfTypes.ACLConsumer                           `tfsdk:"service" tfPlanOnly:"true"`
 	Tags           []types.String                                 `tfsdk:"tags"`
 	UpdatedAt      types.Int64                                    `tfsdk:"updated_at"`
 }
@@ -217,6 +219,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -228,6 +233,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"consumer_group": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -296,6 +304,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -307,6 +318,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Schema(ctx context.Con
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

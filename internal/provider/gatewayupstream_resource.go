@@ -8,9 +8,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -37,7 +39,7 @@ type GatewayUpstreamResource struct {
 // GatewayUpstreamResourceModel describes the resource data model.
 type GatewayUpstreamResourceModel struct {
 	Algorithm              types.String          `tfsdk:"algorithm"`
-	ClientCertificate      *tfTypes.ACLConsumer  `tfsdk:"client_certificate"`
+	ClientCertificate      *tfTypes.ACLConsumer  `tfsdk:"client_certificate" tfPlanOnly:"true"`
 	ControlPlaneID         types.String          `tfsdk:"control_plane_id"`
 	CreatedAt              types.Int64           `tfsdk:"created_at"`
 	HashFallback           types.String          `tfsdk:"hash_fallback"`
@@ -84,6 +86,9 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			"client_certificate": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

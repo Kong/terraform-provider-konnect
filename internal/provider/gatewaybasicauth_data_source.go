@@ -29,7 +29,7 @@ type GatewayBasicAuthDataSource struct {
 
 // GatewayBasicAuthDataSourceModel describes the data model.
 type GatewayBasicAuthDataSourceModel struct {
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer"`
+	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
 	ConsumerID     types.String         `tfsdk:"consumer_id"`
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`

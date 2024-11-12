@@ -14,7 +14,7 @@ func (o *KeyAuthConsumer) GetID() *string {
 }
 
 type KeyAuth struct {
-	Consumer *KeyAuthConsumer `json:"consumer,omitempty"`
+	Consumer *KeyAuthConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
 	ID        *string  `json:"id,omitempty"`

@@ -79,7 +79,7 @@ func (o *JWTConsumer) GetID() *string {
 
 type Jwt struct {
 	Algorithm *JWTAlgorithm `json:"algorithm,omitempty"`
-	Consumer  *JWTConsumer  `json:"consumer,omitempty"`
+	Consumer  *JWTConsumer  `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt    *int64   `json:"created_at,omitempty"`
 	ID           *string  `json:"id,omitempty"`

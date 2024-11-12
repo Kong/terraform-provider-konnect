@@ -4,12 +4,18 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewaySNIDataSourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 	if resp != nil {
-		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		if resp.Certificate == nil {
+			r.Certificate = nil
+		} else {
+			r.Certificate = &tfTypes.ACLConsumer{}
+			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
