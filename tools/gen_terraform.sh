@@ -19,6 +19,7 @@ function apply_overlay() {
   mv $DIR/../build/complete/terraform/public2.yaml $DIR/../build/complete/terraform/public.yaml
 }
 
+apply_overlay overlays/konnect/control-planes.yaml
 apply_overlay overlays/konnect/control-planes-config.yaml
 apply_overlay overlays/konnect/application-auth-strategies.yaml
 apply_overlay overlays/konnect/api-products.yaml

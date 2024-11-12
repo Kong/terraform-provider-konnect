@@ -1,0 +1,13 @@
+overlay: 1.0.0
+info:
+  title: Konnect Control Plane
+  version: 0.0.0
+actions:
+  - target: $["components"]["schemas"]["CreateControlPlaneRequest"]["properties"]["cluster_type"]
+    update:
+      enum:
+        - CLUSTER_TYPE_HYBRID
+  - target: $["components"]["schemas"]["ControlPlane"]["properties"]["config"]["properties"]["cluster_type"]
+    update:
+      enum:
+        - CLUSTER_TYPE_HYBRID

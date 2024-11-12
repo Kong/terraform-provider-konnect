@@ -25,6 +25,16 @@ function addCustomDefaults(doc) {
 
   // Remove default values, unless it's a foreign key or an empty array
   return traverse(doc).forEach(function () {
+    // Anything marked as a foreign key should take values from the plan only
+    // This allows services, routes etc to be unlinked by removing a value in the manifest
+    const isForeignKey = this.node && this.node["x-foreign"] === true;
+    if (isForeignKey) {
+      this.node["x-speakeasy-terraform-plan-only"] = true;
+      this.node["nullable"] = true;
+      this.node["default"] = null;
+      return;
+    }
+
     // Fix OIDC scopes default value
     if (this.path[2] == "OpenidConnectPluginConfig") {
       if (this.path[this.path.length - 1] == "config") {
