@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.2
+> Released on 2024/11/12
+
+### Bug Fixes
+
+* Removing service, route, consumer etc scope from a plugin now sends `null` to the API, removing the link between the plugin and the resource.
+
 ## 2.0.1
 > Released on 2024/11/11
 

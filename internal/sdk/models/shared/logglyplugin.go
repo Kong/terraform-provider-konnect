@@ -412,8 +412,8 @@ func (o *LogglyPluginService) GetID() *string {
 type LogglyPlugin struct {
 	Config LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LogglyPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *LogglyPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *LogglyPluginConsumer      `json:"consumer"`
+	ConsumerGroup *LogglyPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -425,9 +425,9 @@ type LogglyPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []LogglyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LogglyPluginRoute `json:"route,omitempty"`
+	Route *LogglyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LogglyPluginService `json:"service,omitempty"`
+	Service *LogglyPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -544,8 +544,8 @@ func (o *LogglyPlugin) GetUpdatedAt() *int64 {
 type LogglyPluginInput struct {
 	Config LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LogglyPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *LogglyPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *LogglyPluginConsumer      `json:"consumer"`
+	ConsumerGroup *LogglyPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                 `json:"enabled,omitempty"`
 	ID           *string               `json:"id,omitempty"`
@@ -555,9 +555,9 @@ type LogglyPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []LogglyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LogglyPluginRoute `json:"route,omitempty"`
+	Route *LogglyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LogglyPluginService `json:"service,omitempty"`
+	Service *LogglyPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

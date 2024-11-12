@@ -485,8 +485,8 @@ func (o *KafkaLogPluginService) GetID() *string {
 type KafkaLogPlugin struct {
 	Config KafkaLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KafkaLogPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *KafkaLogPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *KafkaLogPluginConsumer      `json:"consumer"`
+	ConsumerGroup *KafkaLogPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -498,9 +498,9 @@ type KafkaLogPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []KafkaLogPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KafkaLogPluginRoute `json:"route,omitempty"`
+	Route *KafkaLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KafkaLogPluginService `json:"service,omitempty"`
+	Service *KafkaLogPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -617,8 +617,8 @@ func (o *KafkaLogPlugin) GetUpdatedAt() *int64 {
 type KafkaLogPluginInput struct {
 	Config KafkaLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KafkaLogPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *KafkaLogPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *KafkaLogPluginConsumer      `json:"consumer"`
+	ConsumerGroup *KafkaLogPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                   `json:"enabled,omitempty"`
 	ID           *string                 `json:"id,omitempty"`
@@ -628,9 +628,9 @@ type KafkaLogPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []KafkaLogPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KafkaLogPluginRoute `json:"route,omitempty"`
+	Route *KafkaLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KafkaLogPluginService `json:"service,omitempty"`
+	Service *KafkaLogPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

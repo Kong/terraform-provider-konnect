@@ -4,18 +4,22 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
-	id := new(string)
-	if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
-		*id = r.Certificate.ID.ValueString()
-	} else {
-		id = nil
-	}
-	certificate := shared.SNICertificate{
-		ID: id,
+	var certificate *shared.SNICertificate
+	if r.Certificate != nil {
+		id := new(string)
+		if !r.Certificate.ID.IsUnknown() && !r.Certificate.ID.IsNull() {
+			*id = r.Certificate.ID.ValueString()
+		} else {
+			id = nil
+		}
+		certificate = &shared.SNICertificate{
+			ID: id,
+		}
 	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -41,7 +45,12 @@ func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
 
 func (r *GatewaySNIResourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 	if resp != nil {
-		r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		if resp.Certificate == nil {
+			r.Certificate = nil
+		} else {
+			r.Certificate = &tfTypes.ACLConsumer{}
+			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)

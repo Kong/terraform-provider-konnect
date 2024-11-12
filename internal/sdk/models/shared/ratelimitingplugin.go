@@ -454,8 +454,8 @@ func (o *RateLimitingPluginService) GetID() *string {
 type RateLimitingPlugin struct {
 	Config RateLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *RateLimitingPluginConsumer      `json:"consumer"`
+	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -467,9 +467,9 @@ type RateLimitingPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RateLimitingPluginRoute `json:"route,omitempty"`
+	Route *RateLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingPluginService `json:"service,omitempty"`
+	Service *RateLimitingPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -586,8 +586,8 @@ func (o *RateLimitingPlugin) GetUpdatedAt() *int64 {
 type RateLimitingPluginInput struct {
 	Config RateLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RateLimitingPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *RateLimitingPluginConsumer      `json:"consumer"`
+	ConsumerGroup *RateLimitingPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                       `json:"enabled,omitempty"`
 	ID           *string                     `json:"id,omitempty"`
@@ -597,9 +597,9 @@ type RateLimitingPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []RateLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RateLimitingPluginRoute `json:"route,omitempty"`
+	Route *RateLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingPluginService `json:"service,omitempty"`
+	Service *RateLimitingPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

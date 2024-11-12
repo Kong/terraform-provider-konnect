@@ -7,9 +7,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -41,7 +43,7 @@ type GatewayKeyResourceModel struct {
 	Kid            types.String         `tfsdk:"kid"`
 	Name           types.String         `tfsdk:"name"`
 	Pem            *tfTypes.Pem         `tfsdk:"pem"`
-	Set            *tfTypes.ACLConsumer `tfsdk:"set"`
+	Set            *tfTypes.ACLConsumer `tfsdk:"set" tfPlanOnly:"true"`
 	Tags           []types.String       `tfsdk:"tags"`
 	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
 }
@@ -101,6 +103,9 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"set": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

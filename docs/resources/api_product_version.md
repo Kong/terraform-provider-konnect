@@ -21,7 +21,7 @@ resource "konnect_api_product_version" "my_apiproductversion" {
     id               = "09b4786a-3e48-4631-8f6b-62d1d8e1a7f3"
   }
   labels = {
-    env = "test"
+    key = "value",
   }
   name = "v1"
 }

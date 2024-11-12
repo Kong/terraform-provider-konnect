@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -54,7 +56,7 @@ type GatewayRouteResourceModel struct {
 	RegexPriority           types.Int64             `tfsdk:"regex_priority"`
 	RequestBuffering        types.Bool              `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool              `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLConsumer    `tfsdk:"service"`
+	Service                 *tfTypes.ACLConsumer    `tfsdk:"service" tfPlanOnly:"true"`
 	Snis                    []types.String          `tfsdk:"snis"`
 	Sources                 []tfTypes.ClusterNodes  `tfsdk:"sources"`
 	StripPath               types.Bool              `tfsdk:"strip_path"`
@@ -185,6 +187,9 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

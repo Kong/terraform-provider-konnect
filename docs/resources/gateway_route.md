@@ -22,7 +22,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
     }
   ]
   headers = {
-    env = "test"
+    key = "value",
   }
   hosts = [
     "..."

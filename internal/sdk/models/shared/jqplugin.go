@@ -295,8 +295,8 @@ func (o *JqPluginService) GetID() *string {
 type JqPlugin struct {
 	Config JqPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *JqPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *JqPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *JqPluginConsumer      `json:"consumer"`
+	ConsumerGroup *JqPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -308,9 +308,9 @@ type JqPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []JqPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *JqPluginRoute `json:"route,omitempty"`
+	Route *JqPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JqPluginService `json:"service,omitempty"`
+	Service *JqPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -427,8 +427,8 @@ func (o *JqPlugin) GetUpdatedAt() *int64 {
 type JqPluginInput struct {
 	Config JqPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *JqPluginConsumer      `json:"consumer,omitempty"`
-	ConsumerGroup *JqPluginConsumerGroup `json:"consumer_group,omitempty"`
+	Consumer      *JqPluginConsumer      `json:"consumer"`
+	ConsumerGroup *JqPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool             `json:"enabled,omitempty"`
 	ID           *string           `json:"id,omitempty"`
@@ -438,9 +438,9 @@ type JqPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []JqPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *JqPluginRoute `json:"route,omitempty"`
+	Route *JqPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JqPluginService `json:"service,omitempty"`
+	Service *JqPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 }

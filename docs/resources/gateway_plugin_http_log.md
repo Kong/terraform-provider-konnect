@@ -17,11 +17,11 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
   config = {
     content_type = "application/json; charset=utf-8"
     custom_fields_by_lua = {
-      "see" : jsonencode("documentation"),
+      key = jsonencode("value"),
     }
     flush_timeout = 8.97
     headers = {
-      "see" : jsonencode("documentation"),
+      key = jsonencode("value"),
     }
     http_endpoint = "...my_http_endpoint..."
     keepalive     = 2.25

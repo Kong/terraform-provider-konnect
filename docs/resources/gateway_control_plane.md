@@ -19,7 +19,7 @@ resource "konnect_gateway_control_plane" "my_gatewaycontrolplane" {
   cluster_type  = "CLUSTER_TYPE_CONTROL_PLANE"
   description   = "A test control plane for exploration."
   labels = {
-    env = "test"
+    key = "value",
   }
   name = "Test Control Plane"
   proxy_urls = [

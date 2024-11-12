@@ -9,7 +9,6 @@ speakeasy: check-speakeasy
 	@git clean -fd examples docs > /dev/null
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md
-	@find docs -type f | xargs sed -i 's/"see" : "documentation",/env = "test"/'
 
 FILES=$(shell find internal/provider -type f | grep data_source | grep -v portallist | grep -v cloudgatewayprovideraccountlist)
 remove-data-sources:

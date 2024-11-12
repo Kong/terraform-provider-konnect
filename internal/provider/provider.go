@@ -113,10 +113,13 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		KonnectAccessToken:       konnectAccessToken,
 	}
 
+	httpClient := http.DefaultClient
+	httpClient.Transport = NewLoggingHTTPTransport(http.DefaultTransport)
+
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(ServerURL),
 		sdk.WithSecurity(security),
-		sdk.WithClient(http.DefaultClient),
+		sdk.WithClient(httpClient),
 	}
 	client := sdk.New(opts...)
 

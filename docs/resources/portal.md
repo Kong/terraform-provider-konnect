@@ -24,7 +24,7 @@ resource "konnect_portal" "my_portal" {
   force                                = "true"
   is_public                            = false
   labels = {
-    env = "test"
+    key = "value",
   }
   name         = "...my_name..."
   rbac_enabled = true

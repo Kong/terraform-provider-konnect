@@ -16,7 +16,7 @@ MeshControlPlane Resource
 resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   description = "A control plane to handle traffic on development environment."
   labels = {
-    env = "test"
+    key = "value",
   }
   name = "Test control plane"
 }
