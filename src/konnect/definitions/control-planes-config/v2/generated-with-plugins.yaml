@@ -9568,14 +9568,13 @@ components:
         type: string
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
-      description: ID of the Consumer to lookup
-      example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
+      description: The UUID of the consumer.
+      example: 123e4567-e89b-12d3-a456-426614174000
       in: path
       name: ConsumerId
       required: true
       schema:
         type: string
-      x-speakeasy-match: id
     ConsumerIdForNestedEntities:
       description: Consumer ID for nested entities
       example: f28acbfa-c866-4587-b688-0208ac24df21
@@ -9752,7 +9751,6 @@ components:
           readOnly: true
         group:
           type: string
-          nullable: true
         id:
           type: string
           nullable: true
@@ -9767,6 +9765,8 @@ components:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
       additionalProperties: false
+      required:
+        - group
     ACLPlugin:
       x-speakeasy-entity: GatewayPluginACL
       allOf:
@@ -9811,7 +9811,6 @@ components:
           readOnly: true
         group:
           type: string
-          nullable: true
         id:
           type: string
           nullable: true
@@ -9824,6 +9823,8 @@ components:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
       additionalProperties: false
+      required:
+        - group
     AcmePlugin:
       x-speakeasy-entity: GatewayPluginAcme
       allOf:
@@ -11062,7 +11063,6 @@ components:
           nullable: true
         password:
           type: string
-          nullable: true
         tags:
           type: array
           items:
@@ -11070,7 +11070,6 @@ components:
           nullable: true
         username:
           type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -11078,6 +11077,9 @@ components:
         password: hashedsoopersecretvalue
         username: darius
       additionalProperties: false
+      required:
+        - username
+        - password
     BasicAuthPlugin:
       x-speakeasy-entity: GatewayPluginBasicAuth
       allOf:
@@ -11115,7 +11117,6 @@ components:
           nullable: true
         password:
           type: string
-          nullable: true
         tags:
           type: array
           items:
@@ -11123,12 +11124,14 @@ components:
           nullable: true
         username:
           type: string
-          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         password: hashedsoopersecretvalue
         username: darius
       additionalProperties: false
+      required:
+        - username
+        - password
     BotDetectionPlugin:
       x-speakeasy-entity: GatewayPluginBotDetection
       allOf:
@@ -12239,7 +12242,6 @@ components:
           nullable: true
         username:
           type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -12247,6 +12249,8 @@ components:
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
         username: xerxes
       additionalProperties: false
+      required:
+        - username
     HMACAuthWithoutParents:
       x-speakeasy-entity: GatewayHMACAuth
       type: object
@@ -12268,12 +12272,13 @@ components:
           nullable: true
         username:
           type: string
-          nullable: true
       example:
         id: 75695322-e8a0-4109-aed4-5416b0308d85
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
         username: xerxes
       additionalProperties: false
+      required:
+        - username
     HmacAuthPlugin:
       x-speakeasy-entity: GatewayPluginHmacAuth
       allOf:
@@ -13529,7 +13534,6 @@ components:
           nullable: true
         key:
           type: string
-          nullable: true
         tags:
           type: array
           items:
@@ -13541,6 +13545,8 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
+      required:
+        - key
     KeyAuthEncPlugin:
       x-speakeasy-entity: GatewayPluginKeyAuthEnc
       allOf:
@@ -13648,7 +13654,6 @@ components:
           nullable: true
         key:
           type: string
-          nullable: true
         tags:
           type: array
           items:
@@ -13658,6 +13663,8 @@ components:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
+      required:
+        - key
     KeySet:
       x-speakeasy-entity: GatewayKeySet
       type: object
@@ -15590,19 +15597,21 @@ components:
           nullable: true
         subject_name:
           type: string
-          nullable: true
         tags:
           type: array
           items:
             type: string
           nullable: true
       example:
-        ca_certificate: bd1f8ca6-cb6b-437f-a4ab-9ce5555fbf1c
+        ca_certificate:
+          id: b2f34145-0343-41a4-9602-4c69dec2f260
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         subject_name: CA_Subject_Name
       additionalProperties: false
+      required:
+        - subject_name
     MTLSAuthWithoutParents:
       x-speakeasy-entity: GatewayMTLSAuth
       type: object
@@ -15624,17 +15633,19 @@ components:
           nullable: true
         subject_name:
           type: string
-          nullable: true
         tags:
           type: array
           items:
             type: string
           nullable: true
       example:
-        ca_certificate: bd1f8ca6-cb6b-437f-a4ab-9ce5555fbf1c
+        ca_certificate:
+          id: b2f34145-0343-41a4-9602-4c69dec2f260
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         subject_name: CA_Subject_Name
       additionalProperties: false
+      required:
+        - subject_name
     MockingPlugin:
       x-speakeasy-entity: GatewayPluginMocking
       allOf:
