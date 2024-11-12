@@ -125,6 +125,63 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v3/portal/snippets:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-portal-snippets
+      summary: List Portal Snippets
+      description: >-
+        Returns a paginated list of snippets for the portal. Each snippet has a name, title, and content.
+        Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByTitleEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByTitleContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPathContains'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPublicEquality'
+        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippetsResponse'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/portal/snippets/content:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-snippet
+      summary: Get Portal Snippet
+      description: >-
+        Returns a single snippet for the portal. Each snippet has a name, title, and content.
+        Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The name of the snippet
+          schema:
+            type: string
+          example: snip1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+
 components:
   parameters:
     SortPortalPages:
@@ -134,6 +191,19 @@ components:
           - created_at
           - updated_at
           - path
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
+    SortPortalSnippets:
+      name: 'sort'
+      description: |
+        Sorts a collection of portal snippets. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - name
           - title
           - public
       in: query
@@ -197,6 +267,28 @@ components:
                     size: 10
                     total: 1
                     number: 1
+    ListPortalSnippetsResponse:
+      description: Paginated list of portal snippets
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalSnippets'
+          examples:
+            ListPortalSnippetResponseExample1:
+              value:
+                data:
+                  - id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                    title: 'Home'
+                    name: 'snip1'
+                    public: true
+                    description: 'Welcome snippet'
+                    created_at: '2021-09-01T00:00:00Z'
+                    updated_at: '2021-09-01T00:00:00Z'
+                meta:
+                  page:
+                    size: 10
+                    total: 1
+                    number: 1  
     GetPortalPageResponse:
       description: A single portal page
       content:
@@ -209,6 +301,22 @@ components:
                 id: 582b9327-3eba-4bfe-9438-6066840dbbca
                 title: 'Home'
                 path: '/'
+                content: '# Welcome to the Developer Portal'
+                public: true
+                created_at: '2021-09-01T00:00:00Z'
+                updated_at: '2021-09-01T00:00:00Z'
+    GetPortalSnippetResponse:
+      description: A single portal snippet
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippet'
+          examples:
+            PortalPageResponseExample1:
+              value:
+                id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                title: 'Home'
+                name: 'snip1'
                 content: '# Welcome to the Developer Portal'
                 public: true
                 created_at: '2021-09-01T00:00:00Z'
@@ -339,15 +447,36 @@ components:
       description: The renderable markdown content of the page
       type: string
       example: '# Welcome to the Developer Portal'
-    PagePublicStatus:
-      title: Page Public Status
-      description: Whether the page is public or private. Private pages are only accessible to authenticated users.
+    PublicStatus:
+      title: Resource Public Status
+      description: Whether the page or snippet is public or private. Private pages and snippets are only accessible to authenticated users.
       type: boolean
       example: true
-    PageDescription:
-      title: PageDescription
+    Description:
+      title: Resource Description
       type: string
       example: 'A custom page about developer portals'
+    SnippetId:
+      title: Snippet ID
+      description: The unique identifier of the snippet
+      type: string
+      format: uuid
+      example: 582b9327-3eba-4bfe-9438-6066840dbbcb
+    SnippetTitle:
+      title:  Snippet Title
+      description: The title of the snippet
+      type: string
+      example: My Snippet
+    SnippetContent:
+      title:  Snippet Content
+      description: The renderable markdown content of the snippet
+      type: string
+      example: '# Welcome to the Developer Portal'
+    SnippetName:
+      title: Snippet Name
+      description: The name of the snippet (no leading slash)
+      type: string
+      example: my-snippet
     ListPortalPages:
       title: List Portal Pages
       description: A paginated list of pages for the portal
@@ -358,6 +487,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+    ListPortalSnippets:
+      title: List Portal Snippets
+      description: A paginated list of snippets for the portal
+      type: object
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalSnippetInfo'
         meta:
           $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
     PortalPageInfo:
@@ -373,9 +514,9 @@ components:
         title:
           $ref: '#/components/schemas/PageTitle'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -383,6 +524,33 @@ components:
       required:
         - id
         - path
+        - title
+        - public
+        - created_at
+        - updated_at
+    PortalSnippetInfo:
+      title: Portal Snippet Info
+      description: A single snippet for the portal
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/SnippetId'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - name
         - title
         - public
         - created_at
@@ -402,9 +570,9 @@ components:
         content:
           $ref: '#/components/schemas/PageContent'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
@@ -413,6 +581,36 @@ components:
         - id
         - title
         - path
+        - content
+        - public
+        - created_at
+        - updated_at
+    PortalSnippet:
+      title: Portal Snippet
+      description: A single snippet for the portal
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - title
+        - name
         - content
         - public
         - created_at

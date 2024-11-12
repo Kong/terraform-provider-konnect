@@ -43,6 +43,15 @@ components:
       in: path
       required: true
       description: ID of the page.
+    SnippetId:
+      schema:
+          type: string
+          format: uuid
+          example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: snippetId
+      in: path
+      required: true
+      description: ID of the snippet.
   schemas:
     PortalCustomization:
       title: PortalCustomization

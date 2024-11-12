@@ -79,8 +79,72 @@ paths:
         - {}
       tags:
         - portal
+  /api/v3/portal/snippets:
+    get:
+      operationId: list-portal-snippets
+      summary: List Portal Snippets
+      description: 'Returns a paginated list of snippets for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByTitleEquality'
+        - $ref: '#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '#/components/parameters/FilterByTitleContains'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByPathContains'
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippetsResponse'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/portal/snippets/content:
+    get:
+      operationId: get-portal-snippet
+      summary: Get Portal Snippet
+      description: 'Returns a single snippet for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - name: name
+          in: query
+          description: The name of the snippet
+          required: true
+          schema:
+            type: string
+          example: snip1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
 components:
   parameters:
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
     FilterByPathContains:
       name: 'filter[path][contains]'
       description: Filter by contains comparison of the path property with a supplied substring
@@ -182,6 +246,19 @@ components:
       required: false
       schema:
         type: string
+    SortPortalSnippets:
+      name: sort
+      description: |
+        Sorts a collection of portal snippets. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - name
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
     PortalContext:
       description: describe the portal execution context
@@ -263,15 +340,36 @@ components:
       type: string
       example: '# Welcome to the Developer Portal'
       title: Page Content
-    PagePublicStatus:
-      description: Whether the page is public or private. Private pages are only accessible to authenticated users.
+    PublicStatus:
+      description: Whether the page or snippet is public or private. Private pages and snippets are only accessible to authenticated users.
       type: boolean
       example: true
-      title: Page Public Status
-    PageDescription:
+      title: Resource Public Status
+    Description:
       type: string
       example: A custom page about developer portals
-      title: PageDescription
+      title: Resource Description
+    SnippetId:
+      description: The unique identifier of the snippet
+      type: string
+      format: uuid
+      example: 582b9327-3eba-4bfe-9438-6066840dbbcb
+      title: Snippet ID
+    SnippetTitle:
+      description: The title of the snippet
+      type: string
+      example: My Snippet
+      title: Snippet Title
+    SnippetContent:
+      description: The renderable markdown content of the snippet
+      type: string
+      example: '# Welcome to the Developer Portal'
+      title: Snippet Content
+    SnippetName:
+      description: The name of the snippet (no leading slash)
+      type: string
+      example: my-snippet
+      title: Snippet Name
     ListPortalPages:
       description: A paginated list of pages for the portal
       type: object
@@ -284,6 +382,18 @@ components:
           $ref: '#/components/schemas/PaginatedMeta'
       additionalProperties: false
       title: List Portal Pages
+    ListPortalSnippets:
+      description: A paginated list of snippets for the portal
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalSnippetInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      additionalProperties: false
+      title: List Portal Snippets
     PortalPageInfo:
       description: A single page for the portal
       type: object
@@ -295,9 +405,9 @@ components:
         title:
           $ref: '#/components/schemas/PageTitle'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -311,6 +421,33 @@ components:
         - created_at
         - updated_at
       title: Portal Page Info
+    PortalSnippetInfo:
+      description: A single snippet for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SnippetId'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - title
+        - public
+        - created_at
+        - updated_at
+      title: Portal Snippet Info
     PortalPage:
       description: A single page for the portal
       type: object
@@ -324,9 +461,9 @@ components:
         content:
           $ref: '#/components/schemas/PageContent'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -341,6 +478,36 @@ components:
         - created_at
         - updated_at
       title: Portal Page
+    PortalSnippet:
+      description: A single snippet for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - name
+        - content
+        - public
+        - created_at
+        - updated_at
+      title: Portal Snippet
     PortalCustomization:
       type: object
       additionalProperties: true
@@ -476,6 +643,28 @@ components:
                     size: 10
                     total: 1
                     number: 1
+    ListPortalSnippetsResponse:
+      description: Paginated list of portal snippets
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalSnippets'
+          examples:
+            ListPortalSnippetResponseExample1:
+              value:
+                data:
+                  - id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                    title: Home
+                    name: snip1
+                    public: true
+                    description: Welcome snippet
+                    created_at: '2021-09-01T00:00:00Z'
+                    updated_at: '2021-09-01T00:00:00Z'
+                meta:
+                  page:
+                    size: 10
+                    total: 1
+                    number: 1
     GetPortalPageResponse:
       description: A single portal page
       content:
@@ -488,6 +677,22 @@ components:
                 id: 582b9327-3eba-4bfe-9438-6066840dbbca
                 title: Home
                 path: /
+                content: '# Welcome to the Developer Portal'
+                public: true
+                created_at: '2021-09-01T00:00:00Z'
+                updated_at: '2021-09-01T00:00:00Z'
+    GetPortalSnippetResponse:
+      description: A single portal snippet
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippet'
+          examples:
+            PortalPageResponseExample1:
+              value:
+                id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                title: Home
+                name: snip1
                 content: '# Welcome to the Developer Portal'
                 public: true
                 created_at: '2021-09-01T00:00:00Z'

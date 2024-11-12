@@ -3124,6 +3124,75 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
+  '/v3/portal/{portalId}/snippets':
+    get:
+      operationId: list-portal-snippets
+      summary: List Portal snippets
+      description: Returns the paginated list of custom snippets that have been created for this portal.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter snippets returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalSnippetsFilters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippets'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalSnippetsBadRequestExample1:
+                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample1'
+                ListPortalSnippetsBadRequestExample2:
+                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
+    post:
+      operationId: create-portal-snippet
+      summary: Create Portal Snippet
+      description: 'Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSnippet'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalPageBadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample1'
+                UpdatePortalSnippetBadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
   '/v3/portals/{portalId}/pages':
     get:
       operationId: list-portal-pages
@@ -3261,6 +3330,74 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Pages
+  '/v3/portals/{portalId}/snippets/{snippetId}':
+    get:
+      operationId: get-portal-snippet
+      summary: Get Portal Snippet
+      description: 'Returns the configuration of a single custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
+    patch:
+      operationId: update-portal-snippet
+      summary: Update Portal Snippet
+      description: Updates the configuration of a single custom snippet for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalSnippet'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                'UpdatePortalPageBadRequestExample1:':
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample1'
+                'UpdatePortalPageBadRequestExample2:':
+                  $ref: '#/components/examples/UpdatePortalPageBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
+    delete:
+      operationId: delete-portal-snippet
+      summary: Delete Portal Snippet
+      description: Deletes a single custom snippet for this portal.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/SnippetId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
   /v3/roles:
     get:
       operationId: get-predefined-roles
@@ -3601,6 +3738,15 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/SortQuery'
+    SnippetId:
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+      name: snippetId
+      in: path
+      required: true
+      description: ID of the snippet.
     SortPortalPages:
       name: sort
       description: |
@@ -3608,6 +3754,19 @@ components:
           - created_at
           - updated_at
           - path
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
+    SortPortalSnippets:
+      name: sort
+      description: |
+        Sorts a collection of portal snippets. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - name
           - title
           - public
       in: query
@@ -6565,6 +6724,23 @@ components:
           $ref: '#/components/schemas/DateTimeFieldFilter'
       additionalProperties: false
       title: PortalPagesFilters
+    PortalSnippetsFilters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+      additionalProperties: false
+      title: PortalSnippetsFilters
     PagePath:
       description: The path of a page in a portal with a leading slash.
       type: string
@@ -6583,22 +6759,46 @@ components:
       example: '# Welcome to My Page'
       maxLength: 1000000
       title: PageContent
-    PagePublicStatus:
-      description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+    SnippetName:
+      description: The name of a snippet in a portal with a leading slash.
+      type: string
+      example: my-snippet
+      maxLength: 512
+      title: SnippetName
+    SnippetTitle:
+      description: The title of a snippet in a portal.
+      type: string
+      example: My Snippet
+      maxLength: 512
+      title: SnippetTitle
+    SnippetContent:
+      description: The renderable markdown content of a page in a portal.
+      type: string
+      example: '# Welcome to My Snippet'
+      maxLength: 1000000
+      title: SnippetContent
+    PublicStatus:
+      description: Whether the resource is publicly accessible to non-authenticated users. Defaults to false.
       type: boolean
       example: true
-      title: PagePublicStatus
-    PagePublishStatus:
-      description: Whether a page is visible on a given portal. Defaults to false.
+      title: PublicStatus
+    PublishedStatus:
+      description: Whether the resource is visible on a given portal. Defaults to false.
       type: boolean
       example: true
-      title: PagePublishStatus
-    PageDescription:
+      title: PublishedStatus
+    Description:
       type: string
       example: A custom page about developer portals
       maxLength: 160
-      title: PageDescription
+      title: Resource Description
     PagePublicStatusWithDefault:
+      description: Whether a page is publicly accessible to non-authenticated users.
+      type: boolean
+      example: true
+      default: false
+      title: PagePublicStatusWithDefault
+    SnippetPublicStatusWithDefault:
       description: Whether a page is publicly accessible to non-authenticated users.
       type: boolean
       example: true
@@ -6615,11 +6815,11 @@ components:
         content:
           $ref: '#/components/schemas/PageContent'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         published:
-          $ref: '#/components/schemas/PagePublishStatus'
+          $ref: '#/components/schemas/PublishedStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
       additionalProperties: false
       title: UpdatePortalPageRequest
     CreatePortalPageRequest:
@@ -6635,9 +6835,9 @@ components:
         public:
           $ref: '#/components/schemas/PagePublicStatusWithDefault'
         published:
-          $ref: '#/components/schemas/PagePublishStatus'
+          $ref: '#/components/schemas/PublishedStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
       additionalProperties: false
       required:
         - path
@@ -6655,11 +6855,11 @@ components:
         title:
           $ref: '#/components/schemas/PageTitle'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         published:
-          $ref: '#/components/schemas/PagePublishStatus'
+          $ref: '#/components/schemas/PublishedStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6674,6 +6874,36 @@ components:
         - updated_at
         - published
       title: PortalPageInfo
+    PortalSnippetInfo:
+      description: Information about a snippet in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        published:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - title
+        - public
+        - published
+        - created_at
+        - updated_at
+      title: PortalSnippetInfo
     PortalPageResponse:
       description: Details about a page in a portal.
       type: object
@@ -6687,11 +6917,11 @@ components:
         content:
           $ref: '#/components/schemas/PageContent'
         public:
-          $ref: '#/components/schemas/PagePublicStatus'
+          $ref: '#/components/schemas/PublicStatus'
         published:
-          $ref: '#/components/schemas/PagePublishStatus'
+          $ref: '#/components/schemas/PublishedStatus'
         description:
-          $ref: '#/components/schemas/PageDescription'
+          $ref: '#/components/schemas/Description'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6737,6 +6967,108 @@ components:
         - data
         - meta
       title: ListPortalPagesResponse
+    PortalSnippetResponse:
+      description: Details about a page in a portal.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        published:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - content
+        - public
+        - published
+        - created_at
+        - updated_at
+      title: PortalSnippetResponse
+    ListPortalSnippetsResponse:
+      description: A paginated list of custom pages in a portal.
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalSnippetInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      example:
+        data:
+          - id: 437c7192-fea0-4f35-8478-c8d57783f8c1
+            name: my-snippet
+            title: My Snippet
+            public: true
+            published: true
+            description: A custom snippet
+            created_at: '2021-01-01T00:00:00Z'
+            updated_at: '2021-01-01T00:00:00Z'
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+      additionalProperties: false
+      required:
+        - data
+        - meta
+      title: ListPortalPagesResponse
+    UpdatePortalSnippetRequest:
+      description: Update a snippet in a portal.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        published:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+      additionalProperties: false
+      title: UpdatePortalSnippetRequest
+    CreatePortalSnippetRequest:
+      description: Create a snippet in a portal.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/SnippetPublicStatusWithDefault'
+        published:
+          $ref: '#/components/schemas/PublishedStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+      additionalProperties: false
+      required:
+        - name
+        - title
+        - content
+      title: CreatePortalSnippetRequest
     ServerlessCloudGateway:
       description: A serverless cloud gateway
       type: object
@@ -10254,6 +10586,89 @@ components:
             reason: value of "title" must not exceed 512 characters
             source: body
             maximum: 512
+    CreatePortalSnippetExample1:
+      value:
+        title: Getting Started
+        name: getting-started
+        content: Welcome to the Getting Started page. This is where you can learn how to use our APIs.
+        public: true
+        published: true
+    UpdatePortalSnippetExample1:
+      value:
+        title: About Us
+        name: about-us
+        content: Welcome to the About Us page. This is where you can learn about our company.
+    PortalSnippetExample1:
+      value:
+        id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: snip1
+        title: Home
+        content: 'Welcome to the first snippet of the portal. '
+        public: true
+        published: true
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+    ListPortalSnippetsExample1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            name: snip1
+            title: Home
+            public: true
+            published: true
+            description: A custom snippet
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+    ListPortalSnippetsBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: 'page[size]'
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalSnippetsBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: 'filter[my_attribute]'
+            rule: unknown_property
+            reason: '"filter[my_attribute]" is not allowed'
+            source: query
+    UpdatePortalSnippetBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalSnippetBadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: title
+            rule: max_length
+            reason: value of "title" must not exceed 512 characters
+            source: body
+            maximum: 512
     ServerlessCloudGatewayExample:
       value:
         control_plane:
@@ -10680,6 +11095,26 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/UpdatePortalPageExample1'
+    CreatePortalSnippet:
+      description: Create a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePortalSnippetRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/CreatePortalSnippetExample1'
+    UpdatePortalSnippet:
+      description: Update a snippet in a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePortalSnippetRequest'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalSnippetExample1'
     CreateServiceHubServiceBody:
       description: Request body schema for creating a service.
       required: true
@@ -12321,6 +12756,24 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/ListPortalPagesExample1'
+    PortalSnippet:
+      description: Details about a snippet in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippetResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalSnippetExample1'
+    ListPortalSnippets:
+      description: A paginated list of custom snippets in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalSnippetsResponse'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ListPortalSnippetsExample1'
     UpdateServerlessCloudGatewayResponse:
       description: A response to updating a serverless cloud gateway.
       content:
@@ -12881,6 +13334,8 @@ tags:
     description: APIs related to Konnect Developer Portal Customization.
   - name: Portal Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
+  - name: Portal Snippets
+    description: APIs related to Konnect Developer Portal Custom Snippets.
   - name: Serverless Cloud Gateways
   - name: Add-ons
   - name: Installed Add-ons
