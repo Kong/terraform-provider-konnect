@@ -8,6 +8,7 @@ info:
     url: 'https://cloud.konghq.com'
 tags:
   - name: Data-Plane Group Configurations
+  - name: Custom Domains
 servers:
   - url: https://global.api.konghq.com/v2
     description: Base URL for the global region
@@ -92,6 +93,125 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Data-Plane Group Configurations
+  /cloud-gateways/custom-domains:
+    get:
+      summary: List Custom Domains
+      description: |
+        Returns a paginated collection of custom domains across control-planes for an organization (restricted by
+        permitted control-plane reads).
+      operationId: list-custom-domains
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainsFilter'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListCustomDomainsResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+    post:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#create
+      summary: Create Custom Domain
+      description: |
+        Creates a new custom domain for a control-plane (restricted by permitted control-plane write
+        action).
+      operationId: create-custom-domains
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomDomainRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateCustomDomainResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
+      tags:
+        - Custom Domains
+  /cloud-gateways/custom-domains/{customDomainId}:
+    get:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#read
+      summary: Get Custom Domain
+      description: Retrieves a custom domain by ID (restricted by permitted control-plane reads).
+      operationId: get-custom-domain
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveCustomDomainResponse'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+    delete:
+      x-speakeasy-entity-operation: CloudGatewayCustomDomain#delete
+      x-speakeasy-retries:
+        strategy: backoff
+        backoff:
+          initialInterval: 10000
+          maxInterval: 60000
+          maxElapsedTime: 1800000
+          exponent: 1.5
+        statusCodes:
+          - 400
+        retryConnectionErrors: false
+      summary: Delete Custom Domain
+      description: Deletes a custom domain by ID (restricted by permitted control-plane reads).
+      operationId: delete-custom-domain
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+  /cloud-gateways/custom-domains/{customDomainId}/online-status:
+    get:
+      summary: Get Custom Domain Online Status
+      description: Retrieves the CNAME and SSL status of a custom domain.
+      operationId: get-custom-domain-online-status
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveCustomDomainOnlineStatusResponse'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '403':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Custom Domains
 components:
   securitySchemes:
     konnectAccessToken:
@@ -116,6 +236,22 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ConfigurationId'
+      x-speakeasy-match: id
+    CustomDomainsFilter:
+      name: filter
+      description: Filters supported for custom domains on the global API.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/CustomDomainsFilterParameters'
+      style: deepObject
+    CustomDomainId:
+      name: customDomainId
+      description: ID of the custom domain to operate on.
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/CustomDomainId'
       x-speakeasy-match: id
   responses:
     ListConfigurationsResponse:
@@ -186,6 +322,41 @@ components:
           examples:
             Configuration Conflict:
               $ref: '#/components/examples/ConfigurationConflictExample'
+    ListCustomDomainsResponse:
+      description: A paginated list for a collection of custom domains.
+      content:
+        application/json:
+          schema:
+            title: 'ListGlobalCustomDomainsResponse'
+            type: object
+            properties:
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomDomain'
+            required:
+              - meta
+              - data
+    CreateCustomDomainResponse:
+      description: Response format for creating a custom domain for a control-plane in the global API.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomain'
+    RetrieveCustomDomainResponse:
+      description: Response format for retrieving a custom domain for a control-plane.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomain'
+    RetrieveCustomDomainOnlineStatusResponse:
+      description: Response format for retrieving the CNAME and SSL status of a custom domain.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomainOnlineStatus'
   schemas:
     ConfigurationId:
       type: string
@@ -757,6 +928,283 @@ components:
       title: ControlPlaneGeoFieldOrEqualityFilter
       description: |
         Filter a control-plane geo by determining if the value is equal to any in a set of values, where the set is a
+        comma-delimited list.
+      type: object
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+    CreateCustomDomainRequest:
+      title: 'CreateCustomDomainRequest'
+      description: Request schema for creating a custom domain in the global API.
+      type: object
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+          enum:
+            - dedicated.v0
+            - serverless.v0
+        control_plane_id:
+          $ref: '#/components/schemas/ControlPlaneId'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+        domain:
+          $ref: '#/components/schemas/CustomDomainName'
+      required:
+        - kind
+        - control_plane_id
+        - control_plane_geo
+        - domain
+    CustomDomainsFilterParameters:
+      title: 'CustomDomainsFilterParameters'
+      type: object
+      additionalProperties: false
+      properties:
+        control_plane_id:
+          $ref: '#/components/schemas/IDFieldFilter'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeoFieldFilter'
+        domain:
+          $ref: '#/components/schemas/CloudGatewaysStringFieldFilterOverride'
+        state:
+          $ref: '#/components/schemas/CustomDomainStateFieldFilter'
+    BaseCustomDomain:
+      title: Base Configuration
+      type: object
+      discriminator:
+        propertyName: kind
+        mapping:
+          'serverless.v0': '#/components/schemas/ServerlessCustomDomain'
+          'dedicated.v0': '#/components/schemas/DedicatedCustomDomain'
+      properties:
+        id:
+          $ref: '#/components/schemas/CustomDomainId'
+        kind:
+          type: string
+          enum:
+            - dedicated.v0
+            - serverless.v0
+        control_plane_id:
+          $ref: '#/components/schemas/ControlPlaneId'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+        domain:
+          $ref: '#/components/schemas/CustomDomainName'
+        certificate_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: |
+            Certificate ID for the certificate representing this domain and stored on data-planes for this
+            control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.
+          readOnly: true
+          example: 3b7cbeee-fbec-440e-a5ef-89e7dec3b9d0
+        sni_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: |
+            Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
+            via the control-planes API for this custom domain's control-plane.
+          readOnly: true
+          example: a8f11ea8-af09-4422-9735-5d4f8910aba1
+        state:
+          $ref: '#/components/schemas/CustomDomainState'
+        state_metadata:
+          title: 'CustomDomainStateMetadata'
+          type: object
+          description: |
+            Metadata describing the backing state of the custom domain and why it may be in an erroneous state.
+          additionalProperties: false
+          properties:
+            reported_status:
+              type: string
+              description: Reported status of the custom domain from backing infrastructure.
+              example: INVALID
+            reason:
+              type: string
+              description: |
+                Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.
+              example: |
+                CNAME points to '_acme-challenge.<prefix>.gateways.konghq.tech.' instead of '_acme-challenge.<prefix>.acme.gateways.konghq.tech.'
+          readOnly: true
+        entity_version:
+          type: integer
+          description: |
+            Monotonically-increasing version count of the custom domain, to indicate the order of updates to the custom
+            domain.
+          readOnly: true
+          example: 1
+        created_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An RFC-3339 timestamp representation of custom domain creation date.
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          description: An RFC-3339 timestamp representation of custom domain update date.
+          readOnly: true
+      required:
+        - id
+        - kind
+        - control_plane_id
+        - control_plane_geo
+        - domain
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+    DedicatedCustomDomain:
+      title: Dedicated Custom Domain
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomDomain'
+        - properties:
+            kind:
+              type: string
+              enum:
+                - dedicated.v0
+          required:
+            - kind
+    ServerlessCustomDomain:
+      title: Serverless Custom Domain
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomDomain'
+        - properties:
+            kind:
+              type: string
+              enum:
+                - serverless.v0
+          required:
+            - kind
+    CustomDomain:
+      x-speakeasy-entity: CloudGatewayCustomDomain
+      title: Custom Domain
+      description: Object containing information about a custom domain for a control-plane.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/DedicatedCustomDomain'
+        - $ref: '#/components/schemas/ServerlessCustomDomain'
+    CustomDomainOnlineStatus:
+      title: Custom Domain Online Status
+      type: object
+      properties:
+        cname:
+          $ref: '#/components/schemas/CustomDomainOnlinePropertyStatus'
+        ssl:
+          $ref: '#/components/schemas/CustomDomainOnlinePropertyStatus'
+      additionalProperties: false
+      required:
+        - cname
+        - ssl
+    ControlPlaneId:
+      type: string
+      format: uuid
+      example: 0949471e-b759-45ba-87ab-ee63fb781388
+    CustomDomainName:
+      title: Custom Domain Name
+      type: string
+      description: Domain name of the custom domain.
+      example: 'example.com'
+    IDFieldFilter:
+      title: 'IDFieldFilter'
+      oneOf:
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldNEQFilter'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldOEQFilter'
+    CustomDomainId:
+      type: string
+      format: uuid
+      example: 39ed3790-085d-4605-9627-f96d86aaf425
+      readOnly: true
+    CloudGatewaysStringFieldFilterOverride:
+      title: 'CloudGatewaysStringFieldFilterOverride'
+      oneOf:
+        - $ref: '#/components/schemas/CloudGatewaysStringFieldEqualsFilterOverride'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldContainsFilter'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldNEQFilter'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldOEQFilter'
+        - $ref: '../../../../common/definitions/filters.yaml#/components/schemas/StringFieldOContainsFilter'
+    CustomDomainStateFieldFilter:
+      title: 'CustomDomainStateFieldFilter'
+      oneOf:
+        - $ref: '#/components/schemas/CustomDomainStateFieldEqualsFilter'
+        - $ref: '#/components/schemas/CustomDomainStateFieldNotEqualsFilter'
+        - $ref: '#/components/schemas/CustomDomainStateFieldOrEqualityFilter'
+    CustomDomainState:
+      title: Custom Domain State
+      type: string
+      description: State of the custom domain.
+      enum:
+        - created
+        - initializing
+        - ready
+        - terminating
+        - terminated
+        - error
+      readOnly: true
+    CustomDomainOnlinePropertyStatus:
+      title: Custom Domain Online Property Status
+      description: Set of available statuses for the online properties of a custom domain.
+      type: string
+      readOnly: true
+      enum:
+        - verified
+        - unverified
+    CloudGatewaysStringFieldEqualsFilterOverride:
+      title: StringFieldEqualsFilter
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required: [ eq ]
+      x-examples:
+        example-1: 'equals-some-value'
+        example-2:
+          eq: 'some-value'
+    CustomDomainStateFieldEqualsFilter:
+      title: CustomDomainStateFieldEqualsFilter
+      description: Filter custom domain state by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/CustomDomainState'
+        - type: object
+          title: CustomDomainStateFieldEqualsComparison
+          properties:
+            eq:
+              $ref: '#/components/schemas/CustomDomainState'
+          required:
+            - eq
+    CustomDomainStateFieldNotEqualsFilter:
+      x-examples:
+        example-1:
+          neq: 'ready'
+      title: CustomDomainStateFieldNotEqualsFilter
+      description: Filter custom domain state by inequality match.
+      type: object
+      properties:
+        neq:
+          $ref: '#/components/schemas/CustomDomainState'
+      required:
+        - neq
+    CustomDomainStateFieldOrEqualityFilter:
+      x-examples:
+        example-1:
+          oeq: 'ready,initializing'
+      title: CustomDomainStateFieldOrEqualityFilter
+      description: |
+        Filter custom domain state by determining if the value is equal to any in a set of values, where the set is a
         comma-delimited list.
       type: object
       properties:
