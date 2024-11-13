@@ -106,8 +106,6 @@ paths:
       x-unstable: true
       operationId: list-user-configurations
       parameters:
-        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore"
-        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter"
         - $ref: "#/components/parameters/ConfigurationFilter"
       responses:
         "200":
@@ -334,14 +332,11 @@ components:
             additionalProperties: false
             required:
               - data
-              - meta
             properties:
               data:
                 type: array
                 items:
                   $ref: "#/components/schemas/UserConfiguration"
-              meta:
-                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/CursorMetaPage"
           examples:
             User Configurations List:
               $ref: "#/components/examples/UserConfigurationListResponse"
@@ -491,8 +486,6 @@ components:
         - event_description
         - event_namespace
         - event_subscription_count
-        - created_at
-        - updated_at
       properties:
         event_id:
           type: string
@@ -505,10 +498,6 @@ components:
         event_subscription_count:
           type: integer
           default: 0
-        created_at:
-          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
-        updated_at:
-          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
     EventSubscriptionResponse:
       description: Subscription response associated with a notification event.
       type: object
@@ -636,19 +625,11 @@ components:
             event_description: Data Plane has been out of sync for >5 minutes.
             event_namespace: gateway-manager
             event_subscription_count: 2
-            created_at: 2023-01-01T00:00:00.000Z
-            updated_at: 2023-01-01T00:00:00.000Z
           - event_id: api-products-weekly-summary
             event_title: API Products Weekly Summary
             event_description: Your API Products summary is available.
             event_namespace: api-products
             event_subscription_count: 2
-            created_at: 2023-01-01T00:00:00.000Z
-            updated_at: 2023-01-01T00:00:00.000Z
-        meta:
-          next: ""
-          previous: ""
-          size: 10
     EventSubscriptionListResponse:
       value:
         data:
