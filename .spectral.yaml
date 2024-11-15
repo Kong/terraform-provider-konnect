@@ -607,3 +607,7 @@ overrides:
     rules:
       server-url-must-contain-version-aip-3101: "off"
       server-in-approved-list: "off"
+  - files:
+      - "src/konnect/definitions/notification-hub/**/openapi.yaml"
+    rules:
+      errors-post-not-contain-200: "off"

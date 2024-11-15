@@ -98,6 +98,29 @@ paths:
       tags:
         - Notifications
 
+  /notifications/me/inbox/bulk:
+    post:
+      summary: Mark a list of notifications to a status.
+      description: Mark a list of notifications to a status.
+      x-internal: true
+      x-unstable: true
+      operationId: bulk-notifications
+      requestBody:
+        $ref: "#/components/requestBodies/BulkRequest"
+      responses:
+        "200":
+          description: No Content
+        "400":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/BadRequest"
+        "401":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Unauthorized"
+        "403":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/Forbidden"
+        "404":
+          $ref: "../../../../common/definitions/errors.yaml#/components/responses/NotFound"
+      tags:
+        - Notifications
+
   /notifications/me/configurations:
     get:
       summary: List available user configurations.
@@ -292,6 +315,15 @@ components:
           examples:
             Example Request Body:
               $ref: "#/components/examples/EventSubscriptionPayload"
+    BulkRequest:
+      description: Request body schema for bulk status update.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BulkPayload"
+          examples:
+            Example Request Body:
+              $ref: "#/components/examples/BulkPayload"
 
   responses:
     NotificationResponse:
@@ -545,6 +577,25 @@ components:
           type: boolean
           description: Enable/Disable complete subscription within an event.
 
+    BulkPayload:
+      description: Request body schema for bulk status update.
+      type: object
+      required:
+        - ids
+        - status
+      properties:
+        ids:
+          type: array
+          items:
+            # UUID v7 regex not supported in https://datatracker.ietf.org/doc/html/rfc4122
+            # TODO: Type should be changed back to uuid once kin-openapi aligns to https://www.rfc-editor.org/rfc/rfc9562.html
+            type: string
+          minItems: 1
+          maxItems: 100
+          uniqueItems: true
+        status:
+          $ref: "#/components/schemas/NotificationStatus"
+
   examples:
     NotificationUpdatePayload:
       value:
@@ -661,6 +712,12 @@ components:
         enabled: true
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
+    BulkPayload:
+      value:
+        ids:
+          - 93f8380e-7798-4566-99e3-2edf2b57d289
+          - 93f8380e-7798-4566-99e3-2edf2b57d290
+        status: READ
   securitySchemes:
     personalAccessToken:
       $ref: "../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken"

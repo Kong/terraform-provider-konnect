@@ -88,6 +88,26 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
+  /notifications/me/inbox/bulk:
+    post:
+      operationId: bulk-notifications
+      summary: Mark a list of notifications to a status.
+      description: Mark a list of notifications to a status.
+      requestBody:
+        $ref: '#/components/requestBodies/BulkRequest'
+      responses:
+        '200':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
   /notifications/me/configurations:
     get:
       operationId: list-user-configurations
@@ -445,6 +465,22 @@ components:
         - entities
         - channels
         - enabled
+    BulkPayload:
+      description: Request body schema for bulk status update.
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          uniqueItems: true
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+      required:
+        - ids
+        - status
     StringFieldEqualsFilter:
       description: Filter a string value by exact match.
       type: string
@@ -917,6 +953,12 @@ components:
         enabled: true
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
+    BulkPayload:
+      value:
+        ids:
+          - 93f8380e-7798-4566-99e3-2edf2b57d289
+          - 93f8380e-7798-4566-99e3-2edf2b57d290
+        status: READ
     UnauthorizedExample:
       value:
         status: 401
@@ -954,6 +996,15 @@ components:
           examples:
             Example Request Body:
               $ref: '#/components/examples/EventSubscriptionPayload'
+    BulkRequest:
+      description: Request body schema for bulk status update.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BulkPayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/BulkPayload'
   responses:
     NotificationResponse:
       description: View a single notification.
