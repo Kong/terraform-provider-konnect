@@ -1330,6 +1330,18 @@ paths:
           $ref: '#/components/responses/ConfigStoreSecretNotFound'
       tags:
         - Config Store Secrets
+  '/v2/control-planes/{controlPlaneId}/expected-config-version':
+    get:
+      operationId: get-expected-config-version
+      summary: Fetch Expected Config Version
+      description: Retrieve the expected config version for this control plane. The expected config version can be used to verify if the config version of a data plane node is up to date with the control plane. The config version will be the same if they are in sync.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetExpectedConfigVersionResponse'
+      tags:
+        - DP Nodes
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   '/v2/control-planes/{controlPlaneId}/observability/debug-sessions':
     get:
       operationId: list-debug-sessions
@@ -13143,6 +13155,21 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BaseError'
+    GetExpectedConfigVersionResponse:
+      description: Response body for retrieving the expected config version of the control plane.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              expected_config_version:
+                description: The expected configuration version.
+                type: string
+              created_at:
+                description: Date the control plane configuration version was created.
+                type: integer
+            required:
+              - expected_config_version
     ListConfigStoresResponse:
       description: List of Config Stores
       content:
@@ -13377,6 +13404,8 @@ tags:
   - name: Discovery Actions
   - name: Discovery Ingestion
   - name: Metadata Field
+  - description: DP Nodes
+    name: DP Nodes
   - description: Config Stores
     name: Config Stores
   - description: Config Store Secrets

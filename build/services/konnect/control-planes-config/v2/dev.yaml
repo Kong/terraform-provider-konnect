@@ -19,6 +19,18 @@ servers:
   - url: 'https://eu.api.konghq.com/v2'
   - url: 'https://au.api.konghq.com/v2'
 paths:
+  '/control-planes/{controlPlaneId}/expected-config-version':
+    get:
+      operationId: get-expected-config-version
+      summary: Fetch Expected Config Version
+      description: Retrieve the expected config version for this control plane. The expected config version can be used to verify if the config version of a data plane node is up to date with the control plane. The config version will be the same if they are in sync.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetExpectedConfigVersionResponse'
+      tags:
+        - DP Nodes
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/config-stores':
     get:
       operationId: list-config-stores
@@ -1028,6 +1040,21 @@ components:
             CreateDebugSessionRequestExample:
               $ref: '#/components/examples/CreateDebugSessionRequestExample'
   responses:
+    GetExpectedConfigVersionResponse:
+      description: Response body for retrieving the expected config version of the control plane.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              expected_config_version:
+                description: The expected configuration version.
+                type: string
+              created_at:
+                description: Date the control plane configuration version was created.
+                type: integer
+            required:
+              - expected_config_version
     ListConfigStoresResponse:
       description: List of Config Stores
       content:
@@ -1225,6 +1252,8 @@ components:
       scheme: bearer
       description: The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs. You can generate a Personal Access Token (PAT) from the personal access token page in the Konnect dashboard.
 tags:
+  - description: DP Nodes
+    name: DP Nodes
   - description: Config Stores
     name: Config Stores
   - description: Config Store Secrets

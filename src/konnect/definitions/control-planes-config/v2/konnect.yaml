@@ -43,6 +43,24 @@ paths:
         same if they are in sync.
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
+  /control-planes/{controlPlaneId}/expected-config-version:
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch Expected Config Version
+      tags:
+        - DP Nodes
+      responses:
+        '200':
+          $ref: '#/components/responses/GetExpectedConfigVersionResponse'
+      operationId: get-expected-config-version
+      description: >-
+        Retrieve the expected config version for this control plane. The expected
+        config version can be used to verify if the config version of a data plane
+        node is up to date with the control plane. The config version will be the
+        same if they are in sync.
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   /control-planes/{controlPlaneId}/dp-client-certificates:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -996,6 +1014,23 @@ components:
               updated_at:
                 type: integer
                 description: Date the control plane configuration was last updated.
+    GetExpectedConfigVersionResponse:
+      description: >-
+        Response body for retrieving the expected config version of the control
+        plane.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - expected_config_version
+            properties:
+              expected_config_version:
+                type: string
+                description: The expected configuration version.
+              created_at:
+                description: Date the control plane configuration version was created.
+                type: integer
     ListDataPlaneCertificatesResponse:
       description: Example response
       content:
