@@ -843,6 +843,9 @@ components:
       properties:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          type: string
+          description: The optional session name.
         max_samples:
           type: integer
           description: The maximum amount of samples to collect per data plane.
@@ -852,12 +855,10 @@ components:
           example: 'http.path == "/my-path"'
           description: An expression used to filter the requests to sample.
           nullable: true
-        target_finish_at:
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          description: An ISO-8601 timestamp in which the sampling must stop in case the max samples are not reached.
-          nullable: true
+        duration_secs:
+          type: integer
+          example: 300
+          description: The duration of the debug session in seconds.
         stopped_at:
           type: string
           format: date-time
@@ -1327,7 +1328,7 @@ components:
                 data:
                   - id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
                     max_samples: 10
-                    target_finish_at: '2024-10-01T20:10:06.927Z'
+                    duration_secs: 300
                     created_at: '2024-10-01T20:00:00.000Z'
                     updated_at: '2024-10-01T20:00:00.000Z'
                 meta:
@@ -1426,7 +1427,7 @@ components:
       value:
         id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
         max_samples: 10
-        target_finish_at: '2024-10-01T20:10:06.927Z'
+        duration_secs: 300
         created_at: '2024-10-01T20:10:00.000Z'
         updated_at: '2024-10-01T20:10:00.000Z'
   securitySchemes:

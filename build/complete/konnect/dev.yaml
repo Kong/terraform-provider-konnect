@@ -9586,6 +9586,9 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/UUID'
+        name:
+          description: The optional session name.
+          type: string
         max_samples:
           description: The maximum amount of samples to collect per data plane.
           type: integer
@@ -9595,12 +9598,10 @@ components:
           type: string
           example: http.path == "/my-path"
           nullable: true
-        target_finish_at:
-          description: An ISO-8601 timestamp in which the sampling must stop in case the max samples are not reached.
-          type: string
-          format: date-time
-          example: '2022-11-04T20:10:06.927Z'
-          nullable: true
+        duration_secs:
+          description: The duration of the debug session in seconds.
+          type: integer
+          example: 300
         stopped_at:
           description: An ISO-8601 timestamp representation of stop date.
           type: string
@@ -10777,7 +10778,7 @@ components:
       value:
         id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
         max_samples: 10
-        target_finish_at: '2024-10-01T20:10:06.927Z'
+        duration_secs: 300
         created_at: '2024-10-01T20:10:00.000Z'
         updated_at: '2024-10-01T20:10:00.000Z'
   requestBodies:
@@ -13288,7 +13289,7 @@ components:
                 data:
                   - id: e7a4f6c0-5777-4a37-bcb9-2d37d3b362ee
                     max_samples: 10
-                    target_finish_at: '2024-10-01T20:10:06.927Z'
+                    duration_secs: 300
                     created_at: '2024-10-01T20:00:00.000Z'
                     updated_at: '2024-10-01T20:00:00.000Z'
                 meta:
