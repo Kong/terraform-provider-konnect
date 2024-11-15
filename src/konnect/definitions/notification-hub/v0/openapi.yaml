@@ -428,7 +428,7 @@ components:
         region:
           $ref: "#/components/schemas/NotificationRegion"
         namespace:
-          type: string
+          $ref: "#/components/schemas/NotificationNamespace"
         entity_id:
           type: string
           description: ID of the entity. Use '*' to represent all entities of this type.
@@ -475,6 +475,10 @@ components:
       enum:
         - EMAIL
         - IN_APP
+    NotificationNamespace:
+      type: string
+      enum:
+        - organization
 
     # User configuration properties
     UserConfiguration:
@@ -494,7 +498,7 @@ components:
         event_description:
           type: string
         event_namespace:
-          type: string
+          $ref: "#/components/schemas/NotificationNamespace"
         event_subscription_count:
           type: integer
           default: 0
@@ -548,13 +552,13 @@ components:
     NotificationResponse:
       summary: Notification Response
       value:
-        id: 93f8380e-7798-4566-99e3-2edf2b57d289
-        title: Data Plane Out Of Sync
-        description: Data Plane has been out of sync for >5 minutes.
+        id: 93f8380e-7798-4566-99e3-2edf2b57d290
+        title: Unpaid invoice reminder
+        description: Reminder for an unpaid invoice.
         status: UNREAD
-        region: US
-        namespace: dev-portal
-        entity_id: control-plane-1
+        region: EU
+        namespace: organization
+        entity_id: invoice-1
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     NotificationListResponse:
@@ -562,39 +566,21 @@ components:
       value:
         data:
           - id: 93f8380e-7798-4566-99e3-2edf2b57d289
-            title: Data Plane Out Of Sync
-            description: Data Plane has been out of sync for >5 minutes.
+            title: Unpaid invoice reminder
+            description: Reminder for an unpaid invoice.
             status: UNREAD
             region: US
-            namespace: gateway-manager
-            entity_id: control-plane-1
+            namespace: organization
+            entity_id: invoice-1
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
           - id: 93f8380e-7798-4566-99e3-2edf2b57d290
-            title: Invoice Ready
-            description: Your March invoice is ready.
+            title: Unpaid invoice reminder
+            description: Reminder for an unpaid invoice.
             status: UNREAD
             region: EU
-            namespace: settings
-            entity_id: control-plane-1
-            created_at: 2023-01-01T00:00:00.000Z
-            updated_at: 2023-01-01T00:00:00.000Z
-          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
-            title: Credits Expiring
-            description: You have X credits expiring.
-            status: READ
-            region: EU
-            namespace: settings
-            entity_id: control-plane-1
-            created_at: 2023-01-01T00:00:00.000Z
-            updated_at: 2023-01-01T00:00:00.000Z
-          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
-            title: Mesh Zone Offline
-            description: Mesh Zone is offline.
-            status: ARCHIVED
-            region: US
-            namespace: mesh-manager
-            entity_id: control-plane-1
+            namespace: organization
+            entity_id: invoice-2
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
         meta:
@@ -620,15 +606,10 @@ components:
     UserConfigurationListResponse:
       value:
         data:
-          - event_id: data-plane-out-of-sync
-            event_title: Data Plane Out of Sync
-            event_description: Data Plane has been out of sync for >5 minutes.
-            event_namespace: gateway-manager
-            event_subscription_count: 2
-          - event_id: api-products-weekly-summary
-            event_title: API Products Weekly Summary
-            event_description: Your API Products summary is available.
-            event_namespace: api-products
+          - event_id: billing.invoice.unpaid-reminder
+            event_title: Unpaid invoice reminder
+            event_description: Reminder for an unpaid invoice
+            event_namespace: organization
             event_subscription_count: 2
     EventSubscriptionListResponse:
       value:
@@ -638,8 +619,8 @@ components:
               - US
               - EU
             entities:
-              - control-plane-1
-              - control-plane-2
+              - invoice-1
+              - invoice-2
             channels:
               - type: IN_APP
                 enabled: true
