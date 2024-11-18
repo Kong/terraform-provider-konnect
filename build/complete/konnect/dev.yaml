@@ -1444,6 +1444,31 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Debug Sessions
+  '/v2/control-planes/{controlPlaneId}/observability/debug-sessions/data':
+    get:
+      operationId: get-debug-sessions-data
+      summary: Gets data for a debug session (internal only)
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+      responses:
+        '200':
+          description: Data response
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
   /v2/discovery/discovered-entities:
     get:
       operationId: list-discovered-entities
