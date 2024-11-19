@@ -510,7 +510,7 @@ components:
     NotificationNamespace:
       type: string
       enum:
-        - organization
+        - plan-and-usage
 
     # User configuration properties
     UserConfiguration:
@@ -608,7 +608,7 @@ components:
         description: Reminder for an unpaid invoice.
         status: UNREAD
         region: EU
-        namespace: organization
+        namespace: plan-and-usage
         entity_id: invoice-1
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
@@ -621,7 +621,7 @@ components:
             description: Reminder for an unpaid invoice.
             status: UNREAD
             region: US
-            namespace: organization
+            namespace: plan-and-usage
             entity_id: invoice-1
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
@@ -630,7 +630,7 @@ components:
             description: Reminder for an unpaid invoice.
             status: UNREAD
             region: EU
-            namespace: organization
+            namespace: plan-and-usage
             entity_id: invoice-2
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
@@ -660,7 +660,7 @@ components:
           - event_id: billing.invoice.unpaid-reminder
             event_title: Unpaid invoice reminder
             event_description: Reminder for an unpaid invoice
-            event_namespace: organization
+            event_namespace: plan-and-usage
             event_subscription_count: 2
     EventSubscriptionListResponse:
       value:
