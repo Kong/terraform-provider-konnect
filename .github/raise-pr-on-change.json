@@ -79,6 +79,12 @@
       "dest": "apps/konnect-api/openapi/v2/portal-management/openapi.yaml"
     }
   ],
+  "kong/koko-private": [
+    {
+      "src": "computed/konnect/control-planes-config/v2/openapi.yaml",
+      "dest": "internal/server/public/openapi/specs/openapi.yaml"
+    }
+  ],
   "kong/servicehub": [
     {
       "src": "computed/konnect/servicehub/v2/openapi.yaml",
