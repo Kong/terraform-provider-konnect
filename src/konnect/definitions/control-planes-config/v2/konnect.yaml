@@ -679,6 +679,21 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Debug Sessions
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete a Debug Session
+      description: Deletes a Debug Session
+      operationId: delete-debug-session
+      responses:
+        '204':
+          description: The debug session was deleted successfully.
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
   /control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}/stop:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -916,6 +931,10 @@ components:
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           description: An ISO-8601 timestamp representation of completion date.
+          readOnly: true
+        timed_out:
+          type: boolean
+          description: Determines whether the target did not respond in time before the sampling time elapsed.
           readOnly: true
         created_at:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'

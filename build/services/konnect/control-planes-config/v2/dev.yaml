@@ -349,6 +349,19 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - Debug Sessions
+    delete:
+      operationId: delete-debug-session
+      summary: Delete a Debug Session
+      description: Deletes a Debug Session
+      responses:
+        '204':
+          description: The debug session was deleted successfully.
+        '401':
+          $ref: '#/components/responses/DebugSessionUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Debug Sessions
   '/control-planes/{controlPlaneId}/observability/debug-sessions/{debugSessionId}/stop':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -544,6 +557,10 @@ components:
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        timed_out:
+          description: Determines whether the target did not respond in time before the sampling time elapsed.
+          type: boolean
           readOnly: true
         created_at:
           $ref: '#/components/schemas/CreatedAt'
