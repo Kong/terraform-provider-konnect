@@ -15023,6 +15023,7 @@ components:
         The aggregate non-negative integer count of this resource that's allowed for the organization.
       type: integer
       example: 2
+      minimum: 0
     ResourceQuota:
       description: Object containing information about a resource quota for an organization.
       type: object

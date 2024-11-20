@@ -2160,6 +2160,7 @@ components:
       example: Across the organization, the aggregate number of active networks cannot exceed this value.
     ResourceQuotaValue:
       type: integer
+      minimum: 0
       description: |
         The aggregate non-negative integer count of this resource that's allowed for the organization.
       example: 2
