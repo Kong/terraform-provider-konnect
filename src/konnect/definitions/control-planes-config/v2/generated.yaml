@@ -3399,8 +3399,8 @@ components:
         type: string
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
-      description: The UUID of the consumer.
-      example: 123e4567-e89b-12d3-a456-426614174000
+      description: ID of the Consumer to lookup
+      example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
       in: path
       name: ConsumerId
       required: true
@@ -5418,7 +5418,6 @@ components:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
           additionalProperties: true
-          nullable: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -5459,6 +5458,7 @@ components:
       required:
         - name
         - prefix
+        - config
   responses:
     HTTP401Error:
       description: Unauthorized
