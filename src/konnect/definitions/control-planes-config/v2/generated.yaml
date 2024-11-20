@@ -856,6 +856,19 @@ paths:
       tags:
         - Consumers
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerId}/consumer_groups':
+    delete:
+      operationId: remove-consumer-from-all-consumer-groups
+      summary: Remove consumer from consumer group
+      description: Removes a consumer from all consumer groups. This operation does not delete the consumer group.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerId'
+      responses:
+        '204':
+          description: Consumer removed from all groups
+        '404':
+          description: Consumer does not exist
+      tags:
+        - Consumer Groups
     get:
       operationId: list-consumer-groups-for-consumer
       summary: List all Consumer Groups a Consumer belongs to
