@@ -45,7 +45,7 @@ paths:
                 UnauthorizedExample:
                   $ref: '#/components/examples/UnauthorizedExample'
         '403':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
       tags:
         - Application Analytics
       security:
@@ -85,7 +85,7 @@ paths:
                 UnauthorizedExample:
                   $ref: '#/components/examples/UnauthorizedExample'
         '403':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
       tags:
         - Application Analytics
       security:
@@ -99,7 +99,7 @@ paths:
         '200':
           $ref: '#/components/responses/GetConfig'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - Application Analytics
       security:
@@ -107,7 +107,7 @@ paths:
 components:
   securitySchemes:
       portalAccessToken:
-        $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+        $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   schemas:
     QueryApplicationAnalytics:
       type: object

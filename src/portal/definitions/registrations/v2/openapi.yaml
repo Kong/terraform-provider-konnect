@@ -13,28 +13,28 @@ paths:
       description: Lists product registrations for an application.
       operationId: list-application-registrations
       parameters:
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameContains'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByProductNameContains'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductVersionNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByProductNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ListRegistrations'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
       security:
@@ -44,20 +44,20 @@ paths:
       description: Registers an application for a product.
       operationId: create-application-registration
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateRegistration'
       responses:
         '201':
           $ref: '#/components/responses/CreateRegistration'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - registrations
       security:
@@ -68,15 +68,15 @@ paths:
       description: Retrieves the specified product registration for an application.
       operationId: get-application-registration
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '200':
           $ref: '#/components/responses/GetRegistration'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
       security:
@@ -86,15 +86,15 @@ paths:
       description: Unregister an application for a product version.
       operationId: delete-application-registration
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '204':
           description: The registration has been deleted.
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - registrations
       security:
@@ -107,17 +107,17 @@ paths:
         Will return 409 if this feature is not supported by the application.
       operationId: get-application-registration-granted-scopes
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/RegistrationId'
       responses:
         '200':
           $ref: '#/components/responses/GetGrantedScopes'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '422':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/UnprocessableContent'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/UnprocessableContent'
       tags:
         - registrations
       security:
@@ -125,7 +125,7 @@ paths:
 components:
   securitySchemes:
     portalAccessToken:
-      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     RegistrationId:
       name: registrationId
@@ -194,7 +194,7 @@ components:
       - meta
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -214,11 +214,11 @@ components:
         - updated_at
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         status:
           description: The approval status of the registration.
           type: string
@@ -261,7 +261,7 @@ components:
         - scopes
       properties:
         scopes:
-          $ref: '../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
+          $ref: '../../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
 tags:
   - name: registrations
     description: |

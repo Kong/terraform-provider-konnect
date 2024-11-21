@@ -16,15 +16,15 @@ paths:
         '200':
           $ref: '#/components/responses/SearchResponse'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       parameters:
         - $ref: '#/components/parameters/SearchIndices'
         - $ref: '#/components/parameters/SearchQuery'
         - $ref: '#/components/parameters/SearchJoin'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       tags:
         - search
       security:
@@ -33,7 +33,7 @@ paths:
 components:
   securitySchemes:
     portalAccessToken:
-      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     SearchQuery:
       name: q
@@ -76,7 +76,7 @@ components:
         - meta
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           description: The paginated results that matched the search query
@@ -105,7 +105,7 @@ components:
         - latest_version
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
           example: Nice Product
@@ -119,9 +119,9 @@ components:
           nullable: true
           readOnly: true
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         document_count:
           type: number
           example: 5
@@ -146,7 +146,7 @@ components:
                 example: v2.0.0
                 description: Name of product version.
               id:
-                $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+                $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
 
     SearchIndicesParameters:
       title: 'SearchIndicesParameters'

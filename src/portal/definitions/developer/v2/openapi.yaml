@@ -25,7 +25,7 @@ paths:
         '201':
           description: the developer has been properly registered.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
       tags:
         - developer
       security:
@@ -47,7 +47,7 @@ paths:
         '200':
           description: the password reset flow has been initiated.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
       tags:
         - developer
       security:
@@ -61,7 +61,7 @@ paths:
         '200':
           $ref: '#/components/responses/MeResponse'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       operationId: get-developer-me
       description: Returns info about the current developer.
       security:
@@ -74,7 +74,7 @@ components:
         full_name: Dev Smith
   securitySchemes:
     portalAccessToken:
-      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   responses:
     MeResponse:
       description: Response from me endpoint
@@ -90,7 +90,7 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         email:
           type: string
           format: email
@@ -102,9 +102,9 @@ components:
           example: API Developer
           maxLength: 250
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
       required:
         - full_name
         - email

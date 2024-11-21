@@ -13,20 +13,20 @@ paths:
       description: List applications owned by the developer currently logged in.
       operationId: list-applications
       parameters:
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEqualityShort'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ListApplications'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - applications
       security:
@@ -41,15 +41,15 @@ paths:
         '201':
           $ref: '#/components/responses/ApplicationCreation'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Forbidden'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - applications
       security:
@@ -60,16 +60,16 @@ paths:
       description: Gets the details for an existing application. You need only supply the unique application identifier that was returned upon application creation or by the list-applications endpoint.
       operationId: get-application
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '200':
           $ref: '#/components/responses/GetApplication'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - applications
       security:
@@ -79,18 +79,18 @@ paths:
       description: Deletes an application and all of its associated entities (registrations).
       operationId: delete-application
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '204':
           description: Application was deleted successfully.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '429':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/TooManyRequests'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/TooManyRequests'
       tags:
         - applications
       security:
@@ -100,20 +100,20 @@ paths:
       description: Updates an application, replacing specified properties with any new values supplied in the request body.
       operationId: update-application
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateApplication'
       responses:
         '200':
           $ref: '#/components/responses/ApplicationUpdate'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - applications
       security:
@@ -124,16 +124,16 @@ paths:
       description: Resets the client secret for an application.
       operationId: refresh-application-token
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       responses:
         '201':
           $ref: '#/components/responses/RefreshToken'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - credentials
       security:
@@ -144,18 +144,18 @@ paths:
       description: Lists the credentials for an application they own.
       operationId: list-credentials
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           $ref: '#/components/responses/ListCredentials'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '409':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - credentials
       security:
@@ -165,20 +165,20 @@ paths:
       description: Allows a developer to create a credential for an application they own.
       operationId: create-credential
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
       requestBody:
         $ref: '#/components/requestBodies/CreateCredential'
       responses:
         '201':
           $ref: '#/components/responses/CredentialCreation'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/PostCredentials403Response'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - credentials
       security:
@@ -189,7 +189,7 @@ paths:
       description: Updates a credential for an application owned by the current logged in developer.
       operationId: update-credential
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       requestBody:
         $ref: '#/components/requestBodies/UpdateCredential'
@@ -197,11 +197,11 @@ paths:
         '200':
           description: Credential successfully updated.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - credentials
       security:
@@ -211,19 +211,19 @@ paths:
       description: Deletes a credential for an application they own.
       operationId: delete-credential
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
         - $ref: '#/components/parameters/CredentialId'
       responses:
         '204':
           description: Credential successfully deleted.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '409':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Conflict'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       tags:
         - credentials
       security:
@@ -237,15 +237,15 @@ paths:
        Will return 422 if this feature is not supported by the application.
       operationId: get-application-product-version-granted-scopes
       parameters:
-        - $ref: '../common/parameters.yaml#/components/parameters/ApplicationId'
-        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ApplicationId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/GetGrantedScopesProductVersion'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/GetGrantedScopesProductVersion422Response'
       tags:
@@ -261,19 +261,19 @@ paths:
         It may reference to Key-Auth or an OIDC configuration (with or without DCR).
       operationId: list-application-auth-strategies
       parameters:
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
         - $ref: '#/components/parameters/FilterByCredentialTypeEquality'
       responses:
         '200':
           $ref: '#/components/responses/ListAuthStrategies'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - applications
       security:
@@ -282,7 +282,7 @@ paths:
 components:
   securitySchemes:
     portalAccessToken:
-      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     CredentialId:
       name: credentialId
@@ -390,7 +390,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/UnprocessableContentError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/UnprocessableContentError'
           examples:
             GetGrantedScopesProductVersion422Example:
               $ref: '#/components/examples/GetGrantedScopesProductVersion422Example'
@@ -399,7 +399,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/ForbiddenError'
           examples:
             PostCredentials403Example:
               $ref: '#/components/examples/PostCredentials403Example'
@@ -451,7 +451,7 @@ components:
         - meta
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -461,11 +461,11 @@ components:
       type: object
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
           nullable: true
@@ -473,13 +473,13 @@ components:
           type: string
           nullable: true
         auth_strategy:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
       required:
         - id
         - name
@@ -495,7 +495,7 @@ components:
         - meta
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -503,7 +503,7 @@ components:
             additionalProperties: false
             properties:
               id:
-                $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+                $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
               display_name:
                 type: string
             required:
@@ -516,7 +516,7 @@ components:
         credential:
           type: string
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         display_name:
           type: string
       required:
@@ -549,7 +549,7 @@ components:
           type: string
           maxLength: 255
         reference_id:
-          $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         redirect_uri:
           description: URL to redirect to after completing an OIDC auth flow
           type: string
@@ -577,11 +577,11 @@ components:
         - auth_strategy
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
           nullable: true
@@ -600,13 +600,13 @@ components:
             client_secret:
               type: string
         auth_strategy:
-           $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
+           $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     UpdateApplicationPayload:
       additionalProperties: false
       type: object
@@ -618,7 +618,7 @@ components:
           type: string
           maxLength: 255
         reference_id:
-          $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         redirect_uri:
           description: URL to redirect to after completing an OIDC auth flow
           type: string
@@ -643,11 +643,11 @@ components:
         - created_at
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           type: string
         reference_id:
-          $ref: '../common/properties.yaml#/components/schemas/ApplicationReferenceId'
+          $ref: '../../common/properties.yaml#/components/schemas/ApplicationReferenceId'
         description:
           type: string
           example: A brief description of the application
@@ -657,13 +657,13 @@ components:
           example: https://example.com/callback
           nullable: true
         auth_strategy:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
         scopes:
           $ref: '#/components/schemas/Scopes'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     GetGrantedScopesProductVersionResponse:
       additionalProperties: false
       type: object
@@ -671,7 +671,7 @@ components:
         - scopes
       properties:
         scopes:
-          $ref: '../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
+          $ref: '../../common/properties.yaml#/components/schemas/RefreshedGrantedScopes'
     ListAuthStrategiesResponse:
       additionalProperties: false
       type: object
@@ -680,11 +680,11 @@ components:
         - meta
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
-            $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
+            $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/PortalAuthStrategy'
   examples:
     GetGrantedScopesProductVersion200Response:
       value:

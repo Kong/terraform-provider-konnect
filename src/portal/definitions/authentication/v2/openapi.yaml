@@ -34,7 +34,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - developer
-  '/api/v2/developer/authenticate/sso':
+  /api/v2/developer/authenticate/sso:
     get:
       summary: Authenticate SSO
       description: This endpoint allows a developer to authenticate to their portal using an external IdP.
@@ -62,7 +62,7 @@ paths:
                   portalaccesstoken=access12345; Path=/; Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023 12:00:00 GMT; HttpOnly; Secure; SameSite=None
                   portalrefreshtoken=refresh12345; Path=/v2/refresh; Domain=example.us.portal.konghq.com; Expires=Thu, 20 Jul 2023 12:00:00 GMT; HttpOnly; Secure; SameSite=None
         '401':
-          $ref: ../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
       tags:
         - developer
   /api/v2/developer/logout:
@@ -86,7 +86,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: ../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+          $ref: ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
         '404':
           $ref: '#/components/responses/NotFound'
         '410':
@@ -150,7 +150,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
           examples:
             400-Invalid-Token:
               $ref: '#/components/examples/400-Invalid-Token'
@@ -161,7 +161,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/UnauthorizedError'
           examples:
             401-Unauthorized:
               $ref: '#/components/examples/401-Unauthorized'
@@ -172,7 +172,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/NotFoundError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/NotFoundError'
           examples:
             404-Token-Not-Found:
               $ref: '#/components/examples/404-Token-Not-Found'
@@ -181,7 +181,7 @@ components:
       content:
         application/problem+json:
           schema:
-            $ref: '../../../common/definitions/errors.yaml#/components/schemas/GoneError'
+            $ref: '../../../../common/definitions/errors.yaml#/components/schemas/GoneError'
           examples:
             410-Expired-Token:
               $ref: '#/components/examples/410-Expired-Token'

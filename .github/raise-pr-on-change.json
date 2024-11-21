@@ -55,7 +55,7 @@
       "dest": "apps/portal-api/openapi/v2/developer/openapi.yaml"
     },
     {
-      "src": "computed/portal/portals/openapi.yaml",
+      "src": "computed/portal/portals/v2/openapi.yaml",
       "dest": "apps/portal-api/openapi/v2/portals/openapi.yaml"
     },
     {

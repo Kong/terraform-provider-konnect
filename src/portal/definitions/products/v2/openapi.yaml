@@ -18,11 +18,11 @@ paths:
         '200':
           $ref: '#/components/responses/ProductGet'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - products
       security:
@@ -34,23 +34,23 @@ paths:
       description: Returns a paginated list of published API Products.
       operationId: list-products
       parameters:
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByDescriptionContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByIdEqualityShort'
       responses:
         '200':
           $ref: '#/components/responses/ProductList'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
       tags:
         - products
       security:
@@ -63,20 +63,20 @@ paths:
       operationId: list-product-versions
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
       responses:
         '200':
           $ref: '#/components/responses/ProductListVersions'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -89,16 +89,16 @@ paths:
       operationId: get-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionGet'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -113,26 +113,26 @@ paths:
       operationId: get-applications-by-product-version
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEquality'
-        - $ref: '../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEqualityShort'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByStatusEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByAuthStrategyEqualityShort'
         - $ref: '#/components/parameters/QueryUnregisteredApplications'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionListApplications'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -144,18 +144,18 @@ paths:
       operationId: get-product-version-spec
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecGet'
         '204':
           description: No specification is defined for the version.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -168,18 +168,18 @@ paths:
       operationId: get-product-version-spec-operations
       parameters:
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '../common/parameters.yaml#/components/parameters/ProductVersionId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/ProductVersionId'
       responses:
         '200':
           $ref: '#/components/responses/ProductVersionSpecOperationsGet'
         '204':
           description: Response when there are no operations to send because no spec is defined for the version.
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - versions
       security:
@@ -195,25 +195,25 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
-        - $ref: '../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
       responses:
         '200':
           description: Lists documents for a given product.
           content:
             'application/json':
               schema:
-                $ref: '../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocuments'
+                $ref: '../../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocuments'
             'application/vnd.konnect.document-tree+json':
               schema:
-                $ref: '../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocumentsTree'
+                $ref: '../../../../internal/definitions/documenthub-portal/v2/openapi.yaml#/components/schemas/ListDocumentsTree'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - documentation
       security:
@@ -228,18 +228,18 @@ paths:
         - in: header
           name: Accept
           schema:
-            $ref: '../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/ProductId'
         - $ref: '#/components/parameters/DocumentId'
       responses:
         '200':
           $ref: '#/components/responses/ProductDocumentGet'
         '400':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - documentation
       security:
@@ -256,17 +256,17 @@ paths:
         '200':
           $ref: '#/components/responses/ProductActions'
         '401':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '404':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotFound'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
         '503':
-          $ref: '../../../common/definitions/errors.yaml#/components/responses/NotAvailable'
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotAvailable'
       tags:
         - products
 components:
   securitySchemes:
     portalAccessToken:
-      $ref: '../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
     ProductId:
       name: productId
@@ -392,11 +392,11 @@ components:
         - name
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         name:
           type: string
           example: Billing
@@ -422,7 +422,7 @@ components:
       type: object
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -432,11 +432,11 @@ components:
       additionalProperties: false
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         name:
           type: string
           example: v2.0.0
@@ -467,7 +467,7 @@ components:
         - registration_auto_approve
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         auth_methods:
           type: array
           items:
@@ -479,7 +479,7 @@ components:
         name:
           type: string
         available_scopes:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AvailableScopes'
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/AvailableScopes'
         registration_enabled:
           type: boolean
           description: If true, application registration is allowed for this configuration.
@@ -504,7 +504,7 @@ components:
           example: v2.0.0
           readOnly: true
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
     ProductVersionListPage:
       title: ProductVersionListPage
       type: object
@@ -514,7 +514,7 @@ components:
         - data
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -528,7 +528,7 @@ components:
         - data
       properties:
         meta:
-          $ref: '../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
         data:
           type: array
           items:
@@ -546,12 +546,12 @@ components:
         - registration_id
       properties:
         id:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
         name:
           description: The name of the application
           type: string
         registration_id:
-          $ref: '../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
         registration_status:
           type: string
           nullable: true
@@ -561,11 +561,11 @@ components:
             - rejected
             - revoked
         auth_strategy:
-          $ref: '../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
         created_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
     ProductVersionSpecDocument:
       type: object
       title: ProductVersionSpecDocument
@@ -637,7 +637,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
               type: string
         parent_document_id:
@@ -651,7 +651,7 @@ components:
           description: Slug of the document. This is used in the URL to identify the document.
           example: getting-started
         content:
-          $ref: '../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
+          $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub_nodes.yaml#/components/schemas/DocumentBlock'
         title:
           type: string
           description: Title of the document. This is used in the Portal UI to identify the document.
@@ -668,7 +668,7 @@ components:
       properties:
         id:
           allOf:
-            - $ref: '../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
             - description: Contains a unique identifier used by the DocumentHub service for this resource.
               type: string
         parent_document_id:

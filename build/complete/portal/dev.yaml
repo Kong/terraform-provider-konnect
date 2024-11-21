@@ -794,6 +794,10 @@ components:
         - allowed_time_period
         - name
       title: Portal Context
+    PortalCustomization:
+      type: object
+      additionalProperties: true
+      title: PortalCustomization
     PageId:
       description: The unique identifier of the page
       type: string
@@ -983,10 +987,6 @@ components:
         - created_at
         - updated_at
       title: Portal Snippet
-    PortalCustomization:
-      type: object
-      additionalProperties: true
-      title: PortalCustomization
   examples:
     BadRequestExample:
       value:
@@ -1047,6 +1047,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalContext'
+    GetPortalCustomization:
+      description: Response for a portal customization
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomization'
     ListPortalPagesResponse:
       description: Paginated list of portal pages
       content:
@@ -1123,12 +1129,6 @@ components:
                 public: true
                 created_at: '2021-09-01T00:00:00Z'
                 updated_at: '2021-09-01T00:00:00Z'
-    GetPortalCustomization:
-      description: Response for a portal customization
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PortalCustomization'
   securitySchemes:
     portalAccessToken:
       type: apiKey

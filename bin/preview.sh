@@ -96,11 +96,11 @@ end_details
 
 add_h1 "Portal"
 start_details "Service Combined"
-build_doc "computed/portal/*" "openapi.yaml" "false"
+build_doc "computed/portal/*/*" "openapi.yaml" "false"
 end_details
 
 start_details "Service By Visibility"
-build_doc "build/services/portal/*" "*.yaml" "true"
+build_doc "build/services/portal/*/*" "*.yaml" "true"
 end_details
 
 start_details "Public Facing"

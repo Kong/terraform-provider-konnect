@@ -1,0 +1,219 @@
+openapi: 3.0.0
+info:
+  title: Portal
+  version: 2.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: https://cloud.konghq.com
+paths:
+  /api/v2/portal:
+    get:
+      operationId: get-portal-context
+      summary: Get portal context
+      description: Return the portal context object.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalContextResponse'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v2/portal/appearance:
+    get:
+      operationId: get-portal-appearance
+      summary: Portal Appearance Details
+      description: Gets appearance configuration object for the portal. This object is set in Konnect.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalAppearanceResponse'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v2/portal/customization:
+    get:
+      x-internal: true
+      x-unstable: true
+      operationId: get-portal-customization
+      summary: Get Customization
+      description: Returns the customized portal appearance.
+      responses:
+        '200':
+          $ref: '../../../../common/definitions/portal.yaml#/components/responses/GetPortalCustomization'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v2/portal/logo:
+    get:
+      operationId: get-portal-logo
+      summary: Portal Logo
+      description: Gets logo of the developer portal. This object is set in Konnect.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalLogoResponse'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v2/portal/catalog-cover:
+    get:
+      operationId: get-portal-catalog-cover
+      summary: Portal Catalog Cover Banner
+      description: Gets cover banner for the developer portal. This object is set in Konnect.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalCoverResponse'
+      tags:
+        - portal
+      security:
+        - {}
+  
+components:
+  responses:
+    GetPortalLogoResponse:
+      description: Logo of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    GetPortalCoverResponse:
+      description: Cover of the portal. Can be either png or jpg
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    GetPortalAppearanceResponse:
+      description: portal appearance
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalAppearance'
+    GetPortalContextResponse:
+      description: portal context
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContext'
+  schemas:
+    PortalAppearance:
+      title: Portal Appearance
+      description: the portal appearance
+      type: object
+      additionalProperties: false
+      properties:
+        variables:
+          type: object
+          properties:
+            catalog:
+              type: object
+              properties:
+                logo:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                cover:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                primary_header:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                welcome_message:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+        stylesheets:
+          type: object
+          properties:
+            global:
+              type: object
+              properties:
+                main:
+                  type: object
+                  properties:
+                    data:
+                      type: object
+    PortalContext:
+      title: Portal Context
+      description: describe the portal execution context
+      type: object
+      additionalProperties: false
+      x-property-annotations:
+        saml_auth_enabled: [ x-unstable, x-internal ]
+      properties:
+        portal_id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        featureset_id:
+          type: string
+        feature_set:
+          type: string
+          description: String that determines feature set group developer belongs to when logged in
+        basic_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via email and password
+        oidc_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+        saml_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via SAML authentication
+        is_public:
+          type: boolean
+          description: Whether the portal catalog can be accessed by non-authenticated users
+        rbac_enabled:
+          type: boolean
+          description: Whether the portal is protected with Role-Based Access Control
+        dcr_provider_ids:
+          type: array
+          description: The unique identifiers of each available client provider when using Dynamic Client Registration
+          items:
+            type: string
+            format: uuid
+        allowed_time_period:
+          type: string
+          description: Allowed time period for Analytics queries
+        name:
+          type: string
+          description: Name of the developer portal.
+        canonical_domain:
+          type: string
+          description: The canonical domain of the developer portal.
+      required:
+        - canonical_domain
+        - portal_id
+        - org_id
+        - is_public
+        - featureset_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - rbac_enabled
+        - dcr_provider_ids
+        - allowed_time_period
+        - name
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+tags:
+  - name: portal
+    description: The API for retrieving details about a single Konnect Portal.
