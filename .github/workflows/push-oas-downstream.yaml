@@ -35,6 +35,23 @@ jobs:
         run: |
           ./tools/run.sh
 
+      - name: Install Speakeasy
+        uses: mheap/setup-go-cli@v1
+        with:
+          owner: speakeasy-api
+          repo: speakeasy
+          cli_name: speakeasy
+          package_type: zip
+
+      - name: Configure speakeasy CLI
+        run: |
+          mkdir -p ~/.speakeasy
+          echo 'speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}' > ~/.speakeasy/config.yaml
+
+      - name: Generated Konnect Go SDK
+        run: |
+          ./tools/gen_go_sdk.sh
+
       - name: Check that /build/ is up to date
         run: |
           ./bin/fails_if_changed.sh

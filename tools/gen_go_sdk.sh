@@ -32,4 +32,10 @@ apply_overlay "overlays/go-sdk/remove-client-certificate.yaml"
 node $DIR/filter-operations.js
 
 # Copy to sdk-konnect-go folder
-cp $DIR/../build/complete/go-sdk/public.yaml $DIR/../../sdk-konnect-go/openapi.yaml
+SDK_KONNECT_GO_DIR="${DIR}/../../sdk-konnect-go"
+if [[ ! -d "${SDK_KONNECT_GO_DIR}" ]]
+then
+  echo "${SDK_KONNECT_GO_DIR} directory not found, skipping copy"
+else
+  cp $DIR/../build/complete/go-sdk/public.yaml "${SDK_KONNECT_GO_DIR}/openapi.yaml"
+fi
