@@ -59,6 +59,7 @@ paths:
         - $ref: '#/components/parameters/APIProductFilters'
         - $ref: '#/components/parameters/APIProductSort'
         - $ref: '#/components/parameters/LabelsFilter'
+        - $ref: '#/components/parameters/PublicLabelsFilter'
       summary: List API Products
       description: Returns a collection of API products.
       operationId: get-many-api-product
@@ -633,6 +634,14 @@ components:
       schema:
         type: string
         example: 'key:value,keyExists'
+    PublicLabelsFilter:
+      name: public_labels
+      description: Filters requested resource by associated public labels.
+      required: false
+      in: query
+      schema:
+        type: string
+        example: 'key:value,keyExists'
     APIProductSort:
       name: sort
       description: |
@@ -856,6 +865,8 @@ components:
                     version_count: 10
                     labels:
                       env: test
+                    public_labels:
+                      label: value
                 meta:
                   page:
                     number: 1
@@ -1126,6 +1137,7 @@ components:
         - created_at
         - updated_at
         - labels
+        - public_labels
         - version_count
       properties:
         id:
@@ -1168,6 +1180,8 @@ components:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabels'
     APIProductDocumentSummary:
       title: API Product Document Summary
       type: object
@@ -1431,6 +1445,8 @@ components:
           default: null
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabels'
         portal_ids:
           type: array
           nullable: false
@@ -1461,6 +1477,8 @@ components:
           description: The description of the API product.
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate'
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabelsUpdate'
         portal_ids:
           type: array
           nullable: false
@@ -1727,6 +1745,8 @@ components:
         version_count: 10
         labels:
           env: test
+        public_labels:
+          label: value
     APIProductVersionExample:
       value:
         id: 9f5061ce-78f6-4452-9108-ad7c02821fd5

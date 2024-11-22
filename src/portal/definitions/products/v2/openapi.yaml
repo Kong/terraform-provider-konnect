@@ -387,6 +387,7 @@ components:
       additionalProperties: false
       required:
         - id
+        - public_labels
         - created_at
         - updated_at
         - name
@@ -417,6 +418,8 @@ components:
           readOnly: true
         latest_version:
            $ref: '#/components/schemas/LatestVersion'
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabels'
     ProductListPage:
       title: ProductListPage
       type: object

@@ -53,6 +53,7 @@ paths:
         - $ref: '#/components/parameters/APIProductFilters'
         - $ref: '#/components/parameters/APIProductSort'
         - $ref: '#/components/parameters/LabelsFilter'
+        - $ref: '#/components/parameters/PublicLabelsFilter'
       responses:
         '200':
           $ref: '#/components/responses/ListAPIProductResponse'
@@ -644,6 +645,14 @@ components:
       schema:
         type: integer
         example: 10
+    PublicLabelsFilter:
+      name: public_labels
+      description: Filters requested resource by associated public labels.
+      required: false
+      in: query
+      schema:
+        type: string
+        example: 'key:value,keyExists'
   schemas:
     APIProductFilterParameters:
       type: object
@@ -807,6 +816,8 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         labels:
           $ref: '#/components/schemas/Labels'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
       additionalProperties: false
       required:
         - id
@@ -817,6 +828,7 @@ components:
         - created_at
         - updated_at
         - labels
+        - public_labels
         - version_count
       title: API Product
     APIProductDocumentSummary:
@@ -1073,6 +1085,8 @@ components:
           nullable: true
         labels:
           $ref: '#/components/schemas/Labels'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
         portal_ids:
           description: The list of portal identifiers which this API product should be published to
           type: array
@@ -1104,6 +1118,8 @@ components:
           nullable: true
         labels:
           $ref: '#/components/schemas/LabelsUpdate'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabelsUpdate'
         portal_ids:
           description: The list of portal identifiers which this API product should be published to
           type: array
@@ -1492,6 +1508,23 @@ components:
         maxLength: 63
       maxProperties: 50
       title: Labels
+    PublicLabels:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: PublicLabels
     BaseError:
       description: standard error
       type: object
@@ -1815,6 +1848,25 @@ components:
         nullable: true
       maxProperties: 50
       nullable: true
+      writeOnly: true
+    PublicLabelsUpdate:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata.
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 50
+      title: PublicLabelsUpdate
       writeOnly: true
     PublishStatus:
       type: string
@@ -2221,6 +2273,8 @@ components:
         version_count: 10
         labels:
           env: test
+        public_labels:
+          label: value
     APIProductVersionExample:
       value:
         id: 9f5061ce-78f6-4452-9108-ad7c02821fd5
@@ -2745,6 +2799,8 @@ components:
                     version_count: 10
                     labels:
                       env: test
+                    public_labels:
+                      label: value
                 meta:
                   page:
                     number: 1

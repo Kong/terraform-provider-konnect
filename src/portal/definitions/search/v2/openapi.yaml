@@ -103,6 +103,7 @@ components:
         - document_count
         - version_count
         - latest_version
+        - public_labels
       properties:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -147,6 +148,8 @@ components:
                 description: Name of product version.
               id:
                 $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/PublicLabels'
 
     SearchIndicesParameters:
       title: 'SearchIndicesParameters'
@@ -174,6 +177,8 @@ components:
               description: Great products are built with great care
               document_count: 5
               version_count: 5
+              public_labels:
+                env: test
               latest_version:
                 name: v5
                 id: 455b0beb-c3f7-4f8f-95f7-cd8ff0ee478e

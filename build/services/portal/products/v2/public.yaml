@@ -478,9 +478,12 @@ components:
           readOnly: true
         latest_version:
           $ref: '#/components/schemas/LatestVersion'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
       additionalProperties: false
       required:
         - id
+        - public_labels
         - created_at
         - updated_at
         - name
@@ -779,6 +782,23 @@ components:
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
+    PublicLabels:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: PublicLabels
     BaseError:
       description: standard error
       type: object
