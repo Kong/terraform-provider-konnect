@@ -573,6 +573,18 @@ paths:
       tags:
         - Consumer Groups
   '/control-planes/{controlPlaneId}/core-entities/consumer_groups/{ConsumerGroupId}/consumers':
+    delete:
+      x-unstable: true
+      operationId: remove-all-consumers-from-consumer-group
+      summary: Remove consumers from consumer group
+      description: Removes all consumers from a consumer groups. This operation does not delete the consumer group.
+      responses:
+        '204':
+          description: Consumers removed from group
+        '404':
+          description: Consumer group or consumer association does not exist
+      tags:
+        - Consumer Groups
     get:
       operationId: list-consumers-for-consumer-group
       summary: List all Consumers in a Consumer Group
@@ -9713,13 +9725,14 @@ components:
         type: string
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
-      description: The UUID of the consumer.
-      example: 123e4567-e89b-12d3-a456-426614174000
+      description: ID of the Consumer to lookup
+      example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
       in: path
       name: ConsumerId
       required: true
       schema:
         type: string
+      x-speakeasy-match: id
     ConsumerIdForNestedEntities:
       description: Consumer ID for nested entities
       example: f28acbfa-c866-4587-b688-0208ac24df21
