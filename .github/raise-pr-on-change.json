@@ -33,6 +33,12 @@
       "dest": "openapi.yaml"
     }
   ],
+  "kong/sdk-portal-js-internal": [
+    {
+      "src": "build/complete/portal/internal.yaml",
+      "dest": "openapi.yaml"
+    }
+  ],
   "kong/sdk-portal-js-dev": [
     {
       "src": "build/complete/portal/dev.yaml",
