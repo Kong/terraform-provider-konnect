@@ -1639,6 +1639,26 @@ paths:
             ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
         - $ref: >-
             ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
+        - schema:
+            type: object
+            properties:
+              email:
+                $ref: >-
+                  ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              full_name:
+                $ref: >-
+                  ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              attributes:
+                $ref: >-
+                  ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+              active:
+                $ref: >-
+                  ../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter
+          in: query
+          name: filter
+          description: Filter developers returned in the response.
+          required: false
+          style: deepObject
       tags:
         - Portal Team Membership
     post:

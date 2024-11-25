@@ -7017,6 +7017,22 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter developers returned in the response.
+          required: false
+          schema:
+            type: object
+            properties:
+              email:
+                $ref: '#/components/schemas/StringFieldFilter'
+              full_name:
+                $ref: '#/components/schemas/StringFieldFilter'
+              attributes:
+                $ref: '#/components/schemas/StringFieldFilter'
+              active:
+                $ref: '#/components/schemas/BooleanFieldFilter'
+          style: deepObject
       responses:
         '200':
           $ref: '#/components/responses/ListBasicDevelopers'
