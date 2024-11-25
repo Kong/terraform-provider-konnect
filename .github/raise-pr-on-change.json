@@ -27,12 +27,6 @@
       "dest": "openapi.yaml"
     }
   ],
-  "kong/sdk-konnect-go": [
-    {
-      "src": "build/complete/go-sdk/public.yaml",
-      "dest": "openapi.yaml"
-    }
-  ],
   "kong/sdk-portal-js": [
     {
       "src": "build/complete/portal/public.yaml",
