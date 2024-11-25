@@ -3,12 +3,14 @@ info:
   title: Konnect external consumers auth api
   version: 0.0.1
 servers:
-  - url: 'http://us.identity.konghq.com'
-    description: US geo
-  - url: 'http://eu.identity.konghq.com'
-    description: EU geo
-  - url: 'http://au.identity.konghq.com'
-    description: AU geo
+  - url: 'https://us.api.konghq.com'
+    description: United-States Production region
+  - url: 'https://eu.api.konghq.com'
+    description: Europe Production region
+  - url: 'https://au.api.konghq.com'
+    description: Australia Production region
+  - url: 'https://me.api.konghq.com'
+    description: Middle-East Production region
 paths:
   '/{realmId}/v0':
     parameters:

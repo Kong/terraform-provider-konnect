@@ -8,11 +8,13 @@ info:
     url: 'https://konghq.com'
 servers:
   - url: 'https://us.api.konghq.com/v2'
-    description: Base URL for the US region
+    description: United-States Production region
   - url: 'https://eu.api.konghq.com/v2'
-    description: Base URL for the EU region
+    description: Europe Production region
   - url: 'https://au.api.konghq.com/v2'
-    description: Base URL for the AU region
+    description: Australia Production region
+  - url: 'https://me.api.konghq.com/v2'
+    description: Middle-East Production region
 paths:
   /servicehub/add-ons:
     get:

@@ -16,8 +16,13 @@ info:
   version: 0.0.1
 servers:
   - url: 'https://us.api.konghq.com/v2'
+    description: United-States Production region
   - url: 'https://eu.api.konghq.com/v2'
+    description: Europe Production region
   - url: 'https://au.api.konghq.com/v2'
+    description: Australia Production region
+  - url: 'https://me.api.konghq.com/v2'
+    description: Middle-East Production region
 paths:
   '/control-planes/{controlPlaneId}/expected-config-hash':
     get:
