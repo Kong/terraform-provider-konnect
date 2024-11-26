@@ -1,0 +1,157 @@
+openapi: 3.0.3
+info:
+    title: Internal API-Builder v1
+    description: Internal api for api builder to allow updating of entities in api-builder db. 
+    version: '1.0.0'
+    contact:
+      name: Kong
+      url: 'https://konghq.com'
+tags:
+  - name: portal
+servers:
+  - url: 'http://apibuilder.apibuilder.svc.cluster.local:4400/v1'
+    description: Konnect cluster
+paths:
+  /internal/portals/{portalId}:
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+    put: 
+      summary: insert or updates portal
+      description: |
+        Accepts a raw database representation of the Portal in the request body.
+        Accepts a raw database representation of any linked default App Auth Strategy in the response body or null if there is none.
+      operationId: put-portal
+      tags:
+        - portal
+      responses:
+        '200':
+          description: The portal has been updated
+        '201':
+          description: The portal has been created
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+      requestBody:
+        $ref: '#/components/requestBodies/PutPortal'
+    delete: 
+      summary: delete portal
+      description: Deletes portal specified in path
+      operationId: delete-portal
+      tags:
+        - portal
+      responses:
+        '204':
+          description: No Content.
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+components:
+  requestBodies:
+    PutPortal: 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Portal'
+  schemas:
+    Portal: 
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - default_application_auth_strategy
+        - name
+        - uri
+        - labels
+      properties:
+        id: 
+          type: string
+          format: uuid
+        name: 
+          type: string
+        display_name:
+          type: string
+        uri:
+          type: string
+        custom_domain:
+          type: string
+        is_domain_verified:
+          type: boolean
+        logo:
+          type: string
+        logo_filename:
+          type: string
+        favicon:
+          type: string
+        favicon_filename:
+          type: string
+        is_public:
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+        auto_approve_applications:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+        config:
+          type: object
+          additionalProperties: true
+        customization: 
+          $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomization'
+        labels: 
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        description:
+          type: string
+        default_application_auth_strategy: 
+          $ref: '#/components/schemas/NullableAuthStrategy'
+    NullableAuthStrategy:
+      type: object
+      nullable: true
+      required: 
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - dcr_provider
+        - configs
+        - labels
+      properties:
+        id: 
+          type: string
+          format: uuid
+        name:
+          type: string
+        display_name:
+          type: string
+        strategy_type:
+          type: string
+        configs:
+          type: object
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        dcr_provider: 
+          $ref: '#/components/schemas/NullableDcrProvider'
+    NullableDcrProvider:
+      type: object
+      nullable: true
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - dcr_config
+        - labels
+      properties:
+        id: 
+          type: string
+          format: uuid
+        name:
+          type: string
+        provider_type:
+          type: string 
+        issuer:
+          type: string
+        dcr_config:
+          type: object
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+
+
+

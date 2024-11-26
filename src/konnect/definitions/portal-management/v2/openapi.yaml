@@ -3809,7 +3809,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalConfig'
+            $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalConfig'
     ReplacePortalCustomization:
       content:
         application/json:
@@ -3819,7 +3819,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalConfig'
+            $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalConfig'
     ReplacePortalAuditLogReplayJob:
       description: The request schema to replace a portal audit log replay job.
       content:
@@ -4203,7 +4203,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/PortalConfig'
+            $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalConfig'
     PortalAuditLogReplayJob:
       description: Response from fetching or updating an portal audit log replay job
       content:
@@ -5470,68 +5470,6 @@ components:
         version_count: 4
     GetPortalResponse:
       $ref: '#/components/schemas/Portal'
-    PortalMenuItem:
-      type: object
-      properties:
-        path:
-          type: string
-          description: The absolute path of a page in a portal with a leading slash.
-          maxLength: 512
-          example: /about/company
-        title:
-          type: string
-          description: The link display text
-          example: My Page
-        public:
-          type: boolean
-          description: >-
-            Whether a page is publicly accessible to non-authenticated users.
-            Defaults to false.
-        external:
-          type: boolean
-          description: When clicked, open the link in a new window
-      required:
-        - path
-        - title
-        - public
-        - external
-    PortalFooterMenuSection:
-      type: object
-      properties:
-        title:
-          type: string
-          description: The footer menu section title
-          maxLength: 512
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/PortalMenuItem'
-      required:
-        - title
-        - items
-    PortalConfig:
-      title: PortalConfig
-      type: object
-      additionalProperties: false
-      required:
-        - data
-      properties:
-        data:
-          type: object
-          additionalProperties: true
-          properties:
-            header:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
-            footer_sections:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalFooterMenuSection'
-            footer_bottom:
-              type: array
-              items:
-                $ref: '#/components/schemas/PortalMenuItem'
     UpdatePortalResponse:
       $ref: '#/components/schemas/Portal'
     CreatePortalResponse:

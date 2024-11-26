@@ -65,6 +65,66 @@ components:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
+    PortalMenuItem:
+      type: object
+      properties:
+        path:
+          description: The absolute path of a page in a portal with a leading slash.
+          type: string
+          example: /about/company
+          maxLength: 512
+        title:
+          description: The link display text
+          type: string
+          example: My Page
+        public:
+          description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+          type: boolean
+        external:
+          description: 'When clicked, open the link in a new window'
+          type: boolean
+      required:
+        - path
+        - title
+        - public
+        - external
+    PortalFooterMenuSection:
+      type: object
+      properties:
+        title:
+          description: The footer menu section title
+          type: string
+          maxLength: 512
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalMenuItem'
+      required:
+        - title
+        - items
+    PortalConfig:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties: true
+          properties:
+            header:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSection'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItem'
+      additionalProperties: false
+      required:
+        - data
+      title: PortalConfig
   responses:
     GetPortalCustomization:
       description: Response for a portal customization
