@@ -2775,6 +2775,7 @@ components:
                   - us
                   - eu
                   - au
+                  - me
                   - '*'
                 example: eu
                 description: The region of the team.
@@ -2810,6 +2811,7 @@ components:
                   - us
                   - eu
                   - au
+                  - me
                   - '*'
                 example: eu
                 description: The region to scope the role assignment to.
@@ -3290,6 +3292,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
           example: eu
           description: Region of the entity.

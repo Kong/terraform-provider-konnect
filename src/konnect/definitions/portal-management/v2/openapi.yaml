@@ -4885,6 +4885,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
           example: eu
       example:
@@ -5131,6 +5132,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
           example: eu
       example:

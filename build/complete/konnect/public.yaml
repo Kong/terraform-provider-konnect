@@ -16111,6 +16111,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
@@ -16732,6 +16733,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
       example:
         role_name: API Viewer
@@ -16961,6 +16963,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
       example:
         id: 1a3c2169-27f8-4594-926b-41df3432d5dc
@@ -25299,6 +25302,7 @@ components:
                   - us
                   - eu
                   - au
+                  - me
                   - '*'
           examples:
             Assigned Roles US:

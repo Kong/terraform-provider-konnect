@@ -1346,6 +1346,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
         parameters:
           description: Additional parameters for the role assignment.
@@ -1819,6 +1820,7 @@ components:
                   - us
                   - eu
                   - au
+                  - me
                   - '*'
               parameters:
                 example:
