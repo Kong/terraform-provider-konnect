@@ -371,6 +371,7 @@ components:
         - us
         - eu
         - au
+        - me
     CloudGatewaysInstanceTypeName:
       type: string
       enum:

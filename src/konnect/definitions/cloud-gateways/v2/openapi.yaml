@@ -1096,6 +1096,7 @@ components:
         - us
         - eu
         - au
+        - me
     GatewayVersion:
       title: Gateway Version
       description: Supported gateway version.

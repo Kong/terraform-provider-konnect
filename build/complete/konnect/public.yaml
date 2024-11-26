@@ -14099,6 +14099,7 @@ components:
         - us
         - eu
         - au
+        - me
       title: Control-Plane Geo
     GatewayVersion:
       description: Supported gateway version.
