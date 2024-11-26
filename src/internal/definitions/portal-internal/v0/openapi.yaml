@@ -1,0 +1,138 @@
+openapi: 3.0.3
+info:
+    title: Internal Portal
+    description: Internal api for konnect to allow retrieving of entities in konnect db.
+    version: '1.0.0'
+    contact:
+      name: Kong
+      url: 'https://konghq.com'
+tags:
+  - name: portal
+servers:
+  - url: 'http://konnect-api.konnect.svc.cluster.local:300/v0'
+    description: Konnect cluster
+paths:
+  /internal/portals/{portalId}:
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+    get:
+      summary: retrieve a portal
+      description: Returns a raw database representation of the portal.
+      operationId: put-portal
+      tags:
+        - portal
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortal'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+components:
+  responses:
+    GetPortal:
+      description: A raw database portal
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Portal'
+  schemas:
+    Portal:
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - default_application_auth_strategy
+        - name
+        - uri
+        - labels
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        display_name:
+          type: string
+        uri:
+          type: string
+        custom_domain:
+          type: string
+        is_domain_verified:
+          type: boolean
+        logo:
+          type: string
+        logo_filename:
+          type: string
+        favicon:
+          type: string
+        favicon_filename:
+          type: string
+        is_public:
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+        auto_approve_applications:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+        config:
+          type: object
+          additionalProperties: true
+        customization:
+          $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomization'
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        description:
+          type: string
+        default_application_auth_strategy:
+          $ref: '#/components/schemas/NullableAuthStrategy'
+    NullableAuthStrategy:
+      type: object
+      nullable: true
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - dcr_provider
+        - configs
+        - labels
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        display_name:
+          type: string
+        strategy_type:
+          type: string
+        configs:
+          type: object
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        dcr_provider:
+          $ref: '#/components/schemas/NullableDcrProvider'
+    NullableDcrProvider:
+      type: object
+      nullable: true
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - dcr_config
+        - labels
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        provider_type:
+          type: string
+        issuer:
+          type: string
+        dcr_config:
+          type: object
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'

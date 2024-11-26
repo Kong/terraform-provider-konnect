@@ -1,0 +1,239 @@
+openapi: 3.0.3
+info:
+  title: Internal Portal
+  description: Internal api for konnect to allow retrieving of entities in konnect db.
+  version: 1.0.0
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: 'http://konnect-api.konnect.svc.cluster.local:300/v0'
+    description: Konnect cluster
+paths:
+  '/internal/portals/{portalId}':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      operationId: put-portal
+      summary: retrieve a portal
+      description: Returns a raw database representation of the portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortal'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - portal
+components:
+  parameters:
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
+  schemas:
+    Portal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        display_name:
+          type: string
+        uri:
+          type: string
+        custom_domain:
+          type: string
+        is_domain_verified:
+          type: boolean
+        logo:
+          type: string
+        logo_filename:
+          type: string
+        favicon:
+          type: string
+        favicon_filename:
+          type: string
+        is_public:
+          type: boolean
+        auto_approve_developers:
+          type: boolean
+        auto_approve_applications:
+          type: boolean
+        rbac_enabled:
+          type: boolean
+        config:
+          type: object
+          additionalProperties: true
+        customization:
+          $ref: '#/components/schemas/PortalCustomization'
+        labels:
+          $ref: '#/components/schemas/Labels'
+        description:
+          type: string
+        default_application_auth_strategy:
+          $ref: '#/components/schemas/NullableAuthStrategy'
+      additionalProperties: true
+      required:
+        - id
+        - default_application_auth_strategy
+        - name
+        - uri
+        - labels
+    NullableAuthStrategy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        display_name:
+          type: string
+        strategy_type:
+          type: string
+        configs:
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+        dcr_provider:
+          $ref: '#/components/schemas/NullableDcrProvider'
+      nullable: true
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - dcr_provider
+        - configs
+        - labels
+    NullableDcrProvider:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        provider_type:
+          type: string
+        issuer:
+          type: string
+        dcr_config:
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+      nullable: true
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - dcr_config
+        - labels
+    PortalCustomization:
+      type: object
+      additionalProperties: true
+      title: PortalCustomization
+    Labels:
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        env: test
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: Labels
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  responses:
+    GetPortal:
+      description: A raw database portal
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Portal'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+tags:
+  - name: portal
