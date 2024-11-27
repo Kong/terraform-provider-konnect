@@ -19928,7 +19928,6 @@ components:
         ca_certificate:
           type: object
           additionalProperties: false
-          nullable: true
           properties:
             id:
               type: string
@@ -19970,7 +19969,6 @@ components:
         ca_certificate:
           type: object
           additionalProperties: false
-          nullable: true
           properties:
             id:
               type: string
