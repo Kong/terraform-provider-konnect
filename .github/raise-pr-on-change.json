@@ -117,10 +117,6 @@
   ],
   "kong/cloud-gateway-configurations": [
     {
-      "src": "computed/konnect/cloud-gateways/v3/openapi.yaml",
-      "dest": "specs/v3/openapi.yaml"
-    },
-    {
       "src": "computed/konnect/cloud-gateways/v2/openapi.yaml",
       "dest": "specs/v2/openapi.yaml"
     }
