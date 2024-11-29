@@ -920,6 +920,12 @@ components:
           type: integer
           example: 300
           description: The duration of the debug session in seconds.
+        started_at:
+          type: string
+          format: date-time
+          example: '2024-11-04T20:10:06.927Z'
+          description: An ISO-8601 timestamp representation of start date.
+          readOnly: true
         stopped_at:
           type: string
           format: date-time
