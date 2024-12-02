@@ -417,8 +417,8 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
-          
-      
+
+
 
 components:
   examples:
@@ -777,13 +777,13 @@ components:
       example: '# Welcome to My Page'
     SnippetName:
       title: SnippetName
-      description: The name of a snippet in a portal with a leading slash.
+      description: The unique name of a snippet in a portal.
       type: string
       maxLength: 512
       example: my-snippet
     SnippetTitle:
       title: SnippetTitle
-      description: The title of a snippet in a portal.
+      description: The display title of a snippet in a portal.
       type: string
       maxLength: 512
       example: My Snippet

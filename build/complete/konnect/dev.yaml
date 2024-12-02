@@ -6862,13 +6862,13 @@ components:
       maxLength: 1000000
       title: PageContent
     SnippetName:
-      description: The name of a snippet in a portal with a leading slash.
+      description: The unique name of a snippet in a portal.
       type: string
       example: my-snippet
       maxLength: 512
       title: SnippetName
     SnippetTitle:
-      description: The title of a snippet in a portal.
+      description: The display title of a snippet in a portal.
       type: string
       example: My Snippet
       maxLength: 512
