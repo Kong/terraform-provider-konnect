@@ -1676,34 +1676,29 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: >-
-                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+                $ref: '../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError'
               examples:
                 AddDeveloperToTeamBadRequestExample1:
                   $ref: '#/components/examples/AddDeveloperToTeamBadRequestExample1'
                 AddDeveloperToTeamBadRequestExample2:
                   $ref: '#/components/examples/AddDeveloperToTeamBadRequestExample2'
         '401':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '409':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Conflict'
       requestBody:
         $ref: '#/components/requestBodies/AddDeveloperToTeam'
       tags:
         - Portal Team Membership
   /portals/{portalId}/teams/{teamId}/developers/{developerId}:
     parameters:
-      - $ref: >-
-          ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
-      - $ref: >-
-          ../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId
-      - $ref: >-
-          ../../../../common/definitions/portal.yaml#/components/parameters/TeamId
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/DeveloperId'
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/TeamId'
     delete:
       summary: Remove Developer from Team
       operationId: remove-developer-from-portal-team
@@ -1714,14 +1709,11 @@ paths:
         '204':
           description: No Content
         '401':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Forbidden'
         '404':
-          $ref: >-
-            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Portal Team Membership
   /portals/{portalId}/teams/{teamId}/assigned-roles:
