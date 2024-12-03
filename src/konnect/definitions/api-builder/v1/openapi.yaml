@@ -924,6 +924,7 @@ components:
             allOf:
               - $ref: "#/components/schemas/ApiPublication"
               - required:
+                  - visibility
                   - created_at
                   - updated_at
     ListApiPublicationResponse:
@@ -1120,6 +1121,17 @@ components:
     ## API Publication
     ################################
 
+    ApiPublicationVisibility:
+      type: string
+      enum:
+        - public
+        - private
+      default: private
+      description: |
+        The visibility of the API in the portal.
+        Public API publications do not require authentication to view and retrieve information about them.
+        Private API publications require authentication to retrieve information about them.
+
     ApiPublicationListItem:
       title: API Publication
       type: object
@@ -1128,6 +1140,7 @@ components:
       required:
         - api_id
         - portal_id
+        - visibility
         - created_at
         - updated_at
       properties:
@@ -1143,6 +1156,8 @@ components:
           example: 7710d5c4-d902-410b-992f-18b814155b53
           description: The portal identifier.
           readOnly: true
+        visibility:
+          $ref: "#/components/schemas/ApiPublicationVisibility"
         created_at:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
         updated_at:
@@ -1154,6 +1169,8 @@ components:
       description: An API publication in a portal
       additionalProperties: false
       properties:
+        visibility:
+          $ref: "#/components/schemas/ApiPublicationVisibility"
         created_at:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
         updated_at:

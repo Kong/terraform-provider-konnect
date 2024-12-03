@@ -4509,6 +4509,16 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       title: API Specification
+    ApiPublicationVisibility:
+      description: |
+        The visibility of the API in the portal.
+        Public API publications do not require authentication to view and retrieve information about them.
+        Private API publications require authentication to retrieve information about them.
+      type: string
+      default: private
+      enum:
+        - public
+        - private
     ApiPublicationListItem:
       description: An API publication in a portal
       type: object
@@ -4525,6 +4535,8 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
+        visibility:
+          $ref: '#/components/schemas/ApiPublicationVisibility'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -4533,6 +4545,7 @@ components:
       required:
         - api_id
         - portal_id
+        - visibility
         - created_at
         - updated_at
       title: API Publication
@@ -4540,6 +4553,8 @@ components:
       description: An API publication in a portal
       type: object
       properties:
+        visibility:
+          $ref: '#/components/schemas/ApiPublicationVisibility'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -11975,12 +11990,15 @@ components:
             description: An API publication in a portal
             type: object
             properties:
+              visibility:
+                $ref: '#/components/schemas/ApiPublicationVisibility'
               created_at:
                 $ref: '#/components/schemas/CreatedAt'
               updated_at:
                 $ref: '#/components/schemas/UpdatedAt'
             additionalProperties: false
             required:
+              - visibility
               - created_at
               - updated_at
             title: API Publication
