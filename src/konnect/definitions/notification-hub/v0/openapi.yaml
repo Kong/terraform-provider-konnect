@@ -511,6 +511,7 @@ components:
       type: string
       enum:
         - plan-and-usage
+        - organization
 
     # User configuration properties
     UserConfiguration:

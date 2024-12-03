@@ -6472,6 +6472,7 @@ components:
       type: string
       enum:
         - plan-and-usage
+        - organization
     UserConfiguration:
       description: Properties of an event.
       type: object
