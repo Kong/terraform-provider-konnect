@@ -332,6 +332,7 @@ components:
         - version
         - description
         - deprecated
+        - visibility
         - public_labels
       properties:
         id:
@@ -356,6 +357,15 @@ components:
         deprecated:
           type: boolean
           description: If true, the API is deprecated.
+        visibility:
+          type: string
+          enum:
+            - public
+            - private
+          description: |
+            Visibility of the API listing.
+            Public APIs are visible to anyone and do not require authentication to view and retrieve information about them.
+            Private APIs are only visible to authenticated developers who have been granted access.
         public_labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         registration_configs:

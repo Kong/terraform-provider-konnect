@@ -280,6 +280,15 @@ components:
         deprecated:
           description: 'If true, the API is deprecated.'
           type: boolean
+        visibility:
+          description: |
+            Visibility of the API listing.
+            Public APIs are visible to anyone and do not require authentication to view and retrieve information about them.
+            Private APIs are only visible to authenticated developers who have been granted access.
+          type: string
+          enum:
+            - public
+            - private
         public_labels:
           $ref: '#/components/schemas/Labels'
         registration_configs:
@@ -296,6 +305,7 @@ components:
         - version
         - description
         - deprecated
+        - visibility
         - public_labels
       title: Api
     ApiListPage:
