@@ -1,0 +1,613 @@
+openapi: 3.0.3
+info:
+  title: Portal API Catalog
+  version: 3.0.0
+  description: N/A (this description is removed during bundling)
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+paths:
+  /api/v3/apis/{apiId}:
+    get:
+      summary: Fetch an API
+      x-internal: true
+      x-unstable: true
+      description: Gets the details for an existing published API.
+      operationId: fetch-api
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - apis
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis:
+    get:
+      summary: List APIs
+      x-internal: true
+      x-unstable: true
+      description: Returns a paginated list of published APIs.
+      operationId: list-apis
+      parameters:
+        - $ref: '#/components/parameters/ApiFilters'
+        - $ref: '#/components/parameters/ApiSort'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiList'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+      tags:
+        - apis
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis/{apiId}/specifications:
+    get:
+      summary: List API specs
+      x-internal: true
+      x-unstable: true
+      description: Returns the API specification documents attached to the API. Currently only OpenAPI is supported.
+      operationId: list-api-specs
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecList'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis/{apiId}/specifications/{specId}:
+    get:
+      summary: Fetch API spec
+      x-internal: true
+      x-unstable: true
+      description: Returns an API specification document for an API. Currently only OpenAPI is supported.
+      operationId: fetch-api-spec
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
+        - $ref: '../../common/parameters.yaml#/components/parameters/SpecId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecGet'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis/{apiId}/documents:
+    get:
+      summary: List API documents
+      x-internal: true
+      x-unstable: true
+      description: Returns a list of documents that are associated with an API. The list is paginated, and is in either a list or tree format (based on the Accept header).
+      operationId: list-api-documents
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentContentTypeEnum'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentList'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis/{apiId}/documents/{documentId}:
+    get:
+      summary: Fetch API document
+      x-internal: true
+      x-unstable: true
+      description: Returns the specified document from the API's document tree.
+      operationId: fetch-api-document
+      parameters:
+        - in: header
+          name: Accept
+          schema:
+            $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
+        - $ref: '#/components/parameters/ApiId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/DocumentId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentGet'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - documentation
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/apis/{apiId}/actions:
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    get:
+      summary: Get API Actions
+      x-internal: true
+      x-unstable: true
+      description: Get a list of actions that the current developer is allowed to perform on an API.
+      operationId: get-api-actions
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiActions'
+        '401':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+        '503':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotAvailable'
+      tags:
+        - apis
+components:
+  securitySchemes:
+    portalAccessToken:
+      $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
+  parameters:
+    ApiId:
+      name: apiId
+      in: path
+      required: true
+      description: Contains a unique identifier used by the Portal API for this resource.
+      schema:
+        type: string
+        format: uuid
+    ApiQueryUnregisteredApplications:
+      name: unregistered
+      description: Return applications that do **not** have a registration for the API (regardless of registration status).
+      in: query
+      required: false
+      schema:
+        type: boolean
+      allowEmptyValue: true
+    ApiFilters:
+      name: filter
+      description: Filters APIs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiFilterParameters"
+      style: deepObject
+    ApiSort:
+      name: sort
+      description: |
+        Sorts a collection of APIs. Supported sort attributes are:
+          - name
+          - version
+          - created_at
+          - updated_at
+      required: false
+      in: query
+      schema:
+        $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery"
+  responses:
+    ApiActions:
+      description: API actions
+      content:
+        application/json:
+          schema:
+             $ref: '#/components/schemas/ApiActionsResponse'
+          examples:
+            Retrieve API Actions Response:
+              $ref: '#/components/examples/ApiActionsExample'
+    ApiGet:
+      description: Response for a single api's details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Api'
+    ApiList:
+      description: Response for a list of apis.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiListPage'
+    ApiListApplications:
+      description: Paginated list of applications either registered or not registered for an API
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiListApplicationsPage'
+    ApiSpecList:
+      description: List of API specification documents.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiSpecDocumentSummary'
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+            required:
+              - data
+              - meta
+    ApiSpecGet:
+      description: API specification document.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiSpecDocument'
+    ApiDocumentList:
+      description: Lists documents for an API.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiDocumentSummary'
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+            required:
+              - data
+              - meta
+        'application/vnd.konnect.document-tree+json':
+          schema:
+            $ref: '#/components/schemas/ApiDocumentTree'
+    ApiDocumentGet:
+      description: Details for a single document for an API.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiDocument'
+  schemas:
+    ApiActionsResponse:
+      title: API Actions Response
+      type: object
+      additionalProperties: false
+      required:
+        - actions
+      properties:
+        actions:
+          type: object
+          additionalProperties: false
+          required:
+            - view
+            - register
+            - view_documentation
+          properties:
+            view:
+              type: boolean
+            register:
+              type: boolean
+            view_documentation:
+              type: boolean
+          description: List of actions that can be performed on the API
+      example:
+        actions:
+          view: true
+          register: false
+          view_documentation: true
+    Api:
+      title: Api
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - created_at
+        - updated_at
+        - name
+        - version
+        - description
+        - deprecated
+        - public_labels
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+        name:
+          type: string
+          example: Billing
+          description: Name of API.
+        version:
+          type: string
+          example: v1
+          nullable: true
+          description: Version of API.
+        description:
+          type: string
+          nullable: true
+          example: V1 API for billing functions
+        deprecated:
+          type: boolean
+          description: If true, the API is deprecated.
+        public_labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+        registration_configs:
+          description: Configurations for how the API is able to be registered for by applications.
+          type: array
+          items:
+            $ref: '#/components/schemas/V3RegistrationConfiguration'
+    ApiListPage:
+      title: ApiListPage
+      type: object
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Api'
+    V3RegistrationConfiguration:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - credential_type
+        - registration_auto_approve
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        auth_methods:
+          type: array
+          items:
+            description: Auth Methods enabled for this strategy
+            type: string
+          example: ['bearer']
+        credential_type:
+            $ref: '#/components/schemas/V3CredentialType'
+        name:
+          type: string
+        available_scopes:
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/AvailableScopes'
+        registration_auto_approve:
+          type: boolean
+          description: If true, applications are automatically approved for registration.
+          example: false
+    V3CredentialType:
+      type: string
+      enum:
+      - client_credentials
+      - self_managed_client_credentials
+      - key_auth
+    ApiListApplicationsPage:
+      title: ApiListApplicationsPage
+      type: object
+      additionalProperties: false
+      required:
+        - meta
+        - data
+      properties:
+        meta:
+          $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiApplication'
+    ApiApplication:
+      title: ApiApplication
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - created_at
+        - updated_at
+        - registration_status
+        - registration_id
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        name:
+          description: The name of the application
+          type: string
+        registration_id:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/NullableUUID'
+        registration_status:
+          type: string
+          nullable: true
+          enum:
+            - approved
+            - pending
+            - rejected
+            - revoked
+        auth_strategy:
+          $ref: '../../../../common/definitions/auth_strategies.yaml#/components/schemas/AuthStrategy'
+        created_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt'
+    ApiSpecDocumentSummary:
+      type: object
+      title: ApiSpecDocumentSummary
+      description: Info about an API specification document.
+      properties:
+        id:
+          $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+        api_type:
+          $ref: '#/components/schemas/V3ApiTypeEnum'
+      required:
+      - id
+      - api_type
+    ApiSpecDocument:
+      type: object
+      title: ApiSpecDocument
+      description: API specification document.
+      properties:
+        api_type:
+          $ref: '#/components/schemas/V3ApiTypeEnum'
+        content:
+          type: string
+      required:
+      - api_type
+      - content
+    V3ApiTypeEnum:
+      type: string
+      enum:
+      - oas3
+    ApiDocument:
+      type: object
+      title: ApiDocument
+      description: A document for an API. This is a document that is not a part of the API specification.
+      required:
+        - id
+        - slug
+        - title
+        - content
+      properties:
+        id:
+          x-flatten-allOf: true
+          allOf:
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - description: Unique identifier of the document.
+              type: string
+        parent_document_id:
+          type: string
+          format: uuid
+          description: Unique identifier of the parent document.
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: Slug of the document. This is used in the URL to identify the document.
+          example: getting-started
+        content:
+          type: string
+          description: Markdown document
+          example: |
+            # My Kong api
+            
+            This api is powered by Konnect
+        title:
+          type: string
+          description: Title of the document.
+          example: Hello World
+    ApiDocumentSummary:
+      type: object
+      title: ApiDocumentSummary
+      description: A summary of details about a document for an API.
+      required:
+        - id
+        - slug
+        - title
+      properties:
+        id:
+          x-flatten-allOf: true
+          allOf:
+            - $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
+            - description: Unique identifier of the document.
+              type: string
+        parent_document_id:
+          type: string
+          format: uuid
+          description: Unique identifier of the parent document.
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        slug:
+          type: string
+          description: Slug of the document. This is used in the URL to identify the document.
+          example: getting-started
+        title:
+          type: string
+          description: Title of the document.
+          example: Hello World
+    ApiDocumentTree:
+      type: object
+      title: ApiDocumentTree
+      description: a document tree
+      required:
+      - id
+      - title
+      - slug
+      - children
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        parent_document_id:
+          type: string
+          format: uuid
+          nullable: true
+          example: dd4e1b98-3629-4dd3-acc0-759a726ffee2
+        title:
+          type: string
+          description: the title of the document
+          example: Getting Started
+        slug:
+          type: string
+          description: the slug of the document
+          example: getting-started
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiDocumentTree'
+    ApiFilterParameters:
+      title: "ApiFilterParameters"
+      type: object
+      properties:
+        id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        name:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+        version:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+        description:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter"
+        public_labels:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/LabelsFieldFilter"
+        deprecated:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter"
+        created_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
+        updated_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
+  examples:
+    ApiActionsExample:
+        value:
+          actions:
+            register: false
+            view: true
+            view_documentation: true
+tags:
+  - name: apis
+    description: Endpoints for viewing APIs published to the portal.

@@ -16,3 +16,11 @@ components:
       schema:
         type: string
         format: uuid
+    SpecId:
+      name: specId
+      in: path
+      required: true
+      description: Contains a unique identifier for this resource.
+      schema:
+        type: string
+        format: uuid

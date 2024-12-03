@@ -230,7 +230,7 @@ paths:
           schema:
             $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
         - $ref: '#/components/parameters/ProductId'
-        - $ref: '#/components/parameters/DocumentId'
+        - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/DocumentId'
       responses:
         '200':
           $ref: '#/components/responses/ProductDocumentGet'
@@ -270,14 +270,6 @@ components:
   parameters:
     ProductId:
       name: productId
-      in: path
-      required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
-    DocumentId:
-      name: documentId
       in: path
       required: true
       description: Contains a unique identifier used by the Portal API for this resource.
@@ -708,4 +700,4 @@ tags:
   - name: versions
     description: The API for Konnect Portal Product Versions.
   - name: documentation
-    description: The API for Konnect Portal Product Documentation.
+    description: The API for Konnect Portal API Documentation.
