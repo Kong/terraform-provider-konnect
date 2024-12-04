@@ -49,7 +49,7 @@ jobs:
           token: ${{ secrets.APIOPS_PAT }}
           mode: check-upstream
           configFile: ".github/raise-pr-on-change.json"
-          prBranch: automated-update
+          prBranch: feat/platform-api-automated-update
           targetBranch: main
           prTitle: "feat(sdk): automated oas update"
           prBody: "Generated OAS files from platform-api."
