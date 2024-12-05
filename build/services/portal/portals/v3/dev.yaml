@@ -7,6 +7,19 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
+  /api/v3/portal:
+    get:
+      operationId: get-portal-context
+      summary: Get portal context
+      description: Returns the portal context object.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalContextResponseV3'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
   /api/v3/portal/pages:
     get:
       operationId: list-portal-pages
@@ -236,6 +249,55 @@ components:
       schema:
         type: string
   schemas:
+    PortalContextV3:
+      description: Describes the portal execution context
+      type: object
+      properties:
+        portal_id:
+          description: ID of the portal
+          type: string
+          format: uuid
+        org_id:
+          description: ID of the organization
+          type: string
+          format: uuid
+        basic_auth_enabled:
+          description: Whether the portal can be accessed via email and password
+          type: boolean
+        oidc_auth_enabled:
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+          type: boolean
+        saml_auth_enabled:
+          description: Whether the portal can be accessed via SAML authentication
+          type: boolean
+        authentication_enabled:
+          description: Whether authentication is enabled for the portal
+          type: boolean
+        rbac_enabled:
+          description: Whether Role-Based Access Control is enabled for the portal
+          type: boolean
+        allowed_time_period:
+          description: Allowed time period for Analytics queries
+          type: string
+        name:
+          description: Name of the developer portal
+          type: string
+        canonical_domain:
+          description: The canonical domain of the developer portal
+          type: string
+      additionalProperties: false
+      required:
+        - portal_id
+        - org_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - saml_auth_enabled
+        - authentication_enabled
+        - rbac_enabled
+        - allowed_time_period
+        - name
+        - canonical_domain
+      title: Portal Context
     PageId:
       description: The unique identifier of the page
       type: string
@@ -604,6 +666,25 @@ components:
                 public: true
                 created_at: '2021-09-01T00:00:00Z'
                 updated_at: '2021-09-01T00:00:00Z'
+    GetPortalContextResponseV3:
+      description: The portal context object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContextV3'
+          examples:
+            GetPortalContextResponseV3Example1:
+              value:
+                portal_id: 18a9b697-7e68-411b-8e1d-102b261ab18e
+                org_id: a40f5d1f-d889-42e9-94ea-b9b33585fc6b
+                basic_auth_enabled: true
+                oidc_auth_enabled: true
+                saml_auth_enabled: true
+                authentication_enabled: true
+                rbac_enabled: true
+                allowed_time_period: 90d
+                name: my portal
+                canonical_domain: portal.example.com
     NotFound:
       description: Not Found
       content:

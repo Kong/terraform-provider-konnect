@@ -7,6 +7,21 @@ info:
     name: Kong
     url: https://cloud.konghq.com
 paths:
+  /api/v3/portal:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-context
+      summary: Get portal context
+      description: Returns the portal context object.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalContextResponseV3'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
   /api/v3/portal/pages:
     get:
       x-unstable: true
@@ -225,7 +240,75 @@ components:
                 public: true
                 created_at: '2021-09-01T00:00:00Z'
                 updated_at: '2021-09-01T00:00:00Z'
+    GetPortalContextResponseV3:
+      description: The portal context object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContextV3'
+          examples:
+            GetPortalContextResponseV3Example1:
+              value:
+                portal_id: "18a9b697-7e68-411b-8e1d-102b261ab18e"
+                org_id: "a40f5d1f-d889-42e9-94ea-b9b33585fc6b"
+                basic_auth_enabled: true
+                oidc_auth_enabled: true
+                saml_auth_enabled: true
+                authentication_enabled: true
+                rbac_enabled: true
+                allowed_time_period: "90d"
+                name: "my portal"
+                canonical_domain: "portal.example.com"
   schemas:
+    PortalContextV3:
+      title: Portal Context
+      description: Describes the portal execution context
+      type: object
+      additionalProperties: false
+      required:
+        - portal_id
+        - org_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - saml_auth_enabled
+        - authentication_enabled
+        - rbac_enabled
+        - allowed_time_period
+        - name
+        - canonical_domain
+      properties:
+        portal_id:
+          type: string
+          format: uuid
+          description: ID of the portal
+        org_id:
+          type: string
+          format: uuid
+          description: ID of the organization
+        basic_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via email and password
+        oidc_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+        saml_auth_enabled:
+          type: boolean
+          description: Whether the portal can be accessed via SAML authentication
+        authentication_enabled:
+          type: boolean
+          description: Whether authentication is enabled for the portal
+        rbac_enabled:
+          type: boolean
+          description: Whether Role-Based Access Control is enabled for the portal
+        allowed_time_period:
+          type: string
+          description: Allowed time period for Analytics queries
+        name:
+          type: string
+          description: Name of the developer portal
+        canonical_domain:
+          type: string
+          description: The canonical domain of the developer portal
     PageId:
       title: Page ID
       description: The unique identifier of the page
