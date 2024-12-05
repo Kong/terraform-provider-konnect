@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3
+> Released on 2024/12/??
+
+### Bug Fixes
+
+* Fix `Expected #sdk.Konnect, got: *sdk.Konnect.` error with custom plugins (and add an integration test)
+
 ## 2.0.2
 > Released on 2024/11/12
 
