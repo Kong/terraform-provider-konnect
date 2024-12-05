@@ -11878,6 +11878,8 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
         labels:
           $ref: '#/components/schemas/Labels'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
       additionalProperties: false
       required:
         - id
@@ -11888,6 +11890,7 @@ components:
         - created_at
         - updated_at
         - labels
+        - public_labels
         - version_count
       title: API Product
     APIProductDocument:
@@ -12104,6 +12107,8 @@ components:
           nullable: true
         labels:
           $ref: '#/components/schemas/Labels'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabels'
         portal_ids:
           description: The list of portal identifiers which this API product should be published to
           type: array
@@ -12137,6 +12142,8 @@ components:
           nullable: true
         labels:
           $ref: '#/components/schemas/LabelsUpdate'
+        public_labels:
+          $ref: '#/components/schemas/PublicLabelsUpdate'
         portal_ids:
           description: The list of portal identifiers which this API product should be published to
           type: array
@@ -12396,6 +12403,23 @@ components:
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
       readOnly: true
+    PublicLabels:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: PublicLabels
     UnsupportedMediaTypeError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -12429,6 +12453,25 @@ components:
         nullable: true
       maxProperties: 50
       nullable: true
+      writeOnly: true
+    PublicLabelsUpdate:
+      description: |
+        Public labels store information about an entity that can be used for filtering a list of objects.
+
+        Public labels are intended to store **PUBLIC** metadata.
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        category: finance
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 50
+      title: PublicLabelsUpdate
       writeOnly: true
     PublishStatus:
       type: string
