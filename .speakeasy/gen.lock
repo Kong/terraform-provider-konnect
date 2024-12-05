@@ -3,16 +3,16 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: eceaafa8f83b81bf1062ee8945d136c9
   docVersion: 2.0.0
-  speakeasyVersion: 1.438.1
-  generationVersion: 2.457.2
+  speakeasyVersion: 1.452.0
+  generationVersion: 2.472.1
   releaseVersion: 2.0.2
-  configChecksum: d484128879499dd5b31305f5ed0e34c2
+  configChecksum: 1491020711e9ce7464fb14e0992c0901
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.0
-    core: 3.26.2
+    core: 3.27.0
     deprecations: 2.81.1
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.9
@@ -22,7 +22,7 @@ features:
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.2
     nullables: 0.0.0
-    retries: 2.81.1
+    retries: 2.81.2
     sets: 0.1.2
     typeOverrides: 2.81.1
     unions: 2.81.17
@@ -1118,6 +1118,7 @@ generatedFiles:
   - internal/sdk/hmacauthcredentials.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/env.go
   - internal/sdk/internal/utils/form.go
   - internal/sdk/internal/utils/headers.go
   - internal/sdk/internal/utils/json.go
@@ -7015,7 +7016,7 @@ examples:
           page[number]: 1
       responses:
         "200":
-          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}, "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
         "400":
           application/problem+json: {"status": 654330, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -7432,3 +7433,4 @@ examples:
           application/problem+json: {"status": 237077, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+generatedTests: {}

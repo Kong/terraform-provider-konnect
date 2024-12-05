@@ -24,6 +24,7 @@ terraform:
   allowUnknownFieldsInWeakUnions: false
   author: kong
   defaultErrorName: SDKError
+  enableTypeDeduplication: true
   environmentVariables:
     - env: KONNECT_TOKEN
       providerAttribute: personal_access_token
