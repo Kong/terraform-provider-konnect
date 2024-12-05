@@ -414,6 +414,7 @@ components:
           description: Title of the document.
           type: string
           example: Hello World
+      additionalProperties: false
       required:
         - id
         - slug
@@ -444,6 +445,7 @@ components:
           description: Title of the document.
           type: string
           example: Hello World
+      additionalProperties: false
       required:
         - id
         - slug
@@ -474,6 +476,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApiDocumentTree'
+      additionalProperties: false
       required:
         - id
         - title

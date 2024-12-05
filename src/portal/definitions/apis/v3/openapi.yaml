@@ -503,6 +503,7 @@ components:
         - slug
         - title
         - content
+      additionalProperties: false
       properties:
         id:
           x-flatten-allOf: true
@@ -539,6 +540,7 @@ components:
         - id
         - slug
         - title
+      additionalProperties: false
       properties:
         id:
           x-flatten-allOf: true
@@ -569,6 +571,7 @@ components:
       - title
       - slug
       - children
+      additionalProperties: false
       properties:
         id:
           type: string
