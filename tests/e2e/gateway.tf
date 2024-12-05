@@ -159,3 +159,12 @@ EOF
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
+
+# This is a built in plugin, but we're using the custom_plugin resource
+# to ensure that it works
+resource "konnect_gateway_custom_plugin" "custom_basic_auth" {
+  name             = "basic-auth"
+  instance_name    = "custom-plugin-test"
+  config           = {}
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
