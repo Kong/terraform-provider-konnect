@@ -1813,6 +1813,67 @@ paths:
         - API-keys
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#create
+      operationId: create-mtls-auth-with-consumer
+      summary: Create a new MTLS-auth credential associated with a Consumer
+      description: Create a new MTLS-auth credential associated with a Consumer
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+      requestBody:
+        description: Description of new MTLS-auth credential for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MTLSAuthWithoutParents'
+      responses:
+        '201':
+          description: Successfully created MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+      tags:
+        - MTLS-auth credentials
+  '/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth/{MTLSAuthId}':
+    delete:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#delete
+      operationId: delete-mtls-auth-with-consumer
+      summary: Delete a a MTLS-auth credential associated with a Consumer
+      description: Delete a a MTLS-auth credential associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+      responses:
+        '204':
+          description: Successfully deleted MTLS-auth credential or the resource didn't exist
+      tags:
+        - MTLS-auth credentials
+    get:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#read
+      operationId: get-mtls-auth-with-consumer
+      summary: Fetch a MTLS-auth credential associated with a Consumer
+      description: Get a MTLS-auth credential associated with a Consumer using ID.
+      parameters:
+        - $ref: '#/components/parameters/ConsumerIdForNestedEntities'
+        - $ref: '#/components/parameters/MTLSAuthId'
+      responses:
+        '200':
+          description: Successfully fetched MTLS-auth credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MTLSAuth'
+        '404':
+          description: Resource does not exist
+      tags:
+        - MTLS-auth credentials
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
   '/v2/control-planes/{controlPlaneId}/core-entities/key-sets':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -10022,6 +10083,15 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    MTLSAuthId:
+      description: ID of the MTLS-auth credential to lookup
+      example: ''
+      in: path
+      name: MTLSAuthId
+      required: true
+      schema:
+        type: string
+      x-speakeasy-match: id
     NetworkId:
       name: networkId
       in: path
@@ -14219,7 +14289,6 @@ components:
           readOnly: true
         group:
           type: string
-          nullable: true
         id:
           type: string
           nullable: true
@@ -14227,13 +14296,14 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
       additionalProperties: false
+      required:
+        - group
     ACLPlugin:
       x-speakeasy-entity: GatewayPluginACL
       allOf:
@@ -14275,7 +14345,6 @@ components:
           readOnly: true
         group:
           type: string
-          nullable: true
         id:
           type: string
           nullable: true
@@ -14283,11 +14352,12 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         group: foo
         id: b1f34145-0343-41a4-9602-4c69dec2f269
       additionalProperties: false
+      required:
+        - group
     AcmePlugin:
       x-speakeasy-entity: GatewayPluginAcme
       allOf:
@@ -15444,15 +15514,12 @@ components:
           nullable: true
         password:
           type: string
-          nullable: true
         tags:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -15460,6 +15527,9 @@ components:
         password: hashedsoopersecretvalue
         username: darius
       additionalProperties: false
+      required:
+        - username
+        - password
     BasicAuthPlugin:
       x-speakeasy-entity: GatewayPluginBasicAuth
       allOf:
@@ -15495,22 +15565,22 @@ components:
           nullable: true
         password:
           type: string
-          nullable: true
           writeOnly: true
           x-speakeasy-param-sensitive: true
         tags:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
-          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         password: hashedsoopersecretvalue
         username: darius
       additionalProperties: false
+      required:
+        - username
+        - password
     BotDetectionPlugin:
       x-speakeasy-entity: GatewayPluginBotDetection
       allOf:
@@ -15560,7 +15630,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -15687,7 +15756,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -15727,7 +15795,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -15760,7 +15827,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -16528,10 +16594,8 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -16539,6 +16603,8 @@ components:
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
         username: xerxes
       additionalProperties: false
+      required:
+        - username
     HMACAuthWithoutParents:
       x-speakeasy-entity: GatewayHMACAuth
       type: object
@@ -16557,15 +16623,15 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         username:
           type: string
-          nullable: true
       example:
         id: 75695322-e8a0-4109-aed4-5416b0308d85
         secret: wQazJ304DW5huJklHgUfjfiSyCyTAEDZ
         username: xerxes
       additionalProperties: false
+      required:
+        - username
     HmacAuthPlugin:
       x-speakeasy-entity: GatewayPluginHmacAuth
       allOf:
@@ -16784,7 +16850,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         algorithm: HS256
         consumer:
@@ -16834,7 +16899,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
       example:
         algorithm: HS256
         id: 75695322-e8a0-4109-aed4-5416b0308d85
@@ -17647,7 +17711,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -17688,18 +17751,18 @@ components:
           nullable: true
         key:
           type: string
-          nullable: true
         tags:
           type: array
           items:
             type: string
-          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
+      required:
+        - key
     KeyAuthEncPlugin:
       x-speakeasy-entity: GatewayPluginKeyAuthEnc
       allOf:
@@ -17793,16 +17856,16 @@ components:
           nullable: true
         key:
           type: string
-          nullable: true
         tags:
           type: array
           items:
             type: string
-          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
       additionalProperties: false
+      required:
+        - key
     KeySet:
       x-speakeasy-entity: GatewayKeySet
       type: object
@@ -17821,7 +17884,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -19438,6 +19500,88 @@ components:
         name:
           type: string
           const: loggly
+    MTLSAuth:
+      x-speakeasy-entity: GatewayMTLSAuth
+      type: object
+      properties:
+        ca_certificate:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          readOnly: true
+        id:
+          type: string
+          nullable: true
+        subject_name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      example:
+        ca_certificate:
+          id: b2f34145-0343-41a4-9602-4c69dec2f260
+        consumer:
+          id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
+        id: b2f34145-0343-41a4-9602-4c69dec2f269
+        subject_name: CA_Subject_Name
+      additionalProperties: false
+      required:
+        - subject_name
+    MTLSAuthWithoutParents:
+      x-speakeasy-entity: GatewayMTLSAuth
+      type: object
+      properties:
+        ca_certificate:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          readOnly: true
+        id:
+          type: string
+          nullable: true
+        subject_name:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      example:
+        ca_certificate:
+          id: b2f34145-0343-41a4-9602-4c69dec2f260
+        id: b2f34145-0343-41a4-9602-4c69dec2f269
+        subject_name: CA_Subject_Name
+      additionalProperties: false
+      required:
+        - subject_name
     MockingPlugin:
       x-speakeasy-entity: GatewayPluginMocking
       allOf:
@@ -21509,7 +21653,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -23193,7 +23336,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -23290,7 +23432,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -23807,7 +23948,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         tls_verify:
           description: 'Whether to enable verification of upstream server TLS certificate. If set to `null`, then the Nginx default is respected.'
           type: boolean
@@ -24404,7 +24544,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -24451,7 +24590,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         target:
           description: 'The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record.'
           type: string
@@ -24779,7 +24917,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -24896,7 +25033,6 @@ components:
           description: The configuration properties for the Vault which can be found on the vaults' documentation page.
           type: object
           additionalProperties: true
-          nullable: true
           x-speakeasy-type-override: any
         created_at:
           description: Unix epoch when the resource was created.
@@ -24920,7 +25056,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
@@ -24939,6 +25074,7 @@ components:
       required:
         - name
         - prefix
+        - config
     VaultAuthPlugin:
       x-speakeasy-entity: GatewayPluginVaultAuth
       allOf:
