@@ -10836,6 +10836,7 @@ components:
         - us
         - eu
         - au
+        - me
       title: Control-Plane Geo
     GatewayVersion:
       description: Supported gateway version.
@@ -14107,6 +14108,7 @@ components:
             - us
             - eu
             - au
+            - me
             - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
@@ -25817,6 +25819,7 @@ components:
                   - us
                   - eu
                   - au
+                  - me
                   - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:
