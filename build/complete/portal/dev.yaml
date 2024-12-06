@@ -229,7 +229,7 @@ paths:
         - documentation
   /api/v3/portal:
     get:
-      operationId: get-portal-context
+      operationId: get-portal-context-v3
       summary: Get portal context
       description: Returns the portal context object.
       responses:
