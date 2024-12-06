@@ -8,8 +8,14 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayBasicAuthDataSourceModel) RefreshFromSharedBasicAuth(resp *shared.BasicAuth) {
+func (r *GatewayMTLSAuthDataSourceModel) RefreshFromSharedMTLSAuth(resp *shared.MTLSAuth) {
 	if resp != nil {
+		if resp.CaCertificate == nil {
+			r.CaCertificate = nil
+		} else {
+			r.CaCertificate = &tfTypes.ACLConsumer{}
+			r.CaCertificate.ID = types.StringPointerValue(resp.CaCertificate.ID)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -18,11 +24,10 @@ func (r *GatewayBasicAuthDataSourceModel) RefreshFromSharedBasicAuth(resp *share
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Password = types.StringValue(resp.Password)
+		r.SubjectName = types.StringValue(resp.SubjectName)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
-		r.Username = types.StringValue(resp.Username)
 	}
 }

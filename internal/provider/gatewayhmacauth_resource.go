@@ -115,8 +115,7 @@ func (r *GatewayHMACAuthResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Requires replacement if changed.`,
 			},
 			"username": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),

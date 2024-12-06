@@ -23,6 +23,6 @@ func (r *GatewayHMACAuthDataSourceModel) RefreshFromSharedHMACAuth(resp *shared.
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
-		r.Username = types.StringPointerValue(resp.Username)
+		r.Username = types.StringValue(resp.Username)
 	}
 }

@@ -41,6 +41,7 @@ type APIProductResourceModel struct {
 	Name         types.String               `tfsdk:"name"`
 	PortalIds    []types.String             `tfsdk:"portal_ids"`
 	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
+	PublicLabels map[string]types.String    `tfsdk:"public_labels"`
 	UpdatedAt    types.String               `tfsdk:"updated_at"`
 	VersionCount types.Number               `tfsdk:"version_count"`
 }
@@ -105,6 +106,16 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 					},
 				},
 				Description: `The list of portals which this API product is published to`,
+			},
+			"public_labels": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
+				MarkdownDescription: `Public labels store information about an entity that can be used for filtering a list of objects.` + "\n" +
+					`` + "\n" +
+					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
+					`` + "\n" +
+					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
 			},
 			"updated_at": schema.StringAttribute{
 				Computed:    true,

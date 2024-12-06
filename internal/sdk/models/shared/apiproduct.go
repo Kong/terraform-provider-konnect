@@ -34,6 +34,13 @@ type APIProduct struct {
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
 	Labels map[string]string `json:"labels"`
+	// Public labels store information about an entity that can be used for filtering a list of objects.
+	//
+	// Public labels are intended to store **PUBLIC** metadata.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	PublicLabels map[string]string `json:"public_labels"`
 }
 
 func (a APIProduct) MarshalJSON() ([]byte, error) {
@@ -108,4 +115,11 @@ func (o *APIProduct) GetLabels() map[string]string {
 		return map[string]string{}
 	}
 	return o.Labels
+}
+
+func (o *APIProduct) GetPublicLabels() map[string]string {
+	if o == nil {
+		return map[string]string{}
+	}
+	return o.PublicLabels
 }

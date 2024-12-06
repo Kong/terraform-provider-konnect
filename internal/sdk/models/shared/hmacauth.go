@@ -20,7 +20,7 @@ type HMACAuth struct {
 	ID        *string  `json:"id,omitempty"`
 	Secret    *string  `json:"secret,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
-	Username  *string  `json:"username,omitempty"`
+	Username  string   `json:"username"`
 }
 
 func (o *HMACAuth) GetConsumer() *HMACAuthConsumer {
@@ -58,9 +58,9 @@ func (o *HMACAuth) GetTags() []string {
 	return o.Tags
 }
 
-func (o *HMACAuth) GetUsername() *string {
+func (o *HMACAuth) GetUsername() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Username
 }

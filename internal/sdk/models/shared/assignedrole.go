@@ -14,6 +14,7 @@ const (
 	AssignedRoleEntityRegionUs       AssignedRoleEntityRegion = "us"
 	AssignedRoleEntityRegionEu       AssignedRoleEntityRegion = "eu"
 	AssignedRoleEntityRegionAu       AssignedRoleEntityRegion = "au"
+	AssignedRoleEntityRegionMe       AssignedRoleEntityRegion = "me"
 	AssignedRoleEntityRegionWildcard AssignedRoleEntityRegion = "*"
 )
 
@@ -31,6 +32,8 @@ func (e *AssignedRoleEntityRegion) UnmarshalJSON(data []byte) error {
 	case "eu":
 		fallthrough
 	case "au":
+		fallthrough
+	case "me":
 		fallthrough
 	case "*":
 		*e = AssignedRoleEntityRegion(v)

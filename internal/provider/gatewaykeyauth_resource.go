@@ -95,8 +95,7 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Requires replacement if changed.`,
 			},
 			"key": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),

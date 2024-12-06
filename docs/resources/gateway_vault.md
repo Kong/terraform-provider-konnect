@@ -31,13 +31,13 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
 
 ### Required
 
+- `config` (String) The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 - `name` (String) The name of the Vault that's going to be added. Currently, the Vault implementation must be installed in every Kong instance.
 - `prefix` (String) The unique prefix (or identifier) for this Vault configuration. The prefix is used to load the right Vault configuration and implementation when referencing secrets with the other entities.
 
 ### Optional
 
-- `config` (String) The configuration properties for the Vault which can be found on the vaults' documentation page. Parsed as JSON.
 - `description` (String) The description of the Vault entity.
 - `tags` (List of String) An optional set of strings associated with the Vault for grouping and filtering.
 

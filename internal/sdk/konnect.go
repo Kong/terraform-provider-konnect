@@ -113,6 +113,7 @@ type Konnect struct {
 	HMACAuthCredentials  *HMACAuthCredentials
 	JWTs                 *JWTs
 	APIKeys              *APIKeys
+	MTLSAuthCredentials  *MTLSAuthCredentials
 	// A JSON Web key set. Key sets are the preferred way to expose keys to plugins because they tell the plugin where to look for keys or have a scoping mechanism to restrict plugins to specific keys.
 	//
 	KeySets *KeySets
@@ -354,6 +355,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.JWTs = newJWTs(sdk.sdkConfiguration)
 
 	sdk.APIKeys = newAPIKeys(sdk.sdkConfiguration)
+
+	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk.sdkConfiguration)
 
 	sdk.KeySets = newKeySets(sdk.sdkConfiguration)
 

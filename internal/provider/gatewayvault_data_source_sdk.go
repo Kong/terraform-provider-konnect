@@ -10,12 +10,8 @@ import (
 
 func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = types.StringNull()
-		} else {
-			configResult, _ := json.Marshal(resp.Config)
-			r.Config = types.StringValue(string(configResult))
-		}
+		configResult, _ := json.Marshal(resp.Config)
+		r.Config = types.StringValue(string(configResult))
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)

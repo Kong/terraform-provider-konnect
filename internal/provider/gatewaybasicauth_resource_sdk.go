@@ -15,22 +15,16 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	} else {
 		id = nil
 	}
-	password := new(string)
-	if !r.Password.IsUnknown() && !r.Password.IsNull() {
-		*password = r.Password.ValueString()
-	} else {
-		password = nil
-	}
+	var password string
+	password = r.Password.ValueString()
+
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	username := new(string)
-	if !r.Username.IsUnknown() && !r.Username.IsNull() {
-		*username = r.Username.ValueString()
-	} else {
-		username = nil
-	}
+	var username string
+	username = r.Username.ValueString()
+
 	out := shared.BasicAuthWithoutParents{
 		ID:       id,
 		Password: password,
@@ -50,11 +44,11 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Password = types.StringPointerValue(resp.Password)
+		r.Password = types.StringValue(resp.Password)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
-		r.Username = types.StringPointerValue(resp.Username)
+		r.Username = types.StringValue(resp.Username)
 	}
 }

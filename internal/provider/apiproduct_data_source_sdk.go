@@ -41,6 +41,12 @@ func (r *APIProductDataSourceModel) RefreshFromSharedAPIProduct(resp *shared.API
 				r.Portals[portalsCount].PortalName = portals1.PortalName
 			}
 		}
+		if len(resp.PublicLabels) > 0 {
+			r.PublicLabels = make(map[string]types.String)
+			for key1, value1 := range resp.PublicLabels {
+				r.PublicLabels[key1] = types.StringValue(value1)
+			}
+		}
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 		r.VersionCount = types.NumberValue(big.NewFloat(float64(resp.VersionCount)))
 	}

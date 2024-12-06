@@ -15,12 +15,9 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 	} else {
 		id = nil
 	}
-	key := new(string)
-	if !r.Key.IsUnknown() && !r.Key.IsNull() {
-		*key = r.Key.ValueString()
-	} else {
-		key = nil
-	}
+	var key string
+	key = r.Key.ValueString()
+
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
@@ -43,7 +40,7 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(resp *shared.KeyA
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Key = types.StringPointerValue(resp.Key)
+		r.Key = types.StringValue(resp.Key)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))

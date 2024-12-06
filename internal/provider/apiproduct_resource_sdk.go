@@ -27,15 +27,23 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAP
 
 		labels[labelsKey] = labelsInst
 	}
+	publicLabels := make(map[string]string)
+	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
+		var publicLabelsInst string
+		publicLabelsInst = publicLabelsValue.ValueString()
+
+		publicLabels[publicLabelsKey] = publicLabelsInst
+	}
 	var portalIds []string = []string{}
 	for _, portalIdsItem := range r.PortalIds {
 		portalIds = append(portalIds, portalIdsItem.ValueString())
 	}
 	out := shared.CreateAPIProductDTO{
-		Name:        name,
-		Description: description,
-		Labels:      labels,
-		PortalIds:   portalIds,
+		Name:         name,
+		Description:  description,
+		Labels:       labels,
+		PublicLabels: publicLabels,
+		PortalIds:    portalIds,
 	}
 	return &out
 }
@@ -71,6 +79,12 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 				r.Portals[portalsCount].PortalName = portals1.PortalName
 			}
 		}
+		if len(resp.PublicLabels) > 0 {
+			r.PublicLabels = make(map[string]types.String)
+			for key1, value1 := range resp.PublicLabels {
+				r.PublicLabels[key1] = types.StringValue(value1)
+			}
+		}
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 		r.VersionCount = types.NumberValue(big.NewFloat(float64(resp.VersionCount)))
 	}
@@ -96,15 +110,23 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAP
 
 		labels[labelsKey] = labelsInst
 	}
+	publicLabels := make(map[string]string)
+	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
+		var publicLabelsInst string
+		publicLabelsInst = publicLabelsValue.ValueString()
+
+		publicLabels[publicLabelsKey] = publicLabelsInst
+	}
 	var portalIds []string = []string{}
 	for _, portalIdsItem := range r.PortalIds {
 		portalIds = append(portalIds, portalIdsItem.ValueString())
 	}
 	out := shared.UpdateAPIProductDTO{
-		Name:        name,
-		Description: description,
-		Labels:      labels,
-		PortalIds:   portalIds,
+		Name:         name,
+		Description:  description,
+		Labels:       labels,
+		PublicLabels: publicLabels,
+		PortalIds:    portalIds,
 	}
 	return &out
 }

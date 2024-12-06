@@ -32,13 +32,13 @@ resource "konnect_gateway_hmac_auth" "my_gatewayhmacauth" {
 
 - `consumer_id` (String) Consumer ID for nested entities. Requires replacement if changed.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `username` (String) Requires replacement if changed.
 
 ### Optional
 
 - `id` (String) Requires replacement if changed.
 - `secret` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-- `username` (String) Requires replacement if changed.
 
 ### Read-Only
 

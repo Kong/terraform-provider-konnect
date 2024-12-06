@@ -17,7 +17,7 @@ type ACL struct {
 	Consumer *ACLConsumer `json:"consumer"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64   `json:"created_at,omitempty"`
-	Group     *string  `json:"group,omitempty"`
+	Group     string   `json:"group"`
 	ID        *string  `json:"id,omitempty"`
 	Tags      []string `json:"tags,omitempty"`
 }
@@ -36,9 +36,9 @@ func (o *ACL) GetCreatedAt() *int64 {
 	return o.CreatedAt
 }
 
-func (o *ACL) GetGroup() *string {
+func (o *ACL) GetGroup() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Group
 }

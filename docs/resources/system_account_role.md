@@ -32,7 +32,7 @@ resource "konnect_system_account_role" "my_systemaccountrole" {
 ### Optional
 
 - `entity_id` (String) The ID of the entity. Requires replacement if changed.
-- `entity_region` (String) The region of the team. must be one of ["us", "eu", "au", "*"]; Requires replacement if changed.
+- `entity_region` (String) The region of the team. must be one of ["us", "eu", "au", "me", "*"]; Requires replacement if changed.
 - `entity_type_name` (String) The type of entity. must be one of ["APIs", "API Products", "Application Auth Strategies", "Audit Logs", "Control Planes", "DCR Providers", "Identity", "Mesh Control Planes", "Networks", "Portals", "Service Hub"]; Requires replacement if changed.
 - `role_name` (String) The desired role. must be one of ["Admin", "Appearance Maintainer", "Application Registration", "Certificate Admin", "Cloud Gateway Cluster Admin", "Cloud Gateway Cluster Viewer", "Consumer Admin", "Creator", "Deployer", "Discovery Admin", "Discovery Viewer", "Gateway Service Admin", "Integration Admin", "Integration Viewer", "Key Admin", "Maintainer", "Network Admin", "Network Creator", "Network Viewer", "Plugin Admin", "Plugins Admin", "Product Publisher", "Publisher", "Route Admin", "SNI Admin", "Service Admin", "Service Creator", "Service Viewer", "Upstream Admin", "Vault Admin", "Viewer"]; Requires replacement if changed.
 

@@ -4,7 +4,7 @@ package shared
 
 type KeyAuthWithoutParents struct {
 	ID   *string  `json:"id,omitempty"`
-	Key  *string  `json:"key,omitempty"`
+	Key  string   `json:"key"`
 	Tags []string `json:"tags,omitempty"`
 }
 
@@ -15,9 +15,9 @@ func (o *KeyAuthWithoutParents) GetID() *string {
 	return o.ID
 }
 
-func (o *KeyAuthWithoutParents) GetKey() *string {
+func (o *KeyAuthWithoutParents) GetKey() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Key
 }

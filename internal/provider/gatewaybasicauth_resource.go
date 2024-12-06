@@ -96,8 +96,7 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 				Description: `Requires replacement if changed.`,
 			},
 			"password": schema.StringAttribute{
-				Computed:  true,
-				Optional:  true,
+				Required:  true,
 				Sensitive: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
@@ -116,8 +115,7 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 				Description: `Requires replacement if changed.`,
 			},
 			"username": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
