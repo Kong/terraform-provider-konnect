@@ -52,7 +52,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/acls/{ACLId}':
     get:
-      x-speakeasy-entity-operation: GatewayACL#read
       operationId: get-acl
       summary: Fetch an ACL
       description: Get an ACL using ID.
@@ -105,7 +104,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/basic-auths/{BasicAuthId}':
     get:
-      x-speakeasy-entity-operation: GatewayBasicAuth#read
       operationId: get-basic-auth
       summary: Fetch a Basic-auth credential
       description: Get a Basic-auth credential using ID.
@@ -1561,6 +1559,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
     post:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#create
       operationId: create-mtls-auth-with-consumer
       summary: Create a new MTLS-auth credential associated with a Consumer
       description: Create a new MTLS-auth credential associated with a Consumer
@@ -1584,6 +1583,7 @@ paths:
         - MTLS-auth credentials
   '/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/mtls-auth/{MTLSAuthId}':
     delete:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#delete
       operationId: delete-mtls-auth-with-consumer
       summary: Delete a a MTLS-auth credential associated with a Consumer
       description: Delete a a MTLS-auth credential associated with a Consumer using ID.
@@ -1596,6 +1596,7 @@ paths:
       tags:
         - MTLS-auth credentials
     get:
+      x-speakeasy-entity-operation: GatewayMTLSAuth#read
       operationId: get-mtls-auth-with-consumer
       summary: Fetch a MTLS-auth credential associated with a Consumer
       description: Get a MTLS-auth credential associated with a Consumer using ID.
@@ -1779,7 +1780,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/hmac-auths/{HMACAuthId}':
     get:
-      x-speakeasy-entity-operation: GatewayHMACAuth#read
       operationId: get-hmac-auth
       summary: Fetch a HMAC-auth credential
       description: Get a HMAC-auth credential using ID.
@@ -1832,7 +1832,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/jwts/{JWTId}':
     get:
-      x-speakeasy-entity-operation: GatewayJWT#read
       operationId: get-jwt
       summary: Fetch a JWT
       description: Get a JWT using ID.
@@ -1885,7 +1884,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/key-auths/{KeyAuthId}':
     get:
-      x-speakeasy-entity-operation: GatewayKeyAuth#read
       operationId: get-key-auth
       summary: Fetch an API-key
       description: Get an API-key using ID.
@@ -2272,7 +2270,6 @@ paths:
       - $ref: '#/components/parameters/controlPlaneId'
   '/control-planes/{controlPlaneId}/core-entities/mtls-auths/{MTLSAuthId}':
     get:
-      x-speakeasy-entity-operation: GatewayMTLSAuth#read
       operationId: get-mtls-auth
       summary: Fetch a MTLS-auth credential
       description: Get a MTLS-auth credential using ID.
