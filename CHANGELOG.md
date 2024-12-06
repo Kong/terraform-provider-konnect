@@ -1,7 +1,13 @@
 # Changelog
 
-## 2.0.3
-> Released on 2024/12/??
+## 2.1.0
+> Released on 2024/12/06
+
+### Features
+
+* Add support for `konnect_gateway_mtls_auth` resource
+* API Products now support `public_labels`
+* Added support for Konnect Middle-East region
 
 ### Bug Fixes
 
