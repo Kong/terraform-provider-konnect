@@ -1442,6 +1442,7 @@ components:
         labels:
           env: test
         public_labels: {}
+        description: My API
         deprecated: false
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
@@ -1674,6 +1675,10 @@ components:
                 example: MyAPI
                 maxLength: 255
                 minLength: 1
+              description:
+                description: A description of your API. Will be visible on your live Portal.
+                type: string
+                nullable: true
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
@@ -1794,6 +1799,10 @@ components:
                 example: MyAPI
                 maxLength: 255
                 minLength: 1
+              description:
+                description: A description of your API. Will be visible on your live Portal.
+                type: string
+                nullable: true
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
@@ -1941,6 +1950,10 @@ components:
                 example: MyAPI
                 maxLength: 255
                 minLength: 1
+              description:
+                description: A description of your API. Will be visible on your live Portal.
+                type: string
+                nullable: true
               version:
                 description: An optional version for your API. Leave this empty if your API is unversioned.
                 type: string
@@ -1969,6 +1982,7 @@ components:
               - deprecated
               - created_at
               - updated_at
+              - description
             title: API
           examples:
             CreateApiResponse:
@@ -2002,6 +2016,10 @@ components:
                       example: MyAPI
                       maxLength: 255
                       minLength: 1
+                    description:
+                      description: A description of your API. Will be visible on your live Portal.
+                      type: string
+                      nullable: true
                     version:
                       description: An optional version for your API. Leave this empty if your API is unversioned.
                       type: string

@@ -777,6 +777,7 @@ components:
                   - deprecated
                   - created_at
                   - updated_at
+                  - description
           examples:
             CreateApiResponse:
               $ref: "#/components/examples/ApiExample"
@@ -968,6 +969,10 @@ components:
           description: |
             The name of your API. The `name + version` combination must be unique for each API you publish.
           example: MyAPI
+        description:
+          type: string
+          description: A description of your API. Will be visible on your live Portal.
+          nullable: true
         version:
           type: string
           maxLength: 255
@@ -1245,6 +1250,7 @@ components:
         labels:
           env: test
         public_labels: {}
+        description: "My API"
         deprecated: false
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
