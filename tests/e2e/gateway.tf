@@ -56,13 +56,6 @@ resource "konnect_gateway_consumer" "alice" {
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
 
-resource "konnect_gateway_basic_auth" "my_basicauth" {
-  username = "alice-test"
-  password = "demo"
-
-  consumer_id      = konnect_gateway_consumer.alice.id
-  control_plane_id = konnect_gateway_control_plane.tfdemo.id
-}
 
 # And a consumer group + membership
 resource "konnect_gateway_consumer_group" "gold" {
@@ -166,5 +159,49 @@ resource "konnect_gateway_custom_plugin" "custom_basic_auth" {
   name             = "basic-auth"
   instance_name    = "custom-plugin-test"
   config           = {}
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+# Authentication types. We use the nested endpoint to ensure
+# that consumer_id can be set
+
+resource "konnect_gateway_acl" "my_acl" {
+  group = "internal_users"
+
+  consumer_id      = konnect_gateway_consumer.alice.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_basic_auth" "my_basicauth" {
+  username = "alice-test"
+  password = "demo"
+
+  consumer_id      = konnect_gateway_consumer.alice.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_hmac_auth" "my_hmac" {
+  username         = "alice"
+  secret           = "secret1234"
+  consumer_id      = konnect_gateway_consumer.alice.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_jwt" "my_jwt" {
+  algorithm        = "HS256"
+  secret           = "my_secret_value"
+  consumer_id      = konnect_gateway_consumer.alice.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_key_auth" "my_keyauth" {
+  key              = "abc123"
+  consumer_id      = konnect_gateway_consumer.alice.id
+  control_plane_id = konnect_gateway_control_plane.tfdemo.id
+}
+
+resource "konnect_gateway_mtls_auth" "my_mtlsauth" {
+  subject_name     = "example.com"
+  consumer_id      = konnect_gateway_consumer.alice.id
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
