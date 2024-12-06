@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: eceaafa8f83b81bf1062ee8945d136c9
+  docChecksum: 3525f41e92d7da0d74b3b2da7fb383ec
   docVersion: 2.0.0
-  speakeasyVersion: 1.438.1
-  generationVersion: 2.457.2
-  releaseVersion: 2.0.2
-  configChecksum: d484128879499dd5b31305f5ed0e34c2
+  speakeasyVersion: 1.452.0
+  generationVersion: 2.472.1
+  releaseVersion: 2.1.0
+  configChecksum: c668f0d60c95f428085daa7f627fb629
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.0
-    core: 3.26.2
+    core: 3.27.0
     deprecations: 2.81.1
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.9
@@ -22,7 +22,7 @@ features:
     methodServerURLs: 2.82.1
     nameOverrides: 2.81.2
     nullables: 0.0.0
-    retries: 2.81.1
+    retries: 2.81.2
     sets: 0.1.2
     typeOverrides: 2.81.1
     unions: 2.81.17
@@ -54,6 +54,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_key/data-source.tf
   - examples/data-sources/konnect_gateway_key_auth/data-source.tf
   - examples/data-sources/konnect_gateway_key_set/data-source.tf
+  - examples/data-sources/konnect_gateway_mtls_auth/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_acme/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_prompt_decorator/data-source.tf
@@ -197,6 +198,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_key_auth/resource.tf
   - examples/resources/konnect_gateway_key_set/import.sh
   - examples/resources/konnect_gateway_key_set/resource.tf
+  - examples/resources/konnect_gateway_mtls_auth/import.sh
+  - examples/resources/konnect_gateway_mtls_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_acl/import.sh
   - examples/resources/konnect_gateway_plugin_acl/resource.tf
   - examples/resources/konnect_gateway_plugin_acme/import.sh
@@ -498,6 +501,10 @@ generatedFiles:
   - internal/provider/gatewaykeyset_data_source_sdk.go
   - internal/provider/gatewaykeyset_resource.go
   - internal/provider/gatewaykeyset_resource_sdk.go
+  - internal/provider/gatewaymtlsauth_data_source.go
+  - internal/provider/gatewaymtlsauth_data_source_sdk.go
+  - internal/provider/gatewaymtlsauth_resource.go
+  - internal/provider/gatewaymtlsauth_resource_sdk.go
   - internal/provider/gatewaypluginacl_data_source.go
   - internal/provider/gatewaypluginacl_data_source_sdk.go
   - internal/provider/gatewaypluginacl_resource.go
@@ -1118,6 +1125,7 @@ generatedFiles:
   - internal/sdk/hmacauthcredentials.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/env.go
   - internal/sdk/internal/utils/form.go
   - internal/sdk/internal/utils/headers.go
   - internal/sdk/internal/utils/json.go
@@ -1197,6 +1205,7 @@ generatedFiles:
   - internal/sdk/models/operations/createlogglyplugin.go
   - internal/sdk/models/operations/createmockingplugin.go
   - internal/sdk/models/operations/createmtlsauthplugin.go
+  - internal/sdk/models/operations/createmtlsauthwithconsumer.go
   - internal/sdk/models/operations/createnetwork.go
   - internal/sdk/models/operations/createoasvalidationplugin.go
   - internal/sdk/models/operations/createoauth2introspectionplugin.go
@@ -1309,6 +1318,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletemeshcontrolplane.go
   - internal/sdk/models/operations/deletemockingplugin.go
   - internal/sdk/models/operations/deletemtlsauthplugin.go
+  - internal/sdk/models/operations/deletemtlsauthwithconsumer.go
   - internal/sdk/models/operations/deletenetwork.go
   - internal/sdk/models/operations/deleteoasvalidationplugin.go
   - internal/sdk/models/operations/deleteoauth2introspectionplugin.go
@@ -1428,6 +1438,7 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshcontrolplane.go
   - internal/sdk/models/operations/getmockingplugin.go
   - internal/sdk/models/operations/getmtlsauthplugin.go
+  - internal/sdk/models/operations/getmtlsauthwithconsumer.go
   - internal/sdk/models/operations/getnetwork.go
   - internal/sdk/models/operations/getoasvalidationplugin.go
   - internal/sdk/models/operations/getoauth2introspectionplugin.go
@@ -1748,7 +1759,9 @@ generatedFiles:
   - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshcontrolplane.go
   - internal/sdk/models/shared/mockingplugin.go
+  - internal/sdk/models/shared/mtlsauth.go
   - internal/sdk/models/shared/mtlsauthplugin.go
+  - internal/sdk/models/shared/mtlsauthwithoutparents.go
   - internal/sdk/models/shared/network.go
   - internal/sdk/models/shared/networkcreatestate.go
   - internal/sdk/models/shared/networkprovidermetadata.go
@@ -1851,6 +1864,7 @@ generatedFiles:
   - internal/sdk/models/shared/websocketvalidatorplugin.go
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
+  - internal/sdk/mtlsauthcredentials.go
   - internal/sdk/networks.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
@@ -1998,7 +2012,7 @@ examples:
         application/json: {"name": "API Product", "description": "Text describing the API product", "labels": {"env": "test"}, "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"]}
       responses:
         "201":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}}
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
         "400":
           application/problem+json: {"status": 445375, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -2014,7 +2028,7 @@ examples:
           id: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
       responses:
         "200":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}}
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}, {"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2030,7 +2044,7 @@ examples:
         application/json: {"name": "API Product", "description": "Text describing the API product", "labels": {"env": "test"}, "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"]}
       responses:
         "200":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}}
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "description": "MyDescription", "portal_ids": ["25a2624c-49fc-4764-99e1-224ed819f200"], "portals": [{"portal_id": "35a2624c-49fc-4764-99e1-224ed819f200", "portal_name": "Developer Portal"}], "version_count": 10, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "labels": {"env": "test"}, "public_labels": {"category": "finance"}}
         "400":
           application/problem+json: {"status": 753997, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -7015,7 +7029,7 @@ examples:
           page[number]: 1
       responses:
         "200":
-          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}, "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
+          application/json: {"meta": {"page": {"number": 1, "size": 10, "total": 100}}, "data": [{"id": "9f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-02-07T17:46:57.52Z", "updated_at": "2022-10-08T17:00:00.52Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}]}
         "400":
           application/problem+json: {"status": 654330, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":
@@ -7432,3 +7446,32 @@ examples:
           application/problem+json: {"status": 237077, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  create-mtls-auth-with-consumer:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+      requestBody:
+        application/json: {"ca_certificate": {"id": "b2f34145-0343-41a4-9602-4c69dec2f260"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "subject_name": "CA_Subject_Name"}
+      responses:
+        "201":
+          application/json: {"ca_certificate": {"id": "b2f34145-0343-41a4-9602-4c69dec2f260"}, "consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "subject_name": "CA_Subject_Name"}
+  delete-mtls-auth-with-consumer:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+          MTLSAuthId: ""
+  get-mtls-auth-with-consumer:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          ConsumerIdForNestedEntities: "f28acbfa-c866-4587-b688-0208ac24df21"
+          MTLSAuthId: ""
+      responses:
+        "200":
+          application/json: {"ca_certificate": {"id": "b2f34145-0343-41a4-9602-4c69dec2f260"}, "consumer": {"id": "84a73fb8-50fc-44a7-a4d5-aa17728ee83f"}, "id": "b2f34145-0343-41a4-9602-4c69dec2f269", "subject_name": "CA_Subject_Name"}
+generatedTests: {}

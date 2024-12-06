@@ -9,12 +9,9 @@ import (
 )
 
 func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithoutParents {
-	group := new(string)
-	if !r.Group.IsUnknown() && !r.Group.IsNull() {
-		*group = r.Group.ValueString()
-	} else {
-		group = nil
-	}
+	var group string
+	group = r.Group.ValueString()
+
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -42,7 +39,7 @@ func (r *GatewayACLResourceModel) RefreshFromSharedACL(resp *shared.ACL) {
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Group = types.StringPointerValue(resp.Group)
+		r.Group = types.StringValue(resp.Group)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {

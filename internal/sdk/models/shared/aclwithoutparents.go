@@ -3,14 +3,14 @@
 package shared
 
 type ACLWithoutParents struct {
-	Group *string  `json:"group,omitempty"`
+	Group string   `json:"group"`
 	ID    *string  `json:"id,omitempty"`
 	Tags  []string `json:"tags,omitempty"`
 }
 
-func (o *ACLWithoutParents) GetGroup() *string {
+func (o *ACLWithoutParents) GetGroup() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Group
 }

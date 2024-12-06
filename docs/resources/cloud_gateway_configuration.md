@@ -51,7 +51,7 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
 
 ### Required
 
-- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au"]
+- `control_plane_geo` (String) Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me"]
 - `control_plane_id` (String)
 - `dataplane_groups` (Attributes Set) List of data-plane groups that describe where to deploy instances, along with how many instances. (see [below for nested schema](#nestedatt--dataplane_groups))
 - `version` (String) Supported gateway version.

@@ -113,6 +113,7 @@ type Konnect struct {
 	HMACAuthCredentials  *HMACAuthCredentials
 	JWTs                 *JWTs
 	APIKeys              *APIKeys
+	MTLSAuthCredentials  *MTLSAuthCredentials
 	// A JSON Web key set. Key sets are the preferred way to expose keys to plugins because they tell the plugin where to look for keys or have a scoping mechanism to restrict plugins to specific keys.
 	//
 	KeySets *KeySets
@@ -290,8 +291,8 @@ func New(opts ...SDKOption) *Konnect {
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
 			SDKVersion:        "0.0.1",
-			GenVersion:        "2.457.2",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.457.2 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			GenVersion:        "2.472.1",
+			UserAgent:         "speakeasy-sdk/go 0.0.1 2.472.1 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -354,6 +355,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.JWTs = newJWTs(sdk.sdkConfiguration)
 
 	sdk.APIKeys = newAPIKeys(sdk.sdkConfiguration)
+
+	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk.sdkConfiguration)
 
 	sdk.KeySets = newKeySets(sdk.sdkConfiguration)
 

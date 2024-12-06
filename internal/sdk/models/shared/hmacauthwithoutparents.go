@@ -6,7 +6,7 @@ type HMACAuthWithoutParents struct {
 	ID       *string  `json:"id,omitempty"`
 	Secret   *string  `json:"secret,omitempty"`
 	Tags     []string `json:"tags,omitempty"`
-	Username *string  `json:"username,omitempty"`
+	Username string   `json:"username"`
 }
 
 func (o *HMACAuthWithoutParents) GetID() *string {
@@ -30,9 +30,9 @@ func (o *HMACAuthWithoutParents) GetTags() []string {
 	return o.Tags
 }
 
-func (o *HMACAuthWithoutParents) GetUsername() *string {
+func (o *HMACAuthWithoutParents) GetUsername() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Username
 }

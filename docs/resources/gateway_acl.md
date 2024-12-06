@@ -31,10 +31,10 @@ resource "konnect_gateway_acl" "my_gatewayacl" {
 
 - `consumer_id` (String) Consumer ID for nested entities. Requires replacement if changed.
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
+- `group` (String) Requires replacement if changed.
 
 ### Optional
 
-- `group` (String) Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
 

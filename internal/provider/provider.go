@@ -9,9 +9,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	custom "github.com/kong/terraform-provider-konnect/src"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	custom "github.com/kong/terraform-provider-konnect/v2/src"
 	"net/http"
 	"os"
 )
@@ -154,6 +154,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayKeyResource,
 		NewGatewayKeyAuthResource,
 		NewGatewayKeySetResource,
+		NewGatewayMTLSAuthResource,
 		NewGatewayPluginACLResource,
 		NewGatewayPluginAcmeResource,
 		NewGatewayPluginAiPromptDecoratorResource,
@@ -282,6 +283,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayKeyDataSource,
 		NewGatewayKeyAuthDataSource,
 		NewGatewayKeySetDataSource,
+		NewGatewayMTLSAuthDataSource,
 		NewGatewayPluginACLDataSource,
 		NewGatewayPluginAcmeDataSource,
 		NewGatewayPluginAiPromptDecoratorDataSource,

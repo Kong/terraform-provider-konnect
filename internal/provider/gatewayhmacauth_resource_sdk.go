@@ -25,12 +25,9 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	username := new(string)
-	if !r.Username.IsUnknown() && !r.Username.IsNull() {
-		*username = r.Username.ValueString()
-	} else {
-		username = nil
-	}
+	var username string
+	username = r.Username.ValueString()
+
 	out := shared.HMACAuthWithoutParents{
 		ID:       id,
 		Secret:   secret,
@@ -55,6 +52,6 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(resp *shared.HM
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
-		r.Username = types.StringPointerValue(resp.Username)
+		r.Username = types.StringValue(resp.Username)
 	}
 }

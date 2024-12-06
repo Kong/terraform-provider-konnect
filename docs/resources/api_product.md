@@ -21,6 +21,9 @@ resource "konnect_api_product" "my_apiproduct" {
   name = "API Product"
   portal_ids = [
   ]
+  public_labels = {
+    key = "value",
+  }
 }
 ```
 
@@ -36,6 +39,11 @@ resource "konnect_api_product" "my_apiproduct" {
 
 - `description` (String) The description of the API product.
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+- `public_labels` (Map of String) Public labels store information about an entity that can be used for filtering a list of objects.
+
+Public labels are intended to store **PUBLIC** metadata. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 

@@ -12,12 +12,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
-	"github.com/kong/terraform-provider-konnect/src/utils"
 	tfReflect "github.com/kong/terraform-provider-konnect/v2/internal/provider/reflect"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"github.com/kong/terraform-provider-konnect/v2/src/utils"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -433,7 +433,7 @@ func orderingToValue(o *shared.Ordering) *tfTypes.ACLPluginOrdering {
 func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
 
 	r.ID = types.StringPointerValue(resp.ID)
-	r.Name = types.StringValue(*resp.Name)
+	r.Name = types.StringValue(resp.Name)
 	r.Consumer = pointerToId(resp.Consumer)
 	r.ConsumerGroup = pointerToId(resp.ConsumerGroup)
 	r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -466,7 +466,7 @@ func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, cli
 	}
 
 	// Remove default values
-	utils.PruneConfigValues(ctx, resp.Config.(map[string]any), config.Fields)
+	utils.PruneConfigValues(ctx, resp.Config, config.Fields)
 
 	// Convert to Terraform types
 	_, c, diag := utils.ConvertToTerraformType(resp.Config)

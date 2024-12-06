@@ -14,16 +14,17 @@ generation:
     oAuth2PasswordEnabled: false
   baseServerURL: ""
 terraform:
-  version: 2.0.2
+  version: 2.1.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalResources:
     - importAlias: custom
-      importLocation: github.com/kong/terraform-provider-konnect/src
+      importLocation: github.com/kong/terraform-provider-konnect/v2/src
       resource: custom.NewCustomPluginResource
   allowUnknownFieldsInWeakUnions: false
   author: kong
   defaultErrorName: SDKError
+  enableTypeDeduplication: true
   environmentVariables:
     - env: KONNECT_TOKEN
       providerAttribute: personal_access_token

@@ -17,7 +17,7 @@ func (r *GatewayACLDataSourceModel) RefreshFromSharedACL(resp *shared.ACL) {
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Group = types.StringPointerValue(resp.Group)
+		r.Group = types.StringValue(resp.Group)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Tags = []types.String{}
 		for _, v := range resp.Tags {

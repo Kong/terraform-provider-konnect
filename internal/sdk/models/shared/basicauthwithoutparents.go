@@ -4,9 +4,9 @@ package shared
 
 type BasicAuthWithoutParents struct {
 	ID       *string  `json:"id,omitempty"`
-	Password *string  `json:"password,omitempty"`
+	Password string   `json:"password"`
 	Tags     []string `json:"tags,omitempty"`
-	Username *string  `json:"username,omitempty"`
+	Username string   `json:"username"`
 }
 
 func (o *BasicAuthWithoutParents) GetID() *string {
@@ -16,9 +16,9 @@ func (o *BasicAuthWithoutParents) GetID() *string {
 	return o.ID
 }
 
-func (o *BasicAuthWithoutParents) GetPassword() *string {
+func (o *BasicAuthWithoutParents) GetPassword() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Password
 }
@@ -30,9 +30,9 @@ func (o *BasicAuthWithoutParents) GetTags() []string {
 	return o.Tags
 }
 
-func (o *BasicAuthWithoutParents) GetUsername() *string {
+func (o *BasicAuthWithoutParents) GetUsername() string {
 	if o == nil {
-		return nil
+		return ""
 	}
 	return o.Username
 }

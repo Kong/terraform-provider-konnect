@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/internal/sdk/models/shared"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
 type CustomPluginResourceModel struct {
@@ -39,7 +39,7 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, e
 	}
 
 	pluginInput := shared.PluginInput{
-		Name:   sdk.String(r.Name.ValueString()),
+		Name:   *sdk.String(r.Name.ValueString()),
 		Config: configJson,
 	}
 

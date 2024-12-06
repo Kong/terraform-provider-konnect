@@ -10,9 +10,7 @@ import (
 
 func (r *GatewayVaultResourceModel) ToSharedVaultInput() *shared.VaultInput {
 	var config interface{}
-	if !r.Config.IsUnknown() && !r.Config.IsNull() {
-		_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
-	}
+	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -48,12 +46,8 @@ func (r *GatewayVaultResourceModel) ToSharedVaultInput() *shared.VaultInput {
 
 func (r *GatewayVaultResourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 	if resp != nil {
-		if resp.Config == nil {
-			r.Config = types.StringNull()
-		} else {
-			configResult, _ := json.Marshal(resp.Config)
-			r.Config = types.StringValue(string(configResult))
-		}
+		configResult, _ := json.Marshal(resp.Config)
+		r.Config = types.StringValue(string(configResult))
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)

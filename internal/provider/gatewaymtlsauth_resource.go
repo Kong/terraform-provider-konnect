@@ -13,11 +13,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -25,37 +27,61 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayACLResource{}
-var _ resource.ResourceWithImportState = &GatewayACLResource{}
+var _ resource.Resource = &GatewayMTLSAuthResource{}
+var _ resource.ResourceWithImportState = &GatewayMTLSAuthResource{}
 
-func NewGatewayACLResource() resource.Resource {
-	return &GatewayACLResource{}
+func NewGatewayMTLSAuthResource() resource.Resource {
+	return &GatewayMTLSAuthResource{}
 }
 
-// GatewayACLResource defines the resource implementation.
-type GatewayACLResource struct {
+// GatewayMTLSAuthResource defines the resource implementation.
+type GatewayMTLSAuthResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayACLResourceModel describes the resource data model.
-type GatewayACLResourceModel struct {
+// GatewayMTLSAuthResourceModel describes the resource data model.
+type GatewayMTLSAuthResourceModel struct {
+	CaCertificate  *tfTypes.ACLConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
 	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
 	ConsumerID     types.String         `tfsdk:"consumer_id"`
 	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	Group          types.String         `tfsdk:"group"`
 	ID             types.String         `tfsdk:"id"`
+	SubjectName    types.String         `tfsdk:"subject_name"`
 	Tags           []types.String       `tfsdk:"tags"`
 }
 
-func (r *GatewayACLResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_gateway_acl"
+func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_mtls_auth"
 }
 
-func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayACL Resource",
+		MarkdownDescription: "GatewayMTLSAuth Resource",
 		Attributes: map[string]schema.Attribute{
+			"ca_certificate": schema.SingleNestedAttribute{
+				Computed: true,
+				Optional: true,
+				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
+					"id": types.StringType,
+				})),
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
+				Attributes: map[string]schema.Attribute{
+					"id": schema.StringAttribute{
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Requires replacement if changed.`,
+					},
+				},
+				Description: `Requires replacement if changed.`,
+			},
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
@@ -85,17 +111,17 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
-			"group": schema.StringAttribute{
-				Required: true,
+			"id": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 				},
 				Description: `Requires replacement if changed.`,
 			},
-			"id": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
+			"subject_name": schema.StringAttribute{
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
@@ -116,7 +142,7 @@ func (r *GatewayACLResource) Schema(ctx context.Context, req resource.SchemaRequ
 	}
 }
 
-func (r *GatewayACLResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayMTLSAuthResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -136,8 +162,8 @@ func (r *GatewayACLResource) Configure(ctx context.Context, req resource.Configu
 	r.client = client
 }
 
-func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayACLResourceModel
+func (r *GatewayMTLSAuthResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayMTLSAuthResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -160,13 +186,13 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 	var consumerID string
 	consumerID = data.ConsumerID.ValueString()
 
-	aclWithoutParents := *data.ToSharedACLWithoutParents()
-	request := operations.CreateACLWithConsumerRequest{
-		ControlPlaneID:    controlPlaneID,
-		ConsumerID:        consumerID,
-		ACLWithoutParents: aclWithoutParents,
+	mtlsAuthWithoutParents := *data.ToSharedMTLSAuthWithoutParents()
+	request := operations.CreateMtlsAuthWithConsumerRequest{
+		ControlPlaneID:         controlPlaneID,
+		ConsumerID:             consumerID,
+		MTLSAuthWithoutParents: mtlsAuthWithoutParents,
 	}
-	res, err := r.client.ACLs.CreateACLWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.CreateMtlsAuthWithConsumer(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -182,19 +208,19 @@ func (r *GatewayACLResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ACL != nil) {
+	if !(res.MTLSAuth != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedACL(res.ACL)
+	data.RefreshFromSharedMTLSAuth(res.MTLSAuth)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayACLResourceModel
+func (r *GatewayMTLSAuthResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayMTLSAuthResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -217,15 +243,15 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 	var consumerID string
 	consumerID = data.ConsumerID.ValueString()
 
-	var aclID string
-	aclID = data.ID.ValueString()
+	var mtlsAuthID string
+	mtlsAuthID = data.ID.ValueString()
 
-	request := operations.GetACLWithConsumerRequest{
+	request := operations.GetMtlsAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
-		ACLID:          aclID,
+		MTLSAuthID:     mtlsAuthID,
 	}
-	res, err := r.client.ACLs.GetACLWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.GetMtlsAuthWithConsumer(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -245,18 +271,18 @@ func (r *GatewayACLResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.ACL != nil) {
+	if !(res.MTLSAuth != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedACL(res.ACL)
+	data.RefreshFromSharedMTLSAuth(res.MTLSAuth)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayACLResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayACLResourceModel
+func (r *GatewayMTLSAuthResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayMTLSAuthResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -275,8 +301,8 @@ func (r *GatewayACLResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayACLResourceModel
+func (r *GatewayMTLSAuthResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayMTLSAuthResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -299,15 +325,15 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 	var consumerID string
 	consumerID = data.ConsumerID.ValueString()
 
-	var aclID string
-	aclID = data.ID.ValueString()
+	var mtlsAuthID string
+	mtlsAuthID = data.ID.ValueString()
 
-	request := operations.DeleteACLWithConsumerRequest{
+	request := operations.DeleteMtlsAuthWithConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerID:     consumerID,
-		ACLID:          aclID,
+		MTLSAuthID:     mtlsAuthID,
 	}
-	res, err := r.client.ACLs.DeleteACLWithConsumer(ctx, request)
+	res, err := r.client.MTLSAuthCredentials.DeleteMtlsAuthWithConsumer(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -326,25 +352,20 @@ func (r *GatewayACLResource) Delete(ctx context.Context, req resource.DeleteRequ
 
 }
 
-func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayMTLSAuthResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {
-		ID             string `json:"id"`
 		ConsumerID     string `json:"consumer_id"`
 		ControlPlaneID string `json:"control_plane_id"`
+		ID             string `json:"id"`
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "aclid": "f28acbfa-c866-4587-b688-0208ac24df21",  "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "f28acbfa-c866-4587-b688-0208ac24df21",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "mtls_auth_id": ""}': `+err.Error())
 		return
 	}
 
-	if len(data.ID) == 0 {
-		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
-		return
-	}
-	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 	if len(data.ConsumerID) == 0 {
 		resp.Diagnostics.AddError("Missing required field", `The field consumer_id is required but was not found in the json encoded ID. It's expected to be a value alike '"f28acbfa-c866-4587-b688-0208ac24df21"`)
 		return
@@ -355,5 +376,10 @@ func (r *GatewayACLResource) ImportState(ctx context.Context, req resource.Impor
 		return
 	}
 	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("control_plane_id"), data.ControlPlaneID)...)
+	if len(data.ID) == 0 {
+		resp.Diagnostics.AddError("Missing required field", `The field id is required but was not found in the json encoded ID. It's expected to be a value alike '""`)
+		return
+	}
+	resp.Diagnostics.Append(resp.State.SetAttribute(ctx, path.Root("id"), data.ID)...)
 
 }
