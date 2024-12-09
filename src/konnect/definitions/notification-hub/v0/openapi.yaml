@@ -446,6 +446,7 @@ components:
         - region
         - namespace
         - entity_id
+        - details
         - created_at
         - updated_at
       properties:
@@ -464,6 +465,9 @@ components:
         entity_id:
           type: string
           description: ID of the entity. Use '*' to represent all entities of this type.
+        details:
+          type: object
+          description: Metadata associated with the notification to build actionable links.
         created_at:
           $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
         updated_at:
@@ -538,10 +542,6 @@ components:
     EventSubscriptionResponse:
       description: Subscription response associated with a notification event.
       type: object
-      required:
-        - id
-        - created_at
-        - updated_at
       x-flatten-allOf: true
       allOf:
         - properties:
@@ -551,6 +551,10 @@ components:
               $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
             updated_at:
               $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+          required:
+            - id
+            - created_at
+            - updated_at
         - $ref: "#/components/schemas/EventSubscription"
     EventSubscription:
       description: Properties associated with an event subscription.
@@ -611,6 +615,11 @@ components:
         region: EU
         namespace: plan-and-usage
         entity_id: invoice-1
+        details:
+          entity_id: invoice-1
+          entity_type: invoice
+          regions:
+            - EU
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     NotificationListResponse:
@@ -624,6 +633,9 @@ components:
             region: US
             namespace: plan-and-usage
             entity_id: invoice-1
+            details:
+              entity_id: invoice-1
+              entity_type: invoice
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
           - id: 93f8380e-7798-4566-99e3-2edf2b57d290
@@ -633,6 +645,9 @@ components:
             region: EU
             namespace: plan-and-usage
             entity_id: invoice-2
+            details:
+              entity_id: invoice-2
+              entity_type: invoice
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
         meta:

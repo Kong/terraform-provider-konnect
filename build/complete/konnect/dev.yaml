@@ -6429,6 +6429,9 @@ components:
         entity_id:
           description: ID of the entity. Use '*' to represent all entities of this type.
           type: string
+        details:
+          description: Metadata associated with the notification to build actionable links.
+          type: object
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -6442,6 +6445,7 @@ components:
         - region
         - namespace
         - entity_id
+        - details
         - created_at
         - updated_at
     NotificationUpdatePayload:
@@ -6536,6 +6540,9 @@ components:
           description: Enable/Disable complete subscription within an event.
           type: boolean
       required:
+        - id
+        - created_at
+        - updated_at
         - regions
         - entities
         - channels
@@ -10361,6 +10368,11 @@ components:
         region: EU
         namespace: plan-and-usage
         entity_id: invoice-1
+        details:
+          entity_id: invoice-1
+          entity_type: invoice
+          regions:
+            - EU
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
     NotificationListResponse:
@@ -10374,6 +10386,9 @@ components:
             region: US
             namespace: plan-and-usage
             entity_id: invoice-1
+            details:
+              entity_id: invoice-1
+              entity_type: invoice
             created_at: '2023-01-01T00:00:00.000Z'
             updated_at: '2023-01-01T00:00:00.000Z'
           - id: 93f8380e-7798-4566-99e3-2edf2b57d290
@@ -10383,6 +10398,9 @@ components:
             region: EU
             namespace: plan-and-usage
             entity_id: invoice-2
+            details:
+              entity_id: invoice-2
+              entity_type: invoice
             created_at: '2023-01-01T00:00:00.000Z'
             updated_at: '2023-01-01T00:00:00.000Z'
         meta:
