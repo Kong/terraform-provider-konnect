@@ -61,6 +61,15 @@ components:
       in: path
       required: true
       description: ID of the snippet.
+    DcrProviderId:
+      name: dcrProviderId
+      description: DCR provider identifier
+      in: path
+      required: true
+      schema:
+          type: string
+          format: uuid
+          example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
   schemas:
     PortalCustomization:
       title: PortalCustomization

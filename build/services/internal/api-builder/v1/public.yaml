@@ -41,8 +41,55 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - portal
+  '/internal/dcr-providers/{dcrProviderId}':
+    parameters:
+      - $ref: '#/components/parameters/DcrProviderId'
+    put:
+      operationId: update-dcr-provider
+      summary: Inserts or updates a DCR provider
+      description: |
+        Accepts a raw database representation of the DCR Provider in the response body
+      requestBody:
+        $ref: '#/components/requestBodies/PutDcrProvider'
+      responses:
+        '200':
+          $ref: '#/components/responses/PutDcrProviderResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
+    delete:
+      operationId: delete-dcr-provider
+      summary: Deletes a DCR provider
+      description: Deletes a DCR provider.
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
 components:
   parameters:
+    DcrProviderId:
+      name: dcrProviderId
+      description: DCR provider identifier
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
     PortalId:
       schema:
         type: string
@@ -153,6 +200,213 @@ components:
         - issuer
         - dcr_config
         - labels
+    PutDcrProviderRequest:
+      description: Updates a DCR provider.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          enum:
+            - auth0
+            - azureAd
+            - curity
+            - okta
+            - http
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        dcr_config:
+          anyOf:
+            - $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      additionalProperties: true
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - dcr_config
+        - org_id
+        - created_at
+        - updated_at
+      title: UpdateDcrProviderRequest
+    DcrProviderName:
+      description: |
+        The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+      type: string
+      maxLength: 256
+      minLength: 1
+    DcrBaseUrl:
+      description: |
+        The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
+        This URL must be accessible from the Konnect service.
+      type: string
+      format: url
+      maxLength: 256
+    UpdateDcrConfigAuth0InRequest:
+      description: Payload to update an Auth0 DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+      additionalProperties: false
+      title: DcrConfigAuth0InRequest
+    DcrConfigPropertyInitialClientId:
+      description: |
+        This ID should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientId
+    DcrConfigPropertyInitialClientSecret:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientSecret
+    DcrConfigPropertyDcrToken:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialDcrToken
+    DcrConfigPropertyInitialClientAudience:
+      description: |
+        This is the audience value used for the initial client.
+        If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.
+        If left blank, the issuer will be used instead.
+      type: string
+      maxLength: 256
+      nullable: true
+      title: DcrConfigPropertyInitialClientAudience
+    DcrConfigPropertyApiKey:
+      description: |
+        This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
+        verified on the server to ensure that incoming requests are coming from Konnect.
+      type: string
+      maxLength: 256
+      minLength: 12
+      pattern: '^[a-zA-Z0-9_]+$'
+      title: DcrConfigPropertyApiKey
+    DcrConfigPropertyDisableEventHooks:
+      description: This flag disables all the event-hooks on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableEventHooks
+    DcrConfigPropertyDisableRefreshSecret:
+      description: This flag disable the refresh-secret endpoint on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableRefreshSecret
+    UpdateDcrConfigAzureAdInRequest:
+      description: Payload to update an Azure AD DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigAzureAdInRequest
+    UpdateDcrConfigHttpInRequest:
+      description: Payload to update an HTTP DCR provider.
+      type: object
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+      additionalProperties: false
+      title: CreateDcrConfigHttpInRequest
+    UpdateDcrConfigCurityInRequest:
+      description: Payload to update a Curity DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigCurityInRequest
+    UpdateDcrConfigOktaInRequest:
+      description: Payload to update an Okta DCR provider.
+      type: object
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+      additionalProperties: false
+      title: DcrConfigOktaInRequest
+    DcrProviderResponse:
+      description: A response containing a raw database representation of the DCR Provider.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        org_id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+          enum:
+            - auth0
+            - azureAd
+            - curity
+            - okta
+            - http
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        dcr_config:
+          description: The DCR configuration for this DCR provider.
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+        - id
+        - org_id
+        - name
+        - provider_type
+        - issuer
+        - dcr_config
     PortalCustomization:
       type: object
       additionalProperties: true
@@ -432,20 +686,147 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
+    LabelsUpdate:
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+        Labels are intended to store **INTERNAL** metadata.
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        env: test
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 50
+      nullable: true
+      writeOnly: true
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
   examples:
+    DcrProviderPutRequest:
+      summary: DCR provider request example
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d289
+        name: DCR Auth0 1 - Segment A
+        provider_type: auth0
+        issuer: 'https://my-issuer.auth0.com/api/v2/'
+        dcr_config:
+          initial_client_id: abc123
+          initial_client_audience: 'https://my-custom-domain.com/api/v2/'
+          use_developer_managed_scopes: false
+        org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        labels: {}
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    DcrProviderResponse:
+      summary: DCR provider Response example
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d289
+        name: DCR Auth0 1 - Segment A
+        provider_type: auth0
+        issuer: 'https://my-issuer.auth0.com/api/v2/'
+        dcr_config:
+          initial_client_id: abc123
+          initial_client_audience: 'https://my-custom-domain.com/api/v2/'
+          use_developer_managed_scopes: false
+        org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        labels: {}
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
     NotFoundExample:
       value:
         status: 404
         title: Not Found
         instance: 'kong:trace:6816496025408232265'
         detail: Not Found
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
   requestBodies:
     PutPortal:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Portal'
+    PutDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PutDcrProviderRequest'
+          examples:
+            DcrProviderRequest:
+              $ref: '#/components/examples/DcrProviderPutRequest'
   responses:
+    PutDcrProviderResponse:
+      description: A response containing a single DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DcrProviderResponse'
+          examples:
+            DcrProviderResponse:
+              $ref: '#/components/examples/DcrProviderResponse'
     BadRequest:
       description: Bad Request
       content:
@@ -461,5 +842,24 @@ components:
           examples:
             NotFoundExample:
               $ref: '#/components/examples/NotFoundExample'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
 tags:
   - name: portal
+  - name: DCR Providers
