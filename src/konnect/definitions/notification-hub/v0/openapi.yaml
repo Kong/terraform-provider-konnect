@@ -540,7 +540,6 @@ components:
           type: integer
           default: 0
     EventSubscriptionResponse:
-      description: Subscription response associated with a notification event.
       type: object
       x-flatten-allOf: true
       allOf:
@@ -551,6 +550,7 @@ components:
               $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
             updated_at:
               $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+          description: Subscription response associated with a notification event.
           required:
             - id
             - created_at

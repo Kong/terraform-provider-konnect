@@ -32,9 +32,19 @@ export default function (targetVal, opts, { documentInventory, path }) {
       return;
     }
 
-    if (keys.includes("properties")) {
+    // List of fields that are not allowed to be siblings
+    const disallowedSiblingFields = ['properties'];
+
+    // If allOf is present and gets flattened, description & required are not allowed to be a sibling. It should be present under allOf
+    if (keys.includes('allOf') && keys.includes('x-flatten-allOf')) {
+      disallowedSiblingFields.push('required', 'description');
+    }
+
+    const foundDisallowedSiblings = disallowedSiblingFields.filter(field => keys.includes(field));
+
+    if (foundDisallowedSiblings.length > 0) {
       results.push({
-        message: `allOf, oneOf and anyOf must not have a 'properties' sibling`,
+        message: `allOf, oneOf and anyOf must not have the following sibling(s): ${foundDisallowedSiblings.join(', ')}`,
         path: actualObjPath
       });
     }
