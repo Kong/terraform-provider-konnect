@@ -1954,7 +1954,7 @@ paths:
           style: deepObject
       responses:
         '200':
-          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
+          $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProviders'
         '401':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/Unauthorized'
         '403':

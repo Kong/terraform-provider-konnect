@@ -225,8 +225,8 @@ components:
           $ref: '#/components/schemas/SAMLIdentityProviderMetadata'
         sp_metadata_url:
           type: string
-          format: uri
-          example: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
+          format: path
+          example: /api/v2/developer/authenticate/saml/metadata
           readOnly: true
         sp_entity_id:
           type: string
@@ -235,9 +235,9 @@ components:
           readOnly: true
         callback_url:
           type: string
-          description: The URL where the SAML identity provider sends authentication responses after successful login attempts.
-          format: uri
-          example: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
+          description: The path URL where the SAML identity provider sends authentication responses after successful login attempts.
+          format: path
+          example: /api/v2/developer/authenticate/saml/acs
           readOnly: true
       additionalProperties: false
 
@@ -268,8 +268,8 @@ components:
         config:
           idp_metadata_url: https://mocksaml.com/api/saml/metadata
           sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
-          sp_metadata_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
-          callback_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
+          sp_metadata_url: /api/v2/developer/authenticate/saml/metadata
+          callback_url: /api/v2/developer/authenticate/saml/acs
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:46:57.52Z'
     SAMLIdentityProviderWithMetadata:
@@ -284,8 +284,8 @@ components:
             <!-- SAML metadata content here -->
             </EntityDescriptor>
           sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
-          sp_metadata_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
-          callback_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
+          sp_metadata_url: /api/v2/developer/authenticate/saml/metadata
+          callback_url: /api/v2/developer/authenticate/saml/acs
         created_at: '2022-02-07T17:46:57.52Z'
         updated_at: '2022-02-07T17:46:57.52Z'
     IdentityProviders:
@@ -297,8 +297,8 @@ components:
             config:
               idp_metadata_url: https://mocksaml.com/api/saml/metadata
               sp_entity_id: https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000
-              sp_metadata_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata
-              callback_url: https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs
+              sp_metadata_url: /api/v2/developer/authenticate/saml/metadata
+              callback_url: /api/v2/developer/authenticate/saml/acs
             created_at: '2022-02-07T17:46:57.52Z'
             updated_at: '2022-02-07T17:46:57.52Z'
           - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
