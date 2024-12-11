@@ -10270,62 +10270,61 @@ components:
         updated_at: '2022-02-07T17:46:57.52Z'
     IdentityProviders:
       value:
-        data:
-          - id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
-            type: saml
-            enabled: true
-            login_path: the-saml-konnect-org
-            config:
-              idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
-              sp_entity_id: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
-              sp_metadata_url: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata'
-              login_url: 'https://cloud.konghq.com/login/the-saml-konnect-org'
-              callback_url: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs'
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-02-07T17:46:57.52Z'
-          - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
-            type: oidc
-            enabled: false
-            login_path: the-oidc-konnect-org
-            config:
-              issuer_url: 'https://konghq.okta.com/oauth2/default'
-              client_id: 0oaqhb43ckTZ02j1F357
-              scopes:
-                - openid
-                - email
-                - profile
-              claim_mappings:
-                email: email
-                name: name
-                groups: groups
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-02-07T17:46:57.52Z'
-          - id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
-            type: saml
-            enabled: true
-            config:
-              idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
-              sp_entity_id: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
-              sp_metadata_url: /api/v2/developer/authenticate/saml/metadata
-              callback_url: /api/v2/developer/authenticate/saml/acs
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-02-07T17:46:57.52Z'
-          - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
-            type: oidc
-            enabled: false
-            config:
-              issuer_url: 'https://konghq.okta.com/oauth2/default'
-              client_id: 0oaqhb43ckTZ02j1F357
-              scopes:
-                - openid
-                - email
-                - profile
-              claim_mappings:
-                email: email
-                name: name
-                groups: groups
-            created_at: '2022-02-07T17:46:57.52Z'
-            updated_at: '2022-02-07T17:46:57.52Z'
+        - id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
+          type: saml
+          enabled: true
+          login_path: the-saml-konnect-org
+          config:
+            idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
+            sp_entity_id: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+            sp_metadata_url: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/metadata'
+            login_url: 'https://cloud.konghq.com/login/the-saml-konnect-org'
+            callback_url: 'https://cloud.konghq.com/v2/authenticate/the-saml-konnect-org/saml/acs'
+          created_at: '2022-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:46:57.52Z'
+        - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
+          type: oidc
+          enabled: false
+          login_path: the-oidc-konnect-org
+          config:
+            issuer_url: 'https://konghq.okta.com/oauth2/default'
+            client_id: 0oaqhb43ckTZ02j1F357
+            scopes:
+              - openid
+              - email
+              - profile
+            claim_mappings:
+              email: email
+              name: name
+              groups: groups
+          created_at: '2022-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:46:57.52Z'
+        - id: a2c3156d-ebb1-432b-b2f1-edcc5f133c60
+          type: saml
+          enabled: true
+          config:
+            idp_metadata_url: 'https://mocksaml.com/api/saml/metadata'
+            sp_entity_id: 'https://cloud.konghq.com/sp/00000000-0000-0000-0000-000000000000'
+            sp_metadata_url: /api/v2/developer/authenticate/saml/metadata
+            callback_url: /api/v2/developer/authenticate/saml/acs
+          created_at: '2022-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:46:57.52Z'
+        - id: 66da2d42-469d-48cd-9ff3-0db135dd82d8
+          type: oidc
+          enabled: false
+          config:
+            issuer_url: 'https://konghq.okta.com/oauth2/default'
+            client_id: 0oaqhb43ckTZ02j1F357
+            scopes:
+              - openid
+              - email
+              - profile
+            claim_mappings:
+              email: email
+              name: name
+              groups: groups
+          created_at: '2022-02-07T17:46:57.52Z'
+          updated_at: '2022-02-07T17:46:57.52Z'
     CreateOIDCIdentityProvider:
       value:
         type: oidc
@@ -12825,12 +12824,9 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/IdentityProvider'
+            type: array
+            items:
+              $ref: '#/components/schemas/IdentityProvider'
             title: Identity Provider Collection Response
           examples:
             Identity Provider Collection:
