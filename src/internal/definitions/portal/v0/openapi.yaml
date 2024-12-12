@@ -44,6 +44,7 @@ components:
         - name
         - uri
         - labels
+        - version
       properties:
         id:
           type: string
@@ -77,6 +78,8 @@ components:
         config:
           type: object
           additionalProperties: true
+        version:
+          type: string
         customization:
           $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomization'
         labels:

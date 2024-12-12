@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     title: Internal API-Builder v1
-    description: Internal api for api builder to allow updating of entities in api-builder db. 
+    description: Internal api for api builder to allow updating of entities in api-builder db.
     version: '1.0.2'
     contact:
       name: Kong
@@ -17,7 +17,7 @@ paths:
   /internal/portals/{portalId}:
     parameters:
       - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
-    put: 
+    put:
       summary: insert or updates portal
       description: |
         Accepts a raw database representation of the Portal in the request body.
@@ -34,7 +34,7 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
       requestBody:
         $ref: '#/components/requestBodies/PutPortal'
-    delete: 
+    delete:
       summary: delete portal
       description: Deletes portal specified in path
       operationId: delete-portal
@@ -127,7 +127,7 @@ paths:
 
 components:
   requestBodies:
-    PutPortal: 
+    PutPortal:
       content:
         application/json:
           schema:
@@ -167,7 +167,7 @@ components:
           schema:
             $ref: '#/components/schemas/PutAppAuthStrategyResponse'
   schemas:
-    Portal: 
+    Portal:
       additionalProperties: true
       type: object
       required:
@@ -176,11 +176,12 @@ components:
         - name
         - uri
         - labels
+        - version
       properties:
-        id: 
+        id:
           type: string
           format: uuid
-        name: 
+        name:
           type: string
         display_name:
           type: string
@@ -209,18 +210,20 @@ components:
         config:
           type: object
           additionalProperties: true
-        customization: 
+        version:
+          type: string
+        customization:
           $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomization'
-        labels: 
+        labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         description:
           type: string
-        default_application_auth_strategy: 
+        default_application_auth_strategy:
           $ref: '#/components/schemas/NullableAuthStrategy'
     NullableAuthStrategy:
       type: object
       nullable: true
-      required: 
+      required:
         - id
         - name
         - display_name
@@ -229,7 +232,7 @@ components:
         - configs
         - labels
       properties:
-        id: 
+        id:
           type: string
           format: uuid
         name:
@@ -242,7 +245,7 @@ components:
           type: object
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
-        dcr_provider: 
+        dcr_provider:
           $ref: '#/components/schemas/NullableDcrProvider'
     NullableDcrProvider:
       type: object
@@ -255,13 +258,13 @@ components:
         - dcr_config
         - labels
       properties:
-        id: 
+        id:
           type: string
           format: uuid
         name:
           type: string
         provider_type:
-          type: string 
+          type: string
         issuer:
           type: string
         dcr_config:
@@ -619,7 +622,7 @@ components:
           initial_client_audience: https://my-custom-domain.com/api/v2/
           use_developer_managed_scopes: false
         org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        labels: {}          
+        labels: {}
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
     DcrProviderResponse:
@@ -634,6 +637,6 @@ components:
           initial_client_audience: https://my-custom-domain.com/api/v2/
           use_developer_managed_scopes: false
         org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-        labels: {}          
+        labels: {}
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z

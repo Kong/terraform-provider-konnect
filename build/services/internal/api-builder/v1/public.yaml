@@ -182,6 +182,8 @@ components:
         config:
           type: object
           additionalProperties: true
+        version:
+          type: string
         customization:
           $ref: '#/components/schemas/PortalCustomization'
         labels:
@@ -197,6 +199,7 @@ components:
         - name
         - uri
         - labels
+        - version
     NullableAuthStrategy:
       type: object
       properties:
