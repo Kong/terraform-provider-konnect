@@ -79,8 +79,56 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - DCR Providers
+  '/internal/application-auth-strategies/{authStrategyId}':
+    parameters:
+      - $ref: '#/components/parameters/AuthStrategyId'
+    put:
+      operationId: put-app-auth-strategy
+      summary: |
+        Inserts or updates an application auth strategy.
+      description: |
+        Accepts a raw database representation of the Auth Strategy in the request body.
+        Accepts a raw database representation of the DCR provider (if provided) in the response body.
+      requestBody:
+        $ref: '#/components/requestBodies/PutAppAuthStrategy'
+      responses:
+        '200':
+          $ref: '#/components/responses/PutAppAuthStrategyResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - App Auth Strategies
+    delete:
+      operationId: delete-app-auth-strategy
+      summary: |
+        Deletes an application auth strategy.
+      description: Deletes the Auth Strategy.
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - App Auth Strategies
 components:
   parameters:
+    AuthStrategyId:
+      name: authStrategyId
+      description: ID of the auth strategy to use for the application
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
     DcrProviderId:
       name: dcrProviderId
       description: DCR provider identifier
@@ -203,6 +251,12 @@ components:
     PutDcrProviderRequest:
       description: Updates a DCR provider.
       type: object
+      additionalProperties: true
+      allOf:
+        - $ref: '#/components/schemas/DcrProvider'
+      title: UpdateDcrProviderRequest
+    DcrProvider:
+      type: object
       properties:
         id:
           type: string
@@ -240,7 +294,6 @@ components:
         updated_at:
           type: string
           format: date-time
-      additionalProperties: true
       required:
         - id
         - name
@@ -250,7 +303,6 @@ components:
         - org_id
         - created_at
         - updated_at
-      title: UpdateDcrProviderRequest
     DcrProviderName:
       description: |
         The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -370,43 +422,141 @@ components:
     DcrProviderResponse:
       description: A response containing a raw database representation of the DCR Provider.
       type: object
+      allOf:
+        - $ref: '#/components/schemas/DcrProvider'
+    PutAppAuthStrategy:
+      description: Insert or updates a application auth strategy.
+      type: object
+      additionalProperties: true
+      allOf:
+        - $ref: '#/components/schemas/AppAuthStrategy'
+      title: UpdateAppAuthStrategyRequest
+    AppAuthStrategy:
+      type: object
       properties:
         id:
-          $ref: '#/components/schemas/UUID'
+          type: string
+          format: uuid
         org_id:
-          $ref: '#/components/schemas/UUID'
+          type: string
+          format: uuid
         name:
-          $ref: '#/components/schemas/DcrProviderName'
-        provider_type:
-          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          description: |
+            The name of the app auth strategy.
+          type: string
+          maxLength: 256
+          minLength: 1
+        display_name:
+          description: |
+            The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+          type: string
+          maxLength: 256
+        strategy_type:
+          description: The stategy type. Can be either openid_connect or key_auth.
           type: string
           enum:
-            - auth0
-            - azureAd
-            - curity
-            - okta
-            - http
+            - openid_connect
+            - key_auth
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        configs:
+          description: JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
+          type: object
+          oneOf:
+            - type: object
+              additionalProperties: true
+              required:
+                - openid-connect
+              properties:
+                openid-connect:
+                  $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+            - type: object
+              additionalProperties: true
+              required:
+                - key-auth
+              properties:
+                key-auth:
+                  $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        dcr_provider:
+          $ref: '#/components/schemas/DcrProvider'
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - org_id
+        - configs
+        - labels
+        - created_at
+        - updated_at
+    AppAuthStrategyConfigKeyAuth:
+      description: |
+        The most basic mode to configure an Application Auth Strategy for an API Product Version. 
+        Using this mode will allow developers to generate API keys that will authenticate their application requests. 
+        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for Key Auth.
+      type: object
+      properties:
+        key_names:
+          description: The names of the headers containing the API key. You can specify multiple header names.
+          type: array
+          items:
+            type: string
+            maxLength: 256
+          maxItems: 10
+          minItems: 1
+      additionalProperties: false
+      title: AppAuthStrategyConfigKeyAuth
+    AppAuthStrategyConfigOpenIDConnect:
+      description: |
+        A more advanced mode to configure an API Product Version’s Application Auth Strategy. 
+        Using this mode will allow developers to use API credentials issued from an external IdP that will authenticate their application requests. 
+        Once authenticated, an application will be granted access to any Product Version it is registered for that is configured for the same Auth Strategy. 
+        An OIDC strategy may be used in conjunction with a DCR provider to automatically create the IdP application.
+      type: object
+      properties:
         issuer:
-          description: The issuer of the DCR provider.
           type: string
           format: url
           maxLength: 256
-        dcr_config:
-          description: The DCR configuration for this DCR provider.
-          type: object
+        credential_claim:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          maxItems: 10
+        scopes:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          maxItems: 50
+        auth_methods:
+          type: array
+          items:
+            type: string
+            maxLength: 64
+          maxItems: 10
         labels:
-          $ref: '#/components/schemas/Labels'
-        created_at:
-          $ref: '#/components/schemas/CreatedAt'
-        updated_at:
-          $ref: '#/components/schemas/UpdatedAt'
+          $ref: '#/components/schemas/LabelsUpdate'
+      additionalProperties: false
       required:
-        - id
-        - org_id
-        - name
-        - provider_type
         - issuer
-        - dcr_config
+        - credential_claim
+        - scopes
+        - auth_methods
+      title: AppAuthStrategyConfigOpenIDConnect
+    PutAppAuthStrategyResponse:
+      description: Response containing Raw Database representation of AuthStrategy (including DCR provider if any)
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AppAuthStrategy'
+      title: UpdateAppAuthStrategyResponse
     PortalCustomization:
       type: object
       additionalProperties: true
@@ -705,24 +855,6 @@ components:
       maxProperties: 50
       nullable: true
       writeOnly: true
-    UUID:
-      description: Contains a unique identifier used by the API for this resource.
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      readOnly: true
-    CreatedAt:
-      description: An ISO-8601 timestamp representation of entity creation date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
-    UpdatedAt:
-      description: An ISO-8601 timestamp representation of entity update date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
     UnauthorizedError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -754,6 +886,34 @@ components:
             detail:
               example: Forbidden
   examples:
+    AppAuthStrategyRequest:
+      summary: Application auth strategy request example
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d289
+        name: strategy
+        display_name: strategy display name
+        strategy_type: key_auth
+        org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        labels: {}
+        configs:
+          key-auth:
+            key_names:
+              - secret
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+        dcr_provider:
+          id: 93f8380e-7798-4566-99e3-2edf2b57d289
+          name: DCR Auth0 1 - Segment A
+          provider_type: auth0
+          issuer: 'https://my-issuer.auth0.com/api/v2/'
+          dcr_config:
+            initial_client_id: abc123
+            initial_client_audience: 'https://my-custom-domain.com/api/v2/'
+            use_developer_managed_scopes: false
+          org_id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          labels: {}
+          created_at: '2023-01-01T00:00:00.000Z'
+          updated_at: '2023-01-01T00:00:00.000Z'
     DcrProviderPutRequest:
       summary: DCR provider request example
       value:
@@ -817,6 +977,15 @@ components:
           examples:
             DcrProviderRequest:
               $ref: '#/components/examples/DcrProviderPutRequest'
+    PutAppAuthStrategy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PutAppAuthStrategy'
+          examples:
+            PutAppAuthStrategy:
+              $ref: '#/components/examples/AppAuthStrategyRequest'
   responses:
     PutDcrProviderResponse:
       description: A response containing a single DCR provider object.
@@ -827,6 +996,12 @@ components:
           examples:
             DcrProviderResponse:
               $ref: '#/components/examples/DcrProviderResponse'
+    PutAppAuthStrategyResponse:
+      description: A response containing a single DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PutAppAuthStrategyResponse'
     BadRequest:
       description: Bad Request
       content:
@@ -863,3 +1038,4 @@ components:
 tags:
   - name: portal
   - name: DCR Providers
+  - name: App Auth Strategies

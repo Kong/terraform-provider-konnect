@@ -70,6 +70,15 @@ components:
           type: string
           format: uuid
           example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+    AuthStrategyId:
+      name: authStrategyId
+      description: 'ID of the auth strategy to use for the application'
+      in: path
+      required: true
+      schema:
+          type: string
+          format: uuid
+          example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
   schemas:
     PortalCustomization:
       title: PortalCustomization
