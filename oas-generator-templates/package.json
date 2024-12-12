@@ -1,0 +1,28 @@
+{
+    "main": "dist/index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "build": "tsc",
+      "prepublish": "npm run build"
+    },
+    "keywords": [],
+    "author": "Kong Inc. <api-ops@konghq.com>",
+    "license": "Apache-2.0",
+    "repository": {
+      "url": ""
+    },
+    "dependencies": {
+      "typescript": "^5.0.2"
+    },
+    "devDependencies": {
+      "axios": "0.28.x"
+    },
+    "peerDependencies": {
+      "axios": "0.28.x"
+    },
+    "bugs": {
+      "url": "https://github.com/Kong/platform-api/issues"
+    },
+    "homepage": "https://github.com/Kong/platform-api/tree/main#readme"
+  }
+  

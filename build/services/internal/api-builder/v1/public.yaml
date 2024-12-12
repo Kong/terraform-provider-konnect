@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Internal API-Builder v1
   description: Internal api for api builder to allow updating of entities in api-builder db.
-  version: 1.0.2
+  version: 1.0.3
   contact:
     name: Kong
     url: 'https://konghq.com'

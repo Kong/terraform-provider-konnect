@@ -62,6 +62,13 @@ for SPEC in $SPECS; do
   if [ $? -eq 0 ]; then
     echo "✅ Generated $SERVICE as $PACKAGE_NAME"
 
+    cd packages/$SERVICE
+    cp ../../oas-generator-templates/package.json package.json
+    npm pkg set name=$PACKAGE_NAME version=$CURRENT_VERSION description="Axios Client for the $SERVICE API"
+    npm pkg set repository.url="https://github.com/Kong/platform-api/tree/main/$SPEC"
+    cp ../../oas-generator-templates/tsconfig.json tsconfig.json
+    npm install
+
     if [ "x$PUBLISH_TO_NPM" != "xtrue" ]; then
       echo "⏭️ Skipping publish"
       echo "";
@@ -75,11 +82,6 @@ for SPEC in $SPECS; do
       continue
     fi
 
-
-
-    cd packages/$SERVICE
-    npm init --yes
-    npm pkg set name=$PACKAGE_NAME version=$CURRENT_VERSION license=Apache-2.0 author="Kong Inc. <api-ops@konghq.com>"
     npm publish
     cd -
     echo "✅ Published $SERVICE"
