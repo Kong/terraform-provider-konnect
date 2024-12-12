@@ -1939,8 +1939,6 @@ paths:
         Retrieves the identity providers available within the portal. This operation provides information about
         various identity providers for SAML or OIDC authentication integrations.
       operationId: get-portal-identity-providers
-      x-internal: true
-      x-unstable: true
       parameters:
         - schema:
             type: object
@@ -1967,8 +1965,6 @@ paths:
         Creates a new identity provider. This operation allows the creation of a new identity provider for
         authentication purposes.
       operationId: create-portal-identity-provider
-      x-internal: true
-      x-unstable: true
       requestBody:
         $ref: '../../../../common/definitions/identity_provider.yaml#/components/requestBodies/CreateIdentityProviderRequest'
       responses:
@@ -1992,8 +1988,6 @@ paths:
         Retrieves the configuration of a single identity provider. This operation returns information about a 
         specific identity provider's settings and authentication integration details.
       operationId: get-portal-identity-provider
-      x-internal: true
-      x-unstable: true
       responses:
         '200':
           $ref: '../../../../common/definitions/identity_provider.yaml#/components/responses/IdentityProvider'
@@ -2013,8 +2007,6 @@ paths:
         Updates the configuration of an existing identity provider. This operation allows modifications to be made
         to an existing identity provider's configuration.
       operationId: update-portal-identity-provider
-      x-internal: true
-      x-unstable: true
       requestBody:
         $ref: '../../../../common/definitions/identity_provider.yaml#/components/requestBodies/UpdateIdentityProviderRequest'
       responses:
@@ -2036,8 +2028,6 @@ paths:
         Deletes an existing identity provider configuration. This operation removes a specific identity provider
         from the portal.
       operationId: delete-portal-identity-provider
-      x-internal: true
-      x-unstable: true
       responses:
         '204':
           description: No Content
@@ -4666,9 +4656,6 @@ components:
       title: PortalAuthenticationSettingsResponse
       description: The developer authentication settings for a portal.
       type: object
-      x-property-annotations:
-        saml_auth_enabled: [x-unstable, x-internal]
-        idp_mapping_enabled: [x-unstable, x-internal]
       properties:
         basic_auth_enabled:
           type: boolean
@@ -4890,9 +4877,6 @@ components:
       title: PortalAuthenticationSettingsUpdateRequest
       description: Properties to update a portal's developer auth settings.
       type: object
-      x-property-annotations:
-        saml_auth_enabled: [x-unstable, x-internal]
-        idp_mapping_enabled: [x-unstable, x-internal]
       properties:
         basic_auth_enabled:
           type: boolean
