@@ -16665,6 +16665,7 @@ components:
           type: string
           example: Test control plane
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -16695,6 +16696,7 @@ components:
           example: Test control plane
           maxLength: 100
           minLength: 1
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -16714,6 +16716,7 @@ components:
           type: string
           example: Test control plane
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.

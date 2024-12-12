@@ -171,6 +171,7 @@ components:
           example: Test control plane
           description: The name of the control plane.
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -199,6 +200,7 @@ components:
           description: The name of the control plane.
           minLength: 1
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -215,6 +217,7 @@ components:
           example: Test control plane
           description: The name of the control plane.
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
