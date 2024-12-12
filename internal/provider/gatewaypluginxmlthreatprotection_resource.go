@@ -355,7 +355,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	xmlThreatProtectionPlugin := data.ToSharedXMLThreatProtectionPluginInput()
+	xmlThreatProtectionPlugin := *data.ToSharedXMLThreatProtectionPluginInput()
 	request := operations.CreateXmlthreatprotectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		XMLThreatProtectionPlugin: xmlThreatProtectionPlugin,
@@ -465,7 +465,7 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	xmlThreatProtectionPlugin := data.ToSharedXMLThreatProtectionPluginInput()
+	xmlThreatProtectionPlugin := *data.ToSharedXMLThreatProtectionPluginInput()
 	request := operations.UpdateXmlthreatprotectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,

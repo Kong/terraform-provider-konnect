@@ -257,7 +257,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestSizeLimitingPlugin := data.ToSharedRequestSizeLimitingPluginInput()
+	requestSizeLimitingPlugin := *data.ToSharedRequestSizeLimitingPluginInput()
 	request := operations.CreateRequestsizelimitingPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		RequestSizeLimitingPlugin: requestSizeLimitingPlugin,
@@ -367,7 +367,7 @@ func (r *GatewayPluginRequestSizeLimitingResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestSizeLimitingPlugin := data.ToSharedRequestSizeLimitingPluginInput()
+	requestSizeLimitingPlugin := *data.ToSharedRequestSizeLimitingPluginInput()
 	request := operations.UpdateRequestsizelimitingPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,

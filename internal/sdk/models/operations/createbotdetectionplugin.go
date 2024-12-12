@@ -9,8 +9,8 @@ import (
 
 type CreateBotdetectionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	BotDetectionPlugin *shared.BotDetectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID     string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	BotDetectionPlugin shared.BotDetectionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateBotdetectionPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateBotdetectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateBotdetectionPluginRequest) GetBotDetectionPlugin() *shared.BotDetectionPluginInput {
+func (o *CreateBotdetectionPluginRequest) GetBotDetectionPlugin() shared.BotDetectionPluginInput {
 	if o == nil {
-		return nil
+		return shared.BotDetectionPluginInput{}
 	}
 	return o.BotDetectionPlugin
 }

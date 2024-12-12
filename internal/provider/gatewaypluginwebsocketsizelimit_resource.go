@@ -249,7 +249,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	websocketSizeLimitPlugin := data.ToSharedWebsocketSizeLimitPluginInput()
+	websocketSizeLimitPlugin := *data.ToSharedWebsocketSizeLimitPluginInput()
 	request := operations.CreateWebsocketsizelimitPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		WebsocketSizeLimitPlugin: websocketSizeLimitPlugin,
@@ -359,7 +359,7 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	websocketSizeLimitPlugin := data.ToSharedWebsocketSizeLimitPluginInput()
+	websocketSizeLimitPlugin := *data.ToSharedWebsocketSizeLimitPluginInput()
 	request := operations.UpdateWebsocketsizelimitPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,

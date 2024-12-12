@@ -487,7 +487,7 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPluginInput()
 	request := operations.CreateZipkinPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		ZipkinPlugin:   zipkinPlugin,
@@ -597,7 +597,7 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPluginInput()
 	request := operations.UpdateZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

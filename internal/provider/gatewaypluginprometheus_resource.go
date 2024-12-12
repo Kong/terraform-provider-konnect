@@ -263,7 +263,7 @@ func (r *GatewayPluginPrometheusResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	prometheusPlugin := data.ToSharedPrometheusPluginInput()
+	prometheusPlugin := *data.ToSharedPrometheusPluginInput()
 	request := operations.CreatePrometheusPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		PrometheusPlugin: prometheusPlugin,
@@ -373,7 +373,7 @@ func (r *GatewayPluginPrometheusResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	prometheusPlugin := data.ToSharedPrometheusPluginInput()
+	prometheusPlugin := *data.ToSharedPrometheusPluginInput()
 	request := operations.UpdatePrometheusPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,

@@ -279,7 +279,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptTemplatePlugin := data.ToSharedAiPromptTemplatePluginInput()
+	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePluginInput()
 	request := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		AiPromptTemplatePlugin: aiPromptTemplatePlugin,
@@ -389,7 +389,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptTemplatePlugin := data.ToSharedAiPromptTemplatePluginInput()
+	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePluginInput()
 	request := operations.UpdateAiprompttemplatePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

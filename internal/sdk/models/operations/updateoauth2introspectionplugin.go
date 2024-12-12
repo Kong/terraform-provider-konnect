@@ -11,8 +11,8 @@ type UpdateOauth2introspectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	Oauth2IntrospectionPlugin *shared.Oauth2IntrospectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID            string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	Oauth2IntrospectionPlugin shared.Oauth2IntrospectionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOauth2introspectionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateOauth2introspectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() *shared.Oauth2IntrospectionPluginInput {
+func (o *UpdateOauth2introspectionPluginRequest) GetOauth2IntrospectionPlugin() shared.Oauth2IntrospectionPluginInput {
 	if o == nil {
-		return nil
+		return shared.Oauth2IntrospectionPluginInput{}
 	}
 	return o.Oauth2IntrospectionPlugin
 }

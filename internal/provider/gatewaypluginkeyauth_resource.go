@@ -274,7 +274,7 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
 	request := operations.CreateKeyauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		KeyAuthPlugin:  keyAuthPlugin,
@@ -384,7 +384,7 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
 	request := operations.UpdateKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

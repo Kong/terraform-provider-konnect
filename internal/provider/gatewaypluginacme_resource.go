@@ -570,7 +570,7 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	acmePlugin := data.ToSharedAcmePluginInput()
+	acmePlugin := *data.ToSharedAcmePluginInput()
 	request := operations.CreateAcmePluginRequest{
 		ControlPlaneID: controlPlaneID,
 		AcmePlugin:     acmePlugin,
@@ -680,7 +680,7 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	acmePlugin := data.ToSharedAcmePluginInput()
+	acmePlugin := *data.ToSharedAcmePluginInput()
 	request := operations.UpdateAcmePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

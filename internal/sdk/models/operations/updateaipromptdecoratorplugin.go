@@ -11,8 +11,8 @@ type UpdateAipromptdecoratorPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID          string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiPromptDecoratorPlugin *shared.AiPromptDecoratorPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID          string                              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiPromptDecoratorPlugin shared.AiPromptDecoratorPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAipromptdecoratorPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateAipromptdecoratorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAipromptdecoratorPluginRequest) GetAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPluginInput {
+func (o *UpdateAipromptdecoratorPluginRequest) GetAiPromptDecoratorPlugin() shared.AiPromptDecoratorPluginInput {
 	if o == nil {
-		return nil
+		return shared.AiPromptDecoratorPluginInput{}
 	}
 	return o.AiPromptDecoratorPlugin
 }

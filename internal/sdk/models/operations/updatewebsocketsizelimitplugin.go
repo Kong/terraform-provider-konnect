@@ -11,8 +11,8 @@ type UpdateWebsocketsizelimitPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	WebsocketSizeLimitPlugin *shared.WebsocketSizeLimitPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	WebsocketSizeLimitPlugin shared.WebsocketSizeLimitPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateWebsocketsizelimitPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateWebsocketsizelimitPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPluginInput {
+func (o *UpdateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() shared.WebsocketSizeLimitPluginInput {
 	if o == nil {
-		return nil
+		return shared.WebsocketSizeLimitPluginInput{}
 	}
 	return o.WebsocketSizeLimitPlugin
 }

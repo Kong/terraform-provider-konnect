@@ -277,7 +277,7 @@ func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	corsPlugin := data.ToSharedCorsPluginInput()
+	corsPlugin := *data.ToSharedCorsPluginInput()
 	request := operations.CreateCorsPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CorsPlugin:     corsPlugin,
@@ -387,7 +387,7 @@ func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	corsPlugin := data.ToSharedCorsPluginInput()
+	corsPlugin := *data.ToSharedCorsPluginInput()
 	request := operations.UpdateCorsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

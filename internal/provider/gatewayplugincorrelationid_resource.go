@@ -257,7 +257,7 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	correlationIDPlugin := data.ToSharedCorrelationIDPluginInput()
+	correlationIDPlugin := *data.ToSharedCorrelationIDPluginInput()
 	request := operations.CreateCorrelationidPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		CorrelationIDPlugin: correlationIDPlugin,
@@ -367,7 +367,7 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	correlationIDPlugin := data.ToSharedCorrelationIDPluginInput()
+	correlationIDPlugin := *data.ToSharedCorrelationIDPluginInput()
 	request := operations.UpdateCorrelationidPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

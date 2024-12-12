@@ -9,8 +9,8 @@ import (
 
 type CreateTcplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TCPLogPlugin   *shared.TCPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TCPLogPlugin   shared.TCPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateTcplogPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateTcplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateTcplogPluginRequest) GetTCPLogPlugin() *shared.TCPLogPluginInput {
+func (o *CreateTcplogPluginRequest) GetTCPLogPlugin() shared.TCPLogPluginInput {
 	if o == nil {
-		return nil
+		return shared.TCPLogPluginInput{}
 	}
 	return o.TCPLogPlugin
 }

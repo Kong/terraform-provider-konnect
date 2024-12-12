@@ -9,8 +9,8 @@ import (
 
 type CreatePostfunctionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	PostFunctionPlugin *shared.PostFunctionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID     string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PostFunctionPlugin shared.PostFunctionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreatePostfunctionPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreatePostfunctionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreatePostfunctionPluginRequest) GetPostFunctionPlugin() *shared.PostFunctionPluginInput {
+func (o *CreatePostfunctionPluginRequest) GetPostFunctionPlugin() shared.PostFunctionPluginInput {
 	if o == nil {
-		return nil
+		return shared.PostFunctionPluginInput{}
 	}
 	return o.PostFunctionPlugin
 }

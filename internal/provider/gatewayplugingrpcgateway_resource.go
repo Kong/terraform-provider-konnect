@@ -238,7 +238,7 @@ func (r *GatewayPluginGrpcGatewayResource) Create(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcGatewayPlugin := data.ToSharedGrpcGatewayPluginInput()
+	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPluginInput()
 	request := operations.CreateGrpcgatewayPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		GrpcGatewayPlugin: grpcGatewayPlugin,
@@ -348,7 +348,7 @@ func (r *GatewayPluginGrpcGatewayResource) Update(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcGatewayPlugin := data.ToSharedGrpcGatewayPluginInput()
+	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPluginInput()
 	request := operations.UpdateGrpcgatewayPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,

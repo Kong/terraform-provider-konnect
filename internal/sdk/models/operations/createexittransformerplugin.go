@@ -9,8 +9,8 @@ import (
 
 type CreateExittransformerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ExitTransformerPlugin *shared.ExitTransformerPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID        string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ExitTransformerPlugin shared.ExitTransformerPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateExittransformerPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateExittransformerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateExittransformerPluginRequest) GetExitTransformerPlugin() *shared.ExitTransformerPluginInput {
+func (o *CreateExittransformerPluginRequest) GetExitTransformerPlugin() shared.ExitTransformerPluginInput {
 	if o == nil {
-		return nil
+		return shared.ExitTransformerPluginInput{}
 	}
 	return o.ExitTransformerPlugin
 }

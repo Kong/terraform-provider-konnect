@@ -11,8 +11,8 @@ type UpdateStatsdPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	StatsdPlugin   *shared.StatsdPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StatsdPlugin   shared.StatsdPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateStatsdPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateStatsdPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateStatsdPluginRequest) GetStatsdPlugin() *shared.StatsdPluginInput {
+func (o *UpdateStatsdPluginRequest) GetStatsdPlugin() shared.StatsdPluginInput {
 	if o == nil {
-		return nil
+		return shared.StatsdPluginInput{}
 	}
 	return o.StatsdPlugin
 }

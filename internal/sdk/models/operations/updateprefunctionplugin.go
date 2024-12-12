@@ -11,8 +11,8 @@ type UpdatePrefunctionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID    string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	PreFunctionPlugin *shared.PreFunctionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID    string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PreFunctionPlugin shared.PreFunctionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePrefunctionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdatePrefunctionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdatePrefunctionPluginRequest) GetPreFunctionPlugin() *shared.PreFunctionPluginInput {
+func (o *UpdatePrefunctionPluginRequest) GetPreFunctionPlugin() shared.PreFunctionPluginInput {
 	if o == nil {
-		return nil
+		return shared.PreFunctionPluginInput{}
 	}
 	return o.PreFunctionPlugin
 }

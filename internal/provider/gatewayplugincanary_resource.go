@@ -321,7 +321,7 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPluginInput()
 	request := operations.CreateCanaryPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CanaryPlugin:   canaryPlugin,
@@ -431,7 +431,7 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPluginInput()
 	request := operations.UpdateCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

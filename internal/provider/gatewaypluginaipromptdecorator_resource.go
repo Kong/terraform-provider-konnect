@@ -314,7 +314,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptDecoratorPlugin := data.ToSharedAiPromptDecoratorPluginInput()
+	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPluginInput()
 	request := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		AiPromptDecoratorPlugin: aiPromptDecoratorPlugin,
@@ -424,7 +424,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptDecoratorPlugin := data.ToSharedAiPromptDecoratorPluginInput()
+	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPluginInput()
 	request := operations.UpdateAipromptdecoratorPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,

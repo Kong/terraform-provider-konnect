@@ -9,8 +9,8 @@ import (
 
 type CreateGraphqlratelimitingadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                    string                                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	GraphqlRateLimitingAdvancedPlugin *shared.GraphqlRateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID                    string                                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	GraphqlRateLimitingAdvancedPlugin shared.GraphqlRateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() str
 	return o.ControlPlaneID
 }
 
-func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPluginInput {
+func (o *CreateGraphqlratelimitingadvancedPluginRequest) GetGraphqlRateLimitingAdvancedPlugin() shared.GraphqlRateLimitingAdvancedPluginInput {
 	if o == nil {
-		return nil
+		return shared.GraphqlRateLimitingAdvancedPluginInput{}
 	}
 	return o.GraphqlRateLimitingAdvancedPlugin
 }

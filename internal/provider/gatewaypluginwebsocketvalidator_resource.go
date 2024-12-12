@@ -340,7 +340,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	websocketValidatorPlugin := data.ToSharedWebsocketValidatorPluginInput()
+	websocketValidatorPlugin := *data.ToSharedWebsocketValidatorPluginInput()
 	request := operations.CreateWebsocketvalidatorPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		WebsocketValidatorPlugin: websocketValidatorPlugin,
@@ -450,7 +450,7 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	websocketValidatorPlugin := data.ToSharedWebsocketValidatorPluginInput()
+	websocketValidatorPlugin := *data.ToSharedWebsocketValidatorPluginInput()
 	request := operations.UpdateWebsocketvalidatorPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,

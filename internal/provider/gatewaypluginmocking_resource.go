@@ -284,7 +284,7 @@ func (r *GatewayPluginMockingResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPluginInput()
 	request := operations.CreateMockingPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		MockingPlugin:  mockingPlugin,
@@ -394,7 +394,7 @@ func (r *GatewayPluginMockingResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPluginInput()
 	request := operations.UpdateMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

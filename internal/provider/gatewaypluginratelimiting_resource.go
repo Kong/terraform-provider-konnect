@@ -387,7 +387,7 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
 	request := operations.CreateRatelimitingPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		RateLimitingPlugin: rateLimitingPlugin,
@@ -497,7 +497,7 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
 	request := operations.UpdateRatelimitingPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

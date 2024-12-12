@@ -681,7 +681,7 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	samlPlugin := data.ToSharedSamlPluginInput()
+	samlPlugin := *data.ToSharedSamlPluginInput()
 	request := operations.CreateSamlPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SamlPlugin:     samlPlugin,
@@ -791,7 +791,7 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	samlPlugin := data.ToSharedSamlPluginInput()
+	samlPlugin := *data.ToSharedSamlPluginInput()
 	request := operations.UpdateSamlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

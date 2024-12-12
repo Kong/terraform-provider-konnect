@@ -245,7 +245,7 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	botDetectionPlugin := data.ToSharedBotDetectionPluginInput()
+	botDetectionPlugin := *data.ToSharedBotDetectionPluginInput()
 	request := operations.CreateBotdetectionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		BotDetectionPlugin: botDetectionPlugin,
@@ -355,7 +355,7 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	botDetectionPlugin := data.ToSharedBotDetectionPluginInput()
+	botDetectionPlugin := *data.ToSharedBotDetectionPluginInput()
 	request := operations.UpdateBotdetectionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

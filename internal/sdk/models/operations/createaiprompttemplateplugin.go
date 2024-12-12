@@ -9,8 +9,8 @@ import (
 
 type CreateAiprompttemplatePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiPromptTemplatePlugin *shared.AiPromptTemplatePluginInput `request:"mediaType=application/json"`
+	ControlPlaneID         string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiPromptTemplatePlugin shared.AiPromptTemplatePluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAiprompttemplatePluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateAiprompttemplatePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAiprompttemplatePluginRequest) GetAiPromptTemplatePlugin() *shared.AiPromptTemplatePluginInput {
+func (o *CreateAiprompttemplatePluginRequest) GetAiPromptTemplatePlugin() shared.AiPromptTemplatePluginInput {
 	if o == nil {
-		return nil
+		return shared.AiPromptTemplatePluginInput{}
 	}
 	return o.AiPromptTemplatePlugin
 }

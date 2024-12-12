@@ -9,8 +9,8 @@ import (
 
 type CreateCanaryPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CanaryPlugin   *shared.CanaryPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CanaryPlugin   shared.CanaryPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateCanaryPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateCanaryPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCanaryPluginRequest) GetCanaryPlugin() *shared.CanaryPluginInput {
+func (o *CreateCanaryPluginRequest) GetCanaryPlugin() shared.CanaryPluginInput {
 	if o == nil {
-		return nil
+		return shared.CanaryPluginInput{}
 	}
 	return o.CanaryPlugin
 }

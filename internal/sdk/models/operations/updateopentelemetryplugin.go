@@ -11,8 +11,8 @@ type UpdateOpentelemetryPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	OpentelemetryPlugin *shared.OpentelemetryPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpentelemetryPlugin shared.OpentelemetryPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateOpentelemetryPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateOpentelemetryPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateOpentelemetryPluginRequest) GetOpentelemetryPlugin() *shared.OpentelemetryPluginInput {
+func (o *UpdateOpentelemetryPluginRequest) GetOpentelemetryPlugin() shared.OpentelemetryPluginInput {
 	if o == nil {
-		return nil
+		return shared.OpentelemetryPluginInput{}
 	}
 	return o.OpentelemetryPlugin
 }

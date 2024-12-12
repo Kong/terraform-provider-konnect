@@ -9,8 +9,8 @@ import (
 
 type CreateKafkaupstreamPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	KafkaUpstreamPlugin *shared.KafkaUpstreamPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KafkaUpstreamPlugin shared.KafkaUpstreamPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateKafkaupstreamPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() *shared.KafkaUpstreamPluginInput {
+func (o *CreateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() shared.KafkaUpstreamPluginInput {
 	if o == nil {
-		return nil
+		return shared.KafkaUpstreamPluginInput{}
 	}
 	return o.KafkaUpstreamPlugin
 }

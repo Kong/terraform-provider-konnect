@@ -263,7 +263,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tlsMetadataHeadersPlugin := data.ToSharedTLSMetadataHeadersPluginInput()
+	tlsMetadataHeadersPlugin := *data.ToSharedTLSMetadataHeadersPluginInput()
 	request := operations.CreateTlsmetadataheadersPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		TLSMetadataHeadersPlugin: tlsMetadataHeadersPlugin,
@@ -373,7 +373,7 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tlsMetadataHeadersPlugin := data.ToSharedTLSMetadataHeadersPluginInput()
+	tlsMetadataHeadersPlugin := *data.ToSharedTLSMetadataHeadersPluginInput()
 	request := operations.UpdateTlsmetadataheadersPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,

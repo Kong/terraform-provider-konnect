@@ -308,7 +308,7 @@ func (r *GatewayPluginOasValidationResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oasValidationPlugin := data.ToSharedOasValidationPluginInput()
+	oasValidationPlugin := *data.ToSharedOasValidationPluginInput()
 	request := operations.CreateOasvalidationPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OasValidationPlugin: oasValidationPlugin,
@@ -418,7 +418,7 @@ func (r *GatewayPluginOasValidationResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oasValidationPlugin := data.ToSharedOasValidationPluginInput()
+	oasValidationPlugin := *data.ToSharedOasValidationPluginInput()
 	request := operations.UpdateOasvalidationPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

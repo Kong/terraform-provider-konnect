@@ -283,7 +283,7 @@ func (r *GatewayPluginPostFunctionResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	postFunctionPlugin := data.ToSharedPostFunctionPluginInput()
+	postFunctionPlugin := *data.ToSharedPostFunctionPluginInput()
 	request := operations.CreatePostfunctionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		PostFunctionPlugin: postFunctionPlugin,
@@ -393,7 +393,7 @@ func (r *GatewayPluginPostFunctionResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	postFunctionPlugin := data.ToSharedPostFunctionPluginInput()
+	postFunctionPlugin := *data.ToSharedPostFunctionPluginInput()
 	request := operations.UpdatePostfunctionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

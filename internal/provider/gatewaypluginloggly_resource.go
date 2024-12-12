@@ -341,7 +341,7 @@ func (r *GatewayPluginLogglyResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	logglyPlugin := data.ToSharedLogglyPluginInput()
+	logglyPlugin := *data.ToSharedLogglyPluginInput()
 	request := operations.CreateLogglyPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		LogglyPlugin:   logglyPlugin,
@@ -451,7 +451,7 @@ func (r *GatewayPluginLogglyResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	logglyPlugin := data.ToSharedLogglyPluginInput()
+	logglyPlugin := *data.ToSharedLogglyPluginInput()
 	request := operations.UpdateLogglyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

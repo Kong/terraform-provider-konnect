@@ -11,8 +11,8 @@ type UpdateTcplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TCPLogPlugin   *shared.TCPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TCPLogPlugin   shared.TCPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateTcplogPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateTcplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateTcplogPluginRequest) GetTCPLogPlugin() *shared.TCPLogPluginInput {
+func (o *UpdateTcplogPluginRequest) GetTCPLogPlugin() shared.TCPLogPluginInput {
 	if o == nil {
-		return nil
+		return shared.TCPLogPluginInput{}
 	}
 	return o.TCPLogPlugin
 }

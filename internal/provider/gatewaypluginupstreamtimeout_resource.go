@@ -259,7 +259,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamTimeoutPlugin := data.ToSharedUpstreamTimeoutPluginInput()
+	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPluginInput()
 	request := operations.CreateUpstreamtimeoutPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		UpstreamTimeoutPlugin: upstreamTimeoutPlugin,
@@ -369,7 +369,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamTimeoutPlugin := data.ToSharedUpstreamTimeoutPluginInput()
+	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPluginInput()
 	request := operations.UpdateUpstreamtimeoutPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,

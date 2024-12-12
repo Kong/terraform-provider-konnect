@@ -11,8 +11,8 @@ type UpdateAipromptguardPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiPromptGuardPlugin *shared.AiPromptGuardPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiPromptGuardPlugin shared.AiPromptGuardPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAipromptguardPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateAipromptguardPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAipromptguardPluginRequest) GetAiPromptGuardPlugin() *shared.AiPromptGuardPluginInput {
+func (o *UpdateAipromptguardPluginRequest) GetAiPromptGuardPlugin() shared.AiPromptGuardPluginInput {
 	if o == nil {
-		return nil
+		return shared.AiPromptGuardPluginInput{}
 	}
 	return o.AiPromptGuardPlugin
 }

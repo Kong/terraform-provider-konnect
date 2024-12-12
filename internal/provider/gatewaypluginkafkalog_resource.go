@@ -407,7 +407,7 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaLogPlugin := data.ToSharedKafkaLogPluginInput()
+	kafkaLogPlugin := *data.ToSharedKafkaLogPluginInput()
 	request := operations.CreateKafkalogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		KafkaLogPlugin: kafkaLogPlugin,
@@ -517,7 +517,7 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaLogPlugin := data.ToSharedKafkaLogPluginInput()
+	kafkaLogPlugin := *data.ToSharedKafkaLogPluginInput()
 	request := operations.UpdateKafkalogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

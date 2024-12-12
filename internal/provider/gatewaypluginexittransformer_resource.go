@@ -248,7 +248,7 @@ func (r *GatewayPluginExitTransformerResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	exitTransformerPlugin := data.ToSharedExitTransformerPluginInput()
+	exitTransformerPlugin := *data.ToSharedExitTransformerPluginInput()
 	request := operations.CreateExittransformerPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		ExitTransformerPlugin: exitTransformerPlugin,
@@ -358,7 +358,7 @@ func (r *GatewayPluginExitTransformerResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	exitTransformerPlugin := data.ToSharedExitTransformerPluginInput()
+	exitTransformerPlugin := *data.ToSharedExitTransformerPluginInput()
 	request := operations.UpdateExittransformerPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,

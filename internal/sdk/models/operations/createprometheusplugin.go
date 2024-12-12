@@ -9,8 +9,8 @@ import (
 
 type CreatePrometheusPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	PrometheusPlugin *shared.PrometheusPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID   string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PrometheusPlugin shared.PrometheusPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreatePrometheusPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreatePrometheusPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreatePrometheusPluginRequest) GetPrometheusPlugin() *shared.PrometheusPluginInput {
+func (o *CreatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPluginInput {
 	if o == nil {
-		return nil
+		return shared.PrometheusPluginInput{}
 	}
 	return o.PrometheusPlugin
 }

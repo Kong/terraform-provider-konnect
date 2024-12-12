@@ -269,7 +269,7 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeByHeaderPlugin := data.ToSharedRouteByHeaderPluginInput()
+	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPluginInput()
 	request := operations.CreateRoutebyheaderPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		RouteByHeaderPlugin: routeByHeaderPlugin,
@@ -379,7 +379,7 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeByHeaderPlugin := data.ToSharedRouteByHeaderPluginInput()
+	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPluginInput()
 	request := operations.UpdateRoutebyheaderPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

@@ -283,7 +283,7 @@ func (r *GatewayPluginPreFunctionResource) Create(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	preFunctionPlugin := data.ToSharedPreFunctionPluginInput()
+	preFunctionPlugin := *data.ToSharedPreFunctionPluginInput()
 	request := operations.CreatePrefunctionPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		PreFunctionPlugin: preFunctionPlugin,
@@ -393,7 +393,7 @@ func (r *GatewayPluginPreFunctionResource) Update(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	preFunctionPlugin := data.ToSharedPreFunctionPluginInput()
+	preFunctionPlugin := *data.ToSharedPreFunctionPluginInput()
 	request := operations.UpdatePrefunctionPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,

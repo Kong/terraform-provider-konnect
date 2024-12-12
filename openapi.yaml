@@ -2248,6 +2248,7 @@ paths:
       summary: Update a ACL plugin
       description: Update a ACL plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2303,6 +2304,7 @@ paths:
       summary: Update a Acme plugin
       description: Update a Acme plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2358,6 +2360,7 @@ paths:
       summary: Update a AiPromptDecorator plugin
       description: Update a AiPromptDecorator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2413,6 +2416,7 @@ paths:
       summary: Update a AiPromptGuard plugin
       description: Update a AiPromptGuard plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2468,6 +2472,7 @@ paths:
       summary: Update a AiPromptTemplate plugin
       description: Update a AiPromptTemplate plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2523,6 +2528,7 @@ paths:
       summary: Update a AiProxy plugin
       description: Update a AiProxy plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2578,6 +2584,7 @@ paths:
       summary: Update a AiRequestTransformer plugin
       description: Update a AiRequestTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2633,6 +2640,7 @@ paths:
       summary: Update a AiResponseTransformer plugin
       description: Update a AiResponseTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2688,6 +2696,7 @@ paths:
       summary: Update a AwsLambda plugin
       description: Update a AwsLambda plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2743,6 +2752,7 @@ paths:
       summary: Update a AzureFunctions plugin
       description: Update a AzureFunctions plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2798,6 +2808,7 @@ paths:
       summary: Update a BasicAuth plugin
       description: Update a BasicAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2853,6 +2864,7 @@ paths:
       summary: Update a BotDetection plugin
       description: Update a BotDetection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2908,6 +2920,7 @@ paths:
       summary: Update a Canary plugin
       description: Update a Canary plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2963,6 +2976,7 @@ paths:
       summary: Update a CorrelationId plugin
       description: Update a CorrelationId plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3018,6 +3032,7 @@ paths:
       summary: Update a Cors plugin
       description: Update a Cors plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3073,6 +3088,7 @@ paths:
       summary: Update a Datadog plugin
       description: Update a Datadog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3128,6 +3144,7 @@ paths:
       summary: Update a Degraphql plugin
       description: Update a Degraphql plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3183,6 +3200,7 @@ paths:
       summary: Update a ExitTransformer plugin
       description: Update a ExitTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3238,6 +3256,7 @@ paths:
       summary: Update a FileLog plugin
       description: Update a FileLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3293,6 +3312,7 @@ paths:
       summary: Update a ForwardProxy plugin
       description: Update a ForwardProxy plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3348,6 +3368,7 @@ paths:
       summary: Update a GraphqlProxyCacheAdvanced plugin
       description: Update a GraphqlProxyCacheAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3403,6 +3424,7 @@ paths:
       summary: Update a GraphqlRateLimitingAdvanced plugin
       description: Update a GraphqlRateLimitingAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3458,6 +3480,7 @@ paths:
       summary: Update a GrpcGateway plugin
       description: Update a GrpcGateway plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3513,6 +3536,7 @@ paths:
       summary: Update a GrpcWeb plugin
       description: Update a GrpcWeb plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3568,6 +3592,7 @@ paths:
       summary: Update a HmacAuth plugin
       description: Update a HmacAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3623,6 +3648,7 @@ paths:
       summary: Update a HttpLog plugin
       description: Update a HttpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3678,6 +3704,7 @@ paths:
       summary: Update a IpRestriction plugin
       description: Update a IpRestriction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3733,6 +3760,7 @@ paths:
       summary: Update a Jq plugin
       description: Update a Jq plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3788,6 +3816,7 @@ paths:
       summary: Update a JweDecrypt plugin
       description: Update a JweDecrypt plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3843,6 +3872,7 @@ paths:
       summary: Update a Jwt plugin
       description: Update a Jwt plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3898,6 +3928,7 @@ paths:
       summary: Update a JwtSigner plugin
       description: Update a JwtSigner plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -3953,6 +3984,7 @@ paths:
       summary: Update a KafkaLog plugin
       description: Update a KafkaLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4008,6 +4040,7 @@ paths:
       summary: Update a KafkaUpstream plugin
       description: Update a KafkaUpstream plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4063,6 +4096,7 @@ paths:
       summary: Update a KeyAuth plugin
       description: Update a KeyAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4118,6 +4152,7 @@ paths:
       summary: Update a KeyAuthEnc plugin
       description: Update a KeyAuthEnc plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4173,6 +4208,7 @@ paths:
       summary: Update a KonnectApplicationAuth plugin
       description: Update a KonnectApplicationAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4228,6 +4264,7 @@ paths:
       summary: Update a LdapAuth plugin
       description: Update a LdapAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4283,6 +4320,7 @@ paths:
       summary: Update a LdapAuthAdvanced plugin
       description: Update a LdapAuthAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4338,6 +4376,7 @@ paths:
       summary: Update a Loggly plugin
       description: Update a Loggly plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4393,6 +4432,7 @@ paths:
       summary: Update a Mocking plugin
       description: Update a Mocking plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4448,6 +4488,7 @@ paths:
       summary: Update a MtlsAuth plugin
       description: Update a MtlsAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4503,6 +4544,7 @@ paths:
       summary: Update a OasValidation plugin
       description: Update a OasValidation plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4558,6 +4600,7 @@ paths:
       summary: Update a Oauth2 plugin
       description: Update a Oauth2 plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4613,6 +4656,7 @@ paths:
       summary: Update a Oauth2Introspection plugin
       description: Update a Oauth2Introspection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4668,6 +4712,7 @@ paths:
       summary: Update a Opa plugin
       description: Update a Opa plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4723,6 +4768,7 @@ paths:
       summary: Update a OpenidConnect plugin
       description: Update a OpenidConnect plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4778,6 +4824,7 @@ paths:
       summary: Update a Opentelemetry plugin
       description: Update a Opentelemetry plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4833,6 +4880,7 @@ paths:
       summary: Update a PostFunction plugin
       description: Update a PostFunction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4888,6 +4936,7 @@ paths:
       summary: Update a PreFunction plugin
       description: Update a PreFunction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4943,6 +4992,7 @@ paths:
       summary: Update a Prometheus plugin
       description: Update a Prometheus plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -4998,6 +5048,7 @@ paths:
       summary: Update a ProxyCache plugin
       description: Update a ProxyCache plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5053,6 +5104,7 @@ paths:
       summary: Update a ProxyCacheAdvanced plugin
       description: Update a ProxyCacheAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5108,6 +5160,7 @@ paths:
       summary: Update a RateLimiting plugin
       description: Update a RateLimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5163,6 +5216,7 @@ paths:
       summary: Update a RateLimitingAdvanced plugin
       description: Update a RateLimitingAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5218,6 +5272,7 @@ paths:
       summary: Update a RequestSizeLimiting plugin
       description: Update a RequestSizeLimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5273,6 +5328,7 @@ paths:
       summary: Update a RequestTermination plugin
       description: Update a RequestTermination plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5328,6 +5384,7 @@ paths:
       summary: Update a RequestTransformer plugin
       description: Update a RequestTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5383,6 +5440,7 @@ paths:
       summary: Update a RequestTransformerAdvanced plugin
       description: Update a RequestTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5438,6 +5496,7 @@ paths:
       summary: Update a RequestValidator plugin
       description: Update a RequestValidator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5493,6 +5552,7 @@ paths:
       summary: Update a ResponseRatelimiting plugin
       description: Update a ResponseRatelimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5548,6 +5608,7 @@ paths:
       summary: Update a ResponseTransformer plugin
       description: Update a ResponseTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5603,6 +5664,7 @@ paths:
       summary: Update a ResponseTransformerAdvanced plugin
       description: Update a ResponseTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5658,6 +5720,7 @@ paths:
       summary: Update a RouteByHeader plugin
       description: Update a RouteByHeader plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5713,6 +5776,7 @@ paths:
       summary: Update a RouteTransformerAdvanced plugin
       description: Update a RouteTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5768,6 +5832,7 @@ paths:
       summary: Update a Saml plugin
       description: Update a Saml plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5823,6 +5888,7 @@ paths:
       summary: Update a Session plugin
       description: Update a Session plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5878,6 +5944,7 @@ paths:
       summary: Update a Statsd plugin
       description: Update a Statsd plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5933,6 +6000,7 @@ paths:
       summary: Update a StatsdAdvanced plugin
       description: Update a StatsdAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -5988,6 +6056,7 @@ paths:
       summary: Update a Syslog plugin
       description: Update a Syslog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6043,6 +6112,7 @@ paths:
       summary: Update a TcpLog plugin
       description: Update a TcpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6098,6 +6168,7 @@ paths:
       summary: Update a TlsHandshakeModifier plugin
       description: Update a TlsHandshakeModifier plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6153,6 +6224,7 @@ paths:
       summary: Update a TlsMetadataHeaders plugin
       description: Update a TlsMetadataHeaders plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6208,6 +6280,7 @@ paths:
       summary: Update a UdpLog plugin
       description: Update a UdpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6263,6 +6336,7 @@ paths:
       summary: Update a UpstreamTimeout plugin
       description: Update a UpstreamTimeout plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6318,6 +6392,7 @@ paths:
       summary: Update a VaultAuth plugin
       description: Update a VaultAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6373,6 +6448,7 @@ paths:
       summary: Update a WebsocketSizeLimit plugin
       description: Update a WebsocketSizeLimit plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6428,6 +6504,7 @@ paths:
       summary: Update a WebsocketValidator plugin
       description: Update a WebsocketValidator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6483,6 +6560,7 @@ paths:
       summary: Update a XmlThreatProtection plugin
       description: Update a XmlThreatProtection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6538,6 +6616,7 @@ paths:
       summary: Update a Zipkin plugin
       description: Update a Zipkin plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6562,6 +6641,7 @@ paths:
       summary: Create a ACL plugin
       description: Create a ACL plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6586,6 +6666,7 @@ paths:
       summary: Create a Acme plugin
       description: Create a Acme plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6610,6 +6691,7 @@ paths:
       summary: Create a AiPromptDecorator plugin
       description: Create a AiPromptDecorator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6634,6 +6716,7 @@ paths:
       summary: Create a AiPromptGuard plugin
       description: Create a AiPromptGuard plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6658,6 +6741,7 @@ paths:
       summary: Create a AiPromptTemplate plugin
       description: Create a AiPromptTemplate plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6682,6 +6766,7 @@ paths:
       summary: Create a AiProxy plugin
       description: Create a AiProxy plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6706,6 +6791,7 @@ paths:
       summary: Create a AiRequestTransformer plugin
       description: Create a AiRequestTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6730,6 +6816,7 @@ paths:
       summary: Create a AiResponseTransformer plugin
       description: Create a AiResponseTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6754,6 +6841,7 @@ paths:
       summary: Create a AwsLambda plugin
       description: Create a AwsLambda plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6778,6 +6866,7 @@ paths:
       summary: Create a AzureFunctions plugin
       description: Create a AzureFunctions plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6802,6 +6891,7 @@ paths:
       summary: Create a BasicAuth plugin
       description: Create a BasicAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6826,6 +6916,7 @@ paths:
       summary: Create a BotDetection plugin
       description: Create a BotDetection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6850,6 +6941,7 @@ paths:
       summary: Create a Canary plugin
       description: Create a Canary plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6874,6 +6966,7 @@ paths:
       summary: Create a CorrelationId plugin
       description: Create a CorrelationId plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6898,6 +6991,7 @@ paths:
       summary: Create a Cors plugin
       description: Create a Cors plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6922,6 +7016,7 @@ paths:
       summary: Create a Datadog plugin
       description: Create a Datadog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6946,6 +7041,7 @@ paths:
       summary: Create a Degraphql plugin
       description: Create a Degraphql plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6970,6 +7066,7 @@ paths:
       summary: Create a ExitTransformer plugin
       description: Create a ExitTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -6994,6 +7091,7 @@ paths:
       summary: Create a FileLog plugin
       description: Create a FileLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7018,6 +7116,7 @@ paths:
       summary: Create a ForwardProxy plugin
       description: Create a ForwardProxy plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7042,6 +7141,7 @@ paths:
       summary: Create a GraphqlProxyCacheAdvanced plugin
       description: Create a GraphqlProxyCacheAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7066,6 +7166,7 @@ paths:
       summary: Create a GraphqlRateLimitingAdvanced plugin
       description: Create a GraphqlRateLimitingAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7090,6 +7191,7 @@ paths:
       summary: Create a GrpcGateway plugin
       description: Create a GrpcGateway plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7114,6 +7216,7 @@ paths:
       summary: Create a GrpcWeb plugin
       description: Create a GrpcWeb plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7138,6 +7241,7 @@ paths:
       summary: Create a HmacAuth plugin
       description: Create a HmacAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7162,6 +7266,7 @@ paths:
       summary: Create a HttpLog plugin
       description: Create a HttpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7186,6 +7291,7 @@ paths:
       summary: Create a IpRestriction plugin
       description: Create a IpRestriction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7210,6 +7316,7 @@ paths:
       summary: Create a Jq plugin
       description: Create a Jq plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7234,6 +7341,7 @@ paths:
       summary: Create a JweDecrypt plugin
       description: Create a JweDecrypt plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7258,6 +7366,7 @@ paths:
       summary: Create a Jwt plugin
       description: Create a Jwt plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7282,6 +7391,7 @@ paths:
       summary: Create a JwtSigner plugin
       description: Create a JwtSigner plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7306,6 +7416,7 @@ paths:
       summary: Create a KafkaLog plugin
       description: Create a KafkaLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7330,6 +7441,7 @@ paths:
       summary: Create a KafkaUpstream plugin
       description: Create a KafkaUpstream plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7354,6 +7466,7 @@ paths:
       summary: Create a KeyAuth plugin
       description: Create a KeyAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7378,6 +7491,7 @@ paths:
       summary: Create a KeyAuthEnc plugin
       description: Create a KeyAuthEnc plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7402,6 +7516,7 @@ paths:
       summary: Create a KonnectApplicationAuth plugin
       description: Create a KonnectApplicationAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7426,6 +7541,7 @@ paths:
       summary: Create a LdapAuth plugin
       description: Create a LdapAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7450,6 +7566,7 @@ paths:
       summary: Create a LdapAuthAdvanced plugin
       description: Create a LdapAuthAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7474,6 +7591,7 @@ paths:
       summary: Create a Loggly plugin
       description: Create a Loggly plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7498,6 +7616,7 @@ paths:
       summary: Create a Mocking plugin
       description: Create a Mocking plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7522,6 +7641,7 @@ paths:
       summary: Create a MtlsAuth plugin
       description: Create a MtlsAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7546,6 +7666,7 @@ paths:
       summary: Create a OasValidation plugin
       description: Create a OasValidation plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7570,6 +7691,7 @@ paths:
       summary: Create a Oauth2 plugin
       description: Create a Oauth2 plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7594,6 +7716,7 @@ paths:
       summary: Create a Oauth2Introspection plugin
       description: Create a Oauth2Introspection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7618,6 +7741,7 @@ paths:
       summary: Create a Opa plugin
       description: Create a Opa plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7642,6 +7766,7 @@ paths:
       summary: Create a OpenidConnect plugin
       description: Create a OpenidConnect plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7666,6 +7791,7 @@ paths:
       summary: Create a Opentelemetry plugin
       description: Create a Opentelemetry plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7690,6 +7816,7 @@ paths:
       summary: Create a PostFunction plugin
       description: Create a PostFunction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7714,6 +7841,7 @@ paths:
       summary: Create a PreFunction plugin
       description: Create a PreFunction plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7738,6 +7866,7 @@ paths:
       summary: Create a Prometheus plugin
       description: Create a Prometheus plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7762,6 +7891,7 @@ paths:
       summary: Create a ProxyCache plugin
       description: Create a ProxyCache plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7786,6 +7916,7 @@ paths:
       summary: Create a ProxyCacheAdvanced plugin
       description: Create a ProxyCacheAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7810,6 +7941,7 @@ paths:
       summary: Create a RateLimiting plugin
       description: Create a RateLimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7834,6 +7966,7 @@ paths:
       summary: Create a RateLimitingAdvanced plugin
       description: Create a RateLimitingAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7858,6 +7991,7 @@ paths:
       summary: Create a RequestSizeLimiting plugin
       description: Create a RequestSizeLimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7882,6 +8016,7 @@ paths:
       summary: Create a RequestTermination plugin
       description: Create a RequestTermination plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7906,6 +8041,7 @@ paths:
       summary: Create a RequestTransformer plugin
       description: Create a RequestTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7930,6 +8066,7 @@ paths:
       summary: Create a RequestTransformerAdvanced plugin
       description: Create a RequestTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7954,6 +8091,7 @@ paths:
       summary: Create a RequestValidator plugin
       description: Create a RequestValidator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -7978,6 +8116,7 @@ paths:
       summary: Create a ResponseRatelimiting plugin
       description: Create a ResponseRatelimiting plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8002,6 +8141,7 @@ paths:
       summary: Create a ResponseTransformer plugin
       description: Create a ResponseTransformer plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8026,6 +8166,7 @@ paths:
       summary: Create a ResponseTransformerAdvanced plugin
       description: Create a ResponseTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8050,6 +8191,7 @@ paths:
       summary: Create a RouteByHeader plugin
       description: Create a RouteByHeader plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8074,6 +8216,7 @@ paths:
       summary: Create a RouteTransformerAdvanced plugin
       description: Create a RouteTransformerAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8098,6 +8241,7 @@ paths:
       summary: Create a Saml plugin
       description: Create a Saml plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8122,6 +8266,7 @@ paths:
       summary: Create a Session plugin
       description: Create a Session plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8146,6 +8291,7 @@ paths:
       summary: Create a Statsd plugin
       description: Create a Statsd plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8170,6 +8316,7 @@ paths:
       summary: Create a StatsdAdvanced plugin
       description: Create a StatsdAdvanced plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8194,6 +8341,7 @@ paths:
       summary: Create a Syslog plugin
       description: Create a Syslog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8218,6 +8366,7 @@ paths:
       summary: Create a TcpLog plugin
       description: Create a TcpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8242,6 +8391,7 @@ paths:
       summary: Create a TlsHandshakeModifier plugin
       description: Create a TlsHandshakeModifier plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8266,6 +8416,7 @@ paths:
       summary: Create a TlsMetadataHeaders plugin
       description: Create a TlsMetadataHeaders plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8290,6 +8441,7 @@ paths:
       summary: Create a UdpLog plugin
       description: Create a UdpLog plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8314,6 +8466,7 @@ paths:
       summary: Create a UpstreamTimeout plugin
       description: Create a UpstreamTimeout plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8338,6 +8491,7 @@ paths:
       summary: Create a VaultAuth plugin
       description: Create a VaultAuth plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8362,6 +8516,7 @@ paths:
       summary: Create a WebsocketSizeLimit plugin
       description: Create a WebsocketSizeLimit plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8386,6 +8541,7 @@ paths:
       summary: Create a WebsocketValidator plugin
       description: Create a WebsocketValidator plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8410,6 +8566,7 @@ paths:
       summary: Create a XmlThreatProtection plugin
       description: Create a XmlThreatProtection plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -8434,6 +8591,7 @@ paths:
       summary: Create a Zipkin plugin
       description: Create a Zipkin plugin
       requestBody:
+        required: true
         content:
           application/json:
             schema:

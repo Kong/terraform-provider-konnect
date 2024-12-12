@@ -332,7 +332,7 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2PluginInput()
 	request := operations.CreateOauth2PluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Oauth2Plugin:   oauth2Plugin,
@@ -442,7 +442,7 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2PluginInput()
 	request := operations.UpdateOauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

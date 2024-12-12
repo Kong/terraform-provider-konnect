@@ -777,7 +777,7 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtSignerPlugin := data.ToSharedJwtSignerPluginInput()
+	jwtSignerPlugin := *data.ToSharedJwtSignerPluginInput()
 	request := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		JwtSignerPlugin: jwtSignerPlugin,
@@ -887,7 +887,7 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtSignerPlugin := data.ToSharedJwtSignerPluginInput()
+	jwtSignerPlugin := *data.ToSharedJwtSignerPluginInput()
 	request := operations.UpdateJwtsignerPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

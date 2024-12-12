@@ -334,7 +334,7 @@ func (r *GatewayPluginMtlsAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mtlsAuthPlugin := data.ToSharedMtlsAuthPluginInput()
+	mtlsAuthPlugin := *data.ToSharedMtlsAuthPluginInput()
 	request := operations.CreateMtlsauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		MtlsAuthPlugin: mtlsAuthPlugin,
@@ -444,7 +444,7 @@ func (r *GatewayPluginMtlsAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mtlsAuthPlugin := data.ToSharedMtlsAuthPluginInput()
+	mtlsAuthPlugin := *data.ToSharedMtlsAuthPluginInput()
 	request := operations.UpdateMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

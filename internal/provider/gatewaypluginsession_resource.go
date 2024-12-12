@@ -366,7 +366,7 @@ func (r *GatewayPluginSessionResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPluginInput()
 	request := operations.CreateSessionPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SessionPlugin:  sessionPlugin,
@@ -476,7 +476,7 @@ func (r *GatewayPluginSessionResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPluginInput()
 	request := operations.UpdateSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

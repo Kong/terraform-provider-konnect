@@ -243,7 +243,7 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Create(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tlsHandshakeModifierPlugin := data.ToSharedTLSHandshakeModifierPluginInput()
+	tlsHandshakeModifierPlugin := *data.ToSharedTLSHandshakeModifierPluginInput()
 	request := operations.CreateTlshandshakemodifierPluginRequest{
 		ControlPlaneID:             controlPlaneID,
 		TLSHandshakeModifierPlugin: tlsHandshakeModifierPlugin,
@@ -353,7 +353,7 @@ func (r *GatewayPluginTLSHandshakeModifierResource) Update(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tlsHandshakeModifierPlugin := data.ToSharedTLSHandshakeModifierPluginInput()
+	tlsHandshakeModifierPlugin := *data.ToSharedTLSHandshakeModifierPluginInput()
 	request := operations.UpdateTlshandshakemodifierPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,

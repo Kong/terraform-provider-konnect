@@ -337,7 +337,7 @@ func (r *GatewayPluginRequestValidatorResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestValidatorPlugin := data.ToSharedRequestValidatorPluginInput()
+	requestValidatorPlugin := *data.ToSharedRequestValidatorPluginInput()
 	request := operations.CreateRequestvalidatorPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		RequestValidatorPlugin: requestValidatorPlugin,
@@ -447,7 +447,7 @@ func (r *GatewayPluginRequestValidatorResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestValidatorPlugin := data.ToSharedRequestValidatorPluginInput()
+	requestValidatorPlugin := *data.ToSharedRequestValidatorPluginInput()
 	request := operations.UpdateRequestvalidatorPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

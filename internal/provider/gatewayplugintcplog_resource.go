@@ -279,7 +279,7 @@ func (r *GatewayPluginTCPLogResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tcpLogPlugin := data.ToSharedTCPLogPluginInput()
+	tcpLogPlugin := *data.ToSharedTCPLogPluginInput()
 	request := operations.CreateTcplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		TCPLogPlugin:   tcpLogPlugin,
@@ -389,7 +389,7 @@ func (r *GatewayPluginTCPLogResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	tcpLogPlugin := data.ToSharedTCPLogPluginInput()
+	tcpLogPlugin := *data.ToSharedTCPLogPluginInput()
 	request := operations.UpdateTcplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

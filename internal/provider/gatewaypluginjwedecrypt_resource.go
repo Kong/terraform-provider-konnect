@@ -254,7 +254,7 @@ func (r *GatewayPluginJweDecryptResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jweDecryptPlugin := data.ToSharedJweDecryptPluginInput()
+	jweDecryptPlugin := *data.ToSharedJweDecryptPluginInput()
 	request := operations.CreateJwedecryptPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		JweDecryptPlugin: jweDecryptPlugin,
@@ -364,7 +364,7 @@ func (r *GatewayPluginJweDecryptResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jweDecryptPlugin := data.ToSharedJweDecryptPluginInput()
+	jweDecryptPlugin := *data.ToSharedJweDecryptPluginInput()
 	request := operations.UpdateJwedecryptPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,
