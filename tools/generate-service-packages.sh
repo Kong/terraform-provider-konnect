@@ -65,7 +65,6 @@ for SPEC in $SPECS; do
     cd packages/$SERVICE
     cp ../../oas-generator-templates/package.json package.json
     npm pkg set name=$PACKAGE_NAME version=$CURRENT_VERSION description="Axios Client for the $SERVICE API"
-    npm pkg set repository.url="https://github.com/Kong/platform-api/tree/main/$SPEC"
     cp ../../oas-generator-templates/tsconfig.json tsconfig.json
     npm install
 

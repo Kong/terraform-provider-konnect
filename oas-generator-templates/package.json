@@ -9,7 +9,8 @@
     "author": "Kong Inc. <api-ops@konghq.com>",
     "license": "Apache-2.0",
     "repository": {
-      "url": ""
+      "type": "git",
+      "url": "git+https://github.com/Kong/platform-api.git#main"
     },
     "dependencies": {
       "typescript": "^5.0.2"
