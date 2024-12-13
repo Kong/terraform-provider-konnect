@@ -690,6 +690,13 @@ components:
           description: The duration of the debug session in seconds.
           type: integer
           example: 300
+        capture_content:
+          type: array
+          items:
+            type: string
+            enum:
+              - headers
+              - body
         started_at:
           description: An ISO-8601 timestamp representation of start date.
           type: string

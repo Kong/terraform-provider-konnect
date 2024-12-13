@@ -920,6 +920,13 @@ components:
           type: integer
           example: 300
           description: The duration of the debug session in seconds.
+        capture_content:
+          type: array
+          items:
+            type: string
+            enum:
+              - "headers"
+              - "body"
         started_at:
           type: string
           format: date-time
