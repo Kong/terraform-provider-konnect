@@ -484,7 +484,7 @@ func (r *GatewayPluginStatsdResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdPlugin := data.ToSharedStatsdPluginInput()
+	statsdPlugin := *data.ToSharedStatsdPluginInput()
 	request := operations.CreateStatsdPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		StatsdPlugin:   statsdPlugin,
@@ -594,7 +594,7 @@ func (r *GatewayPluginStatsdResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdPlugin := data.ToSharedStatsdPluginInput()
+	statsdPlugin := *data.ToSharedStatsdPluginInput()
 	request := operations.UpdateStatsdPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

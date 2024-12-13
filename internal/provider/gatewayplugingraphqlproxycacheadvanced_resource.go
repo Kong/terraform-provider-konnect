@@ -451,7 +451,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlProxyCacheAdvancedPlugin := data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
+	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
 	request := operations.CreateGraphqlproxycacheadvancedPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
 		GraphqlProxyCacheAdvancedPlugin: graphqlProxyCacheAdvancedPlugin,
@@ -561,7 +561,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlProxyCacheAdvancedPlugin := data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
+	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
 	request := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,

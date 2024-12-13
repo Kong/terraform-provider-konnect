@@ -238,7 +238,7 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	degraphqlPlugin := data.ToSharedDegraphqlPluginInput()
+	degraphqlPlugin := *data.ToSharedDegraphqlPluginInput()
 	request := operations.CreateDegraphqlPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		DegraphqlPlugin: degraphqlPlugin,
@@ -348,7 +348,7 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	degraphqlPlugin := data.ToSharedDegraphqlPluginInput()
+	degraphqlPlugin := *data.ToSharedDegraphqlPluginInput()
 	request := operations.UpdateDegraphqlPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

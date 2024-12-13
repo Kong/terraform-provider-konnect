@@ -8,14 +8,18 @@ type PortalAuthenticationSettingsUpdateRequest struct {
 	BasicAuthEnabled *bool `json:"basic_auth_enabled,omitempty"`
 	// The organization has OIDC disabled.
 	OidcAuthEnabled *bool `json:"oidc_auth_enabled,omitempty"`
+	// The portal has SAML enabled or disabled.
+	SamlAuthEnabled *bool `json:"saml_auth_enabled,omitempty"`
 	// Whether IdP groups determine the Konnect Portal teams a developer has.
 	OidcTeamMappingEnabled *bool `json:"oidc_team_mapping_enabled,omitempty"`
 	// Whether a Konnect Identity Admin assigns teams to a developer.
-	KonnectMappingEnabled *bool    `json:"konnect_mapping_enabled,omitempty"`
-	OidcIssuer            *string  `json:"oidc_issuer,omitempty"`
-	OidcClientID          *string  `json:"oidc_client_id,omitempty"`
-	OidcClientSecret      *string  `json:"oidc_client_secret,omitempty"`
-	OidcScopes            []string `json:"oidc_scopes,omitempty"`
+	KonnectMappingEnabled *bool `json:"konnect_mapping_enabled,omitempty"`
+	// Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+	IdpMappingEnabled *bool    `json:"idp_mapping_enabled,omitempty"`
+	OidcIssuer        *string  `json:"oidc_issuer,omitempty"`
+	OidcClientID      *string  `json:"oidc_client_id,omitempty"`
+	OidcClientSecret  *string  `json:"oidc_client_secret,omitempty"`
+	OidcScopes        []string `json:"oidc_scopes,omitempty"`
 	// Mappings from a portal developer atribute to an Identity Provider claim.
 	OidcClaimMappings *PortalClaimMappings `json:"oidc_claim_mappings,omitempty"`
 }
@@ -34,6 +38,13 @@ func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcAuthEnabled() *bool {
 	return o.OidcAuthEnabled
 }
 
+func (o *PortalAuthenticationSettingsUpdateRequest) GetSamlAuthEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SamlAuthEnabled
+}
+
 func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcTeamMappingEnabled() *bool {
 	if o == nil {
 		return nil
@@ -46,6 +57,13 @@ func (o *PortalAuthenticationSettingsUpdateRequest) GetKonnectMappingEnabled() *
 		return nil
 	}
 	return o.KonnectMappingEnabled
+}
+
+func (o *PortalAuthenticationSettingsUpdateRequest) GetIdpMappingEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IdpMappingEnabled
 }
 
 func (o *PortalAuthenticationSettingsUpdateRequest) GetOidcIssuer() *string {

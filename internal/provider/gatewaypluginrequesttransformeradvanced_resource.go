@@ -384,7 +384,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Create(ctx context.Con
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTransformerAdvancedPlugin := data.ToSharedRequestTransformerAdvancedPluginInput()
+	requestTransformerAdvancedPlugin := *data.ToSharedRequestTransformerAdvancedPluginInput()
 	request := operations.CreateRequesttransformeradvancedPluginRequest{
 		ControlPlaneID:                   controlPlaneID,
 		RequestTransformerAdvancedPlugin: requestTransformerAdvancedPlugin,
@@ -494,7 +494,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResource) Update(ctx context.Con
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTransformerAdvancedPlugin := data.ToSharedRequestTransformerAdvancedPluginInput()
+	requestTransformerAdvancedPlugin := *data.ToSharedRequestTransformerAdvancedPluginInput()
 	request := operations.UpdateRequesttransformeradvancedPluginRequest{
 		PluginID:                         pluginID,
 		ControlPlaneID:                   controlPlaneID,

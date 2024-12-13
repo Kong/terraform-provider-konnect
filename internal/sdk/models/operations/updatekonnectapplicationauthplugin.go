@@ -11,8 +11,8 @@ type UpdateKonnectapplicationauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID               string                                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	KonnectApplicationAuthPlugin *shared.KonnectApplicationAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID               string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KonnectApplicationAuthPlugin shared.KonnectApplicationAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateKonnectapplicationauthPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateKonnectapplicationauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateKonnectapplicationauthPluginRequest) GetKonnectApplicationAuthPlugin() *shared.KonnectApplicationAuthPluginInput {
+func (o *UpdateKonnectapplicationauthPluginRequest) GetKonnectApplicationAuthPlugin() shared.KonnectApplicationAuthPluginInput {
 	if o == nil {
-		return nil
+		return shared.KonnectApplicationAuthPluginInput{}
 	}
 	return o.KonnectApplicationAuthPlugin
 }

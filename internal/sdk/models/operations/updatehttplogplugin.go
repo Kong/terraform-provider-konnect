@@ -11,8 +11,8 @@ type UpdateHttplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	HTTPLogPlugin  *shared.HTTPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	HTTPLogPlugin  shared.HTTPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateHttplogPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateHttplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateHttplogPluginRequest) GetHTTPLogPlugin() *shared.HTTPLogPluginInput {
+func (o *UpdateHttplogPluginRequest) GetHTTPLogPlugin() shared.HTTPLogPluginInput {
 	if o == nil {
-		return nil
+		return shared.HTTPLogPluginInput{}
 	}
 	return o.HTTPLogPlugin
 }

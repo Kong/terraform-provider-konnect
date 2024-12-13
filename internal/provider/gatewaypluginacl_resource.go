@@ -259,7 +259,7 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aclPlugin := data.ToSharedACLPluginInput()
+	aclPlugin := *data.ToSharedACLPluginInput()
 	request := operations.CreateACLPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		ACLPlugin:      aclPlugin,
@@ -369,7 +369,7 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aclPlugin := data.ToSharedACLPluginInput()
+	aclPlugin := *data.ToSharedACLPluginInput()
 	request := operations.UpdateACLPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

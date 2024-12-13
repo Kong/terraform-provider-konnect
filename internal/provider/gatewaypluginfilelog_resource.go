@@ -260,7 +260,7 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	fileLogPlugin := data.ToSharedFileLogPluginInput()
+	fileLogPlugin := *data.ToSharedFileLogPluginInput()
 	request := operations.CreateFilelogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		FileLogPlugin:  fileLogPlugin,
@@ -370,7 +370,7 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	fileLogPlugin := data.ToSharedFileLogPluginInput()
+	fileLogPlugin := *data.ToSharedFileLogPluginInput()
 	request := operations.UpdateFilelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

@@ -9,8 +9,8 @@ import (
 
 type CreateWebsocketsizelimitPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	WebsocketSizeLimitPlugin *shared.WebsocketSizeLimitPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	WebsocketSizeLimitPlugin shared.WebsocketSizeLimitPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateWebsocketsizelimitPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateWebsocketsizelimitPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPluginInput {
+func (o *CreateWebsocketsizelimitPluginRequest) GetWebsocketSizeLimitPlugin() shared.WebsocketSizeLimitPluginInput {
 	if o == nil {
-		return nil
+		return shared.WebsocketSizeLimitPluginInput{}
 	}
 	return o.WebsocketSizeLimitPlugin
 }

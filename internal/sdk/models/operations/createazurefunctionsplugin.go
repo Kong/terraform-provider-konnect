@@ -9,8 +9,8 @@ import (
 
 type CreateAzurefunctionsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AzureFunctionsPlugin *shared.AzureFunctionsPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID       string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AzureFunctionsPlugin shared.AzureFunctionsPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateAzurefunctionsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAzurefunctionsPluginRequest) GetAzureFunctionsPlugin() *shared.AzureFunctionsPluginInput {
+func (o *CreateAzurefunctionsPluginRequest) GetAzureFunctionsPlugin() shared.AzureFunctionsPluginInput {
 	if o == nil {
-		return nil
+		return shared.AzureFunctionsPluginInput{}
 	}
 	return o.AzureFunctionsPlugin
 }

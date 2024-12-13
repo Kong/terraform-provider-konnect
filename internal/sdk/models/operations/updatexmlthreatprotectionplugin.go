@@ -11,8 +11,8 @@ type UpdateXmlthreatprotectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	XMLThreatProtectionPlugin *shared.XMLThreatProtectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID            string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	XMLThreatProtectionPlugin shared.XMLThreatProtectionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateXmlthreatprotectionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateXmlthreatprotectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateXmlthreatprotectionPluginRequest) GetXMLThreatProtectionPlugin() *shared.XMLThreatProtectionPluginInput {
+func (o *UpdateXmlthreatprotectionPluginRequest) GetXMLThreatProtectionPlugin() shared.XMLThreatProtectionPluginInput {
 	if o == nil {
-		return nil
+		return shared.XMLThreatProtectionPluginInput{}
 	}
 	return o.XMLThreatProtectionPlugin
 }

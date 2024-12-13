@@ -417,7 +417,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
 	request := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
@@ -527,7 +527,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
 	request := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

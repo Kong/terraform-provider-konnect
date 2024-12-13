@@ -2104,7 +2104,7 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Create(ctx context.Context
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	konnectApplicationAuthPlugin := data.ToSharedKonnectApplicationAuthPluginInput()
+	konnectApplicationAuthPlugin := *data.ToSharedKonnectApplicationAuthPluginInput()
 	request := operations.CreateKonnectapplicationauthPluginRequest{
 		ControlPlaneID:               controlPlaneID,
 		KonnectApplicationAuthPlugin: konnectApplicationAuthPlugin,
@@ -2214,7 +2214,7 @@ func (r *GatewayPluginKonnectApplicationAuthResource) Update(ctx context.Context
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	konnectApplicationAuthPlugin := data.ToSharedKonnectApplicationAuthPluginInput()
+	konnectApplicationAuthPlugin := *data.ToSharedKonnectApplicationAuthPluginInput()
 	request := operations.UpdateKonnectapplicationauthPluginRequest{
 		PluginID:                     pluginID,
 		ControlPlaneID:               controlPlaneID,

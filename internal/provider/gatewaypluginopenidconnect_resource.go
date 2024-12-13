@@ -1998,7 +1998,7 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	openidConnectPlugin := data.ToSharedOpenidConnectPluginInput()
+	openidConnectPlugin := *data.ToSharedOpenidConnectPluginInput()
 	request := operations.CreateOpenidconnectPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OpenidConnectPlugin: openidConnectPlugin,
@@ -2108,7 +2108,7 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	openidConnectPlugin := data.ToSharedOpenidConnectPluginInput()
+	openidConnectPlugin := *data.ToSharedOpenidConnectPluginInput()
 	request := operations.UpdateOpenidconnectPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

@@ -268,7 +268,7 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTerminationPlugin := data.ToSharedRequestTerminationPluginInput()
+	requestTerminationPlugin := *data.ToSharedRequestTerminationPluginInput()
 	request := operations.CreateRequestterminationPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		RequestTerminationPlugin: requestTerminationPlugin,
@@ -378,7 +378,7 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTerminationPlugin := data.ToSharedRequestTerminationPluginInput()
+	requestTerminationPlugin := *data.ToSharedRequestTerminationPluginInput()
 	request := operations.UpdateRequestterminationPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,

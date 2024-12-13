@@ -21,6 +21,12 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	} else {
 		oidcAuthEnabled = nil
 	}
+	samlAuthEnabled := new(bool)
+	if !r.SamlAuthEnabled.IsUnknown() && !r.SamlAuthEnabled.IsNull() {
+		*samlAuthEnabled = r.SamlAuthEnabled.ValueBool()
+	} else {
+		samlAuthEnabled = nil
+	}
 	oidcTeamMappingEnabled := new(bool)
 	if !r.OidcTeamMappingEnabled.IsUnknown() && !r.OidcTeamMappingEnabled.IsNull() {
 		*oidcTeamMappingEnabled = r.OidcTeamMappingEnabled.ValueBool()
@@ -32,6 +38,12 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 		*konnectMappingEnabled = r.KonnectMappingEnabled.ValueBool()
 	} else {
 		konnectMappingEnabled = nil
+	}
+	idpMappingEnabled := new(bool)
+	if !r.IdpMappingEnabled.IsUnknown() && !r.IdpMappingEnabled.IsNull() {
+		*idpMappingEnabled = r.IdpMappingEnabled.ValueBool()
+	} else {
+		idpMappingEnabled = nil
 	}
 	oidcIssuer := new(string)
 	if !r.OidcIssuer.IsUnknown() && !r.OidcIssuer.IsNull() {
@@ -84,8 +96,10 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	out := shared.PortalAuthenticationSettingsUpdateRequest{
 		BasicAuthEnabled:       basicAuthEnabled,
 		OidcAuthEnabled:        oidcAuthEnabled,
+		SamlAuthEnabled:        samlAuthEnabled,
 		OidcTeamMappingEnabled: oidcTeamMappingEnabled,
 		KonnectMappingEnabled:  konnectMappingEnabled,
+		IdpMappingEnabled:      idpMappingEnabled,
 		OidcIssuer:             oidcIssuer,
 		OidcClientID:           oidcClientID,
 		OidcClientSecret:       oidcClientSecret,
@@ -98,6 +112,7 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(resp *shared.PortalAuthenticationSettingsResponse) {
 	if resp != nil {
 		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
+		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
 		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
 		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
 		if resp.OidcConfig == nil {
@@ -120,5 +135,6 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 			}
 		}
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
+		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
 	}
 }

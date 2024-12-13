@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0
+> Released on 2024/12/06
+
+### Features
+
+* Add support for Portal SAML authentication
+* Added support for Konnect India region
+
 ## 2.1.0
 > Released on 2024/12/06
 

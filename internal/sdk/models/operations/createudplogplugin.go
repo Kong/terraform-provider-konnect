@@ -9,8 +9,8 @@ import (
 
 type CreateUdplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	UDPLogPlugin   *shared.UDPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	UDPLogPlugin   shared.UDPLogPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateUdplogPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateUdplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateUdplogPluginRequest) GetUDPLogPlugin() *shared.UDPLogPluginInput {
+func (o *CreateUdplogPluginRequest) GetUDPLogPlugin() shared.UDPLogPluginInput {
 	if o == nil {
-		return nil
+		return shared.UDPLogPluginInput{}
 	}
 	return o.UDPLogPlugin
 }

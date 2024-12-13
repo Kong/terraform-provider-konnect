@@ -15,6 +15,7 @@ const (
 	ControlPlaneGeoEu ControlPlaneGeo = "eu"
 	ControlPlaneGeoAu ControlPlaneGeo = "au"
 	ControlPlaneGeoMe ControlPlaneGeo = "me"
+	ControlPlaneGeoIn ControlPlaneGeo = "in"
 )
 
 func (e ControlPlaneGeo) ToPointer() *ControlPlaneGeo {
@@ -33,6 +34,8 @@ func (e *ControlPlaneGeo) UnmarshalJSON(data []byte) error {
 	case "au":
 		fallthrough
 	case "me":
+		fallthrough
+	case "in":
 		*e = ControlPlaneGeo(v)
 		return nil
 	default:

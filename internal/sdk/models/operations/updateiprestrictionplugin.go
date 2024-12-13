@@ -11,8 +11,8 @@ type UpdateIprestrictionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	IPRestrictionPlugin *shared.IPRestrictionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	IPRestrictionPlugin shared.IPRestrictionPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateIprestrictionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateIprestrictionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateIprestrictionPluginRequest) GetIPRestrictionPlugin() *shared.IPRestrictionPluginInput {
+func (o *UpdateIprestrictionPluginRequest) GetIPRestrictionPlugin() shared.IPRestrictionPluginInput {
 	if o == nil {
-		return nil
+		return shared.IPRestrictionPluginInput{}
 	}
 	return o.IPRestrictionPlugin
 }

@@ -15,6 +15,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	"regexp"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -76,6 +77,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Description: `The name of the control plane.`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 100),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^[a-z0-9A-Z]{1}.*$`), "must match pattern "+regexp.MustCompile(`^[a-z0-9A-Z]{1}.*$`).String()),
 				},
 			},
 			"updated_at": schema.StringAttribute{

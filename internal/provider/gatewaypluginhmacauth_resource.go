@@ -270,7 +270,7 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	hmacAuthPlugin := data.ToSharedHmacAuthPluginInput()
+	hmacAuthPlugin := *data.ToSharedHmacAuthPluginInput()
 	request := operations.CreateHmacauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		HmacAuthPlugin: hmacAuthPlugin,
@@ -380,7 +380,7 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	hmacAuthPlugin := data.ToSharedHmacAuthPluginInput()
+	hmacAuthPlugin := *data.ToSharedHmacAuthPluginInput()
 	request := operations.UpdateHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

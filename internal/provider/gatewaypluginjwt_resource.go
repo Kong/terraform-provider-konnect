@@ -287,7 +287,7 @@ func (r *GatewayPluginJwtResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtPlugin := data.ToSharedJwtPluginInput()
+	jwtPlugin := *data.ToSharedJwtPluginInput()
 	request := operations.CreateJwtPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		JwtPlugin:      jwtPlugin,
@@ -397,7 +397,7 @@ func (r *GatewayPluginJwtResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtPlugin := data.ToSharedJwtPluginInput()
+	jwtPlugin := *data.ToSharedJwtPluginInput()
 	request := operations.UpdateJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

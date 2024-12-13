@@ -255,7 +255,7 @@ func (r *GatewayPluginIPRestrictionResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ipRestrictionPlugin := data.ToSharedIPRestrictionPluginInput()
+	ipRestrictionPlugin := *data.ToSharedIPRestrictionPluginInput()
 	request := operations.CreateIprestrictionPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		IPRestrictionPlugin: ipRestrictionPlugin,
@@ -365,7 +365,7 @@ func (r *GatewayPluginIPRestrictionResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ipRestrictionPlugin := data.ToSharedIPRestrictionPluginInput()
+	ipRestrictionPlugin := *data.ToSharedIPRestrictionPluginInput()
 	request := operations.UpdateIprestrictionPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

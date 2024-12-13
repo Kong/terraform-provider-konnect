@@ -283,7 +283,7 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	azureFunctionsPlugin := data.ToSharedAzureFunctionsPluginInput()
+	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPluginInput()
 	request := operations.CreateAzurefunctionsPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		AzureFunctionsPlugin: azureFunctionsPlugin,
@@ -393,7 +393,7 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	azureFunctionsPlugin := data.ToSharedAzureFunctionsPluginInput()
+	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPluginInput()
 	request := operations.UpdateAzurefunctionsPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,

@@ -74,13 +74,14 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			},
 			"control_plane_geo": schema.StringAttribute{
 				Required:    true,
-				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me"]`,
+				Description: `Set of control-plane geos supported for deploying cloud-gateways configurations. must be one of ["us", "eu", "au", "me", "in"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"us",
 						"eu",
 						"au",
 						"me",
+						"in",
 					),
 				},
 			},

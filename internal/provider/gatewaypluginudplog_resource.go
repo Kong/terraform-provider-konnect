@@ -264,7 +264,7 @@ func (r *GatewayPluginUDPLogResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	udpLogPlugin := data.ToSharedUDPLogPluginInput()
+	udpLogPlugin := *data.ToSharedUDPLogPluginInput()
 	request := operations.CreateUdplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		UDPLogPlugin:   udpLogPlugin,
@@ -374,7 +374,7 @@ func (r *GatewayPluginUDPLogResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	udpLogPlugin := data.ToSharedUDPLogPluginInput()
+	udpLogPlugin := *data.ToSharedUDPLogPluginInput()
 	request := operations.UpdateUdplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

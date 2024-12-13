@@ -500,7 +500,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlRateLimitingAdvancedPlugin := data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
+	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
 	request := operations.CreateGraphqlratelimitingadvancedPluginRequest{
 		ControlPlaneID:                    controlPlaneID,
 		GraphqlRateLimitingAdvancedPlugin: graphqlRateLimitingAdvancedPlugin,
@@ -610,7 +610,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlRateLimitingAdvancedPlugin := data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
+	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
 	request := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
 		PluginID:                          pluginID,
 		ControlPlaneID:                    controlPlaneID,

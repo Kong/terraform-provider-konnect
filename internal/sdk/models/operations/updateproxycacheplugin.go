@@ -11,8 +11,8 @@ type UpdateProxycachePluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ProxyCachePlugin *shared.ProxyCachePluginInput `request:"mediaType=application/json"`
+	ControlPlaneID   string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ProxyCachePlugin shared.ProxyCachePluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateProxycachePluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateProxycachePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateProxycachePluginRequest) GetProxyCachePlugin() *shared.ProxyCachePluginInput {
+func (o *UpdateProxycachePluginRequest) GetProxyCachePlugin() shared.ProxyCachePluginInput {
 	if o == nil {
-		return nil
+		return shared.ProxyCachePluginInput{}
 	}
 	return o.ProxyCachePlugin
 }

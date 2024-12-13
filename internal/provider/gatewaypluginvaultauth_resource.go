@@ -268,7 +268,7 @@ func (r *GatewayPluginVaultAuthResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vaultAuthPlugin := data.ToSharedVaultAuthPluginInput()
+	vaultAuthPlugin := *data.ToSharedVaultAuthPluginInput()
 	request := operations.CreateVaultauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		VaultAuthPlugin: vaultAuthPlugin,
@@ -378,7 +378,7 @@ func (r *GatewayPluginVaultAuthResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vaultAuthPlugin := data.ToSharedVaultAuthPluginInput()
+	vaultAuthPlugin := *data.ToSharedVaultAuthPluginInput()
 	request := operations.UpdateVaultauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

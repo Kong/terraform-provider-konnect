@@ -9,8 +9,8 @@ import (
 
 type CreateStatsdadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	StatsdAdvancedPlugin *shared.StatsdAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID       string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StatsdAdvancedPlugin shared.StatsdAdvancedPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateStatsdadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateStatsdadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateStatsdadvancedPluginRequest) GetStatsdAdvancedPlugin() *shared.StatsdAdvancedPluginInput {
+func (o *CreateStatsdadvancedPluginRequest) GetStatsdAdvancedPlugin() shared.StatsdAdvancedPluginInput {
 	if o == nil {
-		return nil
+		return shared.StatsdAdvancedPluginInput{}
 	}
 	return o.StatsdAdvancedPlugin
 }

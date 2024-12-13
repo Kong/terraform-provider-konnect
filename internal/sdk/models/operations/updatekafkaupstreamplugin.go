@@ -11,8 +11,8 @@ type UpdateKafkaupstreamPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	KafkaUpstreamPlugin *shared.KafkaUpstreamPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KafkaUpstreamPlugin shared.KafkaUpstreamPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateKafkaupstreamPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateKafkaupstreamPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() *shared.KafkaUpstreamPluginInput {
+func (o *UpdateKafkaupstreamPluginRequest) GetKafkaUpstreamPlugin() shared.KafkaUpstreamPluginInput {
 	if o == nil {
-		return nil
+		return shared.KafkaUpstreamPluginInput{}
 	}
 	return o.KafkaUpstreamPlugin
 }

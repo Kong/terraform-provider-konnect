@@ -308,7 +308,7 @@ func (r *GatewayPluginJqResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jqPlugin := data.ToSharedJqPluginInput()
+	jqPlugin := *data.ToSharedJqPluginInput()
 	request := operations.CreateJqPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		JqPlugin:       jqPlugin,
@@ -418,7 +418,7 @@ func (r *GatewayPluginJqResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jqPlugin := data.ToSharedJqPluginInput()
+	jqPlugin := *data.ToSharedJqPluginInput()
 	request := operations.UpdateJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

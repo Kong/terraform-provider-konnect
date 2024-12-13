@@ -364,7 +364,7 @@ func (r *GatewayPluginHTTPLogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	httpLogPlugin := data.ToSharedHTTPLogPluginInput()
+	httpLogPlugin := *data.ToSharedHTTPLogPluginInput()
 	request := operations.CreateHttplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		HTTPLogPlugin:  httpLogPlugin,
@@ -474,7 +474,7 @@ func (r *GatewayPluginHTTPLogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	httpLogPlugin := data.ToSharedHTTPLogPluginInput()
+	httpLogPlugin := *data.ToSharedHTTPLogPluginInput()
 	request := operations.UpdateHttplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

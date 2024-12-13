@@ -11,6 +11,7 @@ import (
 func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(resp *shared.PortalAuthenticationSettingsResponse) {
 	if resp != nil {
 		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
+		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
 		r.KonnectMappingEnabled = types.BoolValue(resp.KonnectMappingEnabled)
 		r.OidcAuthEnabled = types.BoolValue(resp.OidcAuthEnabled)
 		if resp.OidcConfig == nil {
@@ -33,5 +34,6 @@ func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSetting
 			}
 		}
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
+		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
 	}
 }

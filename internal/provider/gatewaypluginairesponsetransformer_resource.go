@@ -561,7 +561,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Create(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiResponseTransformerPlugin := data.ToSharedAiResponseTransformerPluginInput()
+	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPluginInput()
 	request := operations.CreateAiresponsetransformerPluginRequest{
 		ControlPlaneID:              controlPlaneID,
 		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
@@ -671,7 +671,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Update(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiResponseTransformerPlugin := data.ToSharedAiResponseTransformerPluginInput()
+	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPluginInput()
 	request := operations.UpdateAiresponsetransformerPluginRequest{
 		PluginID:                    pluginID,
 		ControlPlaneID:              controlPlaneID,

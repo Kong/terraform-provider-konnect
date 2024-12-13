@@ -398,7 +398,7 @@ func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
+	awsLambdaPlugin := *data.ToSharedAwsLambdaPluginInput()
 	request := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		AwsLambdaPlugin: awsLambdaPlugin,
@@ -508,7 +508,7 @@ func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	awsLambdaPlugin := data.ToSharedAwsLambdaPluginInput()
+	awsLambdaPlugin := *data.ToSharedAwsLambdaPluginInput()
 	request := operations.UpdateAwslambdaPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

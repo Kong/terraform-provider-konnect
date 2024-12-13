@@ -425,7 +425,7 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opentelemetryPlugin := data.ToSharedOpentelemetryPluginInput()
+	opentelemetryPlugin := *data.ToSharedOpentelemetryPluginInput()
 	request := operations.CreateOpentelemetryPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OpentelemetryPlugin: opentelemetryPlugin,
@@ -535,7 +535,7 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opentelemetryPlugin := data.ToSharedOpentelemetryPluginInput()
+	opentelemetryPlugin := *data.ToSharedOpentelemetryPluginInput()
 	request := operations.UpdateOpentelemetryPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

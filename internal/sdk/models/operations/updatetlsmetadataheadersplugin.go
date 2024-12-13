@@ -11,8 +11,8 @@ type UpdateTlsmetadataheadersPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TLSMetadataHeadersPlugin *shared.TLSMetadataHeadersPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TLSMetadataHeadersPlugin shared.TLSMetadataHeadersPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateTlsmetadataheadersPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPluginInput {
+func (o *UpdateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() shared.TLSMetadataHeadersPluginInput {
 	if o == nil {
-		return nil
+		return shared.TLSMetadataHeadersPluginInput{}
 	}
 	return o.TLSMetadataHeadersPlugin
 }

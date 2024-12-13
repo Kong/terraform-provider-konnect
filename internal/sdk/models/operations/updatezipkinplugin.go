@@ -11,8 +11,8 @@ type UpdateZipkinPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ZipkinPlugin   *shared.ZipkinPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ZipkinPlugin   shared.ZipkinPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateZipkinPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateZipkinPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateZipkinPluginRequest) GetZipkinPlugin() *shared.ZipkinPluginInput {
+func (o *UpdateZipkinPluginRequest) GetZipkinPlugin() shared.ZipkinPluginInput {
 	if o == nil {
-		return nil
+		return shared.ZipkinPluginInput{}
 	}
 	return o.ZipkinPlugin
 }

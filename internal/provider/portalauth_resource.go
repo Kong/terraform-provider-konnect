@@ -31,6 +31,7 @@ type PortalAuthResource struct {
 // PortalAuthResourceModel describes the resource data model.
 type PortalAuthResourceModel struct {
 	BasicAuthEnabled       types.Bool                   `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                   `tfsdk:"idp_mapping_enabled"`
 	KonnectMappingEnabled  types.Bool                   `tfsdk:"konnect_mapping_enabled"`
 	OidcAuthEnabled        types.Bool                   `tfsdk:"oidc_auth_enabled"`
 	OidcClaimMappings      *tfTypes.PortalClaimMappings `tfsdk:"oidc_claim_mappings"`
@@ -41,6 +42,7 @@ type PortalAuthResourceModel struct {
 	OidcScopes             []types.String               `tfsdk:"oidc_scopes"`
 	OidcTeamMappingEnabled types.Bool                   `tfsdk:"oidc_team_mapping_enabled"`
 	PortalID               types.String                 `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                   `tfsdk:"saml_auth_enabled"`
 }
 
 func (r *PortalAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -55,6 +57,11 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Computed:    true,
 				Optional:    true,
 				Description: `The organization has basic auth enabled.`,
+			},
+			"idp_mapping_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -133,6 +140,11 @@ func (r *PortalAuthResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the portal.`,
+			},
+			"saml_auth_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Optional:    true,
+				Description: `The portal has SAML enabled or disabled.`,
 			},
 		},
 	}

@@ -313,7 +313,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2IntrospectionPlugin := data.ToSharedOauth2IntrospectionPluginInput()
+	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPluginInput()
 	request := operations.CreateOauth2introspectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		Oauth2IntrospectionPlugin: oauth2IntrospectionPlugin,
@@ -423,7 +423,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2IntrospectionPlugin := data.ToSharedOauth2IntrospectionPluginInput()
+	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPluginInput()
 	request := operations.UpdateOauth2introspectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,

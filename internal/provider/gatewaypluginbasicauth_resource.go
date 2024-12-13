@@ -248,7 +248,7 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	basicAuthPlugin := data.ToSharedBasicAuthPluginInput()
+	basicAuthPlugin := *data.ToSharedBasicAuthPluginInput()
 	request := operations.CreateBasicauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		BasicAuthPlugin: basicAuthPlugin,
@@ -358,7 +358,7 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	basicAuthPlugin := data.ToSharedBasicAuthPluginInput()
+	basicAuthPlugin := *data.ToSharedBasicAuthPluginInput()
 	request := operations.UpdateBasicauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

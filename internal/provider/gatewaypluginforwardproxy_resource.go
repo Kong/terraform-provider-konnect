@@ -299,7 +299,7 @@ func (r *GatewayPluginForwardProxyResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	forwardProxyPlugin := data.ToSharedForwardProxyPluginInput()
+	forwardProxyPlugin := *data.ToSharedForwardProxyPluginInput()
 	request := operations.CreateForwardproxyPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		ForwardProxyPlugin: forwardProxyPlugin,
@@ -409,7 +409,7 @@ func (r *GatewayPluginForwardProxyResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	forwardProxyPlugin := data.ToSharedForwardProxyPluginInput()
+	forwardProxyPlugin := *data.ToSharedForwardProxyPluginInput()
 	request := operations.UpdateForwardproxyPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

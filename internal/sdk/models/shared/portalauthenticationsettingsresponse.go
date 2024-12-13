@@ -8,8 +8,12 @@ type PortalAuthenticationSettingsResponse struct {
 	BasicAuthEnabled bool `json:"basic_auth_enabled"`
 	// The portal has OIDC enabled or disabled.
 	OidcAuthEnabled bool `json:"oidc_auth_enabled"`
+	// The portal has SAML enabled or disabled.
+	SamlAuthEnabled *bool `json:"saml_auth_enabled,omitempty"`
 	// IdP groups determine the Portal Teams a developer has.
 	OidcTeamMappingEnabled bool `json:"oidc_team_mapping_enabled"`
+	// IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
+	IdpMappingEnabled *bool `json:"idp_mapping_enabled,omitempty"`
 	// A Konnect Identity Admin assigns teams to a developer.
 	KonnectMappingEnabled bool `json:"konnect_mapping_enabled"`
 	// Configuration properties for an OpenID Connect Identity Provider.
@@ -30,11 +34,25 @@ func (o *PortalAuthenticationSettingsResponse) GetOidcAuthEnabled() bool {
 	return o.OidcAuthEnabled
 }
 
+func (o *PortalAuthenticationSettingsResponse) GetSamlAuthEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SamlAuthEnabled
+}
+
 func (o *PortalAuthenticationSettingsResponse) GetOidcTeamMappingEnabled() bool {
 	if o == nil {
 		return false
 	}
 	return o.OidcTeamMappingEnabled
+}
+
+func (o *PortalAuthenticationSettingsResponse) GetIdpMappingEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.IdpMappingEnabled
 }
 
 func (o *PortalAuthenticationSettingsResponse) GetKonnectMappingEnabled() bool {

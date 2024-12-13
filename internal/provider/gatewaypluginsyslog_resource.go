@@ -343,7 +343,7 @@ func (r *GatewayPluginSyslogResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	syslogPlugin := data.ToSharedSyslogPluginInput()
+	syslogPlugin := *data.ToSharedSyslogPluginInput()
 	request := operations.CreateSyslogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SyslogPlugin:   syslogPlugin,
@@ -453,7 +453,7 @@ func (r *GatewayPluginSyslogResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	syslogPlugin := data.ToSharedSyslogPluginInput()
+	syslogPlugin := *data.ToSharedSyslogPluginInput()
 	request := operations.UpdateSyslogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

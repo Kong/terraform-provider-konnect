@@ -350,7 +350,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthAdvancedPlugin := data.ToSharedLdapAuthAdvancedPluginInput()
+	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPluginInput()
 	request := operations.CreateLdapauthadvancedPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		LdapAuthAdvancedPlugin: ldapAuthAdvancedPlugin,
@@ -460,7 +460,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthAdvancedPlugin := data.ToSharedLdapAuthAdvancedPluginInput()
+	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPluginInput()
 	request := operations.UpdateLdapauthadvancedPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

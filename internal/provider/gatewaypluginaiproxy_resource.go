@@ -521,7 +521,7 @@ func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyPlugin := data.ToSharedAiProxyPluginInput()
+	aiProxyPlugin := *data.ToSharedAiProxyPluginInput()
 	request := operations.CreateAiproxyPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		AiProxyPlugin:  aiProxyPlugin,
@@ -631,7 +631,7 @@ func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyPlugin := data.ToSharedAiProxyPluginInput()
+	aiProxyPlugin := *data.ToSharedAiProxyPluginInput()
 	request := operations.UpdateAiproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

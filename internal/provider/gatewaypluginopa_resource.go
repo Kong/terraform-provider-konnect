@@ -299,7 +299,7 @@ func (r *GatewayPluginOpaResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opaPlugin := data.ToSharedOpaPluginInput()
+	opaPlugin := *data.ToSharedOpaPluginInput()
 	request := operations.CreateOpaPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		OpaPlugin:      opaPlugin,
@@ -409,7 +409,7 @@ func (r *GatewayPluginOpaResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opaPlugin := data.ToSharedOpaPluginInput()
+	opaPlugin := *data.ToSharedOpaPluginInput()
 	request := operations.UpdateOpaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

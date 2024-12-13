@@ -9,8 +9,8 @@ import (
 
 type CreateVaultauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	VaultAuthPlugin *shared.VaultAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID  string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	VaultAuthPlugin shared.VaultAuthPluginInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateVaultauthPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateVaultauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateVaultauthPluginRequest) GetVaultAuthPlugin() *shared.VaultAuthPluginInput {
+func (o *CreateVaultauthPluginRequest) GetVaultAuthPlugin() shared.VaultAuthPluginInput {
 	if o == nil {
-		return nil
+		return shared.VaultAuthPluginInput{}
 	}
 	return o.VaultAuthPlugin
 }

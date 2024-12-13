@@ -409,7 +409,7 @@ func (r *GatewayPluginDatadogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogPlugin := data.ToSharedDatadogPluginInput()
+	datadogPlugin := *data.ToSharedDatadogPluginInput()
 	request := operations.CreateDatadogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		DatadogPlugin:  datadogPlugin,
@@ -519,7 +519,7 @@ func (r *GatewayPluginDatadogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogPlugin := data.ToSharedDatadogPluginInput()
+	datadogPlugin := *data.ToSharedDatadogPluginInput()
 	request := operations.UpdateDatadogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
