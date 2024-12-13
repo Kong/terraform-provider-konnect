@@ -30,11 +30,13 @@ type PortalAuthDataSource struct {
 // PortalAuthDataSourceModel describes the data model.
 type PortalAuthDataSourceModel struct {
 	BasicAuthEnabled       types.Bool                `tfsdk:"basic_auth_enabled"`
+	IdpMappingEnabled      types.Bool                `tfsdk:"idp_mapping_enabled"`
 	KonnectMappingEnabled  types.Bool                `tfsdk:"konnect_mapping_enabled"`
 	OidcAuthEnabled        types.Bool                `tfsdk:"oidc_auth_enabled"`
 	OidcConfig             *tfTypes.PortalOIDCConfig `tfsdk:"oidc_config"`
 	OidcTeamMappingEnabled types.Bool                `tfsdk:"oidc_team_mapping_enabled"`
 	PortalID               types.String              `tfsdk:"portal_id"`
+	SamlAuthEnabled        types.Bool                `tfsdk:"saml_auth_enabled"`
 }
 
 // Metadata returns the data source type name.
@@ -51,6 +53,10 @@ func (r *PortalAuthDataSource) Schema(ctx context.Context, req datasource.Schema
 			"basic_auth_enabled": schema.BoolAttribute{
 				Computed:    true,
 				Description: `The portal has basic auth enabled or disabled.`,
+			},
+			"idp_mapping_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.`,
 			},
 			"konnect_mapping_enabled": schema.BoolAttribute{
 				Computed:    true,
@@ -98,6 +104,10 @@ func (r *PortalAuthDataSource) Schema(ctx context.Context, req datasource.Schema
 			"portal_id": schema.StringAttribute{
 				Required:    true,
 				Description: `ID of the portal.`,
+			},
+			"saml_auth_enabled": schema.BoolAttribute{
+				Computed:    true,
+				Description: `The portal has SAML enabled or disabled.`,
 			},
 		},
 	}

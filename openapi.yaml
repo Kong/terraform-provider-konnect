@@ -10995,6 +10995,7 @@ components:
         - eu
         - au
         - me
+        - in
       title: Control-Plane Geo
     GatewayVersion:
       description: Supported gateway version.
@@ -11843,6 +11844,7 @@ components:
           type: string
           example: Test control plane
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -11873,6 +11875,7 @@ components:
           example: Test control plane
           maxLength: 100
           minLength: 1
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -11892,6 +11895,7 @@ components:
           type: string
           example: Test control plane
           maxLength: 100
+          pattern: '^[a-z0-9A-Z]{1}.*$'
         description:
           type: string
           example: A control plane to handle traffic on development environment.
@@ -12716,8 +12720,16 @@ components:
           description: The portal has OIDC enabled or disabled.
           type: boolean
           example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
         oidc_team_mapping_enabled:
           description: IdP groups determine the Portal Teams a developer has.
+          type: boolean
+          example: true
+        idp_mapping_enabled:
+          description: IdP groups determine the Portal Teams a developer has. This will soon replace oidc_team_mapping_enabled.
           type: boolean
           example: true
         konnect_mapping_enabled:
@@ -12761,6 +12773,10 @@ components:
           description: The organization has OIDC disabled.
           type: boolean
           example: false
+        saml_auth_enabled:
+          description: The portal has SAML enabled or disabled.
+          type: boolean
+          example: false
         oidc_team_mapping_enabled:
           description: Whether IdP groups determine the Konnect Portal teams a developer has.
           type: boolean
@@ -12769,6 +12785,10 @@ components:
           description: Whether a Konnect Identity Admin assigns teams to a developer.
           type: boolean
           example: false
+        idp_mapping_enabled:
+          description: Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
+          type: boolean
+          example: true
         oidc_issuer:
           type: string
         oidc_client_id:
@@ -14267,6 +14287,7 @@ components:
             - eu
             - au
             - me
+            - in
             - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
@@ -25978,6 +25999,7 @@ components:
                   - eu
                   - au
                   - me
+                  - in
                   - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:

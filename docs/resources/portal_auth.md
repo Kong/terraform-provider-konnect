@@ -15,6 +15,7 @@ PortalAuth Resource
 ```terraform
 resource "konnect_portal_auth" "my_portalauth" {
   basic_auth_enabled      = true
+  idp_mapping_enabled     = true
   konnect_mapping_enabled = false
   oidc_auth_enabled       = false
   oidc_claim_mappings = {
@@ -30,6 +31,7 @@ resource "konnect_portal_auth" "my_portalauth" {
   ]
   oidc_team_mapping_enabled = true
   portal_id                 = "7767e05c-f054-40cb-8b51-1f99bda85654"
+  saml_auth_enabled         = false
 }
 ```
 
@@ -43,6 +45,7 @@ resource "konnect_portal_auth" "my_portalauth" {
 ### Optional
 
 - `basic_auth_enabled` (Boolean) The organization has basic auth enabled.
+- `idp_mapping_enabled` (Boolean) Whether IdP groups determine the Konnect Portal teams a developer has. This will soon replace oidc_team_mapping_enabled.
 - `konnect_mapping_enabled` (Boolean) Whether a Konnect Identity Admin assigns teams to a developer.
 - `oidc_auth_enabled` (Boolean) The organization has OIDC disabled.
 - `oidc_claim_mappings` (Attributes) Mappings from a portal developer atribute to an Identity Provider claim. (see [below for nested schema](#nestedatt--oidc_claim_mappings))
@@ -51,6 +54,7 @@ resource "konnect_portal_auth" "my_portalauth" {
 - `oidc_issuer` (String)
 - `oidc_scopes` (List of String)
 - `oidc_team_mapping_enabled` (Boolean) Whether IdP groups determine the Konnect Portal teams a developer has.
+- `saml_auth_enabled` (Boolean) The portal has SAML enabled or disabled.
 
 ### Read-Only
 
