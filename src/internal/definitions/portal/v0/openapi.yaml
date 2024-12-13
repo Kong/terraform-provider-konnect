@@ -8,17 +8,32 @@ info:
       url: 'https://konghq.com'
 tags:
   - name: portal
+  - name: App Auth Strategies
 servers:
   - url: 'http://konnect-api.konnect.svc.cluster.local:300/v0'
     description: Konnect cluster
 paths:
+  /internal/application-auth-strategies/{authStrategyId}:
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/AuthStrategyId'
+    get:
+      summary: retrieve an auth strategy
+      description: Returns a raw database representation of the auth strategy.
+      operationId: get-authstrat
+      tags:
+        - App Auth Strategies
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAuthStrat'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
   /internal/portals/{portalId}:
     parameters:
       - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/PortalId'
     get:
       summary: retrieve a portal
       description: Returns a raw database representation of the portal.
-      operationId: put-portal
+      operationId: get-portal
       tags:
         - portal
       responses:
@@ -34,6 +49,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Portal'
+    GetAuthStrat:
+      description: A raw database auth strategy
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthStrategy'
   schemas:
     Portal:
       additionalProperties: true
@@ -88,9 +109,15 @@ components:
           type: string
         default_application_auth_strategy:
           $ref: '#/components/schemas/NullableAuthStrategy'
+    AuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseAuthStrategy'
     NullableAuthStrategy:
-      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseAuthStrategy'
       nullable: true
+    BaseAuthStrategy:
+      type: object
       required:
         - id
         - name

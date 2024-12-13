@@ -10,11 +10,25 @@ servers:
   - url: 'http://konnect-api.konnect.svc.cluster.local:300/v0'
     description: Konnect cluster
 paths:
+  '/internal/application-auth-strategies/{authStrategyId}':
+    parameters:
+      - $ref: '#/components/parameters/AuthStrategyId'
+    get:
+      operationId: get-authstrat
+      summary: retrieve an auth strategy
+      description: Returns a raw database representation of the auth strategy.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAuthStrat'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - App Auth Strategies
   '/internal/portals/{portalId}':
     parameters:
       - $ref: '#/components/parameters/PortalId'
     get:
-      operationId: put-portal
+      operationId: get-portal
       summary: retrieve a portal
       description: Returns a raw database representation of the portal.
       responses:
@@ -26,6 +40,15 @@ paths:
         - portal
 components:
   parameters:
+    AuthStrategyId:
+      name: authStrategyId
+      description: ID of the auth strategy to use for the application
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
     PortalId:
       schema:
         type: string
@@ -88,7 +111,14 @@ components:
         - uri
         - labels
         - version
+    AuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseAuthStrategy'
     NullableAuthStrategy:
+      allOf:
+        - $ref: '#/components/schemas/BaseAuthStrategy'
+      nullable: true
+    BaseAuthStrategy:
       type: object
       properties:
         id:
@@ -106,7 +136,6 @@ components:
           $ref: '#/components/schemas/Labels'
         dcr_provider:
           $ref: '#/components/schemas/NullableDcrProvider'
-      nullable: true
       required:
         - id
         - name
@@ -139,10 +168,6 @@ components:
         - issuer
         - dcr_config
         - labels
-    PortalCustomization:
-      type: object
-      additionalProperties: true
-      title: PortalCustomization
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
@@ -215,6 +240,10 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
+    PortalCustomization:
+      type: object
+      additionalProperties: true
+      title: PortalCustomization
   examples:
     NotFoundExample:
       value:
@@ -229,6 +258,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Portal'
+    GetAuthStrat:
+      description: A raw database auth strategy
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthStrategy'
     NotFound:
       description: Not Found
       content:
@@ -240,3 +275,4 @@ components:
               $ref: '#/components/examples/NotFoundExample'
 tags:
   - name: portal
+  - name: App Auth Strategies
