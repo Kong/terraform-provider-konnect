@@ -3530,8 +3530,8 @@ components:
         type: string
       x-speakeasy-name-override: consumer_group_id
     ConsumerId:
-      description: The UUID of the consumer.
-      example: 123e4567-e89b-12d3-a456-426614174000
+      description: ID of the Consumer to lookup
+      example: c1059869-6fa7-4329-a5f5-5946d14ca2c5
       in: path
       name: ConsumerId
       required: true
@@ -3598,6 +3598,14 @@ components:
       example: ''
       in: path
       name: MTLSAuthId
+      required: true
+      schema:
+        type: string
+    OidcJwkId:
+      description: ID of the OIDC JWK to lookup
+      example: ''
+      in: path
+      name: OidcJwkId
       required: true
       schema:
         type: string
@@ -4443,6 +4451,24 @@ components:
       additionalProperties: false
       required:
         - subject_name
+    OidcJwk:
+      type: object
+      properties:
+        id:
+          type: string
+          default: c3cfba2d-1617-453f-a416-52e6edb5f9a0
+          nullable: true
+        jwks:
+          type: object
+          nullable: true
+          properties:
+            keys:
+              type: array
+              items:
+                properties:
+                  '': {}
+                type: object
+      additionalProperties: false
     PaginationNextResponse:
       description: URI to the next page (may be null)
       type: string
@@ -5756,6 +5782,7 @@ tags:
   - name: HMAC-auth credentials
   - name: MTLS-auth credentials
   - name: ACLs
+  - name: OIDC JWKs
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
   url: 'https://docs.konghq.com'
