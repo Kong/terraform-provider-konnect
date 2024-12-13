@@ -906,10 +906,9 @@ components:
                 items:
                   x-flatten-allOf: true
                   allOf:
-                    - $ref: "#/components/schemas/ApiSpec"
+                    - $ref: "#/components/schemas/ApiSpecSummary"
                     - required:
                         - id
-                        - content
                         - type
                         - created_at
                         - updated_at
@@ -1121,7 +1120,31 @@ components:
           $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
         updated_at:
           $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
+    ApiSpecSummary:
+      title: API Specification Summary
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+          description: The API specification identifier.
+          readOnly: true
+        type:
+          type: string
+          example: oas3
+          description: |
+            The type of specification being stored. This allows us to render the specification correctly.
 
+            If this field is not set, it will be autodetected from `content`
+          enum:
+            - oas3
+            - asyncapi
+        created_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/properties.yaml#/components/schemas/UpdatedAt"
     ################################
     ## API Publication
     ################################
@@ -1265,7 +1288,6 @@ components:
       value:
         data:
           - id: 7710d5c4-d902-410b-992f-18b814155b53
-            content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}"
             type: 'oas3'
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z

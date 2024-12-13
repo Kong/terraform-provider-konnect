@@ -1457,7 +1457,6 @@ components:
       value:
         data:
           - id: 7710d5c4-d902-410b-992f-18b814155b53
-            content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
             type: oas3
             created_at: '2023-01-01T00:00:00.000Z'
             updated_at: '2023-01-01T00:00:00.000Z'
@@ -2186,7 +2185,7 @@ components:
               data:
                 type: array
                 items:
-                  title: API Specification
+                  title: API Specification Summary
                   type: object
                   additionalProperties: false
                   properties:
@@ -2196,11 +2195,6 @@ components:
                       format: uuid
                       example: 7710d5c4-d902-410b-992f-18b814155b53
                       readOnly: true
-                    content:
-                      description: |
-                        The raw content of your API specification.
-                      example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
-                      type: string
                     type:
                       description: |
                         The type of specification being stored. This allows us to render the specification correctly.
@@ -2217,7 +2211,6 @@ components:
                       $ref: '#/components/schemas/UpdatedAt'
                   required:
                     - id
-                    - content
                     - type
                     - created_at
                     - updated_at
