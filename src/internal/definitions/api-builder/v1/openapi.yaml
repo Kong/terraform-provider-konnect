@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal API-Builder v1
     description: Internal api for api builder to allow updating of entities in api-builder db. 
-    version: '1.0.3'
+    version: '1.0.4'
     contact:
       name: Kong
       url: 'https://konghq.com'
@@ -11,7 +11,7 @@ tags:
   - name: DCR Providers
   - name: App Auth Strategies
 servers:
-  - url: 'http://apibuilder.apibuilder.svc.cluster.local:4400/v1'
+  - url: 'builder.apibuilder.svc.cluster.local:3000/v1'
     description: Konnect cluster
 paths:
   /internal/portals/{portalId}:
