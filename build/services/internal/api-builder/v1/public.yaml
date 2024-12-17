@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Internal API-Builder v1
   description: Internal api for api builder to allow updating of entities in api-builder db.
-  version: 1.0.4
+  version: 1.0.5
   contact:
     name: Kong
     url: 'https://konghq.com'
@@ -161,16 +161,21 @@ components:
           type: string
         custom_domain:
           type: string
+          nullable: true
         is_domain_verified:
           type: boolean
         logo:
           type: string
+          nullable: true
         logo_filename:
           type: string
+          nullable: true
         favicon:
           type: string
+          nullable: true
         favicon_filename:
           type: string
+          nullable: true
         is_public:
           type: boolean
         auto_approve_developers:
@@ -182,14 +187,18 @@ components:
         config:
           type: object
           additionalProperties: true
+          nullable: true
         version:
           type: string
         customization:
-          $ref: '#/components/schemas/PortalCustomization'
+          type: object
+          additionalProperties: true
+          nullable: true
         labels:
           $ref: '#/components/schemas/Labels'
         description:
           type: string
+          nullable: true
         default_application_auth_strategy:
           $ref: '#/components/schemas/NullableAuthStrategy'
       additionalProperties: true
@@ -199,7 +208,6 @@ components:
         - name
         - uri
         - labels
-        - version
     NullableAuthStrategy:
       type: object
       properties:
@@ -560,10 +568,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/AppAuthStrategy'
       title: UpdateAppAuthStrategyResponse
-    PortalCustomization:
-      type: object
-      additionalProperties: true
-      title: PortalCustomization
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
     title: Internal API-Builder v1
     description: Internal api for api builder to allow updating of entities in api-builder db. 
-    version: '1.0.4'
+    version: '1.0.5'
     contact:
       name: Kong
       url: 'https://konghq.com'
@@ -176,7 +176,6 @@ components:
         - name
         - uri
         - labels
-        - version
       properties:
         id:
           type: string
@@ -189,16 +188,21 @@ components:
           type: string
         custom_domain:
           type: string
+          nullable: true
         is_domain_verified:
           type: boolean
         logo:
           type: string
+          nullable: true
         logo_filename:
           type: string
+          nullable: true
         favicon:
           type: string
+          nullable: true
         favicon_filename:
           type: string
+          nullable: true
         is_public:
           type: boolean
         auto_approve_developers:
@@ -209,15 +213,19 @@ components:
           type: boolean
         config:
           type: object
+          nullable: true
           additionalProperties: true
         version:
           type: string
         customization:
-          $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomization'
+          type: object
+          nullable: true
+          additionalProperties: true
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         description:
           type: string
+          nullable: true
         default_application_auth_strategy:
           $ref: '#/components/schemas/NullableAuthStrategy'
     NullableAuthStrategy:
