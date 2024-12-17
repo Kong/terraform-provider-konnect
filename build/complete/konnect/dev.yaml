@@ -3140,75 +3140,6 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Auth Settings
-  '/v3/portal/{portalId}/snippets':
-    get:
-      operationId: list-portal-snippets
-      summary: List Portal snippets
-      description: Returns the paginated list of custom snippets that have been created for this portal.
-      parameters:
-        - $ref: '#/components/parameters/SortPortalSnippets'
-        - $ref: '#/components/parameters/PortalId'
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - name: filter
-          in: query
-          description: Filter snippets returned in the response.
-          required: false
-          schema:
-            $ref: '#/components/schemas/PortalSnippetsFilters'
-          style: deepObject
-      responses:
-        '200':
-          $ref: '#/components/responses/ListPortalSnippets'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ListPortalSnippetsBadRequestExample1:
-                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample1'
-                ListPortalSnippetsBadRequestExample2:
-                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Snippets
-    post:
-      operationId: create-portal-snippet
-      summary: Create Portal Snippet
-      description: 'Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.'
-      parameters:
-        - $ref: '#/components/parameters/PortalId'
-      requestBody:
-        $ref: '#/components/requestBodies/CreatePortalSnippet'
-      responses:
-        '201':
-          $ref: '#/components/responses/PortalSnippet'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                UpdatePortalPageBadRequestExample1:
-                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample1'
-                UpdatePortalSnippetBadRequestExample2:
-                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample2'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      tags:
-        - Portal Snippets
   '/v3/portals/{portalId}/default-content':
     post:
       operationId: create-default-content
@@ -3364,6 +3295,75 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Pages
+  '/v3/portals/{portalId}/snippets':
+    get:
+      operationId: list-portal-snippets
+      summary: List Portal snippets
+      description: Returns the paginated list of custom snippets that have been created for this portal.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '#/components/parameters/PortalId'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - name: filter
+          in: query
+          description: Filter snippets returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalSnippetsFilters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippets'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalSnippetsBadRequestExample1:
+                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample1'
+                ListPortalSnippetsBadRequestExample2:
+                  $ref: '#/components/examples/ListPortalSnippetsBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
+    post:
+      operationId: create-portal-snippet
+      summary: Create Portal Snippet
+      description: 'Creates a new custom snippet for this portal. Custom snippets can be used to display static content, documentation, or other information to developers.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalSnippet'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalSnippet'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalPageBadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample1'
+                UpdatePortalSnippetBadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalSnippetBadRequestExample2'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Snippets
   '/v3/portals/{portalId}/snippets/{snippetId}':
     get:
       operationId: get-portal-snippet

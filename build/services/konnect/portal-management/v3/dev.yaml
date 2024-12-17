@@ -153,7 +153,7 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Pages
-  '/portal/{portalId}/snippets':
+  '/portals/{portalId}/snippets':
     get:
       operationId: list-portal-snippets
       summary: List Portal snippets
