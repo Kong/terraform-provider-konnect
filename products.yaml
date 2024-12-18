@@ -3,6 +3,7 @@ products:
     match:
       - "konnect/definitions/**/openapi.yaml"
     notMatch:
+      - "konnect/definitions/portal-management/v3/openapi.yaml"
       - "konnect/definitions/identity/v2/openapi.yaml"
       - "konnect/definitions/cloud-gateways/v3/openapi.yaml"
       - "konnect/definitions/runtime-groups/v2/openapi.yaml"
@@ -10,7 +11,12 @@ products:
 
   portal:
     match:
-      - "portal/definitions/**/openapi.yaml"
+      - "portal/definitions/**/v2/openapi.yaml"
+    notMatch: []
+
+  portalv3:
+    match:
+      - "portal/definitions/**/v3/openapi.yaml"
     notMatch: []
 
   internal:

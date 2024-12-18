@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Portal Management
+  title: Portal Management V3
   version: 3.0.0
   description: The management API for Portals
   contact:
@@ -13,7 +13,327 @@ servers:
     description: EU Region Base URL
   - url: https://au.api.konghq.com/v3
     description: AU Region Base URL
+  - url: https://me.api.konghq.com/v3
+    description: ME Region Base URL
 paths:
+  /portals:
+    get:
+      summary: List V3 Portals
+      description: >-
+        Lists developer portals defined in this region for this organization.
+        Each developer portal is available at a unique address and has isolated
+        configuration, customization, developers, and applications.
+      operationId: list-portals
+      tags:
+        - V3 Portals
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
+        - $ref: >-
+            ../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber
+        - $ref: '#/components/parameters/SortPortalsV3'
+        - in: query
+          name: filter
+          description: Filter portals returned in the response.
+          required: false
+          style: deepObject
+          schema:
+            $ref: '#/components/schemas/PortalFilterParameters'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalsResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ListPortalsV3BadRequestExample1:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample1'
+                ListPortalsV3BadRequestExample2:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample2'
+                ListPortalsV3BadRequestExample3:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample3'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+    post:
+      summary: Create V3 Portal
+      description: >-
+        Creates a new developer portal scoped in this region for this organization.
+      operationId: create-portal
+      tags:
+        - V3 Portals
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalV3'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                UpdatePortalV3BadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample1'
+                UpdatePortalV3BadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample2'
+                UpdatePortalV3BadRequestExample3:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample3'
+                UpdatePortalV3BadRequestExample4:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample4'
+                UpdatePortalV3BadRequestExample5:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample5'
+                UpdatePortalV3BadRequestExample6:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample6'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+  /portals/{portalId}:
+    parameters:
+      - name: portalId
+        in: path
+        schema:
+          type: string
+          format: uuid
+        required: true
+        description: ID of the portal.
+    get:
+      summary: Get V3 Portal
+      description: >-
+        Returns the configuration for a single developer portal. This allows you
+        to understand the current visibility, access, and domain settings.
+      operationId: get-portal
+      tags:
+        - V3 Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponseV3'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    patch:
+      summary: Update V3 Portal
+      description: >-
+        Updates the configuration for a single portal including the visibility,
+        access, and custom domain settings.
+      operationId: update-portal
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalV3'
+      tags:
+        - V3 Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                UpdatePortalV3BadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample1'
+                UpdatePortalV3BadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample2'
+                UpdatePortalV3BadRequestExample3:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample3'
+                UpdatePortalV3BadRequestExample4:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample4'
+                UpdatePortalV3BadRequestExample5:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample5'
+                UpdatePortalV3BadRequestExample6:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample6'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+        '409':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Conflict
+    delete:
+      summary: Delete Portal
+      description: >-
+        Deletes a single portal, along with all related entities.
+      operationId: delete-portal
+      tags:
+        - V3 Portals
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/verify-domain:
+    post:
+      summary: Verify Custom Domain
+      description: >-
+        Verifies the current status of the custom hosted domain for this portal,
+        indicating whether the appropriate CNAME properties have propagated and
+        if a corresponding SSL certificate has been generated.
+      operationId: verify-portal-domain
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - V3 Portals
+      responses:
+        '200':
+          $ref: '#/components/responses/VerifyPortalDomainResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                VerifyPortalDomainBadRequestExample1:
+                  $ref: '#/components/examples/VerifyPortalDomainBadRequestExample1'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+  /portals/{portalId}/assets/logo:
+    parameters:
+      - $ref: >-
+          ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+    get:
+      x-unstable: true
+      x-internal: true
+      summary: Get Portal Logo
+      description: >-
+        Returns the logo of the portal.
+      operationId: get-portal-asset-logo
+      tags:
+        - V3 Portal Assets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponseV3'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+    put:
+      x-unstable: true
+      x-internal: true
+      summary: Replace Portal Logo
+      description: >-
+        Replaces the logo of the portal.
+      operationId: replace-portal-asset-logo
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAssetV3'
+      tags:
+        - V3 Portal Assets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: >-
+                    #/components/examples/ReplacePortalImageAssetV3BadRequestExample1
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+  /portals/{portalId}/assets/favicon:
+    parameters:
+      - $ref: >-
+          ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+    get:
+      x-unstable: true
+      x-internal: true
+      summary: Get Portal Favicon
+      description: >-
+        Returns the favicon of the portal.
+      operationId: get-portal-asset-favicon
+      tags:
+        - V3 Portal Assets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponseV3'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+    put:
+      x-unstable: true
+      x-internal: true
+      summary: Replace Portal Favicon
+      description: >-
+        Replaces the favicon of the portal. The favicon is used in the browser tab of the portal.
+      operationId: replace-portal-asset-favicon
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalImageAssetV3'
+      tags:
+        - V3 Portal Assets
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalAssetResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: >-
+                    #/components/examples/ReplacePortalImageAssetV3BadRequestExample1
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
   /portals/{portalId}/pages:
     get:
       x-internal: true
@@ -36,9 +356,9 @@ paths:
           required: false
           style: deepObject
           schema:
-            $ref: '#/components/schemas/PortalPagesFilters'
+            $ref: '#/components/schemas/PortalPagesFilterParameters'
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPages'
@@ -79,7 +399,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '201':
           $ref: '#/components/responses/PortalPage'
@@ -122,7 +442,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PageId
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '200':
           $ref: '#/components/responses/PortalPage'
@@ -150,7 +470,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PageId
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '200':
           $ref: '#/components/responses/PortalPage'
@@ -190,7 +510,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PageId
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '204':
           description: No Content
@@ -225,9 +545,9 @@ paths:
           required: false
           style: deepObject
           schema:
-            $ref: '#/components/schemas/PortalSnippetsFilters'
+            $ref: '#/components/schemas/PortalSnippetsFilterParameters'
       tags:
-        - Portal Snippets
+        - V3 Portal Snippets
       responses:
         '200':
           $ref: '#/components/responses/ListPortalSnippets'
@@ -268,7 +588,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
       tags:
-        - Portal Snippets
+        - V3 Portal Snippets
       responses:
         '201':
           $ref: '#/components/responses/PortalSnippet'
@@ -311,7 +631,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/SnippetId
       tags:
-        - Portal Snippets
+        - V3 Portal Snippets
       responses:
         '200':
           $ref: '#/components/responses/PortalSnippet'
@@ -339,7 +659,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/SnippetId
       tags:
-        - Portal Snippets
+        - V3 Portal Snippets
       responses:
         '200':
           $ref: '#/components/responses/PortalSnippet'
@@ -379,7 +699,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/SnippetId
       tags:
-        - Portal Snippets
+        - V3 Portal Snippets
       responses:
         '204':
           description: No Content
@@ -404,7 +724,7 @@ paths:
         - $ref: >-
             ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
       tags:
-        - Portal Pages
+        - V3 Portal Pages
       responses:
         '201':
           $ref: '#/components/responses/DefaultContentResponse'
@@ -417,11 +737,231 @@ paths:
         '404':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
-
-
-
 components:
   examples:
+    PortalV3Example1:
+      value:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        display_name: Developer Portal A
+        description: The Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        authentication_enabled: false
+        rbac_enabled: true
+        default_api_visibility: private
+        default_page_visibility: private
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+    UpdatePortalV3ExampleRbacEnabled:
+      value:
+        authentication_enabled: true
+        rbac_enabled: true
+    UpdatePortalV3ExampleAuthenticationDisabled:
+      value:
+        authentication_enabled: false
+    UpdatePortalV3ExampleAutoApprove:
+      value:
+        auto_approve_applications: true
+        auto_approve_developers: true
+    UpdatePortalV3ExampleCustomDomain:
+      value:
+        custom_domain: api.example.com
+    UpdatePortalV3Example1:
+      value:
+        authentication_enabled: false
+        rbac_enabled: false
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+    CreatePortalV3ExampleRbacEnabled:
+      value:
+        name: MyDevPortal
+        authentication_enabled: true
+        rbac_enabled: true
+    CreatePortalV3ExampleAuthenticationDisabled:
+      value:
+        name: MyDevPortal
+        authentication_enabled: false
+    CreatePortalV3ExampleAutoApprove:
+      value:
+        name: MyDevPortal
+        auto_approve_applications: true
+        auto_approve_developers: true
+    CreatePortalV3ExampleCustomDomain:
+      value:
+        name: MyDevPortal
+        custom_domain: api.example.com
+    CreatePortalV3Example1:
+      value:
+        name: MyDevPortal
+        authentication_enabled: true
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+    ListPortalsV3Example1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            display_name: Developer Portal A
+            description: The Portal A
+            authentication_enabled: false
+            rbac_enabled: true
+            default_api_visibility: private
+            default_page_visibility: private
+            default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            auto_approve_applications: false
+            auto_approve_developers: true
+            default_domain: 123455678abcd.us.portal.konghq.com
+            custom_domain: api.example.com
+    ListPortalsV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[size]
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalsV3BadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: page[number]
+            rule: is_number
+            reason: '"page[number]" must be a number'
+            source: query
+    ListPortalsV3BadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - created_at
+              - updated_at
+            reason: must be one of [created_at, updated_at]
+            source: query
+    UpdatePortalV3BadRequestExample1:
+      summary: Unknown property
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalV3BadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: authentication_enabled
+            rule: is_boolean
+            reason: value of "authentication_enabled" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: rbac_enabled
+            rule: is_boolean
+            reason: value of "rbac_enabled" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample4:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_applications
+            rule: is_boolean
+            reason: value of "auto_approve_applications" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample5:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_developers
+            rule: is_boolean
+            reason: value of "auto_approve_developers" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample6:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_domain
+            rule: max_length
+            reason: value of "custom_domain" must not exceed 1024 characters
+            source: body
+            maximum: 1024
+    VerifyPortalDomainBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_domain
+            reason: portal needs a custom_domain to be verified
+    VerifyPortalDomainV3Example1:
+      value:
+        is_cname_verified: true
+        is_ssl_issued: false
+    PortalAssetResponseV3ExamplePNG:
+      value: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+    PortalAssetResponseV3ExampleJPEG:
+      value: 'data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
+    ReplacePortalImageAssetV3Example1:
+      value:
+        data: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+        filename: logo.png
+    ReplacePortalImageAssetV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: data
+            rule: required
+            reason: 'data is required'
+            source: body
     CreatePortalPageExample1:
       value:
         title: Getting Started
@@ -607,6 +1147,64 @@ components:
             maximum: 512
 
   requestBodies:
+    CreatePortalV3:
+      description: Create a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/PortalV3'
+              - required:
+                - name
+                properties:
+                  labels:
+                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate"
+          examples:
+            Example 1:
+              $ref: '#/components/examples/CreatePortalV3Example1'
+            Authentication Disabled:
+              $ref: '#/components/examples/CreatePortalV3ExampleAuthenticationDisabled'
+            Enable RBAC:
+              $ref: '#/components/examples/CreatePortalV3ExampleRbacEnabled'
+            Auto Approve Settings:
+              $ref: '#/components/examples/CreatePortalV3ExampleAutoApprove'
+            Custom Domains:
+              $ref: '#/components/examples/CreatePortalV3ExampleCustomDomain'
+    UpdatePortalV3:
+      description: Update a portal's settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/PortalV3'
+              - properties:
+                  labels:
+                    $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/LabelsUpdate"
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalV3Example1'
+            Authentication Disabled:
+              $ref: '#/components/examples/UpdatePortalV3ExampleAuthenticationDisabled'
+            Enable RBAC:
+              $ref: '#/components/examples/UpdatePortalV3ExampleRbacEnabled'
+            Auto Approve Settings:
+              $ref: '#/components/examples/UpdatePortalV3ExampleAutoApprove'
+            Custom Domains:
+              $ref: '#/components/examples/UpdatePortalV3ExampleCustomDomain'
+    ReplacePortalImageAssetV3:
+      description: Update an image asset for the portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReplacePortalImageAssetV3'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ReplacePortalImageAssetV3Example1'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -649,6 +1247,24 @@ components:
               $ref: '#/components/examples/UpdatePortalSnippetExample1'
 
   parameters:
+    SortPortalsV3:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - authentication_enabled
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - custom_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
     SortPortalPages:
       name: 'sort'
       description: |
@@ -676,6 +1292,106 @@ components:
       schema:
         type: string
   responses:
+    ListPortalsResponseV3:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  x-flatten-allOf: true
+                  allOf:
+                    - $ref: '#/components/schemas/PortalV3'
+                    - required:
+                      - id
+                      - name
+                      - display_name
+                      - description
+                      - authentication_enabled
+                      - rbac_enabled
+                      - default_api_visibility
+                      - default_page_visibility
+                      - default_application_auth_strategy_id
+                      - auto_approve_applications
+                      - auto_approve_developers
+                      - default_domain
+                      - custom_domain
+              meta:
+                $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ListPortalsV3Example1'
+    PortalResponseV3:
+      description: Details about a portal.
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: '#/components/schemas/PortalV3'
+              - required:
+                - id
+                - name
+                - display_name
+                - description
+                - authentication_enabled
+                - rbac_enabled
+                - default_api_visibility
+                - default_page_visibility
+                - default_application_auth_strategy_id
+                - auto_approve_applications
+                - auto_approve_developers
+                - default_domain
+                - custom_domain
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalV3Example1'
+    VerifyPortalDomainResponseV3:
+      description: Details about the status of a portal's custom domain.
+      content:
+        application/json:
+          schema:
+            title: VerifyPortalDomainResponseV3
+            additionalProperties: false
+            description: Details about the current status of a custom domain.
+            type: object
+            required:
+              - is_cname_verified
+              - is_ssl_issued
+            properties:
+              is_cname_verified:
+                type: boolean
+                readOnly: true
+              is_ssl_issued:
+                type: boolean
+                readOnly: true
+            example:
+              $ref: '#/components/examples/VerifyPortalDomainV3Example1/value'
+          examples:
+            Example 1:
+              $ref: '#/components/examples/VerifyPortalDomainV3Example1'
+    PortalAssetResponseV3:
+      description: Logo of the portal. Can be either png or jpeg
+      content:
+        image/png:
+          schema:
+            $ref: '#/components/schemas/PortalImageAssetV3'
+          examples:
+            PNG Example:
+              $ref: '#/components/examples/PortalAssetResponseV3ExamplePNG'
+        image/jpeg:
+          schema:
+            $ref: '#/components/schemas/PortalImageAssetV3'
+          examples:
+            JPEG Example:
+              $ref: '#/components/examples/PortalAssetResponseV3ExampleJPEG'
     DefaultContentResponse:
       description: Summary of created default content
       content:
@@ -723,40 +1439,148 @@ components:
               $ref: '#/components/examples/ListPortalSnippetsExample1'
 
   schemas:
-    PortalPagesFilters:
-      title: PortalPagesFilters
+    ################################
+    ## Portal
+    ################################
+
+    PortalV3:
+      title: PortalV3
       type: object
       additionalProperties: false
       properties:
         id:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
-        path:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
-        title:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
-        public:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID'
         created_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt'
         updated_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
-    PortalSnippetsFilters:
-      title: PortalSnippetsFilters
-      type: object
-      additionalProperties: false
-      properties:
-        id:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt'
         name:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
-        title:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
-        public:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
-        created_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
-        updated_at:
-          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >-
+            The name of the portal, used to distinguish it from other portals.
+            Name must be unique.
+        display_name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          description: >-
+            The display name of the portal. This value will be the portal's
+            `name` in Portal API.
+        description:
+          type: string
+          nullable: true
+          maxLength: 512
+          description: >-
+            A description of the portal.
+        authentication_enabled:
+          type: boolean
+          description: >-
+            Whether the portal supports developer authentication. If disabled,
+            developers cannot register for accounts or create applications.
+          default: true
+        rbac_enabled:
+          type: boolean
+          description: >-
+            Whether the portal resources are protected by Role Based Access
+            Control (RBAC). If enabled, developers view or register for products
+            until unless assigned to teams with access to view and consume
+            specific products. Authentication must be enabled to use RBAC.
+          default: false
+        default_api_visibility:
+          type: string
+          description: >-
+            The default visibility of APIs in the portal. If set to `public`,
+            newly published APIs are visible to unauthenticated developers. If set to
+            `private`, newly published APIs are hidden from unauthenticated
+            developers.
+          enum:
+            - public
+            - private
+        default_page_visibility:
+          type: string
+          description: >-
+            The default visibility of pages in the portal. If set to `public`,
+            newly created pages are visible to unauthenticated developers. If set
+            to `private`, newly created pages are hidden from unauthenticated
+            developers.
+          enum:
+            - public
+            - private
+        default_application_auth_strategy_id:
+          type: string
+          format: uuid
+          description: >-
+            The default authentication strategy for APIs published to the portal.
+            Newly published APIs will use this authentication strategy unless
+            overridden during publication. If set to `null`, API publications
+            will not use an authentication strategy unless set during publication.
+          nullable: true
+        auto_approve_developers:
+          type: boolean
+          description: >-
+            Whether developer account registrations will be automatically
+            approved, or if they will be set to pending until approved by an
+            admin.
+          default: false
+        auto_approve_applications:
+          type: boolean
+          description: >-
+            Whether requests from applications to register for products will
+            be automatically approved, or if they will be set to pending until
+            approved by an admin.
+          default: false
+        default_domain:
+          description: >-
+            The domain assigned to the portal by Konnect. This is the default
+            place to access the portal and its API if not using a
+            `custom_domain``.
+          type: string
+          format: hostname
+          readOnly: true
+        custom_domain:
+          type: string
+          format: hostname
+          nullable: true
+          description: >-
+            The custom domain to access the developer portal. A CNAME for the portal's default domain
+            must be able to be set for the custom domain for it to be valid. After setting a valid CNAME,
+            an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will
+            be able to use the custom domain to route to the portal's web client and API.
+        labels:
+          $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+
+    PortalImageAssetV3:
+      title: PortalImageAssetV3
+      type: string
+      format: binary
+      example: data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+
+    ReplacePortalImageAssetV3:
+      title: ReplacePortalImageAssetV3
+      description: >-
+        The image data to upload, along with an optional filename. Images must be a data URL with binary image data in base 64 format.
+        See https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URLs.
+      type: object
+      additionalProperties: false
+      nullable: true
+      required:
+        - data
+      properties:
+        data:
+          $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/schemas/ImageDataUri
+        filename:
+          type: string
+          maxLength: 512
+      example:
+        data: data:image/jpeg;base64,bmljZV9sb29raW5nX3BpY3R1cmU=
+
+    ################################
+    ## Pages & Snippets
+    ################################
+
     PagePath:
       title: PagePath
       description: The path of a page in a portal with a leading slash.
@@ -1112,6 +1936,86 @@ components:
           $ref: '#/components/schemas/PublishedStatus'
         description:
           $ref: '#/components/schemas/Description'
+
+    ################################
+    ## Filter Parameters
+    ################################
+
+    PortalFilterParameters:
+      title: PortalFilterParameters
+      type: object
+      properties:
+        id:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
+        name:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+        description:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+        authentication_enabled:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter
+        rbac_enabled:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter
+        default_api_visibility:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+        default_page_visibility:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+        default_application_auth_strategy_id:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter
+        auto_approve_developers:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter
+        auto_approve_applications:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter
+        default_domain:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+        custom_domain:
+          $ref: >-
+            ../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter
+    PortalPagesFilterParameters:
+      title: PortalPagesFilterParameters
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+        path:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+    PortalSnippetsFilterParameters:
+      title: PortalSnippetsFilterParameters
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        title:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldFilter'
+        public:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/BooleanFieldFilter'
+        created_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter'
+
   securitySchemes:
     personalAccessToken:
       $ref: >-
@@ -1123,7 +2027,11 @@ security:
   - personalAccessToken: []
   - systemAccountAccessToken: []
 tags:
-  - name: Portal Pages
+  - name: V3 Portals
+    description: APIs related to configuration of Konnect Developer Portals.
+  - name: V3 Portal Assets
+    description: APIs for managing static assets for Konnect Developer Portals.
+  - name: V3 Portal Pages
     description: APIs related to Konnect Developer Portal Custom Pages.
-  - name: Portal Snippets
+  - name: V3 Portal Snippets
     description: APIs related to Konnect Developer Portal Custom Snippets.

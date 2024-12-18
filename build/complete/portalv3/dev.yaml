@@ -1,33 +1,15 @@
 openapi: 3.0.3
 info:
-  title: Portal API Catalog
+  title: Portal API
   version: 3.0.0
-  description: N/A (this description is removed during bundling)
+  description: Portal API
   contact:
     name: Kong
     url: 'https://cloud.konghq.com'
+servers:
+  - url: 'https://custom.example.com'
+    description: Production
 paths:
-  '/api/v3/apis/{apiId}':
-    get:
-      operationId: fetch-api
-      summary: Fetch an API
-      description: Gets the details for an existing published API.
-      parameters:
-        - $ref: '#/components/parameters/ApiId'
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiGet'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-      security:
-        - portalAccessToken: []
-        - {}
-      tags:
-        - apis
   /api/v3/apis:
     get:
       operationId: list-apis
@@ -50,16 +32,16 @@ paths:
         - {}
       tags:
         - apis
-  '/api/v3/apis/{apiId}/specifications':
+  '/api/v3/apis/{apiId}':
     get:
-      operationId: list-api-specs
-      summary: List API specs
-      description: Returns the API specification documents attached to the API. Currently only OpenAPI is supported.
+      operationId: fetch-api
+      summary: Fetch an API
+      description: Gets the details for an existing published API.
       parameters:
         - $ref: '#/components/parameters/ApiId'
       responses:
         '200':
-          $ref: '#/components/responses/ApiSpecList'
+          $ref: '#/components/responses/ApiGet'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -70,27 +52,25 @@ paths:
         - portalAccessToken: []
         - {}
       tags:
-        - documentation
-  '/api/v3/apis/{apiId}/specifications/{specId}':
+        - apis
+  '/api/v3/apis/{apiId}/actions':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
     get:
-      operationId: fetch-api-spec
-      summary: Fetch API spec
-      description: Returns an API specification document for an API. Currently only OpenAPI is supported.
-      parameters:
-        - $ref: '#/components/parameters/ApiId'
-        - $ref: '#/components/parameters/SpecId'
+      operationId: get-api-actions
+      summary: Get API Actions
+      description: Get a list of actions that the current developer is allowed to perform on an API.
       responses:
         '200':
-          $ref: '#/components/responses/ApiSpecGet'
+          $ref: '#/components/responses/ApiActions'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-      security:
-        - portalAccessToken: []
-        - {}
+        '503':
+          $ref: '#/components/responses/NotAvailable'
       tags:
-        - documentation
+        - apis
   '/api/v3/apis/{apiId}/documents':
     get:
       operationId: list-api-documents
@@ -144,24 +124,156 @@ paths:
         - {}
       tags:
         - documentation
-  '/api/v3/apis/{apiId}/actions':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
+  '/api/v3/apis/{apiId}/specifications':
     get:
-      operationId: get-api-actions
-      summary: Get API Actions
-      description: Get a list of actions that the current developer is allowed to perform on an API.
+      operationId: list-api-specs
+      summary: List API specs
+      description: Returns the API specification documents attached to the API. Currently only OpenAPI is supported.
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
       responses:
         '200':
-          $ref: '#/components/responses/ApiActions'
+          $ref: '#/components/responses/ApiSpecList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
-        '503':
-          $ref: '#/components/responses/NotAvailable'
+      security:
+        - portalAccessToken: []
+        - {}
       tags:
-        - apis
+        - documentation
+  '/api/v3/apis/{apiId}/specifications/{specId}':
+    get:
+      operationId: fetch-api-spec
+      summary: Fetch API spec
+      description: Returns an API specification document for an API. Currently only OpenAPI is supported.
+      parameters:
+        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/SpecId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecGet'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - documentation
+  /api/v3/portal:
+    get:
+      operationId: get-portal-context-v3
+      summary: Get portal context
+      description: Returns the portal context object.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalContextResponseV3'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/portal/pages:
+    get:
+      operationId: list-portal-pages
+      summary: List Portal Pages
+      description: 'Returns a paginated list of pages for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
+      parameters:
+        - $ref: '#/components/parameters/SortPortalPages'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByTitleEquality'
+        - $ref: '#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '#/components/parameters/FilterByTitleContains'
+        - $ref: '#/components/parameters/FilterByPathEquality'
+        - $ref: '#/components/parameters/FilterByPathEqualityShort'
+        - $ref: '#/components/parameters/FilterByPathContains'
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalPagesResponse'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/portal/pages/content:
+    get:
+      operationId: get-portal-page
+      summary: Get Portal Page
+      description: 'Returns a single page for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
+      parameters:
+        - name: path
+          in: query
+          description: The unique identifier of the page
+          required: true
+          schema:
+            type: string
+          example: /about/company
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalPageResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/portal/snippets:
+    get:
+      operationId: list-portal-snippets
+      summary: List Portal Snippets
+      description: 'Returns a paginated list of snippets for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByTitleEquality'
+        - $ref: '#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '#/components/parameters/FilterByTitleContains'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByPathContains'
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippetsResponse'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/portal/snippets/content:
+    get:
+      operationId: get-portal-snippet
+      summary: Get Portal Snippet
+      description: 'Returns a single snippet for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - name: name
+          in: query
+          description: The name of the snippet
+          required: true
+          schema:
+            type: string
+          example: snip1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
 components:
   parameters:
     ApiFilters:
@@ -201,6 +313,92 @@ components:
       in: path
       required: true
       description: ID of the document.
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good service
+    FilterByPathContains:
+      name: 'filter[path][contains]'
+      description: Filter by contains comparison of the path property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good
+    FilterByPathEquality:
+      name: 'filter[path][eq]'
+      description: Filter by direct equality comparison of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good-page
+    FilterByPathEqualityShort:
+      name: 'filter[path]'
+      description: Filter by direct equality comparison (short-hand) of the path property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: good-page
+    FilterByPublicEquality:
+      name: 'filter[public][eq]'
+      description: 'Filter by whether the pages returned are public or private. Private pages are only accessible to authenticated users. For authenticated users, results will include both public and private pages if not specified.'
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'true'
+        enum:
+          - 'true'
+          - 'false'
+    FilterByPublicEqualityShort:
+      name: 'filter[public]'
+      description: 'Filter (short-hand) by whether the pages returned are public or private. Private pages are only accessible to authenticated users. For authenticated users, results will include both public and private pages if not specified.'
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'true'
+        enum:
+          - 'true'
+          - 'false'
+    FilterByTitleContains:
+      name: 'filter[title][contains]'
+      description: Filter by contains comparison of the title property with a supplied substring
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good
+    FilterByTitleEquality:
+      name: 'filter[title][eq]'
+      description: Filter by direct equality comparison of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good Page
+    FilterByTitleEqualityShort:
+      name: 'filter[title]'
+      description: Filter by direct equality comparison (short-hand) of the title property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: Good Page
     PageNumber:
       name: 'page[number]'
       description: Determines which page of the entities to retrieve.
@@ -219,6 +417,32 @@ components:
       schema:
         type: integer
         example: 10
+    SortPortalPages:
+      name: sort
+      description: |
+        Sorts a collection of portal pages. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - path
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
+    SortPortalSnippets:
+      name: sort
+      description: |
+        Sorts a collection of portal snippets. Supported sort attributes are:
+          - created_at
+          - updated_at
+          - name
+          - title
+          - public
+      in: query
+      required: false
+      schema:
+        type: string
     SpecId:
       name: specId
       in: path
@@ -1064,6 +1288,244 @@ components:
         - text/markdown
         - application/json
         - application/vnd.konnect.document-nodes+json
+    PortalContextV3:
+      description: Describes the portal execution context
+      type: object
+      properties:
+        portal_id:
+          description: ID of the portal
+          type: string
+          format: uuid
+        org_id:
+          description: ID of the organization
+          type: string
+          format: uuid
+        basic_auth_enabled:
+          description: Whether the portal can be accessed via email and password
+          type: boolean
+        oidc_auth_enabled:
+          description: Whether the portal can be accessed via authentication with Single Sign On (SSO) through OpenID Connect (OIDC) from a third-party Identity Provider
+          type: boolean
+        saml_auth_enabled:
+          description: Whether the portal can be accessed via SAML authentication
+          type: boolean
+        authentication_enabled:
+          description: Whether authentication is enabled for the portal
+          type: boolean
+        rbac_enabled:
+          description: Whether Role-Based Access Control is enabled for the portal
+          type: boolean
+        allowed_time_period:
+          description: Allowed time period for Analytics queries
+          type: string
+        name:
+          description: Name of the developer portal
+          type: string
+        canonical_domain:
+          description: The canonical domain of the developer portal
+          type: string
+      additionalProperties: false
+      required:
+        - portal_id
+        - org_id
+        - basic_auth_enabled
+        - oidc_auth_enabled
+        - saml_auth_enabled
+        - authentication_enabled
+        - rbac_enabled
+        - allowed_time_period
+        - name
+        - canonical_domain
+      title: Portal Context
+    PageId:
+      description: The unique identifier of the page
+      type: string
+      format: uuid
+      example: 582b9327-3eba-4bfe-9438-6066840dbbca
+      title: Page ID
+    PagePath:
+      description: The path of the page with a leading slash
+      type: string
+      example: /my-page
+      title: Page Path
+    PageTitle:
+      description: The title of the page
+      type: string
+      example: My Page
+      title: Page Title
+    PageContent:
+      description: The renderable markdown content of the page
+      type: string
+      example: '# Welcome to the Developer Portal'
+      title: Page Content
+    PublicStatus:
+      description: Whether the page or snippet is public or private. Private pages and snippets are only accessible to authenticated users.
+      type: boolean
+      example: true
+      title: Resource Public Status
+    Description:
+      type: string
+      example: A custom page about developer portals
+      title: Resource Description
+    SnippetId:
+      description: The unique identifier of the snippet
+      type: string
+      format: uuid
+      example: 582b9327-3eba-4bfe-9438-6066840dbbcb
+      title: Snippet ID
+    SnippetTitle:
+      description: The title of the snippet
+      type: string
+      example: My Snippet
+      title: Snippet Title
+    SnippetContent:
+      description: The renderable markdown content of the snippet
+      type: string
+      example: '# Welcome to the Developer Portal'
+      title: Snippet Content
+    SnippetName:
+      description: The name of the snippet (no leading slash)
+      type: string
+      example: my-snippet
+      title: Snippet Name
+    ListPortalPages:
+      description: A paginated list of pages for the portal
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalPageInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      additionalProperties: false
+      title: List Portal Pages
+    ListPortalSnippets:
+      description: A paginated list of snippets for the portal
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalSnippetInfo'
+        meta:
+          $ref: '#/components/schemas/PaginatedMeta'
+      additionalProperties: false
+      title: List Portal Snippets
+    PortalPageInfo:
+      description: A single page for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - path
+        - title
+        - public
+        - created_at
+        - updated_at
+      title: Portal Page Info
+    PortalSnippetInfo:
+      description: A single snippet for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SnippetId'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - title
+        - public
+        - created_at
+        - updated_at
+      title: Portal Snippet Info
+    PortalPage:
+      description: A single page for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        title:
+          $ref: '#/components/schemas/PageTitle'
+        path:
+          $ref: '#/components/schemas/PagePath'
+        content:
+          $ref: '#/components/schemas/PageContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - path
+        - content
+        - public
+        - created_at
+        - updated_at
+      title: Portal Page
+    PortalSnippet:
+      description: A single snippet for the portal
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PageId'
+        title:
+          $ref: '#/components/schemas/SnippetTitle'
+        name:
+          $ref: '#/components/schemas/SnippetName'
+        content:
+          $ref: '#/components/schemas/SnippetContent'
+        public:
+          $ref: '#/components/schemas/PublicStatus'
+        description:
+          $ref: '#/components/schemas/Description'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - name
+        - content
+        - public
+        - created_at
+        - updated_at
+      title: Portal Snippet
   examples:
     ApiActionsExample:
       value:
@@ -1182,6 +1644,101 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BaseError'
+    ListPortalPagesResponse:
+      description: Paginated list of portal pages
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalPages'
+          examples:
+            ListPortalPageResponseExample1:
+              value:
+                data:
+                  - id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                    title: Home
+                    path: /
+                    public: true
+                    description: Welcome page
+                    created_at: '2021-09-01T00:00:00Z'
+                    updated_at: '2021-09-01T00:00:00Z'
+                meta:
+                  page:
+                    size: 10
+                    total: 1
+                    number: 1
+    ListPortalSnippetsResponse:
+      description: Paginated list of portal snippets
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ListPortalSnippets'
+          examples:
+            ListPortalSnippetResponseExample1:
+              value:
+                data:
+                  - id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                    title: Home
+                    name: snip1
+                    public: true
+                    description: Welcome snippet
+                    created_at: '2021-09-01T00:00:00Z'
+                    updated_at: '2021-09-01T00:00:00Z'
+                meta:
+                  page:
+                    size: 10
+                    total: 1
+                    number: 1
+    GetPortalPageResponse:
+      description: A single portal page
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalPage'
+          examples:
+            PortalPageResponseExample1:
+              value:
+                id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                title: Home
+                path: /
+                content: '# Welcome to the Developer Portal'
+                public: true
+                created_at: '2021-09-01T00:00:00Z'
+                updated_at: '2021-09-01T00:00:00Z'
+    GetPortalSnippetResponse:
+      description: A single portal snippet
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalSnippet'
+          examples:
+            PortalPageResponseExample1:
+              value:
+                id: 582b9327-3eba-4bfe-9438-6066840dbbca
+                title: Home
+                name: snip1
+                content: '# Welcome to the Developer Portal'
+                public: true
+                created_at: '2021-09-01T00:00:00Z'
+                updated_at: '2021-09-01T00:00:00Z'
+    GetPortalContextResponseV3:
+      description: The portal context object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalContextV3'
+          examples:
+            GetPortalContextResponseV3Example1:
+              value:
+                portal_id: 18a9b697-7e68-411b-8e1d-102b261ab18e
+                org_id: a40f5d1f-d889-42e9-94ea-b9b33585fc6b
+                basic_auth_enabled: true
+                oidc_auth_enabled: true
+                saml_auth_enabled: true
+                authentication_enabled: true
+                rbac_enabled: true
+                allowed_time_period: 90d
+                name: my portal
+                canonical_domain: portal.example.com
   securitySchemes:
     portalAccessToken:
       type: apiKey
@@ -1192,3 +1749,5 @@ components:
 tags:
   - name: apis
     description: Endpoints for viewing APIs published to the portal.
+  - name: portal
+    description: The API for retrieving details about a single Konnect Portal.
