@@ -388,11 +388,11 @@ components:
       type: object
       properties:
         id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the document.
-              type: string
-          x-flatten-allOf: true
+          description: Unique identifier of the document.
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
         parent_document_id:
           description: Unique identifier of the parent document.
           type: string
@@ -426,11 +426,11 @@ components:
       type: object
       properties:
         id:
-          allOf:
-            - $ref: '#/components/schemas/UUID'
-            - description: Unique identifier of the document.
-              type: string
-          x-flatten-allOf: true
+          description: Unique identifier of the document.
+          type: string
+          format: uuid
+          example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
         parent_document_id:
           description: Unique identifier of the parent document.
           type: string

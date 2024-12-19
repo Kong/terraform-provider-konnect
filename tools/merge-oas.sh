@@ -3,13 +3,12 @@ shopt -s globstar
 set -e
 
 if [[ ! -z "$1" ]]; then
-  PRODUCTS=$1
+  PRODUCTS=($1)
 else
-  PRODUCTS=$(node ./tools/get-products.js --plain);
+  PRODUCTS=(konnect portal internal)
 fi
 
-
-for PRODUCT in $PRODUCTS; do
+for PRODUCT in "${PRODUCTS[@]}"; do
   if [ "$PRODUCT" == "internal" ]; then
     continue
   fi
