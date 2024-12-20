@@ -408,12 +408,27 @@ components:
         event_subscription_count:
           type: integer
           default: 0
+        default_subscription:
+          type: array
+          items:
+            $ref: '#/components/schemas/DefaultSubscription'
       required:
         - event_id
         - event_title
         - event_description
         - event_namespace
         - event_subscription_count
+        - default_subscription
+    DefaultSubscription:
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/NotificationChannelType'
+        enabled:
+          type: boolean
+      required:
+        - channel
+        - enabled
     EventSubscriptionResponse:
       description: Properties associated with an event subscription.
       type: object
@@ -922,6 +937,11 @@ components:
             event_description: Reminder for an unpaid invoice
             event_namespace: plan-and-usage
             event_subscription_count: 2
+            default_subscription:
+              - channel: IN_APP
+                enabled: true
+              - channel: EMAIL
+                enabled: true
     EventSubscriptionListResponse:
       value:
         data:
