@@ -1,0 +1,1643 @@
+openapi: 3.0.0
+info:
+  title: Konnect Runtime Groups
+  version: 2.0.0
+  description: The API for Kong Konnect Runtime Groups.
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+servers:
+  - url: 'https://us.api.konghq.com/v2'
+    description: United-States Production region
+  - url: 'https://eu.api.konghq.com/v2'
+    description: Europe Production region
+  - url: 'https://au.api.konghq.com/v2'
+    description: Australia Production region
+  - url: 'https://me.api.konghq.com/v2'
+    description: Middle-East Production region
+paths:
+  /runtime-groups:
+    get:
+      operationId: list-runtime-groups
+      summary: List Runtime Groups
+      description: Returns an array of runtime groups objects containing information about the Konnect Runtime Groups.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByNameContains'
+        - $ref: '#/components/parameters/FilterByNameNotEquals'
+        - $ref: '#/components/parameters/FilterByIdEquality'
+        - $ref: '#/components/parameters/FilterByIdEqualityShort'
+        - $ref: '#/components/parameters/FilterByIdsEquality'
+        - $ref: '#/components/parameters/FilterByClusterTypeEquality'
+        - $ref: '#/components/parameters/FilterByClusterTypeEqualityShort'
+        - $ref: '#/components/parameters/FilterByClusterTypeNotEquals'
+        - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/RuntimeGroupSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListRuntimeGroupsResponse'
+        '400':
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
+        '401':
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
+        '403':
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+    parameters: []
+    post:
+      operationId: create-runtime-group
+      summary: Create Runtime Group
+      description: Create a runtime group in the Konnect Organization.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRuntimeGroupRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/CreateRuntimeGroupRequestExample'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
+        '401':
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
+        '403':
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
+        '409':
+          $ref: '#/components/responses/RuntimeGroupConflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+  '/runtime-groups/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: The runtime group ID
+        required: true
+        schema:
+          type: string
+          format: uuid
+          example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+    get:
+      operationId: get-runtime-group
+      summary: Fetch Runtime Group
+      description: Returns information about a team from a given team ID.
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
+        '401':
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
+        '403':
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
+        '404':
+          $ref: '#/components/responses/RuntimeGroupNotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+    patch:
+      operationId: update-runtime-group
+      summary: Update Runtime Group
+      description: Update an individual runtime group.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRuntimeGroupRequest'
+            examples:
+              Example Request Body:
+                $ref: '#/components/examples/UpdateRuntimeGroupRequestExample'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateRuntimeGroupResponse'
+        '400':
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
+        '401':
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
+        '403':
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
+        '404':
+          $ref: '#/components/responses/RuntimeGroupNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+    delete:
+      operationId: delete-runtime-group
+      summary: Delete Runtime Group
+      description: Delete an individual runtime group.
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/RuntimeGroupsBadRequest'
+        '401':
+          $ref: '#/components/responses/RuntimeGroupUnauthenticated'
+        '403':
+          $ref: '#/components/responses/RuntimeGroupPermissionDenied'
+        '404':
+          $ref: '#/components/responses/RuntimeGroupNotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Runtime Groups
+  '/runtime-groups/{id}/composite-memberships':
+    parameters:
+      - name: id
+        in: path
+        description: ID of a composite runtime group
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: get-runtime-groups-id-composite-memberships
+      summary: List Composite RG Memberships
+      description: Returns an array of runtime groups that are a member of this composite runtime group.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListCompositeMemberships'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Composite Runtime Groups
+    put:
+      operationId: put-runtime-groups-id-composite-memberships
+      summary: Upsert Composite RG Members
+      description: Upserts runtime groups as a member of a composite runtime group.
+      requestBody:
+        $ref: '#/components/requestBodies/CompositeMemebershipUpsert'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Composite Runtime Groups
+  '/runtime-groups/{id}/composite-memberships/add':
+    parameters:
+      - name: id
+        in: path
+        description: ID of a composite runtime group
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: post-runtime-groups-id-composite-memberships-add
+      summary: Add Composite RG Members
+      description: Adds one or more runtime groups as a member of a composite runtime group.
+      requestBody:
+        $ref: '#/components/requestBodies/CompositeMemebershipAdd'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Composite Runtime Groups
+  '/runtime-groups/{id}/composite-memberships/remove':
+    parameters:
+      - name: id
+        in: path
+        description: ID of a composite runtime group
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: post-runtime-groups-id-composite-memberships-remove
+      summary: Remove Composite RG Members
+      description: Removes one or more runtime groups from the members of a composite runtime group.
+      requestBody:
+        $ref: '#/components/requestBodies/CompositeMembershipRemove'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Composite Runtime Groups
+  '/runtime-groups/{id}/composite-member-status':
+    parameters:
+      - name: id
+        in: path
+        description: ID of a runtime group
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: get-runtime-groups-id-composite-member-status
+      summary: Composite Membership Status
+      description: Determines the composite membership status of a runtime group.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCompositeMemberStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/NotAvailable'
+      tags:
+        - Composite Runtime Groups
+  '/runtime-groups/{id}/composite-status':
+    parameters:
+      - name: id
+        in: path
+        description: ID of a composite runtime group
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: get-runtime-groups-id-composite-status
+      summary: Get Composite RG Status
+      description: 'Returns the status of a composite runtime group, including existing conflicts.'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetCompositeStatus'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Composite Runtime Groups
+components:
+  parameters:
+    FilterByClusterTypeEquality:
+      name: 'filter[cluster_type][eq]'
+      description: Filter by direct equality comparison of the cluster_type property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+      example: CLUSTER_TYPE_HYBRID
+    FilterByClusterTypeEqualityShort:
+      name: 'filter[cluster_type]'
+      description: Filter by direct equality comparison (short-hand) of the cluster_type property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: CLUSTER_TYPE_HYBRID
+    FilterByClusterTypeNotEquals:
+      name: 'filter[cluster_type][neq]'
+      description: Filter by non-equality comparison of the cluster_type property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: test
+    FilterByIdEquality:
+      name: 'filter[id][eq]'
+      description: Filter by direct equality comparison of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    FilterByIdEqualityShort:
+      name: 'filter[id]'
+      description: Filter by direct equality comparison (short-hand) of the id property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+    FilterByIdsEquality:
+      name: 'filter[id][oeq]'
+      description: Filter by direct equality comparison of id property with multiple supplied values.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'some-value,some-other-value'
+    FilterByLabels:
+      name: labels
+      description: Filter runtime groups in the response by associated labels.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'key:value,existCheck'
+    FilterByNameContains:
+      name: 'filter[name][contains]'
+      description: Filter by contains comparison of the name property with a supplied substring.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: test
+    FilterByNameEquality:
+      name: 'filter[name][eq]'
+      description: Filter by direct equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: test
+    FilterByNameEqualityShort:
+      name: 'filter[name]'
+      description: Filter by direct equality comparison (short-hand) of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: test
+    FilterByNameNotEquals:
+      name: 'filter[name][neq]'
+      description: Filter by non-equality comparison of the name property with a supplied value.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: test
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    RuntimeGroupSort:
+      name: sort
+      description: |
+        Sorts a collection of runtime-groups. Supported sort attributes are:
+          - created_at
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SortQuery'
+  schemas:
+    CreateRuntimeGroupRequest:
+      description: The request schema for the create runtime group request.
+      type: object
+      properties:
+        name:
+          description: The name of the runtime group.
+          type: string
+          example: Test Runtime Group
+        description:
+          description: The description of the runtime group in Konnect.
+          type: string
+          example: A test runtime group for exploration.
+        cluster_type:
+          description: The ClusterType value of the cluster associated with the Runtime Group.
+          type: string
+          example: CLUSTER_TYPE_HYBRID
+          enum:
+            - CLUSTER_TYPE_HYBRID
+            - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
+            - CLUSTER_TYPE_COMPOSITE
+            - CLUSTER_TYPE_SERVERLESS
+        auth_type:
+          description: The auth type value of the cluster associated with the Runtime Group.
+          type: string
+          example: pinned_client_certs
+          enum:
+            - pinned_client_certs
+            - pki_client_certs
+        cloud_gateway:
+          description: Whether this runtime group can be used for cloud-gateways.
+          type: boolean
+          example: false
+        proxy_urls:
+          $ref: '#/components/schemas/ProxyURLs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      required:
+        - name
+      title: CreateRuntimeGroupRequest
+    UpdateRuntimeGroupRequest:
+      description: The request schema for the update runtime group request.
+      type: object
+      properties:
+        name:
+          description: The name of the runtime group.
+          type: string
+          example: Test Runtime Group
+        description:
+          description: The description of the runtime group in Konnect.
+          type: string
+          example: A test runtime group for exploration.
+        auth_type:
+          description: The auth type value of the cluster associated with the Runtime Group.
+          type: string
+          example: pinned_client_certs
+          enum:
+            - pinned_client_certs
+            - pki_client_certs
+        proxy_urls:
+          $ref: '#/components/schemas/ProxyURLs'
+        labels:
+          $ref: '#/components/schemas/Labels'
+      additionalProperties: false
+      title: UpdateRuntimeGroupRequest
+    RuntimeGroup:
+      allOf:
+        - $ref: '#/components/schemas/RuntimeGroupSummary'
+        - type: object
+          properties:
+            labels:
+              $ref: '#/components/schemas/Labels'
+            config:
+              description: CP configuration object for related access endpoints.
+              type: object
+              properties:
+                control_plane_endpoint:
+                  description: Control Plane Endpoint.
+                  type: string
+                  format: url
+                  example: 'https://acfe5f253f.cp0.konghq.com'
+                  readOnly: true
+                telemetry_endpoint:
+                  description: Telemetry Endpoint.
+                  type: string
+                  format: url
+                  example: 'https://acfe5f253f.tp0.konghq.com'
+                  readOnly: true
+            created_at:
+              description: An ISO-8604 timestamp representation of runtime group creation date.
+              type: string
+              format: date-time
+              example: '2022-11-04T20:10:06.927Z'
+              readOnly: true
+            updated_at:
+              description: An ISO-8604 timestamp representation of runtime group update date.
+              type: string
+              format: date-time
+              example: '2022-11-04T20:10:06.927Z'
+              readOnly: true
+      x-examples:
+        Example 1:
+          id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          name: Test Runtime Group
+          description: A test runtime group for exploration.
+          labels:
+            test: 'true'
+          config:
+            control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
+            telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+            cluster_type: CLUSTER_TYPE_HYBRID
+            auth_type: pinned_client_certs
+            cloud_gateway: false
+            proxy_urls:
+              - host: example.com
+                port: 443
+                protocol: https
+          created_at: '2022-11-04T20:10:06.927Z'
+          updated_at: '2022-11-04T20:10:06.927Z'
+    RuntimeGroupSummary:
+      description: The runtime group object contains information about a Kong control plane.
+      type: object
+      properties:
+        id:
+          description: The runtime group ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          description: The name of the runtime group.
+          type: string
+          example: Test Runtime Group
+        description:
+          description: The description of the runtime group in Konnect.
+          type: string
+          example: A test runtime group for exploration.
+        labels:
+          $ref: '#/components/schemas/Labels'
+        config:
+          description: CP configuration object for related access endpoints.
+          type: object
+          additionalProperties: false
+          properties:
+            control_plane_endpoint:
+              description: Control Plane Endpoint.
+              type: string
+              format: url
+              example: 'https://acfe5f253f.cp0.konghq.com'
+              readOnly: true
+            telemetry_endpoint:
+              description: Telemetry Endpoint.
+              type: string
+              format: url
+              example: 'https://acfe5f253f.tp0.konghq.com'
+              readOnly: true
+            cluster_type:
+              description: The ClusterType value of the cluster associated with the Runtime Group.
+              type: string
+              example: CLUSTER_TYPE_HYBRID
+              enum:
+                - CLUSTER_TYPE_HYBRID
+                - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
+                - CLUSTER_TYPE_COMPOSITE
+                - CLUSTER_TYPE_SERVERLESS
+              readOnly: true
+            auth_type:
+              description: The auth type value of the cluster associated with the Runtime Group.
+              type: string
+              example: pinned_client_certs
+              enum:
+                - pinned_client_certs
+                - pki_client_certs
+              readOnly: true
+            cloud_gateway:
+              description: Whether this Runtime Group can be used for cloud-gateways.
+              type: boolean
+              readOnly: true
+            proxy_urls:
+              $ref: '#/components/schemas/ProxyURLs'
+          required:
+            - control_plane_endpoint
+            - telemetry_endpoint
+            - cluster_type
+            - auth_type
+            - cloud_gateway
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+      title: RuntimeGroupSummary
+    CompositeStatus:
+      description: The Composite Status object contains information about the status of a composite runtime group.
+      type: object
+      properties:
+        id:
+          description: The composite runtime group ID.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        created_at:
+          description: An ISO-8604 timestamp representation of composite runtime group status creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An ISO-8604 timestamp representation of composite runtime group status update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        conflicts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompositeConflict'
+          maxItems: 256
+        state:
+          description: The state of the composite runtime group.
+          type: string
+          example: COMPOSITE_STATE_CONFLICT
+          enum:
+            - COMPOSITE_STATE_OK
+            - COMPOSITE_STATE_CONFLICT
+            - COMPOSITE_STATE_UNKNOWN
+          readOnly: true
+      title: CompositeStatus
+    CompositeConflict:
+      description: The Composite Conflict object contains information about a conflict in a composite runtime group.
+      type: object
+      properties:
+        cluster_id:
+          description: The ID of a runtime group member of a composite runtime group.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        description:
+          description: The description of the conflict.
+          type: string
+          example: 'conflicting entity found: ID=38d790ad-8b08-4ff5-a074-2e1e9e64d8bd, Name=foo'
+          readOnly: true
+        resource:
+          $ref: '#/components/schemas/CompositeConflictResource'
+      title: CompositeConflict
+    CompositeConflictResource:
+      description: A resource causing a conflict in a composite runtime group.
+      type: object
+      properties:
+        id:
+          description: The ID of the resource.
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        type:
+          description: The type of the resource.
+          type: string
+          example: service
+          readOnly: true
+      required:
+        - id
+        - type
+      title: CompositeConflictResource
+    CompositeMemberStatus:
+      description: Object with information determining the composite membership status of a runtime group.
+      type: object
+      properties:
+        is_member:
+          description: Boolean indicating if a runtime group is a member of a composite runtime group.
+          type: boolean
+          example: true
+          readOnly: true
+      required:
+        - is_member
+      title: CompositeMemberStatus
+    Labels:
+      description: 'Labels to facilitate tagged search on runtime groups. Keys must be of length 1-63 characters, and cannot start with ''kong'', ''konnect'', ''mesh'', ''kic'', or ''_''.'
+      type: object
+      example:
+        test: 'true'
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      title: Labels
+    ProxyURL:
+      description: Proxy URL associated with reaching the data-planes connected to a runtime group.
+      type: object
+      properties:
+        host:
+          description: Hostname of the proxy URL.
+          type: string
+        port:
+          description: Port of the proxy URL.
+          type: integer
+        protocol:
+          description: Protocol of the proxy URL.
+          type: string
+      example:
+        host: example.com
+        port: 443
+        protocol: https
+      additionalProperties: false
+      required:
+        - host
+        - port
+        - protocol
+      title: ProxyURL
+    ProxyURLs:
+      description: Array of proxy URLs associated with reaching the data-planes connected to a runtime group.
+      type: array
+      items:
+        $ref: '#/components/schemas/ProxyURL'
+      example:
+        - host: example.com
+          port: 443
+          protocol: https
+      title: ProxyURLs
+    SortQuery:
+      description: |
+        The `asc` suffix is optional as the default sort order is ascending.
+        The `desc` suffix is used to specify a descending order.
+        Multiple sort attributes may be provided via a comma separated list.
+        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
+      type: string
+      example: 'name,created_at desc'
+      title: SortQuery
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+            - min_items
+            - min
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must have at least 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterMaximumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_length
+            - max_items
+            - max
+          nullable: false
+          readOnly: true
+        maximum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must not have more than 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minItems: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterMaximumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+  examples:
+    400RequestFormatInvalidExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:3674017986744198214'
+        invalid_parameters:
+          - field: body
+            reason: request format is invalid
+    400CannotBeBlankExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:6644808935508571943'
+        invalid_parameters:
+          - field: name
+            reason: cannot be blank
+    400InvalidIDFormatExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: id
+            reason: invalid ID format
+    400UsageLimitsReachedExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        detail: Cannot create an additional runtime group because usage limits have been reached.
+    400UnknownPropertyExample:
+      value:
+        status: 400
+        title: Bad Request
+        instance: 'konnect:trace:8988732526256293040'
+        invalid_parameters:
+          - field: id
+            rule: unknownProperty
+            reason: property id should not exist
+    401UnauthenticatedExample:
+      value:
+        status: 401
+        title: Unauthenticated
+        instance: 'konnect:trace:952172606039454040'
+        detail: A valid token is required
+    403PermissionDeniedExample:
+      value:
+        status: 403
+        title: Permission denied
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Insufficient role-set to create runtime groups.
+    404NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'konnect:trace:2287285207635123011'
+        detail: The requested runtime group was not found.
+    409ConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Runtime group with provided name already exists.
+    500InternalErrorExample:
+      value:
+        status: 500
+        title: Internal Server Error
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Could not propagate runtime group changes to control plane cluster service.
+    503PermissionReadFailureExample:
+      value:
+        status: 503
+        title: Service Unavailable
+        instance: 'konnect:trace:2287285207635123011'
+        detail: Could not retrieve permissions to check resource accessibility.
+    CreateRuntimeGroupRequestExample:
+      value:
+        name: Test Runtime Group
+        description: A test runtime group for exploration.
+        cluster_type: CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
+        cloud_gateway: false
+        proxy_urls:
+          - host: example.com
+            port: 443
+            protocol: https
+        labels:
+          test: 'true'
+    UpdateRuntimeGroupRequestExample:
+      value:
+        name: Test Runtime Group
+        description: A test runtime group for exploration.
+        labels:
+          otherTest: 'true'
+    RuntimeGroupExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: Test Runtime Group
+        description: A test runtime group for exploration.
+        labels:
+          test: 'true'
+        config:
+          control_plane_endpoint: 'https://acfe5f253f.cp0.konghq.com'
+          telemetry_endpoint: 'https://acfe5f253f.tp0.konghq.com'
+          cluster_type: CLUSTER_TYPE_HYBRID
+          auth_type: pinned_client_certs
+          cloud_gateway: false
+          proxy_urls:
+            - host: example.com
+              port: 443
+              protocol: https
+    CompositeConflictStatusExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        conflicts:
+          - cluster_id: 57fdf779-7935-476f-ab2b-7fa1323b70e6
+            description: 'conflicting entity found: ID=df43b088-cace-4119-9e2a-d83e5fbb0c48, Name=svc1'
+            resource:
+              id: df43b088-cace-4119-9e2a-d83e5fbb0c48
+              type: service
+          - cluster_id: 38ceea96-fe39-11ed-be56-0242ac120002
+            description: 'conflicting entity found: ID=15f3ab7d-7202-498a-95b4-334f783dbcdd, Name=svc1'
+            resource:
+              id: 15f3ab7d-7202-498a-95b4-334f783dbcdd
+              type: service
+        state: COMPOSITE_STATE_CONFLICT
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    CompositeNoConflictStatusExample:
+      value:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        conflicts:
+          - cluster_id: 57fdf779-7935-476f-ab2b-7fa1323b70e6
+            description: 'conflicting entity found: ID=df43b088-cace-4119-9e2a-d83e5fbb0c48, Name=svc1'
+            resource:
+              id: df43b088-cace-4119-9e2a-d83e5fbb0c48
+              type: service
+          - cluster_id: 38ceea96-fe39-11ed-be56-0242ac120002
+            description: 'conflicting entity found: ID=15f3ab7d-7202-498a-95b4-334f783dbcdd, Name=svc1'
+            resource:
+              id: 15f3ab7d-7202-498a-95b4-334f783dbcdd
+              type: service
+        state: COMPOSITE_STATE_CONFLICT
+        created_at: '2022-11-04T20:10:06.927Z'
+        updated_at: '2022-11-04T20:10:06.927Z'
+    ListCompositeMembershipsExample:
+      value:
+        meta:
+          page:
+            total: 2
+            size: 100
+            number: 1
+        data:
+          - id: 774f2a35-509d-4b94-97e9-1ed49563bcb1
+            name: Composite Member 1
+            description: Child RG
+            labels:
+              env: prod
+            config:
+              control_plane_endpoint: 'https://9e0353434a.us.cp0.konghq.com'
+              telemetry_endpoint: 'https://9e0353434a.us.tp0.konghq.com'
+              cluster_type: CLUSTER_TYPE_HYBRID
+              auth_type: pinned_client_certs
+              cloud_gateway: false
+              proxy_urls:
+                - host: example.com
+                  port: 443
+                  protocol: https
+            created_at: '2023-03-20T22:23:45.873Z'
+            updated_at: '2023-03-30T16:17:55.073Z'
+          - id: e4a1917c-bb26-4aa1-9a3e-50ee366f13db
+            name: Composite Member 2
+            description: Child RG
+            labels:
+              env: prod
+              foo: bar
+            config:
+              control_plane_endpoint: 'https://05459046af.us.cp0.konghq.com'
+              telemetry_endpoint: 'https://05459046af.us.tp0.konghq.com'
+              cluster_type: CLUSTER_TYPE_HYBRID
+              auth_type: pinned_client_certs
+              cloud_gateway: false
+              proxy_urls:
+                - host: example.com
+                  port: 443
+                  protocol: https
+            created_at: '2023-03-23T22:25:30.907Z'
+            updated_at: '2023-03-30T16:18:12.067Z'
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  requestBodies:
+    CompositeMemebershipAdd:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+          examples:
+            Example 1:
+              value:
+                members:
+                  - id: 1beb9ad3-d21b-4090-b6e3-574784d1166d
+                  - id: 778a0474-687d-41af-8e51-a0488d790586
+                  - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
+      description: Request body for adding a list of child runtime groups to a composite runtime group membership.
+    CompositeMembershipRemove:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+          examples:
+            Example 1:
+              value:
+                members:
+                  - id: 1beb9ad3-d21b-4090-b6e3-574784d1166d
+                  - id: 778a0474-687d-41af-8e51-a0488d790586
+                  - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
+      description: Request body for removing a list of child runtime groups from a composite runtime group membership.
+    CompositeMemebershipUpsert:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+          examples:
+            Example 1:
+              value:
+                members:
+                  - id: 1beb9ad3-d21b-4090-b6e3-574784d1166d
+                  - id: 778a0474-687d-41af-8e51-a0488d790586
+                  - id: fa85f8e8-2e5a-496e-b6d0-4e534eaab459
+      description: Request body for upserting a list of child runtime groups to a composite runtime group membership.
+  responses:
+    RetrieveRuntimeGroupResponse:
+      description: A response to retrieving a single runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Single runtime group response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    CreateRuntimeGroupResponse:
+      description: A response to creating a runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Create Runtime Group Response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    UpdateRuntimeGroupResponse:
+      description: A response to updating a runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RuntimeGroup'
+          examples:
+            Update Runtime Group Response:
+              $ref: '#/components/examples/RuntimeGroupExample'
+    ListRuntimeGroupsResponse:
+      description: A paginated list response for a collection of runtime groups.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuntimeGroup'
+            additionalProperties: false
+            required:
+              - meta
+              - data
+            title: ListRuntimeGroupsResponse
+          examples: {}
+    RuntimeGroupsBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Request Format Invalid:
+              $ref: '#/components/examples/400RequestFormatInvalidExample'
+            Cannot Be Blank:
+              $ref: '#/components/examples/400CannotBeBlankExample'
+            Invalid ID Format:
+              $ref: '#/components/examples/400InvalidIDFormatExample'
+            Usage Limits Reached:
+              $ref: '#/components/examples/400UsageLimitsReachedExample'
+            Unknown Property:
+              $ref: '#/components/examples/400UnknownPropertyExample'
+    RuntimeGroupPermissionDenied:
+      description: Permission denied
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            Permission Denied:
+              $ref: '#/components/examples/403PermissionDeniedExample'
+    RuntimeGroupUnauthenticated:
+      description: Unauthenticated
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            Unauthorized:
+              $ref: '#/components/examples/401UnauthenticatedExample'
+    RuntimeGroupNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            Not Found:
+              $ref: '#/components/examples/404NotFoundExample'
+    RuntimeGroupConflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+          examples:
+            Conflict:
+              $ref: '#/components/examples/409ConflictExample'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/problem+json:
+          schema:
+            description: The error response object.
+            type: object
+            properties:
+              status:
+                description: The HTTP status code.
+                type: integer
+                example: 500
+                enum:
+                  - 500
+              title:
+                description: The error response code.
+                type: string
+                example: Internal Server Error
+              instance:
+                description: The Konnect traceback code
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+              detail:
+                description: Details about the error.
+                type: string
+                example: Could not propagate runtime group changes to control plane cluster service.
+            required:
+              - status
+              - title
+              - instance
+            title: InternalServerError
+          examples:
+            Internal Server Error:
+              $ref: '#/components/examples/500InternalErrorExample'
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/problem+json:
+          schema:
+            description: Error response for temporary service unavailability.
+            type: object
+            properties:
+              status:
+                description: The HTTP status code.
+                type: integer
+                example: 503
+                enum:
+                  - 503
+              title:
+                description: The error response code.
+                type: string
+                example: Service Unavailable
+              instance:
+                description: The Konnect traceback code
+                type: string
+                example: 'konnect:trace:2287285207635123011'
+              detail:
+                description: Details about the error.
+                type: string
+                example: Could not retrieve permissions to check resource accessibility.
+            required:
+              - status
+              - title
+              - instance
+            title: ServiceUnavailableError
+          examples:
+            Service Unavailable:
+              $ref: '#/components/examples/503PermissionReadFailureExample'
+    ListCompositeMemberships:
+      description: A paginated list response for a collection of composite runtime group memberships.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                description: Array of runtime groups summary who are a child to this composite runtime group.
+                type: array
+                items:
+                  $ref: '#/components/schemas/RuntimeGroupSummary'
+          examples:
+            List Composite Memberships Example:
+              $ref: '#/components/examples/ListCompositeMembershipsExample'
+    GetCompositeStatus:
+      description: 'Status of a composite runtime group, including existing conflicts.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompositeStatus'
+          examples:
+            Composite Conflict Status Example:
+              $ref: '#/components/examples/CompositeConflictStatusExample'
+            Composite No Conflict Status Example:
+              $ref: '#/components/examples/CompositeNoConflictStatusExample'
+    GetCompositeMemberStatus:
+      description: Determines the composite membership status of a runtime group.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CompositeMemberStatus'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    NotAvailable:
+      description: Service not available
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Runtime Groups
+  - name: Composite Runtime Groups
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []

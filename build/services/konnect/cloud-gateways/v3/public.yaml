@@ -1,0 +1,1077 @@
+openapi: 3.0.3
+info:
+  description: Konnect API for managing cloud-gateways infrastructure.
+  version: 3.0.0
+  title: Konnect Cloud Gateways
+  contact:
+    name: Kong
+    url: 'https://cloud.konghq.com'
+servers:
+  - url: 'https://global.api.konghq.com/v2'
+    description: Base URL for the global region
+paths:
+  /cloud-gateways/custom-domains:
+    get:
+      operationId: list-custom-domains
+      summary: List Custom Domains
+      description: |
+        Returns a paginated collection of custom domains across control-planes for an organization (restricted by
+        permitted control-plane reads).
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainsFilter'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListCustomDomainsResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+    post:
+      operationId: create-custom-domains
+      summary: Create Custom Domain
+      description: |
+        Creates a new custom domain for a control-plane (restricted by permitted control-plane write
+        action).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomDomainRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateCustomDomainResponse'
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Custom Domains
+  '/cloud-gateways/custom-domains/{customDomainId}':
+    get:
+      operationId: get-custom-domain
+      summary: Get Custom Domain
+      description: Retrieves a custom domain by ID (restricted by permitted control-plane reads).
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveCustomDomainResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+    delete:
+      operationId: delete-custom-domain
+      summary: Delete Custom Domain
+      description: Deletes a custom domain by ID (restricted by permitted control-plane reads).
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '204':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/CloudGatewaysBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+  '/cloud-gateways/custom-domains/{customDomainId}/online-status':
+    get:
+      operationId: get-custom-domain-online-status
+      summary: Get Custom Domain Online Status
+      description: Retrieves the CNAME and SSL status of a custom domain.
+      parameters:
+        - $ref: '#/components/parameters/CustomDomainId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveCustomDomainOnlineStatusResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Custom Domains
+components:
+  parameters:
+    CustomDomainId:
+      name: customDomainId
+      description: ID of the custom domain to operate on.
+      required: true
+      in: path
+      schema:
+        $ref: '#/components/schemas/CustomDomainId'
+    CustomDomainsFilter:
+      name: filter
+      description: Filters supported for custom domains on the global API.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/CustomDomainsFilterParameters'
+      style: deepObject
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+  schemas:
+    ControlPlaneGeo:
+      description: Set of control-plane geos supported for deploying cloud-gateways configurations.
+      type: string
+      enum:
+        - us
+        - eu
+        - au
+        - me
+        - in
+      title: Control-Plane Geo
+    ControlPlaneGeoFieldFilter:
+      oneOf:
+        - $ref: '#/components/schemas/ControlPlaneGeoFieldEqualsFilter'
+        - $ref: '#/components/schemas/ControlPlaneGeoFieldNotEqualsFilter'
+        - $ref: '#/components/schemas/ControlPlaneGeoFieldOrEqualityFilter'
+      title: ControlPlaneGeoFieldFilter
+    ControlPlaneGeoFieldEqualsFilter:
+      description: Filter a control-plane geo by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/ControlPlaneGeo'
+        - type: object
+          title: ControlPlaneGeoFieldEqualsComparison
+          properties:
+            eq:
+              $ref: '#/components/schemas/ControlPlaneGeo'
+          required:
+            - eq
+      title: ControlPlaneGeoFieldEqualsFilter
+      x-examples:
+        example-1: us
+        example-2:
+          eq: us
+    ControlPlaneGeoFieldNotEqualsFilter:
+      description: Filter a control-plane geo by inequality match.
+      type: object
+      properties:
+        neq:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+      required:
+        - neq
+      title: ControlPlaneGeoFieldNotEqualsFilter
+      x-examples:
+        example-1:
+          neq: us
+    ControlPlaneGeoFieldOrEqualityFilter:
+      description: |
+        Filter a control-plane geo by determining if the value is equal to any in a set of values, where the set is a
+        comma-delimited list.
+      type: object
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      title: ControlPlaneGeoFieldOrEqualityFilter
+      x-examples:
+        example-1:
+          oeq: 'us,eu'
+    CreateCustomDomainRequest:
+      description: Request schema for creating a custom domain in the global API.
+      type: object
+      properties:
+        kind:
+          type: string
+          enum:
+            - dedicated.v0
+            - serverless.v0
+        control_plane_id:
+          $ref: '#/components/schemas/ControlPlaneId'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+        domain:
+          $ref: '#/components/schemas/CustomDomainName'
+      additionalProperties: false
+      required:
+        - kind
+        - control_plane_id
+        - control_plane_geo
+        - domain
+      title: CreateCustomDomainRequest
+    CustomDomainsFilterParameters:
+      type: object
+      properties:
+        control_plane_id:
+          $ref: '#/components/schemas/IDFieldFilter'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeoFieldFilter'
+        domain:
+          $ref: '#/components/schemas/CloudGatewaysStringFieldFilterOverride'
+        state:
+          $ref: '#/components/schemas/CustomDomainStateFieldFilter'
+      additionalProperties: false
+      title: CustomDomainsFilterParameters
+    BaseCustomDomain:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/CustomDomainId'
+        kind:
+          type: string
+          enum:
+            - dedicated.v0
+            - serverless.v0
+        control_plane_id:
+          $ref: '#/components/schemas/ControlPlaneId'
+        control_plane_geo:
+          $ref: '#/components/schemas/ControlPlaneGeo'
+        domain:
+          $ref: '#/components/schemas/CustomDomainName'
+        certificate_id:
+          description: |
+            Certificate ID for the certificate representing this domain and stored on data-planes for this
+            control-plane. Can be retrieved via the control-planes API for this custom domain's control-plane.
+          type: string
+          format: uuid
+          example: 3b7cbeee-fbec-440e-a5ef-89e7dec3b9d0
+          nullable: true
+          readOnly: true
+        sni_id:
+          description: |
+            Server Name Indication ID for this domain and stored on data-planes for this control-plane. Can be retrieved
+            via the control-planes API for this custom domain's control-plane.
+          type: string
+          format: uuid
+          example: a8f11ea8-af09-4422-9735-5d4f8910aba1
+          nullable: true
+          readOnly: true
+        state:
+          $ref: '#/components/schemas/CustomDomainState'
+        state_metadata:
+          description: |
+            Metadata describing the backing state of the custom domain and why it may be in an erroneous state.
+          type: object
+          additionalProperties: false
+          properties:
+            reported_status:
+              description: Reported status of the custom domain from backing infrastructure.
+              type: string
+              example: INVALID
+            reason:
+              description: |
+                Reason why the custom domain may be in an erroneous state, reported from backing infrastructure.
+              type: string
+              example: |
+                CNAME points to '_acme-challenge.<prefix>.gateways.konghq.tech.' instead of '_acme-challenge.<prefix>.acme.gateways.konghq.tech.'
+          readOnly: true
+          title: CustomDomainStateMetadata
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the custom domain, to indicate the order of updates to the custom
+            domain.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of custom domain creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of custom domain update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      discriminator:
+        propertyName: kind
+        mapping:
+          serverless.v0: '#/components/schemas/ServerlessCustomDomain'
+          dedicated.v0: '#/components/schemas/DedicatedCustomDomain'
+      required:
+        - id
+        - kind
+        - control_plane_id
+        - control_plane_geo
+        - domain
+        - state
+        - state_metadata
+        - entity_version
+        - created_at
+        - updated_at
+      title: Base Configuration
+    DedicatedCustomDomain:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomDomain'
+        - properties:
+            kind:
+              type: string
+              enum:
+                - dedicated.v0
+          required:
+            - kind
+      title: Dedicated Custom Domain
+    ServerlessCustomDomain:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseCustomDomain'
+        - properties:
+            kind:
+              type: string
+              enum:
+                - serverless.v0
+          required:
+            - kind
+      title: Serverless Custom Domain
+    CustomDomain:
+      description: Object containing information about a custom domain for a control-plane.
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/DedicatedCustomDomain'
+        - $ref: '#/components/schemas/ServerlessCustomDomain'
+      title: Custom Domain
+    CustomDomainOnlineStatus:
+      type: object
+      properties:
+        cname:
+          $ref: '#/components/schemas/CustomDomainOnlinePropertyStatus'
+        ssl:
+          $ref: '#/components/schemas/CustomDomainOnlinePropertyStatus'
+      additionalProperties: false
+      required:
+        - cname
+        - ssl
+      title: Custom Domain Online Status
+    ControlPlaneId:
+      type: string
+      format: uuid
+      example: 0949471e-b759-45ba-87ab-ee63fb781388
+    CustomDomainName:
+      description: Domain name of the custom domain.
+      type: string
+      example: example.com
+      title: Custom Domain Name
+    IDFieldFilter:
+      oneOf:
+        - $ref: '#/components/schemas/schemas-StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldNEQFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
+      title: IDFieldFilter
+    CustomDomainId:
+      type: string
+      format: uuid
+      example: 39ed3790-085d-4605-9627-f96d86aaf425
+      readOnly: true
+    CloudGatewaysStringFieldFilterOverride:
+      oneOf:
+        - $ref: '#/components/schemas/CloudGatewaysStringFieldEqualsFilterOverride'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldNEQFilter'
+        - $ref: '#/components/schemas/schemas-StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldOContainsFilter'
+      title: CloudGatewaysStringFieldFilterOverride
+    CustomDomainStateFieldFilter:
+      oneOf:
+        - $ref: '#/components/schemas/CustomDomainStateFieldEqualsFilter'
+        - $ref: '#/components/schemas/CustomDomainStateFieldNotEqualsFilter'
+        - $ref: '#/components/schemas/CustomDomainStateFieldOrEqualityFilter'
+      title: CustomDomainStateFieldFilter
+    CustomDomainState:
+      description: State of the custom domain.
+      type: string
+      enum:
+        - created
+        - initializing
+        - ready
+        - terminating
+        - terminated
+        - error
+      readOnly: true
+      title: Custom Domain State
+    CustomDomainOnlinePropertyStatus:
+      description: Set of available statuses for the online properties of a custom domain.
+      type: string
+      enum:
+        - verified
+        - unverified
+      readOnly: true
+      title: Custom Domain Online Property Status
+    CloudGatewaysStringFieldEqualsFilterOverride:
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      title: StringFieldEqualsFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    CustomDomainStateFieldEqualsFilter:
+      description: Filter custom domain state by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/CustomDomainState'
+        - type: object
+          title: CustomDomainStateFieldEqualsComparison
+          properties:
+            eq:
+              $ref: '#/components/schemas/CustomDomainState'
+          required:
+            - eq
+      title: CustomDomainStateFieldEqualsFilter
+    CustomDomainStateFieldNotEqualsFilter:
+      description: Filter custom domain state by inequality match.
+      type: object
+      properties:
+        neq:
+          $ref: '#/components/schemas/CustomDomainState'
+      required:
+        - neq
+      title: CustomDomainStateFieldNotEqualsFilter
+      x-examples:
+        example-1:
+          neq: ready
+    CustomDomainStateFieldOrEqualityFilter:
+      description: |
+        Filter custom domain state by determining if the value is equal to any in a set of values, where the set is a
+        comma-delimited list.
+      type: object
+      properties:
+        oeq:
+          type: string
+      required:
+        - oeq
+      title: CustomDomainStateFieldOrEqualityFilter
+      x-examples:
+        example-1:
+          oeq: 'ready,initializing'
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+            - min_items
+            - min
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must have at least 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterMaximumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_length
+            - max_items
+            - max
+          nullable: false
+          readOnly: true
+        maximum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must not have more than 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minItems: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterMaximumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+    schemas-StringFieldEqualsFilter:
+      description: Filter a string value by exact match.
+      type: string
+      title: StringFieldEqualsFilter
+    schemas-StringFieldNEQFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        oeq:
+          type: string
+      additionalProperties: false
+      required:
+        - neq
+      title: StringFieldNEQFilter
+      x-examples:
+        example-1:
+          oeq: not-this-value
+    schemas-StringFieldOEQFilter:
+      description: Filters on the given comma separated string by one or more exact match.
+      type: object
+      properties:
+        oeq:
+          type: string
+      additionalProperties: false
+      required:
+        - oeq
+      title: StringFieldOEQFilter
+      x-examples:
+        example-1:
+          oeq: 'some-value,some-other-value'
+    StringFieldContainsFilter:
+      description: Filter a string value field by partial contains.
+      type: object
+      properties:
+        contains:
+          type: string
+      required:
+        - contains
+      title: StringFieldContainsFilter
+    StringFieldOContainsFilter:
+      description: Filters on the union of given string values by fuzzy match.
+      type: object
+      properties:
+        ocontains:
+          type: string
+      additionalProperties: false
+      required:
+        - ocontains
+      title: StringFieldOContainsFilter
+      x-examples:
+        example-1:
+          ocontains: 'dev,prod'
+  examples:
+    NetworkNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+            maximum: 120
+    TransitGatewayNameLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: name
+            rule: max_length
+            reason: name must be shorter than or equal to 120 characters
+            maximum: 120
+    CustomDomainLengthCheckBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: domain
+            rule: min_length
+            minimum: 1
+            reason: domain must be longer than or equal to 1 characters
+    ConfigurationApiAccessBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: api_access
+            rule: enum
+            choices:
+              - private
+              - public
+              - private+public
+            reason: 'api_access must be one of the following values: private, public, private+public'
+    ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.requested_instances
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.requested_instances must be an integer number
+    ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'konnect:trace:2822394689570210664'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: dataplane_groups.0.autoscale.base_rps
+            rule: is_integer
+            reason: dataplane_groups.0.autoscale.base_rps must be an integer number
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  responses:
+    CloudGatewaysBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+          examples:
+            Network Name Length Exceeded:
+              $ref: '#/components/examples/NetworkNameLengthCheckBadRequestExample'
+            Transit Gateway Name Length Exceeded:
+              $ref: '#/components/examples/TransitGatewayNameLengthCheckBadRequestExample'
+            Custom Domain Domain Length Too Short:
+              $ref: '#/components/examples/CustomDomainLengthCheckBadRequestExample'
+            Configuration Api Access Enum Validation:
+              $ref: '#/components/examples/ConfigurationApiAccessBadRequestExample'
+            Configuration Data-Plane Group Static Request Instances Minimum:
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupStaticRequestedInstancesBadRequestExample'
+            Configuration Data-Plane Group Autopilot Base RPS Minimum:
+              $ref: '#/components/examples/ConfigurationDataPlaneGroupAutopilotBaseRpsBadRequestExample'
+    ListCustomDomainsResponse:
+      description: A paginated list for a collection of custom domains.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomDomain'
+            required:
+              - meta
+              - data
+            title: ListGlobalCustomDomainsResponse
+    CreateCustomDomainResponse:
+      description: Response format for creating a custom domain for a control-plane in the global API.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomain'
+    RetrieveCustomDomainResponse:
+      description: Response format for retrieving a custom domain for a control-plane.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomain'
+    RetrieveCustomDomainOnlineStatusResponse:
+      description: Response format for retrieving the CNAME and SSL status of a custom domain.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CustomDomainOnlineStatus'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+  securitySchemes:
+    konnectAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        The Konnect access token is meant to be used by the Konnect dashboard and the decK CLI authenticate with.
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: Custom Domains
+security:
+  - konnectAccessToken: []
+  - personalAccessToken: []
+  - systemAccountAccessToken: []

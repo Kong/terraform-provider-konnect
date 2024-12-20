@@ -20,7 +20,12 @@ async function main() {
         } else {
             projects = arg
         }
+    } else {
+        // If we're not building a specific product, bundle _everything_
+        // as we need service OAS files in computed to generate per-service SDKs
+        allFiles = true;
     }
+
     for (const mode of projects) {
         let files = []
         if (allFiles) {

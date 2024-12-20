@@ -2,10 +2,16 @@
 shopt -s globstar
 set -e
 
+BUNDLE_HAS_RUN=0
 if [[ ! -z "$1" ]]; then
   PRODUCTS=($1)
 else
   PRODUCTS=(konnect portal internal)
+
+  # If we're not building a single product build all computed files
+  # so that we can build per-service SDKs
+  node ./tools/bundle.js
+  BUNDLE_HAS_RUN=1
 fi
 
 for PRODUCT in "${PRODUCTS[@]}"; do
@@ -22,8 +28,10 @@ for PRODUCT in "${PRODUCTS[@]}"; do
   COMPUTED_FILES=$(echo $FILES | sed 's/src/computed/g' | sed 's/definitions\///g');
 
   ./node_modules/.bin/oas-toolkit check-conflicts $FILES src/common/$PRODUCT.yaml --ignorePrefix components.securitySchemes --ignorePrefix components.examples
-  # Bundle here to make sure `computed` comes from `src` after we've linted
-  node ./tools/bundle.js $PRODUCT
+
+  if [[ $BUNDLE_HAS_RUN == 0 ]]; then
+    node ./tools/bundle.js $PRODUCT
+  fi
 
   # Move any global.api.konghq.com server blocks to be per-operation
   node ./tools/move-global-server-block.js $PRODUCT

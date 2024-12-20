@@ -1,0 +1,1442 @@
+openapi: 3.0.3
+info:
+  title: Portal Management V3
+  version: 0.1.0
+  description: The management API for Portals
+  contact:
+    name: Kong
+    url: 'https://konghq.com'
+servers:
+  - url: 'https://us.api.konghq.com/v3'
+    description: United-States Production region
+  - url: 'https://eu.api.konghq.com/v3'
+    description: Europe Production region
+  - url: 'https://au.api.konghq.com/v3'
+    description: Australia Production region
+  - url: 'https://me.api.konghq.com/v3'
+    description: Middle-East Production region
+paths:
+  /portals:
+    get:
+      operationId: list-portals
+      summary: List V3 Portals
+      description: 'Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated configuration, customization, developers, and applications.'
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/SortPortalsV3'
+        - name: filter
+          in: query
+          description: Filter portals returned in the response.
+          required: false
+          schema:
+            $ref: '#/components/schemas/PortalFilterParameters'
+          style: deepObject
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalsResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ListPortalsV3BadRequestExample1:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample1'
+                ListPortalsV3BadRequestExample2:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample2'
+                ListPortalsV3BadRequestExample3:
+                  $ref: '#/components/examples/ListPortalsV3BadRequestExample3'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - V3 Portals
+    post:
+      operationId: create-portal
+      summary: Create V3 Portal
+      description: Creates a new developer portal scoped in this region for this organization.
+      requestBody:
+        $ref: '#/components/requestBodies/CreatePortalV3'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalV3BadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample1'
+                UpdatePortalV3BadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample2'
+                UpdatePortalV3BadRequestExample3:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample3'
+                UpdatePortalV3BadRequestExample4:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample4'
+                UpdatePortalV3BadRequestExample5:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample5'
+                UpdatePortalV3BadRequestExample6:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample6'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - V3 Portals
+  '/portals/{portalId}':
+    parameters:
+      - name: portalId
+        in: path
+        description: ID of the portal.
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      operationId: get-portal
+      summary: Get V3 Portal
+      description: 'Returns the configuration for a single developer portal. This allows you to understand the current visibility, access, and domain settings.'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponseV3'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - V3 Portals
+    patch:
+      operationId: update-portal
+      summary: Update V3 Portal
+      description: 'Updates the configuration for a single portal including the visibility, access, and custom domain settings.'
+      requestBody:
+        $ref: '#/components/requestBodies/UpdatePortalV3'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                UpdatePortalV3BadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample1'
+                UpdatePortalV3BadRequestExample2:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample2'
+                UpdatePortalV3BadRequestExample3:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample3'
+                UpdatePortalV3BadRequestExample4:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample4'
+                UpdatePortalV3BadRequestExample5:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample5'
+                UpdatePortalV3BadRequestExample6:
+                  $ref: '#/components/examples/UpdatePortalV3BadRequestExample6'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - V3 Portals
+    delete:
+      operationId: delete-portal
+      summary: Delete Portal
+      description: 'Deletes a single portal, along with all related entities.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - V3 Portals
+  '/portals/{portalId}/verify-domain':
+    post:
+      operationId: verify-portal-domain
+      summary: Verify Custom Domain
+      description: 'Verifies the current status of the custom hosted domain for this portal, indicating whether the appropriate CNAME properties have propagated and if a corresponding SSL certificate has been generated.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      responses:
+        '200':
+          $ref: '#/components/responses/VerifyPortalDomainResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                VerifyPortalDomainBadRequestExample1:
+                  $ref: '#/components/examples/VerifyPortalDomainBadRequestExample1'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - V3 Portals
+components:
+  parameters:
+    PageNumber:
+      name: 'page[number]'
+      description: Determines which page of the entities to retrieve.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 1
+    PageSize:
+      name: 'page[size]'
+      description: The maximum number of items to include per page. The last page of a collection may include fewer items.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: integer
+        example: 10
+    PortalId:
+      schema:
+        type: string
+        format: uuid
+      name: portalId
+      in: path
+      required: true
+      description: ID of the portal.
+    SortPortalsV3:
+      name: sort
+      description: |
+        Sorts a collection of portals. Supported sort attributes are:
+          - name
+          - description
+          - authentication_enabled
+          - rbac_enabled
+          - auto_approve_applications
+          - auto_approve_developers
+          - default_domain
+          - custom_domain
+          - created_at
+          - updated_at
+      in: query
+      required: false
+      schema:
+        type: string
+  schemas:
+    PortalFilterParameters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        name:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        authentication_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        rbac_enabled:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_api_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_page_visibility:
+          $ref: '#/components/schemas/StringFieldFilter'
+        default_application_auth_strategy_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        auto_approve_developers:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        auto_approve_applications:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+        default_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+        custom_domain:
+          $ref: '#/components/schemas/StringFieldFilter'
+      title: PortalFilterParameters
+    StringFieldEqualsFilter:
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      title: StringFieldEqualsFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    StringFieldOEQFilter:
+      description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+      type: object
+      properties:
+        oeq:
+          type: string
+      additionalProperties: false
+      required:
+        - oeq
+      title: StringFieldOEQFilter
+      x-examples:
+        example-1:
+          oeq: 'some-value,some-other-value'
+    StringFieldNEQFilter:
+      description: Filters on the given string field value by exact match inequality.
+      type: object
+      properties:
+        neq:
+          type: string
+      additionalProperties: false
+      required:
+        - neq
+      title: StringFieldNEQFilter
+      x-examples:
+        example-1:
+          neq: not-this-value
+    UuidFieldFilter:
+      description: Filters on the given UUID field value by exact match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      title: UuidFieldFilter
+      x-examples:
+        example-1: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-2:
+          eq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-3:
+          oeq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+        example-4:
+          neq: 3bbfd3a-e9ab-48a9-9881-ed589e4615d1
+    StringFieldContainsFilter:
+      description: Filters on the given string field value by fuzzy match.
+      type: object
+      properties:
+        contains:
+          type: string
+      additionalProperties: false
+      required:
+        - contains
+      title: StringFieldContainsFilter
+      x-examples:
+        example-1:
+          contains: some-value
+    StringFieldOContainsFilter:
+      description: Returns entities that fuzzy-match any of the comma-delimited phrases in the filter string.
+      type: object
+      properties:
+        ocontains:
+          type: string
+      additionalProperties: false
+      required:
+        - ocontains
+      title: StringFieldOContainsFilter
+      x-examples:
+        example-1:
+          ocontains: 'this-value,or-that-value'
+    StringFieldFilter:
+      description: Filters on the given string field value by either exact or fuzzy match.
+      oneOf:
+        - $ref: '#/components/schemas/StringFieldEqualsFilter'
+        - $ref: '#/components/schemas/StringFieldContainsFilter'
+        - $ref: '#/components/schemas/StringFieldOContainsFilter'
+        - $ref: '#/components/schemas/StringFieldOEQFilter'
+        - $ref: '#/components/schemas/StringFieldNEQFilter'
+      title: StringFieldFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+        example-3:
+          contains: some-value
+        example-4:
+          ocontains: 'some-potential,value'
+        example-5:
+          oeq: 'some-potential,value'
+        example-6:
+          neq: not-this-value
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      title: BooleanFieldFilter
+      x-examples:
+        example-1: true
+    UUID:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    Labels:
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        env: test
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 50
+      title: Labels
+    PageMeta:
+      description: Contains pagination query parameters and the total number of objects returned.
+      type: object
+      properties:
+        number:
+          type: number
+          example: 1
+        size:
+          type: number
+          example: 10
+        total:
+          type: number
+          example: 100
+      required:
+        - number
+        - size
+        - total
+    PaginatedMeta:
+      description: returns the pagination information
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMeta'
+      required:
+        - page
+      title: PaginatedMeta
+    BaseError:
+      description: standard error
+      type: object
+      properties:
+        status:
+          description: |
+            The HTTP status code of the error. Useful when passing the response
+            body to child properties in a frontend UI. Must be returned as an integer.
+          type: integer
+          readOnly: true
+        title:
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+        type:
+          description: The error type.
+          type: string
+          readOnly: true
+        instance:
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          type: string
+          readOnly: true
+        detail:
+          description: |
+            A human readable explanation specific to this occurence of the problem.
+            This field may contain request/entity data to help the user understand
+            what went wrong. Enclose variable values in square brackets. Should be
+            provided as "Sentence case" for direct use in the UI.
+          type: string
+          readOnly: true
+      required:
+        - status
+        - title
+        - instance
+        - detail
+      title: Error
+    InvalidRules:
+      description: invalid parameters rules
+      type: string
+      enum:
+        - required
+        - is_array
+        - is_base64
+        - is_boolean
+        - is_date_time
+        - is_integer
+        - is_null
+        - is_number
+        - is_object
+        - is_string
+        - is_uuid
+        - is_fqdn
+        - is_arn
+        - unknown_property
+        - is_label
+        - matches_regex
+        - invalid
+        - is_supported_network_availability_zone_list
+        - is_supported_network_cidr_block
+        - is_supported_provider_region
+      nullable: true
+      readOnly: true
+    InvalidParameterStandard:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          $ref: '#/components/schemas/InvalidRules'
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+    InvalidParameterMinimumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - min_length
+            - min_digits
+            - min_lowercase
+            - min_uppercase
+            - min_symbols
+            - min_items
+            - min
+          nullable: false
+          readOnly: true
+        minimum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must have at least 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - minimum
+    InvalidParameterMaximumLength:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - max_length
+            - max_items
+            - max
+          nullable: false
+          readOnly: true
+        maximum:
+          type: integer
+          example: 8
+        source:
+          type: string
+          example: body
+        reason:
+          type: string
+          example: must not have more than 8 characters
+          readOnly: true
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - maximum
+    InvalidParameterChoiceItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - enum
+          nullable: false
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        choices:
+          type: array
+          items: {}
+          minItems: 1
+          nullable: false
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - reason
+        - rule
+        - choices
+    InvalidParameterDependentItem:
+      type: object
+      properties:
+        field:
+          type: string
+          example: name
+          readOnly: true
+        rule:
+          description: invalid parameters rules
+          type: string
+          enum:
+            - dependent_fields
+          nullable: true
+          readOnly: true
+        reason:
+          type: string
+          example: is a required field
+          readOnly: true
+        dependents:
+          type: array
+          items: {}
+          nullable: true
+          readOnly: true
+          uniqueItems: true
+        source:
+          type: string
+          example: body
+      additionalProperties: false
+      required:
+        - field
+        - rule
+        - reason
+        - dependents
+    InvalidParameters:
+      description: invalid parameters
+      type: array
+      items:
+        oneOf:
+          - $ref: '#/components/schemas/InvalidParameterStandard'
+          - $ref: '#/components/schemas/InvalidParameterMinimumLength'
+          - $ref: '#/components/schemas/InvalidParameterMaximumLength'
+          - $ref: '#/components/schemas/InvalidParameterChoiceItem'
+          - $ref: '#/components/schemas/InvalidParameterDependentItem'
+      minItems: 1
+      nullable: false
+      uniqueItems: true
+    BadRequestError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          required:
+            - invalid_parameters
+          properties:
+            invalid_parameters:
+              $ref: '#/components/schemas/InvalidParameters'
+    UnauthorizedError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 401
+            title:
+              example: Unauthorized
+            type:
+              example: 'https://httpstatuses.com/401'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Invalid credentials
+    ForbiddenError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 403
+            title:
+              example: Forbidden
+            type:
+              example: 'https://httpstatuses.com/403'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Forbidden
+    LabelsUpdate:
+      description: |
+        Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
+
+        Labels are intended to store **INTERNAL** metadata.
+
+        Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+      type: object
+      example:
+        env: test
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+        nullable: true
+      maxProperties: 50
+      nullable: true
+      writeOnly: true
+    NotFoundError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 404
+            title:
+              example: Not Found
+            type:
+              example: 'https://httpstatuses.com/404'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Not found
+    ConflictError:
+      allOf:
+        - $ref: '#/components/schemas/BaseError'
+        - type: object
+          properties:
+            status:
+              example: 409
+            title:
+              example: Conflict
+            type:
+              example: 'https://httpstatuses.com/409'
+            instance:
+              example: 'kong:trace:1234567890'
+            detail:
+              example: Conflict
+  examples:
+    PortalV3Example1:
+      value:
+        id: 9f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        created_at: '2022-02-07T17:46:57.52Z'
+        updated_at: '2022-10-08T17:00:00.52Z'
+        name: Portal A
+        display_name: Developer Portal A
+        description: The Portal A
+        default_domain: 123455678abcd.us.portal.konghq.com
+        authentication_enabled: false
+        rbac_enabled: true
+        default_api_visibility: private
+        default_page_visibility: private
+        default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        auto_approve_applications: false
+        auto_approve_developers: true
+        custom_domain: api.example.com
+    UpdatePortalV3ExampleRbacEnabled:
+      value:
+        authentication_enabled: true
+        rbac_enabled: true
+    UpdatePortalV3ExampleAuthenticationDisabled:
+      value:
+        authentication_enabled: false
+    UpdatePortalV3ExampleAutoApprove:
+      value:
+        auto_approve_applications: true
+        auto_approve_developers: true
+    UpdatePortalV3ExampleCustomDomain:
+      value:
+        custom_domain: api.example.com
+    UpdatePortalV3Example1:
+      value:
+        authentication_enabled: false
+        rbac_enabled: false
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+    CreatePortalV3ExampleRbacEnabled:
+      value:
+        name: MyDevPortal
+        authentication_enabled: true
+        rbac_enabled: true
+    CreatePortalV3ExampleAuthenticationDisabled:
+      value:
+        name: MyDevPortal
+        authentication_enabled: false
+    CreatePortalV3ExampleAutoApprove:
+      value:
+        name: MyDevPortal
+        auto_approve_applications: true
+        auto_approve_developers: true
+    CreatePortalV3ExampleCustomDomain:
+      value:
+        name: MyDevPortal
+        custom_domain: api.example.com
+    CreatePortalV3Example1:
+      value:
+        name: MyDevPortal
+        authentication_enabled: true
+        rbac_enabled: true
+        auto_approve_applications: false
+        auto_approve_developers: false
+        custom_domain: api.example.com
+    ListPortalsV3Example1:
+      value:
+        meta:
+          page:
+            number: 1
+            size: 10
+            total: 1
+        data:
+          - id: 8f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            created_at: '2022-02-07T17:46:57.52Z'
+            updated_at: '2022-10-08T17:00:00.52Z'
+            name: Portal A
+            display_name: Developer Portal A
+            description: The Portal A
+            authentication_enabled: false
+            rbac_enabled: true
+            default_api_visibility: private
+            default_page_visibility: private
+            default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+            auto_approve_applications: false
+            auto_approve_developers: true
+            default_domain: 123455678abcd.us.portal.konghq.com
+            custom_domain: api.example.com
+    ListPortalsV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: 'page[size]'
+            rule: is_number
+            reason: '"page[size]" must be a number'
+            source: query
+    ListPortalsV3BadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: 'page[number]'
+            rule: is_number
+            reason: '"page[number]" must be a number'
+            source: query
+    ListPortalsV3BadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: sort
+            rule: enum
+            choices:
+              - created_at
+              - updated_at
+            reason: 'must be one of [created_at, updated_at]'
+            source: query
+    UpdatePortalV3BadRequestExample1:
+      summary: Unknown property
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    UpdatePortalV3BadRequestExample2:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: authentication_enabled
+            rule: is_boolean
+            reason: value of "authentication_enabled" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample3:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: rbac_enabled
+            rule: is_boolean
+            reason: value of "rbac_enabled" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample4:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_applications
+            rule: is_boolean
+            reason: value of "auto_approve_applications" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample5:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: auto_approve_developers
+            rule: is_boolean
+            reason: value of "auto_approve_developers" must be true or false
+            source: body
+    UpdatePortalV3BadRequestExample6:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_domain
+            rule: max_length
+            reason: value of "custom_domain" must not exceed 1024 characters
+            source: body
+            maximum: 1024
+    VerifyPortalDomainBadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: custom_domain
+            reason: portal needs a custom_domain to be verified
+    VerifyPortalDomainV3Example1:
+      value:
+        is_cname_verified: true
+        is_ssl_issued: false
+    UnauthorizedExample:
+      value:
+        status: 401
+        title: Unauthorized
+        instance: 'kong:trace:8347343766220159418'
+        detail: Unauthorized
+    ForbiddenExample:
+      value:
+        status: 403
+        title: Forbidden
+        instance: 'kong:trace:2723154947768991354'
+        detail: You do not have permission to perform this action
+    NotFoundExample:
+      value:
+        status: 404
+        title: Not Found
+        instance: 'kong:trace:6816496025408232265'
+        detail: Not Found
+  requestBodies:
+    CreatePortalV3:
+      description: Create a portal.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+                default: true
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products. Authentication must be enabled to use RBAC.'
+                type: boolean
+                default: false
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              custom_domain:
+                description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+                type: string
+                format: hostname
+                nullable: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+            additionalProperties: false
+            required:
+              - name
+            title: PortalV3
+          examples:
+            Example 1:
+              $ref: '#/components/examples/CreatePortalV3Example1'
+            Authentication Disabled:
+              $ref: '#/components/examples/CreatePortalV3ExampleAuthenticationDisabled'
+            Enable RBAC:
+              $ref: '#/components/examples/CreatePortalV3ExampleRbacEnabled'
+            Auto Approve Settings:
+              $ref: '#/components/examples/CreatePortalV3ExampleAutoApprove'
+            Custom Domains:
+              $ref: '#/components/examples/CreatePortalV3ExampleCustomDomain'
+    UpdatePortalV3:
+      description: Update a portal's settings.
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+                default: true
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products. Authentication must be enabled to use RBAC.'
+                type: boolean
+                default: false
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              custom_domain:
+                description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+                type: string
+                format: hostname
+                nullable: true
+              labels:
+                $ref: '#/components/schemas/LabelsUpdate'
+            additionalProperties: false
+            title: PortalV3
+          examples:
+            Example 1:
+              $ref: '#/components/examples/UpdatePortalV3Example1'
+            Authentication Disabled:
+              $ref: '#/components/examples/UpdatePortalV3ExampleAuthenticationDisabled'
+            Enable RBAC:
+              $ref: '#/components/examples/UpdatePortalV3ExampleRbacEnabled'
+            Auto Approve Settings:
+              $ref: '#/components/examples/UpdatePortalV3ExampleAutoApprove'
+            Custom Domains:
+              $ref: '#/components/examples/UpdatePortalV3ExampleCustomDomain'
+  responses:
+    ListPortalsResponseV3:
+      description: A paginated list of portals in the current region of an organization.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  title: PortalV3
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/UUID'
+                    created_at:
+                      $ref: '#/components/schemas/CreatedAt'
+                    updated_at:
+                      $ref: '#/components/schemas/UpdatedAt'
+                    name:
+                      description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                    display_name:
+                      description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                      type: string
+                      maxLength: 255
+                      minLength: 1
+                    description:
+                      description: A description of the portal.
+                      type: string
+                      maxLength: 512
+                      nullable: true
+                    authentication_enabled:
+                      description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                      type: boolean
+                      default: true
+                    rbac_enabled:
+                      description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products. Authentication must be enabled to use RBAC.'
+                      type: boolean
+                      default: false
+                    default_api_visibility:
+                      description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_page_visibility:
+                      description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                      type: string
+                      enum:
+                        - public
+                        - private
+                    default_application_auth_strategy_id:
+                      description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                      type: string
+                      format: uuid
+                      nullable: true
+                    auto_approve_developers:
+                      description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    auto_approve_applications:
+                      description: 'Whether requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+                      type: boolean
+                      default: false
+                    default_domain:
+                      description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                      type: string
+                      format: hostname
+                      readOnly: true
+                    custom_domain:
+                      description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+                      type: string
+                      format: hostname
+                      nullable: true
+                    labels:
+                      $ref: '#/components/schemas/Labels'
+                  required:
+                    - id
+                    - name
+                    - display_name
+                    - description
+                    - authentication_enabled
+                    - rbac_enabled
+                    - default_api_visibility
+                    - default_page_visibility
+                    - default_application_auth_strategy_id
+                    - auto_approve_applications
+                    - auto_approve_developers
+                    - default_domain
+                    - custom_domain
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            Example 1:
+              $ref: '#/components/examples/ListPortalsV3Example1'
+    PortalResponseV3:
+      description: Details about a portal.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              name:
+                description: 'The name of the portal, used to distinguish it from other portals. Name must be unique.'
+                type: string
+                maxLength: 255
+                minLength: 1
+              display_name:
+                description: The display name of the portal. This value will be the portal's `name` in Portal API.
+                type: string
+                maxLength: 255
+                minLength: 1
+              description:
+                description: A description of the portal.
+                type: string
+                maxLength: 512
+                nullable: true
+              authentication_enabled:
+                description: 'Whether the portal supports developer authentication. If disabled, developers cannot register for accounts or create applications.'
+                type: boolean
+                default: true
+              rbac_enabled:
+                description: 'Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products. Authentication must be enabled to use RBAC.'
+                type: boolean
+                default: false
+              default_api_visibility:
+                description: 'The default visibility of APIs in the portal. If set to `public`, newly published APIs are visible to unauthenticated developers. If set to `private`, newly published APIs are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_page_visibility:
+                description: 'The default visibility of pages in the portal. If set to `public`, newly created pages are visible to unauthenticated developers. If set to `private`, newly created pages are hidden from unauthenticated developers.'
+                type: string
+                enum:
+                  - public
+                  - private
+              default_application_auth_strategy_id:
+                description: 'The default authentication strategy for APIs published to the portal. Newly published APIs will use this authentication strategy unless overridden during publication. If set to `null`, API publications will not use an authentication strategy unless set during publication.'
+                type: string
+                format: uuid
+                nullable: true
+              auto_approve_developers:
+                description: 'Whether developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              auto_approve_applications:
+                description: 'Whether requests from applications to register for products will be automatically approved, or if they will be set to pending until approved by an admin.'
+                type: boolean
+                default: false
+              default_domain:
+                description: The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
+                type: string
+                format: hostname
+                readOnly: true
+              custom_domain:
+                description: 'The custom domain to access the developer portal. A CNAME for the portal''s default domain must be able to be set for the custom domain for it to be valid. After setting a valid CNAME, an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will be able to use the custom domain to route to the portal''s web client and API.'
+                type: string
+                format: hostname
+                nullable: true
+              labels:
+                $ref: '#/components/schemas/Labels'
+            additionalProperties: false
+            required:
+              - id
+              - name
+              - display_name
+              - description
+              - authentication_enabled
+              - rbac_enabled
+              - default_api_visibility
+              - default_page_visibility
+              - default_application_auth_strategy_id
+              - auto_approve_applications
+              - auto_approve_developers
+              - default_domain
+              - custom_domain
+            title: PortalV3
+          examples:
+            Example 1:
+              $ref: '#/components/examples/PortalV3Example1'
+    VerifyPortalDomainResponseV3:
+      description: Details about the status of a portal's custom domain.
+      content:
+        application/json:
+          schema:
+            description: Details about the current status of a custom domain.
+            type: object
+            properties:
+              is_cname_verified:
+                type: boolean
+                readOnly: true
+              is_ssl_issued:
+                type: boolean
+                readOnly: true
+            example:
+              is_cname_verified: true
+              is_ssl_issued: false
+            additionalProperties: false
+            required:
+              - is_cname_verified
+              - is_ssl_issued
+            title: VerifyPortalDomainResponseV3
+          examples:
+            Example 1:
+              $ref: '#/components/examples/VerifyPortalDomainV3Example1'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
+    Conflict:
+      description: Conflict
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+  securitySchemes:
+    personalAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
+        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+        The PAT token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
+    systemAccountAccessToken:
+      type: http
+      scheme: bearer
+      bearerFormat: Token
+      description: |
+        The system account access token is meant for automations and integrations that are not directly associated with a human identity.
+        You can generate a system account Access Token by creating a system account and then obtaining a system account access token for that account.
+        The access token must be passed in the header of a request, for example:
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer spat_i2Ej...'`
+tags:
+  - name: V3 Portals
+    description: APIs related to configuration of Konnect Developer Portals.
+security:
+  - personalAccessToken: []
+  - systemAccountAccessToken: []
