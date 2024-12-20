@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Portal Management V3
-  version: 0.1.0
+  version: 0.2.0
   description: The management API for Portals
   contact:
     name: Kong
@@ -18,6 +18,8 @@ servers:
 paths:
   /portals:
     get:
+      x-internal: true
+      x-unstable: true
       summary: List V3 Portals
       description: >-
         Lists developer portals defined in this region for this organization.
@@ -63,6 +65,8 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
     post:
+      x-internal: true
+      x-unstable: true
       summary: Create V3 Portal
       description: >-
         Creates a new developer portal scoped in this region for this organization.
@@ -110,6 +114,8 @@ paths:
         required: true
         description: ID of the portal.
     get:
+      x-internal: true
+      x-unstable: true
       summary: Get V3 Portal
       description: >-
         Returns the configuration for a single developer portal. This allows you
@@ -130,6 +136,8 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
     patch:
+      x-internal: true
+      x-unstable: true
       summary: Update V3 Portal
       description: >-
         Updates the configuration for a single portal including the visibility,
@@ -175,6 +183,8 @@ paths:
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Conflict
     delete:
+      x-internal: true
+      x-unstable: true
       summary: Delete Portal
       description: >-
         Deletes a single portal, along with all related entities.
@@ -195,6 +205,8 @@ paths:
             ../../../../common/definitions/errors.yaml#/components/responses/NotFound
   /portals/{portalId}/verify-domain:
     post:
+      x-internal: true
+      x-unstable: true
       summary: Verify Custom Domain
       description: >-
         Verifies the current status of the custom hosted domain for this portal,
