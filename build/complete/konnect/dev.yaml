@@ -4122,7 +4122,7 @@ components:
         content:
           description: |
             The raw content of your API specification.
-          example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+          example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
           type: string
         type:
           description: |
@@ -8947,7 +8947,7 @@ components:
     ApiSpecExample:
       value:
         id: 7710d5c4-d902-410b-992f-18b814155b53
-        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
         type: oas3
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
@@ -8977,7 +8977,7 @@ components:
     CreateApiSpecRequestExample:
       summary: Create API Specification Request
       value:
-        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
         type: oas3
     UpdateApiNameRequestExample:
       summary: Update API Name
@@ -8990,7 +8990,7 @@ components:
     UpdateApiSpecContentRequestExample:
       summary: Update API Spec Content
       value:
-        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.1"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.1"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
     ApiDocumentExample:
       value:
         id: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
@@ -9824,7 +9824,7 @@ components:
               content:
                 description: |
                   The raw content of your API specification.
-                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
                 type: string
               type:
                 description: |
@@ -10736,7 +10736,7 @@ components:
               content:
                 description: |
                   The raw content of your API specification.
-                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}'
+                example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
                 type: string
               type:
                 description: |
