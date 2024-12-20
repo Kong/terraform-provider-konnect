@@ -442,7 +442,25 @@ components:
       allOf:
         - $ref: '#/components/schemas/AppAuthStrategy'
       title: UpdateAppAuthStrategyRequest
+    PutAppAuthStrategyResponse:
+      description: Response containing Raw Database representation of AuthStrategy (including DCR provider if any)
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/AppAuthStrategy'
+      title: UpdateAppAuthStrategyResponse
     AppAuthStrategy:
+      description: A set of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. Called “Auth Strategy” for short in the context of portals/applications. The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
+      type: object
+      discriminator:
+        propertyName: strategy_type
+      oneOf:
+        - $ref: '#/components/schemas/AppAuthStrategyKeyAuthResponse'
+        - $ref: '#/components/schemas/AppAuthStrategyOpenIDConnectResponse'
+      required:
+        - strategy_type
+      title: AppAuthStrategy
+    AppAuthStrategyOpenIDConnectResponse:
+      description: Response payload from creating an OIDC Application Auth Strategy
       type: object
       properties:
         id:
@@ -467,35 +485,26 @@ components:
           type: string
           enum:
             - openid_connect
-            - key_auth
-        labels:
-          $ref: '#/components/schemas/LabelsUpdate'
         configs:
-          description: JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
+          description: JSON-B object containing the configuration for the OIDC strategy
           type: object
-          oneOf:
-            - type: object
-              additionalProperties: true
-              required:
-                - openid-connect
-              properties:
-                openid-connect:
-                  $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
-            - type: object
-              additionalProperties: true
-              required:
-                - key-auth
-              properties:
-                key-auth:
-                  $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+          additionalProperties: false
+          properties:
+            openid-connect:
+              $ref: '#/components/schemas/AppAuthStrategyConfigOpenIDConnect'
+          required:
+            - openid-connect
+        dcr_provider:
+          $ref: '#/components/schemas/DcrProvider'
+        labels:
+          $ref: '#/components/schemas/Labels'
         created_at:
           type: string
           format: date-time
         updated_at:
           type: string
           format: date-time
-        dcr_provider:
-          $ref: '#/components/schemas/DcrProvider'
+      additionalProperties: false
       required:
         - id
         - name
@@ -506,6 +515,63 @@ components:
         - labels
         - created_at
         - updated_at
+      title: AppAuthStrategyOpenIDConnectResponse
+    AppAuthStrategyKeyAuthResponse:
+      description: Response payload from creating or updating a Key Auth Application Auth Strategy
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        org_id:
+          type: string
+          format: uuid
+        name:
+          description: |
+            The name of the auth strategy. This is used to identify the auth strategy in the Konnect UI.
+          type: string
+          maxLength: 256
+          minLength: 1
+        display_name:
+          description: |
+            The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
+          type: string
+          maxLength: 256
+        strategy_type:
+          type: string
+          enum:
+            - key_auth
+        configs:
+          description: JSON-B object containing the configuration for the Key Auth strategy
+          type: object
+          additionalProperties: false
+          properties:
+            key-auth:
+              $ref: '#/components/schemas/AppAuthStrategyConfigKeyAuth'
+          required:
+            - key-auth
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        dcr_provider:
+          $ref: '#/components/schemas/DcrProvider'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - display_name
+        - strategy_type
+        - org_id
+        - configs
+        - labels
+        - created_at
+        - updated_at
+      title: AppAuthStrategyKeyAuthResponse
     AppAuthStrategyConfigKeyAuth:
       description: |
         The most basic mode to configure an Application Auth Strategy for an API Product Version. 
@@ -562,12 +628,6 @@ components:
         - scopes
         - auth_methods
       title: AppAuthStrategyConfigOpenIDConnect
-    PutAppAuthStrategyResponse:
-      description: Response containing Raw Database representation of AuthStrategy (including DCR provider if any)
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/AppAuthStrategy'
-      title: UpdateAppAuthStrategyResponse
     Labels:
       description: |
         Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
