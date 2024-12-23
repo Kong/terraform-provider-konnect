@@ -9,6 +9,7 @@ info:
 tags:
   - name: portal
   - name: App Auth Strategies
+  - name: api-products
 servers:
   - url: 'http://konnect-api.konnect.svc.cluster.local:300/v0'
     description: Konnect cluster
@@ -41,6 +42,22 @@ paths:
           $ref: '#/components/responses/GetPortal'
         '404':
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+  /internal/control-planes/{controlPlaneId}/gateway-services/{gatewayServiceId}/product-version:
+    parameters:
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/controlPlaneId'
+      - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/GatewayServiceId'
+    get:
+      summary: retrieves a product version id by control plane and gateway service
+      description: returns product version id or 404 if not found
+      operationId: get-cp-gw-product-version
+      tags:
+        - api-products
+      responses:
+        '200':
+          $ref: '#/components/responses/GetProductVersion'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+
 components:
   responses:
     GetPortal:
@@ -55,6 +72,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthStrategy'
+    GetProductVersion:
+      description: A product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersion'
   schemas:
     Portal:
       additionalProperties: true
@@ -109,6 +132,15 @@ components:
           type: string
         default_application_auth_strategy:
           $ref: '#/components/schemas/NullableAuthStrategy'
+    ProductVersion:
+      additionalProperties: false
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid    
     AuthStrategy:
       allOf:
         - $ref: '#/components/schemas/BaseAuthStrategy'

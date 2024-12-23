@@ -38,6 +38,21 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - portal
+  '/internal/control-planes/{controlPlaneId}/gateway-services/{gatewayServiceId}/product-version':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/GatewayServiceId'
+    get:
+      operationId: get-cp-gw-product-version
+      summary: retrieves a product version id by control plane and gateway service
+      description: returns product version id or 404 if not found
+      responses:
+        '200':
+          $ref: '#/components/responses/GetProductVersion'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - api-products
 components:
   parameters:
     AuthStrategyId:
@@ -49,6 +64,14 @@ components:
         type: string
         format: uuid
         example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
+    GatewayServiceId:
+      schema:
+        type: string
+        format: uuid
+      name: gatewayServiceId
+      in: path
+      required: true
+      description: ID of the gateway service.
     PortalId:
       schema:
         type: string
@@ -57,6 +80,15 @@ components:
       in: path
       required: true
       description: ID of the portal.
+    controlPlaneId:
+      name: controlPlaneId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
+      description: The UUID of your control plane. This variable is available in the Konnect manager.
   schemas:
     Portal:
       type: object
@@ -111,6 +143,15 @@ components:
         - uri
         - labels
         - version
+    ProductVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+        - id
     AuthStrategy:
       allOf:
         - $ref: '#/components/schemas/BaseAuthStrategy'
@@ -264,6 +305,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthStrategy'
+    GetProductVersion:
+      description: A product version
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProductVersion'
     NotFound:
       description: Not Found
       content:
@@ -276,3 +323,4 @@ components:
 tags:
   - name: portal
   - name: App Auth Strategies
+  - name: api-products
