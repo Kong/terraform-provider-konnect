@@ -696,6 +696,18 @@ components:
       enum:
         - public
         - private
+    ApiPublicationAuthStrategyIds:
+      description: |
+        The auth strategy the API enforces for applications in the portal.
+        Omitting this property means the portal's default application auth strategy will be used.
+        Setting to null means the API will not require application authentication.
+      type: array
+      items:
+        type: string
+        format: uuid
+      maxItems: 1
+      minItems: 1
+      nullable: true
     ApiPublicationListItem:
       description: An API publication in a portal
       type: object
@@ -714,6 +726,8 @@ components:
           readOnly: true
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
+        auth_strategy_ids:
+          $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
@@ -725,11 +739,14 @@ components:
         - visibility
         - created_at
         - updated_at
+        - auth_strategy_ids
       title: API Publication
     ApiPublication:
       description: An API publication in a portal
       type: object
       properties:
+        auth_strategy_ids:
+          $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
         visibility:
           $ref: '#/components/schemas/ApiPublicationVisibility'
         created_at:
@@ -2230,6 +2247,8 @@ components:
             description: An API publication in a portal
             type: object
             properties:
+              auth_strategy_ids:
+                $ref: '#/components/schemas/ApiPublicationAuthStrategyIds'
               visibility:
                 $ref: '#/components/schemas/ApiPublicationVisibility'
               created_at:
@@ -2241,6 +2260,7 @@ components:
               - visibility
               - created_at
               - updated_at
+              - auth_strategy_ids
             title: API Publication
     ListApiPublicationResponse:
       description: Paginated list of API publications

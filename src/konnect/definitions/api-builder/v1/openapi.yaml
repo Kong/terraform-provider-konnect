@@ -927,6 +927,7 @@ components:
                   - visibility
                   - created_at
                   - updated_at
+                  - auth_strategy_ids
     ListApiPublicationResponse:
       description: Paginated list of API publications
       content:
@@ -1160,6 +1161,19 @@ components:
         Public API publications do not require authentication to view and retrieve information about them.
         Private API publications require authentication to retrieve information about them.
 
+    ApiPublicationAuthStrategyIds:
+      type: array
+      nullable: true
+      description: |
+        The auth strategy the API enforces for applications in the portal.
+        Omitting this property means the portal's default application auth strategy will be used.
+        Setting to null means the API will not require application authentication.
+      maxItems: 1
+      minItems: 1
+      items:
+        type: string
+        format: uuid
+
     ApiPublicationListItem:
       title: API Publication
       type: object
@@ -1171,6 +1185,7 @@ components:
         - visibility
         - created_at
         - updated_at
+        - auth_strategy_ids
       properties:
         api_id:
           type: string
@@ -1186,6 +1201,8 @@ components:
           readOnly: true
         visibility:
           $ref: "#/components/schemas/ApiPublicationVisibility"
+        auth_strategy_ids:
+          $ref: "#/components/schemas/ApiPublicationAuthStrategyIds"
         created_at:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
         updated_at:
@@ -1197,6 +1214,8 @@ components:
       description: An API publication in a portal
       additionalProperties: false
       properties:
+        auth_strategy_ids:
+          $ref: "#/components/schemas/ApiPublicationAuthStrategyIds"
         visibility:
           $ref: "#/components/schemas/ApiPublicationVisibility"
         created_at:
