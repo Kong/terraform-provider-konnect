@@ -1673,6 +1673,7 @@ components:
         auto_approve_applications: false
         auto_approve_developers: true
         custom_domain: api.example.com
+        canonical_domain: api.example.com
     UpdatePortalV3ExampleRbacEnabled:
       value:
         authentication_enabled: true
@@ -1741,8 +1742,9 @@ components:
             default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
             auto_approve_applications: false
             auto_approve_developers: true
-            default_domain: 123455678abcd.us.portal.konghq.com
-            custom_domain: api.example.com
+            default_domain: 123455678abcd.edge.us.portal.konghq.com
+            custom_domain: null
+            canonical_domain: 123455678abcd.edge.us.portal.konghq.com
     ListPortalsV3BadRequestExample1:
       value:
         status: 400
@@ -2142,6 +2144,12 @@ components:
                 type: string
                 format: hostname
                 nullable: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
@@ -2231,6 +2239,12 @@ components:
                 type: string
                 format: hostname
                 nullable: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
             additionalProperties: false
@@ -2375,6 +2389,12 @@ components:
                       type: string
                       format: hostname
                       nullable: true
+                    canonical_domain:
+                      description: The canonical domain of the developer portal
+                      type: string
+                      format: hostname
+                      nullable: false
+                      readOnly: true
                     labels:
                       $ref: '#/components/schemas/Labels'
                   required:
@@ -2391,6 +2411,7 @@ components:
                     - auto_approve_developers
                     - default_domain
                     - custom_domain
+                    - canonical_domain
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
             additionalProperties: false
@@ -2471,6 +2492,12 @@ components:
                 type: string
                 format: hostname
                 nullable: true
+              canonical_domain:
+                description: The canonical domain of the developer portal
+                type: string
+                format: hostname
+                nullable: false
+                readOnly: true
               labels:
                 $ref: '#/components/schemas/Labels'
             additionalProperties: false
@@ -2488,6 +2515,7 @@ components:
               - auto_approve_developers
               - default_domain
               - custom_domain
+              - canonical_domain
             title: PortalV3
           examples:
             Example 1:

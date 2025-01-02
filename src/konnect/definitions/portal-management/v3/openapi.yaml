@@ -768,6 +768,7 @@ components:
         auto_approve_applications: false
         auto_approve_developers: true
         custom_domain: api.example.com
+        canonical_domain: api.example.com
     UpdatePortalV3ExampleRbacEnabled:
       value:
         authentication_enabled: true
@@ -836,8 +837,9 @@ components:
             default_application_auth_strategy_id: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
             auto_approve_applications: false
             auto_approve_developers: true
-            default_domain: 123455678abcd.us.portal.konghq.com
-            custom_domain: api.example.com
+            default_domain: 123455678abcd.edge.us.portal.konghq.com
+            custom_domain: null
+            canonical_domain: 123455678abcd.edge.us.portal.konghq.com
     ListPortalsV3BadRequestExample1:
       value:
         status: 400
@@ -1335,6 +1337,7 @@ components:
                       - auto_approve_developers
                       - default_domain
                       - custom_domain
+                      - canonical_domain
               meta:
                 $ref: '../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta'
           examples:
@@ -1362,6 +1365,7 @@ components:
                 - auto_approve_developers
                 - default_domain
                 - custom_domain
+                - canonical_domain
           examples:
             Example 1:
               $ref: '#/components/examples/PortalV3Example1'
@@ -1560,6 +1564,12 @@ components:
             must be able to be set for the custom domain for it to be valid. After setting a valid CNAME,
             an SSL/TLS certificate will be automatically manged for the custom domain, and traffic will
             be able to use the custom domain to route to the portal's web client and API.
+        canonical_domain:
+          type: string
+          format: hostname
+          description: The canonical domain of the developer portal
+          nullable: false
+          readOnly: true
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
 
