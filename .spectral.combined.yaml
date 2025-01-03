@@ -1,0 +1,15 @@
+extends:
+  - "spectral:oas"
+
+overrides:
+  - files:
+      - "build/**/*"
+    rules:
+      operation-operationId: "error"
+      operation-tag-defined: "off"
+      oas3-valid-media-example: "off"
+      oas3-valid-schema-example: "off"
+      no-$ref-siblings: "off"
+      oas3-operation-security-defined: "off"
+      operation-description: "off"
+      operation-tags: "off"

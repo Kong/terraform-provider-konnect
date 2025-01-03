@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+shopt -s globstar
 
 # Merge the generated and hand maintained OAS files for Control Planes Config
 FILES=(
@@ -23,7 +24,10 @@ node ./tools/split-service-specs.js $1
 
 # Make sure all specs are ordered deterministically
 if [[ $1 != "terraform" ]]; then
-  for i in $(find build -name '*.yaml'); do
+  CHANGED_FILES=$(git diff --name-only build/**/*.yaml)
+  if [[ -n $CHANGED_FILES ]]; then
+  for i in $CHANGED_FILES; do
     npx openapi-format --sortFile .openapi-format-sort.json $i -o $i
   done
+  fi
 fi
