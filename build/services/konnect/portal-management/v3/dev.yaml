@@ -272,6 +272,80 @@ paths:
           $ref: '#/components/responses/Forbidden'
       tags:
         - V3 Portal Assets
+  '/portals/{portalId}/customization':
+    get:
+      operationId: get-portal-customization-v3
+      summary: Get Customization
+      description: Returns the portal customization options.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
+    put:
+      operationId: replace-portal-customization-v3
+      summary: Replace Customization
+      description: Replace the portal customization options.
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomizationV3'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: '#/components/examples/ReplacePortalCustomizationV3BadRequestExample1'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
+    patch:
+      operationId: update-portal-customization-v3
+      summary: Update Portal Customization
+      description: 'Update the portal customization options, merging properties.'
+      parameters:
+        - $ref: '#/components/parameters/PortalId'
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomizationV3'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: '#/components/examples/UpdatePortalCustomizationV3BadRequestExample1'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Customization
   '/portals/{portalId}/pages':
     get:
       operationId: list-portal-pages
@@ -1580,6 +1654,107 @@ components:
       pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: ImageDataUri
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    PortalMenuItemV3:
+      type: object
+      properties:
+        path:
+          description: The absolute path of a page in a portal with a leading slash.
+          type: string
+          example: /about/company
+          maxLength: 512
+        title:
+          description: The link display text
+          type: string
+          example: My Page
+        public:
+          description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+          type: boolean
+        external:
+          description: 'When clicked, open the link in a new window'
+          type: boolean
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - public
+        - external
+    PortalFooterMenuSectionV3:
+      type: object
+      properties:
+        title:
+          description: The footer menu section title
+          type: string
+          maxLength: 512
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalMenuItemV3'
+      additionalProperties: false
+      required:
+        - title
+        - items
+    PortalCustomizationV3:
+      type: object
+      properties:
+        theme:
+          type: string
+          nullable: false
+        layout:
+          type: string
+          nullable: false
+        css:
+          type: string
+          nullable: true
+        js:
+          type: object
+          additionalProperties: false
+          properties:
+            custom:
+              type: string
+              nullable: true
+            scripts:
+              type: array
+              items:
+                type: string
+                pattern: '^https://[^:.]+\\..+$'
+              maxItems: 20
+        menu:
+          type: object
+          additionalProperties: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSectionV3'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          properties:
+            try_it_ui:
+              type: boolean
+              default: true
+            try_it_insomnia:
+              type: boolean
+              default: true
+            infinite_scroll:
+              type: boolean
+              default: true
+            show_schemas:
+              type: boolean
+              default: true
+        robots:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: PortalCustomizationV3
     DateTimeFieldFilter:
       description: Filters on the given datetime (RFC-3339) field value.
       oneOf:
@@ -1862,6 +2037,28 @@ components:
       value:
         is_cname_verified: true
         is_ssl_issued: false
+    UpdatePortalCustomizationV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    ReplacePortalCustomizationV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
     PortalAssetResponseV3ExamplePNG:
       value: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
     PortalAssetResponseV3ExampleJPEG:
@@ -2270,6 +2467,11 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/ReplacePortalImageAssetV3Example1'
+    ReplacePortalCustomizationV3:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomizationV3'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -2560,6 +2762,12 @@ components:
           examples:
             PNG Example:
               $ref: '#/components/examples/PortalAssetResponseV3ExamplePNG'
+    PortalCustomizationResponseV3:
+      description: The current customization options for a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomizationV3'
     DefaultContentResponse:
       description: Summary of created default content
       content:

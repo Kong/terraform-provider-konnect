@@ -6251,7 +6251,7 @@ components:
       required:
         - ids
         - status
-    PortalMenuItem:
+    PortalMenuItemV3:
       type: object
       properties:
         path:
@@ -6269,12 +6269,13 @@ components:
         external:
           description: 'When clicked, open the link in a new window'
           type: boolean
+      additionalProperties: false
       required:
         - path
         - title
         - public
         - external
-    PortalFooterMenuSection:
+    PortalFooterMenuSectionV3:
       type: object
       properties:
         title:
@@ -6284,7 +6285,8 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PortalMenuItem'
+            $ref: '#/components/schemas/PortalMenuItemV3'
+      additionalProperties: false
       required:
         - title
         - items
@@ -6298,15 +6300,15 @@ components:
             header:
               type: array
               items:
-                $ref: '#/components/schemas/PortalMenuItem'
+                $ref: '#/components/schemas/PortalMenuItemV3'
             footer_sections:
               type: array
               items:
-                $ref: '#/components/schemas/PortalFooterMenuSection'
+                $ref: '#/components/schemas/PortalFooterMenuSectionV3'
             footer_bottom:
               type: array
               items:
-                $ref: '#/components/schemas/PortalMenuItem'
+                $ref: '#/components/schemas/PortalMenuItemV3'
       additionalProperties: false
       required:
         - data

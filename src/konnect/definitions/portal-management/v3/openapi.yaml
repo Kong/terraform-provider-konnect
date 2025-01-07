@@ -346,6 +346,102 @@ paths:
         '403':
           $ref: >-
             ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+  /portals/{portalId}/customization:
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Get Customization
+      description: Returns the portal customization options.
+      operationId: get-portal-customization-v3
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Customization
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    put:
+      x-internal: true
+      x-unstable: true
+      summary: Replace Customization
+      description: Replace the portal customization options.
+      operationId: replace-portal-customization-v3
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Customization
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomizationV3'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: >-
+                    #/components/examples/ReplacePortalCustomizationV3BadRequestExample1
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
+    patch:
+      x-internal: true
+      x-unstable: true
+      summary: Update Portal Customization
+      description: Update the portal customization options, merging properties.
+      operationId: update-portal-customization-v3
+      parameters:
+        - $ref: >-
+            ../../../../common/definitions/portal.yaml#/components/parameters/PortalId
+      tags:
+        - Portal Customization
+      requestBody:
+        $ref: '#/components/requestBodies/ReplacePortalCustomizationV3'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: >-
+                  ../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError
+              examples:
+                ReplacePortalImageAssetV3BadRequestExample1:
+                  $ref: >-
+                    #/components/examples/UpdatePortalCustomizationV3BadRequestExample1
+        '401':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Unauthorized
+        '403':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/Forbidden
+        '404':
+          $ref: >-
+            ../../../../common/definitions/errors.yaml#/components/responses/NotFound
   /portals/{portalId}/pages:
     get:
       x-internal: true
@@ -957,6 +1053,28 @@ components:
       value:
         is_cname_verified: true
         is_ssl_issued: false
+    UpdatePortalCustomizationV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
+    ReplacePortalCustomizationV3BadRequestExample1:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: my_property
+            rule: unknown_property
+            reason: '"my_property" is not allowed'
+            source: body
     PortalAssetResponseV3ExamplePNG:
       value: 'data:image/png;base64,bmljZV9sb29raW5nX3BpY3R1cmU='
     PortalAssetResponseV3ExampleJPEG:
@@ -1219,6 +1337,11 @@ components:
           examples:
             Example 1:
               $ref: '#/components/examples/ReplacePortalImageAssetV3Example1'
+    ReplacePortalCustomizationV3:
+      content:
+        application/json:
+          schema:
+            $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomizationV3'
     CreatePortalPage:
       description: Create a page in a portal.
       required: true
@@ -1408,6 +1531,12 @@ components:
           examples:
             JPEG Example:
               $ref: '#/components/examples/PortalAssetResponseV3ExampleJPEG'
+    PortalCustomizationResponseV3:
+      description: The current customization options for a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomizationV3'
     DefaultContentResponse:
       description: Summary of created default content
       content:
@@ -1572,6 +1701,10 @@ components:
           readOnly: true
         labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
+
+    ################################
+    ## Portal Assets
+    ################################
 
     PortalImageAssetV3:
       title: PortalImageAssetV3

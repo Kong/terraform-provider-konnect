@@ -109,8 +109,71 @@ components:
       description: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
       example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
-    PortalMenuItem:
+    PortalCustomizationV3:
+      title: PortalCustomizationV3
       type: object
+      additionalProperties: false
+      properties:
+        theme:
+          type: string
+          nullable: false
+        layout:
+          type: string
+          nullable: false
+        css:
+          type: string
+          nullable: true
+        js:
+          type: object
+          additionalProperties: false
+          properties:
+            custom:
+              type: string
+              nullable: true
+            scripts:
+              type: array
+              items:
+                type: string
+                pattern: '^https://[^:.]+\\..+$'
+              maxItems: 20
+        menu:
+          type: object
+          additionalProperties: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSectionV3'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          properties:
+            try_it_ui:
+              type: boolean
+              default: true
+            try_it_insomnia: 
+              type: boolean
+              default: true
+            infinite_scroll:
+              type: boolean
+              default: true
+            show_schemas:
+              type: boolean
+              default: true
+        robots:
+          type: string
+          nullable: true
+    PortalMenuItemV3:
+      type: object
+      additionalProperties: false
       properties:
         path:
           description: The absolute path of a page in a portal with a leading slash.
@@ -132,8 +195,9 @@ components:
         - title
         - public
         - external
-    PortalFooterMenuSection:
+    PortalFooterMenuSectionV3:
       type: object
+      additionalProperties: false
       properties:
         title:
           description: The footer menu section title
@@ -142,7 +206,7 @@ components:
         items:
           type: array
           items:
-            $ref: '#/components/schemas/PortalMenuItem'
+            $ref: '#/components/schemas/PortalMenuItemV3'
       required:
         - title
         - items
@@ -156,15 +220,15 @@ components:
             header:
               type: array
               items:
-                $ref: '#/components/schemas/PortalMenuItem'
+                $ref: '#/components/schemas/PortalMenuItemV3'
             footer_sections:
               type: array
               items:
-                $ref: '#/components/schemas/PortalFooterMenuSection'
+                $ref: '#/components/schemas/PortalFooterMenuSectionV3'
             footer_bottom:
               type: array
               items:
-                $ref: '#/components/schemas/PortalMenuItem'
+                $ref: '#/components/schemas/PortalMenuItemV3'
       additionalProperties: false
       required:
         - data
