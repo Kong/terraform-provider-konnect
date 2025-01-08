@@ -171,6 +171,56 @@
       "dest": "api-specs/portal.yaml"
     }
   ],
+  "kong/developer.konghq.com": [
+    {
+      "src": "build/services/konnect/analytics-requests/v2/public.yaml",
+      "dest": "api-specs/konnect/analytics-requests/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/api-products/v2/public.yaml",
+      "dest": "api-specs/konnect/api-products/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/application-auth-strategies/v2/public.yaml",
+      "dest": "api-specs/konnect/application-auth-strategies/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/audit-logs/v2/public.yaml",
+      "dest": "api-specs/konnect/audit-logs/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/cloud-gateways/v2/openapi.yaml",
+      "dest": "api-specs/konnect/cloud-gateways/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/control-planes/v2/public.yaml",
+      "dest": "api-specs/konnect/control-planes/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/control-planes-config/v2/public.yaml",
+      "dest": "api-specs/konnect/control-planes-config/v2/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/identity/v3/public.yaml",
+      "dest": "api-specs/konnect/identity/v3/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/ksearch/v1/public.yaml",
+      "dest": "api-specs/konnect/ksearch/v1/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/mesh-control-planes/v0/public.yaml",
+      "dest": "api-specs/konnect/mesh-control-planes/v0/openapi.yaml"
+    },
+    {
+      "src": "build/services/konnect/portal-management/v2/public.yaml",
+      "dest": "api-specs/konnect/portal-management/v2/openapi.yaml"
+    },
+    {
+      "src": "build/complete/portal/public.yaml",
+      "dest": "api-specs/konnect/dev-portal/v2/openapi.yaml"
+    }
+  ],
   "kong/portal": [
     {
       "src": "build/complete/portal/public.yaml",
