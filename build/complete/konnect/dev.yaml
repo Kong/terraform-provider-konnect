@@ -573,543 +573,6 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Serverless Cloud Gateways
-  /v1/api-implementations:
-    get:
-      operationId: list-api-implementations
-      summary: List API Implementations
-      description: List gateway implementations for this API
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/ApiImplementationFilters'
-        - $ref: '#/components/parameters/ApiImplementationSort'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListApiImplementationsResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Implementation
-  /v1/apis:
-    post:
-      operationId: create-api
-      summary: Create API
-      description: Creates an API.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateApiRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/ApiResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiNameBadRequestExample:
-                  $ref: '#/components/examples/ApiNameBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API
-    get:
-      operationId: list-apis
-      summary: List APIs
-      description: Returns a collection of all APIs.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/ApiFilters'
-        - $ref: '#/components/parameters/ApiSort'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListApiResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                InvalidApiSortQueryBadRequestExample:
-                  $ref: '#/components/examples/InvalidApiSortQueryNameBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API
-  '/v1/apis/{apiId}':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-    get:
-      operationId: fetch-api
-      summary: Fetch API
-      description: Fetches an API.
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API
-    patch:
-      operationId: update-api
-      summary: Update API
-      description: Updates an API.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateApiRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiNameBadRequestExample:
-                  $ref: '#/components/examples/ApiNameBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API
-    delete:
-      operationId: delete-api
-      summary: Delete API
-      description: Deletes an API.
-      responses:
-        '204':
-          description: API was deleted successfully.
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API
-  '/v1/apis/{apiId}/documents':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-    post:
-      operationId: create-api-document
-      summary: Create API Document
-      description: |
-        Publish a new document attached to an API.
-
-        All configuration options may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the `POST` request will take precedence.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateApiDocumentRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/ApiDocumentResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiNameBadRequestExample:
-                  $ref: '#/components/examples/ApiDocumentBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '409':
-          $ref: '#/components/responses/ApiSlugConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Documentation
-    get:
-      operationId: list-api-documents
-      summary: List API Documents
-      description: Returns a collection of all documents for an API.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/ApiDocumentFilters'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListApiDocumentResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                InvalidApiSortQueryBadRequestExample:
-                  $ref: '#/components/examples/InvalidApiSortQueryBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Documentation
-  '/v1/apis/{apiId}/documents/{documentId}':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-      - $ref: '#/components/parameters/DocumentId'
-    get:
-      operationId: fetch-api-document
-      summary: Fetch API Document
-      description: Returns a document for the API.
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiDocumentResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Documentation
-    patch:
-      operationId: update-api-document
-      summary: Update an API Document
-      description: Updates a document for an API.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateApiDocumentRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiDocumentResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiNameBadRequestExample:
-                  $ref: '#/components/examples/ApiDocumentBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '409':
-          $ref: '#/components/responses/ApiSlugConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Documentation
-    delete:
-      operationId: delete-api-document
-      summary: Delete API Documentation
-      description: Removes a document from an API.
-      responses:
-        '204':
-          description: Document for the API was deleted successfully.
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Documentation
-  '/v1/apis/{apiId}/implementations':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-    post:
-      operationId: create-api-implementation
-      summary: Create API Implementation
-      description: |
-        Creates an implementation for an API.
-        An API can be implemented by a single Gateway Service.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateApiImplementationRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/ApiImplementationResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiImplementationBadRequestExample:
-                  $ref: '#/components/examples/ApiImplementationBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '409':
-          $ref: '#/components/responses/ApiImplementationConflict'
-      tags:
-        - API Implementation
-  '/v1/apis/{apiId}/implementations/{implementationId}':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-      - $ref: '#/components/parameters/ImplementationId'
-    get:
-      operationId: fetch-api-implementation
-      summary: Fetch API Implementation
-      description: Retrieve a gateway implementation for this API
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiImplementationResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Implementation
-    delete:
-      operationId: delete-api-implementation
-      summary: Delete API Implementation
-      description: Unlink a gateway implementation from this API
-      responses:
-        '204':
-          description: API implementation was unlinked successfully.
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Implementation
-  '/v1/apis/{apiId}/publications/{portalId}':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-      - $ref: '#/components/parameters/PortalId'
-    put:
-      operationId: publish-api-to-portal
-      summary: Publish API
-      description: |
-        Publish an API to a portal.
-      requestBody:
-        $ref: '#/components/requestBodies/PutApiPublicationRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiPublicationResponse'
-        '400':
-          $ref: '#/components/responses/ApiPublicationBadRequest'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Publication
-    get:
-      operationId: fetch-publication
-      summary: Fetch Publication
-      description: |
-        Retrieve an API's publication in a portal.
-        If the API is not published to the portal, a 404 response is returned.
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiPublicationResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Publication
-    delete:
-      operationId: delete-publication
-      summary: Delete Publication
-      description: Unpublish an API from a portal.
-      responses:
-        '204':
-          description: API was successfully unpublished from portal.
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Publication
-  '/v1/apis/{apiId}/specifications':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-    post:
-      operationId: create-api-spec
-      summary: Create API Specification
-      description: |
-        Creates a specification for an API.
-        **Note:** You can only have one specification for an API.
-      requestBody:
-        $ref: '#/components/requestBodies/CreateApiSpecRequest'
-      responses:
-        '201':
-          $ref: '#/components/responses/ApiSpecResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiSpecContentBadRequestExample:
-                  $ref: '#/components/examples/ApiSpecContentBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '409':
-          $ref: '#/components/responses/ApiSpecConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Specification
-    get:
-      operationId: list-api-specs
-      summary: List API Specifications
-      description: |
-        Returns a list of specifications for an API.
-        **Note:** You can only have one specification for an API.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/ApiSpecFilters'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListApiSpecResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Specification
-  '/v1/apis/{apiId}/specifications/{specId}':
-    parameters:
-      - $ref: '#/components/parameters/ApiId'
-      - $ref: '#/components/parameters/SpecId'
-    get:
-      operationId: fetch-api-spec
-      summary: Fetch API Specification
-      description: Fetches the specification of an API.
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiSpecResponse'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Specification
-    patch:
-      operationId: update-api-spec
-      summary: Update API Specification
-      description: Updates the specification of an API.
-      requestBody:
-        $ref: '#/components/requestBodies/UpdateApiSpecRequest'
-      responses:
-        '200':
-          $ref: '#/components/responses/ApiSpecResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-              examples:
-                ApiSpecContentBadRequestExample:
-                  $ref: '#/components/examples/ApiSpecContentBadRequestExample'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-        '409':
-          $ref: '#/components/responses/ApiSpecHiddenConflict'
-        '415':
-          $ref: '#/components/responses/UnsupportedMediaType'
-      tags:
-        - API Specification
-    delete:
-      operationId: delete-api-spec
-      summary: Delete API Specification
-      description: Deletes the specification of an API.
-      responses:
-        '204':
-          description: API Specification was deleted successfully.
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Specification
-  /v1/publications:
-    get:
-      operationId: list-api-publications
-      summary: List Publications
-      description: Returns a collection of all API Publications.
-      parameters:
-        - $ref: '#/components/parameters/PageSize'
-        - $ref: '#/components/parameters/PageNumber'
-        - $ref: '#/components/parameters/ApiPublicationFilters'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListApiPublicationResponse'
-        '400':
-          description: Bad Request
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/BadRequestError'
-        '401':
-          $ref: '#/components/responses/ApiUnauthorized'
-        '403':
-          $ref: '#/components/responses/ApiForbidden'
-        '404':
-          $ref: '#/components/responses/ApiNotFound'
-      tags:
-        - API Publication
   /v2/cloud-gateways/networks:
     get:
       operationId: list-networks
@@ -3103,6 +2566,543 @@ paths:
       tags:
         - Service Hub Services
         - Integrations
+  /v3/api-implementations:
+    get:
+      operationId: list-api-implementations
+      summary: List API Implementations
+      description: List gateway implementations for this API
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiImplementationFilters'
+        - $ref: '#/components/parameters/ApiImplementationSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiImplementationsResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+  /v3/api-publications:
+    get:
+      operationId: list-api-publications
+      summary: List Publications
+      description: Returns a collection of all API Publications.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiPublicationFilters'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiPublicationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+  /v3/apis:
+    post:
+      operationId: create-api
+      summary: Create API
+      description: Creates an API.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: '#/components/examples/ApiNameBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+    get:
+      operationId: list-apis
+      summary: List APIs
+      description: Returns a collection of all APIs.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiFilters'
+        - $ref: '#/components/parameters/ApiSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                InvalidApiSortQueryBadRequestExample:
+                  $ref: '#/components/examples/InvalidApiSortQueryNameBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+  '/v3/apis/{apiId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    get:
+      operationId: fetch-api
+      summary: Fetch API
+      description: Fetches an API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+    patch:
+      operationId: update-api
+      summary: Update API
+      description: Updates an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: '#/components/examples/ApiNameBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API
+    delete:
+      operationId: delete-api
+      summary: Delete API
+      description: Deletes an API.
+      responses:
+        '204':
+          description: API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API
+  '/v3/apis/{apiId}/documents':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      operationId: create-api-document
+      summary: Create API Document
+      description: |
+        Publish a new document attached to an API.
+
+        All configuration options may be provided in the frontmatter section of `content`. If you set values in both the `POST` request _and_ in the frontmatter, the values in the `POST` request will take precedence.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiDocumentRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: '#/components/examples/ApiDocumentBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Documentation
+    get:
+      operationId: list-api-documents
+      summary: List API Documents
+      description: Returns a collection of all documents for an API.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiDocumentFilters'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiDocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                InvalidApiSortQueryBadRequestExample:
+                  $ref: '#/components/examples/InvalidApiSortQueryBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+  '/v3/apis/{apiId}/documents/{documentId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/DocumentId'
+    get:
+      operationId: fetch-api-document
+      summary: Fetch API Document
+      description: Returns a document for the API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+    patch:
+      operationId: update-api-document
+      summary: Update an API Document
+      description: Updates a document for an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiDocumentRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiDocumentResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiNameBadRequestExample:
+                  $ref: '#/components/examples/ApiDocumentBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSlugConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Documentation
+    delete:
+      operationId: delete-api-document
+      summary: Delete API Documentation
+      description: Removes a document from an API.
+      responses:
+        '204':
+          description: Document for the API was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Documentation
+  '/v3/apis/{apiId}/implementations':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      operationId: create-api-implementation
+      summary: Create API Implementation
+      description: |
+        Creates an implementation for an API.
+        An API can be implemented by a single Gateway Service.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiImplementationRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiImplementationBadRequestExample:
+                  $ref: '#/components/examples/ApiImplementationBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiImplementationConflict'
+      tags:
+        - API Implementation
+  '/v3/apis/{apiId}/implementations/{implementationId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ImplementationId'
+    get:
+      operationId: fetch-api-implementation
+      summary: Fetch API Implementation
+      description: Retrieve a gateway implementation for this API
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+    delete:
+      operationId: delete-api-implementation
+      summary: Delete API Implementation
+      description: Unlink a gateway implementation from this API
+      responses:
+        '204':
+          description: API implementation was unlinked successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+  '/v3/apis/{apiId}/publications/{portalId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/PortalId'
+    put:
+      operationId: publish-api-to-portal
+      summary: Publish API
+      description: |
+        Publish an API to a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PutApiPublicationRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '400':
+          $ref: '#/components/responses/ApiPublicationBadRequest'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    get:
+      operationId: fetch-publication
+      summary: Fetch Publication
+      description: |
+        Retrieve an API's publication in a portal.
+        If the API is not published to the portal, a 404 response is returned.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiPublicationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+    delete:
+      operationId: delete-publication
+      summary: Delete Publication
+      description: Unpublish an API from a portal.
+      responses:
+        '204':
+          description: API was successfully unpublished from portal.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Publication
+  '/v3/apis/{apiId}/specifications':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      operationId: create-api-spec
+      summary: Create API Specification
+      description: |
+        Creates a specification for an API.
+        **Note:** You can only have one specification for an API.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiSpecRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiSpecContentBadRequestExample:
+                  $ref: '#/components/examples/ApiSpecContentBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Specification
+    get:
+      operationId: list-api-specs
+      summary: List API Specifications
+      description: |
+        Returns a list of specifications for an API.
+        **Note:** You can only have one specification for an API.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiSpecFilters'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Specification
+  '/v3/apis/{apiId}/specifications/{specId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/SpecId'
+    get:
+      operationId: fetch-api-spec
+      summary: Fetch API Specification
+      description: Fetches the specification of an API.
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Specification
+    patch:
+      operationId: update-api-spec
+      summary: Update API Specification
+      description: Updates the specification of an API.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateApiSpecRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiSpecResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiSpecContentBadRequestExample:
+                  $ref: '#/components/examples/ApiSpecContentBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiSpecHiddenConflict'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - API Specification
+    delete:
+      operationId: delete-api-spec
+      summary: Delete API Specification
+      description: Deletes the specification of an API.
+      responses:
+        '204':
+          description: API Specification was deleted successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Specification
   /v3/identity-providers:
     get:
       operationId: get-identity-providers

@@ -7,13 +7,13 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 servers:
-  - url: 'https://us.api.konghq.com/v1'
+  - url: 'https://us.api.konghq.com/v3'
     description: United-States Production region
-  - url: 'https://eu.api.konghq.com/v1'
+  - url: 'https://eu.api.konghq.com/v3'
     description: Europe Production region
-  - url: 'https://au.api.konghq.com/v1'
+  - url: 'https://au.api.konghq.com/v3'
     description: Australia Production region
-  - url: 'https://me.api.konghq.com/v1'
+  - url: 'https://me.api.konghq.com/v3'
     description: Middle-East Production region
 paths:
   /apis:
@@ -439,7 +439,7 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Publication
-  /publications:
+  /api-publications:
     get:
       operationId: list-api-publications
       summary: List Publications

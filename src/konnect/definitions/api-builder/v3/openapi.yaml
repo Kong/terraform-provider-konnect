@@ -13,13 +13,13 @@ tags:
   - name: API Publication
   - name: API Implementation
 servers:
-  - url: "https://us.api.konghq.com/v1"
+  - url: "https://us.api.konghq.com/v3"
     description: US Region Base URL
-  - url: "https://eu.api.konghq.com/v1"
+  - url: "https://eu.api.konghq.com/v3"
     description: EU Region Base URL
-  - url: "https://au.api.konghq.com/v1"
+  - url: "https://au.api.konghq.com/v3"
     description: AU Region Base URL
-  - url: "https://me.api.konghq.com/v1"
+  - url: "https://me.api.konghq.com/v3"
     description: ME Region Base URL
 security:
   - konnectAccessToken: []
@@ -485,7 +485,7 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Publication
-  /publications:
+  /api-publications:
     get:
       x-internal: true
       x-unstable: true
