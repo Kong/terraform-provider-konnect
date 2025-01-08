@@ -11,6 +11,7 @@ tags:
   - name: API Documentation
   - name: API Specification
   - name: API Publication
+  - name: API Implementation
 servers:
   - url: "https://us.api.konghq.com/v1"
     description: US Region Base URL
@@ -512,6 +513,102 @@ paths:
           $ref: "#/components/responses/ApiNotFound"
       tags:
         - API Publication
+  /apis/{apiId}/implementations:
+    parameters:
+      - $ref: "#/components/parameters/ApiId"
+    post:
+      x-internal: true
+      x-unstable: true
+      summary: Create API Implementation
+      description: |
+        Creates an implementation for an API.
+        An API can be implemented by a single Gateway Service.
+      operationId: create-api-implementation
+      responses:
+        "201":
+          $ref: "#/components/responses/ApiImplementationResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: "../../../../common/definitions/errors.yaml#/components/schemas/BadRequestError"
+              examples:
+                ApiImplementationBadRequestExample:
+                  $ref: "#/components/examples/ApiImplementationBadRequestExample"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+        "409":
+          $ref: "#/components/responses/ApiImplementationConflict"
+      tags:
+        - API Implementation
+      requestBody:
+        $ref: "#/components/requestBodies/CreateApiImplementationRequest"
+  /apis/{apiId}/implementations/{implementationId}:
+    parameters:
+      - $ref: "#/components/parameters/ApiId"
+      - $ref: "#/components/parameters/ImplementationId"
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: Fetch API Implementation
+      description: Retrieve a gateway implementation for this API
+      operationId: fetch-api-implementation
+      responses:
+        "200":
+          $ref: "#/components/responses/ApiImplementationResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Implementation
+    delete:
+      x-internal: true
+      x-unstable: true
+      summary: Delete API Implementation
+      description: Unlink a gateway implementation from this API
+      operationId: delete-api-implementation
+      responses:
+        "204":
+          description: API implementation was unlinked successfully.
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Implementation
+  /api-implementations:
+    get:
+      x-internal: true
+      x-unstable: true
+      summary: List API Implementations
+      description: List gateway implementations for this API
+      operationId: list-api-implementations
+      parameters:
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize"
+        - $ref: "../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber"
+        - $ref: "#/components/parameters/ApiImplementationFilters"
+        - $ref: "#/components/parameters/ApiImplementationSort"
+      responses:
+        "200":
+          $ref: "#/components/responses/ListApiImplementationsResponse"
+        "401":
+          $ref: "#/components/responses/ApiUnauthorized"
+        "403":
+          $ref: "#/components/responses/ApiForbidden"
+        "404":
+          $ref: "#/components/responses/ApiNotFound"
+      tags:
+        - API Implementation
 components:
   parameters:
     ApiId:
@@ -547,6 +644,15 @@ components:
         format: uuid
         example: f32d905a-ed33-46a3-a093-d8f536af9a8a
       name: portalId
+      in: path
+      required: true
+      description: The Portal identifier
+    ImplementationId:
+      schema:
+        type: string
+        format: uuid
+        example: 032d905a-ed33-46a3-a093-d8f536af9a8a
+      name: implementationId
       in: path
       required: true
       description: The Portal identifier
@@ -594,6 +700,28 @@ components:
       schema:
         $ref: "#/components/schemas/ApiPublicationFilterParameters"
       style: deepObject
+    ApiImplementationFilters:
+      name: filter
+      description: Filters APIs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: "#/components/schemas/ApiImplementationFilterParameters"
+      style: deepObject
+    ApiImplementationSort:
+      name: sort
+      description: |
+        Sorts a collection of API implementations. Supported sort attributes are:
+          - id
+          - api_id
+          - control_plane_id
+          - service_id
+          - created_at
+          - updated_at
+      required: false
+      in: query
+      schema:
+        $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/SortQuery"
   requestBodies:
     CreateApiRequest:
       required: true
@@ -685,6 +813,15 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ApiPublication"
+    CreateApiImplementationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ApiImplementation"
+          examples:
+            CreateApiImplementationRequest:
+              $ref: "#/components/examples/CreateApiImplementationRequestExample"
   responses:
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
@@ -726,6 +863,17 @@ components:
           examples:
             ApiSpecConflictExample:
               $ref: "#/components/examples/ApiSpecHiddenConflictExample"
+    ApiImplementationConflict:
+      description: Conflict - A gateway service can only be linked to a single API
+      content:
+        application/problem+json:
+          schema:
+            $ref: "../../../../common/definitions/errors.yaml#/components/schemas/ConflictError"
+          examples:
+            ApiImplementationServiceConflictExample:
+              $ref: "#/components/examples/ApiImplementationServiceConflictExample"
+            ApiImplementationCountConflictExample:
+              $ref: "#/components/examples/ApiImplementationCountConflictExample"
     ApiUnauthorized:
       description: ApiUnauthorized
       content:
@@ -946,6 +1094,37 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/ApiPublicationListItem"
+    ApiImplementationResponse:
+      description: An API implementation
+      content:
+        application/json:
+          schema:
+            x-flatten-allOf: true
+            allOf:
+              - $ref: "#/components/schemas/ApiImplementation"
+              - required:
+                  - id
+                  - service
+                  - created_at
+                  - updated_at
+    ListApiImplementationsResponse:
+      description: Paginated list of API implementations
+      content:
+        application/json:
+          schema:
+            title: ListApiImplementations
+            type: object
+            required:
+              - data
+              - meta
+            additionalProperties: false
+            properties:
+              meta:
+                $ref: "../../../../common/definitions/metadatas.yaml#/components/schemas/PaginatedMeta"
+              data:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ApiImplementationListItem"
 
   schemas:
     ################################
@@ -1106,7 +1285,7 @@ components:
           type: string
           description: |
             The raw content of your API specification.
-          example : "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
+          example: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
         type:
           type: string
           example: oas3
@@ -1224,6 +1403,72 @@ components:
           $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt"
 
     ################################
+    ## API Implementation
+    ################################
+
+    ApiImplementationService:
+      title: API Implementation Service
+      type: object
+      description: A Gateway service that implements an API
+      additionalProperties: false
+      required:
+        - control_plane_id
+        - id
+      properties:
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+
+    ApiImplementationListItem:
+      title: API Implementation List Item
+      type: object
+      description: An entity that implements an API
+      additionalProperties: false
+      required:
+        - id
+        - api_id
+        - created_at
+        - updated_at
+        - service
+      properties:
+        id:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+        created_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt"
+        api_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          description: The API identifier.
+          readOnly: true
+        service:
+          $ref: "#/components/schemas/ApiImplementationService"
+
+    ApiImplementation:
+      title: API Implementation
+      type: object
+      description: An entity that implements an API
+      additionalProperties: false
+      required:
+        - service
+      properties:
+        id:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UUID"
+        created_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/CreatedAt"
+        updated_at:
+          $ref: "../../../../common/definitions/konnect_properties.yaml#/components/schemas/UpdatedAt"
+        service:
+          $ref: "#/components/schemas/ApiImplementationService"
+
+    ################################
     ## Filter Parameters
     ################################
 
@@ -1271,6 +1516,22 @@ components:
         api_id:
           $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
 
+    ApiImplementationFilterParameters:
+      title: "ApiImplementationFilterParameters"
+      type: object
+      properties:
+        id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        api_id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        service_id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        control_plane_id:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/UuidFieldFilter"
+        created_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
+        updated_at:
+          $ref: "../../../../common/definitions/aip_filters.yaml#/components/schemas/DateTimeFieldFilter"
 
   ################################
   ## Other schemas
@@ -1299,7 +1560,7 @@ components:
     ApiSpecExample:
       value:
         id: 7710d5c4-d902-410b-992f-18b814155b53
-        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
         type: oas3
         created_at: 2023-01-01T00:00:00.000Z
         updated_at: 2023-01-01T00:00:00.000Z
@@ -1307,7 +1568,7 @@ components:
       value:
         data:
           - id: 7710d5c4-d902-410b-992f-18b814155b53
-            type: 'oas3'
+            type: "oas3"
             created_at: 2023-01-01T00:00:00.000Z
             updated_at: 2023-01-01T00:00:00.000Z
         meta:
@@ -1329,7 +1590,7 @@ components:
     CreateApiSpecRequestExample:
       summary: Create API Specification Request
       value:
-        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.0\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.0"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
         type: oas3
     UpdateApiNameRequestExample:
       summary: Update API Name
@@ -1342,7 +1603,7 @@ components:
     UpdateApiSpecContentRequestExample:
       summary: Update API Spec Content
       value:
-        content: "{\"openapi\":\"3.0.3\",\"info\":{\"title\":\"Example API\",\"version\":\"1.0.1\"},\"paths\":{\"/example\":{\"get\":{\"summary\":\"Example endpoint\",\"responses\":{\"200\":{\"description\":\"Successful response\"}}}}}}"
+        content: '{"openapi":"3.0.3","info":{"title":"Example API","version":"1.0.1"},"paths":{"/example":{"get":{"summary":"Example endpoint","responses":{"200":{"description":"Successful response"}}}}}}'
     ApiDocumentExample:
       value:
         id: de5c9818-be5c-42e6-b514-e3d4bc30ddeb
@@ -1406,6 +1667,11 @@ components:
         status: published
         title: API Document
         content: "# Updated API Document Header"
+    CreateApiImplementationRequestExample:
+      value:
+        service:
+          control_plane_id: fd4e1b98-3629-4dd3-acc0-759a726ffee2
+          id: dd4e1b98-3629-4dd3-acc0-759a726ffee2
     ApiNameBadRequestExample:
       value:
         status: 400
@@ -1438,6 +1704,16 @@ components:
             rule: min_length
             minimum: 1
             reason: content must be longer than or equal to 1 characters
+    ApiImplementationBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: kong:trace:1433447772874964729
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: service.id
+            rule: missing_reference
+            reason: Service not found
     ApiUnauthorizedExample:
       value:
         status: 401
@@ -1473,6 +1749,18 @@ components:
         title: Conflict
         instance: kong:trace:9039922446017540182
         detail: "Key (api_id, path)=(23380be0-c15e-4ca8-bcf7-43aadddc91b1, hidden.yaml) already exists."
+    ApiImplementationServiceConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: kong:trace:3169213858331814220
+        detail: "This gateway service is already linked to another API"
+    ApiImplementationCountConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: kong:trace:3169213858331814220
+        detail: "An implementation already exists for this API"
     InvalidApiSortQueryBadRequestExample:
       value:
         status: 400

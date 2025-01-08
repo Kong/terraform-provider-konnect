@@ -11714,6 +11714,7 @@ components:
         - is_fqdn
         - is_arn
         - unknown_property
+        - missing_reference
         - is_label
         - matches_regex
         - invalid
@@ -11988,6 +11989,12 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Conflict
+    UUID:
+      description: Contains a unique identifier used by the API for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
     APIProductFilterParameters:
       type: object
       properties:
@@ -14056,12 +14063,6 @@ components:
         The display name of the Auth strategy. This is used to identify the Auth strategy in the Portal UI.
       type: string
       maxLength: 256
-    UUID:
-      description: Contains a unique identifier used by the API for this resource.
-      type: string
-      format: uuid
-      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
-      readOnly: true
     ListAuditLogDestinations:
       type: object
       properties:

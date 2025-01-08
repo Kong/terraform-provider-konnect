@@ -465,6 +465,94 @@ paths:
           $ref: '#/components/responses/ApiNotFound'
       tags:
         - API Publication
+  '/apis/{apiId}/implementations':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+    post:
+      operationId: create-api-implementation
+      summary: Create API Implementation
+      description: |
+        Creates an implementation for an API.
+        An API can be implemented by a single Gateway Service.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateApiImplementationRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+              examples:
+                ApiImplementationBadRequestExample:
+                  $ref: '#/components/examples/ApiImplementationBadRequestExample'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+        '409':
+          $ref: '#/components/responses/ApiImplementationConflict'
+      tags:
+        - API Implementation
+  '/apis/{apiId}/implementations/{implementationId}':
+    parameters:
+      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ImplementationId'
+    get:
+      operationId: fetch-api-implementation
+      summary: Fetch API Implementation
+      description: Retrieve a gateway implementation for this API
+      responses:
+        '200':
+          $ref: '#/components/responses/ApiImplementationResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+    delete:
+      operationId: delete-api-implementation
+      summary: Delete API Implementation
+      description: Unlink a gateway implementation from this API
+      responses:
+        '204':
+          description: API implementation was unlinked successfully.
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
+  /api-implementations:
+    get:
+      operationId: list-api-implementations
+      summary: List API Implementations
+      description: List gateway implementations for this API
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ApiImplementationFilters'
+        - $ref: '#/components/parameters/ApiImplementationSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListApiImplementationsResponse'
+        '401':
+          $ref: '#/components/responses/ApiUnauthorized'
+        '403':
+          $ref: '#/components/responses/ApiForbidden'
+        '404':
+          $ref: '#/components/responses/ApiNotFound'
+      tags:
+        - API Implementation
 components:
   parameters:
     ApiDocumentFilters:
@@ -492,6 +580,28 @@ components:
       in: path
       required: true
       description: The API identifier
+    ApiImplementationFilters:
+      name: filter
+      description: Filters APIs in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ApiImplementationFilterParameters'
+      style: deepObject
+    ApiImplementationSort:
+      name: sort
+      description: |
+        Sorts a collection of API implementations. Supported sort attributes are:
+          - id
+          - api_id
+          - control_plane_id
+          - service_id
+          - created_at
+          - updated_at
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SortQuery'
     ApiPublicationFilters:
       name: filter
       description: Filters API Publications in the response.
@@ -529,6 +639,15 @@ components:
       description: The document identifier related to the API
       in: path
       required: true
+    ImplementationId:
+      schema:
+        type: string
+        format: uuid
+        example: 032d905a-ed33-46a3-a093-d8f536af9a8a
+      name: implementationId
+      in: path
+      required: true
+      description: The Portal identifier
     PageNumber:
       name: 'page[number]'
       description: Determines which page of the entities to retrieve.
@@ -755,6 +874,65 @@ components:
           $ref: '#/components/schemas/UpdatedAt'
       additionalProperties: false
       title: API Publication
+    ApiImplementationService:
+      description: A Gateway service that implements an API
+      type: object
+      properties:
+        control_plane_id:
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+        id:
+          type: string
+          format: uuid
+          example: 7710d5c4-d902-410b-992f-18b814155b53
+      additionalProperties: false
+      required:
+        - control_plane_id
+        - id
+      title: API Implementation Service
+    ApiImplementationListItem:
+      description: An entity that implements an API
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        api_id:
+          description: The API identifier.
+          type: string
+          format: uuid
+          example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+          readOnly: true
+        service:
+          $ref: '#/components/schemas/ApiImplementationService'
+      additionalProperties: false
+      required:
+        - id
+        - api_id
+        - created_at
+        - updated_at
+        - service
+      title: API Implementation List Item
+    ApiImplementation:
+      description: An entity that implements an API
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        service:
+          $ref: '#/components/schemas/ApiImplementationService'
+      additionalProperties: false
+      required:
+        - service
+      title: API Implementation
     ApiFilterParameters:
       type: object
       properties:
@@ -795,6 +973,22 @@ components:
         api_id:
           $ref: '#/components/schemas/UuidFieldFilter'
       title: ApiPublicationFilterParameters
+    ApiImplementationFilterParameters:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        api_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        service_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        control_plane_id:
+          $ref: '#/components/schemas/UuidFieldFilter'
+        created_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+        updated_at:
+          $ref: '#/components/schemas/DateTimeFieldFilter'
+      title: ApiImplementationFilterParameters
     StringFieldEqualsFilter:
       description: Filters on the given string field value by exact match.
       oneOf:
@@ -1152,6 +1346,7 @@ components:
         - is_fqdn
         - is_arn
         - unknown_property
+        - missing_reference
         - is_label
         - matches_regex
         - invalid
@@ -1450,6 +1645,12 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Conflict
+    UUID:
+      description: Contains a unique identifier used for this resource.
+      type: string
+      format: uuid
+      example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      readOnly: true
   examples:
     ApiExample:
       value:
@@ -1573,6 +1774,11 @@ components:
         status: published
         title: API Document
         content: '# Updated API Document Header'
+    CreateApiImplementationRequestExample:
+      value:
+        service:
+          control_plane_id: fd4e1b98-3629-4dd3-acc0-759a726ffee2
+          id: dd4e1b98-3629-4dd3-acc0-759a726ffee2
     ApiNameBadRequestExample:
       value:
         status: 400
@@ -1605,6 +1811,16 @@ components:
             rule: min_length
             minimum: 1
             reason: content must be longer than or equal to 1 characters
+    ApiImplementationBadRequestExample:
+      value:
+        status: 400
+        title: Invalid Request
+        instance: 'kong:trace:1433447772874964729'
+        detail: Invalid Parameters
+        invalid_parameters:
+          - field: service.id
+            rule: missing_reference
+            reason: Service not found
     ApiUnauthorizedExample:
       value:
         status: 401
@@ -1640,6 +1856,18 @@ components:
         title: Conflict
         instance: 'kong:trace:9039922446017540182'
         detail: 'Key (api_id, path)=(23380be0-c15e-4ca8-bcf7-43aadddc91b1, hidden.yaml) already exists.'
+    ApiImplementationServiceConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: 'kong:trace:3169213858331814220'
+        detail: This gateway service is already linked to another API
+    ApiImplementationCountConflictExample:
+      value:
+        status: 409
+        title: Conflict
+        instance: 'kong:trace:3169213858331814220'
+        detail: An implementation already exists for this API
     InvalidApiSortQueryBadRequestExample:
       value:
         status: 400
@@ -1872,6 +2100,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiPublication'
+    CreateApiImplementationRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiImplementation'
+          examples:
+            CreateApiImplementationRequest:
+              $ref: '#/components/examples/CreateApiImplementationRequestExample'
   responses:
     ApiSlugConflict:
       description: Conflict - `slug` property must be unique
@@ -1913,6 +2150,17 @@ components:
           examples:
             ApiSpecConflictExample:
               $ref: '#/components/examples/ApiSpecHiddenConflictExample'
+    ApiImplementationConflict:
+      description: Conflict - A gateway service can only be linked to a single API
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+          examples:
+            ApiImplementationServiceConflictExample:
+              $ref: '#/components/examples/ApiImplementationServiceConflictExample'
+            ApiImplementationCountConflictExample:
+              $ref: '#/components/examples/ApiImplementationCountConflictExample'
     ApiUnauthorized:
       description: ApiUnauthorized
       content:
@@ -2280,6 +2528,47 @@ components:
               - data
               - meta
             title: ListApiPublications
+    ApiImplementationResponse:
+      description: An API implementation
+      content:
+        application/json:
+          schema:
+            description: An entity that implements an API
+            type: object
+            properties:
+              id:
+                $ref: '#/components/schemas/UUID'
+              created_at:
+                $ref: '#/components/schemas/CreatedAt'
+              updated_at:
+                $ref: '#/components/schemas/UpdatedAt'
+              service:
+                $ref: '#/components/schemas/ApiImplementationService'
+            additionalProperties: false
+            required:
+              - service
+              - id
+              - created_at
+              - updated_at
+            title: API Implementation
+    ListApiImplementationsResponse:
+      description: Paginated list of API implementations
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiImplementationListItem'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            title: ListApiImplementations
     UnsupportedMediaType:
       description: Unsupported Media Type
       content:
@@ -2319,6 +2608,7 @@ tags:
   - name: API Documentation
   - name: API Specification
   - name: API Publication
+  - name: API Implementation
 security:
   - konnectAccessToken: []
   - personalAccessToken: []
