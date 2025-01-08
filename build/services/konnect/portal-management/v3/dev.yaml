@@ -2614,6 +2614,8 @@ components:
                     - default_domain
                     - custom_domain
                     - canonical_domain
+                    - created_at
+                    - updated_at
               meta:
                 $ref: '#/components/schemas/PaginatedMeta'
             additionalProperties: false
@@ -2718,6 +2720,8 @@ components:
               - default_domain
               - custom_domain
               - canonical_domain
+              - updated_at
+              - created_at
             title: PortalV3
           examples:
             Example 1:
