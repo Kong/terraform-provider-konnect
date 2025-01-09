@@ -27,6 +27,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
+      deprecated: true
       security:
         - {}
       tags:
@@ -95,6 +96,7 @@ components:
     PortalCustomization:
       type: object
       additionalProperties: true
+      deprecated: true
       title: PortalCustomization
   responses:
     GetPortalContextResponse:

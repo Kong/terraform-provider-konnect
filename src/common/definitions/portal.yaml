@@ -98,6 +98,7 @@ components:
           example: ebbac5b0-ac89-45c3-9d2e-c4542c657e79
   schemas:
     PortalCustomization:
+      deprecated: true
       title: PortalCustomization
       type: object
       additionalProperties: true
@@ -111,6 +112,7 @@ components:
       example: 'data:image/png,YW5faW1hZ2VfZmlsZQ=='
     PortalCustomizationV3:
       title: PortalCustomizationV3
+      description: The custom settings of this portal
       type: object
       additionalProperties: false
       properties:

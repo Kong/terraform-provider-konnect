@@ -1695,6 +1695,7 @@ components:
         - title
         - items
     PortalCustomizationV3:
+      description: The custom settings of this portal
       type: object
       properties:
         theme:

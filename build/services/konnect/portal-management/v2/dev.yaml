@@ -491,6 +491,7 @@ components:
     PortalCustomization:
       type: object
       additionalProperties: true
+      deprecated: true
       title: PortalCustomization
   examples:
     UnauthorizedExample:

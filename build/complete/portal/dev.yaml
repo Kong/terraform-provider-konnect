@@ -68,6 +68,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/GetPortalCustomization'
+      deprecated: true
       security:
         - {}
       tags:
@@ -227,6 +228,90 @@ paths:
         - {}
       tags:
         - documentation
+  /api/v3/assets/favicon:
+    get:
+      operationId: get-portal-favicon-v3
+      summary: Portal Favicon
+      description: Gets favicon of the developer portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalImageAssetResponseV3'
+      security:
+        - {}
+      tags:
+        - portal
+  /api/v3/assets/logo:
+    get:
+      operationId: get-portal-logo-v3
+      summary: Portal Logo
+      description: Gets logo of the developer portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalImageAssetResponseV3'
+      security:
+        - {}
+      tags:
+        - portal
+  /api/v3/customization:
+    get:
+      operationId: get-portal-customization-v3
+      summary: Get Customization Settings
+      description: Returns the portal's custom settings.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+      security:
+        - {}
+      tags:
+        - portal
+  /api/v3/pages:
+    get:
+      operationId: list-portal-pages-v3
+      summary: List Portal Pages
+      description: 'Returns a paginated list of pages for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
+      parameters:
+        - $ref: '#/components/parameters/SortPortalPages'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByTitleEquality'
+        - $ref: '#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '#/components/parameters/FilterByTitleContains'
+        - $ref: '#/components/parameters/FilterByPathEquality'
+        - $ref: '#/components/parameters/FilterByPathEqualityShort'
+        - $ref: '#/components/parameters/FilterByPathContains'
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalPagesResponse'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/pages/content:
+    get:
+      operationId: get-portal-page-v3
+      summary: Get Portal Page
+      description: 'Returns a single page for the portal. Each page has a path, title, and content. Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.'
+      parameters:
+        - name: path
+          in: query
+          description: The unique identifier of the page
+          required: true
+          schema:
+            type: string
+          example: /about/company
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalPageResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
   /api/v3/portal:
     get:
       operationId: get-portal-context-v3
@@ -260,6 +345,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListPortalPagesResponse'
+      deprecated: true
       security:
         - portalAccessToken: []
         - {}
@@ -283,6 +369,7 @@ paths:
           $ref: '#/components/responses/GetPortalPageResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+      deprecated: true
       security:
         - portalAccessToken: []
         - {}
@@ -308,6 +395,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ListPortalSnippetsResponse'
+      deprecated: true
       security:
         - portalAccessToken: []
         - {}
@@ -316,6 +404,55 @@ paths:
   /api/v3/portal/snippets/content:
     get:
       operationId: get-portal-snippet
+      summary: Get Portal Snippet
+      description: 'Returns a single snippet for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - name: name
+          in: query
+          description: The name of the snippet
+          required: true
+          schema:
+            type: string
+          example: snip1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      deprecated: true
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/snippets:
+    get:
+      operationId: list-portal-snippets-v3
+      summary: List Portal Snippets
+      description: 'Returns a paginated list of snippets for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/FilterByTitleEquality'
+        - $ref: '#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '#/components/parameters/FilterByTitleContains'
+        - $ref: '#/components/parameters/FilterByNameEquality'
+        - $ref: '#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '#/components/parameters/FilterByPathContains'
+        - $ref: '#/components/parameters/FilterByPublicEquality'
+        - $ref: '#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippetsResponse'
+      security:
+        - portalAccessToken: []
+        - {}
+      tags:
+        - portal
+  /api/v3/snippets/content:
+    get:
+      operationId: get-portal-snippet-v3
       summary: Get Portal Snippet
       description: 'Returns a single snippet for the portal. Each snippet has a name, title, and content. Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.'
       parameters:
@@ -1752,6 +1889,7 @@ components:
     PortalCustomization:
       type: object
       additionalProperties: true
+      deprecated: true
       title: PortalCustomization
     PortalContextV3:
       description: Describes the portal execution context
@@ -1802,6 +1940,69 @@ components:
         - name
         - canonical_domain
       title: Portal Context
+    PortalCustomizationV3:
+      description: The custom settings of this portal
+      type: object
+      properties:
+        theme:
+          type: string
+          nullable: false
+        layout:
+          type: string
+          nullable: false
+        css:
+          type: string
+          nullable: true
+        js:
+          type: object
+          additionalProperties: false
+          properties:
+            custom:
+              type: string
+              nullable: true
+            scripts:
+              type: array
+              items:
+                type: string
+                pattern: '^https://[^:.]+\\..+$'
+              maxItems: 20
+        menu:
+          type: object
+          additionalProperties: false
+          properties:
+            main:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+            footer_sections:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalFooterMenuSectionV3'
+            footer_bottom:
+              type: array
+              items:
+                $ref: '#/components/schemas/PortalMenuItemV3'
+        spec_renderer:
+          type: object
+          additionalProperties: false
+          properties:
+            try_it_ui:
+              type: boolean
+              default: true
+            try_it_insomnia:
+              type: boolean
+              default: true
+            infinite_scroll:
+              type: boolean
+              default: true
+            show_schemas:
+              type: boolean
+              default: true
+        robots:
+          type: string
+          nullable: true
+      additionalProperties: false
+      title: PortalCustomizationV3
     PageId:
       description: The unique identifier of the page
       type: string
@@ -1991,6 +2192,45 @@ components:
         - created_at
         - updated_at
       title: Portal Snippet
+    PortalMenuItemV3:
+      type: object
+      properties:
+        path:
+          description: The absolute path of a page in a portal with a leading slash.
+          type: string
+          example: /about/company
+          maxLength: 512
+        title:
+          description: The link display text
+          type: string
+          example: My Page
+        public:
+          description: Whether a page is publicly accessible to non-authenticated users. Defaults to false.
+          type: boolean
+        external:
+          description: 'When clicked, open the link in a new window'
+          type: boolean
+      additionalProperties: false
+      required:
+        - path
+        - title
+        - public
+        - external
+    PortalFooterMenuSectionV3:
+      type: object
+      properties:
+        title:
+          description: The footer menu section title
+          type: string
+          maxLength: 512
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PortalMenuItemV3'
+      additionalProperties: false
+      required:
+        - title
+        - items
   examples:
     BadRequestExample:
       value:
@@ -2286,6 +2526,23 @@ components:
                 allowed_time_period: 90d
                 name: my portal
                 canonical_domain: portal.example.com
+    PortalImageAssetResponseV3:
+      description: An image asset
+      content:
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+        image/png:
+          schema:
+            type: string
+            format: binary
+    PortalCustomizationResponseV3:
+      description: Response for custom portal settings
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomizationV3'
   securitySchemes:
     portalAccessToken:
       type: apiKey

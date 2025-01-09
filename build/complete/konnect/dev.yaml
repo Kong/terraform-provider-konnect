@@ -6511,6 +6511,7 @@ components:
     PortalCustomization:
       type: object
       additionalProperties: true
+      deprecated: true
       title: PortalCustomization
     ServerlessCloudGateway:
       description: A serverless cloud gateway

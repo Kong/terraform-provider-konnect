@@ -22,10 +22,165 @@ paths:
       security:
         - portalAccessToken: []
         - {}
+  /api/v3/pages:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-portal-pages-v3
+      summary: List Portal Pages
+      description: >-
+        Returns a paginated list of pages for the portal. Each page has a path, title, and content.
+        Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalPages'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPathEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPathEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPathContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPublicEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalPagesResponse'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/pages/content:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-page-v3
+      summary: Get Portal Page
+      description: >-
+        Returns a single page for the portal. Each page has a path, title, and content.
+        Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
+      parameters:
+        - name: path
+          in: query
+          required: true
+          description: The unique identifier of the page
+          schema:
+            type: string
+          example: /about/company
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalPageResponse'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/snippets:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: list-portal-snippets-v3
+      summary: List Portal Snippets
+      description: >-
+        Returns a paginated list of snippets for the portal. Each snippet has a name, title, and content.
+        Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
+      parameters:
+        - $ref: '#/components/parameters/SortPortalSnippets'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize'
+        - $ref: '../../../../common/definitions/metadatas.yaml#/components/parameters/PageNumber'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByTitleContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByNameEqualityShort'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPathContains'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPublicEquality'
+        - $ref: '../../common/filter_parameters.yaml#/components/parameters/FilterByPublicEqualityShort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListPortalSnippetsResponse'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/snippets/content:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-snippet-v3
+      summary: Get Portal Snippet
+      description: >-
+        Returns a single snippet for the portal. Each snippet has a name, title, and content.
+        Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The name of the snippet
+          schema:
+            type: string
+          example: snip1
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/customization:
+    get:
+      x-internal: true
+      x-unstable: true
+      operationId: get-portal-customization-v3
+      summary: Get Customization Settings
+      description: Returns the portal's custom settings.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalCustomizationResponseV3'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v3/assets/logo:
+    get:
+      x-internal: true
+      x-unstable: true
+      operationId: get-portal-logo-v3
+      summary: Portal Logo
+      description: Gets logo of the developer portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalImageAssetResponseV3'
+      tags:
+        - portal
+      security:
+        - {}
+  /api/v3/assets/favicon:
+    get:
+      x-internal: true
+      x-unstable: true
+      operationId: get-portal-favicon-v3
+      summary: Portal Favicon
+      description: Gets favicon of the developer portal.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalImageAssetResponseV3'
+      tags:
+        - portal
+      security:
+        - {}
   /api/v3/portal/pages:
     get:
       x-unstable: true
       x-internal: true
+      deprecated: true
       operationId: list-portal-pages
       summary: List Portal Pages
       description: >-
@@ -55,6 +210,7 @@ paths:
     get:
       x-unstable: true
       x-internal: true
+      deprecated: true
       operationId: get-portal-page
       summary: Get Portal Page
       description: >-
@@ -82,6 +238,7 @@ paths:
     get:
       x-unstable: true
       x-internal: true
+      deprecated: true
       operationId: list-portal-snippets
       summary: List Portal Snippets
       description: >-
@@ -111,6 +268,7 @@ paths:
     get:
       x-unstable: true
       x-internal: true
+      deprecated: true
       operationId: get-portal-snippet
       summary: Get Portal Snippet
       description: >-
@@ -259,6 +417,23 @@ components:
                 allowed_time_period: "90d"
                 name: "my portal"
                 canonical_domain: "portal.example.com"
+    PortalImageAssetResponseV3:
+      description: An image asset
+      content:
+        image/png:
+          schema:
+            type: string
+            format: binary
+        image/jpg:
+          schema:
+            type: string
+            format: binary
+    PortalCustomizationResponseV3:
+      description: Response for custom portal settings
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCustomizationV3'
   schemas:
     PortalContextV3:
       title: Portal Context
@@ -309,6 +484,8 @@ components:
         canonical_domain:
           type: string
           description: The canonical domain of the developer portal
+    PortalCustomizationV3:
+      $ref: '../../../../common/definitions/portal.yaml#/components/schemas/PortalCustomizationV3'
     PageId:
       title: Page ID
       description: The unique identifier of the page

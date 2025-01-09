@@ -35,6 +35,7 @@ paths:
     get:
       x-internal: true
       x-unstable: true
+      deprecated: true
       operationId: get-portal-customization
       summary: Get Customization
       description: Returns the customized portal appearance.
