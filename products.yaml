@@ -20,6 +20,7 @@ products:
     notMatch: []
 
   terraform:
+    onDemand: true
     match:
       - "konnect/definitions/control-planes/v2/openapi.yaml"
       - "konnect/definitions/cloud-gateways/v2/openapi.yaml"
@@ -33,6 +34,15 @@ products:
     notMatch: []
 
   go-sdk:
+    onDemand: true
+    match:
+      - "konnect/definitions/control-planes/v2/openapi.yaml"
+      - "konnect/definitions/control-planes-config/v2/openapi.yaml"
+      - "konnect/definitions/identity/v3/openapi.yaml"
+    notMatch: []
+
+  go-sdk-internal:
+    onDemand: true
     match:
       - "konnect/definitions/control-planes/v2/openapi.yaml"
       - "konnect/definitions/control-planes-config/v2/openapi.yaml"

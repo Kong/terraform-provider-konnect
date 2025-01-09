@@ -1,0 +1,9 @@
+openapi: "3.1.0"
+info: 
+  title: "Konnect API - Go Internal SDK"
+  description: "The Konnect platform API"
+servers:
+  - url: "https://global.api.konghq.com"
+  - url: "https://us.api.konghq.com"
+  - url: "https://eu.api.konghq.com"
+  - url: "https://au.api.konghq.com"

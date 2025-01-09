@@ -10,9 +10,8 @@ module.exports = function (product) {
 
   // These products are only built when requested
   // e.g. ./tools/run.sh terraform
-  const onDemandProducts = ['terraform', 'go-sdk'];
   return products.filter(p => {
-    return !onDemandProducts.includes(p)
+    return !p.onDemand;
   });
 
 };
