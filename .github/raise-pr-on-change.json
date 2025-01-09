@@ -189,7 +189,7 @@
       "dest": "api-specs/konnect/audit-logs/v2/openapi.yaml"
     },
     {
-      "src": "build/services/konnect/cloud-gateways/v2/openapi.yaml",
+      "src": "build/services/konnect/cloud-gateways/v2/public.yaml",
       "dest": "api-specs/konnect/cloud-gateways/v2/openapi.yaml"
     },
     {
