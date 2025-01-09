@@ -106,6 +106,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageBefore'
         - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/ConsumerFilters'
       responses:
         '200':
           description: success
@@ -275,6 +276,14 @@ paths:
         - keys
 components:
   parameters:
+    ConsumerFilters:
+      name: filter
+      description: Filters Consumers in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConsumerFilterParameters'
+      style: deepObject
     PageAfter:
       name: 'page[after]'
       description: 'Request the next page of data, starting with the item after this parameter.'
@@ -325,6 +334,17 @@ components:
         type: string
         format: uuid
   schemas:
+    ConsumerFilterParameters:
+      type: object
+      properties:
+        custom_id:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldContainsFilter'
+        username:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldContainsFilter'
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
@@ -861,6 +881,36 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
+    StringFieldEqualsFilter:
+      description: Filters on the given string field value by exact match.
+      oneOf:
+        - type: string
+        - type: object
+          title: StringFieldEqualsComparison
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+          required:
+            - eq
+      title: StringFieldEqualsFilter
+      x-examples:
+        example-1: equals-some-value
+        example-2:
+          eq: some-value
+    StringFieldContainsFilter:
+      description: Filters on the given string field value by fuzzy match.
+      type: object
+      properties:
+        contains:
+          type: string
+      additionalProperties: false
+      required:
+        - contains
+      title: StringFieldContainsFilter
+      x-examples:
+        example-1:
+          contains: some-value
     Tags:
       type: array
       items:

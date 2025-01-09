@@ -124,6 +124,7 @@ paths:
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageSize
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageBefore
         - $ref: ../../../../common/definitions/metadatas.yaml#/components/parameters/PageAfter
+        - $ref: "#/components/parameters/ConsumerFilters"
       tags: [consumers]
       responses:
         "200":
@@ -306,6 +307,14 @@ components:
       scheme: bearer
       bearerFormat: JWT
   parameters:
+    ConsumerFilters:
+      name: filter
+      description: Filters Consumers in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConsumerFilterParameters'
+      style: deepObject
     keyId:
       name: keyId
       in: path
@@ -328,6 +337,17 @@ components:
       schema:
         type: string
   schemas:
+    ConsumerFilterParameters:
+      type: object
+      properties:
+        custom_id:
+          oneOf:
+          - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldEqualsFilter'
+          - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldContainsFilter'
+        username:
+          oneOf:
+          - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldEqualsFilter'
+          - $ref: '../../../../common/definitions/aip_filters.yaml#/components/schemas/StringFieldContainsFilter'
     CreateApiKeyPayload:
       oneOf:
       - $ref: '#/components/schemas/CreateApiKeyPayloadNew'

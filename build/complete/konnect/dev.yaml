@@ -368,6 +368,7 @@ paths:
         - $ref: '#/components/parameters/PageSize'
         - $ref: '#/components/parameters/PageBefore'
         - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/ConsumerFilters'
       responses:
         '200':
           description: success
@@ -3378,6 +3379,14 @@ components:
       schema:
         $ref: '#/components/schemas/ConfigurationFilterParameters'
       style: deepObject
+    ConsumerFilters:
+      name: filter
+      description: Filters Consumers in the response.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConsumerFilterParameters'
+      style: deepObject
     CustomPluginId:
       description: ID of the CustomPlugin to lookup
       example: ''
@@ -5454,6 +5463,17 @@ components:
       x-examples:
         example-1:
           oeq: 'ready,initializing'
+    ConsumerFilterParameters:
+      type: object
+      properties:
+        custom_id:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldContainsFilter'
+        username:
+          oneOf:
+            - $ref: '#/components/schemas/StringFieldEqualsFilter'
+            - $ref: '#/components/schemas/StringFieldContainsFilter'
     CreateApiKeyPayload:
       oneOf:
         - $ref: '#/components/schemas/CreateApiKeyPayloadNew'
