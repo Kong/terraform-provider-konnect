@@ -7,13 +7,13 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
-  '/api/v3/apis/{apiId}':
+  '/api/v3/apis/{apiIdOrSlug}':
     get:
       operationId: fetch-api
       summary: Fetch an API
       description: Gets the details for an existing published API.
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
       responses:
         '200':
           $ref: '#/components/responses/ApiGet'
@@ -50,13 +50,13 @@ paths:
         - {}
       tags:
         - apis
-  '/api/v3/apis/{apiId}/specifications':
+  '/api/v3/apis/{apiIdOrSlug}/specifications':
     get:
       operationId: list-api-specs
       summary: List API specs
       description: Returns the API specification documents attached to the API. Currently only OpenAPI is supported.
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
       responses:
         '200':
           $ref: '#/components/responses/ApiSpecList'
@@ -71,13 +71,13 @@ paths:
         - {}
       tags:
         - documentation
-  '/api/v3/apis/{apiId}/specifications/{specId}':
+  '/api/v3/apis/{apiIdOrSlug}/specifications/{specId}':
     get:
       operationId: fetch-api-spec
       summary: Fetch API spec
       description: Returns an API specification document for an API. Currently only OpenAPI is supported.
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - $ref: '#/components/parameters/SpecId'
       responses:
         '200':
@@ -91,13 +91,13 @@ paths:
         - {}
       tags:
         - documentation
-  '/api/v3/apis/{apiId}/documents':
+  '/api/v3/apis/{apiIdOrSlug}/documents':
     get:
       operationId: list-api-documents
       summary: List API documents
       description: 'Returns a list of documents that are associated with an API. The list is paginated, and is in either a list or tree format (based on the Accept header).'
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - name: Accept
           in: header
           schema:
@@ -118,7 +118,7 @@ paths:
         - {}
       tags:
         - documentation
-  '/api/v3/apis/{apiId}/documents/{documentId}':
+  '/api/v3/apis/{apiIdOrSlug}/documents/{documentId}':
     get:
       operationId: fetch-api-document
       summary: Fetch API document
@@ -128,7 +128,7 @@ paths:
           in: header
           schema:
             $ref: '#/components/schemas/DocumentFormatContentTypeEnum'
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - $ref: '#/components/parameters/DocumentId'
       responses:
         '200':
@@ -144,9 +144,9 @@ paths:
         - {}
       tags:
         - documentation
-  '/api/v3/apis/{apiId}/actions':
+  '/api/v3/apis/{apiIdOrSlug}/actions':
     parameters:
-      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ApiIdOrSlug'
     get:
       operationId: get-api-actions
       summary: Get API Actions
@@ -172,14 +172,15 @@ components:
       schema:
         $ref: '#/components/schemas/ApiFilterParameters'
       style: deepObject
-    ApiId:
-      name: apiId
+    ApiIdOrSlug:
+      name: apiIdOrSlug
+      schema:
+        oneOf:
+          - $ref: '#/components/schemas/ApiId'
+          - $ref: '#/components/schemas/ApiSlug'
       in: path
       required: true
-      description: Contains a unique identifier used by the Portal API for this resource.
-      schema:
-        type: string
-        format: uuid
+      description: 'The API identifier, either ApiId or Api Slug'
     ApiSort:
       name: sort
       description: |
@@ -228,6 +229,20 @@ components:
         type: string
         format: uuid
   schemas:
+    ApiSlug:
+      description: |
+        The Api `slug` is used in generated URLs to provide human readable paths.
+
+        Defaults to `slugify(name + version)`
+      type: string
+      example: my-api-v1
+      pattern: '^[\w-]+$'
+    ApiId:
+      description: The API identifier.
+      type: string
+      format: uuid
+      example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+      readOnly: true
     ApiActionsResponse:
       type: object
       properties:
@@ -289,6 +304,15 @@ components:
           enum:
             - public
             - private
+        slug:
+          description: |
+            The API `slug` is used in generated URLs to provide human readable paths.
+
+            Defaults to `slugify(name + version)`
+          type: string
+          example: my-api-v1
+          nullable: true
+          pattern: '^[\w-]+$'
         public_labels:
           $ref: '#/components/schemas/Labels'
         registration_configs:
@@ -307,6 +331,7 @@ components:
         - deprecated
         - visibility
         - public_labels
+        - slug
       title: Api
     ApiListPage:
       type: object

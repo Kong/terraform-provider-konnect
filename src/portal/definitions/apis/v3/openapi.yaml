@@ -7,7 +7,7 @@ info:
     name: Kong
     url: 'https://cloud.konghq.com'
 paths:
-  /api/v3/apis/{apiId}:
+  /api/v3/apis/{apiIdOrSlug}:
     get:
       summary: Fetch an API
       x-internal: true
@@ -15,7 +15,7 @@ paths:
       description: Gets the details for an existing published API.
       operationId: fetch-api
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
       responses:
         '200':
           $ref: '#/components/responses/ApiGet'
@@ -54,7 +54,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/apis/{apiId}/specifications:
+  /api/v3/apis/{apiIdOrSlug}/specifications:
     get:
       summary: List API specs
       x-internal: true
@@ -62,7 +62,7 @@ paths:
       description: Returns the API specification documents attached to the API. Currently only OpenAPI is supported.
       operationId: list-api-specs
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
       responses:
         '200':
           $ref: '#/components/responses/ApiSpecList'
@@ -77,7 +77,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/apis/{apiId}/specifications/{specId}:
+  /api/v3/apis/{apiIdOrSlug}/specifications/{specId}:
     get:
       summary: Fetch API spec
       x-internal: true
@@ -85,7 +85,7 @@ paths:
       description: Returns an API specification document for an API. Currently only OpenAPI is supported.
       operationId: fetch-api-spec
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - $ref: '../../common/parameters.yaml#/components/parameters/SpecId'
       responses:
         '200':
@@ -99,7 +99,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/apis/{apiId}/documents:
+  /api/v3/apis/{apiIdOrSlug}/documents:
     get:
       summary: List API documents
       x-internal: true
@@ -107,7 +107,7 @@ paths:
       description: Returns a list of documents that are associated with an API. The list is paginated, and is in either a list or tree format (based on the Accept header).
       operationId: list-api-documents
       parameters:
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - in: header
           name: Accept
           schema:
@@ -128,7 +128,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/apis/{apiId}/documents/{documentId}:
+  /api/v3/apis/{apiIdOrSlug}/documents/{documentId}:
     get:
       summary: Fetch API document
       x-internal: true
@@ -140,7 +140,7 @@ paths:
           name: Accept
           schema:
             $ref: '../../../../internal/definitions/documenthub/common/v2/documenthub.yaml#/components/schemas/DocumentFormatContentTypeEnum'
-        - $ref: '#/components/parameters/ApiId'
+        - $ref: '#/components/parameters/ApiIdOrSlug'
         - $ref: '../../../../common/definitions/portal.yaml#/components/parameters/DocumentId'
       responses:
         '200':
@@ -156,9 +156,9 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/apis/{apiId}/actions:
+  /api/v3/apis/{apiIdOrSlug}/actions:
     parameters:
-      - $ref: '#/components/parameters/ApiId'
+      - $ref: '#/components/parameters/ApiIdOrSlug'
     get:
       summary: Get API Actions
       x-internal: true
@@ -181,6 +181,15 @@ components:
     portalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/portalAccessToken'
   parameters:
+    ApiIdOrSlug:
+      name: apiIdOrSlug
+      schema:
+        oneOf:
+          - $ref: "#/components/schemas/ApiId"
+          - $ref: "#/components/schemas/ApiSlug"
+      in: path
+      required: true
+      description: The API identifier, either ApiId or Api Slug
     ApiId:
       name: apiId
       in: path
@@ -293,6 +302,20 @@ components:
           schema:
             $ref: '#/components/schemas/ApiDocument'
   schemas:
+    ApiSlug:
+      type: string
+      pattern: '^[\w-]+$'
+      description: |
+        The Api `slug` is used in generated URLs to provide human readable paths.
+        
+        Defaults to `slugify(name + version)`
+      example: my-api-v1
+    ApiId: 
+      type: string
+      format: uuid
+      example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
+      description: The API identifier.
+      readOnly: true
     ApiActionsResponse:
       title: API Actions Response
       type: object
@@ -334,6 +357,7 @@ components:
         - deprecated
         - visibility
         - public_labels
+        - slug
       properties:
         id:
           $ref: '../../../../common/definitions/properties.yaml#/components/schemas/UUID'
@@ -366,6 +390,15 @@ components:
             Visibility of the API listing.
             Public APIs are visible to anyone and do not require authentication to view and retrieve information about them.
             Private APIs are only visible to authenticated developers who have been granted access.
+        slug:
+          type: string
+          pattern: '^[\w-]+$'
+          nullable: true
+          description: |
+            The API `slug` is used in generated URLs to provide human readable paths.
+
+            Defaults to `slugify(name + version)`
+          example: my-api-v1
         public_labels:
           $ref: '../../../../common/definitions/konnect_properties.yaml#/components/schemas/Labels'
         registration_configs:

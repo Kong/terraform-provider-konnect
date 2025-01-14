@@ -3316,11 +3316,11 @@ components:
       schema:
         type: string
         format: uuid
-        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+        example: 9f5061ce-78f6-4452-9108-ad7c02821fd5
       name: apiId
       in: path
       required: true
-      description: The API identifier
+      description: The UUID API identifier
     ApiImplementationFilters:
       name: filter
       description: Filters APIs in the response.
@@ -9179,6 +9179,7 @@ components:
         deprecated: false
         created_at: '2023-01-01T00:00:00.000Z'
         updated_at: '2023-01-01T00:00:00.000Z'
+        slug: my-api-v1
     ApiSpecExample:
       value:
         id: 7710d5c4-d902-410b-992f-18b814155b53
@@ -9207,6 +9208,7 @@ components:
       value:
         name: myAPI
         version: v1
+        slug: my-api-v1
         labels:
           env: test
     CreateApiSpecRequestExample:
@@ -10053,6 +10055,15 @@ components:
                 description: Marks this API as deprecated.
                 type: boolean
                 default: false
+              slug:
+                description: |
+                  The `slug` is used in generated URLs to provide human readable paths.
+
+                  Defaults to `slugify(name + version)`
+                type: string
+                example: my-api-v1
+                nullable: true
+                pattern: '^[\w-]+$'
               labels:
                 $ref: '#/components/schemas/Labels'
               public_labels:
@@ -10177,6 +10188,15 @@ components:
                 description: Marks this API as deprecated.
                 type: boolean
                 default: false
+              slug:
+                description: |
+                  The `slug` is used in generated URLs to provide human readable paths.
+
+                  Defaults to `slugify(name + version)`
+                type: string
+                example: my-api-v1
+                nullable: true
+                pattern: '^[\w-]+$'
               labels:
                 $ref: '#/components/schemas/LabelsUpdate'
               public_labels:
@@ -10835,6 +10855,15 @@ components:
                 description: Marks this API as deprecated.
                 type: boolean
                 default: false
+              slug:
+                description: |
+                  The `slug` is used in generated URLs to provide human readable paths.
+
+                  Defaults to `slugify(name + version)`
+                type: string
+                example: my-api-v1
+                nullable: true
+                pattern: '^[\w-]+$'
               labels:
                 $ref: '#/components/schemas/Labels'
               public_labels:
@@ -10854,6 +10883,7 @@ components:
               - created_at
               - updated_at
               - description
+              - slug
             title: API
           examples:
             CreateApiResponse:
@@ -10901,6 +10931,15 @@ components:
                       description: Marks this API as deprecated.
                       type: boolean
                       default: false
+                    slug:
+                      description: |
+                        The `slug` is used in generated URLs to provide human readable paths.
+
+                        Defaults to `slugify(name + version)`
+                      type: string
+                      example: my-api-v1
+                      nullable: true
+                      pattern: '^[\w-]+$'
                     labels:
                       $ref: '#/components/schemas/Labels'
                     public_labels:
@@ -10918,6 +10957,7 @@ components:
                     - deprecated
                     - created_at
                     - updated_at
+                    - slug
             additionalProperties: false
             required:
               - data
@@ -10934,6 +10974,7 @@ components:
                       group: accounts
                     labels:
                       env: test
+                    slug: my-api-v1
                     deprecated: false
                     created_at: '2023-01-01T00:00:00.000Z'
                     updated_at: '2023-01-01T00:00:00.000Z'
