@@ -1,0 +1,38 @@
+name: Sync Kong Mesh OpenAPI
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  sync-file:
+    permissions:
+      contents: read
+      pull-requests: write
+
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        with:
+          fetch-depth: 0
+
+      - name: Fetch the latest file from Kong/kong-mesh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -sSL -H "Authorization: token $GITHUB_TOKEN" \
+          https://raw.githubusercontent.com/Kong/kong-mesh/master/docs/generated/openapi.yaml -o src/konnect/definitions/mesh-control-planes/v0/kong-mesh.yaml
+          tools/run.sh
+
+      - name: Create a Pull Request
+        uses: peter-evans/create-pull-request@5e914681df9dc83aa4e4905692ca88beb2f9e91f
+        with:
+          commit-message: "chore(sync): update kong-mesh.yaml file from upstream"
+          branch: "sync/kong-mesh-update"
+          title: "Update kong-mesh.yaml"
+          body: "This PR updates the kong-mesh.yaml file from the upstream repository."
