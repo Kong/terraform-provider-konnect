@@ -235,6 +235,220 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
+  /v1/notifications/configurations:
+    get:
+      operationId: list-user-configurations
+      summary: List available user configurations.
+      description: List available user configurations.
+      parameters:
+        - $ref: '#/components/parameters/ConfigurationFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserConfigurationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/v1/notifications/configurations/{eventId}/subscriptions':
+    get:
+      operationId: list-event-subscriptions
+      summary: List event subscriptions.
+      description: List event subscriptions.
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    post:
+      operationId: create-event-subscription
+      summary: Create a new subscription for an event.
+      description: Create a new subscription for an event.
+      parameters:
+        - $ref: '#/components/parameters/eventId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventSubscriptionRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/v1/notifications/configurations/{eventId}/subscriptions/{subscriptionId}':
+    parameters:
+      - $ref: '#/components/parameters/eventId'
+      - $ref: '#/components/parameters/subscriptionId'
+    get:
+      operationId: get-event-subscription
+      summary: Get subscription for an event.
+      description: Get subscription for an event.
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    patch:
+      operationId: update-event-subscription
+      summary: Update subscription for an event.
+      description: Update subscription for an event.
+      requestBody:
+        $ref: '#/components/requestBodies/EventSubscriptionRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventSubscriptionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    delete:
+      operationId: delete-event-subscription
+      summary: Delete subscription associated with event.
+      description: Delete subscription associated with event.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  /v1/notifications/inbox:
+    get:
+      operationId: list-notifications
+      summary: List available notifications.
+      description: List available notifications.
+      parameters:
+        - $ref: '#/components/parameters/PageBefore'
+        - $ref: '#/components/parameters/PageAfter'
+        - $ref: '#/components/parameters/NotificationFilter'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationListResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  '/v1/notifications/inbox/{notificationId}':
+    get:
+      operationId: get-notification-details
+      summary: Get notification details.
+      description: Get notification details.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    patch:
+      operationId: update-notification
+      summary: Update notification.
+      description: Update notification.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      requestBody:
+        $ref: '#/components/requestBodies/NotificationUpdateRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/NotificationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+    delete:
+      operationId: delete-notification
+      summary: Delete notification.
+      description: Delete notification.
+      parameters:
+        - $ref: '#/components/parameters/notificationId'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
+  /v1/notifications/inbox/bulk:
+    post:
+      operationId: bulk-notifications
+      summary: Mark a list of notifications to a status.
+      description: Mark a list of notifications to a status.
+      requestBody:
+        $ref: '#/components/requestBodies/BulkRequest'
+      responses:
+        '200':
+          description: No Content
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Notifications
   /v1/search:
     get:
       operationId: get-search
@@ -8787,6 +9001,14 @@ components:
       required: true
       schema:
         type: string
+    ConfigurationFilter:
+      name: filter
+      description: Filters a collection of configurations.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConfigurationFilterParameters'
+      style: deepObject
     ConfigurationId:
       name: configurationId
       in: path
@@ -9098,6 +9320,14 @@ components:
       in: query
       schema:
         $ref: '#/components/schemas/NetworksFilterParameters'
+      style: deepObject
+    NotificationFilter:
+      name: filter
+      description: Filters a collection of notifications.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NotificationFilterParameters'
       style: deepObject
     PageAfter:
       name: 'page[after]'
@@ -9453,6 +9683,21 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
+    eventId:
+      name: eventId
+      in: path
+      required: true
+      description: Formatted string ID of the notification event.
+      schema:
+        type: string
+        example: invoice-ready
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      description: ID of the notification.
+      schema:
+        type: string
     pagination-size:
       description: Number of resources to be returned.
       in: query
@@ -9478,6 +9723,13 @@ components:
       in: path
       required: true
       description: ID of the developer.
+    subscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      description: Subscription ID of the user configuration.
+      schema:
+        type: string
   schemas:
     BaseError:
       description: standard error
@@ -16726,6 +16978,227 @@ components:
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
       title: UpdateMeshControlPlaneRequest
+    NotificationFilterParameters:
+      type: object
+      properties:
+        title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        namespace:
+          $ref: '#/components/schemas/StringFieldFilter'
+        region:
+          $ref: '#/components/schemas/StringFieldFilter'
+        status:
+          $ref: '#/components/schemas/StringFieldFilter'
+      additionalProperties: false
+      title: NotificationFilterParameters
+    ConfigurationFilterParameters:
+      type: object
+      properties:
+        event_title:
+          $ref: '#/components/schemas/StringFieldFilter'
+        event_description:
+          $ref: '#/components/schemas/StringFieldFilter'
+        event_namespace:
+          $ref: '#/components/schemas/StringFieldFilter'
+        region:
+          $ref: '#/components/schemas/StringFieldFilter'
+      additionalProperties: false
+      title: ConfigurationFilterParameters
+    Notification:
+      description: Properties of a notification.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+        region:
+          $ref: '#/components/schemas/NotificationRegion'
+        namespace:
+          $ref: '#/components/schemas/NotificationNamespace'
+        entity_id:
+          description: ID of the entity. Use '*' to represent all entities of this type.
+          type: string
+        details:
+          description: Metadata associated with the notification to build actionable links.
+          type: object
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - status
+        - region
+        - namespace
+        - entity_id
+        - details
+        - created_at
+        - updated_at
+    NotificationUpdatePayload:
+      description: Status of the notification.
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+      required:
+        - status
+    NotificationStatus:
+      description: Status of the notification.
+      type: string
+      enum:
+        - READ
+        - UNREAD
+        - ARCHIVED
+    NotificationRegion:
+      description: Region associated to a notification.
+      type: string
+      enum:
+        - US
+        - EU
+        - AU
+        - '*'
+    NotificationChannel:
+      description: Channel subscription details for an event.
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/NotificationChannelType'
+        enabled:
+          type: boolean
+      required:
+        - type
+        - enabled
+    NotificationChannelType:
+      type: string
+      enum:
+        - EMAIL
+        - IN_APP
+    NotificationNamespace:
+      type: string
+      enum:
+        - plan-and-usage
+        - organization
+    UserConfiguration:
+      description: Properties of an event.
+      type: object
+      properties:
+        event_id:
+          type: string
+        event_title:
+          type: string
+        event_description:
+          type: string
+        event_namespace:
+          $ref: '#/components/schemas/NotificationNamespace'
+        event_subscription_count:
+          type: integer
+          default: 0
+        default_subscription:
+          type: array
+          items:
+            $ref: '#/components/schemas/DefaultSubscription'
+      required:
+        - event_id
+        - event_title
+        - event_description
+        - event_namespace
+        - event_subscription_count
+        - default_subscription
+    DefaultSubscription:
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/NotificationChannelType'
+        enabled:
+          type: boolean
+      required:
+        - channel
+        - enabled
+    EventSubscriptionResponse:
+      description: Properties associated with an event subscription.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+        enabled:
+          description: Enable/Disable complete subscription within an event.
+          type: boolean
+      required:
+        - id
+        - created_at
+        - updated_at
+        - regions
+        - entities
+        - channels
+        - enabled
+    EventSubscription:
+      description: Properties associated with an event subscription.
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationRegion'
+        entities:
+          type: array
+          items:
+            type: string
+            description: ID of the entity. Use '*' to represent all entities of this type.
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+        enabled:
+          description: Enable/Disable complete subscription within an event.
+          type: boolean
+      required:
+        - regions
+        - entities
+        - channels
+        - enabled
+    BulkPayload:
+      description: Request body schema for bulk status update.
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+          minItems: 1
+          uniqueItems: true
+        status:
+          $ref: '#/components/schemas/NotificationStatus'
+      required:
+        - ids
+        - status
     AuthStrategy:
       type: object
       discriminator:
@@ -23292,6 +23765,143 @@ components:
         description: A test control plane for exploration.
         labels:
           test: 'true'
+    NotificationUpdatePayload:
+      value:
+        status: READ
+    NotificationResponse:
+      summary: Notification Response
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d290
+        title: Unpaid invoice reminder
+        description: Reminder for an unpaid invoice.
+        status: UNREAD
+        region: EU
+        namespace: plan-and-usage
+        entity_id: invoice-1
+        details:
+          entity_id: invoice-1
+          entity_type: invoice
+          regions:
+            - EU
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    NotificationListResponse:
+      summary: List Notifications Response
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d289
+            title: Unpaid invoice reminder
+            description: Reminder for an unpaid invoice.
+            status: UNREAD
+            region: US
+            namespace: plan-and-usage
+            entity_id: invoice-1
+            details:
+              entity_id: invoice-1
+              entity_type: invoice
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d290
+            title: Unpaid invoice reminder
+            description: Reminder for an unpaid invoice.
+            status: UNREAD
+            region: EU
+            namespace: plan-and-usage
+            entity_id: invoice-2
+            details:
+              entity_id: invoice-2
+              entity_type: invoice
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          next: ''
+          previous: ''
+          size: 10
+    EventSubscriptionPayload:
+      value:
+        regions:
+          - US
+          - EU
+        entities:
+          - control-plane-1
+          - control-plane-2
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    UserConfigurationListResponse:
+      value:
+        data:
+          - event_id: billing.invoice.unpaid-reminder
+            event_title: Unpaid invoice reminder
+            event_description: Reminder for an unpaid invoice
+            event_namespace: plan-and-usage
+            event_subscription_count: 2
+            default_subscription:
+              - channel: IN_APP
+                enabled: true
+              - channel: EMAIL
+                enabled: true
+    EventSubscriptionListResponse:
+      value:
+        data:
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d291
+            regions:
+              - US
+              - EU
+            entities:
+              - invoice-1
+              - invoice-2
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+          - id: 93f8380e-7798-4566-99e3-2edf2b57d292
+            regions:
+              - '*'
+            entities:
+              - '*'
+            channels:
+              - type: IN_APP
+                enabled: true
+              - type: EMAIL
+                enabled: true
+            enabled: true
+            created_at: '2023-01-01T00:00:00.000Z'
+            updated_at: '2023-01-01T00:00:00.000Z'
+        meta:
+          next: ''
+          previous: ''
+          size: 10
+    EventSubscriptionResponse:
+      value:
+        id: 93f8380e-7798-4566-99e3-2edf2b57d292
+        regions:
+          - '*'
+        entities:
+          - '*'
+        channels:
+          - type: IN_APP
+            enabled: true
+          - type: EMAIL
+            enabled: true
+        enabled: true
+        created_at: '2023-01-01T00:00:00.000Z'
+        updated_at: '2023-01-01T00:00:00.000Z'
+    BulkPayload:
+      value:
+        ids:
+          - 93f8380e-7798-4566-99e3-2edf2b57d289
+          - 93f8380e-7798-4566-99e3-2edf2b57d290
+        status: READ
     Update-Portal-Audit-Log-Webhook:
       value:
         audit_log_destination_id: 9cb77dc2-ff99-4d47-84ab-7c5c1b3ef939
@@ -26001,6 +26611,33 @@ components:
               $ref: '#/components/examples/UpdateSAMLIdentityProvider'
             Update Identity Provider Login Path:
               $ref: '#/components/examples/UpdateIdentityProviderLoginPath'
+    NotificationUpdateRequest:
+      description: Request body schema for updating notification status.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationUpdatePayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/NotificationUpdatePayload'
+    EventSubscriptionRequest:
+      description: Request body schema for creating/updating event subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscription'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/EventSubscriptionPayload'
+    BulkRequest:
+      description: Request body schema for bulk status update.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BulkPayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/BulkPayload'
     ReplacePortalAuditLogReplayJob:
       description: The request schema to replace a portal audit log replay job.
       content:
@@ -28790,6 +29427,81 @@ components:
                       test: 'true'
                     created_at: '2022-11-04T20:10:06.927Z'
                     updated_at: '2022-11-04T20:10:06.927Z'
+    NotificationResponse:
+      description: View a single notification.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Notification'
+          examples:
+            Notification:
+              $ref: '#/components/examples/NotificationResponse'
+    NotificationListResponse:
+      description: A paginated list response for a collection of notifications
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            Notifications List:
+              $ref: '#/components/examples/NotificationListResponse'
+    UserConfigurationListResponse:
+      description: A paginated list response for all notification events and user subscriptions.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserConfiguration'
+            additionalProperties: false
+            required:
+              - data
+          examples:
+            User Configurations List:
+              $ref: '#/components/examples/UserConfigurationListResponse'
+    EventSubscriptionListResponse:
+      description: A paginated list response for all subscriptions associated with an event.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventSubscriptionResponse'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+            additionalProperties: false
+            required:
+              - data
+              - meta
+          examples:
+            Event Subscriptions List:
+              $ref: '#/components/examples/EventSubscriptionListResponse'
+    EventSubscriptionResponse:
+      description: Response containing specific subscription details associated with an event.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscriptionResponse'
+          examples:
+            Event Subscription:
+              $ref: '#/components/examples/EventSubscriptionResponse'
     PortalAuditLogReplayJob:
       description: Response from fetching or updating an portal audit log replay job
       content:
@@ -29513,6 +30225,8 @@ tags:
   - name: Impersonation Settings
   - name: Search
   - name: Mesh
+  - name: Notifications
+    description: Operations related to notifications
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
   - name: Portal Developers

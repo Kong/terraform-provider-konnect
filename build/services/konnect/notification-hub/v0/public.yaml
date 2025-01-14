@@ -5,16 +5,21 @@ info:
   description: Notification Hub API for Konnect.
   contact:
     name: Kong
-    url: 'https://konghq.com'
+    url: https://konghq.com
 servers:
-  - url: 'https://global.api.konghq.com/v0'
+  - url: https://global.api.konghq.com/v1
     description: Global Base URL
+security:
+  - personalAccessToken: []
+tags:
+  - name: Notifications
+    description: Operations related to notifications
 paths:
-  /notifications/me/inbox:
+  /notifications/inbox:
     get:
-      operationId: list-notifications
       summary: List available notifications.
       description: List available notifications.
+      operationId: list-notifications
       parameters:
         - $ref: '#/components/parameters/PageBefore'
         - $ref: '#/components/parameters/PageAfter'
@@ -32,11 +37,11 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
-  '/notifications/me/inbox/{notificationId}':
+  /notifications/inbox/{notificationId}:
     get:
-      operationId: get-notification-details
       summary: Get notification details.
       description: Get notification details.
+      operationId: get-notification-details
       parameters:
         - $ref: '#/components/parameters/notificationId'
       responses:
@@ -51,9 +56,9 @@ paths:
       tags:
         - Notifications
     patch:
-      operationId: update-notification
       summary: Update notification.
       description: Update notification.
+      operationId: update-notification
       parameters:
         - $ref: '#/components/parameters/notificationId'
       requestBody:
@@ -72,9 +77,9 @@ paths:
       tags:
         - Notifications
     delete:
-      operationId: delete-notification
       summary: Delete notification.
       description: Delete notification.
+      operationId: delete-notification
       parameters:
         - $ref: '#/components/parameters/notificationId'
       responses:
@@ -88,11 +93,11 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
-  /notifications/me/inbox/bulk:
+  /notifications/inbox/bulk:
     post:
-      operationId: bulk-notifications
       summary: Mark a list of notifications to a status.
       description: Mark a list of notifications to a status.
+      operationId: bulk-notifications
       requestBody:
         $ref: '#/components/requestBodies/BulkRequest'
       responses:
@@ -108,11 +113,11 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
-  /notifications/me/configurations:
+  /notifications/configurations:
     get:
-      operationId: list-user-configurations
       summary: List available user configurations.
       description: List available user configurations.
+      operationId: list-user-configurations
       parameters:
         - $ref: '#/components/parameters/ConfigurationFilter'
       responses:
@@ -128,11 +133,11 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
-  '/notifications/me/configurations/{eventId}/subscriptions':
+  /notifications/configurations/{eventId}/subscriptions:
     get:
-      operationId: list-event-subscriptions
       summary: List event subscriptions.
       description: List event subscriptions.
+      operationId: list-event-subscriptions
       parameters:
         - $ref: '#/components/parameters/eventId'
       responses:
@@ -149,9 +154,9 @@ paths:
       tags:
         - Notifications
     post:
-      operationId: create-event-subscription
       summary: Create a new subscription for an event.
       description: Create a new subscription for an event.
+      operationId: create-event-subscription
       parameters:
         - $ref: '#/components/parameters/eventId'
       requestBody:
@@ -169,14 +174,14 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Notifications
-  '/notifications/me/configurations/{eventId}/subscriptions/{subscriptionId}':
+  /notifications/configurations/{eventId}/subscriptions/{subscriptionId}:
     parameters:
       - $ref: '#/components/parameters/eventId'
       - $ref: '#/components/parameters/subscriptionId'
     get:
-      operationId: get-event-subscription
       summary: Get subscription for an event.
       description: Get subscription for an event.
+      operationId: get-event-subscription
       responses:
         '200':
           $ref: '#/components/responses/EventSubscriptionResponse'
@@ -191,9 +196,9 @@ paths:
       tags:
         - Notifications
     patch:
-      operationId: update-event-subscription
       summary: Update subscription for an event.
       description: Update subscription for an event.
+      operationId: update-event-subscription
       requestBody:
         $ref: '#/components/requestBodies/EventSubscriptionRequest'
       responses:
@@ -210,9 +215,9 @@ paths:
       tags:
         - Notifications
     delete:
-      operationId: delete-event-subscription
       summary: Delete subscription associated with event.
       description: Delete subscription associated with event.
+      operationId: delete-event-subscription
       responses:
         '204':
           description: No Content
@@ -226,40 +231,13 @@ paths:
         - Notifications
 components:
   parameters:
-    ConfigurationFilter:
-      name: filter
-      description: Filters a collection of configurations.
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/ConfigurationFilterParameters'
-      style: deepObject
-    NotificationFilter:
-      name: filter
-      description: Filters a collection of notifications.
-      required: false
-      in: query
-      schema:
-        $ref: '#/components/schemas/NotificationFilterParameters'
-      style: deepObject
-    PageAfter:
-      name: 'page[after]'
-      description: 'Request the next page of data, starting with the item after this parameter.'
-      required: false
-      in: query
-      allowEmptyValue: true
+    notificationId:
+      name: notificationId
+      in: path
+      required: true
+      description: ID of the notification.
       schema:
         type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
-    PageBefore:
-      name: 'page[before]'
-      description: 'Request the next page of data, starting with the item before this parameter.'
-      required: false
-      in: query
-      allowEmptyValue: true
-      schema:
-        type: string
-        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
     eventId:
       name: eventId
       in: path
@@ -268,13 +246,6 @@ components:
       schema:
         type: string
         example: invoice-ready
-    notificationId:
-      name: notificationId
-      in: path
-      required: true
-      description: ID of the notification.
-      schema:
-        type: string
     subscriptionId:
       name: subscriptionId
       in: path
@@ -282,9 +253,192 @@ components:
       description: Subscription ID of the user configuration.
       schema:
         type: string
+    NotificationFilter:
+      name: filter
+      description: Filters a collection of notifications.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/NotificationFilterParameters'
+      style: deepObject
+    ConfigurationFilter:
+      name: filter
+      description: Filters a collection of configurations.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ConfigurationFilterParameters'
+      style: deepObject
+    PageBefore:
+      name: page[before]
+      description: >-
+        Request the next page of data, starting with the item before this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+    PageAfter:
+      name: page[after]
+      description: >-
+        Request the next page of data, starting with the item after this
+        parameter.
+      required: false
+      in: query
+      allowEmptyValue: true
+      schema:
+        type: string
+        example: ewogICJpZCI6ICJoZWxsbyB3b3JsZCIKfQ
+  requestBodies:
+    NotificationUpdateRequest:
+      description: Request body schema for updating notification status.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotificationUpdatePayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/NotificationUpdatePayload'
+    EventSubscriptionRequest:
+      description: Request body schema for creating/updating event subscription.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscription'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/EventSubscriptionPayload'
+    BulkRequest:
+      description: Request body schema for bulk status update.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BulkPayload'
+          examples:
+            Example Request Body:
+              $ref: '#/components/examples/BulkPayload'
+  responses:
+    NotificationResponse:
+      description: View a single notification.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Notification'
+          examples:
+            Notification:
+              $ref: '#/components/examples/NotificationResponse'
+    NotificationListResponse:
+      description: A paginated list response for a collection of notifications
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+          examples:
+            Notifications List:
+              $ref: '#/components/examples/NotificationListResponse'
+    UserConfigurationListResponse:
+      description: >-
+        A paginated list response for all notification events and user
+        subscriptions.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserConfiguration'
+          examples:
+            User Configurations List:
+              $ref: '#/components/examples/UserConfigurationListResponse'
+    EventSubscriptionListResponse:
+      description: >-
+        A paginated list response for all subscriptions associated with an
+        event.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: false
+            required:
+              - data
+              - meta
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventSubscriptionResponse'
+              meta:
+                $ref: '#/components/schemas/CursorMetaPage'
+          examples:
+            Event Subscriptions List:
+              $ref: '#/components/examples/EventSubscriptionListResponse'
+    EventSubscriptionResponse:
+      description: >-
+        Response containing specific subscription details associated with an
+        event.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubscriptionResponse'
+          examples:
+            Event Subscription:
+              $ref: '#/components/examples/EventSubscriptionResponse'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/UnauthorizedExample'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            UnauthorizedExample:
+              $ref: '#/components/examples/ForbiddenExample'
+    NotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
+          examples:
+            NotFoundExample:
+              $ref: '#/components/examples/NotFoundExample'
   schemas:
     NotificationFilterParameters:
+      title: NotificationFilterParameters
       type: object
+      additionalProperties: false
       properties:
         title:
           $ref: '#/components/schemas/StringFieldFilter'
@@ -296,10 +450,10 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         status:
           $ref: '#/components/schemas/StringFieldFilter'
-      additionalProperties: false
-      title: NotificationFilterParameters
     ConfigurationFilterParameters:
+      title: ConfigurationFilterParameters
       type: object
+      additionalProperties: false
       properties:
         event_title:
           $ref: '#/components/schemas/StringFieldFilter'
@@ -309,11 +463,21 @@ components:
           $ref: '#/components/schemas/StringFieldFilter'
         region:
           $ref: '#/components/schemas/StringFieldFilter'
-      additionalProperties: false
-      title: ConfigurationFilterParameters
     Notification:
-      description: Properties of a notification.
       type: object
+      description: Properties of a notification.
+      additionalProperties: false
+      required:
+        - id
+        - title
+        - description
+        - status
+        - region
+        - namespace
+        - entity_id
+        - details
+        - created_at
+        - updated_at
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -328,61 +492,49 @@ components:
         namespace:
           $ref: '#/components/schemas/NotificationNamespace'
         entity_id:
-          description: ID of the entity. Use '*' to represent all entities of this type.
           type: string
+          description: ID of the entity. Use '*' to represent all entities of this type.
         details:
-          description: Metadata associated with the notification to build actionable links.
           type: object
+          description: Metadata associated with the notification to build actionable links.
         created_at:
           $ref: '#/components/schemas/CreatedAt'
         updated_at:
           $ref: '#/components/schemas/UpdatedAt'
-      additionalProperties: false
-      required:
-        - id
-        - title
-        - description
-        - status
-        - region
-        - namespace
-        - entity_id
-        - details
-        - created_at
-        - updated_at
     NotificationUpdatePayload:
       description: Status of the notification.
       type: object
+      required:
+        - status
       properties:
         status:
           $ref: '#/components/schemas/NotificationStatus'
-      required:
-        - status
     NotificationStatus:
-      description: Status of the notification.
       type: string
+      description: Status of the notification.
       enum:
         - READ
         - UNREAD
         - ARCHIVED
     NotificationRegion:
-      description: Region associated to a notification.
       type: string
+      description: Region associated to a notification.
       enum:
         - US
         - EU
         - AU
         - '*'
     NotificationChannel:
-      description: Channel subscription details for an event.
       type: object
+      description: Channel subscription details for an event.
+      required:
+        - type
+        - enabled
       properties:
         type:
           $ref: '#/components/schemas/NotificationChannelType'
         enabled:
           type: boolean
-      required:
-        - type
-        - enabled
     NotificationChannelType:
       type: string
       enum:
@@ -396,6 +548,13 @@ components:
     UserConfiguration:
       description: Properties of an event.
       type: object
+      required:
+        - event_id
+        - event_title
+        - event_description
+        - event_namespace
+        - event_subscription_count
+        - default_subscription
       properties:
         event_id:
           type: string
@@ -412,26 +571,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DefaultSubscription'
-      required:
-        - event_id
-        - event_title
-        - event_description
-        - event_namespace
-        - event_subscription_count
-        - default_subscription
     DefaultSubscription:
       type: object
+      required:
+        - channel
+        - enabled
       properties:
         channel:
           $ref: '#/components/schemas/NotificationChannelType'
         enabled:
           type: boolean
-      required:
-        - channel
-        - enabled
     EventSubscriptionResponse:
-      description: Properties associated with an event subscription.
-      type: object
       properties:
         id:
           $ref: '#/components/schemas/UUID'
@@ -453,8 +603,9 @@ components:
           items:
             $ref: '#/components/schemas/NotificationChannel'
         enabled:
-          description: Enable/Disable complete subscription within an event.
           type: boolean
+          description: Enable/Disable complete subscription within an event.
+      description: Properties associated with an event subscription.
       required:
         - id
         - created_at
@@ -463,9 +614,15 @@ components:
         - entities
         - channels
         - enabled
+      type: object
     EventSubscription:
       description: Properties associated with an event subscription.
       type: object
+      required:
+        - regions
+        - entities
+        - channels
+        - enabled
       properties:
         regions:
           type: array
@@ -481,68 +638,67 @@ components:
           items:
             $ref: '#/components/schemas/NotificationChannel'
         enabled:
-          description: Enable/Disable complete subscription within an event.
           type: boolean
-      required:
-        - regions
-        - entities
-        - channels
-        - enabled
+          description: Enable/Disable complete subscription within an event.
     BulkPayload:
       description: Request body schema for bulk status update.
       type: object
+      required:
+        - ids
+        - status
       properties:
         ids:
           type: array
           items:
             type: string
-          maxItems: 100
           minItems: 1
+          maxItems: 100
           uniqueItems: true
         status:
           $ref: '#/components/schemas/NotificationStatus'
-      required:
-        - ids
-        - status
     StringFieldEqualsFilter:
+      title: StringFieldEqualsFilter
       description: Filter a string value by exact match.
       type: string
-      title: StringFieldEqualsFilter
     StringFieldContainsFilter:
-      description: Filter a string value field by partial contains.
       type: object
+      title: StringFieldContainsFilter
+      description: Filter a string value field by partial contains.
       properties:
         contains:
           type: string
       required:
         - contains
-      title: StringFieldContainsFilter
     StringFieldFilter:
+      title: StringFieldFilter
       description: Filter a string value field either by exact match or partial contains.
       oneOf:
         - $ref: '#/components/schemas/StringFieldEqualsFilter'
         - $ref: '#/components/schemas/StringFieldContainsFilter'
-      title: StringFieldFilter
     UUID:
-      description: Contains a unique identifier used for this resource.
       type: string
       format: uuid
       example: 5f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+      description: Contains a unique identifier used for this resource.
       readOnly: true
     CreatedAt:
-      description: An ISO-8601 timestamp representation of entity creation date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity creation date.
       readOnly: true
     UpdatedAt:
-      description: An ISO-8601 timestamp representation of entity update date.
       type: string
       format: date-time
       example: '2022-11-04T20:10:06.927Z'
+      description: An ISO-8601 timestamp representation of entity update date.
       readOnly: true
     CursorMetaPage:
       type: object
+      required:
+        - size
+        - next
+        - previous
       properties:
         first:
           description: URI to the first page
@@ -566,55 +722,61 @@ components:
           description: Requested page size
           type: number
           example: 10
-      required:
-        - size
-        - next
-        - previous
     BaseError:
-      description: standard error
       type: object
-      properties:
-        status:
-          description: |
-            The HTTP status code of the error. Useful when passing the response
-            body to child properties in a frontend UI. Must be returned as an integer.
-          type: integer
-          readOnly: true
-        title:
-          description: |
-            A short, human-readable summary of the problem. It should not
-            change between occurences of a problem, except for localization.
-            Should be provided as "Sentence case" for direct use in the UI.
-          type: string
-          readOnly: true
-        type:
-          description: The error type.
-          type: string
-          readOnly: true
-        instance:
-          description: |
-            Used to return the correlation ID back to the user, in the format
-            kong:trace:<correlation_id>. This helps us find the relevant logs
-            when a customer reports an issue.
-          type: string
-          readOnly: true
-        detail:
-          description: |
-            A human readable explanation specific to this occurence of the problem.
-            This field may contain request/entity data to help the user understand
-            what went wrong. Enclose variable values in square brackets. Should be
-            provided as "Sentence case" for direct use in the UI.
-          type: string
-          readOnly: true
+      title: Error
+      description: standard error
       required:
         - status
         - title
         - instance
         - detail
-      title: Error
+      properties:
+        status:
+          type: integer
+          description: >
+            The HTTP status code of the error. Useful when passing the response
+
+            body to child properties in a frontend UI. Must be returned as an
+            integer.
+          readOnly: true
+        title:
+          type: string
+          description: |
+            A short, human-readable summary of the problem. It should not
+            change between occurences of a problem, except for localization.
+            Should be provided as "Sentence case" for direct use in the UI.
+          readOnly: true
+        type:
+          type: string
+          description: The error type.
+          readOnly: true
+        instance:
+          type: string
+          description: |
+            Used to return the correlation ID back to the user, in the format
+            kong:trace:<correlation_id>. This helps us find the relevant logs
+            when a customer reports an issue.
+          readOnly: true
+        detail:
+          type: string
+          description: >
+            A human readable explanation specific to this occurence of the
+            problem.
+
+            This field may contain request/entity data to help the user
+            understand
+
+            what went wrong. Enclose variable values in square brackets. Should
+            be
+
+            provided as "Sentence case" for direct use in the UI.
+          readOnly: true
     InvalidRules:
       description: invalid parameters rules
       type: string
+      readOnly: true
+      nullable: true
       enum:
         - required
         - is_array
@@ -637,10 +799,9 @@ components:
         - is_supported_network_availability_zone_list
         - is_supported_network_cidr_block
         - is_supported_provider_region
-      nullable: true
-      readOnly: true
     InvalidParameterStandard:
       type: object
+      additionalProperties: false
       properties:
         field:
           type: string
@@ -655,12 +816,12 @@ components:
           type: string
           example: is a required field
           readOnly: true
-      additionalProperties: false
       required:
         - field
         - reason
     InvalidParameterMinimumLength:
       type: object
+      additionalProperties: false
       properties:
         field:
           type: string
@@ -669,6 +830,8 @@ components:
         rule:
           description: invalid parameters rules
           type: string
+          readOnly: true
+          nullable: false
           enum:
             - min_length
             - min_digits
@@ -677,8 +840,6 @@ components:
             - min_symbols
             - min_items
             - min
-          nullable: false
-          readOnly: true
         minimum:
           type: integer
           example: 8
@@ -689,7 +850,6 @@ components:
           type: string
           example: must have at least 8 characters
           readOnly: true
-      additionalProperties: false
       required:
         - field
         - reason
@@ -697,6 +857,7 @@ components:
         - minimum
     InvalidParameterMaximumLength:
       type: object
+      additionalProperties: false
       properties:
         field:
           type: string
@@ -705,12 +866,12 @@ components:
         rule:
           description: invalid parameters rules
           type: string
+          readOnly: true
+          nullable: false
           enum:
             - max_length
             - max_items
             - max
-          nullable: false
-          readOnly: true
         maximum:
           type: integer
           example: 8
@@ -721,7 +882,6 @@ components:
           type: string
           example: must not have more than 8 characters
           readOnly: true
-      additionalProperties: false
       required:
         - field
         - reason
@@ -729,6 +889,7 @@ components:
         - maximum
     InvalidParameterChoiceItem:
       type: object
+      additionalProperties: false
       properties:
         field:
           type: string
@@ -737,25 +898,24 @@ components:
         rule:
           description: invalid parameters rules
           type: string
+          readOnly: true
+          nullable: false
           enum:
             - enum
-          nullable: false
-          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         choices:
           type: array
-          items: {}
-          minItems: 1
-          nullable: false
-          readOnly: true
           uniqueItems: true
+          readOnly: true
+          nullable: false
+          minItems: 1
+          items: {}
         source:
           type: string
           example: body
-      additionalProperties: false
       required:
         - field
         - reason
@@ -763,6 +923,7 @@ components:
         - choices
     InvalidParameterDependentItem:
       type: object
+      additionalProperties: false
       properties:
         field:
           type: string
@@ -771,32 +932,34 @@ components:
         rule:
           description: invalid parameters rules
           type: string
+          readOnly: true
+          nullable: true
           enum:
             - dependent_fields
-          nullable: true
-          readOnly: true
         reason:
           type: string
           example: is a required field
           readOnly: true
         dependents:
           type: array
-          items: {}
-          nullable: true
-          readOnly: true
           uniqueItems: true
+          nullable: true
+          items: {}
+          readOnly: true
         source:
           type: string
           example: body
-      additionalProperties: false
       required:
         - field
         - rule
         - reason
         - dependents
     InvalidParameters:
-      description: invalid parameters
       type: array
+      nullable: false
+      uniqueItems: true
+      minItems: 1
+      description: invalid parameters
       items:
         oneOf:
           - $ref: '#/components/schemas/InvalidParameterStandard'
@@ -804,9 +967,6 @@ components:
           - $ref: '#/components/schemas/InvalidParameterMaximumLength'
           - $ref: '#/components/schemas/InvalidParameterChoiceItem'
           - $ref: '#/components/schemas/InvalidParameterDependentItem'
-      minItems: 1
-      nullable: false
-      uniqueItems: true
     BadRequestError:
       allOf:
         - $ref: '#/components/schemas/BaseError'
@@ -826,9 +986,9 @@ components:
             title:
               example: Unauthorized
             type:
-              example: 'https://httpstatuses.com/401'
+              example: https://httpstatuses.com/401
             instance:
-              example: 'kong:trace:1234567890'
+              example: kong:trace:1234567890
             detail:
               example: Invalid credentials
     ForbiddenError:
@@ -841,9 +1001,9 @@ components:
             title:
               example: Forbidden
             type:
-              example: 'https://httpstatuses.com/403'
+              example: https://httpstatuses.com/403
             instance:
-              example: 'kong:trace:1234567890'
+              example: kong:trace:1234567890
             detail:
               example: Forbidden
     NotFoundError:
@@ -856,9 +1016,9 @@ components:
             title:
               example: Not Found
             type:
-              example: 'https://httpstatuses.com/404'
+              example: https://httpstatuses.com/404
             instance:
-              example: 'kong:trace:1234567890'
+              example: kong:trace:1234567890
             detail:
               example: Not found
   examples:
@@ -1003,169 +1163,34 @@ components:
       value:
         status: 401
         title: Unauthorized
-        instance: 'kong:trace:8347343766220159418'
+        instance: kong:trace:8347343766220159418
         detail: Unauthorized
     ForbiddenExample:
       value:
         status: 403
         title: Forbidden
-        instance: 'kong:trace:2723154947768991354'
+        instance: kong:trace:2723154947768991354
         detail: You do not have permission to perform this action
     NotFoundExample:
       value:
         status: 404
         title: Not Found
-        instance: 'kong:trace:6816496025408232265'
+        instance: kong:trace:6816496025408232265
         detail: Not Found
-  requestBodies:
-    NotificationUpdateRequest:
-      description: Request body schema for updating notification status.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/NotificationUpdatePayload'
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/NotificationUpdatePayload'
-    EventSubscriptionRequest:
-      description: Request body schema for creating/updating event subscription.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventSubscription'
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/EventSubscriptionPayload'
-    BulkRequest:
-      description: Request body schema for bulk status update.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/BulkPayload'
-          examples:
-            Example Request Body:
-              $ref: '#/components/examples/BulkPayload'
-  responses:
-    NotificationResponse:
-      description: View a single notification.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Notification'
-          examples:
-            Notification:
-              $ref: '#/components/examples/NotificationResponse'
-    NotificationListResponse:
-      description: A paginated list response for a collection of notifications
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Notification'
-              meta:
-                $ref: '#/components/schemas/CursorMetaPage'
-            additionalProperties: false
-            required:
-              - data
-              - meta
-          examples:
-            Notifications List:
-              $ref: '#/components/examples/NotificationListResponse'
-    UserConfigurationListResponse:
-      description: A paginated list response for all notification events and user subscriptions.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UserConfiguration'
-            additionalProperties: false
-            required:
-              - data
-          examples:
-            User Configurations List:
-              $ref: '#/components/examples/UserConfigurationListResponse'
-    EventSubscriptionListResponse:
-      description: A paginated list response for all subscriptions associated with an event.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EventSubscriptionResponse'
-              meta:
-                $ref: '#/components/schemas/CursorMetaPage'
-            additionalProperties: false
-            required:
-              - data
-              - meta
-          examples:
-            Event Subscriptions List:
-              $ref: '#/components/examples/EventSubscriptionListResponse'
-    EventSubscriptionResponse:
-      description: Response containing specific subscription details associated with an event.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/EventSubscriptionResponse'
-          examples:
-            Event Subscription:
-              $ref: '#/components/examples/EventSubscriptionResponse'
-    BadRequest:
-      description: Bad Request
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestError'
-    Unauthorized:
-      description: Unauthorized
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/UnauthorizedExample'
-    Forbidden:
-      description: Forbidden
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenError'
-          examples:
-            UnauthorizedExample:
-              $ref: '#/components/examples/ForbiddenExample'
-    NotFound:
-      description: Not Found
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/NotFoundError'
-          examples:
-            NotFoundExample:
-              $ref: '#/components/examples/NotFoundExample'
   securitySchemes:
     personalAccessToken:
       type: http
       scheme: bearer
       bearerFormat: Token
-      description: |
-        The personal access token is meant to be used as an alternative to basic-auth when accessing Konnect via APIs.
-        You can generate a Personal Access Token (PAT) from the [personal access token page](https://cloud.konghq.com/global/tokens/) in the Konnect dashboard.
+      description: >
+        The personal access token is meant to be used as an alternative to
+        basic-auth when accessing Konnect via APIs.
+
+        You can generate a Personal Access Token (PAT) from the [personal access
+        token page](https://cloud.konghq.com/global/tokens/) in the Konnect
+        dashboard.
+
         The PAT token must be passed in the header of a request, for example:
-        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header 'Authorization: Bearer kpat_xgfT...'`
-tags:
-  - name: Notifications
-    description: Operations related to notifications
-security:
-  - personalAccessToken: []
+
+        `curl -X GET 'https://global.api.konghq.com/v2/users/' --header
+        'Authorization: Bearer kpat_xgfT...'`
