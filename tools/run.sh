@@ -2,6 +2,8 @@
 set -e
 shopt -s globstar
 
+./tools/prepare-mesh-control-planes.sh
+
 # Merge the generated and hand maintained OAS files for Control Planes Config
 FILES=(
   "src/konnect/definitions/control-planes-config/v2/konnect.yaml"

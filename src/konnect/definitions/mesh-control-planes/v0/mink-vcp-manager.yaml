@@ -16,6 +16,8 @@ servers:
     description: EU Public API
   - url: https://au.api.konghq.com/v1
     description: AU Public API
+  - url: https://me.api.konghq.com/v1
+    description: ME Public API
 paths:
   /mesh/control-planes:
     get:
@@ -245,14 +247,8 @@ components:
           type: array
           description: An array of objects that contains information related to the error response.
           items:
-            type: object
-            properties:
-              field:
-                type: string
-              reason:
-                type: string
-              rule:
-                type: string
+            $ref: >-
+              ../../../../common/definitions/errors.yaml#/components/schemas/InvalidParameters
         status:
           type: integer
           description: The HTTP status code.

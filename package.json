@@ -8,6 +8,7 @@
     "lint:all": "spectral lint 'src/(portal|konnect)/**/openapi.yaml'",
     "lint:build": "spectral lint -r .spectral.combined.yaml 'build/complete/**/*.yaml'",
     "lint:artifacts": "spectral lint 'output/**/*.yaml'",
+    "test:tools": "node --test ./tools/*.spec.js",
     "test:common": "node ./src/common/test/index.js",
     "bundle-apis": "node ./tools/bundle.js",
     "generate-sdk-oas": "node ./tools/generate-sdk-openapi-files.js",

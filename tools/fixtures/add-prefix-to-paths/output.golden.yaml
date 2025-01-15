@@ -1,0 +1,29 @@
+openapi: 3.0.0
+info:
+  title: Example API
+  version: 1.0.0
+paths:
+  /v2/users:
+    get:
+      summary: List all users
+      responses:
+        '200':
+          $ref: '#/components/schemas/User'
+      parameters:
+        - $ref: '#/components/parameters/testParameter'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+  parameters:
+    testParameter:
+      name: testParameter
+      in: query
+      required: true
+      schema:
+        type: string

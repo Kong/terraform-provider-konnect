@@ -7,6 +7,7 @@ info:
     name: Kong Inc
     url: 'https://konghq.com'
     email: support@konghq.com
+  x-ref-schema-name: MeshOPA
   license:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
@@ -11330,6 +11331,12 @@ components:
           examples:
             Identity Provider Collection:
               $ref: '#/components/examples/IdentityProviders'
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
     GetPortalConfig:
       description: Response for a portal configuration
       content:
@@ -11672,12 +11679,6 @@ components:
             required:
               - meta
               - data
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BaseError'
     NotAvailable:
       description: Service not available
       content:

@@ -407,6 +407,9 @@ overrides:
       - "src/konnect/definitions/mesh-control-planes/v0/**/openapi.yaml"
     rules:
       server-url-must-contain-version-aip-3101: "off"
+      paths-kebab-case-aip-122: "off"
+      properties-snake-case-aip-122: "off"
+      server-in-approved-list: "off"
   - files:
       - "src/konnect/definitions/audit-logs/v2/**/openapi.yaml"
     rules:

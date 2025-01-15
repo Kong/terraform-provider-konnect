@@ -1,0 +1,20 @@
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        invalid_parameters:
+          type: array
+          items:
+            $ref: >-
+              ../../../../common/definitions/errors.yaml#/components/schemas/InvalidParameter
+paths:
+  /mesh/control-planes/{cpId}/:
+    get:
+      operationId: index
+      summary: The index endpoint
+      resources:
+        '200':
+          $ref: '#/components/responses/IndexResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'

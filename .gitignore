@@ -1,4 +1,7 @@
 # Generated at runtime
+src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml
+src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml
+src/konnect/definitions/mesh-control-planes/v0/openapi.yaml
 src/konnect/definitions/control-planes-config/v2/openapi.yaml
 
 # Not committed to repo

@@ -1,0 +1,4 @@
+components:
+  schemas:
+    InvalidParameter:
+      type: string
