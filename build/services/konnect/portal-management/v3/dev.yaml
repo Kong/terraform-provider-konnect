@@ -1718,7 +1718,7 @@ components:
               type: array
               items:
                 type: string
-                pattern: '^https://[^:.]+\\..+$'
+                pattern: '^https://[^:.]+\..+$'
               maxItems: 20
         menu:
           type: object
