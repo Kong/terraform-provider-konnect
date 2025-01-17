@@ -1,6 +1,6 @@
 # All internal/public APIs need review from editors
 build/services/**/internal.yaml       @Kong/team-aip
-build/services/**/public.yaml       @mheap
+build/services/**/public.yaml       @mheap @slonka
 
 # TPS
 src/konnect/definitions/audit-logs/**    @Kong/team-platform-services
