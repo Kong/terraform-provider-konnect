@@ -206,6 +206,33 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Documents
+  '/collections/{collectionId}/documents/slug':
+    get:
+      operationId: getDocumentBySlug
+      summary: Get a document by slug
+      description: Get a document
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - name: slug
+          in: query
+          description: Unique slug of the document.
+          required: true
+          schema:
+            type: string
+          example: /about/company
+      responses:
+        '200':
+          description: Document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentRaw'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Documents
   '/collections/{collectionId}/documents/{documentId}':
     parameters:
       - $ref: '#/components/parameters/collectionId'

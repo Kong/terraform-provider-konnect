@@ -209,6 +209,33 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - Documents
+  /collections/{collectionId}/documents/slug:
+    get:
+      summary: Get a document by slug
+      description: Get a document
+      operationId: getDocumentBySlug
+      parameters:
+        - $ref: '#/components/parameters/collectionId'
+        - in: query
+          name: slug
+          required: true
+          description: Unique slug of the document.
+          schema:
+            type: string
+          example: '/about/company'
+      responses:
+        '200':
+          description: Document
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/DocumentRaw'
+        '400':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/BadRequest'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - Documents
   /collections/{collectionId}/documents/{documentId}:
     parameters:
       - $ref: '#/components/parameters/collectionId'

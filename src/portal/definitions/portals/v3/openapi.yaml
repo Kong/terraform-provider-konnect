@@ -212,7 +212,7 @@ paths:
       x-internal: true
       deprecated: true
       operationId: get-portal-page
-      summary: Get Portal Page
+      summary: Get Portal Page. Will be removed once switched to /pages/{pageName}
       description: >-
         Returns a single page for the portal. Each page has a path, title, and content.
         Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
@@ -224,6 +224,27 @@ paths:
           schema:
             type: string
           example: /about/company
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalPageResponse'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - portal
+      security:
+        - portalAccessToken: []
+        - {}
+  /api/v3/portal/pages/{pageName}:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-page-by-name
+      summary: Get Portal Page by name
+      description: >-
+        Returns a single page for the portal. Each page has a path, title, and content.
+        Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
+      parameters:
+        - $ref: '#/components/parameters/pageName'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalPageResponse'
@@ -270,7 +291,7 @@ paths:
       x-internal: true
       deprecated: true
       operationId: get-portal-snippet
-      summary: Get Portal Snippet
+      summary: Get Portal Snippet. Will be removed once switched to /snippets/{snippetName}.
       description: >-
         Returns a single snippet for the portal. Each snippet has a name, title, and content.
         Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
@@ -289,12 +310,46 @@ paths:
           $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
       tags:
         - portal
+  /api/v3/portal/snippets/{snippetName}:
+    get:
+      x-unstable: true
+      x-internal: true
+      operationId: get-portal-snippet-by-name
+      summary: Get Portal Snippet by name
+      description: >-
+        Returns a single snippet for the portal. Each snippet has a name, title, and content.
+        Public snippets will be returned for non-authenticated users, while both private and public snippets will be returned for authenticated users.
+      parameters:
+        - $ref: '#/components/parameters/snippetName'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetPortalSnippetResponse'
+        '404':
+          $ref: '../../../../common/definitions/errors.yaml#/components/responses/NotFound'
+      tags:
+        - portal
       security:
         - portalAccessToken: []
         - {}
 
 components:
   parameters:
+    snippetName:
+      name: snippetName
+      in: path
+      required: true
+      description: Targeted snippet, url-encoded. Must not start with /.
+      example: mysnippet
+      schema:
+        type: string
+    pageName:
+      name: pageName
+      in: path
+      required: true
+      description: Targeted snippet, url-encoded. Must start with /.
+      example: '%2Fmypage'
+      schema:
+        type: string
     SortPortalPages:
       name: 'sort'
       description: |
@@ -365,7 +420,7 @@ components:
                   page:
                     size: 10
                     total: 1
-                    number: 1  
+                    number: 1
     GetPortalPageResponse:
       description: A single portal page
       content:

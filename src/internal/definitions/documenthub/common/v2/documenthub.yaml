@@ -52,3 +52,12 @@ components:
             enum:
             - published
             - unpublished
+  parameters:
+    slugName:
+      name: slugId
+      in: path
+      required: true
+      description: Targeted slug, url-encoded. Only works for flat collections.
+      example: '%2Fcompany%2Fabout'
+      schema:
+        type: string
