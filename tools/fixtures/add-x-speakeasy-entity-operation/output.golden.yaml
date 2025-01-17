@@ -1,0 +1,12 @@
+paths:
+  /mesh/control-planes/{cpId}/:
+    get:
+      operationId: getMeshAccessLog
+      x-speakeasy-entity-operation: MeshAccessLog#get
+    put:
+      operationId: putMeshAccessLog
+      x-speakeasy-entity-operation: MeshAccessLog#update
+  /mesh/resource-types:
+    post:
+      operationId: postResourceTypeDescription
+      x-speakeasy-entity-operation: ResourceTypeDescription#post

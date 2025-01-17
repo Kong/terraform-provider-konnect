@@ -1,0 +1,9 @@
+paths:
+  /mesh/control-planes/{cpId}/:
+    get:
+      operationId: getMeshAccessLog
+    put:
+      operationId: putMeshAccessLog
+  /mesh/resource-types:
+    post:
+      operationId: postResourceTypeDescription

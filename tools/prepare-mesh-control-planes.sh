@@ -14,6 +14,10 @@ x-speakeasy-match: id"
 
 node ./tools/remove-common-definitions.js src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml
 
-./node_modules/.bin/oas-toolkit merge src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml src/konnect/definitions/mesh-control-planes/v0/mink-vcp-manager.yaml > src/konnect/definitions/mesh-control-planes/v0/openapi.yaml
+node ./tools/add-x-speakeasy-entity-operation.js src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml > src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml
 
-rm src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml
+./node_modules/.bin/oas-toolkit merge src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml src/konnect/definitions/mesh-control-planes/v0/mink-vcp-manager.yaml > src/konnect/definitions/mesh-control-planes/v0/openapi.yaml
+
+rm src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml \
+   src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml \
+   src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml \
