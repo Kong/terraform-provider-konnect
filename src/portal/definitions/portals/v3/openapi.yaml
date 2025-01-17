@@ -212,7 +212,7 @@ paths:
       x-internal: true
       deprecated: true
       operationId: get-portal-page
-      summary: Get Portal Page. Will be removed once switched to /pages/{pageName}
+      summary: Get Portal Page. Will be removed once switched to /pages/{pagePath}
       description: >-
         Returns a single page for the portal. Each page has a path, title, and content.
         Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
@@ -234,7 +234,7 @@ paths:
       security:
         - portalAccessToken: []
         - {}
-  /api/v3/portal/pages/{pageName}:
+  /api/v3/portal/pages/{pagePath}:
     get:
       x-unstable: true
       x-internal: true
@@ -244,7 +244,7 @@ paths:
         Returns a single page for the portal. Each page has a path, title, and content.
         Public pages will be returned for non-authenticated users, while both private and public pages will be returned for authenticated users.
       parameters:
-        - $ref: '#/components/parameters/pageName'
+        - $ref: '#/components/parameters/pagePath'
       responses:
         '200':
           $ref: '#/components/responses/GetPortalPageResponse'
@@ -342,8 +342,8 @@ components:
       example: mysnippet
       schema:
         type: string
-    pageName:
-      name: pageName
+    pagePath:
+      name: pagePath
       in: path
       required: true
       description: Targeted snippet, url-encoded. Must start with /.
