@@ -16,7 +16,7 @@ servers:
   - url: 'https://me.api.konghq.com/v1'
     description: Middle-East Production region
 paths:
-  '/mesh/control-planes/{cpId}':
+  '/mesh/control-planes/{id}':
     get:
       operationId: get-mesh-control-plane
       summary: Get the control plane
@@ -80,7 +80,7 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
-  '/mesh/control-planes/{cpId}/_resources':
+  '/mesh/control-planes/{id}/_resources':
     get:
       operationId: get-resource-type-description
       summary: A list of all resources that exist
@@ -96,7 +96,7 @@ paths:
         - System
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/global-insight':
+  '/mesh/control-planes/{id}/global-insight':
     get:
       operationId: get-global-insight
       summary: Get Global Insight
@@ -112,7 +112,7 @@ paths:
         - GlobalInsight
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/{resourceType}/{resourceName}/_rules':
+  '/mesh/control-planes/{id}/meshes/{mesh}/{resourceType}/{resourceName}/_rules':
     get:
       operationId: inspect-dataplanes-rules
       summary: Returns rules matching this dataplane
@@ -153,7 +153,7 @@ paths:
         - Inspect
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/dataplanes/{name}/_config':
+  '/mesh/control-planes/{id}/meshes/{mesh}/dataplanes/{name}/_config':
     get:
       operationId: get-meshes-mesh-dataplanes-name-config
       summary: Get a proxy XDS config on a CP
@@ -198,7 +198,7 @@ paths:
           $ref: '#/components/responses/Internal'
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/{policyType}/{policyName}/_resources/dataplanes':
+  '/mesh/control-planes/{id}/meshes/{mesh}/{policyType}/{policyName}/_resources/dataplanes':
     get:
       operationId: inspect-resources
       summary: Returns resources matched by this policy
@@ -254,7 +254,7 @@ paths:
         - Inspect
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/{serviceType}/{serviceName}/_hostnames':
+  '/mesh/control-planes/{id}/meshes/{mesh}/{serviceType}/{serviceName}/_hostnames':
     get:
       operationId: inspect-hostnames
       summary: Returns hostnames for service
@@ -298,7 +298,7 @@ paths:
         - Inspect
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshaccesslogs/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs/{name}':
     get:
       operationId: getMeshAccessLog
       summary: Returns MeshAccessLog entity
@@ -383,7 +383,7 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshaccesslogs':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs':
     get:
       operationId: getMeshAccessLogList
       summary: Returns a list of MeshAccessLog in the mesh.
@@ -401,7 +401,7 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshcircuitbreakers/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshcircuitbreakers/{name}':
     get:
       operationId: getMeshCircuitBreaker
       summary: Returns MeshCircuitBreaker entity
@@ -486,7 +486,7 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshcircuitbreakers':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshcircuitbreakers':
     get:
       operationId: getMeshCircuitBreakerList
       summary: Returns a list of MeshCircuitBreaker in the mesh.
@@ -504,7 +504,7 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshfaultinjections/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshfaultinjections/{name}':
     get:
       operationId: getMeshFaultInjection
       summary: Returns MeshFaultInjection entity
@@ -589,7 +589,7 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshfaultinjections':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshfaultinjections':
     get:
       operationId: getMeshFaultInjectionList
       summary: Returns a list of MeshFaultInjection in the mesh.
@@ -607,7 +607,7 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhealthchecks/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshhealthchecks/{name}':
     get:
       operationId: getMeshHealthCheck
       summary: Returns MeshHealthCheck entity
@@ -692,7 +692,7 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhealthchecks':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshhealthchecks':
     get:
       operationId: getMeshHealthCheckList
       summary: Returns a list of MeshHealthCheck in the mesh.
@@ -710,7 +710,7 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhttproutes/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshhttproutes/{name}':
     get:
       operationId: getMeshHTTPRoute
       summary: Returns MeshHTTPRoute entity
@@ -795,7 +795,7 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhttproutes':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshhttproutes':
     get:
       operationId: getMeshHTTPRouteList
       summary: Returns a list of MeshHTTPRoute in the mesh.
@@ -813,7 +813,7 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshloadbalancingstrategies/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshloadbalancingstrategies/{name}':
     get:
       operationId: getMeshLoadBalancingStrategy
       summary: Returns MeshLoadBalancingStrategy entity
@@ -898,7 +898,7 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshloadbalancingstrategies':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshloadbalancingstrategies':
     get:
       operationId: getMeshLoadBalancingStrategyList
       summary: Returns a list of MeshLoadBalancingStrategy in the mesh.
@@ -916,7 +916,7 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmetrics/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshmetrics/{name}':
     get:
       operationId: getMeshMetric
       summary: Returns MeshMetric entity
@@ -1001,7 +1001,7 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmetrics':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshmetrics':
     get:
       operationId: getMeshMetricList
       summary: Returns a list of MeshMetric in the mesh.
@@ -1019,7 +1019,7 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshpassthroughs/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshpassthroughs/{name}':
     get:
       operationId: getMeshPassthrough
       summary: Returns MeshPassthrough entity
@@ -1104,7 +1104,7 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshpassthroughs':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshpassthroughs':
     get:
       operationId: getMeshPassthroughList
       summary: Returns a list of MeshPassthrough in the mesh.
@@ -1122,7 +1122,7 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshproxypatches/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshproxypatches/{name}':
     get:
       operationId: getMeshProxyPatch
       summary: Returns MeshProxyPatch entity
@@ -1207,7 +1207,7 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshproxypatches':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshproxypatches':
     get:
       operationId: getMeshProxyPatchList
       summary: Returns a list of MeshProxyPatch in the mesh.
@@ -1225,7 +1225,7 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshratelimits/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshratelimits/{name}':
     get:
       operationId: getMeshRateLimit
       summary: Returns MeshRateLimit entity
@@ -1310,7 +1310,7 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshratelimits':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshratelimits':
     get:
       operationId: getMeshRateLimitList
       summary: Returns a list of MeshRateLimit in the mesh.
@@ -1328,7 +1328,7 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshretries/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshretries/{name}':
     get:
       operationId: getMeshRetry
       summary: Returns MeshRetry entity
@@ -1413,7 +1413,7 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshretries':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshretries':
     get:
       operationId: getMeshRetryList
       summary: Returns a list of MeshRetry in the mesh.
@@ -1431,7 +1431,7 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtcproutes/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtcproutes/{name}':
     get:
       operationId: getMeshTCPRoute
       summary: Returns MeshTCPRoute entity
@@ -1516,7 +1516,7 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtcproutes':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtcproutes':
     get:
       operationId: getMeshTCPRouteList
       summary: Returns a list of MeshTCPRoute in the mesh.
@@ -1534,7 +1534,7 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtimeouts/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtimeouts/{name}':
     get:
       operationId: getMeshTimeout
       summary: Returns MeshTimeout entity
@@ -1619,7 +1619,7 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtimeouts':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtimeouts':
     get:
       operationId: getMeshTimeoutList
       summary: Returns a list of MeshTimeout in the mesh.
@@ -1637,7 +1637,7 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtlses/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtlses/{name}':
     get:
       operationId: getMeshTLS
       summary: Returns MeshTLS entity
@@ -1722,7 +1722,7 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtlses':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtlses':
     get:
       operationId: getMeshTLSList
       summary: Returns a list of MeshTLS in the mesh.
@@ -1740,7 +1740,7 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtraces/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtraces/{name}':
     get:
       operationId: getMeshTrace
       summary: Returns MeshTrace entity
@@ -1825,7 +1825,7 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtraces':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtraces':
     get:
       operationId: getMeshTraceList
       summary: Returns a list of MeshTrace in the mesh.
@@ -1843,7 +1843,7 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtrafficpermissions/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtrafficpermissions/{name}':
     get:
       operationId: getMeshTrafficPermission
       summary: Returns MeshTrafficPermission entity
@@ -1928,7 +1928,7 @@ paths:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtrafficpermissions':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshtrafficpermissions':
     get:
       operationId: getMeshTrafficPermissionList
       summary: Returns a list of MeshTrafficPermission in the mesh.
@@ -1946,7 +1946,7 @@ paths:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{name}':
+  '/mesh/control-planes/{id}/meshes/{name}':
     get:
       operationId: getMesh
       summary: Returns Mesh entity
@@ -2013,7 +2013,7 @@ paths:
         - Mesh
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes':
+  '/mesh/control-planes/{id}/meshes':
     get:
       operationId: getMeshList
       summary: Returns a list of Mesh in the mesh.
@@ -2024,7 +2024,7 @@ paths:
         - Mesh
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshgateways/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshgateways/{name}':
     get:
       operationId: getMeshGateway
       summary: Returns MeshGateway entity
@@ -2109,7 +2109,7 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshgateways':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshgateways':
     get:
       operationId: getMeshGatewayList
       summary: Returns a list of MeshGateway in the mesh.
@@ -2127,7 +2127,7 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/hostnamegenerators/{name}':
+  '/mesh/control-planes/{id}/hostnamegenerators/{name}':
     get:
       operationId: getHostnameGenerator
       summary: Returns HostnameGenerator entity
@@ -2194,7 +2194,7 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/hostnamegenerators':
+  '/mesh/control-planes/{id}/hostnamegenerators':
     get:
       operationId: getHostnameGeneratorList
       summary: Returns a list of HostnameGenerator in the mesh.
@@ -2205,7 +2205,7 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshexternalservices/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshexternalservices/{name}':
     get:
       operationId: getMeshExternalService
       summary: Returns MeshExternalService entity
@@ -2290,7 +2290,7 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshexternalservices':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshexternalservices':
     get:
       operationId: getMeshExternalServiceList
       summary: Returns a list of MeshExternalService in the mesh.
@@ -2308,7 +2308,7 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmultizoneservices/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshmultizoneservices/{name}':
     get:
       operationId: getMeshMultiZoneService
       summary: Returns MeshMultiZoneService entity
@@ -2393,7 +2393,7 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmultizoneservices':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshmultizoneservices':
     get:
       operationId: getMeshMultiZoneServiceList
       summary: Returns a list of MeshMultiZoneService in the mesh.
@@ -2411,7 +2411,7 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshservices/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshservices/{name}':
     get:
       operationId: getMeshService
       summary: Returns MeshService entity
@@ -2496,7 +2496,7 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshservices':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshservices':
     get:
       operationId: getMeshServiceList
       summary: Returns a list of MeshService in the mesh.
@@ -2514,7 +2514,7 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshglobalratelimits/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshglobalratelimits/{name}':
     get:
       operationId: getMeshGlobalRateLimit
       summary: Returns MeshGlobalRateLimit entity
@@ -2599,7 +2599,7 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshglobalratelimits':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshglobalratelimits':
     get:
       operationId: getMeshGlobalRateLimitList
       summary: Returns a list of MeshGlobalRateLimit in the mesh.
@@ -2617,7 +2617,7 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas/{name}':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshopas/{name}':
     get:
       operationId: getMeshOPA
       summary: Returns MeshOPA entity
@@ -2702,7 +2702,7 @@ paths:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas':
+  '/mesh/control-planes/{id}/meshes/{mesh}/meshopas':
     get:
       operationId: getMeshOPAList
       summary: Returns a list of MeshOPA in the mesh.
@@ -2782,7 +2782,7 @@ components:
         type: integer
         example: 10
     cpId:
-      name: cpId
+      name: id
       in: path
       required: true
       description: Id of the Konnect resource
@@ -5168,7 +5168,6 @@ components:
                             description: List of HTTP response statuses which are considered healthy
                             type: array
                             items:
-                              format: int32
                               type: integer
                           path:
                             description: |-
