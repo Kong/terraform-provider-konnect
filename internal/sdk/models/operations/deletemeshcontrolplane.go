@@ -9,14 +9,14 @@ import (
 
 type DeleteMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
-	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
+	ID string `pathParam:"style=simple,explode=false,name=id"`
 }
 
-func (o *DeleteMeshControlPlaneRequest) GetCpID() string {
+func (o *DeleteMeshControlPlaneRequest) GetID() string {
 	if o == nil {
 		return ""
 	}
-	return o.CpID
+	return o.ID
 }
 
 type DeleteMeshControlPlaneResponse struct {

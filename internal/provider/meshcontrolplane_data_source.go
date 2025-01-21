@@ -54,8 +54,8 @@ func (r *MeshControlPlaneDataSource) Schema(ctx context.Context, req datasource.
 				Computed: true,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
-				Description: `ID of the control plane.`,
+				Required:    true,
+				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -111,11 +111,11 @@ func (r *MeshControlPlaneDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	var id string
+	id = data.ID.ValueString()
 
 	request := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
+		ID: id,
 	}
 	res, err := r.client.Mesh.GetMeshControlPlane(ctx, request)
 	if err != nil {

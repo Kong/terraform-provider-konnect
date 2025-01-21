@@ -10,7 +10,7 @@ import (
 )
 
 func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInput() *shared.RouteByHeaderPluginInput {
-	var rules []shared.Rules = []shared.Rules{}
+	var rules []shared.RouteByHeaderPluginRules = []shared.RouteByHeaderPluginRules{}
 	for _, rulesItem := range r.Config.Rules {
 		condition := make(map[string]interface{})
 		for conditionKey, conditionValue := range rulesItem.Condition {
@@ -21,7 +21,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInp
 		var upstreamName string
 		upstreamName = rulesItem.UpstreamName.ValueString()
 
-		rules = append(rules, shared.Rules{
+		rules = append(rules, shared.RouteByHeaderPluginRules{
 			Condition:    condition,
 			UpstreamName: upstreamName,
 		})
@@ -148,12 +148,12 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInp
 
 func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		r.Config.Rules = []tfTypes.Rules{}
+		r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
 		if len(r.Config.Rules) > len(resp.Config.Rules) {
 			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 		}
 		for rulesCount, rulesItem := range resp.Config.Rules {
-			var rules1 tfTypes.Rules
+			var rules1 tfTypes.RouteByHeaderPluginRules
 			if len(rulesItem.Condition) > 0 {
 				rules1.Condition = make(map[string]types.String)
 				for key, value := range rulesItem.Condition {

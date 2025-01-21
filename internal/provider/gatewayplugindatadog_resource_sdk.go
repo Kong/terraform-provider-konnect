@@ -28,7 +28,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPluginInput() *shared
 	} else {
 		host = nil
 	}
-	var metrics []shared.Metrics = []shared.Metrics{}
+	var metrics []shared.DatadogPluginMetrics = []shared.DatadogPluginMetrics{}
 	for _, metricsItem := range r.Config.Metrics {
 		consumerIdentifier := new(shared.ConsumerIdentifier)
 		if !metricsItem.ConsumerIdentifier.IsUnknown() && !metricsItem.ConsumerIdentifier.IsNull() {
@@ -48,7 +48,7 @@ func (r *GatewayPluginDatadogResourceModel) ToSharedDatadogPluginInput() *shared
 		for _, tagsItem := range metricsItem.Tags {
 			tags = append(tags, tagsItem.ValueString())
 		}
-		metrics = append(metrics, shared.Metrics{
+		metrics = append(metrics, shared.DatadogPluginMetrics{
 			ConsumerIdentifier: consumerIdentifier,
 			Name:               name,
 			SampleRate:         sampleRate,
@@ -292,12 +292,12 @@ func (r *GatewayPluginDatadogResourceModel) RefreshFromSharedDatadogPlugin(resp 
 			r.Config.FlushTimeout = types.NumberNull()
 		}
 		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Metrics = []tfTypes.Metrics{}
+		r.Config.Metrics = []tfTypes.DatadogPluginMetrics{}
 		if len(r.Config.Metrics) > len(resp.Config.Metrics) {
 			r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 		}
 		for metricsCount, metricsItem := range resp.Config.Metrics {
-			var metrics1 tfTypes.Metrics
+			var metrics1 tfTypes.DatadogPluginMetrics
 			if metricsItem.ConsumerIdentifier != nil {
 				metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 			} else {

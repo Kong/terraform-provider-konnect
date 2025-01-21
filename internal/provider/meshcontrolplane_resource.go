@@ -174,11 +174,11 @@ func (r *MeshControlPlaneResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	var id string
+	id = data.ID.ValueString()
 
 	request := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
+		ID: id,
 	}
 	res, err := r.client.Mesh.GetMeshControlPlane(ctx, request)
 	if err != nil {
@@ -224,12 +224,12 @@ func (r *MeshControlPlaneResource) Update(ctx context.Context, req resource.Upda
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	var id string
+	id = data.ID.ValueString()
 
 	updateMeshControlPlaneRequest := *data.ToSharedUpdateMeshControlPlaneRequest()
 	request := operations.UpdateMeshControlPlaneRequest{
-		CpID:                          cpID,
+		ID:                            id,
 		UpdateMeshControlPlaneRequest: updateMeshControlPlaneRequest,
 	}
 	res, err := r.client.Mesh.UpdateMeshControlPlane(ctx, request)
@@ -277,11 +277,11 @@ func (r *MeshControlPlaneResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	var cpID string
-	cpID = data.ID.ValueString()
+	var id string
+	id = data.ID.ValueString()
 
 	request := operations.DeleteMeshControlPlaneRequest{
-		CpID: cpID,
+		ID: id,
 	}
 	res, err := r.client.Mesh.DeleteMeshControlPlane(ctx, request)
 	if err != nil {

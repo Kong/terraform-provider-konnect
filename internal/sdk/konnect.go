@@ -76,6 +76,30 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
+	System                         *System
+	HostnameGenerator              *HostnameGenerator
+	MeshAccessLog                  *MeshAccessLog
+	MeshCircuitBreaker             *MeshCircuitBreaker
+	MeshExternalService            *MeshExternalService
+	MeshFaultInjection             *MeshFaultInjection
+	MeshGateway                    *MeshGateway
+	MeshGlobalRateLimit            *MeshGlobalRateLimit
+	MeshHealthCheck                *MeshHealthCheck
+	MeshHTTPRoute                  *MeshHTTPRoute
+	MeshLoadBalancingStrategy      *MeshLoadBalancingStrategy
+	MeshMetric                     *MeshMetric
+	MeshMultiZoneService           *MeshMultiZoneService
+	MeshOPA                        *MeshOPA
+	MeshPassthrough                *MeshPassthrough
+	MeshProxyPatch                 *MeshProxyPatch
+	MeshRateLimit                  *MeshRateLimit
+	MeshRetry                      *MeshRetry
+	MeshService                    *MeshService
+	MeshTCPRoute                   *MeshTCPRoute
+	MeshTimeout                    *MeshTimeout
+	MeshTLS                        *MeshTLS
+	MeshTrace                      *MeshTrace
+	MeshTrafficPermission          *MeshTrafficPermission
 	APIProducts                    *APIProducts
 	APIProductDocumentation        *APIProductDocumentation
 	APIProductVersions             *APIProductVersions
@@ -315,6 +339,54 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
+
+	sdk.System = newSystem(sdk.sdkConfiguration)
+
+	sdk.HostnameGenerator = newHostnameGenerator(sdk.sdkConfiguration)
+
+	sdk.MeshAccessLog = newMeshAccessLog(sdk.sdkConfiguration)
+
+	sdk.MeshCircuitBreaker = newMeshCircuitBreaker(sdk.sdkConfiguration)
+
+	sdk.MeshExternalService = newMeshExternalService(sdk.sdkConfiguration)
+
+	sdk.MeshFaultInjection = newMeshFaultInjection(sdk.sdkConfiguration)
+
+	sdk.MeshGateway = newMeshGateway(sdk.sdkConfiguration)
+
+	sdk.MeshGlobalRateLimit = newMeshGlobalRateLimit(sdk.sdkConfiguration)
+
+	sdk.MeshHealthCheck = newMeshHealthCheck(sdk.sdkConfiguration)
+
+	sdk.MeshHTTPRoute = newMeshHTTPRoute(sdk.sdkConfiguration)
+
+	sdk.MeshLoadBalancingStrategy = newMeshLoadBalancingStrategy(sdk.sdkConfiguration)
+
+	sdk.MeshMetric = newMeshMetric(sdk.sdkConfiguration)
+
+	sdk.MeshMultiZoneService = newMeshMultiZoneService(sdk.sdkConfiguration)
+
+	sdk.MeshOPA = newMeshOPA(sdk.sdkConfiguration)
+
+	sdk.MeshPassthrough = newMeshPassthrough(sdk.sdkConfiguration)
+
+	sdk.MeshProxyPatch = newMeshProxyPatch(sdk.sdkConfiguration)
+
+	sdk.MeshRateLimit = newMeshRateLimit(sdk.sdkConfiguration)
+
+	sdk.MeshRetry = newMeshRetry(sdk.sdkConfiguration)
+
+	sdk.MeshService = newMeshService(sdk.sdkConfiguration)
+
+	sdk.MeshTCPRoute = newMeshTCPRoute(sdk.sdkConfiguration)
+
+	sdk.MeshTimeout = newMeshTimeout(sdk.sdkConfiguration)
+
+	sdk.MeshTLS = newMeshTLS(sdk.sdkConfiguration)
+
+	sdk.MeshTrace = newMeshTrace(sdk.sdkConfiguration)
+
+	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk.sdkConfiguration)
 
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
 

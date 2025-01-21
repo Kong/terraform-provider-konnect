@@ -25,6 +25,7 @@ const (
 	InvalidRulesIsFqdn                                 InvalidRules = "is_fqdn"
 	InvalidRulesIsArn                                  InvalidRules = "is_arn"
 	InvalidRulesUnknownProperty                        InvalidRules = "unknown_property"
+	InvalidRulesMissingReference                       InvalidRules = "missing_reference"
 	InvalidRulesIsLabel                                InvalidRules = "is_label"
 	InvalidRulesMatchesRegex                           InvalidRules = "matches_regex"
 	InvalidRulesInvalid                                InvalidRules = "invalid"
@@ -69,6 +70,8 @@ func (e *InvalidRules) UnmarshalJSON(data []byte) error {
 	case "is_arn":
 		fallthrough
 	case "unknown_property":
+		fallthrough
+	case "missing_reference":
 		fallthrough
 	case "is_label":
 		fallthrough

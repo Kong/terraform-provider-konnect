@@ -45,5 +45,5 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_mesh_control_plane.my_konnect_mesh_control_plane "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+terraform import konnect_mesh_control_plane.my_konnect_mesh_control_plane "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
 ```
