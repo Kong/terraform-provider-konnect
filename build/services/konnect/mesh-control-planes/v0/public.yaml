@@ -21,8 +21,6 @@ paths:
       operationId: get-mesh-control-plane
       summary: Get the control plane
       description: Get the control plane
-      parameters:
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
@@ -40,14 +38,7 @@ paths:
         - System
         - Mesh
     parameters:
-      - name: cpId
-        in: path
-        description: Id of the Konnect resource
-        required: true
-        schema:
-          type: string
-          format: uuid
-        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      - $ref: '#/components/parameters/cpId'
     delete:
       operationId: delete-mesh-control-plane
       summary: Delete the control plane
@@ -94,8 +85,6 @@ paths:
       operationId: get-resource-type-description
       summary: A list of all resources that exist
       description: Returns a Global Insight object
-      parameters:
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/ResourceTypeDescriptionListResponse'
@@ -105,13 +94,13 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - System
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/global-insight':
     get:
       operationId: get-global-insight
       summary: Get Global Insight
       description: Returns a Global Insight object
-      parameters:
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/GlobalInsightResponse'
@@ -121,6 +110,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - GlobalInsight
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/{resourceType}/{resourceName}/_rules':
     get:
       operationId: inspect-dataplanes-rules
@@ -151,7 +142,6 @@ paths:
           schema:
             type: string
           example: my-dp
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/InspectRulesResponse'
@@ -161,6 +151,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Inspect
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/dataplanes/{name}/_config':
     get:
       operationId: get-meshes-mesh-dataplanes-name-config
@@ -197,7 +189,6 @@ paths:
               type: string
               enum:
                 - diff
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/InspectDataplanesConfigResponse'
@@ -205,6 +196,8 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/Internal'
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/{policyType}/{policyName}/_resources/dataplanes':
     get:
       operationId: inspect-resources
@@ -250,7 +243,6 @@ paths:
           required: false
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/InspectDataplanesForPolicyResponse'
@@ -260,6 +252,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Inspect
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/{serviceType}/{serviceName}/_hostnames':
     get:
       operationId: inspect-hostnames
@@ -291,7 +285,6 @@ paths:
           schema:
             type: string
           example: redis
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/InspectHostnamesResponse'
@@ -303,6 +296,8 @@ paths:
           $ref: '#/components/responses/Internal'
       tags:
         - Inspect
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshaccesslogs/{name}':
     get:
       operationId: getMeshAccessLog
@@ -320,7 +315,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshAccessLogItem'
@@ -342,7 +336,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -381,7 +374,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -389,6 +381,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshAccessLog
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshaccesslogs':
     get:
       operationId: getMeshAccessLogList
@@ -400,12 +394,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshAccessLogList'
       tags:
         - MeshAccessLog
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshcircuitbreakers/{name}':
     get:
       operationId: getMeshCircuitBreaker
@@ -423,7 +418,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshCircuitBreakerItem'
@@ -445,7 +439,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -484,7 +477,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -492,6 +484,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshCircuitBreaker
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshcircuitbreakers':
     get:
       operationId: getMeshCircuitBreakerList
@@ -503,12 +497,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshCircuitBreakerList'
       tags:
         - MeshCircuitBreaker
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshfaultinjections/{name}':
     get:
       operationId: getMeshFaultInjection
@@ -526,7 +521,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshFaultInjectionItem'
@@ -548,7 +542,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -587,7 +580,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -595,6 +587,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshFaultInjection
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshfaultinjections':
     get:
       operationId: getMeshFaultInjectionList
@@ -606,12 +600,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshFaultInjectionList'
       tags:
         - MeshFaultInjection
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhealthchecks/{name}':
     get:
       operationId: getMeshHealthCheck
@@ -629,7 +624,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshHealthCheckItem'
@@ -651,7 +645,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -690,7 +683,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -698,6 +690,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshHealthCheck
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhealthchecks':
     get:
       operationId: getMeshHealthCheckList
@@ -709,12 +703,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshHealthCheckList'
       tags:
         - MeshHealthCheck
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhttproutes/{name}':
     get:
       operationId: getMeshHTTPRoute
@@ -732,7 +727,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshHTTPRouteItem'
@@ -754,7 +748,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -793,7 +786,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -801,6 +793,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshHTTPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshhttproutes':
     get:
       operationId: getMeshHTTPRouteList
@@ -812,12 +806,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshHTTPRouteList'
       tags:
         - MeshHTTPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshloadbalancingstrategies/{name}':
     get:
       operationId: getMeshLoadBalancingStrategy
@@ -835,7 +830,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshLoadBalancingStrategyItem'
@@ -857,7 +851,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -896,7 +889,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -904,6 +896,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshLoadBalancingStrategy
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshloadbalancingstrategies':
     get:
       operationId: getMeshLoadBalancingStrategyList
@@ -915,12 +909,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshLoadBalancingStrategyList'
       tags:
         - MeshLoadBalancingStrategy
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmetrics/{name}':
     get:
       operationId: getMeshMetric
@@ -938,7 +933,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshMetricItem'
@@ -960,7 +954,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -999,7 +992,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1007,6 +999,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshMetric
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmetrics':
     get:
       operationId: getMeshMetricList
@@ -1018,12 +1012,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshMetricList'
       tags:
         - MeshMetric
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshpassthroughs/{name}':
     get:
       operationId: getMeshPassthrough
@@ -1041,7 +1036,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshPassthroughItem'
@@ -1063,7 +1057,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1102,7 +1095,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1110,6 +1102,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshPassthrough
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshpassthroughs':
     get:
       operationId: getMeshPassthroughList
@@ -1121,12 +1115,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshPassthroughList'
       tags:
         - MeshPassthrough
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshproxypatches/{name}':
     get:
       operationId: getMeshProxyPatch
@@ -1144,7 +1139,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshProxyPatchItem'
@@ -1166,7 +1160,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1205,7 +1198,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1213,6 +1205,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshProxyPatch
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshproxypatches':
     get:
       operationId: getMeshProxyPatchList
@@ -1224,12 +1218,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshProxyPatchList'
       tags:
         - MeshProxyPatch
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshratelimits/{name}':
     get:
       operationId: getMeshRateLimit
@@ -1247,7 +1242,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshRateLimitItem'
@@ -1269,7 +1263,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1308,7 +1301,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1316,6 +1308,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshratelimits':
     get:
       operationId: getMeshRateLimitList
@@ -1327,12 +1321,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshRateLimitList'
       tags:
         - MeshRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshretries/{name}':
     get:
       operationId: getMeshRetry
@@ -1350,7 +1345,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshRetryItem'
@@ -1372,7 +1366,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1411,7 +1404,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1419,6 +1411,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshRetry
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshretries':
     get:
       operationId: getMeshRetryList
@@ -1430,12 +1424,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshRetryList'
       tags:
         - MeshRetry
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtcproutes/{name}':
     get:
       operationId: getMeshTCPRoute
@@ -1453,7 +1448,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTCPRouteItem'
@@ -1475,7 +1469,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1514,7 +1507,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1522,6 +1514,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTCPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtcproutes':
     get:
       operationId: getMeshTCPRouteList
@@ -1533,12 +1527,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTCPRouteList'
       tags:
         - MeshTCPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtimeouts/{name}':
     get:
       operationId: getMeshTimeout
@@ -1556,7 +1551,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTimeoutItem'
@@ -1578,7 +1572,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1617,7 +1610,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1625,6 +1617,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTimeout
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtimeouts':
     get:
       operationId: getMeshTimeoutList
@@ -1636,12 +1630,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTimeoutList'
       tags:
         - MeshTimeout
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtlses/{name}':
     get:
       operationId: getMeshTLS
@@ -1659,7 +1654,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTLSItem'
@@ -1681,7 +1675,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1720,7 +1713,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1728,6 +1720,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTLS
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtlses':
     get:
       operationId: getMeshTLSList
@@ -1739,12 +1733,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTLSList'
       tags:
         - MeshTLS
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtraces/{name}':
     get:
       operationId: getMeshTrace
@@ -1762,7 +1757,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTraceItem'
@@ -1784,7 +1778,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1823,7 +1816,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1831,6 +1823,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrace
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtraces':
     get:
       operationId: getMeshTraceList
@@ -1842,12 +1836,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTraceList'
       tags:
         - MeshTrace
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtrafficpermissions/{name}':
     get:
       operationId: getMeshTrafficPermission
@@ -1865,7 +1860,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTrafficPermissionItem'
@@ -1887,7 +1881,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -1926,7 +1919,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -1934,6 +1926,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrafficPermission
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshtrafficpermissions':
     get:
       operationId: getMeshTrafficPermissionList
@@ -1945,12 +1939,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshTrafficPermissionList'
       tags:
         - MeshTrafficPermission
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{name}':
     get:
       operationId: getMesh
@@ -1962,7 +1957,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshItem'
@@ -1978,7 +1972,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2011,7 +2004,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2019,17 +2011,19 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Mesh
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes':
     get:
       operationId: getMeshList
       summary: Returns a list of Mesh in the mesh.
-      parameters:
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshList'
       tags:
         - Mesh
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshgateways/{name}':
     get:
       operationId: getMeshGateway
@@ -2047,7 +2041,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshGatewayItem'
@@ -2069,7 +2062,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2108,7 +2100,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2116,6 +2107,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshGateway
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshgateways':
     get:
       operationId: getMeshGatewayList
@@ -2127,12 +2120,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshGatewayList'
       tags:
         - MeshGateway
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/hostnamegenerators/{name}':
     get:
       operationId: getHostnameGenerator
@@ -2144,7 +2138,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/HostnameGeneratorItem'
@@ -2160,7 +2153,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2193,7 +2185,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2201,17 +2192,19 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - HostnameGenerator
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/hostnamegenerators':
     get:
       operationId: getHostnameGeneratorList
       summary: Returns a list of HostnameGenerator in the mesh.
-      parameters:
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/HostnameGeneratorList'
       tags:
         - HostnameGenerator
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshexternalservices/{name}':
     get:
       operationId: getMeshExternalService
@@ -2229,7 +2222,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshExternalServiceItem'
@@ -2251,7 +2243,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2290,7 +2281,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2298,6 +2288,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshExternalService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshexternalservices':
     get:
       operationId: getMeshExternalServiceList
@@ -2309,12 +2301,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshExternalServiceList'
       tags:
         - MeshExternalService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmultizoneservices/{name}':
     get:
       operationId: getMeshMultiZoneService
@@ -2332,7 +2325,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshMultiZoneServiceItem'
@@ -2354,7 +2346,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2393,7 +2384,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2401,6 +2391,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshMultiZoneService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshmultizoneservices':
     get:
       operationId: getMeshMultiZoneServiceList
@@ -2412,12 +2404,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshMultiZoneServiceList'
       tags:
         - MeshMultiZoneService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshservices/{name}':
     get:
       operationId: getMeshService
@@ -2435,7 +2428,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshServiceItem'
@@ -2457,7 +2449,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2496,7 +2487,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2504,6 +2494,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshservices':
     get:
       operationId: getMeshServiceList
@@ -2515,12 +2507,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshServiceList'
       tags:
         - MeshService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshglobalratelimits/{name}':
     get:
       operationId: getMeshGlobalRateLimit
@@ -2538,7 +2531,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshGlobalRateLimitItem'
@@ -2560,7 +2552,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2599,7 +2590,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2607,6 +2597,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshGlobalRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshglobalratelimits':
     get:
       operationId: getMeshGlobalRateLimitList
@@ -2618,12 +2610,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshGlobalRateLimitList'
       tags:
         - MeshGlobalRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas/{name}':
     get:
       operationId: getMeshOPA
@@ -2641,7 +2634,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshOPAItem'
@@ -2663,7 +2655,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       requestBody:
         description: Put request
         required: true
@@ -2702,7 +2693,6 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           description: Successful response
@@ -2710,6 +2700,8 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - MeshOPA
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/mesh/control-planes/{cpId}/meshes/{mesh}/meshopas':
     get:
       operationId: getMeshOPAList
@@ -2721,12 +2713,13 @@ paths:
           required: true
           schema:
             type: string
-        - $ref: '#/components/parameters/cpId'
       responses:
         '200':
           $ref: '#/components/responses/MeshOPAList'
       tags:
         - MeshOPA
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   /mesh/control-planes:
     get:
       operationId: list-mesh-control-planes
