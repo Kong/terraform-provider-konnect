@@ -1,4 +1,5 @@
 # Generated at runtime
+src/konnect/definitions/mesh-control-planes/v0/kong-mesh-stripped.yaml
 src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml
 src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml
 src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml

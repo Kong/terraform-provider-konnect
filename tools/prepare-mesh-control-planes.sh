@@ -15,8 +15,11 @@ node ./tools/remove-common-definitions.js src/konnect/definitions/mesh-control-p
 
 node ./tools/add-x-speakeasy-entity-operation.js src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml > src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml
 
-./node_modules/.bin/oas-toolkit merge src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml src/konnect/definitions/mesh-control-planes/v0/mink-vcp-manager.yaml > src/konnect/definitions/mesh-control-planes/v0/openapi.yaml
+node ./tools/remove-temporarily-unsupported-field.js src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml "components.schemas.MeshHealthCheckItem.properties.spec.properties.to.items.properties.default.properties.http.properties.expectedStatuses.items.format" > src/konnect/definitions/mesh-control-planes/v0/kong-mesh-stripped.yaml
+
+./node_modules/.bin/oas-toolkit merge src/konnect/definitions/mesh-control-planes/v0/kong-mesh-stripped.yaml src/konnect/definitions/mesh-control-planes/v0/mink-vcp-manager.yaml > src/konnect/definitions/mesh-control-planes/v0/openapi.yaml
 
 rm src/konnect/definitions/mesh-control-planes/v0/kong-mesh-prefixed.yaml \
    src/konnect/definitions/mesh-control-planes/v0/kong-mesh-deduped.yaml \
    src/konnect/definitions/mesh-control-planes/v0/kong-mesh-annotated.yaml \
+   src/konnect/definitions/mesh-control-planes/v0/kong-mesh-stripped.yaml \
