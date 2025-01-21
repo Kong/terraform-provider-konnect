@@ -1,4 +1,4 @@
-name: testParameter
+name: id
 in: query
 required: true
 schema:

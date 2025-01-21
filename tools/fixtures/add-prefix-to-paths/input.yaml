@@ -9,6 +9,11 @@ paths:
       responses:
         200:
           $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete users
+      responses:
+        204:
+          description: The resource was deleted successfully.
 components:
   schemas:
     User:

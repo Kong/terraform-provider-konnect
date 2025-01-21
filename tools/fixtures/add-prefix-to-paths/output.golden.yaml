@@ -3,14 +3,21 @@ info:
   title: Example API
   version: 1.0.0
 paths:
-  /v2/users:
+  /v2/{id}/users:
     get:
       summary: List all users
       responses:
         '200':
           $ref: '#/components/schemas/User'
       parameters:
-        - $ref: '#/components/parameters/testParameter'
+        - $ref: '#/components/parameters/id'
+    delete:
+      summary: Delete users
+      responses:
+        '204':
+          description: The resource was deleted successfully.
+      parameters:
+        - $ref: '#/components/parameters/id'
 components:
   schemas:
     User:
@@ -21,8 +28,8 @@ components:
         name:
           type: string
   parameters:
-    testParameter:
-      name: testParameter
+    id:
+      name: id
       in: query
       required: true
       schema:

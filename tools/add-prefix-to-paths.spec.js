@@ -11,7 +11,7 @@ const GOLDEN_FILE = path.resolve(__dirname, "fixtures", "add-prefix-to-paths", "
 const PARAMETER_FILE = path.resolve(__dirname, "fixtures", "add-prefix-to-paths", "parameter.yaml");
 
 // Test parameters
-const PREFIX = "/v2";
+const PREFIX = "/v2/{id}";
 
 describe("addPrefixAndParameterToOpenApiPaths", () => {
     test("Test addPrefixAndParameterToOpenApiPaths", async () => {
@@ -19,7 +19,7 @@ describe("addPrefixAndParameterToOpenApiPaths", () => {
         const parameter = fs.readFileSync(PARAMETER_FILE, "utf8");
 
         // Run the function and get the updated schema as a string
-        const updatedSchema = await addPrefixAndParameterToOpenApiPaths(INPUT_FILE, PREFIX, "testParameter", parameter);
+        const updatedSchema = await addPrefixAndParameterToOpenApiPaths(INPUT_FILE, PREFIX, "id", parameter);
 
         // Compare the updated schema with the golden file
         compareWithGoldenFile(updatedSchema, GOLDEN_FILE);
