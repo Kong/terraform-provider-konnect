@@ -24,21 +24,17 @@ async function addPrefixAndParameterToOpenApiPaths(inputFile, prefix, parameterN
             const newPath = path === "/" ? `${prefix}` : `${prefix}${path}`;
             modifiedPaths[newPath] = { ...methods };
 
-            // Add parameter to each method in the path
-            for (const [method, operation] of Object.entries(modifiedPaths[newPath])) {
-                if (typeof operation === "object") {
-                    if (!operation.parameters) {
-                        operation.parameters = [];
-                    }
+            // Add parameter at the path level
+            if (!modifiedPaths[newPath].parameters) {
+                modifiedPaths[newPath].parameters = [];
+            }
 
-                    // Avoid duplicate references
-                    const alreadyExists = operation.parameters.some(
-                        (param) => param.$ref === parameterRef
-                    );
-                    if (!alreadyExists) {
-                        operation.parameters.push({ $ref: parameterRef });
-                    }
-                }
+            // Avoid duplicate references
+            const alreadyExists = modifiedPaths[newPath].parameters.some(
+                (param) => param.$ref === parameterRef
+            );
+            if (!alreadyExists) {
+                modifiedPaths[newPath].parameters.push({ $ref: parameterRef });
             }
         }
 

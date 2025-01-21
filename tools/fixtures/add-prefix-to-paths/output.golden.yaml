@@ -9,15 +9,13 @@ paths:
       responses:
         '200':
           $ref: '#/components/schemas/User'
-      parameters:
-        - $ref: '#/components/parameters/id'
     delete:
       summary: Delete users
       responses:
         '204':
           description: The resource was deleted successfully.
-      parameters:
-        - $ref: '#/components/parameters/id'
+    parameters:
+      - $ref: '#/components/parameters/id'
 components:
   schemas:
     User:
