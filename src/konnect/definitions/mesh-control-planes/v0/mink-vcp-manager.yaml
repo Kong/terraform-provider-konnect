@@ -61,7 +61,7 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-  /mesh/control-planes/{cpId}:
+  /mesh/control-planes/{id}:
     parameters:
     - $ref: '#/components/parameters/cpId'
     get:
@@ -126,7 +126,7 @@ paths:
 components:
   parameters:
     cpId:
-      name: cpId
+      name: id
       in: path
       required: true
       description: Id of the Konnect resource
@@ -134,7 +134,6 @@ components:
       schema:
         type: string
         format: uuid
-      x-speakeasy-match: id
   securitySchemes:
     personalAccessToken:
       $ref: '../../../../common/definitions/security.yaml#/components/securitySchemes/personalAccessToken'
