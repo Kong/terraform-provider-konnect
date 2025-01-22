@@ -29,7 +29,7 @@ type MeshGlobalRateLimitListDataSource struct {
 
 // MeshGlobalRateLimitListDataSourceModel describes the data model.
 type MeshGlobalRateLimitListDataSourceModel struct {
-	ID    types.String                      `tfsdk:"id"`
+	CpID  types.String                      `tfsdk:"cp_id"`
 	Items []tfTypes.MeshGlobalRateLimitItem `tfsdk:"items"`
 	Mesh  types.String                      `tfsdk:"mesh"`
 	Next  types.String                      `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshGlobalRateLimitListDataSource) Schema(ctx context.Context, req data
 		MarkdownDescription: "MeshGlobalRateLimitList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -592,14 +592,14 @@ func (r *MeshGlobalRateLimitListDataSource) Read(ctx context.Context, req dataso
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshGlobalRateLimitListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshGlobalRateLimit.GetMeshGlobalRateLimitList(ctx, request)

@@ -9,7 +9,7 @@ import (
 
 type PutMeshMetricRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshMetric
@@ -18,11 +18,11 @@ type PutMeshMetricRequest struct {
 	MeshMetricItem shared.MeshMetricItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshMetricRequest) GetID() string {
+func (o *PutMeshMetricRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshMetricRequest) GetMesh() string {

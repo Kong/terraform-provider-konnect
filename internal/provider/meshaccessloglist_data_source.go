@@ -29,7 +29,7 @@ type MeshAccessLogListDataSource struct {
 
 // MeshAccessLogListDataSourceModel describes the data model.
 type MeshAccessLogListDataSourceModel struct {
-	ID    types.String                `tfsdk:"id"`
+	CpID  types.String                `tfsdk:"cp_id"`
 	Items []tfTypes.MeshAccessLogItem `tfsdk:"items"`
 	Mesh  types.String                `tfsdk:"mesh"`
 	Next  types.String                `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshAccessLogListDataSource) Schema(ctx context.Context, req datasource
 		MarkdownDescription: "MeshAccessLogList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -560,14 +560,14 @@ func (r *MeshAccessLogListDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshAccessLogListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshAccessLog.GetMeshAccessLogList(ctx, request)

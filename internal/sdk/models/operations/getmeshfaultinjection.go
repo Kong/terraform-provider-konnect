@@ -9,18 +9,18 @@ import (
 
 type GetMeshFaultInjectionRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshFaultInjection
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (o *GetMeshFaultInjectionRequest) GetID() string {
+func (o *GetMeshFaultInjectionRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *GetMeshFaultInjectionRequest) GetMesh() string {

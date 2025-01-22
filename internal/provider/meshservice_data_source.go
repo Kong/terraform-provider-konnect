@@ -29,8 +29,8 @@ type MeshServiceDataSource struct {
 
 // MeshServiceDataSourceModel describes the data model.
 type MeshServiceDataSourceModel struct {
+	CpID             types.String                   `tfsdk:"cp_id"`
 	CreationTime     types.String                   `tfsdk:"creation_time"`
-	ID               types.String                   `tfsdk:"id"`
 	Labels           map[string]types.String        `tfsdk:"labels"`
 	Mesh             types.String                   `tfsdk:"mesh"`
 	ModificationTime types.String                   `tfsdk:"modification_time"`
@@ -51,13 +51,13 @@ func (r *MeshServiceDataSource) Schema(ctx context.Context, req datasource.Schem
 		MarkdownDescription: "MeshService DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"cp_id": schema.StringAttribute{
+				Required:    true,
+				Description: `Id of the Konnect resource`,
+			},
 			"creation_time": schema.StringAttribute{
 				Computed:    true,
 				Description: `Time at which the resource was created`,
-			},
-			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -298,8 +298,8 @@ func (r *MeshServiceDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
@@ -308,7 +308,7 @@ func (r *MeshServiceDataSource) Read(ctx context.Context, req datasource.ReadReq
 	name = data.Name.ValueString()
 
 	request := operations.GetMeshServiceRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
 	}

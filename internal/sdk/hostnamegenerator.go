@@ -45,7 +45,7 @@ func (s *HostnameGenerator) GetHostnameGeneratorList(ctx context.Context, reques
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/hostnamegenerators", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -162,7 +162,7 @@ func (s *HostnameGenerator) GetHostnameGenerator(ctx context.Context, request op
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/hostnamegenerators/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -279,7 +279,7 @@ func (s *HostnameGenerator) PutHostnameGenerator(ctx context.Context, request op
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/hostnamegenerators/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -404,7 +404,7 @@ func (s *HostnameGenerator) DeleteHostnameGenerator(ctx context.Context, request
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/hostnamegenerators/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

@@ -9,7 +9,7 @@ import (
 
 type PutMeshProxyPatchRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshProxyPatch
@@ -18,11 +18,11 @@ type PutMeshProxyPatchRequest struct {
 	MeshProxyPatchItem shared.MeshProxyPatchItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshProxyPatchRequest) GetID() string {
+func (o *PutMeshProxyPatchRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshProxyPatchRequest) GetMesh() string {

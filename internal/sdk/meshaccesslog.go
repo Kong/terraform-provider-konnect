@@ -45,7 +45,7 @@ func (s *MeshAccessLog) GetMeshAccessLogList(ctx context.Context, request operat
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -162,7 +162,7 @@ func (s *MeshAccessLog) GetMeshAccessLog(ctx context.Context, request operations
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -279,7 +279,7 @@ func (s *MeshAccessLog) PutMeshAccessLog(ctx context.Context, request operations
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -404,7 +404,7 @@ func (s *MeshAccessLog) DeleteMeshAccessLog(ctx context.Context, request operati
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

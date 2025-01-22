@@ -9,16 +9,16 @@ import (
 
 type DeleteHostnameGeneratorRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the HostnameGenerator
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (o *DeleteHostnameGeneratorRequest) GetID() string {
+func (o *DeleteHostnameGeneratorRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *DeleteHostnameGeneratorRequest) GetName() string {

@@ -29,7 +29,7 @@ type MeshMetricListDataSource struct {
 
 // MeshMetricListDataSourceModel describes the data model.
 type MeshMetricListDataSourceModel struct {
-	ID    types.String             `tfsdk:"id"`
+	CpID  types.String             `tfsdk:"cp_id"`
 	Items []tfTypes.MeshMetricItem `tfsdk:"items"`
 	Mesh  types.String             `tfsdk:"mesh"`
 	Next  types.String             `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshMetricListDataSource) Schema(ctx context.Context, req datasource.Sc
 		MarkdownDescription: "MeshMetricList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -340,14 +340,14 @@ func (r *MeshMetricListDataSource) Read(ctx context.Context, req datasource.Read
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshMetricListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshMetric.GetMeshMetricList(ctx, request)

@@ -45,7 +45,7 @@ func (s *MeshService) GetMeshServiceList(ctx context.Context, request operations
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -162,7 +162,7 @@ func (s *MeshService) GetMeshService(ctx context.Context, request operations.Get
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -279,7 +279,7 @@ func (s *MeshService) PutMeshService(ctx context.Context, request operations.Put
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -404,7 +404,7 @@ func (s *MeshService) DeleteMeshService(ctx context.Context, request operations.
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

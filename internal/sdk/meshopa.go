@@ -45,7 +45,7 @@ func (s *MeshOPA) GetMeshOPAList(ctx context.Context, request operations.GetMesh
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -162,7 +162,7 @@ func (s *MeshOPA) GetMeshOPA(ctx context.Context, request operations.GetMeshOPAR
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -279,7 +279,7 @@ func (s *MeshOPA) PutMeshOPA(ctx context.Context, request operations.PutMeshOPAR
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
@@ -404,7 +404,7 @@ func (s *MeshOPA) DeleteMeshOPA(ctx context.Context, request operations.DeleteMe
 	}
 
 	baseURL := utils.ReplaceParameters(s.sdkConfiguration.GetServerDetails())
-	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas/{name}", request, nil)
+	opURL, err := utils.GenerateURL(ctx, baseURL, "/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}

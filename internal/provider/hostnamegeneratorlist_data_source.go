@@ -29,7 +29,7 @@ type HostnameGeneratorListDataSource struct {
 
 // HostnameGeneratorListDataSourceModel describes the data model.
 type HostnameGeneratorListDataSourceModel struct {
-	ID    types.String                    `tfsdk:"id"`
+	CpID  types.String                    `tfsdk:"cp_id"`
 	Items []tfTypes.HostnameGeneratorItem `tfsdk:"items"`
 	Next  types.String                    `tfsdk:"next"`
 	Total types.Number                    `tfsdk:"total"`
@@ -46,7 +46,7 @@ func (r *HostnameGeneratorListDataSource) Schema(ctx context.Context, req dataso
 		MarkdownDescription: "HostnameGeneratorList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -169,11 +169,11 @@ func (r *HostnameGeneratorListDataSource) Read(ctx context.Context, req datasour
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	request := operations.GetHostnameGeneratorListRequest{
-		ID: id,
+		CpID: cpID,
 	}
 	res, err := r.client.HostnameGenerator.GetHostnameGeneratorList(ctx, request)
 	if err != nil {

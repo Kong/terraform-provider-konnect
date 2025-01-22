@@ -9,18 +9,18 @@ import (
 
 type GetMeshServiceRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshService
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 }
 
-func (o *GetMeshServiceRequest) GetID() string {
+func (o *GetMeshServiceRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *GetMeshServiceRequest) GetMesh() string {

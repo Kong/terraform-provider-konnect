@@ -9,14 +9,14 @@ import (
 
 type GetMeshListRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 }
 
-func (o *GetMeshListRequest) GetID() string {
+func (o *GetMeshListRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 type GetMeshListResponse struct {

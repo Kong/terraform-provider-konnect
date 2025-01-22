@@ -9,16 +9,16 @@ import (
 
 type GetMeshGlobalRateLimitListRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 }
 
-func (o *GetMeshGlobalRateLimitListRequest) GetID() string {
+func (o *GetMeshGlobalRateLimitListRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *GetMeshGlobalRateLimitListRequest) GetMesh() string {

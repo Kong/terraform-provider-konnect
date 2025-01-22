@@ -9,7 +9,7 @@ import (
 
 type PutMeshGatewayRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshGateway
@@ -18,11 +18,11 @@ type PutMeshGatewayRequest struct {
 	MeshGatewayItem shared.MeshGatewayItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshGatewayRequest) GetID() string {
+func (o *PutMeshGatewayRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshGatewayRequest) GetMesh() string {

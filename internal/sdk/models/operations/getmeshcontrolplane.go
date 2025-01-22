@@ -9,14 +9,14 @@ import (
 
 type GetMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 }
 
-func (o *GetMeshControlPlaneRequest) GetID() string {
+func (o *GetMeshControlPlaneRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 type GetMeshControlPlaneResponse struct {
@@ -28,16 +28,12 @@ type GetMeshControlPlaneResponse struct {
 	RawResponse *http.Response
 	// A response to creating a control plane.
 	MeshControlPlane *shared.MeshControlPlane
-	// Bad Request
-	BadRequestError *shared.BadRequestError
 	// Unauthorized Error
 	UnauthorizedError *shared.UnauthorizedError
 	// Permission denied
 	ForbiddenError *shared.ForbiddenError
 	// Not found
 	NotFoundError *shared.NotFoundError
-	// Internal
-	BaseError *shared.BaseError
 }
 
 func (o *GetMeshControlPlaneResponse) GetContentType() string {
@@ -68,13 +64,6 @@ func (o *GetMeshControlPlaneResponse) GetMeshControlPlane() *shared.MeshControlP
 	return o.MeshControlPlane
 }
 
-func (o *GetMeshControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
-	if o == nil {
-		return nil
-	}
-	return o.BadRequestError
-}
-
 func (o *GetMeshControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if o == nil {
 		return nil
@@ -94,11 +83,4 @@ func (o *GetMeshControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
-}
-
-func (o *GetMeshControlPlaneResponse) GetBaseError() *shared.BaseError {
-	if o == nil {
-		return nil
-	}
-	return o.BaseError
 }

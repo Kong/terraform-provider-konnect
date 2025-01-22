@@ -30,7 +30,7 @@ type MeshGatewayDataSource struct {
 // MeshGatewayDataSourceModel describes the data model.
 type MeshGatewayDataSourceModel struct {
 	Conf      *tfTypes.Conf           `tfsdk:"conf"`
-	ID        types.String            `tfsdk:"id"`
+	CpID      types.String            `tfsdk:"cp_id"`
 	Labels    map[string]types.String `tfsdk:"labels"`
 	Mesh      types.String            `tfsdk:"mesh"`
 	Name      types.String            `tfsdk:"name"`
@@ -169,7 +169,7 @@ func (r *MeshGatewayDataSource) Schema(ctx context.Context, req datasource.Schem
 				},
 				Description: `The desired configuration of the MeshGateway.`,
 			},
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -252,8 +252,8 @@ func (r *MeshGatewayDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
@@ -262,7 +262,7 @@ func (r *MeshGatewayDataSource) Read(ctx context.Context, req datasource.ReadReq
 	name = data.Name.ValueString()
 
 	request := operations.GetMeshGatewayRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
 	}

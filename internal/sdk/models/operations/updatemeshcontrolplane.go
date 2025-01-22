@@ -9,15 +9,15 @@ import (
 
 type UpdateMeshControlPlaneRequest struct {
 	// Id of the Konnect resource
-	ID                            string                               `pathParam:"style=simple,explode=false,name=id"`
+	CpID                          string                               `pathParam:"style=simple,explode=false,name=cpId"`
 	UpdateMeshControlPlaneRequest shared.UpdateMeshControlPlaneRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateMeshControlPlaneRequest) GetID() string {
+func (o *UpdateMeshControlPlaneRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *UpdateMeshControlPlaneRequest) GetUpdateMeshControlPlaneRequest() shared.UpdateMeshControlPlaneRequest {

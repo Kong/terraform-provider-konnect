@@ -29,7 +29,7 @@ type MeshTLSListDataSource struct {
 
 // MeshTLSListDataSourceModel describes the data model.
 type MeshTLSListDataSourceModel struct {
-	ID    types.String          `tfsdk:"id"`
+	CpID  types.String          `tfsdk:"cp_id"`
 	Items []tfTypes.MeshTLSItem `tfsdk:"items"`
 	Mesh  types.String          `tfsdk:"mesh"`
 	Next  types.String          `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshTLSListDataSource) Schema(ctx context.Context, req datasource.Schem
 		MarkdownDescription: "MeshTLSList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -278,14 +278,14 @@ func (r *MeshTLSListDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshTLSListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshTLS.GetMeshTLSList(ctx, request)

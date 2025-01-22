@@ -9,14 +9,14 @@ import (
 
 type GetHostnameGeneratorListRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 }
 
-func (o *GetHostnameGeneratorListRequest) GetID() string {
+func (o *GetHostnameGeneratorListRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 type GetHostnameGeneratorListResponse struct {

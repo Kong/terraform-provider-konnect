@@ -29,7 +29,7 @@ type MeshTCPRouteListDataSource struct {
 
 // MeshTCPRouteListDataSourceModel describes the data model.
 type MeshTCPRouteListDataSourceModel struct {
-	ID    types.String               `tfsdk:"id"`
+	CpID  types.String               `tfsdk:"cp_id"`
 	Items []tfTypes.MeshTCPRouteItem `tfsdk:"items"`
 	Mesh  types.String               `tfsdk:"mesh"`
 	Next  types.String               `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshTCPRouteListDataSource) Schema(ctx context.Context, req datasource.
 		MarkdownDescription: "MeshTCPRouteList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -320,14 +320,14 @@ func (r *MeshTCPRouteListDataSource) Read(ctx context.Context, req datasource.Re
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshTCPRouteListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshTCPRoute.GetMeshTCPRouteList(ctx, request)

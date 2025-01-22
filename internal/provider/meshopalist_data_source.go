@@ -29,7 +29,7 @@ type MeshOPAListDataSource struct {
 
 // MeshOPAListDataSourceModel describes the data model.
 type MeshOPAListDataSourceModel struct {
-	ID    types.String          `tfsdk:"id"`
+	CpID  types.String          `tfsdk:"cp_id"`
 	Items []tfTypes.MeshOPAItem `tfsdk:"items"`
 	Mesh  types.String          `tfsdk:"mesh"`
 	Next  types.String          `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshOPAListDataSource) Schema(ctx context.Context, req datasource.Schem
 		MarkdownDescription: "MeshOPAList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -283,14 +283,14 @@ func (r *MeshOPAListDataSource) Read(ctx context.Context, req datasource.ReadReq
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshOPAListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshOPA.GetMeshOPAList(ctx, request)

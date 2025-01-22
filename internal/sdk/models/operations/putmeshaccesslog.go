@@ -9,7 +9,7 @@ import (
 
 type PutMeshAccessLogRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshAccessLog
@@ -18,11 +18,11 @@ type PutMeshAccessLogRequest struct {
 	MeshAccessLogItem shared.MeshAccessLogItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshAccessLogRequest) GetID() string {
+func (o *PutMeshAccessLogRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshAccessLogRequest) GetMesh() string {

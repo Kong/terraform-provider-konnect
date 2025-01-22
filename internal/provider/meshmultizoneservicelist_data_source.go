@@ -29,7 +29,7 @@ type MeshMultiZoneServiceListDataSource struct {
 
 // MeshMultiZoneServiceListDataSourceModel describes the data model.
 type MeshMultiZoneServiceListDataSourceModel struct {
-	ID    types.String                       `tfsdk:"id"`
+	CpID  types.String                       `tfsdk:"cp_id"`
 	Items []tfTypes.MeshMultiZoneServiceItem `tfsdk:"items"`
 	Mesh  types.String                       `tfsdk:"mesh"`
 	Next  types.String                       `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshMultiZoneServiceListDataSource) Schema(ctx context.Context, req dat
 		MarkdownDescription: "MeshMultiZoneServiceList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -283,14 +283,14 @@ func (r *MeshMultiZoneServiceListDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshMultiZoneServiceListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshMultiZoneService.GetMeshMultiZoneServiceList(ctx, request)

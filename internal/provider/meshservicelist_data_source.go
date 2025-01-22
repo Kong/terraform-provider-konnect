@@ -29,7 +29,7 @@ type MeshServiceListDataSource struct {
 
 // MeshServiceListDataSourceModel describes the data model.
 type MeshServiceListDataSourceModel struct {
-	ID    types.String              `tfsdk:"id"`
+	CpID  types.String              `tfsdk:"cp_id"`
 	Items []tfTypes.MeshServiceItem `tfsdk:"items"`
 	Mesh  types.String              `tfsdk:"mesh"`
 	Next  types.String              `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshServiceListDataSource) Schema(ctx context.Context, req datasource.S
 		MarkdownDescription: "MeshServiceList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -313,14 +313,14 @@ func (r *MeshServiceListDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshServiceListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshService.GetMeshServiceList(ctx, request)

@@ -76,7 +76,6 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
-	System                         *System
 	HostnameGenerator              *HostnameGenerator
 	MeshAccessLog                  *MeshAccessLog
 	MeshCircuitBreaker             *MeshCircuitBreaker
@@ -339,8 +338,6 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
-
-	sdk.System = newSystem(sdk.sdkConfiguration)
 
 	sdk.HostnameGenerator = newHostnameGenerator(sdk.sdkConfiguration)
 

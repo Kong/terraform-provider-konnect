@@ -29,7 +29,7 @@ type MeshTrafficPermissionListDataSource struct {
 
 // MeshTrafficPermissionListDataSourceModel describes the data model.
 type MeshTrafficPermissionListDataSourceModel struct {
-	ID    types.String                        `tfsdk:"id"`
+	CpID  types.String                        `tfsdk:"cp_id"`
 	Items []tfTypes.MeshTrafficPermissionItem `tfsdk:"items"`
 	Mesh  types.String                        `tfsdk:"mesh"`
 	Next  types.String                        `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshTrafficPermissionListDataSource) Schema(ctx context.Context, req da
 		MarkdownDescription: "MeshTrafficPermissionList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -259,14 +259,14 @@ func (r *MeshTrafficPermissionListDataSource) Read(ctx context.Context, req data
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshTrafficPermissionListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshTrafficPermission.GetMeshTrafficPermissionList(ctx, request)

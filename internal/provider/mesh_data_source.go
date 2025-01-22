@@ -30,7 +30,7 @@ type MeshDataSource struct {
 // MeshDataSourceModel describes the data model.
 type MeshDataSourceModel struct {
 	Constraints                 *tfTypes.Constraints    `tfsdk:"constraints"`
-	ID                          types.String            `tfsdk:"id"`
+	CpID                        types.String            `tfsdk:"cp_id"`
 	Labels                      map[string]types.String `tfsdk:"labels"`
 	Logging                     *tfTypes.Logging        `tfsdk:"logging"`
 	MeshServices                *tfTypes.MeshServices   `tfsdk:"mesh_services"`
@@ -102,7 +102,7 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 				},
 				Description: `Constraints that applies to the mesh and its entities`,
 			},
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -432,14 +432,14 @@ func (r *MeshDataSource) Read(ctx context.Context, req datasource.ReadRequest, r
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var name string
 	name = data.Name.ValueString()
 
 	request := operations.GetMeshRequest{
-		ID:   id,
+		CpID: cpID,
 		Name: name,
 	}
 	res, err := r.client.Mesh.GetMesh(ctx, request)

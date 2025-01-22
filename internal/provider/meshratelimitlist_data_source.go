@@ -29,7 +29,7 @@ type MeshRateLimitListDataSource struct {
 
 // MeshRateLimitListDataSourceModel describes the data model.
 type MeshRateLimitListDataSourceModel struct {
-	ID    types.String                `tfsdk:"id"`
+	CpID  types.String                `tfsdk:"cp_id"`
 	Items []tfTypes.MeshRateLimitItem `tfsdk:"items"`
 	Mesh  types.String                `tfsdk:"mesh"`
 	Next  types.String                `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshRateLimitListDataSource) Schema(ctx context.Context, req datasource
 		MarkdownDescription: "MeshRateLimitList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -520,14 +520,14 @@ func (r *MeshRateLimitListDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshRateLimitListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshRateLimit.GetMeshRateLimitList(ctx, request)

@@ -111,7 +111,17 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
       tags:
         - Mesh
-  '/v1/mesh/control-planes/{id}':
+  '/v1/mesh/control-planes/{cpId}':
+    parameters:
+      - name: cpId
+        in: path
+        description: Id of the Konnect resource
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+        x-speakeasy-match: id
     get:
       x-speakeasy-entity-operation: MeshControlPlane#read
       operationId: get-mesh-control-plane
@@ -120,21 +130,14 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
           $ref: '#/components/responses/MeshControlPlaneForbiddenError'
         '404':
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-        '500':
-          $ref: '#/components/responses/Internal'
       tags:
-        - System
         - Mesh
-    parameters:
-      - $ref: '#/components/parameters/cpId'
     delete:
       x-speakeasy-entity-operation: MeshControlPlane#delete
       operationId: delete-mesh-control-plane
@@ -175,7 +178,7 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
-  '/v1/mesh/control-planes/{id}/hostnamegenerators':
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators':
     get:
       x-speakeasy-entity-operation: HostnameGeneratorList#get
       operationId: getHostnameGeneratorList
@@ -187,7 +190,7 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/hostnamegenerators/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}':
     get:
       x-speakeasy-entity-operation: HostnameGenerator#get
       operationId: getHostnameGenerator
@@ -257,7 +260,7 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes':
+  '/v1/mesh/control-planes/{cpId}/api/meshes':
     get:
       x-speakeasy-entity-operation: MeshList#get
       operationId: getMeshList
@@ -269,7 +272,7 @@ paths:
         - Mesh
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs':
     get:
       x-speakeasy-entity-operation: MeshAccessLogList#get
       operationId: getMeshAccessLogList
@@ -288,7 +291,7 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshaccesslogs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}':
     get:
       x-speakeasy-entity-operation: MeshAccessLog#get
       operationId: getMeshAccessLog
@@ -376,7 +379,7 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshcircuitbreakers':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers':
     get:
       x-speakeasy-entity-operation: MeshCircuitBreakerList#get
       operationId: getMeshCircuitBreakerList
@@ -395,7 +398,7 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshcircuitbreakers/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}':
     get:
       x-speakeasy-entity-operation: MeshCircuitBreaker#get
       operationId: getMeshCircuitBreaker
@@ -483,7 +486,7 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshexternalservices':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices':
     get:
       x-speakeasy-entity-operation: MeshExternalServiceList#get
       operationId: getMeshExternalServiceList
@@ -502,7 +505,7 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshexternalservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}':
     get:
       x-speakeasy-entity-operation: MeshExternalService#get
       operationId: getMeshExternalService
@@ -590,7 +593,7 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshfaultinjections':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections':
     get:
       x-speakeasy-entity-operation: MeshFaultInjectionList#get
       operationId: getMeshFaultInjectionList
@@ -609,7 +612,7 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshfaultinjections/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}':
     get:
       x-speakeasy-entity-operation: MeshFaultInjection#get
       operationId: getMeshFaultInjection
@@ -697,7 +700,7 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshgateways':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways':
     get:
       x-speakeasy-entity-operation: MeshGatewayList#get
       operationId: getMeshGatewayList
@@ -716,7 +719,7 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshgateways/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}':
     get:
       x-speakeasy-entity-operation: MeshGateway#get
       operationId: getMeshGateway
@@ -804,7 +807,7 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshglobalratelimits':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits':
     get:
       x-speakeasy-entity-operation: MeshGlobalRateLimitList#get
       operationId: getMeshGlobalRateLimitList
@@ -823,7 +826,7 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshglobalratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}':
     get:
       x-speakeasy-entity-operation: MeshGlobalRateLimit#get
       operationId: getMeshGlobalRateLimit
@@ -911,7 +914,7 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshhealthchecks':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks':
     get:
       x-speakeasy-entity-operation: MeshHealthCheckList#get
       operationId: getMeshHealthCheckList
@@ -930,7 +933,7 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshhealthchecks/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}':
     get:
       x-speakeasy-entity-operation: MeshHealthCheck#get
       operationId: getMeshHealthCheck
@@ -1018,7 +1021,7 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshhttproutes':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes':
     get:
       x-speakeasy-entity-operation: MeshHTTPRouteList#get
       operationId: getMeshHTTPRouteList
@@ -1037,7 +1040,7 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshhttproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}':
     get:
       x-speakeasy-entity-operation: MeshHTTPRoute#get
       operationId: getMeshHTTPRoute
@@ -1125,7 +1128,7 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshloadbalancingstrategies':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies':
     get:
       x-speakeasy-entity-operation: MeshLoadBalancingStrategyList#get
       operationId: getMeshLoadBalancingStrategyList
@@ -1144,7 +1147,7 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshloadbalancingstrategies/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}':
     get:
       x-speakeasy-entity-operation: MeshLoadBalancingStrategy#get
       operationId: getMeshLoadBalancingStrategy
@@ -1232,7 +1235,7 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshmetrics':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics':
     get:
       x-speakeasy-entity-operation: MeshMetricList#get
       operationId: getMeshMetricList
@@ -1251,7 +1254,7 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshmetrics/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}':
     get:
       x-speakeasy-entity-operation: MeshMetric#get
       operationId: getMeshMetric
@@ -1339,7 +1342,7 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshmultizoneservices':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices':
     get:
       x-speakeasy-entity-operation: MeshMultiZoneServiceList#get
       operationId: getMeshMultiZoneServiceList
@@ -1358,7 +1361,7 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshmultizoneservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}':
     get:
       x-speakeasy-entity-operation: MeshMultiZoneService#get
       operationId: getMeshMultiZoneService
@@ -1446,7 +1449,7 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas':
     get:
       x-speakeasy-entity-operation: MeshOPAList#get
       operationId: getMeshOPAList
@@ -1465,7 +1468,7 @@ paths:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshopas/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}':
     get:
       x-speakeasy-entity-operation: MeshOPA#get
       operationId: getMeshOPA
@@ -1553,7 +1556,7 @@ paths:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshpassthroughs':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs':
     get:
       x-speakeasy-entity-operation: MeshPassthroughList#get
       operationId: getMeshPassthroughList
@@ -1572,7 +1575,7 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshpassthroughs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}':
     get:
       x-speakeasy-entity-operation: MeshPassthrough#get
       operationId: getMeshPassthrough
@@ -1660,7 +1663,7 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshproxypatches':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches':
     get:
       x-speakeasy-entity-operation: MeshProxyPatchList#get
       operationId: getMeshProxyPatchList
@@ -1679,7 +1682,7 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshproxypatches/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}':
     get:
       x-speakeasy-entity-operation: MeshProxyPatch#get
       operationId: getMeshProxyPatch
@@ -1767,7 +1770,7 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshratelimits':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits':
     get:
       x-speakeasy-entity-operation: MeshRateLimitList#get
       operationId: getMeshRateLimitList
@@ -1786,7 +1789,7 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}':
     get:
       x-speakeasy-entity-operation: MeshRateLimit#get
       operationId: getMeshRateLimit
@@ -1874,7 +1877,7 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshretries':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries':
     get:
       x-speakeasy-entity-operation: MeshRetryList#get
       operationId: getMeshRetryList
@@ -1893,7 +1896,7 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshretries/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}':
     get:
       x-speakeasy-entity-operation: MeshRetry#get
       operationId: getMeshRetry
@@ -1981,7 +1984,7 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices':
     get:
       x-speakeasy-entity-operation: MeshServiceList#get
       operationId: getMeshServiceList
@@ -2000,7 +2003,7 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}':
     get:
       x-speakeasy-entity-operation: MeshService#get
       operationId: getMeshService
@@ -2088,7 +2091,7 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtcproutes':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes':
     get:
       x-speakeasy-entity-operation: MeshTCPRouteList#get
       operationId: getMeshTCPRouteList
@@ -2107,7 +2110,7 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtcproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}':
     get:
       x-speakeasy-entity-operation: MeshTCPRoute#get
       operationId: getMeshTCPRoute
@@ -2195,7 +2198,7 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtimeouts':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts':
     get:
       x-speakeasy-entity-operation: MeshTimeoutList#get
       operationId: getMeshTimeoutList
@@ -2214,7 +2217,7 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtimeouts/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}':
     get:
       x-speakeasy-entity-operation: MeshTimeout#get
       operationId: getMeshTimeout
@@ -2302,7 +2305,7 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtlses':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses':
     get:
       x-speakeasy-entity-operation: MeshTLSList#get
       operationId: getMeshTLSList
@@ -2321,7 +2324,7 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtlses/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}':
     get:
       x-speakeasy-entity-operation: MeshTLS#get
       operationId: getMeshTLS
@@ -2409,7 +2412,7 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtraces':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces':
     get:
       x-speakeasy-entity-operation: MeshTraceList#get
       operationId: getMeshTraceList
@@ -2428,7 +2431,7 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtraces/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}':
     get:
       x-speakeasy-entity-operation: MeshTrace#get
       operationId: getMeshTrace
@@ -2516,7 +2519,7 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtrafficpermissions':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions':
     get:
       x-speakeasy-entity-operation: MeshTrafficPermissionList#get
       operationId: getMeshTrafficPermissionList
@@ -2535,7 +2538,7 @@ paths:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{mesh}/meshtrafficpermissions/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}':
     get:
       x-speakeasy-entity-operation: MeshTrafficPermission#get
       operationId: getMeshTrafficPermission
@@ -2623,7 +2626,7 @@ paths:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{id}/meshes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{name}':
     get:
       x-speakeasy-entity-operation: Mesh#get
       operationId: getMesh
@@ -12916,7 +12919,7 @@ components:
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
     cpId:
-      name: id
+      name: cpId
       in: path
       required: true
       description: Id of the Konnect resource
@@ -37889,12 +37892,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BaseError'
     SlugConflict:
       description: Conflict - `slug` property must be unique
       content:

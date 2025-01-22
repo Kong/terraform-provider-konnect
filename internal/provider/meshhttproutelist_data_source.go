@@ -29,7 +29,7 @@ type MeshHTTPRouteListDataSource struct {
 
 // MeshHTTPRouteListDataSourceModel describes the data model.
 type MeshHTTPRouteListDataSourceModel struct {
-	ID    types.String                `tfsdk:"id"`
+	CpID  types.String                `tfsdk:"cp_id"`
 	Items []tfTypes.MeshHTTPRouteItem `tfsdk:"items"`
 	Mesh  types.String                `tfsdk:"mesh"`
 	Next  types.String                `tfsdk:"next"`
@@ -47,7 +47,7 @@ func (r *MeshHTTPRouteListDataSource) Schema(ctx context.Context, req datasource
 		MarkdownDescription: "MeshHTTPRouteList DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"id": schema.StringAttribute{
+			"cp_id": schema.StringAttribute{
 				Required:    true,
 				Description: `Id of the Konnect resource`,
 			},
@@ -622,14 +622,14 @@ func (r *MeshHTTPRouteListDataSource) Read(ctx context.Context, req datasource.R
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
 
 	request := operations.GetMeshHTTPRouteListRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 	}
 	res, err := r.client.MeshHTTPRoute.GetMeshHTTPRouteList(ctx, request)

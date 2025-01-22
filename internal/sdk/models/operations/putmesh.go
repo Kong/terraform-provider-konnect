@@ -9,18 +9,18 @@ import (
 
 type PutMeshRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the Mesh
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
 	MeshItem shared.MeshItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshRequest) GetID() string {
+func (o *PutMeshRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshRequest) GetName() string {

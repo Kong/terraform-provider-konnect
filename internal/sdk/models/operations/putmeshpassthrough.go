@@ -9,7 +9,7 @@ import (
 
 type PutMeshPassthroughRequest struct {
 	// Id of the Konnect resource
-	ID string `pathParam:"style=simple,explode=false,name=id"`
+	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
 	// name of the MeshPassthrough
@@ -18,11 +18,11 @@ type PutMeshPassthroughRequest struct {
 	MeshPassthroughItem shared.MeshPassthroughItem `request:"mediaType=application/json"`
 }
 
-func (o *PutMeshPassthroughRequest) GetID() string {
+func (o *PutMeshPassthroughRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
-	return o.ID
+	return o.CpID
 }
 
 func (o *PutMeshPassthroughRequest) GetMesh() string {

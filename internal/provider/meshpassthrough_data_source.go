@@ -29,8 +29,8 @@ type MeshPassthroughDataSource struct {
 
 // MeshPassthroughDataSourceModel describes the data model.
 type MeshPassthroughDataSourceModel struct {
+	CpID             types.String                    `tfsdk:"cp_id"`
 	CreationTime     types.String                    `tfsdk:"creation_time"`
-	ID               types.String                    `tfsdk:"id"`
 	Labels           map[string]types.String         `tfsdk:"labels"`
 	Mesh             types.String                    `tfsdk:"mesh"`
 	ModificationTime types.String                    `tfsdk:"modification_time"`
@@ -50,13 +50,13 @@ func (r *MeshPassthroughDataSource) Schema(ctx context.Context, req datasource.S
 		MarkdownDescription: "MeshPassthrough DataSource",
 
 		Attributes: map[string]schema.Attribute{
+			"cp_id": schema.StringAttribute{
+				Required:    true,
+				Description: `Id of the Konnect resource`,
+			},
 			"creation_time": schema.StringAttribute{
 				Computed:    true,
 				Description: `Time at which the resource was created`,
-			},
-			"id": schema.StringAttribute{
-				Required:    true,
-				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
 				Computed:    true,
@@ -211,8 +211,8 @@ func (r *MeshPassthroughDataSource) Read(ctx context.Context, req datasource.Rea
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	var cpID string
+	cpID = data.CpID.ValueString()
 
 	var mesh string
 	mesh = data.Mesh.ValueString()
@@ -221,7 +221,7 @@ func (r *MeshPassthroughDataSource) Read(ctx context.Context, req datasource.Rea
 	name = data.Name.ValueString()
 
 	request := operations.GetMeshPassthroughRequest{
-		ID:   id,
+		CpID: cpID,
 		Mesh: mesh,
 		Name: name,
 	}
