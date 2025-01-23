@@ -126,7 +126,7 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(resp *shared.Serv
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
 		} else {
-			r.ClientCertificate = &tfTypes.ACLConsumer{}
+			r.ClientCertificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
 		}
 		r.ConnectTimeout = types.Int64PointerValue(resp.ConnectTimeout)

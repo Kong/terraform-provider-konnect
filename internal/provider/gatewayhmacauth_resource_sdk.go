@@ -9,11 +9,23 @@ import (
 )
 
 func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.HMACAuthWithoutParents {
-	id := new(string)
+	var consumer *shared.HMACAuthWithoutParentsConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.HMACAuthWithoutParentsConsumer{
+			ID: id,
+		}
+	}
+	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
+		*id1 = r.ID.ValueString()
 	} else {
-		id = nil
+		id1 = nil
 	}
 	secret := new(string)
 	if !r.Secret.IsUnknown() && !r.Secret.IsNull() {
@@ -29,7 +41,8 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 	username = r.Username.ValueString()
 
 	out := shared.HMACAuthWithoutParents{
-		ID:       id,
+		Consumer: consumer,
+		ID:       id1,
 		Secret:   secret,
 		Tags:     tags,
 		Username: username,
@@ -42,7 +55,7 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(resp *shared.HM
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

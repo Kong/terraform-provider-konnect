@@ -348,7 +348,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
 		} else {
-			r.ClientCertificate = &tfTypes.ACLConsumer{}
+			r.ClientCertificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

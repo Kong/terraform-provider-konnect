@@ -9,11 +9,23 @@ import (
 )
 
 func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *shared.BasicAuthWithoutParents {
-	id := new(string)
+	var consumer *shared.BasicAuthWithoutParentsConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.BasicAuthWithoutParentsConsumer{
+			ID: id,
+		}
+	}
+	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
+		*id1 = r.ID.ValueString()
 	} else {
-		id = nil
+		id1 = nil
 	}
 	var password string
 	password = r.Password.ValueString()
@@ -26,7 +38,8 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	username = r.Username.ValueString()
 
 	out := shared.BasicAuthWithoutParents{
-		ID:       id,
+		Consumer: consumer,
+		ID:       id1,
 		Password: password,
 		Tags:     tags,
 		Username: username,
@@ -39,7 +52,7 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

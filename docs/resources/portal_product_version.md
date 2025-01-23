@@ -64,6 +64,7 @@ Read-Only:
 Read-Only:
 
 - `auth_methods` (List of String)
+- `available_scopes` (List of String) Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
 - `credential_type` (String) must be one of ["client_credentials", "self_managed_client_credentials"]
 - `id` (String) The Application Auth Strategy ID.
 - `name` (String)
@@ -76,6 +77,7 @@ Read-Only:
 
 - `credential_type` (String) must be "key_auth"
 - `id` (String) The Application Auth Strategy ID.
+- `key_names` (List of String)
 - `name` (String)
 
 ## Import

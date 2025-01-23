@@ -41,14 +41,14 @@ type GatewayMTLSAuthResource struct {
 
 // GatewayMTLSAuthResourceModel describes the resource data model.
 type GatewayMTLSAuthResourceModel struct {
-	CaCertificate  *tfTypes.ACLConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerID     types.String         `tfsdk:"consumer_id"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	SubjectName    types.String         `tfsdk:"subject_name"`
-	Tags           []types.String       `tfsdk:"tags"`
+	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerID     types.String                       `tfsdk:"consumer_id"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	SubjectName    types.String                       `tfsdk:"subject_name"`
+	Tags           []types.String                     `tfsdk:"tags"`
 }
 
 func (r *GatewayMTLSAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -84,14 +84,26 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"id": types.StringType,
 				})),
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Requires replacement if changed.`,
 					},
 				},
+				Description: `Requires replacement if changed.`,
 			},
 			"consumer_id": schema.StringAttribute{
 				Required: true,

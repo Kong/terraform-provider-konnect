@@ -2,10 +2,29 @@
 
 package shared
 
+type KeyAuthWithoutParentsConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *KeyAuthWithoutParentsConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type KeyAuthWithoutParents struct {
-	ID   *string  `json:"id,omitempty"`
-	Key  string   `json:"key"`
-	Tags []string `json:"tags,omitempty"`
+	Consumer *KeyAuthWithoutParentsConsumer `json:"consumer"`
+	ID       *string                        `json:"id,omitempty"`
+	Key      string                         `json:"key"`
+	Tags     []string                       `json:"tags,omitempty"`
+}
+
+func (o *KeyAuthWithoutParents) GetConsumer() *KeyAuthWithoutParentsConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *KeyAuthWithoutParents) GetID() *string {

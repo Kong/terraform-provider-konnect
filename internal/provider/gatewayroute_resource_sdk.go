@@ -227,7 +227,7 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
 		r.Snis = []types.String{}

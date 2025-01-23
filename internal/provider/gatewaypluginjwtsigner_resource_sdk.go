@@ -991,13 +991,13 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(r
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -1034,13 +1034,13 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(r
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
 		r.Tags = []types.String{}

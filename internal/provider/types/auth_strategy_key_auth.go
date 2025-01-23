@@ -5,7 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AuthStrategyKeyAuth struct {
-	CredentialType types.String `tfsdk:"credential_type"`
-	ID             types.String `tfsdk:"id"`
-	Name           types.String `tfsdk:"name"`
+	CredentialType types.String   `tfsdk:"credential_type"`
+	ID             types.String   `tfsdk:"id"`
+	KeyNames       []types.String `tfsdk:"key_names"`
+	Name           types.String   `tfsdk:"name"`
 }
