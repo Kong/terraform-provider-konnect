@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 9d1823029362132cdf2295f300c0f812
+  docChecksum: 849f2f4ecb03b0bbdaff7021d9c3f809
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -1655,6 +1655,7 @@ generatedFiles:
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/baseerror.go
   - internal/sdk/models/shared/basicauth.go
   - internal/sdk/models/shared/basicauthplugin.go
   - internal/sdk/models/shared/basicauthwithoutparents.go
@@ -1709,6 +1710,7 @@ generatedFiles:
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
+  - internal/sdk/models/shared/entityregion.go
   - internal/sdk/models/shared/exittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
@@ -1878,6 +1880,7 @@ generatedFiles:
   - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/services.go
   - internal/sdk/snis.go
+  - internal/sdk/system.go
   - internal/sdk/systemaccounts.go
   - internal/sdk/systemaccountsaccesstokens.go
   - internal/sdk/systemaccountsroles.go
@@ -1976,6 +1979,10 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "400":
+          application/problem+json: {"status": 837283, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "500":
+          application/problem+json: {"status": 152806, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   delete-mesh-control-plane:
     "":
       parameters:
