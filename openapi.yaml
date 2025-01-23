@@ -112,29 +112,6 @@ paths:
       tags:
         - Mesh
   '/v1/mesh/control-planes/{cpId}':
-    get:
-      x-speakeasy-entity-operation: MeshControlPlane#read
-      operationId: get-mesh-control-plane
-      summary: Get the control plane
-      description: Get the control plane
-      parameters:
-        - $ref: '#/components/parameters/cpId'
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - System
-        - Mesh
     parameters:
       - name: cpId
         in: path
@@ -145,6 +122,22 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: MeshControlPlane#read
+      operationId: get-mesh-control-plane
+      summary: Get the control plane
+      description: Get the control plane
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      tags:
+        - Mesh
     delete:
       x-speakeasy-entity-operation: MeshControlPlane#delete
       operationId: delete-mesh-control-plane
@@ -10411,16 +10404,6 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
-    cpId:
-      name: cpId
-      in: path
-      required: true
-      description: Id of the Konnect resource
-      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      schema:
-        type: string
-        format: uuid
-      x-speakeasy-match: id
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -26487,12 +26470,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BaseError'
     SlugConflict:
       description: Conflict - `slug` property must be unique
       content:
