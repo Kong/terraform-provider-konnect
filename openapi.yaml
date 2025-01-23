@@ -112,6 +112,29 @@ paths:
       tags:
         - Mesh
   '/v1/mesh/control-planes/{cpId}':
+    get:
+      x-speakeasy-entity-operation: MeshControlPlane#read
+      operationId: get-mesh-control-plane
+      summary: Get the control plane
+      description: Get the control plane
+      parameters:
+        - $ref: '#/components/parameters/cpId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+        '500':
+          $ref: '#/components/responses/Internal'
+      tags:
+        - System
+        - Mesh
     parameters:
       - name: cpId
         in: path
@@ -122,22 +145,6 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
-    get:
-      x-speakeasy-entity-operation: MeshControlPlane#read
-      operationId: get-mesh-control-plane
-      summary: Get the control plane
-      description: Get the control plane
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-      tags:
-        - Mesh
     delete:
       x-speakeasy-entity-operation: MeshControlPlane#delete
       operationId: delete-mesh-control-plane
@@ -10400,6 +10407,16 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
+    cpId:
+      name: cpId
+      in: path
+      required: true
+      description: Id of the Konnect resource
+      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      schema:
+        type: string
+        format: uuid
+      x-speakeasy-match: id
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -10709,6 +10726,7 @@ components:
         - is_fqdn
         - is_arn
         - unknown_property
+        - missing_reference
         - is_label
         - matches_regex
         - invalid
@@ -13831,6 +13849,16 @@ components:
       pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: ImageDataUri
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
+    EntityRegion:
+      type: string
+      example: eu
+      enum:
+        - us
+        - eu
+        - au
+        - me
+        - in
+        - '*'
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
       type: string
@@ -14279,16 +14307,10 @@ components:
           type: string
           example: Control Planes
         entity_region:
-          description: Region of the entity.
-          type: string
-          example: eu
-          enum:
-            - us
-            - eu
-            - au
-            - me
-            - in
-            - '*'
+          allOf:
+            - $ref: '#/components/schemas/EntityRegion'
+            - description: Region of the entity.
+          x-flatten-allOf: true
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
@@ -25991,16 +26013,10 @@ components:
                   - Portals
                   - Service Hub
               entity_region:
-                description: The region of the team.
-                type: string
-                example: eu
-                enum:
-                  - us
-                  - eu
-                  - au
-                  - me
-                  - in
-                  - '*'
+                allOf:
+                  - $ref: '#/components/schemas/EntityRegion'
+                  - description: Region of the team.
+                x-flatten-allOf: true
       description: The request schema for assigning a role.
     CreateSystemAccount:
       content:
@@ -26397,6 +26413,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
     SlugConflict:
       description: Conflict - `slug` property must be unique
       content:

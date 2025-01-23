@@ -76,6 +76,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
+	System                         *System
 	APIProducts                    *APIProducts
 	APIProductDocumentation        *APIProductDocumentation
 	APIProductVersions             *APIProductVersions
@@ -315,6 +316,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
+
+	sdk.System = newSystem(sdk.sdkConfiguration)
 
 	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
 
