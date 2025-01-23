@@ -24,6 +24,10 @@ func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVers
 				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AuthMethods {
 					authStrategies1.ClientCredentials.AuthMethods = append(authStrategies1.ClientCredentials.AuthMethods, types.StringValue(v))
 				}
+				authStrategies1.ClientCredentials.AvailableScopes = []types.String{}
+				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes {
+					authStrategies1.ClientCredentials.AvailableScopes = append(authStrategies1.ClientCredentials.AvailableScopes, types.StringValue(v))
+				}
 				authStrategies1.ClientCredentials.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyClientCredentials.CredentialType))
 				authStrategies1.ClientCredentials.ID = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.ID)
 				authStrategies1.ClientCredentials.Name = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.Name)
@@ -32,6 +36,10 @@ func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVers
 				authStrategies1.KeyAuth = &tfTypes.AuthStrategyKeyAuth{}
 				authStrategies1.KeyAuth.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyKeyAuth.CredentialType))
 				authStrategies1.KeyAuth.ID = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.ID)
+				authStrategies1.KeyAuth.KeyNames = []types.String{}
+				for _, v := range authStrategiesItem.AuthStrategyKeyAuth.KeyNames {
+					authStrategies1.KeyAuth.KeyNames = append(authStrategies1.KeyAuth.KeyNames, types.StringValue(v))
+				}
 				authStrategies1.KeyAuth.Name = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
 			}
 			if authStrategiesCount+1 > len(r.AuthStrategies) {

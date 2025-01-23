@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 849f2f4ecb03b0bbdaff7021d9c3f809
+  docChecksum: e969670d08a437f9de88486bf487e962
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -905,10 +905,10 @@ generatedFiles:
   - internal/provider/teamuser_resource.go
   - internal/provider/teamuser_resource_sdk.go
   - internal/provider/types/account_key.go
-  - internal/provider/types/acl_consumer.go
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
   - internal/provider/types/acl_plugin_ordering.go
+  - internal/provider/types/acl_without_parents_consumer.go
   - internal/provider/types/acme_plugin_config.go
   - internal/provider/types/acme_plugin_redis.go
   - internal/provider/types/acme_plugin_vault.go
@@ -1655,7 +1655,6 @@ generatedFiles:
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
-  - internal/sdk/models/shared/baseerror.go
   - internal/sdk/models/shared/basicauth.go
   - internal/sdk/models/shared/basicauthplugin.go
   - internal/sdk/models/shared/basicauthwithoutparents.go
@@ -1880,7 +1879,6 @@ generatedFiles:
   - internal/sdk/serverlesscloudgateways.go
   - internal/sdk/services.go
   - internal/sdk/snis.go
-  - internal/sdk/system.go
   - internal/sdk/systemaccounts.go
   - internal/sdk/systemaccountsaccesstokens.go
   - internal/sdk/systemaccountsroles.go
@@ -2167,6 +2165,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "415":
           application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   get-api-product-version:
     speakeasy-default-get-api-product-version:
       parameters:
@@ -2203,6 +2203,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "415":
           application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
   delete-api-product-version:
     speakeasy-default-delete-api-product-version:
       parameters:
@@ -7157,7 +7159,7 @@ examples:
           portalId: "b5664eca-81a8-4aa6-adfb-8b2919f7182b"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth"}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "client_credentials", "auth_methods": ["bearer"]}], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value>", "<value>"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "client_credentials", "auth_methods": ["bearer"]}], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
         "400":
           application/problem+json: {"status": 308877, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -7176,7 +7178,7 @@ examples:
         application/json: {"publish_status": "published", "auth_strategy_ids": ["5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"], "application_registration_enabled": false, "auto_approve_registration": false, "deprecated": true}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth"}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth"}], "application_registration_enabled": true, "auto_approve_registration": false, "deprecated": true}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "publish_status": "published", "product_version_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "auth_strategies": [{"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value>"]}, {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "name", "credential_type": "key_auth", "key_names": ["<value>", "<value>", "<value>"]}], "application_registration_enabled": true, "auto_approve_registration": false, "deprecated": true}
         "400":
           application/problem+json: {"status": 172898, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "max_items", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":

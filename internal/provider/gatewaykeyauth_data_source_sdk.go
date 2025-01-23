@@ -13,7 +13,7 @@ func (r *GatewayKeyAuthDataSourceModel) RefreshFromSharedKeyAuth(resp *shared.Ke
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

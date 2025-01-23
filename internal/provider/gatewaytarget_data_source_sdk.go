@@ -30,7 +30,7 @@ func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Targ
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {
-			r.Upstream = &tfTypes.ACLConsumer{}
+			r.Upstream = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
 		}
 		r.Weight = types.Int64PointerValue(resp.Weight)

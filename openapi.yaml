@@ -112,29 +112,6 @@ paths:
       tags:
         - Mesh
   '/v1/mesh/control-planes/{cpId}':
-    get:
-      x-speakeasy-entity-operation: MeshControlPlane#read
-      operationId: get-mesh-control-plane
-      summary: Get the control plane
-      description: Get the control plane
-      parameters:
-        - $ref: '#/components/parameters/cpId'
-      responses:
-        '200':
-          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
-        '403':
-          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
-        '404':
-          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
-        '500':
-          $ref: '#/components/responses/Internal'
-      tags:
-        - System
-        - Mesh
     parameters:
       - name: cpId
         in: path
@@ -145,6 +122,22 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
+    get:
+      x-speakeasy-entity-operation: MeshControlPlane#read
+      operationId: get-mesh-control-plane
+      summary: Get the control plane
+      description: Get the control plane
+      responses:
+        '200':
+          $ref: '#/components/responses/RetrieveMeshControlPlaneResponse'
+        '401':
+          $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
+        '403':
+          $ref: '#/components/responses/MeshControlPlaneForbiddenError'
+        '404':
+          $ref: '#/components/responses/MeshControlPlaneNotFoundError'
+      tags:
+        - Mesh
     delete:
       x-speakeasy-entity-operation: MeshControlPlane#delete
       operationId: delete-mesh-control-plane
@@ -360,6 +353,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/ApiProductImplementationConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -555,6 +550,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/ApiProductImplementationConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -10407,16 +10404,6 @@ components:
         format: uuid
         example: 9524ec7d-36d9-465d-a8c5-83a3c9390458
       description: The UUID of your control plane. This variable is available in the Konnect manager.
-    cpId:
-      name: cpId
-      in: path
-      required: true
-      description: Id of the Konnect resource
-      example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      schema:
-        type: string
-        format: uuid
-      x-speakeasy-match: id
   schemas:
     GroupMembership:
       x-speakeasy-entity: GatewayControlPlaneMembership
@@ -13805,10 +13792,16 @@ components:
           type: string
           enum:
             - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
       required:
         - id
         - name
         - credential_type
+        - key_names
     AuthMethods:
       type: array
       items:
@@ -13816,6 +13809,14 @@ components:
         type: string
       example:
         - bearer
+    AvailableScopes:
+      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
     AuthStrategyClientCredentials:
       description: Client Credential Auth strategy that the application uses.
       type: object
@@ -13836,6 +13837,9 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+      additionalProperties: false
       required:
         - id
         - name
@@ -14585,6 +14589,16 @@ components:
       x-speakeasy-entity: GatewayACL
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -15802,6 +15816,16 @@ components:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -16855,6 +16879,16 @@ components:
       x-speakeasy-entity: GatewayHMACAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -17125,6 +17159,16 @@ components:
             - PS512
             - EdDSA
           nullable: true
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -18093,6 +18137,16 @@ components:
       x-speakeasy-entity: GatewayKeyAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -19798,6 +19852,16 @@ components:
       type: object
       properties:
         ca_certificate:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
+        consumer:
           type: object
           default: null
           additionalProperties: false
@@ -24844,6 +24908,16 @@ components:
           description: Unix epoch when the resource was last updated.
           type: number
           readOnly: true
+        upstream:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         weight:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
@@ -26413,12 +26487,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/MeshControlPlane'
-    Internal:
-      description: Internal
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BaseError'
     SlugConflict:
       description: Conflict - `slug` property must be unique
       content:
@@ -26446,6 +26514,12 @@ components:
             $ref: '#/components/schemas/ConflictError'
     VersionSpecHiddenConflict:
       description: Conflict - name attribute must be unique accross legacy version specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiProductImplementationConflict:
+      description: Conflict - V3 API is currently linked to the target gateway service
       content:
         application/problem+json:
           schema:
@@ -26734,6 +26808,7 @@ tags:
   - name: Provider Accounts
   - name: Custom Domains
   - name: Resource Quotas
+  - name: Resource Configurations
   - name: Resource Availability
   - name: Mesh
   - name: API Products

@@ -13,11 +13,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -39,14 +41,14 @@ type GatewayBasicAuthResource struct {
 
 // GatewayBasicAuthResourceModel describes the resource data model.
 type GatewayBasicAuthResourceModel struct {
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerID     types.String         `tfsdk:"consumer_id"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Password       types.String         `tfsdk:"password"`
-	Tags           []types.String       `tfsdk:"tags"`
-	Username       types.String         `tfsdk:"username"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerID     types.String                       `tfsdk:"consumer_id"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Password       types.String                       `tfsdk:"password"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	Username       types.String                       `tfsdk:"username"`
 }
 
 func (r *GatewayBasicAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,14 +61,26 @@ func (r *GatewayBasicAuthResource) Schema(ctx context.Context, req resource.Sche
 		Attributes: map[string]schema.Attribute{
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"id": types.StringType,
 				})),
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Requires replacement if changed.`,
 					},
 				},
+				Description: `Requires replacement if changed.`,
 			},
 			"consumer_id": schema.StringAttribute{
 				Required: true,

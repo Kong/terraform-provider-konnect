@@ -29,16 +29,16 @@ type GatewayJWTDataSource struct {
 
 // GatewayJWTDataSourceModel describes the data model.
 type GatewayJWTDataSourceModel struct {
-	Algorithm      types.String         `tfsdk:"algorithm"`
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerID     types.String         `tfsdk:"consumer_id"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Key            types.String         `tfsdk:"key"`
-	RsaPublicKey   types.String         `tfsdk:"rsa_public_key"`
-	Secret         types.String         `tfsdk:"secret"`
-	Tags           []types.String       `tfsdk:"tags"`
+	Algorithm      types.String                       `tfsdk:"algorithm"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerID     types.String                       `tfsdk:"consumer_id"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Key            types.String                       `tfsdk:"key"`
+	RsaPublicKey   types.String                       `tfsdk:"rsa_public_key"`
+	Secret         types.String                       `tfsdk:"secret"`
+	Tags           []types.String                     `tfsdk:"tags"`
 }
 
 // Metadata returns the data source type name.

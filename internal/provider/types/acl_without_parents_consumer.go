@@ -4,6 +4,6 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type ACLConsumer struct {
+type ACLWithoutParentsConsumer struct {
 	ID types.String `tfsdk:"id"`
 }

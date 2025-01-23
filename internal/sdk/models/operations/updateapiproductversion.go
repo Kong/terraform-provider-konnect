@@ -53,6 +53,8 @@ type UpdateAPIProductVersionResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Conflict - V3 API is currently linked to the target gateway service
+	ConflictError *shared.ConflictError
 	// Unsupported Media Type
 	UnsupportedMediaTypeError *shared.UnsupportedMediaTypeError
 }
@@ -111,6 +113,13 @@ func (o *UpdateAPIProductVersionResponse) GetNotFoundError() *shared.NotFoundErr
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *UpdateAPIProductVersionResponse) GetConflictError() *shared.ConflictError {
+	if o == nil {
+		return nil
+	}
+	return o.ConflictError
 }
 
 func (o *UpdateAPIProductVersionResponse) GetUnsupportedMediaTypeError() *shared.UnsupportedMediaTypeError {

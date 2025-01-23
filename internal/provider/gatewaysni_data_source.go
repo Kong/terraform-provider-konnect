@@ -29,13 +29,13 @@ type GatewaySNIDataSource struct {
 
 // GatewaySNIDataSourceModel describes the data model.
 type GatewaySNIDataSourceModel struct {
-	Certificate    *tfTypes.ACLConsumer `tfsdk:"certificate" tfPlanOnly:"true"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Name           types.String         `tfsdk:"name"`
-	Tags           []types.String       `tfsdk:"tags"`
-	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
+	Certificate    *tfTypes.ACLWithoutParentsConsumer `tfsdk:"certificate" tfPlanOnly:"true"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Name           types.String                       `tfsdk:"name"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.

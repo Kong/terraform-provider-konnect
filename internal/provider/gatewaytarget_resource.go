@@ -14,12 +14,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -41,15 +43,15 @@ type GatewayTargetResource struct {
 
 // GatewayTargetResourceModel describes the resource data model.
 type GatewayTargetResourceModel struct {
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Number         `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Tags           []types.String       `tfsdk:"tags"`
-	Target         types.String         `tfsdk:"target"`
-	UpdatedAt      types.Number         `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLConsumer `tfsdk:"upstream" tfPlanOnly:"true"`
-	UpstreamID     types.String         `tfsdk:"upstream_id"`
-	Weight         types.Int64          `tfsdk:"weight"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Number                       `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	Target         types.String                       `tfsdk:"target"`
+	UpdatedAt      types.Number                       `tfsdk:"updated_at"`
+	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream" tfPlanOnly:"true"`
+	UpstreamID     types.String                       `tfsdk:"upstream_id"`
+	Weight         types.Int64                        `tfsdk:"weight"`
 }
 
 func (r *GatewayTargetResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -105,14 +107,26 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"upstream": schema.SingleNestedAttribute{
 				Computed: true,
+				Optional: true,
 				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
 					"id": types.StringType,
 				})),
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
+						Description: `Requires replacement if changed.`,
 					},
 				},
+				Description: `Requires replacement if changed.`,
 			},
 			"upstream_id": schema.StringAttribute{
 				Required: true,

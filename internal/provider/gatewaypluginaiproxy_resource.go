@@ -39,20 +39,20 @@ type GatewayPluginAiProxyResource struct {
 
 // GatewayPluginAiProxyResourceModel describes the resource data model.
 type GatewayPluginAiProxyResourceModel struct {
-	Config         tfTypes.AiProxyPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer        `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer        `tfsdk:"consumer_group" tfPlanOnly:"true"`
-	ControlPlaneID types.String                `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                 `tfsdk:"created_at"`
-	Enabled        types.Bool                  `tfsdk:"enabled"`
-	ID             types.String                `tfsdk:"id"`
-	InstanceName   types.String                `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering  `tfsdk:"ordering"`
-	Protocols      []types.String              `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer        `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer        `tfsdk:"service" tfPlanOnly:"true"`
-	Tags           []types.String              `tfsdk:"tags"`
-	UpdatedAt      types.Int64                 `tfsdk:"updated_at"`
+	Config         tfTypes.AiProxyPluginConfig        `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route" tfPlanOnly:"true"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiProxyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -21,11 +21,23 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 			ID: id,
 		}
 	}
-	id1 := new(string)
+	var consumer *shared.MTLSAuthWithoutParentsConsumer
+	if r.Consumer != nil {
+		id1 := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumer = &shared.MTLSAuthWithoutParentsConsumer{
+			ID: id1,
+		}
+	}
+	id2 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id1 = r.ID.ValueString()
+		*id2 = r.ID.ValueString()
 	} else {
-		id1 = nil
+		id2 = nil
 	}
 	var subjectName string
 	subjectName = r.SubjectName.ValueString()
@@ -36,7 +48,8 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	}
 	out := shared.MTLSAuthWithoutParents{
 		CaCertificate: caCertificate,
-		ID:            id1,
+		Consumer:      consumer,
+		ID:            id2,
 		SubjectName:   subjectName,
 		Tags:          tags,
 	}
@@ -48,13 +61,13 @@ func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(resp *shared.MT
 		if resp.CaCertificate == nil {
 			r.CaCertificate = nil
 		} else {
-			r.CaCertificate = &tfTypes.ACLConsumer{}
+			r.CaCertificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.CaCertificate.ID = types.StringPointerValue(resp.CaCertificate.ID)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

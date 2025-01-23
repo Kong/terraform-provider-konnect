@@ -29,14 +29,14 @@ type GatewayMTLSAuthDataSource struct {
 
 // GatewayMTLSAuthDataSourceModel describes the data model.
 type GatewayMTLSAuthDataSourceModel struct {
-	CaCertificate  *tfTypes.ACLConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerID     types.String         `tfsdk:"consumer_id"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	SubjectName    types.String         `tfsdk:"subject_name"`
-	Tags           []types.String       `tfsdk:"tags"`
+	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerID     types.String                       `tfsdk:"consumer_id"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	SubjectName    types.String                       `tfsdk:"subject_name"`
+	Tags           []types.String                     `tfsdk:"tags"`
 }
 
 // Metadata returns the data source type name.

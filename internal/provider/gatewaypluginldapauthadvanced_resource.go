@@ -37,8 +37,8 @@ type GatewayPluginLdapAuthAdvancedResource struct {
 // GatewayPluginLdapAuthAdvancedResourceModel describes the resource data model.
 type GatewayPluginLdapAuthAdvancedResourceModel struct {
 	Config         tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                 `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer                 `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                          `tfsdk:"created_at"`
 	Enabled        types.Bool                           `tfsdk:"enabled"`
@@ -46,8 +46,8 @@ type GatewayPluginLdapAuthAdvancedResourceModel struct {
 	InstanceName   types.String                         `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
 	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                 `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer                 `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route" tfPlanOnly:"true"`
+	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service" tfPlanOnly:"true"`
 	Tags           []types.String                       `tfsdk:"tags"`
 	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }

@@ -36,6 +36,7 @@ type AuthStrategyKeyAuth struct {
 	ID             string         `json:"id"`
 	Name           string         `json:"name"`
 	CredentialType CredentialType `json:"credential_type"`
+	KeyNames       []string       `json:"key_names"`
 }
 
 func (o *AuthStrategyKeyAuth) GetID() string {
@@ -57,4 +58,11 @@ func (o *AuthStrategyKeyAuth) GetCredentialType() CredentialType {
 		return CredentialType("")
 	}
 	return o.CredentialType
+}
+
+func (o *AuthStrategyKeyAuth) GetKeyNames() []string {
+	if o == nil {
+		return []string{}
+	}
+	return o.KeyNames
 }

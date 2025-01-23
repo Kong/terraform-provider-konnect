@@ -25,7 +25,7 @@ func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(resp *shared.Key) {
 		if resp.Set == nil {
 			r.Set = nil
 		} else {
-			r.Set = &tfTypes.ACLConsumer{}
+			r.Set = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Set.ID = types.StringPointerValue(resp.Set.ID)
 		}
 		r.Tags = []types.String{}

@@ -2,11 +2,30 @@
 
 package shared
 
+type HMACAuthWithoutParentsConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *HMACAuthWithoutParentsConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type HMACAuthWithoutParents struct {
-	ID       *string  `json:"id,omitempty"`
-	Secret   *string  `json:"secret,omitempty"`
-	Tags     []string `json:"tags,omitempty"`
-	Username string   `json:"username"`
+	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer"`
+	ID       *string                         `json:"id,omitempty"`
+	Secret   *string                         `json:"secret,omitempty"`
+	Tags     []string                        `json:"tags,omitempty"`
+	Username string                          `json:"username"`
+}
+
+func (o *HMACAuthWithoutParents) GetConsumer() *HMACAuthWithoutParentsConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *HMACAuthWithoutParents) GetID() *string {

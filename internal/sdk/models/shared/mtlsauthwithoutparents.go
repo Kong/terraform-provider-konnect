@@ -13,8 +13,20 @@ func (o *MTLSAuthWithoutParentsCaCertificate) GetID() *string {
 	return o.ID
 }
 
+type MTLSAuthWithoutParentsConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *MTLSAuthWithoutParentsConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type MTLSAuthWithoutParents struct {
 	CaCertificate *MTLSAuthWithoutParentsCaCertificate `json:"ca_certificate"`
+	Consumer      *MTLSAuthWithoutParentsConsumer      `json:"consumer"`
 	ID            *string                              `json:"id,omitempty"`
 	SubjectName   string                               `json:"subject_name"`
 	Tags          []string                             `json:"tags,omitempty"`
@@ -25,6 +37,13 @@ func (o *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCer
 		return nil
 	}
 	return o.CaCertificate
+}
+
+func (o *MTLSAuthWithoutParents) GetConsumer() *MTLSAuthWithoutParentsConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *MTLSAuthWithoutParents) GetID() *string {

@@ -15,11 +15,23 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	} else {
 		algorithm = nil
 	}
-	id := new(string)
+	var consumer *shared.JWTWithoutParentsConsumer
+	if r.Consumer != nil {
+		id := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id = r.Consumer.ID.ValueString()
+		} else {
+			id = nil
+		}
+		consumer = &shared.JWTWithoutParentsConsumer{
+			ID: id,
+		}
+	}
+	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id = r.ID.ValueString()
+		*id1 = r.ID.ValueString()
 	} else {
-		id = nil
+		id1 = nil
 	}
 	key := new(string)
 	if !r.Key.IsUnknown() && !r.Key.IsNull() {
@@ -45,7 +57,8 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	}
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
-		ID:           id,
+		Consumer:     consumer,
+		ID:           id1,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,
 		Secret:       secret,
@@ -64,7 +77,7 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)

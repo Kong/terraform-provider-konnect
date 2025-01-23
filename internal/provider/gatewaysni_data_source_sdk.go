@@ -13,7 +13,7 @@ func (r *GatewaySNIDataSourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 		if resp.Certificate == nil {
 			r.Certificate = nil
 		} else {
-			r.Certificate = &tfTypes.ACLConsumer{}
+			r.Certificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
