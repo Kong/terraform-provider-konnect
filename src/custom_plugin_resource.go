@@ -364,11 +364,11 @@ func (r *CustomPluginResource) ImportState(ctx context.Context, req resource.Imp
 	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource gateway_custom_plugin.")
 }
 
-func pointerToId[T any](obj *T) *tfTypes.ACLConsumer {
+func pointerToId[T any](obj *T) *tfTypes.ACLWithoutParentsConsumer {
 	if obj == nil {
 		return nil
 	}
-	x := &tfTypes.ACLConsumer{}
+	x := &tfTypes.ACLWithoutParentsConsumer{}
 	switch v := any(obj).(type) {
 	case *shared.PluginConsumer:
 		x.ID = types.StringPointerValue(v.ID)
