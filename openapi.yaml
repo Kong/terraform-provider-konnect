@@ -26808,6 +26808,7 @@ tags:
   - name: Provider Accounts
   - name: Custom Domains
   - name: Resource Quotas
+  - name: Resource Configurations
   - name: Resource Availability
   - name: Mesh
   - name: API Products
