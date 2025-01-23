@@ -13792,10 +13792,16 @@ components:
           type: string
           enum:
             - key_auth
+        key_names:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
       required:
         - id
         - name
         - credential_type
+        - key_names
     AuthMethods:
       type: array
       items:
@@ -13803,6 +13809,14 @@ components:
         type: string
       example:
         - bearer
+    AvailableScopes:
+      description: Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+      type: array
+      items:
+        type: string
+      example:
+        - scope1
+        - scope2
     AuthStrategyClientCredentials:
       description: Client Credential Auth strategy that the application uses.
       type: object
@@ -13823,6 +13837,9 @@ components:
             - self_managed_client_credentials
         auth_methods:
           $ref: '#/components/schemas/AuthMethods'
+        available_scopes:
+          $ref: '#/components/schemas/AvailableScopes'
+      additionalProperties: false
       required:
         - id
         - name
