@@ -360,6 +360,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/ApiProductImplementationConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -555,6 +557,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/ApiProductNotFound'
+        '409':
+          $ref: '#/components/responses/ApiProductImplementationConflict'
         '415':
           $ref: '#/components/responses/UnsupportedMediaType'
       tags:
@@ -14585,6 +14589,16 @@ components:
       x-speakeasy-entity: GatewayACL
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -15802,6 +15816,16 @@ components:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -16855,6 +16879,16 @@ components:
       x-speakeasy-entity: GatewayHMACAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -17125,6 +17159,16 @@ components:
             - PS512
             - EdDSA
           nullable: true
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -18093,6 +18137,16 @@ components:
       x-speakeasy-entity: GatewayKeyAuth
       type: object
       properties:
+        consumer:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -19798,6 +19852,16 @@ components:
       type: object
       properties:
         ca_certificate:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
+        consumer:
           type: object
           default: null
           additionalProperties: false
@@ -24844,6 +24908,16 @@ components:
           description: Unix epoch when the resource was last updated.
           type: number
           readOnly: true
+        upstream:
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-foreign: true
+          x-speakeasy-terraform-plan-only: true
         weight:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
@@ -26446,6 +26520,12 @@ components:
             $ref: '#/components/schemas/ConflictError'
     VersionSpecHiddenConflict:
       description: Conflict - name attribute must be unique accross legacy version specifications
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConflictError'
+    ApiProductImplementationConflict:
+      description: Conflict - V3 API is currently linked to the target gateway service
       content:
         application/problem+json:
           schema:
