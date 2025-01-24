@@ -18,6 +18,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -140,10 +141,13 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.SingleNestedAttribute{
+								"conf": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Configuration of the backend`,
+									Description: `Configuration of the backend. Parsed as JSON.`,
+									Validators: []validator.String{
+										validators.IsValidJSON(),
+									},
 								},
 								"format": schema.StringAttribute{
 									Computed: true,
@@ -217,10 +221,13 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.SingleNestedAttribute{
+								"conf": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Configuration of the backend`,
+									Description: `Configuration of the backend. Parsed as JSON.`,
+									Validators: []validator.String{
+										validators.IsValidJSON(),
+									},
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
@@ -261,10 +268,13 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.SingleNestedAttribute{
+								"conf": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Configuration of the backend`,
+									Description: `Configuration of the backend. Parsed as JSON.`,
+									Validators: []validator.String{
+										validators.IsValidJSON(),
+									},
 								},
 								"dp_cert": schema.SingleNestedAttribute{
 									Computed: true,
@@ -450,10 +460,13 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.SingleNestedAttribute{
+								"conf": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Configuration of the backend`,
+									Description: `Configuration of the backend. Parsed as JSON.`,
+									Validators: []validator.String{
+										validators.IsValidJSON(),
+									},
 								},
 								"name": schema.StringAttribute{
 									Computed: true,

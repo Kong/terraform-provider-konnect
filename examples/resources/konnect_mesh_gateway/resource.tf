@@ -25,9 +25,7 @@ resource "konnect_mesh_gateway" "my_meshgateway" {
             integer = 4
             str     = "...my_str..."
           }
-          options = {
-            # ...
-          }
+          options = "{ \"see\": \"documentation\" }"
         }
       }
     ]

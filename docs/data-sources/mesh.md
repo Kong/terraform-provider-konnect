@@ -106,16 +106,12 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (Attributes) Configuration of the backend (see [below for nested schema](#nestedatt--logging--backends--conf))
+- `conf` (String) Configuration of the backend. Parsed as JSON.
 - `format` (String) Format of access logs. Placeholders available on
 https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log
 - `name` (String) Name of the backend, can be then used in Mesh.logging.defaultBackend or in
 TrafficLogging
 - `type` (String) Type of the backend (Kuma ships with 'tcp' and 'file')
-
-<a id="nestedatt--logging--backends--conf"></a>
-### Nested Schema for `logging.backends.conf`
-
 
 
 
@@ -149,13 +145,9 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (Attributes) Configuration of the backend (see [below for nested schema](#nestedatt--metrics--backends--conf))
+- `conf` (String) Configuration of the backend. Parsed as JSON.
 - `name` (String) Name of the backend, can be then used in Mesh.metrics.enabledBackend
 - `type` (String) Type of the backend (Kuma ships with 'prometheus')
-
-<a id="nestedatt--metrics--backends--conf"></a>
-### Nested Schema for `metrics.backends.conf`
-
 
 
 
@@ -173,7 +165,7 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (Attributes) Configuration of the backend (see [below for nested schema](#nestedatt--mtls--backends--conf))
+- `conf` (String) Configuration of the backend. Parsed as JSON.
 - `dp_cert` (Attributes) Dataplane certificate settings (see [below for nested schema](#nestedatt--mtls--backends--dp_cert))
 - `mode` (Attributes) Mode defines the behaviour of inbound listeners with regard to traffic
 encryption (see [below for nested schema](#nestedatt--mtls--backends--mode))
@@ -181,10 +173,6 @@ encryption (see [below for nested schema](#nestedatt--mtls--backends--mode))
 - `root_chain` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--root_chain))
 - `type` (String) Type of the backend. Has to be one of the loaded plugins (Kuma ships with
 builtin and provided)
-
-<a id="nestedatt--mtls--backends--conf"></a>
-### Nested Schema for `mtls.backends.conf`
-
 
 <a id="nestedatt--mtls--backends--dp_cert"></a>
 ### Nested Schema for `mtls.backends.dp_cert`
@@ -290,16 +278,12 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (Attributes) Configuration of the backend (see [below for nested schema](#nestedatt--tracing--backends--conf))
+- `conf` (String) Configuration of the backend. Parsed as JSON.
 - `name` (String) Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
 TrafficTrace
 - `sampling` (Attributes) Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
 Empty value defaults to 100.0% (see [below for nested schema](#nestedatt--tracing--backends--sampling))
 - `type` (String) Type of the backend (Kuma ships with 'zipkin')
-
-<a id="nestedatt--tracing--backends--conf"></a>
-### Nested Schema for `tracing.backends.conf`
-
 
 <a id="nestedatt--tracing--backends--sampling"></a>
 ### Nested Schema for `tracing.backends.sampling`

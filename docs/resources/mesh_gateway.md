@@ -40,9 +40,7 @@ resource "konnect_mesh_gateway" "my_meshgateway" {
             integer = 4
             str     = "...my_str..."
           }
-          options = {
-            # ...
-          }
+          options = "{ \"see\": \"documentation\" }"
         }
       }
     ]
@@ -162,9 +160,10 @@ should contain an RSA key and certificate, and the other an
 ECDSA key and certificate. (see [below for nested schema](#nestedatt--conf--listeners--tls--certificates))
 - `mode` (Attributes) Mode defines the TLS behavior for the TLS session initiated
 by the client. (see [below for nested schema](#nestedatt--conf--listeners--tls--mode))
-- `options` (Attributes) Options should eventually configure how TLS is configured. This
+- `options` (String) Options should eventually configure how TLS is configured. This
 is where cipher suite and version configuration can be specified,
-client certificates enforced, and so on. (see [below for nested schema](#nestedatt--conf--listeners--tls--options))
+client certificates enforced, and so on.
+Parsed as JSON.
 
 <a id="nestedatt--conf--listeners--tls--certificates"></a>
 ### Nested Schema for `conf.listeners.tls.certificates`
@@ -187,10 +186,6 @@ Optional:
 
 - `integer` (Number)
 - `str` (String)
-
-
-<a id="nestedatt--conf--listeners--tls--options"></a>
-### Nested Schema for `conf.listeners.tls.options`
 
 
 

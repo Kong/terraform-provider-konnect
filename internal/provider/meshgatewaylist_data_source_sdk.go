@@ -78,9 +78,10 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(resp *
 							}
 						}
 						if listenersItem.TLS.Options == nil {
-							listeners1.TLS.Options = nil
+							listeners1.TLS.Options = types.StringNull()
 						} else {
-							listeners1.TLS.Options = &tfTypes.Metadata{}
+							optionsVarResult, _ := json.Marshal(listenersItem.TLS.Options)
+							listeners1.TLS.Options = types.StringValue(string(optionsVarResult))
 						}
 					}
 					if listenersCount+1 > len(items1.Conf.Listeners) {

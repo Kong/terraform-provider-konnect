@@ -79,14 +79,10 @@ func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
 	return o.DataplaneProxy
 }
 
-// MeshItemLoggingConf - Configuration of the backend
-type MeshItemLoggingConf struct {
-}
-
 // Backends - LoggingBackend defines logging backend available to mesh.
 type Backends struct {
 	// Configuration of the backend
-	Conf *MeshItemLoggingConf `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
 	// Format of access logs. Placeholders available on
 	// https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log
 	Format *string `json:"format,omitempty"`
@@ -97,7 +93,7 @@ type Backends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *Backends) GetConf() *MeshItemLoggingConf {
+func (o *Backends) GetConf() any {
 	if o == nil {
 		return nil
 	}
@@ -222,21 +218,17 @@ func (o *MeshServices) GetMode() *Mode {
 	return o.Mode
 }
 
-// MeshItemConf - Configuration of the backend
-type MeshItemConf struct {
-}
-
 // MeshItemBackends - MetricsBackend defines metric backends
 type MeshItemBackends struct {
 	// Configuration of the backend
-	Conf *MeshItemConf `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
 	// Name of the backend, can be then used in Mesh.metrics.enabledBackend
 	Name *string `json:"name,omitempty"`
 	// Type of the backend (Kuma ships with 'prometheus')
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemBackends) GetConf() *MeshItemConf {
+func (o *MeshItemBackends) GetConf() any {
 	if o == nil {
 		return nil
 	}
@@ -282,10 +274,6 @@ func (o *Metrics) GetEnabledBackend() *string {
 		return nil
 	}
 	return o.EnabledBackend
-}
-
-// MeshItemMtlsConf - Configuration of the backend
-type MeshItemMtlsConf struct {
 }
 
 // RequestTimeout - Timeout on request to CA for DP certificate generation and retrieval
@@ -445,7 +433,7 @@ func (o *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
 // MeshItemMtlsBackends - CertificateAuthorityBackend defines Certificate Authority backend
 type MeshItemMtlsBackends struct {
 	// Configuration of the backend
-	Conf *MeshItemMtlsConf `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
 	// Dataplane certificate settings
 	DpCert *DpCert `json:"dpCert,omitempty"`
 	// Mode defines the behaviour of inbound listeners with regard to traffic
@@ -459,7 +447,7 @@ type MeshItemMtlsBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemMtlsBackends) GetConf() *MeshItemMtlsConf {
+func (o *MeshItemMtlsBackends) GetConf() any {
 	if o == nil {
 		return nil
 	}
@@ -604,10 +592,6 @@ func (o *Routing) GetZoneEgress() *bool {
 	return o.ZoneEgress
 }
 
-// MeshItemTracingConf - Configuration of the backend
-type MeshItemTracingConf struct {
-}
-
 // Sampling - Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
 // Empty value defaults to 100.0%
 type Sampling struct {
@@ -624,7 +608,7 @@ func (o *Sampling) GetValue() *float64 {
 // MeshItemTracingBackends - TracingBackend defines tracing backend available to mesh.
 type MeshItemTracingBackends struct {
 	// Configuration of the backend
-	Conf *MeshItemTracingConf `json:"conf,omitempty"`
+	Conf any `json:"conf,omitempty"`
 	// Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
 	// TrafficTrace
 	Name *string `json:"name,omitempty"`
@@ -635,7 +619,7 @@ type MeshItemTracingBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemTracingBackends) GetConf() *MeshItemTracingConf {
+func (o *MeshItemTracingBackends) GetConf() any {
 	if o == nil {
 		return nil
 	}

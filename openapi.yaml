@@ -20883,6 +20883,8 @@ components:
                     description: Configuration of the backend
                     type: object
                     properties: {}
+                    x-speakeasy-type-override: any
+                    additionalProperties: true
                   format:
                     description: |-
                       Format of access logs. Placeholders available on
@@ -20927,6 +20929,8 @@ components:
                     description: Configuration of the backend
                     type: object
                     properties: {}
+                    x-speakeasy-type-override: any
+                    additionalProperties: true
                   name:
                     description: 'Name of the backend, can be then used in Mesh.metrics.enabledBackend'
                     type: string
@@ -20953,6 +20957,8 @@ components:
                     description: Configuration of the backend
                     type: object
                     properties: {}
+                    x-speakeasy-type-override: any
+                    additionalProperties: true
                   dpCert:
                     description: Dataplane certificate settings
                     type: object
@@ -21064,6 +21070,8 @@ components:
                     description: Configuration of the backend
                     type: object
                     properties: {}
+                    x-speakeasy-type-override: any
+                    additionalProperties: true
                   name:
                     description: |-
                       Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
@@ -21196,6 +21204,8 @@ components:
                           client certificates enforced, and so on.
                         type: object
                         properties: {}
+                        x-speakeasy-type-override: any
+                        additionalProperties: true
                 type: object
         labels:
           type: object

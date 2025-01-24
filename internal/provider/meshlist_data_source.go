@@ -112,9 +112,9 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									Computed: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
-											"conf": schema.SingleNestedAttribute{
+											"conf": schema.StringAttribute{
 												Computed:    true,
-												Description: `Configuration of the backend`,
+												Description: `Configuration of the backend. Parsed as JSON.`,
 											},
 											"format": schema.StringAttribute{
 												Computed: true,
@@ -165,9 +165,9 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									Computed: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
-											"conf": schema.SingleNestedAttribute{
+											"conf": schema.StringAttribute{
 												Computed:    true,
-												Description: `Configuration of the backend`,
+												Description: `Configuration of the backend. Parsed as JSON.`,
 											},
 											"name": schema.StringAttribute{
 												Computed:    true,
@@ -200,9 +200,9 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									Computed: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
-											"conf": schema.SingleNestedAttribute{
+											"conf": schema.StringAttribute{
 												Computed:    true,
-												Description: `Configuration of the backend`,
+												Description: `Configuration of the backend. Parsed as JSON.`,
 											},
 											"dp_cert": schema.SingleNestedAttribute{
 												Computed: true,
@@ -346,9 +346,9 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 									Computed: true,
 									NestedObject: schema.NestedAttributeObject{
 										Attributes: map[string]schema.Attribute{
-											"conf": schema.SingleNestedAttribute{
+											"conf": schema.StringAttribute{
 												Computed:    true,
-												Description: `Configuration of the backend`,
+												Description: `Configuration of the backend. Parsed as JSON.`,
 											},
 											"name": schema.StringAttribute{
 												Computed: true,

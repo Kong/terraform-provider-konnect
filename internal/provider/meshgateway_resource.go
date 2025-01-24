@@ -204,12 +204,16 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 											MarkdownDescription: `Mode defines the TLS behavior for the TLS session initiated` + "\n" +
 												`by the client.`,
 										},
-										"options": schema.SingleNestedAttribute{
+										"options": schema.StringAttribute{
 											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Options should eventually configure how TLS is configured. This` + "\n" +
 												`is where cipher suite and version configuration can be specified,` + "\n" +
-												`client certificates enforced, and so on.`,
+												`client certificates enforced, and so on.` + "\n" +
+												`Parsed as JSON.`,
+											Validators: []validator.String{
+												validators.IsValidJSON(),
+											},
 										},
 									},
 									MarkdownDescription: `TLS is the TLS configuration for the Listener. This field` + "\n" +

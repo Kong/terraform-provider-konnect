@@ -155,11 +155,12 @@ func (r *MeshGatewayListDataSource) Schema(ctx context.Context, req datasource.S
 														MarkdownDescription: `Mode defines the TLS behavior for the TLS session initiated` + "\n" +
 															`by the client.`,
 													},
-													"options": schema.SingleNestedAttribute{
+													"options": schema.StringAttribute{
 														Computed: true,
 														MarkdownDescription: `Options should eventually configure how TLS is configured. This` + "\n" +
 															`is where cipher suite and version configuration can be specified,` + "\n" +
-															`client certificates enforced, and so on.`,
+															`client certificates enforced, and so on.` + "\n" +
+															`Parsed as JSON.`,
 													},
 												},
 												MarkdownDescription: `TLS is the TLS configuration for the Listener. This field` + "\n" +

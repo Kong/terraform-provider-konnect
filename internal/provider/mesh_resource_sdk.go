@@ -3,6 +3,7 @@
 package provider
 
 import (
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -60,9 +61,9 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Logging != nil {
 		var backends []shared.Backends = []shared.Backends{}
 		for _, backendsItem := range r.Logging.Backends {
-			var conf *shared.MeshItemLoggingConf
-			if backendsItem.Conf != nil {
-				conf = &shared.MeshItemLoggingConf{}
+			var conf interface{}
+			if !backendsItem.Conf.IsUnknown() && !backendsItem.Conf.IsNull() {
+				_ = json.Unmarshal([]byte(backendsItem.Conf.ValueString()), &conf)
 			}
 			format := new(string)
 			if !backendsItem.Format.IsUnknown() && !backendsItem.Format.IsNull() {
@@ -135,9 +136,9 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Metrics != nil {
 		var backends1 []shared.MeshItemBackends = []shared.MeshItemBackends{}
 		for _, backendsItem1 := range r.Metrics.Backends {
-			var conf1 *shared.MeshItemConf
-			if backendsItem1.Conf != nil {
-				conf1 = &shared.MeshItemConf{}
+			var conf1 interface{}
+			if !backendsItem1.Conf.IsUnknown() && !backendsItem1.Conf.IsNull() {
+				_ = json.Unmarshal([]byte(backendsItem1.Conf.ValueString()), &conf1)
 			}
 			name1 := new(string)
 			if !backendsItem1.Name.IsUnknown() && !backendsItem1.Name.IsNull() {
@@ -172,9 +173,9 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Mtls != nil {
 		var backends2 []shared.MeshItemMtlsBackends = []shared.MeshItemMtlsBackends{}
 		for _, backendsItem2 := range r.Mtls.Backends {
-			var conf2 *shared.MeshItemMtlsConf
-			if backendsItem2.Conf != nil {
-				conf2 = &shared.MeshItemMtlsConf{}
+			var conf2 interface{}
+			if !backendsItem2.Conf.IsUnknown() && !backendsItem2.Conf.IsNull() {
+				_ = json.Unmarshal([]byte(backendsItem2.Conf.ValueString()), &conf2)
 			}
 			var dpCert *shared.DpCert
 			if backendsItem2.DpCert != nil {
@@ -364,9 +365,9 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Tracing != nil {
 		var backends3 []shared.MeshItemTracingBackends = []shared.MeshItemTracingBackends{}
 		for _, backendsItem3 := range r.Tracing.Backends {
-			var conf3 *shared.MeshItemTracingConf
-			if backendsItem3.Conf != nil {
-				conf3 = &shared.MeshItemTracingConf{}
+			var conf3 interface{}
+			if !backendsItem3.Conf.IsUnknown() && !backendsItem3.Conf.IsNull() {
+				_ = json.Unmarshal([]byte(backendsItem3.Conf.ValueString()), &conf3)
 			}
 			name4 := new(string)
 			if !backendsItem3.Name.IsUnknown() && !backendsItem3.Name.IsNull() {
@@ -504,9 +505,10 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount, backendsItem := range resp.Logging.Backends {
 				var backends1 tfTypes.Backends
 				if backendsItem.Conf == nil {
-					backends1.Conf = nil
+					backends1.Conf = types.StringNull()
 				} else {
-					backends1.Conf = &tfTypes.Metadata{}
+					confResult, _ := json.Marshal(backendsItem.Conf)
+					backends1.Conf = types.StringValue(string(confResult))
 				}
 				backends1.Format = types.StringPointerValue(backendsItem.Format)
 				backends1.Name = types.StringPointerValue(backendsItem.Name)
@@ -549,9 +551,10 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount1, backendsItem1 := range resp.Metrics.Backends {
 				var backends3 tfTypes.MeshItemBackends
 				if backendsItem1.Conf == nil {
-					backends3.Conf = nil
+					backends3.Conf = types.StringNull()
 				} else {
-					backends3.Conf = &tfTypes.Metadata{}
+					confResult1, _ := json.Marshal(backendsItem1.Conf)
+					backends3.Conf = types.StringValue(string(confResult1))
 				}
 				backends3.Name = types.StringPointerValue(backendsItem1.Name)
 				backends3.Type = types.StringPointerValue(backendsItem1.Type)
@@ -576,9 +579,10 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount2, backendsItem2 := range resp.Mtls.Backends {
 				var backends5 tfTypes.MeshItemMtlsBackends
 				if backendsItem2.Conf == nil {
-					backends5.Conf = nil
+					backends5.Conf = types.StringNull()
 				} else {
-					backends5.Conf = &tfTypes.Metadata{}
+					confResult2, _ := json.Marshal(backendsItem2.Conf)
+					backends5.Conf = types.StringValue(string(confResult2))
 				}
 				if backendsItem2.DpCert == nil {
 					backends5.DpCert = nil
@@ -677,9 +681,10 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount3, backendsItem3 := range resp.Tracing.Backends {
 				var backends7 tfTypes.MeshItemTracingBackends
 				if backendsItem3.Conf == nil {
-					backends7.Conf = nil
+					backends7.Conf = types.StringNull()
 				} else {
-					backends7.Conf = &tfTypes.Metadata{}
+					confResult3, _ := json.Marshal(backendsItem3.Conf)
+					backends7.Conf = types.StringValue(string(confResult3))
 				}
 				backends7.Name = types.StringPointerValue(backendsItem3.Name)
 				if backendsItem3.Sampling == nil {

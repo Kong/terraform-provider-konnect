@@ -3,6 +3,7 @@
 package provider
 
 import (
+	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -71,9 +72,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount, backendsItem := range itemsItem.Logging.Backends {
 					var backends1 tfTypes.Backends
 					if backendsItem.Conf == nil {
-						backends1.Conf = nil
+						backends1.Conf = types.StringNull()
 					} else {
-						backends1.Conf = &tfTypes.Metadata{}
+						confResult, _ := json.Marshal(backendsItem.Conf)
+						backends1.Conf = types.StringValue(string(confResult))
 					}
 					backends1.Format = types.StringPointerValue(backendsItem.Format)
 					backends1.Name = types.StringPointerValue(backendsItem.Name)
@@ -113,9 +115,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount1, backendsItem1 := range itemsItem.Metrics.Backends {
 					var backends3 tfTypes.MeshItemBackends
 					if backendsItem1.Conf == nil {
-						backends3.Conf = nil
+						backends3.Conf = types.StringNull()
 					} else {
-						backends3.Conf = &tfTypes.Metadata{}
+						confResult1, _ := json.Marshal(backendsItem1.Conf)
+						backends3.Conf = types.StringValue(string(confResult1))
 					}
 					backends3.Name = types.StringPointerValue(backendsItem1.Name)
 					backends3.Type = types.StringPointerValue(backendsItem1.Type)
@@ -137,9 +140,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount2, backendsItem2 := range itemsItem.Mtls.Backends {
 					var backends5 tfTypes.MeshItemMtlsBackends
 					if backendsItem2.Conf == nil {
-						backends5.Conf = nil
+						backends5.Conf = types.StringNull()
 					} else {
-						backends5.Conf = &tfTypes.Metadata{}
+						confResult2, _ := json.Marshal(backendsItem2.Conf)
+						backends5.Conf = types.StringValue(string(confResult2))
 					}
 					if backendsItem2.DpCert == nil {
 						backends5.DpCert = nil
@@ -235,9 +239,10 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount3, backendsItem3 := range itemsItem.Tracing.Backends {
 					var backends7 tfTypes.MeshItemTracingBackends
 					if backendsItem3.Conf == nil {
-						backends7.Conf = nil
+						backends7.Conf = types.StringNull()
 					} else {
-						backends7.Conf = &tfTypes.Metadata{}
+						confResult3, _ := json.Marshal(backendsItem3.Conf)
+						backends7.Conf = types.StringValue(string(confResult3))
 					}
 					backends7.Name = types.StringPointerValue(backendsItem3.Name)
 					if backendsItem3.Sampling == nil {

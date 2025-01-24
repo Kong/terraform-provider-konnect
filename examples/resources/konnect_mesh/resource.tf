@@ -24,9 +24,7 @@ resource "konnect_mesh" "my_mesh" {
   logging = {
     backends = [
       {
-        conf = {
-          # ...
-        }
+        conf   = "{ \"see\": \"documentation\" }"
         format = "...my_format..."
         name   = "...my_name..."
         type   = "...my_type..."
@@ -43,9 +41,7 @@ resource "konnect_mesh" "my_mesh" {
   metrics = {
     backends = [
       {
-        conf = {
-          # ...
-        }
+        conf = "{ \"see\": \"documentation\" }"
         name = "...my_name..."
         type = "...my_type..."
       }
@@ -55,9 +51,7 @@ resource "konnect_mesh" "my_mesh" {
   mtls = {
     backends = [
       {
-        conf = {
-          # ...
-        }
+        conf = "{ \"see\": \"documentation\" }"
         dp_cert = {
           request_timeout = {
             nanos   = 5
@@ -103,9 +97,7 @@ resource "konnect_mesh" "my_mesh" {
   tracing = {
     backends = [
       {
-        conf = {
-          # ...
-        }
+        conf = "{ \"see\": \"documentation\" }"
         name = "...my_name..."
         sampling = {
           value = 9.31
