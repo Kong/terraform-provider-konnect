@@ -1,0 +1,1 @@
+terraform import konnect_portal_appearance.my_konnect_portal_appearance ""

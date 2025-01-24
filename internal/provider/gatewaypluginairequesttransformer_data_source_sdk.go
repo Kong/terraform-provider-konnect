@@ -47,7 +47,7 @@ func (r *GatewayPluginAiRequestTransformerDataSourceModel) RefreshFromSharedAiRe
 			if resp.Config.Llm.Logging == nil {
 				r.Config.Llm.Logging = nil
 			} else {
-				r.Config.Llm.Logging = &tfTypes.Logging{}
+				r.Config.Llm.Logging = &tfTypes.AiProxyPluginLogging{}
 				r.Config.Llm.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Llm.Logging.LogPayloads)
 				r.Config.Llm.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Llm.Logging.LogStatistics)
 			}
