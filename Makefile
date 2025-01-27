@@ -2,6 +2,9 @@
 
 all: speakeasy
 
+dev: speakeasy
+	go run main.go -debug
+
 speakeasy: check-speakeasy
 	speakeasy run --skip-versioning --output console
 	@go mod tidy
