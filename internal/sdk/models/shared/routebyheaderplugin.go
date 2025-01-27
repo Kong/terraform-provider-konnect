@@ -8,19 +8,19 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type Rules struct {
+type RouteByHeaderPluginRules struct {
 	Condition    map[string]any `json:"condition"`
 	UpstreamName string         `json:"upstream_name"`
 }
 
-func (o *Rules) GetCondition() map[string]any {
+func (o *RouteByHeaderPluginRules) GetCondition() map[string]any {
 	if o == nil {
 		return map[string]any{}
 	}
 	return o.Condition
 }
 
-func (o *Rules) GetUpstreamName() string {
+func (o *RouteByHeaderPluginRules) GetUpstreamName() string {
 	if o == nil {
 		return ""
 	}
@@ -29,10 +29,10 @@ func (o *Rules) GetUpstreamName() string {
 
 type RouteByHeaderPluginConfig struct {
 	// Route by header rules.
-	Rules []Rules `json:"rules,omitempty"`
+	Rules []RouteByHeaderPluginRules `json:"rules,omitempty"`
 }
 
-func (o *RouteByHeaderPluginConfig) GetRules() []Rules {
+func (o *RouteByHeaderPluginConfig) GetRules() []RouteByHeaderPluginRules {
 	if o == nil {
 		return nil
 	}
