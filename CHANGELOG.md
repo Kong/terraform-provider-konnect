@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.0
+* Add support for `konnect_portal_team` resource
+
 ## 2.2.0
 > Released on 2024/12/06
 
