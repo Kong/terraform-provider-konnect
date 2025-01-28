@@ -46,6 +46,8 @@ type GetMeshPassthroughResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshPassthroughItem *shared.MeshPassthroughItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshPassthroughResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshPassthroughResponse) GetMeshPassthroughItem() *shared.MeshPassth
 		return nil
 	}
 	return o.MeshPassthroughItem
+}
+
+func (o *GetMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

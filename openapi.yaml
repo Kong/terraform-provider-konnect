@@ -205,6 +205,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/HostnameGeneratorItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - HostnameGenerator
     put:
@@ -254,6 +256,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostnameGeneratorDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -312,6 +318,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshAccessLogItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshAccessLog
     put:
@@ -373,6 +381,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshAccessLogDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -419,6 +431,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshCircuitBreakerItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshCircuitBreaker
     put:
@@ -480,6 +494,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshCircuitBreakerDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -526,6 +544,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshExternalServiceItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshExternalService
     put:
@@ -587,6 +607,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshExternalServiceDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -633,6 +657,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshFaultInjectionItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshFaultInjection
     put:
@@ -694,6 +720,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshFaultInjectionDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -740,6 +770,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshGatewayItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshGateway
     put:
@@ -801,6 +833,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGatewayDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -847,6 +883,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshGlobalRateLimitItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshGlobalRateLimit
     put:
@@ -908,6 +946,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGlobalRateLimitDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -954,6 +996,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshHealthCheckItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshHealthCheck
     put:
@@ -1015,6 +1059,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHealthCheckDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1061,6 +1109,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshHTTPRouteItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshHTTPRoute
     put:
@@ -1122,6 +1172,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHTTPRouteDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1168,6 +1222,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshLoadBalancingStrategyItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshLoadBalancingStrategy
     put:
@@ -1229,6 +1285,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshLoadBalancingStrategyDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1275,6 +1335,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshMetricItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshMetric
     put:
@@ -1336,6 +1398,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMetricDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1382,6 +1448,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshMultiZoneServiceItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshMultiZoneService
     put:
@@ -1443,6 +1511,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMultiZoneServiceDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1489,6 +1561,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshOPAItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshOPA
     put:
@@ -1550,6 +1624,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshOPADeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1596,6 +1674,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshPassthroughItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshPassthrough
     put:
@@ -1657,6 +1737,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshPassthroughDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1703,6 +1787,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshProxyPatchItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshProxyPatch
     put:
@@ -1764,6 +1850,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshProxyPatchDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1810,6 +1900,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshRateLimitItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshRateLimit
     put:
@@ -1871,6 +1963,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRateLimitDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -1917,6 +2013,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshRetryItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshRetry
     put:
@@ -1978,6 +2076,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRetryDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2024,6 +2126,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshServiceItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshService
     put:
@@ -2085,6 +2189,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshServiceDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2131,6 +2239,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshTCPRouteItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTCPRoute
     put:
@@ -2192,6 +2302,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTCPRouteDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2238,6 +2352,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshTimeoutItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTimeout
     put:
@@ -2299,6 +2415,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTimeoutDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2345,6 +2465,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshTLSItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTLS
     put:
@@ -2406,6 +2528,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTLSDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2452,6 +2578,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshTraceItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrace
     put:
@@ -2513,6 +2641,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTraceDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2559,6 +2691,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshTrafficPermissionItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - MeshTrafficPermission
     put:
@@ -2620,6 +2754,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrafficPermissionDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -2641,6 +2779,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/MeshItem'
+        '404':
+          $ref: '#/components/responses/NotFound'
       tags:
         - Mesh
     put:
@@ -2690,6 +2830,10 @@ paths:
       responses:
         '200':
           description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
       tags:
@@ -14885,6 +15029,9 @@ components:
           type: array
           items:
             type: string
+    MeshAccessLogDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshCircuitBreakerItem:
       type: object
       properties:
@@ -15611,6 +15758,9 @@ components:
           type: array
           items:
             type: string
+    MeshCircuitBreakerDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshFaultInjectionItem:
       type: object
       properties:
@@ -16011,6 +16161,9 @@ components:
           type: array
           items:
             type: string
+    MeshFaultInjectionDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshHealthCheckItem:
       type: object
       properties:
@@ -16374,6 +16527,9 @@ components:
           type: array
           items:
             type: string
+    MeshHealthCheckDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshHTTPRouteItem:
       type: object
       properties:
@@ -17019,6 +17175,9 @@ components:
           type: array
           items:
             type: string
+    MeshHTTPRouteDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshLoadBalancingStrategyItem:
       type: object
       properties:
@@ -17563,6 +17722,9 @@ components:
           type: array
           items:
             type: string
+    MeshLoadBalancingStrategyDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshMetricItem:
       type: object
       properties:
@@ -17827,6 +17989,9 @@ components:
           type: array
           items:
             type: string
+    MeshMetricDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshPassthroughItem:
       type: object
       properties:
@@ -17979,6 +18144,9 @@ components:
           type: array
           items:
             type: string
+    MeshPassthroughDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshProxyPatchItem:
       type: object
       properties:
@@ -18490,6 +18658,9 @@ components:
           type: array
           items:
             type: string
+    MeshProxyPatchDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshRateLimitItem:
       type: object
       properties:
@@ -18964,6 +19135,9 @@ components:
           type: array
           items:
             type: string
+    MeshRateLimitDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshRetryItem:
       type: object
       properties:
@@ -19446,6 +19620,9 @@ components:
           type: array
           items:
             type: string
+    MeshRetryDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshTCPRouteItem:
       type: object
       properties:
@@ -19718,6 +19895,9 @@ components:
           type: array
           items:
             type: string
+    MeshTCPRouteDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshTimeoutItem:
       type: object
       properties:
@@ -20127,6 +20307,9 @@ components:
           type: array
           items:
             type: string
+    MeshTimeoutDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshTLSItem:
       type: object
       properties:
@@ -20353,6 +20536,9 @@ components:
           type: array
           items:
             type: string
+    MeshTLSDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshTraceItem:
       type: object
       properties:
@@ -20621,6 +20807,9 @@ components:
           type: array
           items:
             type: string
+    MeshTraceDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshTrafficPermissionItem:
       type: object
       properties:
@@ -20814,6 +21003,43 @@ components:
           type: array
           items:
             type: string
+    MeshTrafficPermissionDeleteSuccessResponse:
+      type: object
+      properties: {}
+    BuiltinCertificateAuthorityConfig:
+      type: object
+      properties:
+        caCert:
+          type: object
+          properties:
+            RSAbits:
+              type: integer
+              format: uint32
+            expiration:
+              type: string
+    DatadogTracingBackendConfig:
+      type: object
+      properties:
+        address:
+          description: Address of datadog collector.
+          type: string
+        port:
+          description: Port of datadog collector
+          type: integer
+        splitService:
+          description: |-
+            Determines if datadog service name should be split based on traffic
+            direction and destination. For example, with `splitService: true` and a
+            `backend` service that communicates with a couple of databases, you would
+            get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
+            `backend_OUTBOUND_db2` in Datadog. Default: false
+          type: boolean
+    FileLoggingBackendConfig:
+      type: object
+      properties:
+        path:
+          description: Path to a file that logs will be written to
+          type: string
     MeshItem:
       type: object
       properties:
@@ -20880,11 +21106,10 @@ components:
                 description: LoggingBackend defines logging backend available to mesh.
                 properties:
                   conf:
-                    description: Configuration of the backend
                     type: object
-                    properties: {}
-                    x-speakeasy-type-override: any
-                    additionalProperties: true
+                    oneOf:
+                      - $ref: '#/components/schemas/FileLoggingBackendConfig'
+                      - $ref: '#/components/schemas/TcpLoggingBackendConfig'
                   format:
                     description: |-
                       Format of access logs. Placeholders available on
@@ -20926,11 +21151,9 @@ components:
                 description: MetricsBackend defines metric backends
                 properties:
                   conf:
-                    description: Configuration of the backend
                     type: object
-                    properties: {}
-                    x-speakeasy-type-override: any
-                    additionalProperties: true
+                    oneOf:
+                      - $ref: '#/components/schemas/PrometheusMetricsBackendConfig'
                   name:
                     description: 'Name of the backend, can be then used in Mesh.metrics.enabledBackend'
                     type: string
@@ -20954,11 +21177,13 @@ components:
                 description: CertificateAuthorityBackend defines Certificate Authority backend
                 properties:
                   conf:
-                    description: Configuration of the backend
                     type: object
-                    properties: {}
-                    x-speakeasy-type-override: any
-                    additionalProperties: true
+                    oneOf:
+                      - $ref: '#/components/schemas/ProvidedCertificateAuthorityConfig'
+                      - $ref: '#/components/schemas/BuiltinCertificateAuthorityConfig'
+                      - ef: '#/components/schemas/VaultCertificateAuthorityConfig'
+                      - ef: '#/components/schemas/ACMCertificateAuthorityConfig'
+                      - ef: '#/components/schemas/CertManagerCertificateAuthorityConfig'
                   dpCert:
                     description: Dataplane certificate settings
                     type: object
@@ -21025,10 +21250,7 @@ components:
               properties:
                 passthrough:
                   description: Control the passthrough cluster
-                  type: object
-                  properties:
-                    value:
-                      type: boolean
+                  type: boolean
         routing:
           description: Routing settings of the mesh
           type: object
@@ -21067,11 +21289,10 @@ components:
                 description: TracingBackend defines tracing backend available to mesh.
                 properties:
                   conf:
-                    description: Configuration of the backend
                     type: object
-                    properties: {}
-                    x-speakeasy-type-override: any
-                    additionalProperties: true
+                    oneOf:
+                      - $ref: '#/components/schemas/DatadogTracingBackendConfig'
+                      - $ref: '#/components/schemas/ZipkinTracingBackendConfig'
                   name:
                     description: |-
                       Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
@@ -21081,10 +21302,7 @@ components:
                     description: |-
                       Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
                       Empty value defaults to 100.0%
-                    type: object
-                    properties:
-                      value:
-                        type: number
+                    type: number
                   type:
                     description: Type of the backend (Kuma ships with 'zipkin')
                     type: string
@@ -21107,6 +21325,132 @@ components:
           type: array
           items:
             type: string
+    MeshDeleteSuccessResponse:
+      type: object
+      properties: {}
+    TcpLoggingBackendConfig:
+      type: object
+      properties:
+        address:
+          description: Address to TCP service that will receive logs
+          type: string
+    PrometheusMetricsBackendConfig:
+      type: object
+      properties:
+        aggregate:
+          description: |-
+            Map with the configuration of applications which metrics are going to be
+            scrapped by kuma-dp.
+          type: array
+          items:
+            description: PrometheusAggregateMetricsConfig defines endpoints that should be scrapped by kuma-dp for prometheus metrics.
+            properties:
+              address:
+                description: Address on which a service expose HTTP endpoint with Prometheus metrics.
+                type: string
+              enabled:
+                description: |-
+                  If false then the application won't be scrapped. If nil, then it is treated
+                  as true and kuma-dp scrapes metrics from the service.
+                type: boolean
+              name:
+                description: Name which identify given configuration.
+                type: string
+              path:
+                description: Path on which a service expose HTTP endpoint with Prometheus metrics.
+                type: string
+              port:
+                description: Port on which a service expose HTTP endpoint with Prometheus metrics.
+                type: integer
+            type: object
+        envoy:
+          description: Configuration of Envoy's metrics.
+          type: object
+          properties:
+            filterRegex:
+              description: |-
+                FilterRegex value that is going to be passed to Envoy for filtering
+                Envoy metrics.
+              type: string
+            usedOnly:
+              description: |-
+                If true then return metrics that Envoy has updated (counters incremented
+                at least once, gauges changed at least once, and histograms added to at
+                least once). If nil, then it is treated as false.
+              type: boolean
+        path:
+          description: |-
+            Path on which a dataplane should expose HTTP endpoint with Prometheus
+            metrics.
+          type: string
+        port:
+          description: |-
+            Port on which a dataplane should expose HTTP endpoint with Prometheus
+            metrics.
+          type: integer
+        skipMTLS:
+          description: |-
+            If true then endpoints for scraping metrics won't require mTLS even if mTLS
+            is enabled in Mesh. If nil, then it is treated as false.
+          type: boolean
+        tags:
+          description: |-
+            Tags associated with an application this dataplane is deployed next to,
+            e.g. service=web, version=1.0.
+            `service` tag is mandatory.
+          type: object
+          additionalProperties:
+            type: string
+        tls:
+          description: Configuration of TLS for prometheus listener.
+          type: object
+          properties:
+            mode:
+              description: |-
+                mode defines how configured is the TLS for Prometheus.
+                Supported values, delegated, disabled, activeMTLSBackend. Default to
+                `activeMTLSBackend`.
+              oneOf:
+                - type: string
+                - type: integer
+    ProvidedCertificateAuthorityConfig:
+      type: object
+      properties:
+        cert:
+          type: object
+          properties:
+            Type:
+              description: "Types that are assignable to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
+          required:
+            - Type
+        key:
+          type: object
+          properties:
+            Type:
+              description: "Types that are assignable to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
+          required:
+            - Type
+    ZipkinTracingBackendConfig:
+      type: object
+      properties:
+        apiVersion:
+          description: |-
+            Version of the API. values: httpJson, httpJsonV1, httpProto. Default:
+            httpJson see
+            https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion
+          type: string
+        sharedSpanContext:
+          description: |-
+            Determines whether client and server spans will share the same span
+            context. Default: true.
+            https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
+          type: boolean
+        traceId128bit:
+          description: 'Generate 128bit traces. Default: false'
+          type: boolean
+        url:
+          description: Address of Zipkin collector.
+          type: string
     MeshGatewayItem:
       type: object
       properties:
@@ -21204,8 +21548,6 @@ components:
                           client certificates enforced, and so on.
                         type: object
                         properties: {}
-                        x-speakeasy-type-override: any
-                        additionalProperties: true
                 type: object
         labels:
           type: object
@@ -21254,6 +21596,9 @@ components:
           type: array
           items:
             type: string
+    MeshGatewayDeleteSuccessResponse:
+      type: object
+      properties: {}
     HostnameGeneratorItem:
       type: object
       properties:
@@ -21324,6 +21669,9 @@ components:
           type: array
           items:
             type: string
+    HostnameGeneratorDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshExternalServiceItem:
       type: object
       properties:
@@ -21622,6 +21970,9 @@ components:
           type: array
           items:
             type: string
+    MeshExternalServiceDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshMultiZoneServiceItem:
       type: object
       properties:
@@ -21812,6 +22163,9 @@ components:
           type: array
           items:
             type: string
+    MeshMultiZoneServiceDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshServiceItem:
       type: object
       properties:
@@ -22022,6 +22376,9 @@ components:
           type: array
           items:
             type: string
+    MeshServiceDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshGlobalRateLimitItem:
       type: object
       properties:
@@ -22584,6 +22941,9 @@ components:
           type: array
           items:
             type: string
+    MeshGlobalRateLimitDeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshOPAItem:
       type: object
       properties:
@@ -22774,6 +23134,9 @@ components:
           type: array
           items:
             type: string
+    MeshOPADeleteSuccessResponse:
+      type: object
+      properties: {}
     MeshControlPlaneLabels:
       description: Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
       type: object

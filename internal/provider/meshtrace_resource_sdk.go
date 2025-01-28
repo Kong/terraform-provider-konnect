@@ -94,7 +94,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItem() *shared.MeshTraceItem {
 				Zipkin:        zipkin,
 			})
 		}
-		var sampling *shared.MeshTraceItemSampling
+		var sampling *shared.Sampling
 		if r.Spec.Default.Sampling != nil {
 			var client *shared.MeshTraceItemClient
 			if r.Spec.Default.Sampling.Client != nil {
@@ -171,7 +171,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItem() *shared.MeshTraceItem {
 					}
 				}
 			}
-			sampling = &shared.MeshTraceItemSampling{
+			sampling = &shared.Sampling{
 				Client:  client,
 				Overall: overall,
 				Random:  random,
@@ -383,7 +383,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			if resp.Spec.Default.Sampling == nil {
 				r.Spec.Default.Sampling = nil
 			} else {
-				r.Spec.Default.Sampling = &tfTypes.MeshTraceItemSampling{}
+				r.Spec.Default.Sampling = &tfTypes.Sampling{}
 				if resp.Spec.Default.Sampling.Client == nil {
 					r.Spec.Default.Sampling.Client = nil
 				} else {

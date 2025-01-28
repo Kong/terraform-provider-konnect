@@ -46,6 +46,8 @@ type GetMeshTraceResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshTraceItem *shared.MeshTraceItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshTraceResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshTraceResponse) GetMeshTraceItem() *shared.MeshTraceItem {
 		return nil
 	}
 	return o.MeshTraceItem
+}
+
+func (o *GetMeshTraceResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

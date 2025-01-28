@@ -44,6 +44,8 @@ type DeleteMeshCircuitBreakerResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshCircuitBreakerDeleteSuccessResponse *shared.MeshCircuitBreakerDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshCircuitBreakerResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshCircuitBreakerResponse) GetMeshCircuitBreakerDeleteSuccessResponse() *shared.MeshCircuitBreakerDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshCircuitBreakerDeleteSuccessResponse
 }
 
 func (o *DeleteMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {

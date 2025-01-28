@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
+	"github.com/hashicorp/terraform-plugin-framework-validators/objectvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,6 +21,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -141,12 +143,42 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
-									Validators: []validator.String{
-										validators.IsValidJSON(),
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"file_logging_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"path": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Path to a file that logs will be written to`,
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("tcp_logging_backend_config"),
+												}...),
+											},
+										},
+										"tcp_logging_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"address": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Address to TCP service that will receive logs`,
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("file_logging_backend_config"),
+												}...),
+											},
+										},
 									},
 								},
 								"format": schema.StringAttribute{
@@ -221,12 +253,135 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
-									Validators: []validator.String{
-										validators.IsValidJSON(),
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"prometheus_metrics_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"aggregate": schema.ListNestedAttribute{
+													Computed: true,
+													Optional: true,
+													NestedObject: schema.NestedAttributeObject{
+														Validators: []validator.Object{
+															speakeasy_objectvalidators.NotNull(),
+														},
+														Attributes: map[string]schema.Attribute{
+															"address": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Address on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+															"enabled": schema.BoolAttribute{
+																Computed: true,
+																Optional: true,
+																MarkdownDescription: `If false then the application won't be scrapped. If nil, then it is treated` + "\n" +
+																	`as true and kuma-dp scrapes metrics from the service.`,
+															},
+															"name": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Name which identify given configuration.`,
+															},
+															"path": schema.StringAttribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Path on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+															"port": schema.Int64Attribute{
+																Computed:    true,
+																Optional:    true,
+																Description: `Port on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+														},
+													},
+													MarkdownDescription: `Map with the configuration of applications which metrics are going to be` + "\n" +
+														`scrapped by kuma-dp.`,
+												},
+												"envoy": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"filter_regex": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+															MarkdownDescription: `FilterRegex value that is going to be passed to Envoy for filtering` + "\n" +
+																`Envoy metrics.`,
+														},
+														"used_only": schema.BoolAttribute{
+															Computed: true,
+															Optional: true,
+															MarkdownDescription: `If true then return metrics that Envoy has updated (counters incremented` + "\n" +
+																`at least once, gauges changed at least once, and histograms added to at` + "\n" +
+																`least once). If nil, then it is treated as false.`,
+														},
+													},
+													Description: `Configuration of Envoy's metrics.`,
+												},
+												"path": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `Path on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
+														`metrics.`,
+												},
+												"port": schema.Int64Attribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `Port on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
+														`metrics.`,
+												},
+												"skip_mtls": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `If true then endpoints for scraping metrics won't require mTLS even if mTLS` + "\n" +
+														`is enabled in Mesh. If nil, then it is treated as false.`,
+												},
+												"tags": schema.MapAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Tags associated with an application this dataplane is deployed next to,` + "\n" +
+														`e.g. service=web, version=1.0.` + "\n" +
+														`` + "`" + `service` + "`" + ` tag is mandatory.`,
+												},
+												"tls": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"mode": schema.SingleNestedAttribute{
+															Computed: true,
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"integer": schema.Int64Attribute{
+																	Computed: true,
+																	Optional: true,
+																	Validators: []validator.Int64{
+																		int64validator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("str"),
+																		}...),
+																	},
+																},
+																"str": schema.StringAttribute{
+																	Computed: true,
+																	Optional: true,
+																	Validators: []validator.String{
+																		stringvalidator.ConflictsWith(path.Expressions{
+																			path.MatchRelative().AtParent().AtName("integer"),
+																		}...),
+																	},
+																},
+															},
+															MarkdownDescription: `mode defines how configured is the TLS for Prometheus.` + "\n" +
+																`Supported values, delegated, disabled, activeMTLSBackend. Default to` + "\n" +
+																`` + "`" + `activeMTLSBackend` + "`" + `.`,
+														},
+													},
+													Description: `Configuration of TLS for prometheus listener.`,
+												},
+											},
+										},
 									},
 								},
 								"name": schema.StringAttribute{
@@ -268,12 +423,130 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
-									Validators: []validator.String{
-										validators.IsValidJSON(),
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"builtin_certificate_authority_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"expiration": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+														},
+														"rs_abits": schema.Int64Attribute{
+															Computed: true,
+															Optional: true,
+														},
+													},
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("three"),
+													path.MatchRelative().AtParent().AtName("four"),
+													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+												}...),
+											},
+										},
+										"five": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("three"),
+													path.MatchRelative().AtParent().AtName("four"),
+													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+												}...),
+											},
+										},
+										"four": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("three"),
+													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+												}...),
+											},
+										},
+										"provided_certificate_authority_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Not Null; Parsed as JSON.`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+																validators.IsValidJSON(),
+															},
+														},
+													},
+												},
+												"key": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Not Null; Parsed as JSON.`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+																validators.IsValidJSON(),
+															},
+														},
+													},
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("three"),
+													path.MatchRelative().AtParent().AtName("four"),
+													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+												}...),
+											},
+										},
+										"three": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("four"),
+													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+												}...),
+											},
+										},
 									},
 								},
 								"dp_cert": schema.SingleNestedAttribute{
@@ -399,15 +672,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
-							"passthrough": schema.SingleNestedAttribute{
-								Computed: true,
-								Optional: true,
-								Attributes: map[string]schema.Attribute{
-									"value": schema.BoolAttribute{
-										Computed: true,
-										Optional: true,
-									},
-								},
+							"passthrough": schema.BoolAttribute{
+								Computed:    true,
+								Optional:    true,
 								Description: `Control the passthrough cluster`,
 							},
 						},
@@ -460,12 +727,75 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Optional:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
-									Validators: []validator.String{
-										validators.IsValidJSON(),
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Optional: true,
+									Attributes: map[string]schema.Attribute{
+										"datadog_tracing_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"address": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Address of datadog collector.`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Port of datadog collector`,
+												},
+												"split_service": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
+														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
+														`` + "`" + `backend` + "`" + ` service that communicates with a couple of databases, you would` + "\n" +
+														`get service names like ` + "`" + `backend_INBOUND` + "`" + `, ` + "`" + `backend_OUTBOUND_db1` + "`" + `, and` + "\n" +
+														`` + "`" + `backend_OUTBOUND_db2` + "`" + ` in Datadog. Default: false`,
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("zipkin_tracing_backend_config"),
+												}...),
+											},
+										},
+										"zipkin_tracing_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"api_version": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `Version of the API. values: httpJson, httpJsonV1, httpProto. Default:` + "\n" +
+														`httpJson see` + "\n" +
+														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion`,
+												},
+												"shared_span_context": schema.BoolAttribute{
+													Computed: true,
+													Optional: true,
+													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
+														`context. Default: true.` + "\n" +
+														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig`,
+												},
+												"trace_id128bit": schema.BoolAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Generate 128bit traces. Default: false`,
+												},
+												"url": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Address of Zipkin collector.`,
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("datadog_tracing_backend_config"),
+												}...),
+											},
+										},
 									},
 								},
 								"name": schema.StringAttribute{
@@ -474,15 +804,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									MarkdownDescription: `Name of the backend, can be then used in Mesh.tracing.defaultBackend or in` + "\n" +
 										`TrafficTrace`,
 								},
-								"sampling": schema.SingleNestedAttribute{
+								"sampling": schema.NumberAttribute{
 									Computed: true,
 									Optional: true,
-									Attributes: map[string]schema.Attribute{
-										"value": schema.NumberAttribute{
-											Computed: true,
-											Optional: true,
-										},
-									},
 									MarkdownDescription: `Percentage of traces that will be sent to the backend (range 0.0 - 100.0).` + "\n" +
 										`Empty value defaults to 100.0%`,
 								},

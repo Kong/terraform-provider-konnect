@@ -24,7 +24,14 @@ resource "konnect_mesh" "my_mesh" {
   logging = {
     backends = [
       {
-        conf   = "{ \"see\": \"documentation\" }"
+        conf = {
+          file_logging_backend_config = {
+            path = "...my_path..."
+          }
+          tcp_logging_backend_config = {
+            address = "...my_address..."
+          }
+        }
         format = "...my_format..."
         name   = "...my_name..."
         type   = "...my_type..."
@@ -41,7 +48,35 @@ resource "konnect_mesh" "my_mesh" {
   metrics = {
     backends = [
       {
-        conf = "{ \"see\": \"documentation\" }"
+        conf = {
+          prometheus_metrics_backend_config = {
+            aggregate = [
+              {
+                address = "...my_address..."
+                enabled = true
+                name    = "...my_name..."
+                path    = "...my_path..."
+                port    = 10
+              }
+            ]
+            envoy = {
+              filter_regex = "...my_filter_regex..."
+              used_only    = true
+            }
+            path      = "...my_path..."
+            port      = 5
+            skip_mtls = true
+            tags = {
+              key = "value",
+            }
+            tls = {
+              mode = {
+                integer = 8
+                str     = "...my_str..."
+              }
+            }
+          }
+        }
         name = "...my_name..."
         type = "...my_type..."
       }
@@ -51,7 +86,31 @@ resource "konnect_mesh" "my_mesh" {
   mtls = {
     backends = [
       {
-        conf = "{ \"see\": \"documentation\" }"
+        conf = {
+          builtin_certificate_authority_config = {
+            ca_cert = {
+              expiration = "...my_expiration..."
+              rs_abits   = 7
+            }
+          }
+          five = {
+            # ...
+          }
+          four = {
+            # ...
+          }
+          provided_certificate_authority_config = {
+            cert = {
+              type = "{ \"see\": \"documentation\" }"
+            }
+            key = {
+              type = "{ \"see\": \"documentation\" }"
+            }
+          }
+          three = {
+            # ...
+          }
+        }
         dp_cert = {
           request_timeout = {
             nanos   = 5
@@ -81,9 +140,7 @@ resource "konnect_mesh" "my_mesh" {
   name = "...my_name..."
   networking = {
     outbound = {
-      passthrough = {
-        value = true
-      }
+      passthrough = false
     }
   }
   routing = {
@@ -97,12 +154,22 @@ resource "konnect_mesh" "my_mesh" {
   tracing = {
     backends = [
       {
-        conf = "{ \"see\": \"documentation\" }"
-        name = "...my_name..."
-        sampling = {
-          value = 9.31
+        conf = {
+          datadog_tracing_backend_config = {
+            address       = "...my_address..."
+            port          = 0
+            split_service = true
+          }
+          zipkin_tracing_backend_config = {
+            api_version         = "...my_api_version..."
+            shared_span_context = false
+            trace_id128bit      = true
+            url                 = "...my_url..."
+          }
         }
-        type = "...my_type..."
+        name     = "...my_name..."
+        sampling = 9.35
+        type     = "...my_type..."
       }
     ]
     default_backend = "...my_default_backend..."

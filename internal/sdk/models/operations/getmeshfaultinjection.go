@@ -46,6 +46,8 @@ type GetMeshFaultInjectionResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshFaultInjectionItem *shared.MeshFaultInjectionItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshFaultInjectionResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshFaultInjectionResponse) GetMeshFaultInjectionItem() *shared.Mesh
 		return nil
 	}
 	return o.MeshFaultInjectionItem
+}
+
+func (o *GetMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

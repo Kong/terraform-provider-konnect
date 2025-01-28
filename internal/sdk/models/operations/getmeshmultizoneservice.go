@@ -46,6 +46,8 @@ type GetMeshMultiZoneServiceResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshMultiZoneServiceItem *shared.MeshMultiZoneServiceItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshMultiZoneServiceResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshMultiZoneServiceResponse) GetMeshMultiZoneServiceItem() *shared.
 		return nil
 	}
 	return o.MeshMultiZoneServiceItem
+}
+
+func (o *GetMeshMultiZoneServiceResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

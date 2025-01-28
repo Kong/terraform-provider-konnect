@@ -35,6 +35,8 @@ type DeleteHostnameGeneratorResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	HostnameGeneratorDeleteSuccessResponse *shared.HostnameGeneratorDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -58,6 +60,13 @@ func (o *DeleteHostnameGeneratorResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteHostnameGeneratorResponse) GetHostnameGeneratorDeleteSuccessResponse() *shared.HostnameGeneratorDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.HostnameGeneratorDeleteSuccessResponse
 }
 
 func (o *DeleteHostnameGeneratorResponse) GetNotFoundError() *shared.NotFoundError {

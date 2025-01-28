@@ -44,6 +44,8 @@ type DeleteMeshLoadBalancingStrategyResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshLoadBalancingStrategyDeleteSuccessResponse *shared.MeshLoadBalancingStrategyDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshLoadBalancingStrategyResponse) GetRawResponse() *http.Respons
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyDeleteSuccessResponse() *shared.MeshLoadBalancingStrategyDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshLoadBalancingStrategyDeleteSuccessResponse
 }
 
 func (o *DeleteMeshLoadBalancingStrategyResponse) GetNotFoundError() *shared.NotFoundError {

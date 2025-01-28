@@ -44,6 +44,8 @@ type DeleteMeshOPAResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshOPADeleteSuccessResponse *shared.MeshOPADeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshOPAResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshOPAResponse) GetMeshOPADeleteSuccessResponse() *shared.MeshOPADeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshOPADeleteSuccessResponse
 }
 
 func (o *DeleteMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {

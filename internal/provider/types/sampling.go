@@ -2,8 +2,8 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
-
 type Sampling struct {
-	Value types.Number `tfsdk:"value"`
+	Client  *Mode `tfsdk:"client"`
+	Overall *Mode `tfsdk:"overall"`
+	Random  *Mode `tfsdk:"random"`
 }

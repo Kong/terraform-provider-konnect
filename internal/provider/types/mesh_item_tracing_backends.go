@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshItemTracingBackends struct {
-	Conf     types.String `tfsdk:"conf"`
-	Name     types.String `tfsdk:"name"`
-	Sampling *Sampling    `tfsdk:"sampling"`
-	Type     types.String `tfsdk:"type"`
+	Conf     *MeshItemTracingConf `tfsdk:"conf"`
+	Name     types.String         `tfsdk:"name"`
+	Sampling types.Number         `tfsdk:"sampling"`
+	Type     types.String         `tfsdk:"type"`
 }

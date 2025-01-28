@@ -46,6 +46,8 @@ type GetMeshLoadBalancingStrategyResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshLoadBalancingStrategyItem *shared.MeshLoadBalancingStrategyItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshLoadBalancingStrategyResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshLoadBalancingStrategyResponse) GetMeshLoadBalancingStrategyItem(
 		return nil
 	}
 	return o.MeshLoadBalancingStrategyItem
+}
+
+func (o *GetMeshLoadBalancingStrategyResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

@@ -61,9 +61,42 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Logging != nil {
 		var backends []shared.Backends = []shared.Backends{}
 		for _, backendsItem := range r.Logging.Backends {
-			var conf interface{}
-			if !backendsItem.Conf.IsUnknown() && !backendsItem.Conf.IsNull() {
-				_ = json.Unmarshal([]byte(backendsItem.Conf.ValueString()), &conf)
+			var conf *shared.MeshItemLoggingConf
+			if backendsItem.Conf != nil {
+				var fileLoggingBackendConfig *shared.FileLoggingBackendConfig
+				if backendsItem.Conf.FileLoggingBackendConfig != nil {
+					path := new(string)
+					if !backendsItem.Conf.FileLoggingBackendConfig.Path.IsUnknown() && !backendsItem.Conf.FileLoggingBackendConfig.Path.IsNull() {
+						*path = backendsItem.Conf.FileLoggingBackendConfig.Path.ValueString()
+					} else {
+						path = nil
+					}
+					fileLoggingBackendConfig = &shared.FileLoggingBackendConfig{
+						Path: path,
+					}
+				}
+				if fileLoggingBackendConfig != nil {
+					conf = &shared.MeshItemLoggingConf{
+						FileLoggingBackendConfig: fileLoggingBackendConfig,
+					}
+				}
+				var tcpLoggingBackendConfig *shared.TCPLoggingBackendConfig
+				if backendsItem.Conf.TCPLoggingBackendConfig != nil {
+					address := new(string)
+					if !backendsItem.Conf.TCPLoggingBackendConfig.Address.IsUnknown() && !backendsItem.Conf.TCPLoggingBackendConfig.Address.IsNull() {
+						*address = backendsItem.Conf.TCPLoggingBackendConfig.Address.ValueString()
+					} else {
+						address = nil
+					}
+					tcpLoggingBackendConfig = &shared.TCPLoggingBackendConfig{
+						Address: address,
+					}
+				}
+				if tcpLoggingBackendConfig != nil {
+					conf = &shared.MeshItemLoggingConf{
+						TCPLoggingBackendConfig: tcpLoggingBackendConfig,
+					}
+				}
 			}
 			format := new(string)
 			if !backendsItem.Format.IsUnknown() && !backendsItem.Format.IsNull() {
@@ -136,15 +169,146 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Metrics != nil {
 		var backends1 []shared.MeshItemBackends = []shared.MeshItemBackends{}
 		for _, backendsItem1 := range r.Metrics.Backends {
-			var conf1 interface{}
-			if !backendsItem1.Conf.IsUnknown() && !backendsItem1.Conf.IsNull() {
-				_ = json.Unmarshal([]byte(backendsItem1.Conf.ValueString()), &conf1)
+			var conf1 *shared.MeshItemConf
+			if backendsItem1.Conf != nil {
+				var prometheusMetricsBackendConfig *shared.PrometheusMetricsBackendConfig
+				if backendsItem1.Conf.PrometheusMetricsBackendConfig != nil {
+					var aggregate []shared.Aggregate = []shared.Aggregate{}
+					for _, aggregateItem := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Aggregate {
+						address1 := new(string)
+						if !aggregateItem.Address.IsUnknown() && !aggregateItem.Address.IsNull() {
+							*address1 = aggregateItem.Address.ValueString()
+						} else {
+							address1 = nil
+						}
+						enabled := new(bool)
+						if !aggregateItem.Enabled.IsUnknown() && !aggregateItem.Enabled.IsNull() {
+							*enabled = aggregateItem.Enabled.ValueBool()
+						} else {
+							enabled = nil
+						}
+						name1 := new(string)
+						if !aggregateItem.Name.IsUnknown() && !aggregateItem.Name.IsNull() {
+							*name1 = aggregateItem.Name.ValueString()
+						} else {
+							name1 = nil
+						}
+						path1 := new(string)
+						if !aggregateItem.Path.IsUnknown() && !aggregateItem.Path.IsNull() {
+							*path1 = aggregateItem.Path.ValueString()
+						} else {
+							path1 = nil
+						}
+						port := new(int64)
+						if !aggregateItem.Port.IsUnknown() && !aggregateItem.Port.IsNull() {
+							*port = aggregateItem.Port.ValueInt64()
+						} else {
+							port = nil
+						}
+						aggregate = append(aggregate, shared.Aggregate{
+							Address: address1,
+							Enabled: enabled,
+							Name:    name1,
+							Path:    path1,
+							Port:    port,
+						})
+					}
+					var envoy *shared.Envoy
+					if backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy != nil {
+						filterRegex := new(string)
+						if !backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex.IsNull() {
+							*filterRegex = backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex.ValueString()
+						} else {
+							filterRegex = nil
+						}
+						usedOnly := new(bool)
+						if !backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly.IsNull() {
+							*usedOnly = backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly.ValueBool()
+						} else {
+							usedOnly = nil
+						}
+						envoy = &shared.Envoy{
+							FilterRegex: filterRegex,
+							UsedOnly:    usedOnly,
+						}
+					}
+					path2 := new(string)
+					if !backendsItem1.Conf.PrometheusMetricsBackendConfig.Path.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.Path.IsNull() {
+						*path2 = backendsItem1.Conf.PrometheusMetricsBackendConfig.Path.ValueString()
+					} else {
+						path2 = nil
+					}
+					port1 := new(int64)
+					if !backendsItem1.Conf.PrometheusMetricsBackendConfig.Port.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.Port.IsNull() {
+						*port1 = backendsItem1.Conf.PrometheusMetricsBackendConfig.Port.ValueInt64()
+					} else {
+						port1 = nil
+					}
+					skipMTLS := new(bool)
+					if !backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS.IsNull() {
+						*skipMTLS = backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS.ValueBool()
+					} else {
+						skipMTLS = nil
+					}
+					tags2 := make(map[string]string)
+					for tagsKey2, tagsValue2 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
+						var tagsInst2 string
+						tagsInst2 = tagsValue2.ValueString()
+
+						tags2[tagsKey2] = tagsInst2
+					}
+					var tls *shared.TLS
+					if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS != nil {
+						var mode1 *shared.PrometheusMetricsBackendConfigMode
+						if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode != nil {
+							str1 := new(string)
+							if !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str.IsNull() {
+								*str1 = backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str.ValueString()
+							} else {
+								str1 = nil
+							}
+							if str1 != nil {
+								mode1 = &shared.PrometheusMetricsBackendConfigMode{
+									Str: str1,
+								}
+							}
+							integer1 := new(int64)
+							if !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer.IsNull() {
+								*integer1 = backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer.ValueInt64()
+							} else {
+								integer1 = nil
+							}
+							if integer1 != nil {
+								mode1 = &shared.PrometheusMetricsBackendConfigMode{
+									Integer: integer1,
+								}
+							}
+						}
+						tls = &shared.TLS{
+							Mode: mode1,
+						}
+					}
+					prometheusMetricsBackendConfig = &shared.PrometheusMetricsBackendConfig{
+						Aggregate: aggregate,
+						Envoy:     envoy,
+						Path:      path2,
+						Port:      port1,
+						SkipMTLS:  skipMTLS,
+						Tags:      tags2,
+						TLS:       tls,
+					}
+				}
+				if prometheusMetricsBackendConfig != nil {
+					conf1 = &shared.MeshItemConf{
+						PrometheusMetricsBackendConfig: prometheusMetricsBackendConfig,
+					}
+				}
 			}
-			name1 := new(string)
+			name2 := new(string)
 			if !backendsItem1.Name.IsUnknown() && !backendsItem1.Name.IsNull() {
-				*name1 = backendsItem1.Name.ValueString()
+				*name2 = backendsItem1.Name.ValueString()
 			} else {
-				name1 = nil
+				name2 = nil
 			}
 			type1 := new(string)
 			if !backendsItem1.Type.IsUnknown() && !backendsItem1.Type.IsNull() {
@@ -154,7 +318,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 			}
 			backends1 = append(backends1, shared.MeshItemBackends{
 				Conf: conf1,
-				Name: name1,
+				Name: name2,
 				Type: type1,
 			})
 		}
@@ -173,9 +337,93 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Mtls != nil {
 		var backends2 []shared.MeshItemMtlsBackends = []shared.MeshItemMtlsBackends{}
 		for _, backendsItem2 := range r.Mtls.Backends {
-			var conf2 interface{}
-			if !backendsItem2.Conf.IsUnknown() && !backendsItem2.Conf.IsNull() {
-				_ = json.Unmarshal([]byte(backendsItem2.Conf.ValueString()), &conf2)
+			var conf2 *shared.MeshItemMtlsConf
+			if backendsItem2.Conf != nil {
+				var providedCertificateAuthorityConfig *shared.ProvidedCertificateAuthorityConfig
+				if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
+					var cert *shared.Cert
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert != nil {
+						var typeVar1 interface{}
+						_ = json.Unmarshal([]byte(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type.ValueString()), &typeVar1)
+						cert = &shared.Cert{
+							Type: typeVar1,
+						}
+					}
+					var key *shared.ProvidedCertificateAuthorityConfigKey
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key != nil {
+						var typeVar2 interface{}
+						_ = json.Unmarshal([]byte(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type.ValueString()), &typeVar2)
+						key = &shared.ProvidedCertificateAuthorityConfigKey{
+							Type: typeVar2,
+						}
+					}
+					providedCertificateAuthorityConfig = &shared.ProvidedCertificateAuthorityConfig{
+						Cert: cert,
+						Key:  key,
+					}
+				}
+				if providedCertificateAuthorityConfig != nil {
+					conf2 = &shared.MeshItemMtlsConf{
+						ProvidedCertificateAuthorityConfig: providedCertificateAuthorityConfig,
+					}
+				}
+				var builtinCertificateAuthorityConfig *shared.BuiltinCertificateAuthorityConfig
+				if backendsItem2.Conf.BuiltinCertificateAuthorityConfig != nil {
+					var caCert *shared.CaCert
+					if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert != nil {
+						rsAbits := new(int64)
+						if !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits.IsUnknown() && !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits.IsNull() {
+							*rsAbits = backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits.ValueInt64()
+						} else {
+							rsAbits = nil
+						}
+						expiration := new(string)
+						if !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration.IsUnknown() && !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration.IsNull() {
+							*expiration = backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration.ValueString()
+						} else {
+							expiration = nil
+						}
+						caCert = &shared.CaCert{
+							RSAbits:    rsAbits,
+							Expiration: expiration,
+						}
+					}
+					builtinCertificateAuthorityConfig = &shared.BuiltinCertificateAuthorityConfig{
+						CaCert: caCert,
+					}
+				}
+				if builtinCertificateAuthorityConfig != nil {
+					conf2 = &shared.MeshItemMtlsConf{
+						BuiltinCertificateAuthorityConfig: builtinCertificateAuthorityConfig,
+					}
+				}
+				var three *shared.Three
+				if backendsItem2.Conf.Three != nil {
+					three = &shared.Three{}
+				}
+				if three != nil {
+					conf2 = &shared.MeshItemMtlsConf{
+						Three: three,
+					}
+				}
+				var four *shared.Four
+				if backendsItem2.Conf.Four != nil {
+					four = &shared.Four{}
+				}
+				if four != nil {
+					conf2 = &shared.MeshItemMtlsConf{
+						Four: four,
+					}
+				}
+				var five *shared.Five
+				if backendsItem2.Conf.Five != nil {
+					five = &shared.Five{}
+				}
+				if five != nil {
+					conf2 = &shared.MeshItemMtlsConf{
+						Five: five,
+					}
+				}
 			}
 			var dpCert *shared.DpCert
 			if backendsItem2.DpCert != nil {
@@ -200,14 +448,14 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 				}
 				var rotation *shared.Rotation
 				if backendsItem2.DpCert.Rotation != nil {
-					expiration := new(string)
+					expiration1 := new(string)
 					if !backendsItem2.DpCert.Rotation.Expiration.IsUnknown() && !backendsItem2.DpCert.Rotation.Expiration.IsNull() {
-						*expiration = backendsItem2.DpCert.Rotation.Expiration.ValueString()
+						*expiration1 = backendsItem2.DpCert.Rotation.Expiration.ValueString()
 					} else {
-						expiration = nil
+						expiration1 = nil
 					}
 					rotation = &shared.Rotation{
-						Expiration: expiration,
+						Expiration: expiration1,
 					}
 				}
 				dpCert = &shared.DpCert{
@@ -215,36 +463,36 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					Rotation:       rotation,
 				}
 			}
-			var mode1 *shared.MeshItemMode
+			var mode2 *shared.MeshItemMode
 			if backendsItem2.Mode != nil {
-				str1 := new(string)
+				str2 := new(string)
 				if !backendsItem2.Mode.Str.IsUnknown() && !backendsItem2.Mode.Str.IsNull() {
-					*str1 = backendsItem2.Mode.Str.ValueString()
+					*str2 = backendsItem2.Mode.Str.ValueString()
 				} else {
-					str1 = nil
+					str2 = nil
 				}
-				if str1 != nil {
-					mode1 = &shared.MeshItemMode{
-						Str: str1,
+				if str2 != nil {
+					mode2 = &shared.MeshItemMode{
+						Str: str2,
 					}
 				}
-				integer1 := new(int64)
+				integer2 := new(int64)
 				if !backendsItem2.Mode.Integer.IsUnknown() && !backendsItem2.Mode.Integer.IsNull() {
-					*integer1 = backendsItem2.Mode.Integer.ValueInt64()
+					*integer2 = backendsItem2.Mode.Integer.ValueInt64()
 				} else {
-					integer1 = nil
+					integer2 = nil
 				}
-				if integer1 != nil {
-					mode1 = &shared.MeshItemMode{
-						Integer: integer1,
+				if integer2 != nil {
+					mode2 = &shared.MeshItemMode{
+						Integer: integer2,
 					}
 				}
 			}
-			name2 := new(string)
+			name3 := new(string)
 			if !backendsItem2.Name.IsUnknown() && !backendsItem2.Name.IsNull() {
-				*name2 = backendsItem2.Name.ValueString()
+				*name3 = backendsItem2.Name.ValueString()
 			} else {
-				name2 = nil
+				name3 = nil
 			}
 			var rootChain *shared.RootChain
 			if backendsItem2.RootChain != nil {
@@ -280,8 +528,8 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 			backends2 = append(backends2, shared.MeshItemMtlsBackends{
 				Conf:      conf2,
 				DpCert:    dpCert,
-				Mode:      mode1,
-				Name:      name2,
+				Mode:      mode2,
+				Name:      name3,
 				RootChain: rootChain,
 				Type:      type2,
 			})
@@ -304,24 +552,18 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 			SkipValidation: skipValidation,
 		}
 	}
-	var name3 string
-	name3 = r.Name.ValueString()
+	var name4 string
+	name4 = r.Name.ValueString()
 
 	var networking *shared.Networking
 	if r.Networking != nil {
 		var outbound *shared.Outbound
 		if r.Networking.Outbound != nil {
-			var passthrough *shared.Passthrough
-			if r.Networking.Outbound.Passthrough != nil {
-				value := new(bool)
-				if !r.Networking.Outbound.Passthrough.Value.IsUnknown() && !r.Networking.Outbound.Passthrough.Value.IsNull() {
-					*value = r.Networking.Outbound.Passthrough.Value.ValueBool()
-				} else {
-					value = nil
-				}
-				passthrough = &shared.Passthrough{
-					Value: value,
-				}
+			passthrough := new(bool)
+			if !r.Networking.Outbound.Passthrough.IsUnknown() && !r.Networking.Outbound.Passthrough.IsNull() {
+				*passthrough = r.Networking.Outbound.Passthrough.ValueBool()
+			} else {
+				passthrough = nil
 			}
 			outbound = &shared.Outbound{
 				Passthrough: passthrough,
@@ -365,27 +607,89 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 	if r.Tracing != nil {
 		var backends3 []shared.MeshItemTracingBackends = []shared.MeshItemTracingBackends{}
 		for _, backendsItem3 := range r.Tracing.Backends {
-			var conf3 interface{}
-			if !backendsItem3.Conf.IsUnknown() && !backendsItem3.Conf.IsNull() {
-				_ = json.Unmarshal([]byte(backendsItem3.Conf.ValueString()), &conf3)
+			var conf3 *shared.MeshItemTracingConf
+			if backendsItem3.Conf != nil {
+				var datadogTracingBackendConfig *shared.DatadogTracingBackendConfig
+				if backendsItem3.Conf.DatadogTracingBackendConfig != nil {
+					address2 := new(string)
+					if !backendsItem3.Conf.DatadogTracingBackendConfig.Address.IsUnknown() && !backendsItem3.Conf.DatadogTracingBackendConfig.Address.IsNull() {
+						*address2 = backendsItem3.Conf.DatadogTracingBackendConfig.Address.ValueString()
+					} else {
+						address2 = nil
+					}
+					port2 := new(int64)
+					if !backendsItem3.Conf.DatadogTracingBackendConfig.Port.IsUnknown() && !backendsItem3.Conf.DatadogTracingBackendConfig.Port.IsNull() {
+						*port2 = backendsItem3.Conf.DatadogTracingBackendConfig.Port.ValueInt64()
+					} else {
+						port2 = nil
+					}
+					splitService := new(bool)
+					if !backendsItem3.Conf.DatadogTracingBackendConfig.SplitService.IsUnknown() && !backendsItem3.Conf.DatadogTracingBackendConfig.SplitService.IsNull() {
+						*splitService = backendsItem3.Conf.DatadogTracingBackendConfig.SplitService.ValueBool()
+					} else {
+						splitService = nil
+					}
+					datadogTracingBackendConfig = &shared.DatadogTracingBackendConfig{
+						Address:      address2,
+						Port:         port2,
+						SplitService: splitService,
+					}
+				}
+				if datadogTracingBackendConfig != nil {
+					conf3 = &shared.MeshItemTracingConf{
+						DatadogTracingBackendConfig: datadogTracingBackendConfig,
+					}
+				}
+				var zipkinTracingBackendConfig *shared.ZipkinTracingBackendConfig
+				if backendsItem3.Conf.ZipkinTracingBackendConfig != nil {
+					apiVersion := new(string)
+					if !backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion.IsUnknown() && !backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion.IsNull() {
+						*apiVersion = backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion.ValueString()
+					} else {
+						apiVersion = nil
+					}
+					sharedSpanContext := new(bool)
+					if !backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext.IsUnknown() && !backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext.IsNull() {
+						*sharedSpanContext = backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext.ValueBool()
+					} else {
+						sharedSpanContext = nil
+					}
+					traceId128bit := new(bool)
+					if !backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit.IsUnknown() && !backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit.IsNull() {
+						*traceId128bit = backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit.ValueBool()
+					} else {
+						traceId128bit = nil
+					}
+					url := new(string)
+					if !backendsItem3.Conf.ZipkinTracingBackendConfig.URL.IsUnknown() && !backendsItem3.Conf.ZipkinTracingBackendConfig.URL.IsNull() {
+						*url = backendsItem3.Conf.ZipkinTracingBackendConfig.URL.ValueString()
+					} else {
+						url = nil
+					}
+					zipkinTracingBackendConfig = &shared.ZipkinTracingBackendConfig{
+						APIVersion:        apiVersion,
+						SharedSpanContext: sharedSpanContext,
+						TraceId128bit:     traceId128bit,
+						URL:               url,
+					}
+				}
+				if zipkinTracingBackendConfig != nil {
+					conf3 = &shared.MeshItemTracingConf{
+						ZipkinTracingBackendConfig: zipkinTracingBackendConfig,
+					}
+				}
 			}
-			name4 := new(string)
+			name5 := new(string)
 			if !backendsItem3.Name.IsUnknown() && !backendsItem3.Name.IsNull() {
-				*name4 = backendsItem3.Name.ValueString()
+				*name5 = backendsItem3.Name.ValueString()
 			} else {
-				name4 = nil
+				name5 = nil
 			}
-			var sampling *shared.Sampling
-			if backendsItem3.Sampling != nil {
-				value1 := new(float64)
-				if !backendsItem3.Sampling.Value.IsUnknown() && !backendsItem3.Sampling.Value.IsNull() {
-					*value1, _ = backendsItem3.Sampling.Value.ValueBigFloat().Float64()
-				} else {
-					value1 = nil
-				}
-				sampling = &shared.Sampling{
-					Value: value1,
-				}
+			sampling := new(float64)
+			if !backendsItem3.Sampling.IsUnknown() && !backendsItem3.Sampling.IsNull() {
+				*sampling, _ = backendsItem3.Sampling.ValueBigFloat().Float64()
+			} else {
+				sampling = nil
 			}
 			type3 := new(string)
 			if !backendsItem3.Type.IsUnknown() && !backendsItem3.Type.IsNull() {
@@ -395,7 +699,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 			}
 			backends3 = append(backends3, shared.MeshItemTracingBackends{
 				Conf:     conf3,
-				Name:     name4,
+				Name:     name5,
 				Sampling: sampling,
 				Type:     type3,
 			})
@@ -411,8 +715,8 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 			DefaultBackend: defaultBackend1,
 		}
 	}
-	var typeVar1 string
-	typeVar1 = r.Type.ValueString()
+	var typeVar3 string
+	typeVar3 = r.Type.ValueString()
 
 	out := shared.MeshItem{
 		Constraints:                 constraints,
@@ -421,12 +725,12 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 		MeshServices:                meshServices,
 		Metrics:                     metrics,
 		Mtls:                        mtls,
-		Name:                        name3,
+		Name:                        name4,
 		Networking:                  networking,
 		Routing:                     routing,
 		SkipCreatingInitialPolicies: skipCreatingInitialPolicies,
 		Tracing:                     tracing,
-		Type:                        typeVar1,
+		Type:                        typeVar3,
 	}
 	return &out
 }
@@ -505,10 +809,17 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount, backendsItem := range resp.Logging.Backends {
 				var backends1 tfTypes.Backends
 				if backendsItem.Conf == nil {
-					backends1.Conf = types.StringNull()
+					backends1.Conf = nil
 				} else {
-					confResult, _ := json.Marshal(backendsItem.Conf)
-					backends1.Conf = types.StringValue(string(confResult))
+					backends1.Conf = &tfTypes.MeshItemLoggingConf{}
+					if backendsItem.Conf.FileLoggingBackendConfig != nil {
+						backends1.Conf.FileLoggingBackendConfig = &tfTypes.FileLoggingBackendConfig{}
+						backends1.Conf.FileLoggingBackendConfig.Path = types.StringPointerValue(backendsItem.Conf.FileLoggingBackendConfig.Path)
+					}
+					if backendsItem.Conf.TCPLoggingBackendConfig != nil {
+						backends1.Conf.TCPLoggingBackendConfig = &tfTypes.TCPLoggingBackendConfig{}
+						backends1.Conf.TCPLoggingBackendConfig.Address = types.StringPointerValue(backendsItem.Conf.TCPLoggingBackendConfig.Address)
+					}
 				}
 				backends1.Format = types.StringPointerValue(backendsItem.Format)
 				backends1.Name = types.StringPointerValue(backendsItem.Name)
@@ -551,10 +862,62 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount1, backendsItem1 := range resp.Metrics.Backends {
 				var backends3 tfTypes.MeshItemBackends
 				if backendsItem1.Conf == nil {
-					backends3.Conf = types.StringNull()
+					backends3.Conf = nil
 				} else {
-					confResult1, _ := json.Marshal(backendsItem1.Conf)
-					backends3.Conf = types.StringValue(string(confResult1))
+					backends3.Conf = &tfTypes.MeshItemConf{}
+					if backendsItem1.Conf.PrometheusMetricsBackendConfig != nil {
+						backends3.Conf.PrometheusMetricsBackendConfig = &tfTypes.PrometheusMetricsBackendConfig{}
+						backends3.Conf.PrometheusMetricsBackendConfig.Aggregate = []tfTypes.Aggregate{}
+						for aggregateCount, aggregateItem := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Aggregate {
+							var aggregate1 tfTypes.Aggregate
+							aggregate1.Address = types.StringPointerValue(aggregateItem.Address)
+							aggregate1.Enabled = types.BoolPointerValue(aggregateItem.Enabled)
+							aggregate1.Name = types.StringPointerValue(aggregateItem.Name)
+							aggregate1.Path = types.StringPointerValue(aggregateItem.Path)
+							aggregate1.Port = types.Int64PointerValue(aggregateItem.Port)
+							if aggregateCount+1 > len(backends3.Conf.PrometheusMetricsBackendConfig.Aggregate) {
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate = append(backends3.Conf.PrometheusMetricsBackendConfig.Aggregate, aggregate1)
+							} else {
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Address = aggregate1.Address
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Enabled = aggregate1.Enabled
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Name = aggregate1.Name
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Path = aggregate1.Path
+								backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Port = aggregate1.Port
+							}
+						}
+						if backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy == nil {
+							backends3.Conf.PrometheusMetricsBackendConfig.Envoy = nil
+						} else {
+							backends3.Conf.PrometheusMetricsBackendConfig.Envoy = &tfTypes.Envoy{}
+							backends3.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex)
+							backends3.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly)
+						}
+						backends3.Conf.PrometheusMetricsBackendConfig.Path = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Path)
+						backends3.Conf.PrometheusMetricsBackendConfig.Port = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Port)
+						backends3.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
+						if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
+							backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String)
+							for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
+								backends3.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
+							}
+						}
+						if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS == nil {
+							backends3.Conf.PrometheusMetricsBackendConfig.TLS = nil
+						} else {
+							backends3.Conf.PrometheusMetricsBackendConfig.TLS = &tfTypes.MeshServices{}
+							if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode == nil {
+								backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = nil
+							} else {
+								backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.Mode{}
+								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
+									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
+								}
+								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer != nil {
+									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer)
+								}
+							}
+						}
+					}
 				}
 				backends3.Name = types.StringPointerValue(backendsItem1.Name)
 				backends3.Type = types.StringPointerValue(backendsItem1.Type)
@@ -579,10 +942,45 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount2, backendsItem2 := range resp.Mtls.Backends {
 				var backends5 tfTypes.MeshItemMtlsBackends
 				if backendsItem2.Conf == nil {
-					backends5.Conf = types.StringNull()
+					backends5.Conf = nil
 				} else {
-					confResult2, _ := json.Marshal(backendsItem2.Conf)
-					backends5.Conf = types.StringValue(string(confResult2))
+					backends5.Conf = &tfTypes.MeshItemMtlsConf{}
+					if backendsItem2.Conf.Three != nil {
+						backends5.Conf.Three = &tfTypes.Metadata{}
+					}
+					if backendsItem2.Conf.Four != nil {
+						backends5.Conf.Four = &tfTypes.Metadata{}
+					}
+					if backendsItem2.Conf.Five != nil {
+						backends5.Conf.Five = &tfTypes.Metadata{}
+					}
+					if backendsItem2.Conf.BuiltinCertificateAuthorityConfig != nil {
+						backends5.Conf.BuiltinCertificateAuthorityConfig = &tfTypes.BuiltinCertificateAuthorityConfig{}
+						if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert == nil {
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = nil
+						} else {
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.CaCert{}
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration = types.StringPointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration)
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits = types.Int64PointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits)
+						}
+					}
+					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
+						backends5.Conf.ProvidedCertificateAuthorityConfig = &tfTypes.ProvidedCertificateAuthorityConfig{}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert == nil {
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = nil
+						} else {
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.Cert{}
+							typeVarResult, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type)
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = types.StringValue(string(typeVarResult))
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key == nil {
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Key = nil
+						} else {
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.Cert{}
+							typeVarResult1, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type)
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Key.Type = types.StringValue(string(typeVarResult1))
+						}
+					}
 				}
 				if backendsItem2.DpCert == nil {
 					backends5.DpCert = nil
@@ -650,12 +1048,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 				r.Networking.Outbound = nil
 			} else {
 				r.Networking.Outbound = &tfTypes.Outbound{}
-				if resp.Networking.Outbound.Passthrough == nil {
-					r.Networking.Outbound.Passthrough = nil
-				} else {
-					r.Networking.Outbound.Passthrough = &tfTypes.Passthrough{}
-					r.Networking.Outbound.Passthrough.Value = types.BoolPointerValue(resp.Networking.Outbound.Passthrough.Value)
-				}
+				r.Networking.Outbound.Passthrough = types.BoolPointerValue(resp.Networking.Outbound.Passthrough)
 			}
 		}
 		if resp.Routing == nil {
@@ -681,21 +1074,28 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			for backendsCount3, backendsItem3 := range resp.Tracing.Backends {
 				var backends7 tfTypes.MeshItemTracingBackends
 				if backendsItem3.Conf == nil {
-					backends7.Conf = types.StringNull()
+					backends7.Conf = nil
 				} else {
-					confResult3, _ := json.Marshal(backendsItem3.Conf)
-					backends7.Conf = types.StringValue(string(confResult3))
+					backends7.Conf = &tfTypes.MeshItemTracingConf{}
+					if backendsItem3.Conf.DatadogTracingBackendConfig != nil {
+						backends7.Conf.DatadogTracingBackendConfig = &tfTypes.DatadogTracingBackendConfig{}
+						backends7.Conf.DatadogTracingBackendConfig.Address = types.StringPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Address)
+						backends7.Conf.DatadogTracingBackendConfig.Port = types.Int64PointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Port)
+						backends7.Conf.DatadogTracingBackendConfig.SplitService = types.BoolPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.SplitService)
+					}
+					if backendsItem3.Conf.ZipkinTracingBackendConfig != nil {
+						backends7.Conf.ZipkinTracingBackendConfig = &tfTypes.ZipkinTracingBackendConfig{}
+						backends7.Conf.ZipkinTracingBackendConfig.APIVersion = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion)
+						backends7.Conf.ZipkinTracingBackendConfig.SharedSpanContext = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext)
+						backends7.Conf.ZipkinTracingBackendConfig.TraceId128bit = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit)
+						backends7.Conf.ZipkinTracingBackendConfig.URL = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.URL)
+					}
 				}
 				backends7.Name = types.StringPointerValue(backendsItem3.Name)
-				if backendsItem3.Sampling == nil {
-					backends7.Sampling = nil
+				if backendsItem3.Sampling != nil {
+					backends7.Sampling = types.NumberValue(big.NewFloat(float64(*backendsItem3.Sampling)))
 				} else {
-					backends7.Sampling = &tfTypes.Sampling{}
-					if backendsItem3.Sampling.Value != nil {
-						backends7.Sampling.Value = types.NumberValue(big.NewFloat(float64(*backendsItem3.Sampling.Value)))
-					} else {
-						backends7.Sampling.Value = types.NumberNull()
-					}
+					backends7.Sampling = types.NumberNull()
 				}
 				backends7.Type = types.StringPointerValue(backendsItem3.Type)
 				if backendsCount3+1 > len(r.Tracing.Backends) {

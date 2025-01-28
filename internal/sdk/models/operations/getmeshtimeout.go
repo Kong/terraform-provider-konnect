@@ -46,6 +46,8 @@ type GetMeshTimeoutResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshTimeoutItem *shared.MeshTimeoutItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshTimeoutResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshTimeoutResponse) GetMeshTimeoutItem() *shared.MeshTimeoutItem {
 		return nil
 	}
 	return o.MeshTimeoutItem
+}
+
+func (o *GetMeshTimeoutResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

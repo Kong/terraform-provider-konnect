@@ -4,6 +4,6 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Passthrough struct {
-	Value types.Bool `tfsdk:"value"`
+type TCPLoggingBackendConfig struct {
+	Address types.String `tfsdk:"address"`
 }

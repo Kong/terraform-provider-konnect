@@ -167,6 +167,12 @@ func (u MeshGatewayItemMode) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type MeshGatewayItemMode: all fields are null")
 }
 
+// MeshGatewayItemOptions - Options should eventually configure how TLS is configured. This
+// is where cipher suite and version configuration can be specified,
+// client certificates enforced, and so on.
+type MeshGatewayItemOptions struct {
+}
+
 // MeshGatewayItemTLS - TLS is the TLS configuration for the Listener. This field
 // is required if the Protocol field is "HTTPS" or "TLS" and
 // ignored otherwise.
@@ -189,7 +195,7 @@ type MeshGatewayItemTLS struct {
 	// Options should eventually configure how TLS is configured. This
 	// is where cipher suite and version configuration can be specified,
 	// client certificates enforced, and so on.
-	Options any `json:"options,omitempty"`
+	Options *MeshGatewayItemOptions `json:"options,omitempty"`
 }
 
 func (o *MeshGatewayItemTLS) GetCertificates() []Certificates {
@@ -206,7 +212,7 @@ func (o *MeshGatewayItemTLS) GetMode() *MeshGatewayItemMode {
 	return o.Mode
 }
 
-func (o *MeshGatewayItemTLS) GetOptions() any {
+func (o *MeshGatewayItemTLS) GetOptions() *MeshGatewayItemOptions {
 	if o == nil {
 		return nil
 	}

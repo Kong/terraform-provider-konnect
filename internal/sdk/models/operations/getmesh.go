@@ -37,6 +37,8 @@ type GetMeshResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshItem *shared.MeshItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshResponse) GetContentType() string {
@@ -65,4 +67,11 @@ func (o *GetMeshResponse) GetMeshItem() *shared.MeshItem {
 		return nil
 	}
 	return o.MeshItem
+}
+
+func (o *GetMeshResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

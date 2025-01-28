@@ -79,10 +79,72 @@ func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
 	return o.DataplaneProxy
 }
 
+type MeshItemLoggingConfType string
+
+const (
+	MeshItemLoggingConfTypeFileLoggingBackendConfig MeshItemLoggingConfType = "FileLoggingBackendConfig"
+	MeshItemLoggingConfTypeTCPLoggingBackendConfig  MeshItemLoggingConfType = "TcpLoggingBackendConfig"
+)
+
+type MeshItemLoggingConf struct {
+	FileLoggingBackendConfig *FileLoggingBackendConfig
+	TCPLoggingBackendConfig  *TCPLoggingBackendConfig
+
+	Type MeshItemLoggingConfType
+}
+
+func CreateMeshItemLoggingConfFileLoggingBackendConfig(fileLoggingBackendConfig FileLoggingBackendConfig) MeshItemLoggingConf {
+	typ := MeshItemLoggingConfTypeFileLoggingBackendConfig
+
+	return MeshItemLoggingConf{
+		FileLoggingBackendConfig: &fileLoggingBackendConfig,
+		Type:                     typ,
+	}
+}
+
+func CreateMeshItemLoggingConfTCPLoggingBackendConfig(tcpLoggingBackendConfig TCPLoggingBackendConfig) MeshItemLoggingConf {
+	typ := MeshItemLoggingConfTypeTCPLoggingBackendConfig
+
+	return MeshItemLoggingConf{
+		TCPLoggingBackendConfig: &tcpLoggingBackendConfig,
+		Type:                    typ,
+	}
+}
+
+func (u *MeshItemLoggingConf) UnmarshalJSON(data []byte) error {
+
+	var fileLoggingBackendConfig FileLoggingBackendConfig = FileLoggingBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &fileLoggingBackendConfig, "", true, true); err == nil {
+		u.FileLoggingBackendConfig = &fileLoggingBackendConfig
+		u.Type = MeshItemLoggingConfTypeFileLoggingBackendConfig
+		return nil
+	}
+
+	var tcpLoggingBackendConfig TCPLoggingBackendConfig = TCPLoggingBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &tcpLoggingBackendConfig, "", true, true); err == nil {
+		u.TCPLoggingBackendConfig = &tcpLoggingBackendConfig
+		u.Type = MeshItemLoggingConfTypeTCPLoggingBackendConfig
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemLoggingConf", string(data))
+}
+
+func (u MeshItemLoggingConf) MarshalJSON() ([]byte, error) {
+	if u.FileLoggingBackendConfig != nil {
+		return utils.MarshalJSON(u.FileLoggingBackendConfig, "", true)
+	}
+
+	if u.TCPLoggingBackendConfig != nil {
+		return utils.MarshalJSON(u.TCPLoggingBackendConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemLoggingConf: all fields are null")
+}
+
 // Backends - LoggingBackend defines logging backend available to mesh.
 type Backends struct {
-	// Configuration of the backend
-	Conf any `json:"conf,omitempty"`
+	Conf *MeshItemLoggingConf `json:"conf,omitempty"`
 	// Format of access logs. Placeholders available on
 	// https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log
 	Format *string `json:"format,omitempty"`
@@ -93,7 +155,7 @@ type Backends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *Backends) GetConf() any {
+func (o *Backends) GetConf() *MeshItemLoggingConf {
 	if o == nil {
 		return nil
 	}
@@ -218,17 +280,57 @@ func (o *MeshServices) GetMode() *Mode {
 	return o.Mode
 }
 
+type MeshItemConfType string
+
+const (
+	MeshItemConfTypePrometheusMetricsBackendConfig MeshItemConfType = "PrometheusMetricsBackendConfig"
+)
+
+type MeshItemConf struct {
+	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig
+
+	Type MeshItemConfType
+}
+
+func CreateMeshItemConfPrometheusMetricsBackendConfig(prometheusMetricsBackendConfig PrometheusMetricsBackendConfig) MeshItemConf {
+	typ := MeshItemConfTypePrometheusMetricsBackendConfig
+
+	return MeshItemConf{
+		PrometheusMetricsBackendConfig: &prometheusMetricsBackendConfig,
+		Type:                           typ,
+	}
+}
+
+func (u *MeshItemConf) UnmarshalJSON(data []byte) error {
+
+	var prometheusMetricsBackendConfig PrometheusMetricsBackendConfig = PrometheusMetricsBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &prometheusMetricsBackendConfig, "", true, true); err == nil {
+		u.PrometheusMetricsBackendConfig = &prometheusMetricsBackendConfig
+		u.Type = MeshItemConfTypePrometheusMetricsBackendConfig
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemConf", string(data))
+}
+
+func (u MeshItemConf) MarshalJSON() ([]byte, error) {
+	if u.PrometheusMetricsBackendConfig != nil {
+		return utils.MarshalJSON(u.PrometheusMetricsBackendConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemConf: all fields are null")
+}
+
 // MeshItemBackends - MetricsBackend defines metric backends
 type MeshItemBackends struct {
-	// Configuration of the backend
-	Conf any `json:"conf,omitempty"`
+	Conf *MeshItemConf `json:"conf,omitempty"`
 	// Name of the backend, can be then used in Mesh.metrics.enabledBackend
 	Name *string `json:"name,omitempty"`
 	// Type of the backend (Kuma ships with 'prometheus')
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemBackends) GetConf() any {
+func (o *MeshItemBackends) GetConf() *MeshItemConf {
 	if o == nil {
 		return nil
 	}
@@ -274,6 +376,144 @@ func (o *Metrics) GetEnabledBackend() *string {
 		return nil
 	}
 	return o.EnabledBackend
+}
+
+type Five struct {
+}
+
+type Four struct {
+}
+
+type Three struct {
+}
+
+type MeshItemMtlsConfType string
+
+const (
+	MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig MeshItemMtlsConfType = "ProvidedCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig  MeshItemMtlsConfType = "BuiltinCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeThree                              MeshItemMtlsConfType = "3"
+	MeshItemMtlsConfTypeFour                               MeshItemMtlsConfType = "4"
+	MeshItemMtlsConfTypeFive                               MeshItemMtlsConfType = "5"
+)
+
+type MeshItemMtlsConf struct {
+	ProvidedCertificateAuthorityConfig *ProvidedCertificateAuthorityConfig
+	BuiltinCertificateAuthorityConfig  *BuiltinCertificateAuthorityConfig
+	Three                              *Three
+	Four                               *Four
+	Five                               *Five
+
+	Type MeshItemMtlsConfType
+}
+
+func CreateMeshItemMtlsConfProvidedCertificateAuthorityConfig(providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig
+
+	return MeshItemMtlsConf{
+		ProvidedCertificateAuthorityConfig: &providedCertificateAuthorityConfig,
+		Type:                               typ,
+	}
+}
+
+func CreateMeshItemMtlsConfBuiltinCertificateAuthorityConfig(builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig
+
+	return MeshItemMtlsConf{
+		BuiltinCertificateAuthorityConfig: &builtinCertificateAuthorityConfig,
+		Type:                              typ,
+	}
+}
+
+func CreateMeshItemMtlsConfThree(three Three) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeThree
+
+	return MeshItemMtlsConf{
+		Three: &three,
+		Type:  typ,
+	}
+}
+
+func CreateMeshItemMtlsConfFour(four Four) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeFour
+
+	return MeshItemMtlsConf{
+		Four: &four,
+		Type: typ,
+	}
+}
+
+func CreateMeshItemMtlsConfFive(five Five) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeFive
+
+	return MeshItemMtlsConf{
+		Five: &five,
+		Type: typ,
+	}
+}
+
+func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
+
+	var three Three = Three{}
+	if err := utils.UnmarshalJSON(data, &three, "", true, true); err == nil {
+		u.Three = &three
+		u.Type = MeshItemMtlsConfTypeThree
+		return nil
+	}
+
+	var four Four = Four{}
+	if err := utils.UnmarshalJSON(data, &four, "", true, true); err == nil {
+		u.Four = &four
+		u.Type = MeshItemMtlsConfTypeFour
+		return nil
+	}
+
+	var five Five = Five{}
+	if err := utils.UnmarshalJSON(data, &five, "", true, true); err == nil {
+		u.Five = &five
+		u.Type = MeshItemMtlsConfTypeFive
+		return nil
+	}
+
+	var builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig = BuiltinCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, true); err == nil {
+		u.BuiltinCertificateAuthorityConfig = &builtinCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig
+		return nil
+	}
+
+	var providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig = ProvidedCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &providedCertificateAuthorityConfig, "", true, true); err == nil {
+		u.ProvidedCertificateAuthorityConfig = &providedCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemMtlsConf", string(data))
+}
+
+func (u MeshItemMtlsConf) MarshalJSON() ([]byte, error) {
+	if u.ProvidedCertificateAuthorityConfig != nil {
+		return utils.MarshalJSON(u.ProvidedCertificateAuthorityConfig, "", true)
+	}
+
+	if u.BuiltinCertificateAuthorityConfig != nil {
+		return utils.MarshalJSON(u.BuiltinCertificateAuthorityConfig, "", true)
+	}
+
+	if u.Three != nil {
+		return utils.MarshalJSON(u.Three, "", true)
+	}
+
+	if u.Four != nil {
+		return utils.MarshalJSON(u.Four, "", true)
+	}
+
+	if u.Five != nil {
+		return utils.MarshalJSON(u.Five, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemMtlsConf: all fields are null")
 }
 
 // RequestTimeout - Timeout on request to CA for DP certificate generation and retrieval
@@ -432,8 +672,7 @@ func (o *RootChain) GetRequestTimeout() *MeshItemRequestTimeout {
 
 // MeshItemMtlsBackends - CertificateAuthorityBackend defines Certificate Authority backend
 type MeshItemMtlsBackends struct {
-	// Configuration of the backend
-	Conf any `json:"conf,omitempty"`
+	Conf *MeshItemMtlsConf `json:"conf,omitempty"`
 	// Dataplane certificate settings
 	DpCert *DpCert `json:"dpCert,omitempty"`
 	// Mode defines the behaviour of inbound listeners with regard to traffic
@@ -447,7 +686,7 @@ type MeshItemMtlsBackends struct {
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemMtlsBackends) GetConf() any {
+func (o *MeshItemMtlsBackends) GetConf() *MeshItemMtlsConf {
 	if o == nil {
 		return nil
 	}
@@ -521,25 +760,13 @@ func (o *Mtls) GetSkipValidation() *bool {
 	return o.SkipValidation
 }
 
-// Passthrough - Control the passthrough cluster
-type Passthrough struct {
-	Value *bool `json:"value,omitempty"`
-}
-
-func (o *Passthrough) GetValue() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Value
-}
-
 // Outbound settings
 type Outbound struct {
 	// Control the passthrough cluster
-	Passthrough *Passthrough `json:"passthrough,omitempty"`
+	Passthrough *bool `json:"passthrough,omitempty"`
 }
 
-func (o *Outbound) GetPassthrough() *Passthrough {
+func (o *Outbound) GetPassthrough() *bool {
 	if o == nil {
 		return nil
 	}
@@ -592,34 +819,83 @@ func (o *Routing) GetZoneEgress() *bool {
 	return o.ZoneEgress
 }
 
-// Sampling - Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
-// Empty value defaults to 100.0%
-type Sampling struct {
-	Value *float64 `json:"value,omitempty"`
+type MeshItemTracingConfType string
+
+const (
+	MeshItemTracingConfTypeDatadogTracingBackendConfig MeshItemTracingConfType = "DatadogTracingBackendConfig"
+	MeshItemTracingConfTypeZipkinTracingBackendConfig  MeshItemTracingConfType = "ZipkinTracingBackendConfig"
+)
+
+type MeshItemTracingConf struct {
+	DatadogTracingBackendConfig *DatadogTracingBackendConfig
+	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig
+
+	Type MeshItemTracingConfType
 }
 
-func (o *Sampling) GetValue() *float64 {
-	if o == nil {
+func CreateMeshItemTracingConfDatadogTracingBackendConfig(datadogTracingBackendConfig DatadogTracingBackendConfig) MeshItemTracingConf {
+	typ := MeshItemTracingConfTypeDatadogTracingBackendConfig
+
+	return MeshItemTracingConf{
+		DatadogTracingBackendConfig: &datadogTracingBackendConfig,
+		Type:                        typ,
+	}
+}
+
+func CreateMeshItemTracingConfZipkinTracingBackendConfig(zipkinTracingBackendConfig ZipkinTracingBackendConfig) MeshItemTracingConf {
+	typ := MeshItemTracingConfTypeZipkinTracingBackendConfig
+
+	return MeshItemTracingConf{
+		ZipkinTracingBackendConfig: &zipkinTracingBackendConfig,
+		Type:                       typ,
+	}
+}
+
+func (u *MeshItemTracingConf) UnmarshalJSON(data []byte) error {
+
+	var datadogTracingBackendConfig DatadogTracingBackendConfig = DatadogTracingBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &datadogTracingBackendConfig, "", true, true); err == nil {
+		u.DatadogTracingBackendConfig = &datadogTracingBackendConfig
+		u.Type = MeshItemTracingConfTypeDatadogTracingBackendConfig
 		return nil
 	}
-	return o.Value
+
+	var zipkinTracingBackendConfig ZipkinTracingBackendConfig = ZipkinTracingBackendConfig{}
+	if err := utils.UnmarshalJSON(data, &zipkinTracingBackendConfig, "", true, true); err == nil {
+		u.ZipkinTracingBackendConfig = &zipkinTracingBackendConfig
+		u.Type = MeshItemTracingConfTypeZipkinTracingBackendConfig
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshItemTracingConf", string(data))
+}
+
+func (u MeshItemTracingConf) MarshalJSON() ([]byte, error) {
+	if u.DatadogTracingBackendConfig != nil {
+		return utils.MarshalJSON(u.DatadogTracingBackendConfig, "", true)
+	}
+
+	if u.ZipkinTracingBackendConfig != nil {
+		return utils.MarshalJSON(u.ZipkinTracingBackendConfig, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshItemTracingConf: all fields are null")
 }
 
 // MeshItemTracingBackends - TracingBackend defines tracing backend available to mesh.
 type MeshItemTracingBackends struct {
-	// Configuration of the backend
-	Conf any `json:"conf,omitempty"`
+	Conf *MeshItemTracingConf `json:"conf,omitempty"`
 	// Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
 	// TrafficTrace
 	Name *string `json:"name,omitempty"`
 	// Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
 	// Empty value defaults to 100.0%
-	Sampling *Sampling `json:"sampling,omitempty"`
+	Sampling *float64 `json:"sampling,omitempty"`
 	// Type of the backend (Kuma ships with 'zipkin')
 	Type *string `json:"type,omitempty"`
 }
 
-func (o *MeshItemTracingBackends) GetConf() any {
+func (o *MeshItemTracingBackends) GetConf() *MeshItemTracingConf {
 	if o == nil {
 		return nil
 	}
@@ -633,7 +909,7 @@ func (o *MeshItemTracingBackends) GetName() *string {
 	return o.Name
 }
 
-func (o *MeshItemTracingBackends) GetSampling() *Sampling {
+func (o *MeshItemTracingBackends) GetSampling() *float64 {
 	if o == nil {
 		return nil
 	}

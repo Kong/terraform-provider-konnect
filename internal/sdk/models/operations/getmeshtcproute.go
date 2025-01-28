@@ -46,6 +46,8 @@ type GetMeshTCPRouteResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshTCPRouteItem *shared.MeshTCPRouteItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshTCPRouteResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshTCPRouteResponse) GetMeshTCPRouteItem() *shared.MeshTCPRouteItem
 		return nil
 	}
 	return o.MeshTCPRouteItem
+}
+
+func (o *GetMeshTCPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

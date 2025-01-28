@@ -46,6 +46,8 @@ type GetMeshProxyPatchResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshProxyPatchItem *shared.MeshProxyPatchItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshProxyPatchResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshProxyPatchResponse) GetMeshProxyPatchItem() *shared.MeshProxyPat
 		return nil
 	}
 	return o.MeshProxyPatchItem
+}
+
+func (o *GetMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

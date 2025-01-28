@@ -44,6 +44,8 @@ type DeleteMeshHealthCheckResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshHealthCheckDeleteSuccessResponse *shared.MeshHealthCheckDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshHealthCheckResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshHealthCheckResponse) GetMeshHealthCheckDeleteSuccessResponse() *shared.MeshHealthCheckDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshHealthCheckDeleteSuccessResponse
 }
 
 func (o *DeleteMeshHealthCheckResponse) GetNotFoundError() *shared.NotFoundError {

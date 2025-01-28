@@ -164,8 +164,8 @@ func (o *Match) GetType() *MeshExternalServiceItemSpecType {
 	return o.Type
 }
 
-// CaCert defines a certificate of CA.
-type CaCert struct {
+// MeshExternalServiceItemCaCert - CaCert defines a certificate of CA.
+type MeshExternalServiceItemCaCert struct {
 	// Data source is inline bytes.
 	Inline *string `json:"inline,omitempty"`
 	// Data source is inline string`
@@ -174,21 +174,21 @@ type CaCert struct {
 	Secret *string `json:"secret,omitempty"`
 }
 
-func (o *CaCert) GetInline() *string {
+func (o *MeshExternalServiceItemCaCert) GetInline() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Inline
 }
 
-func (o *CaCert) GetInlineString() *string {
+func (o *MeshExternalServiceItemCaCert) GetInlineString() *string {
 	if o == nil {
 		return nil
 	}
 	return o.InlineString
 }
 
-func (o *CaCert) GetSecret() *string {
+func (o *MeshExternalServiceItemCaCert) GetSecret() *string {
 	if o == nil {
 		return nil
 	}
@@ -341,7 +341,7 @@ func (o *SubjectAltNames) GetValue() string {
 // Verification section for providing TLS verification details.
 type Verification struct {
 	// CaCert defines a certificate of CA.
-	CaCert *CaCert `json:"caCert,omitempty"`
+	CaCert *MeshExternalServiceItemCaCert `json:"caCert,omitempty"`
 	// ClientCert defines a certificate of a client.
 	ClientCert *ClientCert `json:"clientCert,omitempty"`
 	// ClientKey defines a client private key.
@@ -354,7 +354,7 @@ type Verification struct {
 	SubjectAltNames []SubjectAltNames `json:"subjectAltNames,omitempty"`
 }
 
-func (o *Verification) GetCaCert() *CaCert {
+func (o *Verification) GetCaCert() *MeshExternalServiceItemCaCert {
 	if o == nil {
 		return nil
 	}
@@ -490,8 +490,8 @@ func (o *MeshExternalServiceItemVersion) GetMin() *Min {
 	return o.Min
 }
 
-// TLS - Tls provides a TLS configuration when proxy is resposible for a TLS origination
-type TLS struct {
+// MeshExternalServiceItemTLS - Tls provides a TLS configuration when proxy is resposible for a TLS origination
+type MeshExternalServiceItemTLS struct {
 	// AllowRenegotiation defines if TLS sessions will allow renegotiation.
 	// Setting this to true is not recommended for security reasons.
 	AllowRenegotiation *bool `json:"allowRenegotiation,omitempty"`
@@ -503,28 +503,28 @@ type TLS struct {
 	Version *MeshExternalServiceItemVersion `json:"version,omitempty"`
 }
 
-func (o *TLS) GetAllowRenegotiation() *bool {
+func (o *MeshExternalServiceItemTLS) GetAllowRenegotiation() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AllowRenegotiation
 }
 
-func (o *TLS) GetEnabled() *bool {
+func (o *MeshExternalServiceItemTLS) GetEnabled() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.Enabled
 }
 
-func (o *TLS) GetVerification() *Verification {
+func (o *MeshExternalServiceItemTLS) GetVerification() *Verification {
 	if o == nil {
 		return nil
 	}
 	return o.Verification
 }
 
-func (o *TLS) GetVersion() *MeshExternalServiceItemVersion {
+func (o *MeshExternalServiceItemTLS) GetVersion() *MeshExternalServiceItemVersion {
 	if o == nil {
 		return nil
 	}
@@ -540,7 +540,7 @@ type MeshExternalServiceItemSpec struct {
 	// Match defines traffic that should be routed through the sidecar.
 	Match Match `json:"match"`
 	// Tls provides a TLS configuration when proxy is resposible for a TLS origination
-	TLS *TLS `json:"tls,omitempty"`
+	TLS *MeshExternalServiceItemTLS `json:"tls,omitempty"`
 }
 
 func (o *MeshExternalServiceItemSpec) GetEndpoints() []Endpoints {
@@ -564,7 +564,7 @@ func (o *MeshExternalServiceItemSpec) GetMatch() Match {
 	return o.Match
 }
 
-func (o *MeshExternalServiceItemSpec) GetTLS() *TLS {
+func (o *MeshExternalServiceItemSpec) GetTLS() *MeshExternalServiceItemTLS {
 	if o == nil {
 		return nil
 	}

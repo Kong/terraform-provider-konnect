@@ -46,6 +46,8 @@ type GetMeshAccessLogResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshAccessLogItem *shared.MeshAccessLogItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshAccessLogResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshAccessLogResponse) GetMeshAccessLogItem() *shared.MeshAccessLogI
 		return nil
 	}
 	return o.MeshAccessLogItem
+}
+
+func (o *GetMeshAccessLogResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

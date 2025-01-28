@@ -44,6 +44,8 @@ type DeleteMeshRateLimitResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshRateLimitDeleteSuccessResponse *shared.MeshRateLimitDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshRateLimitResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshRateLimitResponse) GetMeshRateLimitDeleteSuccessResponse() *shared.MeshRateLimitDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshRateLimitDeleteSuccessResponse
 }
 
 func (o *DeleteMeshRateLimitResponse) GetNotFoundError() *shared.NotFoundError {

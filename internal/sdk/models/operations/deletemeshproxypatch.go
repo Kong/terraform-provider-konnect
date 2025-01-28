@@ -44,6 +44,8 @@ type DeleteMeshProxyPatchResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshProxyPatchDeleteSuccessResponse *shared.MeshProxyPatchDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshProxyPatchResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshProxyPatchResponse) GetMeshProxyPatchDeleteSuccessResponse() *shared.MeshProxyPatchDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshProxyPatchDeleteSuccessResponse
 }
 
 func (o *DeleteMeshProxyPatchResponse) GetNotFoundError() *shared.NotFoundError {

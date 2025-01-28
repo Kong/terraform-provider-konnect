@@ -117,9 +117,28 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"file_logging_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"path": schema.StringAttribute{
+													Computed:    true,
+													Description: `Path to a file that logs will be written to`,
+												},
+											},
+										},
+										"tcp_logging_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"address": schema.StringAttribute{
+													Computed:    true,
+													Description: `Address to TCP service that will receive logs`,
+												},
+											},
+										},
+									},
 								},
 								"format": schema.StringAttribute{
 									Computed: true,
@@ -170,9 +189,104 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"prometheus_metrics_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"aggregate": schema.ListNestedAttribute{
+													Computed: true,
+													NestedObject: schema.NestedAttributeObject{
+														Attributes: map[string]schema.Attribute{
+															"address": schema.StringAttribute{
+																Computed:    true,
+																Description: `Address on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+															"enabled": schema.BoolAttribute{
+																Computed: true,
+																MarkdownDescription: `If false then the application won't be scrapped. If nil, then it is treated` + "\n" +
+																	`as true and kuma-dp scrapes metrics from the service.`,
+															},
+															"name": schema.StringAttribute{
+																Computed:    true,
+																Description: `Name which identify given configuration.`,
+															},
+															"path": schema.StringAttribute{
+																Computed:    true,
+																Description: `Path on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+															"port": schema.Int64Attribute{
+																Computed:    true,
+																Description: `Port on which a service expose HTTP endpoint with Prometheus metrics.`,
+															},
+														},
+													},
+													MarkdownDescription: `Map with the configuration of applications which metrics are going to be` + "\n" +
+														`scrapped by kuma-dp.`,
+												},
+												"envoy": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"filter_regex": schema.StringAttribute{
+															Computed: true,
+															MarkdownDescription: `FilterRegex value that is going to be passed to Envoy for filtering` + "\n" +
+																`Envoy metrics.`,
+														},
+														"used_only": schema.BoolAttribute{
+															Computed: true,
+															MarkdownDescription: `If true then return metrics that Envoy has updated (counters incremented` + "\n" +
+																`at least once, gauges changed at least once, and histograms added to at` + "\n" +
+																`least once). If nil, then it is treated as false.`,
+														},
+													},
+													Description: `Configuration of Envoy's metrics.`,
+												},
+												"path": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Path on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
+														`metrics.`,
+												},
+												"port": schema.Int64Attribute{
+													Computed: true,
+													MarkdownDescription: `Port on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
+														`metrics.`,
+												},
+												"skip_mtls": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `If true then endpoints for scraping metrics won't require mTLS even if mTLS` + "\n" +
+														`is enabled in Mesh. If nil, then it is treated as false.`,
+												},
+												"tags": schema.MapAttribute{
+													Computed:    true,
+													ElementType: types.StringType,
+													MarkdownDescription: `Tags associated with an application this dataplane is deployed next to,` + "\n" +
+														`e.g. service=web, version=1.0.` + "\n" +
+														`` + "`" + `service` + "`" + ` tag is mandatory.`,
+												},
+												"tls": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"mode": schema.SingleNestedAttribute{
+															Computed: true,
+															Attributes: map[string]schema.Attribute{
+																"integer": schema.Int64Attribute{
+																	Computed: true,
+																},
+																"str": schema.StringAttribute{
+																	Computed: true,
+																},
+															},
+															MarkdownDescription: `mode defines how configured is the TLS for Prometheus.` + "\n" +
+																`Supported values, delegated, disabled, activeMTLSBackend. Default to` + "\n" +
+																`` + "`" + `activeMTLSBackend` + "`" + `.`,
+														},
+													},
+													Description: `Configuration of TLS for prometheus listener.`,
+												},
+											},
+										},
+									},
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
@@ -205,9 +319,70 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"builtin_certificate_authority_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"expiration": schema.StringAttribute{
+															Computed: true,
+														},
+														"rs_abits": schema.Int64Attribute{
+															Computed: true,
+														},
+													},
+												},
+											},
+										},
+										"five": schema.SingleNestedAttribute{
+											Computed: true,
+										},
+										"four": schema.SingleNestedAttribute{
+											Computed: true,
+										},
+										"provided_certificate_authority_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed: true,
+															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
+														},
+													},
+												},
+												"key": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed: true,
+															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
+																`` + "\n" +
+																`	*DataSource_Secret` + "\n" +
+																`	*DataSource_File` + "\n" +
+																`	*DataSource_Inline` + "\n" +
+																`	*DataSource_InlineString` + "\n" +
+																`Parsed as JSON.`,
+														},
+													},
+												},
+											},
+										},
+										"three": schema.SingleNestedAttribute{
+											Computed: true,
+										},
+									},
 								},
 								"dp_cert": schema.SingleNestedAttribute{
 									Computed: true,
@@ -303,13 +478,8 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 					"outbound": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"passthrough": schema.SingleNestedAttribute{
-								Computed: true,
-								Attributes: map[string]schema.Attribute{
-									"value": schema.BoolAttribute{
-										Computed: true,
-									},
-								},
+							"passthrough": schema.BoolAttribute{
+								Computed:    true,
 								Description: `Control the passthrough cluster`,
 							},
 						},
@@ -352,22 +522,64 @@ func (r *MeshDataSource) Schema(ctx context.Context, req datasource.SchemaReques
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"conf": schema.StringAttribute{
-									Computed:    true,
-									Description: `Configuration of the backend. Parsed as JSON.`,
+								"conf": schema.SingleNestedAttribute{
+									Computed: true,
+									Attributes: map[string]schema.Attribute{
+										"datadog_tracing_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"address": schema.StringAttribute{
+													Computed:    true,
+													Description: `Address of datadog collector.`,
+												},
+												"port": schema.Int64Attribute{
+													Computed:    true,
+													Description: `Port of datadog collector`,
+												},
+												"split_service": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
+														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
+														`` + "`" + `backend` + "`" + ` service that communicates with a couple of databases, you would` + "\n" +
+														`get service names like ` + "`" + `backend_INBOUND` + "`" + `, ` + "`" + `backend_OUTBOUND_db1` + "`" + `, and` + "\n" +
+														`` + "`" + `backend_OUTBOUND_db2` + "`" + ` in Datadog. Default: false`,
+												},
+											},
+										},
+										"zipkin_tracing_backend_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Attributes: map[string]schema.Attribute{
+												"api_version": schema.StringAttribute{
+													Computed: true,
+													MarkdownDescription: `Version of the API. values: httpJson, httpJsonV1, httpProto. Default:` + "\n" +
+														`httpJson see` + "\n" +
+														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion`,
+												},
+												"shared_span_context": schema.BoolAttribute{
+													Computed: true,
+													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
+														`context. Default: true.` + "\n" +
+														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig`,
+												},
+												"trace_id128bit": schema.BoolAttribute{
+													Computed:    true,
+													Description: `Generate 128bit traces. Default: false`,
+												},
+												"url": schema.StringAttribute{
+													Computed:    true,
+													Description: `Address of Zipkin collector.`,
+												},
+											},
+										},
+									},
 								},
 								"name": schema.StringAttribute{
 									Computed: true,
 									MarkdownDescription: `Name of the backend, can be then used in Mesh.tracing.defaultBackend or in` + "\n" +
 										`TrafficTrace`,
 								},
-								"sampling": schema.SingleNestedAttribute{
+								"sampling": schema.NumberAttribute{
 									Computed: true,
-									Attributes: map[string]schema.Attribute{
-										"value": schema.NumberAttribute{
-											Computed: true,
-										},
-									},
 									MarkdownDescription: `Percentage of traces that will be sent to the backend (range 0.0 - 100.0).` + "\n" +
 										`Empty value defaults to 100.0%`,
 								},

@@ -44,6 +44,8 @@ type DeleteMeshPassthroughResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshPassthroughDeleteSuccessResponse *shared.MeshPassthroughDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshPassthroughResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshPassthroughResponse) GetMeshPassthroughDeleteSuccessResponse() *shared.MeshPassthroughDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshPassthroughDeleteSuccessResponse
 }
 
 func (o *DeleteMeshPassthroughResponse) GetNotFoundError() *shared.NotFoundError {

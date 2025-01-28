@@ -46,6 +46,8 @@ type GetMeshRateLimitResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshRateLimitItem *shared.MeshRateLimitItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshRateLimitResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshRateLimitResponse) GetMeshRateLimitItem() *shared.MeshRateLimitI
 		return nil
 	}
 	return o.MeshRateLimitItem
+}
+
+func (o *GetMeshRateLimitResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

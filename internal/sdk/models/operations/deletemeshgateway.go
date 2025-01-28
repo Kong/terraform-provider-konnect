@@ -44,6 +44,8 @@ type DeleteMeshGatewayResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshGatewayDeleteSuccessResponse *shared.MeshGatewayDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshGatewayResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshGatewayResponse) GetMeshGatewayDeleteSuccessResponse() *shared.MeshGatewayDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshGatewayDeleteSuccessResponse
 }
 
 func (o *DeleteMeshGatewayResponse) GetNotFoundError() *shared.NotFoundError {

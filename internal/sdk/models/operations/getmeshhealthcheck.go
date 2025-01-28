@@ -46,6 +46,8 @@ type GetMeshHealthCheckResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshHealthCheckItem *shared.MeshHealthCheckItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshHealthCheckResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshHealthCheckResponse) GetMeshHealthCheckItem() *shared.MeshHealth
 		return nil
 	}
 	return o.MeshHealthCheckItem
+}
+
+func (o *GetMeshHealthCheckResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

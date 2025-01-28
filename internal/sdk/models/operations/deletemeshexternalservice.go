@@ -44,6 +44,8 @@ type DeleteMeshExternalServiceResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshExternalServiceDeleteSuccessResponse *shared.MeshExternalServiceDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshExternalServiceResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshExternalServiceResponse) GetMeshExternalServiceDeleteSuccessResponse() *shared.MeshExternalServiceDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshExternalServiceDeleteSuccessResponse
 }
 
 func (o *DeleteMeshExternalServiceResponse) GetNotFoundError() *shared.NotFoundError {

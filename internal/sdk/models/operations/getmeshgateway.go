@@ -46,6 +46,8 @@ type GetMeshGatewayResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshGatewayItem *shared.MeshGatewayItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshGatewayResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshGatewayResponse) GetMeshGatewayItem() *shared.MeshGatewayItem {
 		return nil
 	}
 	return o.MeshGatewayItem
+}
+
+func (o *GetMeshGatewayResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

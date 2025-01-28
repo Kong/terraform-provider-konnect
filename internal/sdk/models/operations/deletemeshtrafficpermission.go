@@ -44,6 +44,8 @@ type DeleteMeshTrafficPermissionResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshTrafficPermissionDeleteSuccessResponse *shared.MeshTrafficPermissionDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshTrafficPermissionResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshTrafficPermissionResponse) GetMeshTrafficPermissionDeleteSuccessResponse() *shared.MeshTrafficPermissionDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshTrafficPermissionDeleteSuccessResponse
 }
 
 func (o *DeleteMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {

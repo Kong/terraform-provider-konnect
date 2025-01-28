@@ -114,12 +114,37 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (String) Configuration of the backend. Parsed as JSON.
+- `conf` (Attributes) (see [below for nested schema](#nestedatt--items--logging--backends--conf))
 - `format` (String) Format of access logs. Placeholders available on
 https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log
 - `name` (String) Name of the backend, can be then used in Mesh.logging.defaultBackend or in
 TrafficLogging
 - `type` (String) Type of the backend (Kuma ships with 'tcp' and 'file')
+
+<a id="nestedatt--items--logging--backends--conf"></a>
+### Nested Schema for `items.logging.backends.conf`
+
+Read-Only:
+
+- `file_logging_backend_config` (Attributes) (see [below for nested schema](#nestedatt--items--logging--backends--conf--file_logging_backend_config))
+- `tcp_logging_backend_config` (Attributes) (see [below for nested schema](#nestedatt--items--logging--backends--conf--tcp_logging_backend_config))
+
+<a id="nestedatt--items--logging--backends--conf--file_logging_backend_config"></a>
+### Nested Schema for `items.logging.backends.conf.file_logging_backend_config`
+
+Read-Only:
+
+- `path` (String) Path to a file that logs will be written to
+
+
+<a id="nestedatt--items--logging--backends--conf--tcp_logging_backend_config"></a>
+### Nested Schema for `items.logging.backends.conf.tcp_logging_backend_config`
+
+Read-Only:
+
+- `address` (String) Address to TCP service that will receive logs
+
+
 
 
 
@@ -153,9 +178,81 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (String) Configuration of the backend. Parsed as JSON.
+- `conf` (Attributes) (see [below for nested schema](#nestedatt--items--metrics--backends--conf))
 - `name` (String) Name of the backend, can be then used in Mesh.metrics.enabledBackend
 - `type` (String) Type of the backend (Kuma ships with 'prometheus')
+
+<a id="nestedatt--items--metrics--backends--conf"></a>
+### Nested Schema for `items.metrics.backends.conf`
+
+Read-Only:
+
+- `prometheus_metrics_backend_config` (Attributes) (see [below for nested schema](#nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config))
+
+<a id="nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config"></a>
+### Nested Schema for `items.metrics.backends.conf.prometheus_metrics_backend_config`
+
+Read-Only:
+
+- `aggregate` (Attributes List) Map with the configuration of applications which metrics are going to be
+scrapped by kuma-dp. (see [below for nested schema](#nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--aggregate))
+- `envoy` (Attributes) Configuration of Envoy's metrics. (see [below for nested schema](#nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--envoy))
+- `path` (String) Path on which a dataplane should expose HTTP endpoint with Prometheus
+metrics.
+- `port` (Number) Port on which a dataplane should expose HTTP endpoint with Prometheus
+metrics.
+- `skip_mtls` (Boolean) If true then endpoints for scraping metrics won't require mTLS even if mTLS
+is enabled in Mesh. If nil, then it is treated as false.
+- `tags` (Map of String) Tags associated with an application this dataplane is deployed next to,
+e.g. service=web, version=1.0.
+`service` tag is mandatory.
+- `tls` (Attributes) Configuration of TLS for prometheus listener. (see [below for nested schema](#nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--tls))
+
+<a id="nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--aggregate"></a>
+### Nested Schema for `items.metrics.backends.conf.prometheus_metrics_backend_config.aggregate`
+
+Read-Only:
+
+- `address` (String) Address on which a service expose HTTP endpoint with Prometheus metrics.
+- `enabled` (Boolean) If false then the application won't be scrapped. If nil, then it is treated
+as true and kuma-dp scrapes metrics from the service.
+- `name` (String) Name which identify given configuration.
+- `path` (String) Path on which a service expose HTTP endpoint with Prometheus metrics.
+- `port` (Number) Port on which a service expose HTTP endpoint with Prometheus metrics.
+
+
+<a id="nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--envoy"></a>
+### Nested Schema for `items.metrics.backends.conf.prometheus_metrics_backend_config.envoy`
+
+Read-Only:
+
+- `filter_regex` (String) FilterRegex value that is going to be passed to Envoy for filtering
+Envoy metrics.
+- `used_only` (Boolean) If true then return metrics that Envoy has updated (counters incremented
+at least once, gauges changed at least once, and histograms added to at
+least once). If nil, then it is treated as false.
+
+
+<a id="nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--tls"></a>
+### Nested Schema for `items.metrics.backends.conf.prometheus_metrics_backend_config.tls`
+
+Read-Only:
+
+- `mode` (Attributes) mode defines how configured is the TLS for Prometheus.
+Supported values, delegated, disabled, activeMTLSBackend. Default to
+`activeMTLSBackend`. (see [below for nested schema](#nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--tls--mode))
+
+<a id="nestedatt--items--metrics--backends--conf--prometheus_metrics_backend_config--tls--mode"></a>
+### Nested Schema for `items.metrics.backends.conf.prometheus_metrics_backend_config.tls.mode`
+
+Read-Only:
+
+- `integer` (Number)
+- `str` (String)
+
+
+
+
 
 
 
@@ -173,7 +270,7 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (String) Configuration of the backend. Parsed as JSON.
+- `conf` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf))
 - `dp_cert` (Attributes) Dataplane certificate settings (see [below for nested schema](#nestedatt--items--mtls--backends--dp_cert))
 - `mode` (Attributes) Mode defines the behaviour of inbound listeners with regard to traffic
 encryption (see [below for nested schema](#nestedatt--items--mtls--backends--mode))
@@ -181,6 +278,84 @@ encryption (see [below for nested schema](#nestedatt--items--mtls--backends--mod
 - `root_chain` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--root_chain))
 - `type` (String) Type of the backend. Has to be one of the loaded plugins (Kuma ships with
 builtin and provided)
+
+<a id="nestedatt--items--mtls--backends--conf"></a>
+### Nested Schema for `items.mtls.backends.conf`
+
+Read-Only:
+
+- `builtin_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--builtin_certificate_authority_config))
+- `five` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--five))
+- `four` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--four))
+- `provided_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--provided_certificate_authority_config))
+- `three` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--three))
+
+<a id="nestedatt--items--mtls--backends--conf--builtin_certificate_authority_config"></a>
+### Nested Schema for `items.mtls.backends.conf.builtin_certificate_authority_config`
+
+Read-Only:
+
+- `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--builtin_certificate_authority_config--ca_cert))
+
+<a id="nestedatt--items--mtls--backends--conf--builtin_certificate_authority_config--ca_cert"></a>
+### Nested Schema for `items.mtls.backends.conf.builtin_certificate_authority_config.ca_cert`
+
+Read-Only:
+
+- `expiration` (String)
+- `rs_abits` (Number)
+
+
+
+<a id="nestedatt--items--mtls--backends--conf--five"></a>
+### Nested Schema for `items.mtls.backends.conf.five`
+
+
+<a id="nestedatt--items--mtls--backends--conf--four"></a>
+### Nested Schema for `items.mtls.backends.conf.four`
+
+
+<a id="nestedatt--items--mtls--backends--conf--provided_certificate_authority_config"></a>
+### Nested Schema for `items.mtls.backends.conf.provided_certificate_authority_config`
+
+Read-Only:
+
+- `cert` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--provided_certificate_authority_config--cert))
+- `key` (Attributes) (see [below for nested schema](#nestedatt--items--mtls--backends--conf--provided_certificate_authority_config--key))
+
+<a id="nestedatt--items--mtls--backends--conf--provided_certificate_authority_config--cert"></a>
+### Nested Schema for `items.mtls.backends.conf.provided_certificate_authority_config.cert`
+
+Read-Only:
+
+- `type` (String) Types that are assignable to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
+
+
+<a id="nestedatt--items--mtls--backends--conf--provided_certificate_authority_config--key"></a>
+### Nested Schema for `items.mtls.backends.conf.provided_certificate_authority_config.key`
+
+Read-Only:
+
+- `type` (String) Types that are assignable to Type:
+
+	*DataSource_Secret
+	*DataSource_File
+	*DataSource_Inline
+	*DataSource_InlineString
+Parsed as JSON.
+
+
+
+<a id="nestedatt--items--mtls--backends--conf--three"></a>
+### Nested Schema for `items.mtls.backends.conf.three`
+
+
 
 <a id="nestedatt--items--mtls--backends--dp_cert"></a>
 ### Nested Schema for `items.mtls.backends.dp_cert`
@@ -249,15 +424,7 @@ Read-Only:
 
 Read-Only:
 
-- `passthrough` (Attributes) Control the passthrough cluster (see [below for nested schema](#nestedatt--items--networking--outbound--passthrough))
-
-<a id="nestedatt--items--networking--outbound--passthrough"></a>
-### Nested Schema for `items.networking.outbound.passthrough`
-
-Read-Only:
-
-- `value` (Boolean)
-
+- `passthrough` (Boolean) Control the passthrough cluster
 
 
 
@@ -286,16 +453,45 @@ Read-Only:
 
 Read-Only:
 
-- `conf` (String) Configuration of the backend. Parsed as JSON.
+- `conf` (Attributes) (see [below for nested schema](#nestedatt--items--tracing--backends--conf))
 - `name` (String) Name of the backend, can be then used in Mesh.tracing.defaultBackend or in
 TrafficTrace
-- `sampling` (Attributes) Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
-Empty value defaults to 100.0% (see [below for nested schema](#nestedatt--items--tracing--backends--sampling))
+- `sampling` (Number) Percentage of traces that will be sent to the backend (range 0.0 - 100.0).
+Empty value defaults to 100.0%
 - `type` (String) Type of the backend (Kuma ships with 'zipkin')
 
-<a id="nestedatt--items--tracing--backends--sampling"></a>
-### Nested Schema for `items.tracing.backends.sampling`
+<a id="nestedatt--items--tracing--backends--conf"></a>
+### Nested Schema for `items.tracing.backends.conf`
 
 Read-Only:
 
-- `value` (Number)
+- `datadog_tracing_backend_config` (Attributes) (see [below for nested schema](#nestedatt--items--tracing--backends--conf--datadog_tracing_backend_config))
+- `zipkin_tracing_backend_config` (Attributes) (see [below for nested schema](#nestedatt--items--tracing--backends--conf--zipkin_tracing_backend_config))
+
+<a id="nestedatt--items--tracing--backends--conf--datadog_tracing_backend_config"></a>
+### Nested Schema for `items.tracing.backends.conf.datadog_tracing_backend_config`
+
+Read-Only:
+
+- `address` (String) Address of datadog collector.
+- `port` (Number) Port of datadog collector
+- `split_service` (Boolean) Determines if datadog service name should be split based on traffic
+direction and destination. For example, with `splitService: true` and a
+`backend` service that communicates with a couple of databases, you would
+get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
+`backend_OUTBOUND_db2` in Datadog. Default: false
+
+
+<a id="nestedatt--items--tracing--backends--conf--zipkin_tracing_backend_config"></a>
+### Nested Schema for `items.tracing.backends.conf.zipkin_tracing_backend_config`
+
+Read-Only:
+
+- `api_version` (String) Version of the API. values: httpJson, httpJsonV1, httpProto. Default:
+httpJson see
+https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion
+- `shared_span_context` (Boolean) Determines whether client and server spans will share the same span
+context. Default: true.
+https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
+- `trace_id128bit` (Boolean) Generate 128bit traces. Default: false
+- `url` (String) Address of Zipkin collector.

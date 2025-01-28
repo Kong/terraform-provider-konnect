@@ -82,7 +82,7 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 				if itemsItem.Spec.Default.Sampling == nil {
 					items1.Spec.Default.Sampling = nil
 				} else {
-					items1.Spec.Default.Sampling = &tfTypes.MeshTraceItemSampling{}
+					items1.Spec.Default.Sampling = &tfTypes.Sampling{}
 					if itemsItem.Spec.Default.Sampling.Client == nil {
 						items1.Spec.Default.Sampling.Client = nil
 					} else {

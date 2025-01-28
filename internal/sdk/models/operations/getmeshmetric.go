@@ -46,6 +46,8 @@ type GetMeshMetricResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshMetricItem *shared.MeshMetricItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshMetricResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshMetricResponse) GetMeshMetricItem() *shared.MeshMetricItem {
 		return nil
 	}
 	return o.MeshMetricItem
+}
+
+func (o *GetMeshMetricResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

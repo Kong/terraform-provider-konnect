@@ -46,6 +46,8 @@ type GetMeshTrafficPermissionResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshTrafficPermissionItem *shared.MeshTrafficPermissionItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshTrafficPermissionResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshTrafficPermissionResponse) GetMeshTrafficPermissionItem() *share
 		return nil
 	}
 	return o.MeshTrafficPermissionItem
+}
+
+func (o *GetMeshTrafficPermissionResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

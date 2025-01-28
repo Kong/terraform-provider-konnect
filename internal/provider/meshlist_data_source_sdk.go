@@ -72,10 +72,17 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount, backendsItem := range itemsItem.Logging.Backends {
 					var backends1 tfTypes.Backends
 					if backendsItem.Conf == nil {
-						backends1.Conf = types.StringNull()
+						backends1.Conf = nil
 					} else {
-						confResult, _ := json.Marshal(backendsItem.Conf)
-						backends1.Conf = types.StringValue(string(confResult))
+						backends1.Conf = &tfTypes.MeshItemLoggingConf{}
+						if backendsItem.Conf.FileLoggingBackendConfig != nil {
+							backends1.Conf.FileLoggingBackendConfig = &tfTypes.FileLoggingBackendConfig{}
+							backends1.Conf.FileLoggingBackendConfig.Path = types.StringPointerValue(backendsItem.Conf.FileLoggingBackendConfig.Path)
+						}
+						if backendsItem.Conf.TCPLoggingBackendConfig != nil {
+							backends1.Conf.TCPLoggingBackendConfig = &tfTypes.TCPLoggingBackendConfig{}
+							backends1.Conf.TCPLoggingBackendConfig.Address = types.StringPointerValue(backendsItem.Conf.TCPLoggingBackendConfig.Address)
+						}
 					}
 					backends1.Format = types.StringPointerValue(backendsItem.Format)
 					backends1.Name = types.StringPointerValue(backendsItem.Name)
@@ -115,10 +122,62 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount1, backendsItem1 := range itemsItem.Metrics.Backends {
 					var backends3 tfTypes.MeshItemBackends
 					if backendsItem1.Conf == nil {
-						backends3.Conf = types.StringNull()
+						backends3.Conf = nil
 					} else {
-						confResult1, _ := json.Marshal(backendsItem1.Conf)
-						backends3.Conf = types.StringValue(string(confResult1))
+						backends3.Conf = &tfTypes.MeshItemConf{}
+						if backendsItem1.Conf.PrometheusMetricsBackendConfig != nil {
+							backends3.Conf.PrometheusMetricsBackendConfig = &tfTypes.PrometheusMetricsBackendConfig{}
+							backends3.Conf.PrometheusMetricsBackendConfig.Aggregate = []tfTypes.Aggregate{}
+							for aggregateCount, aggregateItem := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Aggregate {
+								var aggregate1 tfTypes.Aggregate
+								aggregate1.Address = types.StringPointerValue(aggregateItem.Address)
+								aggregate1.Enabled = types.BoolPointerValue(aggregateItem.Enabled)
+								aggregate1.Name = types.StringPointerValue(aggregateItem.Name)
+								aggregate1.Path = types.StringPointerValue(aggregateItem.Path)
+								aggregate1.Port = types.Int64PointerValue(aggregateItem.Port)
+								if aggregateCount+1 > len(backends3.Conf.PrometheusMetricsBackendConfig.Aggregate) {
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate = append(backends3.Conf.PrometheusMetricsBackendConfig.Aggregate, aggregate1)
+								} else {
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Address = aggregate1.Address
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Enabled = aggregate1.Enabled
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Name = aggregate1.Name
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Path = aggregate1.Path
+									backends3.Conf.PrometheusMetricsBackendConfig.Aggregate[aggregateCount].Port = aggregate1.Port
+								}
+							}
+							if backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy == nil {
+								backends3.Conf.PrometheusMetricsBackendConfig.Envoy = nil
+							} else {
+								backends3.Conf.PrometheusMetricsBackendConfig.Envoy = &tfTypes.Envoy{}
+								backends3.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.FilterRegex)
+								backends3.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Envoy.UsedOnly)
+							}
+							backends3.Conf.PrometheusMetricsBackendConfig.Path = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Path)
+							backends3.Conf.PrometheusMetricsBackendConfig.Port = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.Port)
+							backends3.Conf.PrometheusMetricsBackendConfig.SkipMTLS = types.BoolPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.SkipMTLS)
+							if len(backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags) > 0 {
+								backends3.Conf.PrometheusMetricsBackendConfig.Tags = make(map[string]types.String)
+								for key3, value3 := range backendsItem1.Conf.PrometheusMetricsBackendConfig.Tags {
+									backends3.Conf.PrometheusMetricsBackendConfig.Tags[key3] = types.StringValue(value3)
+								}
+							}
+							if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS == nil {
+								backends3.Conf.PrometheusMetricsBackendConfig.TLS = nil
+							} else {
+								backends3.Conf.PrometheusMetricsBackendConfig.TLS = &tfTypes.MeshServices{}
+								if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode == nil {
+									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = nil
+								} else {
+									backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode = &tfTypes.Mode{}
+									if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str != nil {
+										backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str = types.StringPointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str)
+									}
+									if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer != nil {
+										backends3.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer = types.Int64PointerValue(backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Integer)
+									}
+								}
+							}
+						}
 					}
 					backends3.Name = types.StringPointerValue(backendsItem1.Name)
 					backends3.Type = types.StringPointerValue(backendsItem1.Type)
@@ -140,10 +199,45 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount2, backendsItem2 := range itemsItem.Mtls.Backends {
 					var backends5 tfTypes.MeshItemMtlsBackends
 					if backendsItem2.Conf == nil {
-						backends5.Conf = types.StringNull()
+						backends5.Conf = nil
 					} else {
-						confResult2, _ := json.Marshal(backendsItem2.Conf)
-						backends5.Conf = types.StringValue(string(confResult2))
+						backends5.Conf = &tfTypes.MeshItemMtlsConf{}
+						if backendsItem2.Conf.Three != nil {
+							backends5.Conf.Three = &tfTypes.Metadata{}
+						}
+						if backendsItem2.Conf.Four != nil {
+							backends5.Conf.Four = &tfTypes.Metadata{}
+						}
+						if backendsItem2.Conf.Five != nil {
+							backends5.Conf.Five = &tfTypes.Metadata{}
+						}
+						if backendsItem2.Conf.BuiltinCertificateAuthorityConfig != nil {
+							backends5.Conf.BuiltinCertificateAuthorityConfig = &tfTypes.BuiltinCertificateAuthorityConfig{}
+							if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert == nil {
+								backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = nil
+							} else {
+								backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.CaCert{}
+								backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration = types.StringPointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration)
+								backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits = types.Int64PointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits)
+							}
+						}
+						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
+							backends5.Conf.ProvidedCertificateAuthorityConfig = &tfTypes.ProvidedCertificateAuthorityConfig{}
+							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert == nil {
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = nil
+							} else {
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.Cert{}
+								typeVarResult, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type)
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = types.StringValue(string(typeVarResult))
+							}
+							if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key == nil {
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Key = nil
+							} else {
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.Cert{}
+								typeVarResult1, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type)
+								backends5.Conf.ProvidedCertificateAuthorityConfig.Key.Type = types.StringValue(string(typeVarResult1))
+							}
+						}
 					}
 					if backendsItem2.DpCert == nil {
 						backends5.DpCert = nil
@@ -211,12 +305,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 					items1.Networking.Outbound = nil
 				} else {
 					items1.Networking.Outbound = &tfTypes.Outbound{}
-					if itemsItem.Networking.Outbound.Passthrough == nil {
-						items1.Networking.Outbound.Passthrough = nil
-					} else {
-						items1.Networking.Outbound.Passthrough = &tfTypes.Passthrough{}
-						items1.Networking.Outbound.Passthrough.Value = types.BoolPointerValue(itemsItem.Networking.Outbound.Passthrough.Value)
-					}
+					items1.Networking.Outbound.Passthrough = types.BoolPointerValue(itemsItem.Networking.Outbound.Passthrough)
 				}
 			}
 			if itemsItem.Routing == nil {
@@ -239,21 +328,28 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				for backendsCount3, backendsItem3 := range itemsItem.Tracing.Backends {
 					var backends7 tfTypes.MeshItemTracingBackends
 					if backendsItem3.Conf == nil {
-						backends7.Conf = types.StringNull()
+						backends7.Conf = nil
 					} else {
-						confResult3, _ := json.Marshal(backendsItem3.Conf)
-						backends7.Conf = types.StringValue(string(confResult3))
+						backends7.Conf = &tfTypes.MeshItemTracingConf{}
+						if backendsItem3.Conf.DatadogTracingBackendConfig != nil {
+							backends7.Conf.DatadogTracingBackendConfig = &tfTypes.DatadogTracingBackendConfig{}
+							backends7.Conf.DatadogTracingBackendConfig.Address = types.StringPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Address)
+							backends7.Conf.DatadogTracingBackendConfig.Port = types.Int64PointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.Port)
+							backends7.Conf.DatadogTracingBackendConfig.SplitService = types.BoolPointerValue(backendsItem3.Conf.DatadogTracingBackendConfig.SplitService)
+						}
+						if backendsItem3.Conf.ZipkinTracingBackendConfig != nil {
+							backends7.Conf.ZipkinTracingBackendConfig = &tfTypes.ZipkinTracingBackendConfig{}
+							backends7.Conf.ZipkinTracingBackendConfig.APIVersion = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.APIVersion)
+							backends7.Conf.ZipkinTracingBackendConfig.SharedSpanContext = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.SharedSpanContext)
+							backends7.Conf.ZipkinTracingBackendConfig.TraceId128bit = types.BoolPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.TraceId128bit)
+							backends7.Conf.ZipkinTracingBackendConfig.URL = types.StringPointerValue(backendsItem3.Conf.ZipkinTracingBackendConfig.URL)
+						}
 					}
 					backends7.Name = types.StringPointerValue(backendsItem3.Name)
-					if backendsItem3.Sampling == nil {
-						backends7.Sampling = nil
+					if backendsItem3.Sampling != nil {
+						backends7.Sampling = types.NumberValue(big.NewFloat(float64(*backendsItem3.Sampling)))
 					} else {
-						backends7.Sampling = &tfTypes.Sampling{}
-						if backendsItem3.Sampling.Value != nil {
-							backends7.Sampling.Value = types.NumberValue(big.NewFloat(float64(*backendsItem3.Sampling.Value)))
-						} else {
-							backends7.Sampling.Value = types.NumberNull()
-						}
+						backends7.Sampling = types.NumberNull()
 					}
 					backends7.Type = types.StringPointerValue(backendsItem3.Type)
 					if backendsCount3+1 > len(items1.Tracing.Backends) {

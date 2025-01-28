@@ -44,6 +44,8 @@ type DeleteMeshAccessLogResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshAccessLogDeleteSuccessResponse *shared.MeshAccessLogDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshAccessLogResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshAccessLogResponse) GetMeshAccessLogDeleteSuccessResponse() *shared.MeshAccessLogDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshAccessLogDeleteSuccessResponse
 }
 
 func (o *DeleteMeshAccessLogResponse) GetNotFoundError() *shared.NotFoundError {

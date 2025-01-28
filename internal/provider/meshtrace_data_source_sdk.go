@@ -78,7 +78,7 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(resp *shared.M
 			if resp.Spec.Default.Sampling == nil {
 				r.Spec.Default.Sampling = nil
 			} else {
-				r.Spec.Default.Sampling = &tfTypes.MeshTraceItemSampling{}
+				r.Spec.Default.Sampling = &tfTypes.Sampling{}
 				if resp.Spec.Default.Sampling.Client == nil {
 					r.Spec.Default.Sampling.Client = nil
 				} else {

@@ -55,9 +55,9 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(resp *
 						listeners1.TLS = nil
 					} else {
 						listeners1.TLS = &tfTypes.MeshGatewayItemTLS{}
-						listeners1.TLS.Certificates = []tfTypes.Certificates{}
+						listeners1.TLS.Certificates = []tfTypes.Cert{}
 						for certificatesCount, certificatesItem := range listenersItem.TLS.Certificates {
-							var certificates1 tfTypes.Certificates
+							var certificates1 tfTypes.Cert
 							typeVarResult, _ := json.Marshal(certificatesItem.Type)
 							certificates1.Type = types.StringValue(string(typeVarResult))
 							if certificatesCount+1 > len(listeners1.TLS.Certificates) {
@@ -78,10 +78,9 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(resp *
 							}
 						}
 						if listenersItem.TLS.Options == nil {
-							listeners1.TLS.Options = types.StringNull()
+							listeners1.TLS.Options = nil
 						} else {
-							optionsVarResult, _ := json.Marshal(listenersItem.TLS.Options)
-							listeners1.TLS.Options = types.StringValue(string(optionsVarResult))
+							listeners1.TLS.Options = &tfTypes.Metadata{}
 						}
 					}
 					if listenersCount+1 > len(items1.Conf.Listeners) {

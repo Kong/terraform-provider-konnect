@@ -46,6 +46,8 @@ type GetMeshOPAResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshOPAItem *shared.MeshOPAItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshOPAResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshOPAResponse) GetMeshOPAItem() *shared.MeshOPAItem {
 		return nil
 	}
 	return o.MeshOPAItem
+}
+
+func (o *GetMeshOPAResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

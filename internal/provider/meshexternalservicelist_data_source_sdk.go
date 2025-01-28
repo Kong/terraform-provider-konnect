@@ -71,7 +71,7 @@ func (r *MeshExternalServiceListDataSourceModel) RefreshFromSharedMeshExternalSe
 			if itemsItem.Spec.TLS == nil {
 				items1.Spec.TLS = nil
 			} else {
-				items1.Spec.TLS = &tfTypes.TLS{}
+				items1.Spec.TLS = &tfTypes.MeshExternalServiceItemTLS{}
 				items1.Spec.TLS.AllowRenegotiation = types.BoolPointerValue(itemsItem.Spec.TLS.AllowRenegotiation)
 				items1.Spec.TLS.Enabled = types.BoolPointerValue(itemsItem.Spec.TLS.Enabled)
 				if itemsItem.Spec.TLS.Verification == nil {
@@ -81,7 +81,7 @@ func (r *MeshExternalServiceListDataSourceModel) RefreshFromSharedMeshExternalSe
 					if itemsItem.Spec.TLS.Verification.CaCert == nil {
 						items1.Spec.TLS.Verification.CaCert = nil
 					} else {
-						items1.Spec.TLS.Verification.CaCert = &tfTypes.CaCert{}
+						items1.Spec.TLS.Verification.CaCert = &tfTypes.MeshExternalServiceItemCaCert{}
 						items1.Spec.TLS.Verification.CaCert.Inline = types.StringPointerValue(itemsItem.Spec.TLS.Verification.CaCert.Inline)
 						items1.Spec.TLS.Verification.CaCert.InlineString = types.StringPointerValue(itemsItem.Spec.TLS.Verification.CaCert.InlineString)
 						items1.Spec.TLS.Verification.CaCert.Secret = types.StringPointerValue(itemsItem.Spec.TLS.Verification.CaCert.Secret)
@@ -89,7 +89,7 @@ func (r *MeshExternalServiceListDataSourceModel) RefreshFromSharedMeshExternalSe
 					if itemsItem.Spec.TLS.Verification.ClientCert == nil {
 						items1.Spec.TLS.Verification.ClientCert = nil
 					} else {
-						items1.Spec.TLS.Verification.ClientCert = &tfTypes.CaCert{}
+						items1.Spec.TLS.Verification.ClientCert = &tfTypes.MeshExternalServiceItemCaCert{}
 						items1.Spec.TLS.Verification.ClientCert.Inline = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientCert.Inline)
 						items1.Spec.TLS.Verification.ClientCert.InlineString = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientCert.InlineString)
 						items1.Spec.TLS.Verification.ClientCert.Secret = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientCert.Secret)
@@ -97,7 +97,7 @@ func (r *MeshExternalServiceListDataSourceModel) RefreshFromSharedMeshExternalSe
 					if itemsItem.Spec.TLS.Verification.ClientKey == nil {
 						items1.Spec.TLS.Verification.ClientKey = nil
 					} else {
-						items1.Spec.TLS.Verification.ClientKey = &tfTypes.CaCert{}
+						items1.Spec.TLS.Verification.ClientKey = &tfTypes.MeshExternalServiceItemCaCert{}
 						items1.Spec.TLS.Verification.ClientKey.Inline = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientKey.Inline)
 						items1.Spec.TLS.Verification.ClientKey.InlineString = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientKey.InlineString)
 						items1.Spec.TLS.Verification.ClientKey.Secret = types.StringPointerValue(itemsItem.Spec.TLS.Verification.ClientKey.Secret)

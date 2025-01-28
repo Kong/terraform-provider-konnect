@@ -119,10 +119,9 @@ should contain an RSA key and certificate, and the other an
 ECDSA key and certificate. (see [below for nested schema](#nestedatt--items--conf--listeners--tls--certificates))
 - `mode` (Attributes) Mode defines the TLS behavior for the TLS session initiated
 by the client. (see [below for nested schema](#nestedatt--items--conf--listeners--tls--mode))
-- `options` (String) Options should eventually configure how TLS is configured. This
+- `options` (Attributes) Options should eventually configure how TLS is configured. This
 is where cipher suite and version configuration can be specified,
-client certificates enforced, and so on.
-Parsed as JSON.
+client certificates enforced, and so on. (see [below for nested schema](#nestedatt--items--conf--listeners--tls--options))
 
 <a id="nestedatt--items--conf--listeners--tls--certificates"></a>
 ### Nested Schema for `items.conf.listeners.tls.certificates`
@@ -145,6 +144,10 @@ Read-Only:
 
 - `integer` (Number)
 - `str` (String)
+
+
+<a id="nestedatt--items--conf--listeners--tls--options"></a>
+### Nested Schema for `items.conf.listeners.tls.options`
 
 
 

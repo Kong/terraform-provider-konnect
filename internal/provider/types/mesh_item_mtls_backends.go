@@ -5,10 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshItemMtlsBackends struct {
-	Conf      types.String `tfsdk:"conf"`
-	DpCert    *DpCert      `tfsdk:"dp_cert"`
-	Mode      *Mode        `tfsdk:"mode"`
-	Name      types.String `tfsdk:"name"`
-	RootChain *RootChain   `tfsdk:"root_chain"`
-	Type      types.String `tfsdk:"type"`
+	Conf      *MeshItemMtlsConf `tfsdk:"conf"`
+	DpCert    *DpCert           `tfsdk:"dp_cert"`
+	Mode      *Mode             `tfsdk:"mode"`
+	Name      types.String      `tfsdk:"name"`
+	RootChain *RootChain        `tfsdk:"root_chain"`
+	Type      types.String      `tfsdk:"type"`
 }

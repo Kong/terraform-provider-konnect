@@ -46,6 +46,8 @@ type GetMeshHTTPRouteResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshHTTPRouteItem *shared.MeshHTTPRouteItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshHTTPRouteResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshHTTPRouteResponse) GetMeshHTTPRouteItem() *shared.MeshHTTPRouteI
 		return nil
 	}
 	return o.MeshHTTPRouteItem
+}
+
+func (o *GetMeshHTTPRouteResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

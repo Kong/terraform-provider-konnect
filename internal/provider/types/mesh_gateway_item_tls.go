@@ -2,10 +2,8 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
-
 type MeshGatewayItemTLS struct {
-	Certificates []Certificates `tfsdk:"certificates"`
-	Mode         *Mode          `tfsdk:"mode"`
-	Options      types.String   `tfsdk:"options"`
+	Certificates []Cert    `tfsdk:"certificates"`
+	Mode         *Mode     `tfsdk:"mode"`
+	Options      *Metadata `tfsdk:"options"`
 }

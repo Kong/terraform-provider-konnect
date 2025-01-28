@@ -44,6 +44,8 @@ type DeleteMeshFaultInjectionResponse struct {
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
+	// Successful response
+	MeshFaultInjectionDeleteSuccessResponse *shared.MeshFaultInjectionDeleteSuccessResponse
 	// Not Found
 	NotFoundError *shared.NotFoundError
 }
@@ -67,6 +69,13 @@ func (o *DeleteMeshFaultInjectionResponse) GetRawResponse() *http.Response {
 		return nil
 	}
 	return o.RawResponse
+}
+
+func (o *DeleteMeshFaultInjectionResponse) GetMeshFaultInjectionDeleteSuccessResponse() *shared.MeshFaultInjectionDeleteSuccessResponse {
+	if o == nil {
+		return nil
+	}
+	return o.MeshFaultInjectionDeleteSuccessResponse
 }
 
 func (o *DeleteMeshFaultInjectionResponse) GetNotFoundError() *shared.NotFoundError {

@@ -37,6 +37,8 @@ type GetHostnameGeneratorResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	HostnameGeneratorItem *shared.HostnameGeneratorItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetHostnameGeneratorResponse) GetContentType() string {
@@ -65,4 +67,11 @@ func (o *GetHostnameGeneratorResponse) GetHostnameGeneratorItem() *shared.Hostna
 		return nil
 	}
 	return o.HostnameGeneratorItem
+}
+
+func (o *GetHostnameGeneratorResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

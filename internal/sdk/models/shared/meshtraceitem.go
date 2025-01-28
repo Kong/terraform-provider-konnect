@@ -420,10 +420,10 @@ func (u Random) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type Random: all fields are null")
 }
 
-// MeshTraceItemSampling - Sampling configuration.
+// Sampling configuration.
 // Sampling is the process by which a decision is made on whether to
 // process/export a span or not.
-type MeshTraceItemSampling struct {
+type Sampling struct {
 	// Target percentage of requests that will be force traced if the
 	// 'x-client-trace-id' header is set. Mirror of client_sampling in Envoy
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133
@@ -447,21 +447,21 @@ type MeshTraceItemSampling struct {
 	Random *Random `json:"random,omitempty"`
 }
 
-func (o *MeshTraceItemSampling) GetClient() *MeshTraceItemClient {
+func (o *Sampling) GetClient() *MeshTraceItemClient {
 	if o == nil {
 		return nil
 	}
 	return o.Client
 }
 
-func (o *MeshTraceItemSampling) GetOverall() *Overall {
+func (o *Sampling) GetOverall() *Overall {
 	if o == nil {
 		return nil
 	}
 	return o.Overall
 }
 
-func (o *MeshTraceItemSampling) GetRandom() *Random {
+func (o *Sampling) GetRandom() *Random {
 	if o == nil {
 		return nil
 	}
@@ -535,7 +535,7 @@ type MeshTraceItemDefault struct {
 	// Sampling configuration.
 	// Sampling is the process by which a decision is made on whether to
 	// process/export a span or not.
-	Sampling *MeshTraceItemSampling `json:"sampling,omitempty"`
+	Sampling *Sampling `json:"sampling,omitempty"`
 	// Custom tags configuration. You can add custom tags to traces based on
 	// headers or literal values.
 	Tags []Tags `json:"tags,omitempty"`
@@ -548,7 +548,7 @@ func (o *MeshTraceItemDefault) GetBackends() []MeshTraceItemBackends {
 	return o.Backends
 }
 
-func (o *MeshTraceItemDefault) GetSampling() *MeshTraceItemSampling {
+func (o *MeshTraceItemDefault) GetSampling() *Sampling {
 	if o == nil {
 		return nil
 	}

@@ -46,6 +46,8 @@ type GetMeshCircuitBreakerResponse struct {
 	RawResponse *http.Response
 	// Successful response
 	MeshCircuitBreakerItem *shared.MeshCircuitBreakerItem
+	// Not Found
+	NotFoundError *shared.NotFoundError
 }
 
 func (o *GetMeshCircuitBreakerResponse) GetContentType() string {
@@ -74,4 +76,11 @@ func (o *GetMeshCircuitBreakerResponse) GetMeshCircuitBreakerItem() *shared.Mesh
 		return nil
 	}
 	return o.MeshCircuitBreakerItem
+}
+
+func (o *GetMeshCircuitBreakerResponse) GetNotFoundError() *shared.NotFoundError {
+	if o == nil {
+		return nil
+	}
+	return o.NotFoundError
 }

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 22c0ae3242acdaca1e8bba8ddaafe5c5
+  docChecksum: 6933d36cd1c0bcdf2d55e7daa39465dd
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -1157,6 +1157,7 @@ generatedFiles:
   - internal/provider/types/add.go
   - internal/provider/types/addresses.go
   - internal/provider/types/affinity_tags.go
+  - internal/provider/types/aggregate.go
   - internal/provider/types/ai_prompt_decorator_plugin_append.go
   - internal/provider/types/ai_prompt_decorator_plugin_config.go
   - internal/provider/types/ai_prompt_guard_plugin_config.go
@@ -1209,11 +1210,12 @@ generatedFiles:
   - internal/provider/types/binary.go
   - internal/provider/types/bootstrap_servers.go
   - internal/provider/types/bot_detection_plugin_config.go
+  - internal/provider/types/builtin_certificate_authority_config.go
   - internal/provider/types/button.go
   - internal/provider/types/ca_cert.go
   - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
-  - internal/provider/types/certificates.go
+  - internal/provider/types/cert.go
   - internal/provider/types/client.go
   - internal/provider/types/cluster.go
   - internal/provider/types/cluster_nodes.go
@@ -1238,6 +1240,7 @@ generatedFiles:
   - internal/provider/types/datadog.go
   - internal/provider/types/datadog_plugin_config.go
   - internal/provider/types/datadog_plugin_metrics.go
+  - internal/provider/types/datadog_tracing_backend_config.go
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
@@ -1248,6 +1251,7 @@ generatedFiles:
   - internal/provider/types/detectors.go
   - internal/provider/types/dp_cert.go
   - internal/provider/types/endpoints.go
+  - internal/provider/types/envoy.go
   - internal/provider/types/exclude.go
   - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extension.go
@@ -1257,6 +1261,7 @@ generatedFiles:
   - internal/provider/types/failure_percentage.go
   - internal/provider/types/file.go
   - internal/provider/types/file_log_plugin_config.go
+  - internal/provider/types/file_logging_backend_config.go
   - internal/provider/types/filter_state.go
   - internal/provider/types/filters.go
   - internal/provider/types/format.go
@@ -1332,7 +1337,9 @@ generatedFiles:
   - internal/provider/types/mesh_circuit_breaker_item_spec.go
   - internal/provider/types/mesh_external_service.go
   - internal/provider/types/mesh_external_service_item.go
+  - internal/provider/types/mesh_external_service_item_ca_cert.go
   - internal/provider/types/mesh_external_service_item_spec.go
+  - internal/provider/types/mesh_external_service_item_tls.go
   - internal/provider/types/mesh_external_service_item_version.go
   - internal/provider/types/mesh_fault_injection_item.go
   - internal/provider/types/mesh_fault_injection_item_default.go
@@ -1360,8 +1367,12 @@ generatedFiles:
   - internal/provider/types/mesh_http_route_item_to.go
   - internal/provider/types/mesh_item.go
   - internal/provider/types/mesh_item_backends.go
+  - internal/provider/types/mesh_item_conf.go
+  - internal/provider/types/mesh_item_logging_conf.go
   - internal/provider/types/mesh_item_mtls_backends.go
+  - internal/provider/types/mesh_item_mtls_conf.go
   - internal/provider/types/mesh_item_tracing_backends.go
+  - internal/provider/types/mesh_item_tracing_conf.go
   - internal/provider/types/mesh_load_balancing_strategy_item.go
   - internal/provider/types/mesh_load_balancing_strategy_item_default.go
   - internal/provider/types/mesh_load_balancing_strategy_item_from.go
@@ -1430,7 +1441,6 @@ generatedFiles:
   - internal/provider/types/mesh_trace_item_backends.go
   - internal/provider/types/mesh_trace_item_default.go
   - internal/provider/types/mesh_trace_item_open_telemetry.go
-  - internal/provider/types/mesh_trace_item_sampling.go
   - internal/provider/types/mesh_trace_item_spec.go
   - internal/provider/types/mesh_traffic_permission_item.go
   - internal/provider/types/mesh_traffic_permission_item_default.go
@@ -1464,7 +1474,6 @@ generatedFiles:
   - internal/provider/types/paginated_meta.go
   - internal/provider/types/parameter_schema.go
   - internal/provider/types/passive.go
-  - internal/provider/types/passthrough.go
   - internal/provider/types/path.go
   - internal/provider/types/pem.go
   - internal/provider/types/portal.go
@@ -1474,9 +1483,11 @@ generatedFiles:
   - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/profiles.go
   - internal/provider/types/prometheus.go
+  - internal/provider/types/prometheus_metrics_backend_config.go
   - internal/provider/types/prometheus_plugin_config.go
   - internal/provider/types/prompts.go
   - internal/provider/types/propagation.go
+  - internal/provider/types/provided_certificate_authority_config.go
   - internal/provider/types/provider_account.go
   - internal/provider/types/proxy_cache_advanced_plugin_config.go
   - internal/provider/types/proxy_cache_plugin_config.go
@@ -1549,9 +1560,9 @@ generatedFiles:
   - internal/provider/types/tags.go
   - internal/provider/types/tcp.go
   - internal/provider/types/tcp_log_plugin_config.go
+  - internal/provider/types/tcp_logging_backend_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
-  - internal/provider/types/tls.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
   - internal/provider/types/tracing.go
@@ -1573,6 +1584,7 @@ generatedFiles:
   - internal/provider/types/xml_threat_protection_plugin_config.go
   - internal/provider/types/zipkin.go
   - internal/provider/types/zipkin_plugin_config.go
+  - internal/provider/types/zipkin_tracing_backend_config.go
   - internal/provider/utils.go
   - internal/sdk/.gitattributes
   - internal/sdk/.gitignore
@@ -2251,6 +2263,7 @@ generatedFiles:
   - internal/sdk/models/shared/basicauthplugin.go
   - internal/sdk/models/shared/basicauthwithoutparents.go
   - internal/sdk/models/shared/botdetectionplugin.go
+  - internal/sdk/models/shared/builtincertificateauthorityconfig.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/cacertificateinput.go
   - internal/sdk/models/shared/canaryplugin.go
@@ -2297,12 +2310,14 @@ generatedFiles:
   - internal/sdk/models/shared/customdomain.go
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/datadogplugin.go
+  - internal/sdk/models/shared/datadogtracingbackendconfig.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/entityregion.go
   - internal/sdk/models/shared/exittransformerplugin.go
+  - internal/sdk/models/shared/fileloggingbackendconfig.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/forwardproxyplugin.go
@@ -2319,6 +2334,7 @@ generatedFiles:
   - internal/sdk/models/shared/hmacauthplugin.go
   - internal/sdk/models/shared/hmacauthwithoutparents.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/hostnamegeneratordeletesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratoritem.go
   - internal/sdk/models/shared/hostnamegeneratorlist.go
   - internal/sdk/models/shared/httplogplugin.go
@@ -2354,73 +2370,96 @@ generatedFiles:
   - internal/sdk/models/shared/listprovideraccountsresponse.go
   - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshaccesslogcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshaccesslogdeletesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogitem.go
   - internal/sdk/models/shared/meshaccessloglist.go
   - internal/sdk/models/shared/meshcircuitbreakercreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshcircuitbreakerdeletesuccessresponse.go
   - internal/sdk/models/shared/meshcircuitbreakeritem.go
   - internal/sdk/models/shared/meshcircuitbreakerlist.go
   - internal/sdk/models/shared/meshcontrolplane.go
   - internal/sdk/models/shared/meshcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshdeletesuccessresponse.go
   - internal/sdk/models/shared/meshexternalservicecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshexternalservicedeletesuccessresponse.go
   - internal/sdk/models/shared/meshexternalserviceitem.go
   - internal/sdk/models/shared/meshexternalservicelist.go
   - internal/sdk/models/shared/meshfaultinjectioncreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshfaultinjectiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshfaultinjectionitem.go
   - internal/sdk/models/shared/meshfaultinjectionlist.go
   - internal/sdk/models/shared/meshgatewaycreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshgatewaydeletesuccessresponse.go
   - internal/sdk/models/shared/meshgatewayitem.go
   - internal/sdk/models/shared/meshgatewaylist.go
   - internal/sdk/models/shared/meshglobalratelimitcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshglobalratelimitdeletesuccessresponse.go
   - internal/sdk/models/shared/meshglobalratelimititem.go
   - internal/sdk/models/shared/meshglobalratelimitlist.go
   - internal/sdk/models/shared/meshhealthcheckcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshhealthcheckdeletesuccessresponse.go
   - internal/sdk/models/shared/meshhealthcheckitem.go
   - internal/sdk/models/shared/meshhealthchecklist.go
   - internal/sdk/models/shared/meshhttproutecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshhttproutedeletesuccessresponse.go
   - internal/sdk/models/shared/meshhttprouteitem.go
   - internal/sdk/models/shared/meshhttproutelist.go
   - internal/sdk/models/shared/meshitem.go
   - internal/sdk/models/shared/meshlist.go
   - internal/sdk/models/shared/meshloadbalancingstrategycreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshloadbalancingstrategydeletesuccessresponse.go
   - internal/sdk/models/shared/meshloadbalancingstrategyitem.go
   - internal/sdk/models/shared/meshloadbalancingstrategylist.go
   - internal/sdk/models/shared/meshmetriccreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshmetricdeletesuccessresponse.go
   - internal/sdk/models/shared/meshmetricitem.go
   - internal/sdk/models/shared/meshmetriclist.go
   - internal/sdk/models/shared/meshmultizoneservicecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshmultizoneservicedeletesuccessresponse.go
   - internal/sdk/models/shared/meshmultizoneserviceitem.go
   - internal/sdk/models/shared/meshmultizoneservicelist.go
   - internal/sdk/models/shared/meshopacreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshopadeletesuccessresponse.go
   - internal/sdk/models/shared/meshopaitem.go
   - internal/sdk/models/shared/meshopalist.go
   - internal/sdk/models/shared/meshpassthroughcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshpassthroughdeletesuccessresponse.go
   - internal/sdk/models/shared/meshpassthroughitem.go
   - internal/sdk/models/shared/meshpassthroughlist.go
   - internal/sdk/models/shared/meshproxypatchcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshproxypatchdeletesuccessresponse.go
   - internal/sdk/models/shared/meshproxypatchitem.go
   - internal/sdk/models/shared/meshproxypatchlist.go
   - internal/sdk/models/shared/meshratelimitcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshratelimitdeletesuccessresponse.go
   - internal/sdk/models/shared/meshratelimititem.go
   - internal/sdk/models/shared/meshratelimitlist.go
   - internal/sdk/models/shared/meshretrycreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshretrydeletesuccessresponse.go
   - internal/sdk/models/shared/meshretryitem.go
   - internal/sdk/models/shared/meshretrylist.go
   - internal/sdk/models/shared/meshservicecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshservicedeletesuccessresponse.go
   - internal/sdk/models/shared/meshserviceitem.go
   - internal/sdk/models/shared/meshservicelist.go
   - internal/sdk/models/shared/meshtcproutecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtcproutedeletesuccessresponse.go
   - internal/sdk/models/shared/meshtcprouteitem.go
   - internal/sdk/models/shared/meshtcproutelist.go
   - internal/sdk/models/shared/meshtimeoutcreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtimeoutdeletesuccessresponse.go
   - internal/sdk/models/shared/meshtimeoutitem.go
   - internal/sdk/models/shared/meshtimeoutlist.go
   - internal/sdk/models/shared/meshtlscreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtlsdeletesuccessresponse.go
   - internal/sdk/models/shared/meshtlsitem.go
   - internal/sdk/models/shared/meshtlslist.go
   - internal/sdk/models/shared/meshtracecreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtracedeletesuccessresponse.go
   - internal/sdk/models/shared/meshtraceitem.go
   - internal/sdk/models/shared/meshtracelist.go
   - internal/sdk/models/shared/meshtrafficpermissioncreateorupdatesuccessresponse.go
+  - internal/sdk/models/shared/meshtrafficpermissiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshtrafficpermissionitem.go
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
   - internal/sdk/models/shared/mockingplugin.go
@@ -2457,7 +2496,9 @@ generatedFiles:
   - internal/sdk/models/shared/portaltheme.go
   - internal/sdk/models/shared/postfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
+  - internal/sdk/models/shared/prometheusmetricsbackendconfig.go
   - internal/sdk/models/shared/prometheusplugin.go
+  - internal/sdk/models/shared/providedcertificateauthorityconfig.go
   - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/proxycacheadvancedplugin.go
@@ -2495,6 +2536,7 @@ generatedFiles:
   - internal/sdk/models/shared/systemaccountaccesstokencreated.go
   - internal/sdk/models/shared/target.go
   - internal/sdk/models/shared/targetwithoutparents.go
+  - internal/sdk/models/shared/tcploggingbackendconfig.go
   - internal/sdk/models/shared/tcplogplugin.go
   - internal/sdk/models/shared/team.go
   - internal/sdk/models/shared/tlshandshakemodifierplugin.go
@@ -2529,6 +2571,7 @@ generatedFiles:
   - internal/sdk/models/shared/websocketvalidatorplugin.go
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
+  - internal/sdk/models/shared/zipkintracingbackendconfig.go
   - internal/sdk/mtlsauthcredentials.go
   - internal/sdk/networks.go
   - internal/sdk/plugins.go
@@ -8161,6 +8204,8 @@ examples:
       responses:
         "200":
           application/json: {"name": "<value>", "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMesh:
     "":
       parameters:
@@ -8178,6 +8223,8 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200":
+          application/json: "<value>"
   getHostnameGeneratorList:
     "":
       parameters:
@@ -8195,6 +8242,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "HostnameGenerator", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putHostnameGenerator:
     "":
       parameters:
@@ -8212,6 +8261,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshAccessLogList:
     "":
       parameters:
@@ -8231,6 +8281,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshAccessLog", "name": "<value>", "spec": {"from": [], "to": [{"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Plain"}}, "type": "File"}]}}, {"default": {"backends": [{"file": {"format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}, "path": "/tmp/access.log"}, "openTelemetry": {"attributes": [{"key": "mesh", "value": "%KUMA_MESH%"}], "body": {"kvlistValue": {"values": [{"key": "mesh", "value": {"stringValue": "%KUMA_MESH%"}}]}}, "endpoint": "otel-collector:4317"}, "tcp": {"address": "127.0.0.1:5000", "format": {"json": [{"key": "start_time", "value": "%START_TIME%"}, {"key": "bytes_received", "value": "%BYTES_RECEIVED%"}], "plain": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%", "type": "Json"}}, "type": "OpenTelemetry"}]}}]}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshAccessLog:
     "":
       parameters:
@@ -8250,6 +8302,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshCircuitBreakerList:
     "":
       parameters:
@@ -8269,6 +8322,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshCircuitBreaker", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshCircuitBreaker:
     "":
       parameters:
@@ -8288,6 +8343,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshExternalServiceList:
     "":
       parameters:
@@ -8307,6 +8363,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshExternalService", "name": "<value>", "spec": {"endpoints": [{"address": "example.com", "port": 470723}], "match": {"port": 913312}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshExternalService:
     "":
       parameters:
@@ -8326,6 +8384,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshFaultInjectionList:
     "":
       parameters:
@@ -8345,6 +8404,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshFaultInjection", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshFaultInjection:
     "":
       parameters:
@@ -8364,6 +8425,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshGatewayList:
     "":
       parameters:
@@ -8380,6 +8442,8 @@ examples:
       responses:
         "200":
           application/json: {"mesh": "<value>", "name": "<value>", "type": "<value>"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshGateway:
     "":
       parameters:
@@ -8399,6 +8463,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshGlobalRateLimitList:
     "":
       parameters:
@@ -8418,6 +8483,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshGlobalRateLimit", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshGlobalRateLimit:
     "":
       parameters:
@@ -8437,6 +8504,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshHealthCheckList:
     "":
       parameters:
@@ -8456,6 +8524,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshHealthCheck", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshHealthCheck:
     "":
       parameters:
@@ -8475,6 +8545,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshHTTPRouteList:
     "":
       parameters:
@@ -8494,6 +8565,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshHTTPRoute", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshHTTPRoute:
     "":
       parameters:
@@ -8513,6 +8586,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshLoadBalancingStrategyList:
     "":
       parameters:
@@ -8532,6 +8606,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshLoadBalancingStrategy", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshLoadBalancingStrategy:
     "":
       parameters:
@@ -8551,6 +8627,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshMetricList:
     "":
       parameters:
@@ -8570,6 +8647,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshMetric", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshMetric:
     "":
       parameters:
@@ -8589,6 +8668,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshMultiZoneServiceList:
     "":
       parameters:
@@ -8608,6 +8688,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshMultiZoneService", "name": "<value>", "spec": {"selector": {"meshService": {"matchLabels": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshMultiZoneService:
     "":
       parameters:
@@ -8627,6 +8709,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshOPAList:
     "":
       parameters:
@@ -8646,6 +8729,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshOPA", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshOPA:
     "":
       parameters:
@@ -8665,6 +8750,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshPassthroughList:
     "":
       parameters:
@@ -8684,6 +8770,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshPassthrough", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshPassthrough:
     "":
       parameters:
@@ -8703,6 +8791,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshProxyPatchList:
     "":
       parameters:
@@ -8722,6 +8811,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshProxyPatch", "name": "<value>", "spec": {"default": {}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshProxyPatch:
     "":
       parameters:
@@ -8741,6 +8832,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshRateLimitList:
     "":
       parameters:
@@ -8760,6 +8852,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshRateLimit", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshRateLimit:
     "":
       parameters:
@@ -8779,6 +8873,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshRetryList:
     "":
       parameters:
@@ -8798,6 +8893,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshRetry", "name": "<value>", "spec": {"to": []}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshRetry:
     "":
       parameters:
@@ -8817,6 +8914,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshServiceList:
     "":
       parameters:
@@ -8836,6 +8934,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshService", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshService:
     "":
       parameters:
@@ -8855,6 +8955,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshTCPRouteList:
     "":
       parameters:
@@ -8874,6 +8975,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshTCPRoute", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTCPRoute:
     "":
       parameters:
@@ -8893,6 +8996,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshTimeoutList:
     "":
       parameters:
@@ -8912,6 +9016,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshTimeout", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTimeout:
     "":
       parameters:
@@ -8931,6 +9037,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshTLSList:
     "":
       parameters:
@@ -8950,6 +9057,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshTLS", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTLS:
     "":
       parameters:
@@ -8969,6 +9078,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshTraceList:
     "":
       parameters:
@@ -8988,6 +9098,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshTrace", "name": "<value>", "spec": {"default": {"backends": [{"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}, {"openTelemetry": {"endpoint": "otel-collector:4317"}, "type": "Zipkin"}]}}, "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTrace:
     "":
       parameters:
@@ -9007,6 +9119,7 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
   getMeshTrafficPermissionList:
     "":
       parameters:
@@ -9026,6 +9139,8 @@ examples:
       responses:
         "200":
           application/json: {"type": "MeshTrafficPermission", "name": "<value>", "creationTime": "0001-01-01T00:00:00Z", "modificationTime": "0001-01-01T00:00:00Z"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
   putMeshTrafficPermission:
     "":
       parameters:
@@ -9045,4 +9160,5 @@ examples:
       responses:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "200": {}
 generatedTests: {}
