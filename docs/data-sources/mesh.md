@@ -276,11 +276,63 @@ builtin and provided)
 
 Read-Only:
 
+- `acm_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config))
 - `builtin_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--builtin_certificate_authority_config))
-- `five` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--five))
-- `four` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--four))
+- `cert_manager_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config))
 - `provided_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--provided_certificate_authority_config))
-- `three` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--three))
+- `vault_certificate_authority_config` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--vault_certificate_authority_config))
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config`
+
+Read-Only:
+
+- `arn` (String)
+- `auth` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth))
+- `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert))
+- `common_name` (String)
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth`
+
+Read-Only:
+
+- `aws_credentials` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials))
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials`
+
+Read-Only:
+
+- `access_key` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key))
+- `access_key_secret` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret))
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key`
+
+Read-Only:
+
+- `type` (String) Parsed as JSON.
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--auth--aws_credentials--access_key_secret"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.auth.aws_credentials.access_key_secret`
+
+Read-Only:
+
+- `type` (String) Parsed as JSON.
+
+
+
+
+<a id="nestedatt--mtls--backends--conf--acm_certificate_authority_config--ca_cert"></a>
+### Nested Schema for `mtls.backends.conf.acm_certificate_authority_config.ca_cert`
+
+Read-Only:
+
+- `type` (String) Parsed as JSON.
+
+
 
 <a id="nestedatt--mtls--backends--conf--builtin_certificate_authority_config"></a>
 ### Nested Schema for `mtls.backends.conf.builtin_certificate_authority_config`
@@ -299,12 +351,33 @@ Read-Only:
 
 
 
-<a id="nestedatt--mtls--backends--conf--five"></a>
-### Nested Schema for `mtls.backends.conf.five`
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config`
+
+Read-Only:
+
+- `ca_cert` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert))
+- `common_name` (String)
+- `dns_names` (List of String)
+- `issuer_ref` (Attributes) (see [below for nested schema](#nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref))
+
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--ca_cert"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.ca_cert`
+
+Read-Only:
+
+- `type` (String) Parsed as JSON.
 
 
-<a id="nestedatt--mtls--backends--conf--four"></a>
-### Nested Schema for `mtls.backends.conf.four`
+<a id="nestedatt--mtls--backends--conf--cert_manager_certificate_authority_config--issuer_ref"></a>
+### Nested Schema for `mtls.backends.conf.cert_manager_certificate_authority_config.issuer_ref`
+
+Read-Only:
+
+- `group` (String)
+- `kind` (String)
+- `name` (String)
+
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config"></a>
@@ -320,13 +393,7 @@ Read-Only:
 
 Read-Only:
 
-- `type` (String) Types that are assignable to Type:
-
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 <a id="nestedatt--mtls--backends--conf--provided_certificate_authority_config--key"></a>
@@ -334,18 +401,16 @@ Parsed as JSON.
 
 Read-Only:
 
-- `type` (String) Types that are assignable to Type:
-
-	*DataSource_Secret
-	*DataSource_File
-	*DataSource_Inline
-	*DataSource_InlineString
-Parsed as JSON.
+- `type` (String) Parsed as JSON.
 
 
 
-<a id="nestedatt--mtls--backends--conf--three"></a>
-### Nested Schema for `mtls.backends.conf.three`
+<a id="nestedatt--mtls--backends--conf--vault_certificate_authority_config"></a>
+### Nested Schema for `mtls.backends.conf.vault_certificate_authority_config`
+
+Read-Only:
+
+- `mode` (String) Parsed as JSON.
 
 
 

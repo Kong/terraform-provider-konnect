@@ -211,14 +211,41 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 					backends5.Conf = nil
 				} else {
 					backends5.Conf = &tfTypes.MeshItemMtlsConf{}
-					if backendsItem2.Conf.Three != nil {
-						backends5.Conf.Three = &tfTypes.Metadata{}
-					}
-					if backendsItem2.Conf.Four != nil {
-						backends5.Conf.Four = &tfTypes.Metadata{}
-					}
-					if backendsItem2.Conf.Five != nil {
-						backends5.Conf.Five = &tfTypes.Metadata{}
+					if backendsItem2.Conf.ACMCertificateAuthorityConfig != nil {
+						backends5.Conf.ACMCertificateAuthorityConfig = &tfTypes.ACMCertificateAuthorityConfig{}
+						backends5.Conf.ACMCertificateAuthorityConfig.Arn = types.StringPointerValue(backendsItem2.Conf.ACMCertificateAuthorityConfig.Arn)
+						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
+							backends5.Conf.ACMCertificateAuthorityConfig.Auth = nil
+						} else {
+							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
+							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
+								backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
+							} else {
+								backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = &tfTypes.AwsCredentials{}
+								if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey == nil {
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey = nil
+								} else {
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey = &tfTypes.AccessKey{}
+									typeVarResult, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey.Type)
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKey.Type = types.StringValue(string(typeVarResult))
+								}
+								if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret == nil {
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret = nil
+								} else {
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret = &tfTypes.AccessKey{}
+									typeVarResult1, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret.Type)
+									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials.AccessKeySecret.Type = types.StringValue(string(typeVarResult1))
+								}
+							}
+						}
+						if backendsItem2.Conf.ACMCertificateAuthorityConfig.CaCert == nil {
+							backends5.Conf.ACMCertificateAuthorityConfig.CaCert = nil
+						} else {
+							backends5.Conf.ACMCertificateAuthorityConfig.CaCert = &tfTypes.AccessKey{}
+							typeVarResult2, _ := json.Marshal(backendsItem2.Conf.ACMCertificateAuthorityConfig.CaCert.Type)
+							backends5.Conf.ACMCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult2))
+						}
+						backends5.Conf.ACMCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.ACMCertificateAuthorityConfig.CommonName)
 					}
 					if backendsItem2.Conf.BuiltinCertificateAuthorityConfig != nil {
 						backends5.Conf.BuiltinCertificateAuthorityConfig = &tfTypes.BuiltinCertificateAuthorityConfig{}
@@ -230,21 +257,53 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits = types.Int64PointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits)
 						}
 					}
+					if backendsItem2.Conf.CertManagerCertificateAuthorityConfig != nil {
+						backends5.Conf.CertManagerCertificateAuthorityConfig = &tfTypes.CertManagerCertificateAuthorityConfig{}
+						if backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CaCert == nil {
+							backends5.Conf.CertManagerCertificateAuthorityConfig.CaCert = nil
+						} else {
+							backends5.Conf.CertManagerCertificateAuthorityConfig.CaCert = &tfTypes.AccessKey{}
+							typeVarResult3, _ := json.Marshal(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type)
+							backends5.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult3))
+						}
+						backends5.Conf.CertManagerCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CommonName)
+						backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = []types.String{}
+						for _, v := range backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames {
+							backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = append(backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames, types.StringValue(v))
+						}
+						if backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef == nil {
+							backends5.Conf.CertManagerCertificateAuthorityConfig.IssuerRef = nil
+						} else {
+							backends5.Conf.CertManagerCertificateAuthorityConfig.IssuerRef = &tfTypes.IssuerRef{}
+							backends5.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Group)
+							backends5.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Kind)
+							backends5.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.IssuerRef.Name)
+						}
+					}
 					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig != nil {
 						backends5.Conf.ProvidedCertificateAuthorityConfig = &tfTypes.ProvidedCertificateAuthorityConfig{}
 						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert == nil {
 							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = nil
 						} else {
-							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.Cert{}
-							typeVarResult, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type)
-							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = types.StringValue(string(typeVarResult))
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert = &tfTypes.AccessKey{}
+							typeVarResult4, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Cert.Type)
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Cert.Type = types.StringValue(string(typeVarResult4))
 						}
 						if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key == nil {
 							backends5.Conf.ProvidedCertificateAuthorityConfig.Key = nil
 						} else {
-							backends5.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.Cert{}
-							typeVarResult1, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type)
-							backends5.Conf.ProvidedCertificateAuthorityConfig.Key.Type = types.StringValue(string(typeVarResult1))
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Key = &tfTypes.AccessKey{}
+							typeVarResult5, _ := json.Marshal(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type)
+							backends5.Conf.ProvidedCertificateAuthorityConfig.Key.Type = types.StringValue(string(typeVarResult5))
+						}
+					}
+					if backendsItem2.Conf.VaultCertificateAuthorityConfig != nil {
+						backends5.Conf.VaultCertificateAuthorityConfig = &tfTypes.VaultCertificateAuthorityConfig{}
+						if backendsItem2.Conf.VaultCertificateAuthorityConfig.Mode == nil {
+							backends5.Conf.VaultCertificateAuthorityConfig.Mode = types.StringNull()
+						} else {
+							modeResult, _ := json.Marshal(backendsItem2.Conf.VaultCertificateAuthorityConfig.Mode)
+							backends5.Conf.VaultCertificateAuthorityConfig.Mode = types.StringValue(string(modeResult))
 						}
 					}
 				}

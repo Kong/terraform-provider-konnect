@@ -3,6 +3,6 @@
 package types
 
 type ProvidedCertificateAuthorityConfig struct {
-	Cert *Cert `tfsdk:"cert"`
-	Key  *Cert `tfsdk:"key"`
+	Cert *AccessKey `tfsdk:"cert"`
+	Key  *AccessKey `tfsdk:"key"`
 }

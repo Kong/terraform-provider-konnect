@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6933d36cd1c0bcdf2d55e7daa39465dd
+  docChecksum: 1972fcfac9c3635ddab1856e2d30d767
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -1145,11 +1145,13 @@ generatedFiles:
   - internal/provider/teamuser_resource.go
   - internal/provider/teamuser_resource_sdk.go
   - internal/provider/types/abort.go
+  - internal/provider/types/access_key.go
   - internal/provider/types/account_key.go
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
   - internal/provider/types/acl_plugin_ordering.go
   - internal/provider/types/acl_without_parents_consumer.go
+  - internal/provider/types/acm_certificate_authority_config.go
   - internal/provider/types/acme_plugin_config.go
   - internal/provider/types/acme_plugin_redis.go
   - internal/provider/types/acme_plugin_vault.go
@@ -1162,6 +1164,7 @@ generatedFiles:
   - internal/provider/types/ai_prompt_decorator_plugin_config.go
   - internal/provider/types/ai_prompt_guard_plugin_config.go
   - internal/provider/types/ai_prompt_template_plugin_config.go
+  - internal/provider/types/ai_proxy_plugin_auth.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_proxy_plugin_logging.go
   - internal/provider/types/ai_request_transformer_plugin_config.go
@@ -1193,6 +1196,7 @@ generatedFiles:
   - internal/provider/types/auth_strategy_client_credentials.go
   - internal/provider/types/auth_strategy_key_auth.go
   - internal/provider/types/authentication.go
+  - internal/provider/types/aws_credentials.go
   - internal/provider/types/aws_lambda_plugin_config.go
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
@@ -1215,7 +1219,7 @@ generatedFiles:
   - internal/provider/types/ca_cert.go
   - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
-  - internal/provider/types/cert.go
+  - internal/provider/types/cert_manager_certificate_authority_config.go
   - internal/provider/types/client.go
   - internal/provider/types/cluster.go
   - internal/provider/types/cluster_nodes.go
@@ -1291,6 +1295,7 @@ generatedFiles:
   - internal/provider/types/http_log_plugin_config.go
   - internal/provider/types/identities.go
   - internal/provider/types/ip_restriction_plugin_config.go
+  - internal/provider/types/issuer_ref.go
   - internal/provider/types/jq_plugin_config.go
   - internal/provider/types/json.go
   - internal/provider/types/json_patches.go
@@ -1576,6 +1581,7 @@ generatedFiles:
   - internal/provider/types/url_rewrite.go
   - internal/provider/types/v2_strategies.go
   - internal/provider/types/vault_auth_plugin_config.go
+  - internal/provider/types/vault_certificate_authority_config.go
   - internal/provider/types/verification.go
   - internal/provider/types/vip.go
   - internal/provider/types/virtual_host.go
@@ -2221,6 +2227,7 @@ generatedFiles:
   - internal/sdk/models/shared/acl.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/aclwithoutparents.go
+  - internal/sdk/models/shared/acmcertificateauthorityconfig.go
   - internal/sdk/models/shared/acmeplugin.go
   - internal/sdk/models/shared/addsystemaccounttoteam.go
   - internal/sdk/models/shared/addusertoteam.go
@@ -2269,6 +2276,7 @@ generatedFiles:
   - internal/sdk/models/shared/canaryplugin.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/certificateinput.go
+  - internal/sdk/models/shared/certmanagercertificateauthorityconfig.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
@@ -2566,6 +2574,7 @@ generatedFiles:
   - internal/sdk/models/shared/upstreamtimeoutplugin.go
   - internal/sdk/models/shared/vault.go
   - internal/sdk/models/shared/vaultauthplugin.go
+  - internal/sdk/models/shared/vaultcertificateauthorityconfig.go
   - internal/sdk/models/shared/vaultinput.go
   - internal/sdk/models/shared/websocketsizelimitplugin.go
   - internal/sdk/models/shared/websocketvalidatorplugin.go

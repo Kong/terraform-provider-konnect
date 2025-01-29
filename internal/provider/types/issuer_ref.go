@@ -4,6 +4,8 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type Cert struct {
-	Type types.String `tfsdk:"type"`
+type IssuerRef struct {
+	Group types.String `tfsdk:"group"`
+	Kind  types.String `tfsdk:"kind"`
+	Name  types.String `tfsdk:"name"`
 }

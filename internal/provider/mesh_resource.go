@@ -427,6 +427,85 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
+										"acm_certificate_authority_config": schema.SingleNestedAttribute{
+											Computed: true,
+											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"arn": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+												},
+												"auth": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"aws_credentials": schema.SingleNestedAttribute{
+															Computed: true,
+															Optional: true,
+															Attributes: map[string]schema.Attribute{
+																"access_key": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; Parsed as JSON.`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				validators.IsValidJSON(),
+																			},
+																		},
+																	},
+																},
+																"access_key_secret": schema.SingleNestedAttribute{
+																	Computed: true,
+																	Optional: true,
+																	Attributes: map[string]schema.Attribute{
+																		"type": schema.StringAttribute{
+																			Computed:    true,
+																			Optional:    true,
+																			Description: `Not Null; Parsed as JSON.`,
+																			Validators: []validator.String{
+																				speakeasy_stringvalidators.NotNull(),
+																				validators.IsValidJSON(),
+																			},
+																		},
+																	},
+																},
+															},
+														},
+													},
+												},
+												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Not Null; Parsed as JSON.`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+																validators.IsValidJSON(),
+															},
+														},
+													},
+												},
+												"common_name": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+												},
+											},
+											Validators: []validator.Object{
+												objectvalidator.ConflictsWith(path.Expressions{
+													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("cert_manager_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("vault_certificate_authority_config"),
+												}...),
+											},
+										},
 										"builtin_certificate_authority_config": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
@@ -448,34 +527,66 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("three"),
-													path.MatchRelative().AtParent().AtName("four"),
-													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("acm_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("cert_manager_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("vault_certificate_authority_config"),
 												}...),
 											},
 										},
-										"five": schema.SingleNestedAttribute{
+										"cert_manager_certificate_authority_config": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
-											Validators: []validator.Object{
-												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("three"),
-													path.MatchRelative().AtParent().AtName("four"),
-													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
-													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
-												}...),
+											Attributes: map[string]schema.Attribute{
+												"ca_cert": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"type": schema.StringAttribute{
+															Computed:    true,
+															Optional:    true,
+															Description: `Not Null; Parsed as JSON.`,
+															Validators: []validator.String{
+																speakeasy_stringvalidators.NotNull(),
+																validators.IsValidJSON(),
+															},
+														},
+													},
+												},
+												"common_name": schema.StringAttribute{
+													Computed: true,
+													Optional: true,
+												},
+												"dns_names": schema.ListAttribute{
+													Computed:    true,
+													Optional:    true,
+													ElementType: types.StringType,
+												},
+												"issuer_ref": schema.SingleNestedAttribute{
+													Computed: true,
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"group": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+														},
+														"kind": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+														},
+														"name": schema.StringAttribute{
+															Computed: true,
+															Optional: true,
+														},
+													},
+												},
 											},
-										},
-										"four": schema.SingleNestedAttribute{
-											Computed: true,
-											Optional: true,
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("three"),
-													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("acm_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("vault_certificate_authority_config"),
 												}...),
 											},
 										},
@@ -488,15 +599,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															Computed: true,
-															Optional: true,
-															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
-																`` + "\n" +
-																`	*DataSource_Secret` + "\n" +
-																`	*DataSource_File` + "\n" +
-																`	*DataSource_Inline` + "\n" +
-																`	*DataSource_InlineString` + "\n" +
-																`Not Null; Parsed as JSON.`,
+															Computed:    true,
+															Optional:    true,
+															Description: `Not Null; Parsed as JSON.`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
 																validators.IsValidJSON(),
@@ -509,15 +614,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
-															Computed: true,
-															Optional: true,
-															MarkdownDescription: `Types that are assignable to Type:` + "\n" +
-																`` + "\n" +
-																`	*DataSource_Secret` + "\n" +
-																`	*DataSource_File` + "\n" +
-																`	*DataSource_Inline` + "\n" +
-																`	*DataSource_InlineString` + "\n" +
-																`Not Null; Parsed as JSON.`,
+															Computed:    true,
+															Optional:    true,
+															Description: `Not Null; Parsed as JSON.`,
 															Validators: []validator.String{
 																speakeasy_stringvalidators.NotNull(),
 																validators.IsValidJSON(),
@@ -528,21 +627,31 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("three"),
-													path.MatchRelative().AtParent().AtName("four"),
-													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("acm_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("cert_manager_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("vault_certificate_authority_config"),
 												}...),
 											},
 										},
-										"three": schema.SingleNestedAttribute{
+										"vault_certificate_authority_config": schema.SingleNestedAttribute{
 											Computed: true,
 											Optional: true,
+											Attributes: map[string]schema.Attribute{
+												"mode": schema.StringAttribute{
+													Computed:    true,
+													Optional:    true,
+													Description: `Parsed as JSON.`,
+													Validators: []validator.String{
+														validators.IsValidJSON(),
+													},
+												},
+											},
 											Validators: []validator.Object{
 												objectvalidator.ConflictsWith(path.Expressions{
-													path.MatchRelative().AtParent().AtName("four"),
-													path.MatchRelative().AtParent().AtName("five"),
+													path.MatchRelative().AtParent().AtName("acm_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("builtin_certificate_authority_config"),
+													path.MatchRelative().AtParent().AtName("cert_manager_certificate_authority_config"),
 													path.MatchRelative().AtParent().AtName("provided_certificate_authority_config"),
 												}...),
 											},

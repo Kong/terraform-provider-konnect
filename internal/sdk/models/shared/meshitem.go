@@ -378,31 +378,22 @@ func (o *Metrics) GetEnabledBackend() *string {
 	return o.EnabledBackend
 }
 
-type Five struct {
-}
-
-type Four struct {
-}
-
-type Three struct {
-}
-
 type MeshItemMtlsConfType string
 
 const (
-	MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig MeshItemMtlsConfType = "ProvidedCertificateAuthorityConfig"
-	MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig  MeshItemMtlsConfType = "BuiltinCertificateAuthorityConfig"
-	MeshItemMtlsConfTypeThree                              MeshItemMtlsConfType = "3"
-	MeshItemMtlsConfTypeFour                               MeshItemMtlsConfType = "4"
-	MeshItemMtlsConfTypeFive                               MeshItemMtlsConfType = "5"
+	MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig    MeshItemMtlsConfType = "ProvidedCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeBuiltinCertificateAuthorityConfig     MeshItemMtlsConfType = "BuiltinCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeVaultCertificateAuthorityConfig       MeshItemMtlsConfType = "VaultCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeACMCertificateAuthorityConfig         MeshItemMtlsConfType = "ACMCertificateAuthorityConfig"
+	MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig MeshItemMtlsConfType = "CertManagerCertificateAuthorityConfig"
 )
 
 type MeshItemMtlsConf struct {
-	ProvidedCertificateAuthorityConfig *ProvidedCertificateAuthorityConfig
-	BuiltinCertificateAuthorityConfig  *BuiltinCertificateAuthorityConfig
-	Three                              *Three
-	Four                               *Four
-	Five                               *Five
+	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig
+	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig
+	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig
+	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig
+	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig
 
 	Type MeshItemMtlsConfType
 }
@@ -425,55 +416,34 @@ func CreateMeshItemMtlsConfBuiltinCertificateAuthorityConfig(builtinCertificateA
 	}
 }
 
-func CreateMeshItemMtlsConfThree(three Three) MeshItemMtlsConf {
-	typ := MeshItemMtlsConfTypeThree
+func CreateMeshItemMtlsConfVaultCertificateAuthorityConfig(vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
 
 	return MeshItemMtlsConf{
-		Three: &three,
-		Type:  typ,
+		VaultCertificateAuthorityConfig: &vaultCertificateAuthorityConfig,
+		Type:                            typ,
 	}
 }
 
-func CreateMeshItemMtlsConfFour(four Four) MeshItemMtlsConf {
-	typ := MeshItemMtlsConfTypeFour
+func CreateMeshItemMtlsConfACMCertificateAuthorityConfig(acmCertificateAuthorityConfig ACMCertificateAuthorityConfig) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeACMCertificateAuthorityConfig
 
 	return MeshItemMtlsConf{
-		Four: &four,
-		Type: typ,
+		ACMCertificateAuthorityConfig: &acmCertificateAuthorityConfig,
+		Type:                          typ,
 	}
 }
 
-func CreateMeshItemMtlsConfFive(five Five) MeshItemMtlsConf {
-	typ := MeshItemMtlsConfTypeFive
+func CreateMeshItemMtlsConfCertManagerCertificateAuthorityConfig(certManagerCertificateAuthorityConfig CertManagerCertificateAuthorityConfig) MeshItemMtlsConf {
+	typ := MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig
 
 	return MeshItemMtlsConf{
-		Five: &five,
-		Type: typ,
+		CertManagerCertificateAuthorityConfig: &certManagerCertificateAuthorityConfig,
+		Type:                                  typ,
 	}
 }
 
 func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
-
-	var three Three = Three{}
-	if err := utils.UnmarshalJSON(data, &three, "", true, true); err == nil {
-		u.Three = &three
-		u.Type = MeshItemMtlsConfTypeThree
-		return nil
-	}
-
-	var four Four = Four{}
-	if err := utils.UnmarshalJSON(data, &four, "", true, true); err == nil {
-		u.Four = &four
-		u.Type = MeshItemMtlsConfTypeFour
-		return nil
-	}
-
-	var five Five = Five{}
-	if err := utils.UnmarshalJSON(data, &five, "", true, true); err == nil {
-		u.Five = &five
-		u.Type = MeshItemMtlsConfTypeFive
-		return nil
-	}
 
 	var builtinCertificateAuthorityConfig BuiltinCertificateAuthorityConfig = BuiltinCertificateAuthorityConfig{}
 	if err := utils.UnmarshalJSON(data, &builtinCertificateAuthorityConfig, "", true, true); err == nil {
@@ -482,10 +452,31 @@ func (u *MeshItemMtlsConf) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	var vaultCertificateAuthorityConfig VaultCertificateAuthorityConfig = VaultCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &vaultCertificateAuthorityConfig, "", true, true); err == nil {
+		u.VaultCertificateAuthorityConfig = &vaultCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeVaultCertificateAuthorityConfig
+		return nil
+	}
+
 	var providedCertificateAuthorityConfig ProvidedCertificateAuthorityConfig = ProvidedCertificateAuthorityConfig{}
 	if err := utils.UnmarshalJSON(data, &providedCertificateAuthorityConfig, "", true, true); err == nil {
 		u.ProvidedCertificateAuthorityConfig = &providedCertificateAuthorityConfig
 		u.Type = MeshItemMtlsConfTypeProvidedCertificateAuthorityConfig
+		return nil
+	}
+
+	var acmCertificateAuthorityConfig ACMCertificateAuthorityConfig = ACMCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &acmCertificateAuthorityConfig, "", true, true); err == nil {
+		u.ACMCertificateAuthorityConfig = &acmCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeACMCertificateAuthorityConfig
+		return nil
+	}
+
+	var certManagerCertificateAuthorityConfig CertManagerCertificateAuthorityConfig = CertManagerCertificateAuthorityConfig{}
+	if err := utils.UnmarshalJSON(data, &certManagerCertificateAuthorityConfig, "", true, true); err == nil {
+		u.CertManagerCertificateAuthorityConfig = &certManagerCertificateAuthorityConfig
+		u.Type = MeshItemMtlsConfTypeCertManagerCertificateAuthorityConfig
 		return nil
 	}
 
@@ -501,16 +492,16 @@ func (u MeshItemMtlsConf) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.BuiltinCertificateAuthorityConfig, "", true)
 	}
 
-	if u.Three != nil {
-		return utils.MarshalJSON(u.Three, "", true)
+	if u.VaultCertificateAuthorityConfig != nil {
+		return utils.MarshalJSON(u.VaultCertificateAuthorityConfig, "", true)
 	}
 
-	if u.Four != nil {
-		return utils.MarshalJSON(u.Four, "", true)
+	if u.ACMCertificateAuthorityConfig != nil {
+		return utils.MarshalJSON(u.ACMCertificateAuthorityConfig, "", true)
 	}
 
-	if u.Five != nil {
-		return utils.MarshalJSON(u.Five, "", true)
+	if u.CertManagerCertificateAuthorityConfig != nil {
+		return utils.MarshalJSON(u.CertManagerCertificateAuthorityConfig, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type MeshItemMtlsConf: all fields are null")

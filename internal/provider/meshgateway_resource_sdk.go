@@ -234,9 +234,9 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(resp *shared
 					listeners1.TLS = nil
 				} else {
 					listeners1.TLS = &tfTypes.MeshGatewayItemTLS{}
-					listeners1.TLS.Certificates = []tfTypes.Cert{}
+					listeners1.TLS.Certificates = []tfTypes.AccessKey{}
 					for certificatesCount, certificatesItem := range listenersItem.TLS.Certificates {
-						var certificates1 tfTypes.Cert
+						var certificates1 tfTypes.AccessKey
 						typeVarResult, _ := json.Marshal(certificatesItem.Type)
 						certificates1.Type = types.StringValue(string(typeVarResult))
 						if certificatesCount+1 > len(listeners1.TLS.Certificates) {

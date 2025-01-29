@@ -87,17 +87,42 @@ resource "konnect_mesh" "my_mesh" {
     backends = [
       {
         conf = {
+          acm_certificate_authority_config = {
+            arn = "...my_arn..."
+            auth = {
+              aws_credentials = {
+                access_key = {
+                  type = "{ \"see\": \"documentation\" }"
+                }
+                access_key_secret = {
+                  type = "{ \"see\": \"documentation\" }"
+                }
+              }
+            }
+            ca_cert = {
+              type = "{ \"see\": \"documentation\" }"
+            }
+            common_name = "...my_common_name..."
+          }
           builtin_certificate_authority_config = {
             ca_cert = {
               expiration = "...my_expiration..."
               rs_abits   = 7
             }
           }
-          five = {
-            # ...
-          }
-          four = {
-            # ...
+          cert_manager_certificate_authority_config = {
+            ca_cert = {
+              type = "{ \"see\": \"documentation\" }"
+            }
+            common_name = "...my_common_name..."
+            dns_names = [
+              "..."
+            ]
+            issuer_ref = {
+              group = "...my_group..."
+              kind  = "...my_kind..."
+              name  = "...my_name..."
+            }
           }
           provided_certificate_authority_config = {
             cert = {
@@ -107,8 +132,8 @@ resource "konnect_mesh" "my_mesh" {
               type = "{ \"see\": \"documentation\" }"
             }
           }
-          three = {
-            # ...
+          vault_certificate_authority_config = {
+            mode = "{ \"see\": \"documentation\" }"
           }
         }
         dp_cert = {

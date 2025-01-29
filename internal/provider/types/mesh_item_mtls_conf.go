@@ -3,9 +3,9 @@
 package types
 
 type MeshItemMtlsConf struct {
-	Three                              *Metadata                           `tfsdk:"three" tfPlanOnly:"true"`
-	Four                               *Metadata                           `tfsdk:"four" tfPlanOnly:"true"`
-	Five                               *Metadata                           `tfsdk:"five" tfPlanOnly:"true"`
-	BuiltinCertificateAuthorityConfig  *BuiltinCertificateAuthorityConfig  `tfsdk:"builtin_certificate_authority_config" tfPlanOnly:"true"`
-	ProvidedCertificateAuthorityConfig *ProvidedCertificateAuthorityConfig `tfsdk:"provided_certificate_authority_config" tfPlanOnly:"true"`
+	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `tfsdk:"acm_certificate_authority_config" tfPlanOnly:"true"`
+	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `tfsdk:"builtin_certificate_authority_config" tfPlanOnly:"true"`
+	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `tfsdk:"cert_manager_certificate_authority_config" tfPlanOnly:"true"`
+	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `tfsdk:"provided_certificate_authority_config" tfPlanOnly:"true"`
+	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `tfsdk:"vault_certificate_authority_config" tfPlanOnly:"true"`
 }

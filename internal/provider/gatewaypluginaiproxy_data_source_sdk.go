@@ -14,7 +14,7 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(res
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.Auth{}
+			r.Config.Auth = &tfTypes.AiProxyPluginAuth{}
 			r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
 			r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
 			r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)

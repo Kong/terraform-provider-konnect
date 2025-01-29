@@ -21181,9 +21181,9 @@ components:
                     oneOf:
                       - $ref: '#/components/schemas/ProvidedCertificateAuthorityConfig'
                       - $ref: '#/components/schemas/BuiltinCertificateAuthorityConfig'
-                      - ef: '#/components/schemas/VaultCertificateAuthorityConfig'
-                      - ef: '#/components/schemas/ACMCertificateAuthorityConfig'
-                      - ef: '#/components/schemas/CertManagerCertificateAuthorityConfig'
+                      - $ref: '#/components/schemas/VaultCertificateAuthorityConfig'
+                      - $ref: '#/components/schemas/ACMCertificateAuthorityConfig'
+                      - $ref: '#/components/schemas/CertManagerCertificateAuthorityConfig'
                   dpCert:
                     description: Dataplane certificate settings
                     type: object
@@ -21419,15 +21419,13 @@ components:
         cert:
           type: object
           properties:
-            Type:
-              description: "Types that are assignable to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
+            Type: {}
           required:
             - Type
         key:
           type: object
           properties:
-            Type:
-              description: "Types that are assignable to Type:\n\n\t*DataSource_Secret\n\t*DataSource_File\n\t*DataSource_Inline\n\t*DataSource_InlineString"
+            Type: {}
           required:
             - Type
     ZipkinTracingBackendConfig:
@@ -22379,6 +22377,65 @@ components:
     MeshServiceDeleteSuccessResponse:
       type: object
       properties: {}
+    VaultCertificateAuthorityConfig:
+      type: object
+      properties:
+        Mode: {}
+    ACMCertificateAuthorityConfig:
+      type: object
+      properties:
+        arn:
+          type: string
+        auth:
+          type: object
+          properties:
+            awsCredentials:
+              type: object
+              properties:
+                accessKey:
+                  type: object
+                  properties:
+                    Type: {}
+                  required:
+                    - Type
+                accessKeySecret:
+                  type: object
+                  properties:
+                    Type: {}
+                  required:
+                    - Type
+        caCert:
+          type: object
+          properties:
+            Type: {}
+          required:
+            - Type
+        commonName:
+          type: string
+    CertManagerCertificateAuthorityConfig:
+      type: object
+      properties:
+        caCert:
+          type: object
+          properties:
+            Type: {}
+          required:
+            - Type
+        commonName:
+          type: string
+        dnsNames:
+          type: array
+          items:
+            type: string
+        issuerRef:
+          type: object
+          properties:
+            group:
+              type: string
+            kind:
+              type: string
+            name:
+              type: string
     MeshGlobalRateLimitItem:
       type: object
       properties:

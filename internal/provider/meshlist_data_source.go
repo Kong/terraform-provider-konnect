@@ -317,6 +317,54 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 											"conf": schema.SingleNestedAttribute{
 												Computed: true,
 												Attributes: map[string]schema.Attribute{
+													"acm_certificate_authority_config": schema.SingleNestedAttribute{
+														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"arn": schema.StringAttribute{
+																Computed: true,
+															},
+															"auth": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"aws_credentials": schema.SingleNestedAttribute{
+																		Computed: true,
+																		Attributes: map[string]schema.Attribute{
+																			"access_key": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"type": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `Parsed as JSON.`,
+																					},
+																				},
+																			},
+																			"access_key_secret": schema.SingleNestedAttribute{
+																				Computed: true,
+																				Attributes: map[string]schema.Attribute{
+																					"type": schema.StringAttribute{
+																						Computed:    true,
+																						Description: `Parsed as JSON.`,
+																					},
+																				},
+																			},
+																		},
+																	},
+																},
+															},
+															"ca_cert": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"type": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `Parsed as JSON.`,
+																	},
+																},
+															},
+															"common_name": schema.StringAttribute{
+																Computed: true,
+															},
+														},
+													},
 													"builtin_certificate_authority_config": schema.SingleNestedAttribute{
 														Computed: true,
 														Attributes: map[string]schema.Attribute{
@@ -333,11 +381,40 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 															},
 														},
 													},
-													"five": schema.SingleNestedAttribute{
+													"cert_manager_certificate_authority_config": schema.SingleNestedAttribute{
 														Computed: true,
-													},
-													"four": schema.SingleNestedAttribute{
-														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"ca_cert": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"type": schema.StringAttribute{
+																		Computed:    true,
+																		Description: `Parsed as JSON.`,
+																	},
+																},
+															},
+															"common_name": schema.StringAttribute{
+																Computed: true,
+															},
+															"dns_names": schema.ListAttribute{
+																Computed:    true,
+																ElementType: types.StringType,
+															},
+															"issuer_ref": schema.SingleNestedAttribute{
+																Computed: true,
+																Attributes: map[string]schema.Attribute{
+																	"group": schema.StringAttribute{
+																		Computed: true,
+																	},
+																	"kind": schema.StringAttribute{
+																		Computed: true,
+																	},
+																	"name": schema.StringAttribute{
+																		Computed: true,
+																	},
+																},
+															},
+														},
 													},
 													"provided_certificate_authority_config": schema.SingleNestedAttribute{
 														Computed: true,
@@ -346,14 +423,8 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
-																		Computed: true,
-																		MarkdownDescription: `Types that are assignable to Type:` + "\n" +
-																			`` + "\n" +
-																			`	*DataSource_Secret` + "\n" +
-																			`	*DataSource_File` + "\n" +
-																			`	*DataSource_Inline` + "\n" +
-																			`	*DataSource_InlineString` + "\n" +
-																			`Parsed as JSON.`,
+																		Computed:    true,
+																		Description: `Parsed as JSON.`,
 																	},
 																},
 															},
@@ -361,21 +432,21 @@ func (r *MeshListDataSource) Schema(ctx context.Context, req datasource.SchemaRe
 																Computed: true,
 																Attributes: map[string]schema.Attribute{
 																	"type": schema.StringAttribute{
-																		Computed: true,
-																		MarkdownDescription: `Types that are assignable to Type:` + "\n" +
-																			`` + "\n" +
-																			`	*DataSource_Secret` + "\n" +
-																			`	*DataSource_File` + "\n" +
-																			`	*DataSource_Inline` + "\n" +
-																			`	*DataSource_InlineString` + "\n" +
-																			`Parsed as JSON.`,
+																		Computed:    true,
+																		Description: `Parsed as JSON.`,
 																	},
 																},
 															},
 														},
 													},
-													"three": schema.SingleNestedAttribute{
+													"vault_certificate_authority_config": schema.SingleNestedAttribute{
 														Computed: true,
+														Attributes: map[string]schema.Attribute{
+															"mode": schema.StringAttribute{
+																Computed:    true,
+																Description: `Parsed as JSON.`,
+															},
+														},
 													},
 												},
 											},

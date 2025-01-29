@@ -3,12 +3,6 @@
 package shared
 
 type Cert struct {
-	// Types that are assignable to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
@@ -20,12 +14,6 @@ func (o *Cert) GetType() any {
 }
 
 type ProvidedCertificateAuthorityConfigKey struct {
-	// Types that are assignable to Type:
-	//
-	// 	*DataSource_Secret
-	// 	*DataSource_File
-	// 	*DataSource_Inline
-	// 	*DataSource_InlineString
 	Type any `json:"Type"`
 }
 
