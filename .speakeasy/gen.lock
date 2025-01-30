@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 3fca058991d920237b11e25bf77f543b
+  docChecksum: dbe5589d7995eb65ae5a7054db636c9c
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -17,6 +17,7 @@ features:
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.9
     globalServerURLs: 2.82.1
+    groups: 2.81.2
     ignores: 2.81.1
     inputOutputModels: 2.83.0
     methodServerURLs: 2.82.1
@@ -1121,13 +1122,12 @@ generatedFiles:
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
   - internal/sdk/certificates.go
+  - internal/sdk/cloudgateways.go
   - internal/sdk/consumergroups.go
   - internal/sdk/consumers.go
   - internal/sdk/controlplanegroups.go
   - internal/sdk/controlplanes.go
-  - internal/sdk/customdomains.go
   - internal/sdk/custompluginschemas.go
-  - internal/sdk/dataplanegroupconfigurations.go
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
   - internal/sdk/internal/hooks/hooks.go
@@ -1887,7 +1887,6 @@ generatedFiles:
   - internal/sdk/portalproductversions.go
   - internal/sdk/portals.go
   - internal/sdk/portalteams.go
-  - internal/sdk/provideraccounts.go
   - internal/sdk/retry/config.go
   - internal/sdk/roles.go
   - internal/sdk/routes.go
@@ -1901,7 +1900,6 @@ generatedFiles:
   - internal/sdk/targets.go
   - internal/sdk/teammembership.go
   - internal/sdk/teams.go
-  - internal/sdk/transitgateways.go
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go

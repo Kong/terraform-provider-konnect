@@ -159,7 +159,7 @@ func (r *CloudGatewayProviderAccountListDataSource) Read(ctx context.Context, re
 		PageSize:   pageSize,
 		PageNumber: pageNumber,
 	}
-	res, err := r.client.ProviderAccounts.ListProviderAccounts(ctx, request)
+	res, err := r.client.CloudGateways.ListProviderAccounts(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

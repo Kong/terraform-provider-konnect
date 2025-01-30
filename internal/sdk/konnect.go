@@ -84,13 +84,10 @@ type Konnect struct {
 	// Called “Auth Strategy” for short in the context of portals/applications.
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
 	//
-	AppAuthStrategies            *AppAuthStrategies
-	DataPlaneGroupConfigurations *DataPlaneGroupConfigurations
-	CustomDomains                *CustomDomains
-	Networks                     *Networks
-	TransitGateways              *TransitGateways
-	ProviderAccounts             *ProviderAccounts
-	ControlPlanes                *ControlPlanes
+	AppAuthStrategies *AppAuthStrategies
+	CloudGateways     *CloudGateways
+	Networks          *Networks
+	ControlPlanes     *ControlPlanes
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
 	CACertificates *CACertificates
@@ -328,15 +325,9 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
 
-	sdk.DataPlaneGroupConfigurations = newDataPlaneGroupConfigurations(sdk.sdkConfiguration)
-
-	sdk.CustomDomains = newCustomDomains(sdk.sdkConfiguration)
+	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Networks = newNetworks(sdk.sdkConfiguration)
-
-	sdk.TransitGateways = newTransitGateways(sdk.sdkConfiguration)
-
-	sdk.ProviderAccounts = newProviderAccounts(sdk.sdkConfiguration)
 
 	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
 
