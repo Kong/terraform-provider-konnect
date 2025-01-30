@@ -36,7 +36,7 @@ func (r *MeshOPADataSourceModel) RefreshFromSharedMeshOPAItem(resp *shared.MeshO
 			if resp.Spec.Default.AgentConfig == nil {
 				r.Spec.Default.AgentConfig = nil
 			} else {
-				r.Spec.Default.AgentConfig = &tfTypes.MeshExternalServiceItemCaCert{}
+				r.Spec.Default.AgentConfig = &tfTypes.CaCert{}
 				r.Spec.Default.AgentConfig.Inline = types.StringPointerValue(resp.Spec.Default.AgentConfig.Inline)
 				r.Spec.Default.AgentConfig.InlineString = types.StringPointerValue(resp.Spec.Default.AgentConfig.InlineString)
 				r.Spec.Default.AgentConfig.Secret = types.StringPointerValue(resp.Spec.Default.AgentConfig.Secret)

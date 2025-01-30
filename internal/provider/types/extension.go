@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Extension struct {
-	Config types.String `tfsdk:"config"`
-	Type   types.String `tfsdk:"type"`
+	Config types.String `tfsdk:"config" tfPlanOnly:"true"`
+	Type   types.String `tfsdk:"type" tfPlanOnly:"true"`
 }

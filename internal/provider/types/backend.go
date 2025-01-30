@@ -3,5 +3,5 @@
 package types
 
 type Backend struct {
-	RateLimitService RateLimitService `tfsdk:"rate_limit_service"`
+	RateLimitService RateLimitService `tfsdk:"rate_limit_service" tfPlanOnly:"true"`
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Grpc struct {
-	Authority   types.String `tfsdk:"authority"`
-	Disabled    types.Bool   `tfsdk:"disabled"`
-	ServiceName types.String `tfsdk:"service_name"`
+	Authority   types.String `tfsdk:"authority" tfPlanOnly:"true"`
+	Disabled    types.Bool   `tfsdk:"disabled" tfPlanOnly:"true"`
+	ServiceName types.String `tfsdk:"service_name" tfPlanOnly:"true"`
 }

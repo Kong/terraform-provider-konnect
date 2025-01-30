@@ -5,9 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Aggregate struct {
-	Address types.String `tfsdk:"address"`
-	Enabled types.Bool   `tfsdk:"enabled"`
-	Name    types.String `tfsdk:"name"`
-	Path    types.String `tfsdk:"path"`
-	Port    types.Int64  `tfsdk:"port"`
+	Address types.String `tfsdk:"address" tfPlanOnly:"true"`
+	Enabled types.Bool   `tfsdk:"enabled" tfPlanOnly:"true"`
+	Name    types.String `tfsdk:"name" tfPlanOnly:"true"`
+	Path    types.String `tfsdk:"path" tfPlanOnly:"true"`
+	Port    types.Int64  `tfsdk:"port" tfPlanOnly:"true"`
 }

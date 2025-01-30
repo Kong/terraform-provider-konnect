@@ -35,7 +35,7 @@ func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type AiProxyPluginAuth struct {
+type Auth struct {
 	// If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.
 	AllowOverride *bool `json:"allow_override,omitempty"`
 	// Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
@@ -66,98 +66,98 @@ type AiProxyPluginAuth struct {
 	ParamValue *string `json:"param_value,omitempty"`
 }
 
-func (o *AiProxyPluginAuth) GetAllowOverride() *bool {
+func (o *Auth) GetAllowOverride() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AllowOverride
 }
 
-func (o *AiProxyPluginAuth) GetAwsAccessKeyID() *string {
+func (o *Auth) GetAwsAccessKeyID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsAccessKeyID
 }
 
-func (o *AiProxyPluginAuth) GetAwsSecretAccessKey() *string {
+func (o *Auth) GetAwsSecretAccessKey() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsSecretAccessKey
 }
 
-func (o *AiProxyPluginAuth) GetAzureClientID() *string {
+func (o *Auth) GetAzureClientID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureClientID
 }
 
-func (o *AiProxyPluginAuth) GetAzureClientSecret() *string {
+func (o *Auth) GetAzureClientSecret() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureClientSecret
 }
 
-func (o *AiProxyPluginAuth) GetAzureTenantID() *string {
+func (o *Auth) GetAzureTenantID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AzureTenantID
 }
 
-func (o *AiProxyPluginAuth) GetAzureUseManagedIdentity() *bool {
+func (o *Auth) GetAzureUseManagedIdentity() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AzureUseManagedIdentity
 }
 
-func (o *AiProxyPluginAuth) GetGcpServiceAccountJSON() *string {
+func (o *Auth) GetGcpServiceAccountJSON() *string {
 	if o == nil {
 		return nil
 	}
 	return o.GcpServiceAccountJSON
 }
 
-func (o *AiProxyPluginAuth) GetGcpUseServiceAccount() *bool {
+func (o *Auth) GetGcpUseServiceAccount() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.GcpUseServiceAccount
 }
 
-func (o *AiProxyPluginAuth) GetHeaderName() *string {
+func (o *Auth) GetHeaderName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderName
 }
 
-func (o *AiProxyPluginAuth) GetHeaderValue() *string {
+func (o *Auth) GetHeaderValue() *string {
 	if o == nil {
 		return nil
 	}
 	return o.HeaderValue
 }
 
-func (o *AiProxyPluginAuth) GetParamLocation() *ParamLocation {
+func (o *Auth) GetParamLocation() *ParamLocation {
 	if o == nil {
 		return nil
 	}
 	return o.ParamLocation
 }
 
-func (o *AiProxyPluginAuth) GetParamName() *string {
+func (o *Auth) GetParamName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ParamName
 }
 
-func (o *AiProxyPluginAuth) GetParamValue() *string {
+func (o *Auth) GetParamValue() *string {
 	if o == nil {
 		return nil
 	}
@@ -566,7 +566,7 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyPluginConfig struct {
-	Auth    *AiProxyPluginAuth    `json:"auth,omitempty"`
+	Auth    *Auth                 `json:"auth,omitempty"`
 	Logging *AiProxyPluginLogging `json:"logging,omitempty"`
 	// max allowed body size allowed to be introspected
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
@@ -579,7 +579,7 @@ type AiProxyPluginConfig struct {
 	RouteType *RouteType `json:"route_type,omitempty"`
 }
 
-func (o *AiProxyPluginConfig) GetAuth() *AiProxyPluginAuth {
+func (o *AiProxyPluginConfig) GetAuth() *Auth {
 	if o == nil {
 		return nil
 	}

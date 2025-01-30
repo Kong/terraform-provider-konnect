@@ -3,5 +3,5 @@
 package types
 
 type Constraints struct {
-	DataplaneProxy *DataplaneProxy `tfsdk:"dataplane_proxy"`
+	DataplaneProxy *DataplaneProxy `tfsdk:"dataplane_proxy" tfPlanOnly:"true"`
 }

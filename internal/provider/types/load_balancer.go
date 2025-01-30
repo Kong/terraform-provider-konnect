@@ -5,10 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type LoadBalancer struct {
-	LeastRequest *LeastRequest `tfsdk:"least_request"`
-	Maglev       *Maglev       `tfsdk:"maglev"`
-	Random       *Metadata     `tfsdk:"random"`
-	RingHash     *RingHash     `tfsdk:"ring_hash"`
-	RoundRobin   *Metadata     `tfsdk:"round_robin"`
-	Type         types.String  `tfsdk:"type"`
+	LeastRequest *LeastRequest `tfsdk:"least_request" tfPlanOnly:"true"`
+	Maglev       *Maglev       `tfsdk:"maglev" tfPlanOnly:"true"`
+	Random       *Metadata     `tfsdk:"random" tfPlanOnly:"true"`
+	RingHash     *RingHash     `tfsdk:"ring_hash" tfPlanOnly:"true"`
+	RoundRobin   *Metadata     `tfsdk:"round_robin" tfPlanOnly:"true"`
+	Type         types.String  `tfsdk:"type" tfPlanOnly:"true"`
 }

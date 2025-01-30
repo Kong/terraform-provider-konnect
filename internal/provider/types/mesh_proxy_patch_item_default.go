@@ -3,5 +3,5 @@
 package types
 
 type MeshProxyPatchItemDefault struct {
-	AppendModifications []AppendModifications `tfsdk:"append_modifications"`
+	AppendModifications []AppendModifications `tfsdk:"append_modifications" tfPlanOnly:"true"`
 }

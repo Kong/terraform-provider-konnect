@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Tracing struct {
-	Backends       []MeshItemTracingBackends `tfsdk:"backends"`
-	DefaultBackend types.String              `tfsdk:"default_backend"`
+	Backends       []MeshItemTracingBackends `tfsdk:"backends" tfPlanOnly:"true"`
+	DefaultBackend types.String              `tfsdk:"default_backend" tfPlanOnly:"true"`
 }

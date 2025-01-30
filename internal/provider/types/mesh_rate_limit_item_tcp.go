@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshRateLimitItemTCP struct {
-	ConnectionRate *MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"connection_rate"`
-	Disabled       types.Bool                                  `tfsdk:"disabled"`
+	ConnectionRate *MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"connection_rate" tfPlanOnly:"true"`
+	Disabled       types.Bool                                  `tfsdk:"disabled" tfPlanOnly:"true"`
 }

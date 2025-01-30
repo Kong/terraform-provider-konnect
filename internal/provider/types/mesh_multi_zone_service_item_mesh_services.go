@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshMultiZoneServiceItemMeshServices struct {
-	Mesh      types.String `tfsdk:"mesh"`
-	Name      types.String `tfsdk:"name"`
-	Namespace types.String `tfsdk:"namespace"`
-	Zone      types.String `tfsdk:"zone"`
+	Mesh      types.String `tfsdk:"mesh" tfPlanOnly:"true"`
+	Name      types.String `tfsdk:"name" tfPlanOnly:"true"`
+	Namespace types.String `tfsdk:"namespace" tfPlanOnly:"true"`
+	Zone      types.String `tfsdk:"zone" tfPlanOnly:"true"`
 }

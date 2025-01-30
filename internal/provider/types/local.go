@@ -3,6 +3,6 @@
 package types
 
 type Local struct {
-	HTTP *MeshRateLimitItemHTTP `tfsdk:"http"`
-	TCP  *MeshRateLimitItemTCP  `tfsdk:"tcp"`
+	HTTP *MeshRateLimitItemHTTP `tfsdk:"http" tfPlanOnly:"true"`
+	TCP  *MeshRateLimitItemTCP  `tfsdk:"tcp" tfPlanOnly:"true"`
 }

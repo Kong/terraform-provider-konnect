@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type PrometheusMetricsBackendConfig struct {
-	Aggregate []Aggregate             `tfsdk:"aggregate"`
-	Envoy     *Envoy                  `tfsdk:"envoy"`
-	Path      types.String            `tfsdk:"path"`
-	Port      types.Int64             `tfsdk:"port"`
-	SkipMTLS  types.Bool              `tfsdk:"skip_mtls"`
-	Tags      map[string]types.String `tfsdk:"tags"`
-	TLS       *MeshServices           `tfsdk:"tls"`
+	Aggregate []Aggregate             `tfsdk:"aggregate" tfPlanOnly:"true"`
+	Envoy     *Envoy                  `tfsdk:"envoy" tfPlanOnly:"true"`
+	Path      types.String            `tfsdk:"path" tfPlanOnly:"true"`
+	Port      types.Int64             `tfsdk:"port" tfPlanOnly:"true"`
+	SkipMTLS  types.Bool              `tfsdk:"skip_mtls" tfPlanOnly:"true"`
+	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
+	TLS       *MeshServices           `tfsdk:"tls" tfPlanOnly:"true"`
 }

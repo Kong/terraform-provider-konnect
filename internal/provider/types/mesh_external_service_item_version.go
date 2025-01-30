@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshExternalServiceItemVersion struct {
-	Max types.String `tfsdk:"max"`
-	Min types.String `tfsdk:"min"`
+	Max types.String `tfsdk:"max" tfPlanOnly:"true"`
+	Min types.String `tfsdk:"min" tfPlanOnly:"true"`
 }

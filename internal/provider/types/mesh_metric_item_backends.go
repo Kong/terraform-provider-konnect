@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshMetricItemBackends struct {
-	OpenTelemetry *OpenTelemetry `tfsdk:"open_telemetry"`
-	Prometheus    *Prometheus    `tfsdk:"prometheus"`
-	Type          types.String   `tfsdk:"type"`
+	OpenTelemetry *OpenTelemetry `tfsdk:"open_telemetry" tfPlanOnly:"true"`
+	Prometheus    *Prometheus    `tfsdk:"prometheus" tfPlanOnly:"true"`
+	Type          types.String   `tfsdk:"type" tfPlanOnly:"true"`
 }

@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CertManagerCertificateAuthorityConfig struct {
-	CaCert     *AccessKey     `tfsdk:"ca_cert"`
-	CommonName types.String   `tfsdk:"common_name"`
-	DNSNames   []types.String `tfsdk:"dns_names"`
-	IssuerRef  *IssuerRef     `tfsdk:"issuer_ref"`
+	CaCert     *AccessKey     `tfsdk:"ca_cert" tfPlanOnly:"true"`
+	CommonName types.String   `tfsdk:"common_name" tfPlanOnly:"true"`
+	DNSNames   []types.String `tfsdk:"dns_names" tfPlanOnly:"true"`
+	IssuerRef  *IssuerRef     `tfsdk:"issuer_ref" tfPlanOnly:"true"`
 }

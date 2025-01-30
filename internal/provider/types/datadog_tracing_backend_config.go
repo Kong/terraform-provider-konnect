@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type DatadogTracingBackendConfig struct {
-	Address      types.String `tfsdk:"address"`
-	Port         types.Int64  `tfsdk:"port"`
-	SplitService types.Bool   `tfsdk:"split_service"`
+	Address      types.String `tfsdk:"address" tfPlanOnly:"true"`
+	Port         types.Int64  `tfsdk:"port" tfPlanOnly:"true"`
+	SplitService types.Bool   `tfsdk:"split_service" tfPlanOnly:"true"`
 }

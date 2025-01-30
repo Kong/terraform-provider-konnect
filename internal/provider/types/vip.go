@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Vip struct {
-	IP types.String `tfsdk:"ip"`
+	IP types.String `tfsdk:"ip" tfPlanOnly:"true"`
 }

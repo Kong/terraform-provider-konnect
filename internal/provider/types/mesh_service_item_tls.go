@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshServiceItemTLS struct {
-	Status types.String `tfsdk:"status"`
+	Status types.String `tfsdk:"status" tfPlanOnly:"true"`
 }

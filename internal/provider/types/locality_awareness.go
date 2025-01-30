@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type LocalityAwareness struct {
-	CrossZone *CrossZone `tfsdk:"cross_zone"`
-	Disabled  types.Bool `tfsdk:"disabled"`
-	LocalZone *LocalZone `tfsdk:"local_zone"`
+	CrossZone *CrossZone `tfsdk:"cross_zone" tfPlanOnly:"true"`
+	Disabled  types.Bool `tfsdk:"disabled" tfPlanOnly:"true"`
+	LocalZone *LocalZone `tfsdk:"local_zone" tfPlanOnly:"true"`
 }

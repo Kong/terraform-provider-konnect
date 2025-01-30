@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ResponseBandwidth struct {
-	Limit      types.String `tfsdk:"limit"`
-	Percentage Mode         `tfsdk:"percentage"`
+	Limit      types.String `tfsdk:"limit" tfPlanOnly:"true"`
+	Percentage Mode         `tfsdk:"percentage" tfPlanOnly:"true"`
 }

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshServiceItemSelector struct {
-	DataplaneRef  *DataplaneRef           `tfsdk:"dataplane_ref"`
-	DataplaneTags map[string]types.String `tfsdk:"dataplane_tags"`
+	DataplaneRef  *DataplaneRef           `tfsdk:"dataplane_ref" tfPlanOnly:"true"`
+	DataplaneTags map[string]types.String `tfsdk:"dataplane_tags" tfPlanOnly:"true"`
 }

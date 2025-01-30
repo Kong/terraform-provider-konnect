@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Conditions struct {
-	Message types.String `tfsdk:"message"`
-	Reason  types.String `tfsdk:"reason"`
-	Status  types.String `tfsdk:"status"`
-	Type    types.String `tfsdk:"type"`
+	Message types.String `tfsdk:"message" tfPlanOnly:"true"`
+	Reason  types.String `tfsdk:"reason" tfPlanOnly:"true"`
+	Status  types.String `tfsdk:"status" tfPlanOnly:"true"`
+	Type    types.String `tfsdk:"type" tfPlanOnly:"true"`
 }

@@ -3,5 +3,5 @@
 package types
 
 type Conf struct {
-	Listeners []Listeners `tfsdk:"listeners"`
+	Listeners []Listeners `tfsdk:"listeners" tfPlanOnly:"true"`
 }

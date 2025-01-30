@@ -3,9 +3,9 @@
 package types
 
 type Detectors struct {
-	FailurePercentage   *FailurePercentage `tfsdk:"failure_percentage"`
-	GatewayFailures     *GatewayFailures   `tfsdk:"gateway_failures"`
-	LocalOriginFailures *GatewayFailures   `tfsdk:"local_origin_failures"`
-	SuccessRate         *SuccessRate       `tfsdk:"success_rate"`
-	TotalFailures       *GatewayFailures   `tfsdk:"total_failures"`
+	FailurePercentage   *FailurePercentage `tfsdk:"failure_percentage" tfPlanOnly:"true"`
+	GatewayFailures     *GatewayFailures   `tfsdk:"gateway_failures" tfPlanOnly:"true"`
+	LocalOriginFailures *GatewayFailures   `tfsdk:"local_origin_failures" tfPlanOnly:"true"`
+	SuccessRate         *SuccessRate       `tfsdk:"success_rate" tfPlanOnly:"true"`
+	TotalFailures       *GatewayFailures   `tfsdk:"total_failures" tfPlanOnly:"true"`
 }

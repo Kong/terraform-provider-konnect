@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type File struct {
-	Format *Format      `tfsdk:"format"`
-	Path   types.String `tfsdk:"path"`
+	Format *Format      `tfsdk:"format" tfPlanOnly:"true"`
+	Path   types.String `tfsdk:"path" tfPlanOnly:"true"`
 }

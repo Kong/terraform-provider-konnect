@@ -79,6 +79,30 @@ func (o *Constraints) GetDataplaneProxy() *DataplaneProxy {
 	return o.DataplaneProxy
 }
 
+type TCPLoggingBackendConfig struct {
+	// Address to TCP service that will receive logs
+	Address *string `json:"address,omitempty"`
+}
+
+func (o *TCPLoggingBackendConfig) GetAddress() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Address
+}
+
+type FileLoggingBackendConfig struct {
+	// Path to a file that logs will be written to
+	Path *string `json:"path,omitempty"`
+}
+
+func (o *FileLoggingBackendConfig) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
 type MeshItemLoggingConfType string
 
 const (
@@ -280,6 +304,234 @@ func (o *MeshServices) GetMode() *Mode {
 	return o.Mode
 }
 
+// Aggregate - PrometheusAggregateMetricsConfig defines endpoints that should be scrapped by kuma-dp for prometheus metrics.
+type Aggregate struct {
+	// Address on which a service expose HTTP endpoint with Prometheus metrics.
+	Address *string `json:"address,omitempty"`
+	// If false then the application won't be scrapped. If nil, then it is treated
+	// as true and kuma-dp scrapes metrics from the service.
+	Enabled *bool `json:"enabled,omitempty"`
+	// Name which identify given configuration.
+	Name *string `json:"name,omitempty"`
+	// Path on which a service expose HTTP endpoint with Prometheus metrics.
+	Path *string `json:"path,omitempty"`
+	// Port on which a service expose HTTP endpoint with Prometheus metrics.
+	Port *int64 `json:"port,omitempty"`
+}
+
+func (o *Aggregate) GetAddress() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Address
+}
+
+func (o *Aggregate) GetEnabled() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Enabled
+}
+
+func (o *Aggregate) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+func (o *Aggregate) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
+func (o *Aggregate) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+// Envoy - Configuration of Envoy's metrics.
+type Envoy struct {
+	// FilterRegex value that is going to be passed to Envoy for filtering
+	// Envoy metrics.
+	FilterRegex *string `json:"filterRegex,omitempty"`
+	// If true then return metrics that Envoy has updated (counters incremented
+	// at least once, gauges changed at least once, and histograms added to at
+	// least once). If nil, then it is treated as false.
+	UsedOnly *bool `json:"usedOnly,omitempty"`
+}
+
+func (o *Envoy) GetFilterRegex() *string {
+	if o == nil {
+		return nil
+	}
+	return o.FilterRegex
+}
+
+func (o *Envoy) GetUsedOnly() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UsedOnly
+}
+
+type ConfModeType string
+
+const (
+	ConfModeTypeStr     ConfModeType = "str"
+	ConfModeTypeInteger ConfModeType = "integer"
+)
+
+// ConfMode - mode defines how configured is the TLS for Prometheus.
+// Supported values, delegated, disabled, activeMTLSBackend. Default to
+// `activeMTLSBackend`.
+type ConfMode struct {
+	Str     *string
+	Integer *int64
+
+	Type ConfModeType
+}
+
+func CreateConfModeStr(str string) ConfMode {
+	typ := ConfModeTypeStr
+
+	return ConfMode{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func CreateConfModeInteger(integer int64) ConfMode {
+	typ := ConfModeTypeInteger
+
+	return ConfMode{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func (u *ConfMode) UnmarshalJSON(data []byte) error {
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = ConfModeTypeStr
+		return nil
+	}
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = ConfModeTypeInteger
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for ConfMode", string(data))
+}
+
+func (u ConfMode) MarshalJSON() ([]byte, error) {
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type ConfMode: all fields are null")
+}
+
+// ConfTLS - Configuration of TLS for prometheus listener.
+type ConfTLS struct {
+	// mode defines how configured is the TLS for Prometheus.
+	// Supported values, delegated, disabled, activeMTLSBackend. Default to
+	// `activeMTLSBackend`.
+	Mode *ConfMode `json:"mode,omitempty"`
+}
+
+func (o *ConfTLS) GetMode() *ConfMode {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type PrometheusMetricsBackendConfig struct {
+	// Map with the configuration of applications which metrics are going to be
+	// scrapped by kuma-dp.
+	Aggregate []Aggregate `json:"aggregate,omitempty"`
+	// Configuration of Envoy's metrics.
+	Envoy *Envoy `json:"envoy,omitempty"`
+	// Path on which a dataplane should expose HTTP endpoint with Prometheus
+	// metrics.
+	Path *string `json:"path,omitempty"`
+	// Port on which a dataplane should expose HTTP endpoint with Prometheus
+	// metrics.
+	Port *int64 `json:"port,omitempty"`
+	// If true then endpoints for scraping metrics won't require mTLS even if mTLS
+	// is enabled in Mesh. If nil, then it is treated as false.
+	SkipMTLS *bool `json:"skipMTLS,omitempty"`
+	// Tags associated with an application this dataplane is deployed next to,
+	// e.g. service=web, version=1.0.
+	// `service` tag is mandatory.
+	Tags map[string]string `json:"tags,omitempty"`
+	// Configuration of TLS for prometheus listener.
+	TLS *ConfTLS `json:"tls,omitempty"`
+}
+
+func (o *PrometheusMetricsBackendConfig) GetAggregate() []Aggregate {
+	if o == nil {
+		return nil
+	}
+	return o.Aggregate
+}
+
+func (o *PrometheusMetricsBackendConfig) GetEnvoy() *Envoy {
+	if o == nil {
+		return nil
+	}
+	return o.Envoy
+}
+
+func (o *PrometheusMetricsBackendConfig) GetPath() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Path
+}
+
+func (o *PrometheusMetricsBackendConfig) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *PrometheusMetricsBackendConfig) GetSkipMTLS() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SkipMTLS
+}
+
+func (o *PrometheusMetricsBackendConfig) GetTags() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *PrometheusMetricsBackendConfig) GetTLS() *ConfTLS {
+	if o == nil {
+		return nil
+	}
+	return o.TLS
+}
+
 type MeshItemConfType string
 
 const (
@@ -376,6 +628,259 @@ func (o *Metrics) GetEnabledBackend() *string {
 		return nil
 	}
 	return o.EnabledBackend
+}
+
+type CertManagerCertificateAuthorityConfigConfCaCert struct {
+	Type any `json:"Type"`
+}
+
+func (o *CertManagerCertificateAuthorityConfigConfCaCert) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type IssuerRef struct {
+	Group *string `json:"group,omitempty"`
+	Kind  *string `json:"kind,omitempty"`
+	Name  *string `json:"name,omitempty"`
+}
+
+func (o *IssuerRef) GetGroup() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Group
+}
+
+func (o *IssuerRef) GetKind() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Kind
+}
+
+func (o *IssuerRef) GetName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Name
+}
+
+type CertManagerCertificateAuthorityConfig struct {
+	CaCert     *CertManagerCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
+	CommonName *string                                          `json:"commonName,omitempty"`
+	DNSNames   []string                                         `json:"dnsNames,omitempty"`
+	IssuerRef  *IssuerRef                                       `json:"issuerRef,omitempty"`
+}
+
+func (o *CertManagerCertificateAuthorityConfig) GetCaCert() *CertManagerCertificateAuthorityConfigConfCaCert {
+	if o == nil {
+		return nil
+	}
+	return o.CaCert
+}
+
+func (o *CertManagerCertificateAuthorityConfig) GetCommonName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CommonName
+}
+
+func (o *CertManagerCertificateAuthorityConfig) GetDNSNames() []string {
+	if o == nil {
+		return nil
+	}
+	return o.DNSNames
+}
+
+func (o *CertManagerCertificateAuthorityConfig) GetIssuerRef() *IssuerRef {
+	if o == nil {
+		return nil
+	}
+	return o.IssuerRef
+}
+
+type AccessKey struct {
+	Type any `json:"Type"`
+}
+
+func (o *AccessKey) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type AccessKeySecret struct {
+	Type any `json:"Type"`
+}
+
+func (o *AccessKeySecret) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type AwsCredentials struct {
+	AccessKey       *AccessKey       `json:"accessKey,omitempty"`
+	AccessKeySecret *AccessKeySecret `json:"accessKeySecret,omitempty"`
+}
+
+func (o *AwsCredentials) GetAccessKey() *AccessKey {
+	if o == nil {
+		return nil
+	}
+	return o.AccessKey
+}
+
+func (o *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
+	if o == nil {
+		return nil
+	}
+	return o.AccessKeySecret
+}
+
+type ConfAuth struct {
+	AwsCredentials *AwsCredentials `json:"awsCredentials,omitempty"`
+}
+
+func (o *ConfAuth) GetAwsCredentials() *AwsCredentials {
+	if o == nil {
+		return nil
+	}
+	return o.AwsCredentials
+}
+
+type ConfCaCert struct {
+	Type any `json:"Type"`
+}
+
+func (o *ConfCaCert) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type ACMCertificateAuthorityConfig struct {
+	Arn        *string     `json:"arn,omitempty"`
+	Auth       *ConfAuth   `json:"auth,omitempty"`
+	CaCert     *ConfCaCert `json:"caCert,omitempty"`
+	CommonName *string     `json:"commonName,omitempty"`
+}
+
+func (o *ACMCertificateAuthorityConfig) GetArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Arn
+}
+
+func (o *ACMCertificateAuthorityConfig) GetAuth() *ConfAuth {
+	if o == nil {
+		return nil
+	}
+	return o.Auth
+}
+
+func (o *ACMCertificateAuthorityConfig) GetCaCert() *ConfCaCert {
+	if o == nil {
+		return nil
+	}
+	return o.CaCert
+}
+
+func (o *ACMCertificateAuthorityConfig) GetCommonName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.CommonName
+}
+
+type VaultCertificateAuthorityConfig struct {
+	Mode any `json:"Mode,omitempty"`
+}
+
+func (o *VaultCertificateAuthorityConfig) GetMode() any {
+	if o == nil {
+		return nil
+	}
+	return o.Mode
+}
+
+type BuiltinCertificateAuthorityConfigConfCaCert struct {
+	RSAbits    *int64  `json:"RSAbits,omitempty"`
+	Expiration *string `json:"expiration,omitempty"`
+}
+
+func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetRSAbits() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.RSAbits
+}
+
+func (o *BuiltinCertificateAuthorityConfigConfCaCert) GetExpiration() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Expiration
+}
+
+type BuiltinCertificateAuthorityConfig struct {
+	CaCert *BuiltinCertificateAuthorityConfigConfCaCert `json:"caCert,omitempty"`
+}
+
+func (o *BuiltinCertificateAuthorityConfig) GetCaCert() *BuiltinCertificateAuthorityConfigConfCaCert {
+	if o == nil {
+		return nil
+	}
+	return o.CaCert
+}
+
+type Cert struct {
+	Type any `json:"Type"`
+}
+
+func (o *Cert) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type ConfKey struct {
+	Type any `json:"Type"`
+}
+
+func (o *ConfKey) GetType() any {
+	if o == nil {
+		return nil
+	}
+	return o.Type
+}
+
+type ProvidedCertificateAuthorityConfig struct {
+	Cert *Cert    `json:"cert,omitempty"`
+	Key  *ConfKey `json:"key,omitempty"`
+}
+
+func (o *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
+	if o == nil {
+		return nil
+	}
+	return o.Cert
+}
+
+func (o *ProvidedCertificateAuthorityConfig) GetKey() *ConfKey {
+	if o == nil {
+		return nil
+	}
+	return o.Key
 }
 
 type MeshItemMtlsConfType string
@@ -808,6 +1313,83 @@ func (o *Routing) GetZoneEgress() *bool {
 		return nil
 	}
 	return o.ZoneEgress
+}
+
+type ZipkinTracingBackendConfig struct {
+	// Version of the API. values: httpJson, httpJsonV1, httpProto. Default:
+	// httpJson see
+	// https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion
+	APIVersion *string `json:"apiVersion,omitempty"`
+	// Determines whether client and server spans will share the same span
+	// context. Default: true.
+	// https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig
+	SharedSpanContext *bool `json:"sharedSpanContext,omitempty"`
+	// Generate 128bit traces. Default: false
+	TraceId128bit *bool `json:"traceId128bit,omitempty"`
+	// Address of Zipkin collector.
+	URL *string `json:"url,omitempty"`
+}
+
+func (o *ZipkinTracingBackendConfig) GetAPIVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIVersion
+}
+
+func (o *ZipkinTracingBackendConfig) GetSharedSpanContext() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SharedSpanContext
+}
+
+func (o *ZipkinTracingBackendConfig) GetTraceId128bit() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.TraceId128bit
+}
+
+func (o *ZipkinTracingBackendConfig) GetURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.URL
+}
+
+type DatadogTracingBackendConfig struct {
+	// Address of datadog collector.
+	Address *string `json:"address,omitempty"`
+	// Port of datadog collector
+	Port *int64 `json:"port,omitempty"`
+	// Determines if datadog service name should be split based on traffic
+	// direction and destination. For example, with `splitService: true` and a
+	// `backend` service that communicates with a couple of databases, you would
+	// get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
+	// `backend_OUTBOUND_db2` in Datadog. Default: false
+	SplitService *bool `json:"splitService,omitempty"`
+}
+
+func (o *DatadogTracingBackendConfig) GetAddress() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Address
+}
+
+func (o *DatadogTracingBackendConfig) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *DatadogTracingBackendConfig) GetSplitService() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SplitService
 }
 
 type MeshItemTracingConfType string

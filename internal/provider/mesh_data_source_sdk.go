@@ -217,7 +217,7 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends5.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
-							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
+							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 								backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 							} else {
@@ -252,7 +252,7 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert == nil {
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = nil
 						} else {
-							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.CaCert{}
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.BuiltinCertificateAuthorityConfigConfCaCert{}
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration = types.StringPointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration)
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits = types.Int64PointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits)
 						}

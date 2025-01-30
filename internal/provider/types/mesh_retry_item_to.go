@@ -3,6 +3,6 @@
 package types
 
 type MeshRetryItemTo struct {
-	Default   *MeshRetryItemDefault      `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
+	Default   *MeshRetryItemDefault      `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

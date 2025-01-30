@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 1972fcfac9c3635ddab1856e2d30d767
+  docChecksum: 2cfb2b3f7b2c6dc7000c27e0d986df04
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -193,6 +193,7 @@ generatedFiles:
   - examples/data-sources/konnect_portal_auth/data-source.tf
   - examples/data-sources/konnect_portal_list/data-source.tf
   - examples/data-sources/konnect_portal_product_version/data-source.tf
+  - examples/data-sources/konnect_portal_team/data-source.tf
   - examples/data-sources/konnect_serverless_cloud_gateway/data-source.tf
   - examples/data-sources/konnect_system_account/data-source.tf
   - examples/data-sources/konnect_system_account_access_token/data-source.tf
@@ -475,6 +476,8 @@ generatedFiles:
   - examples/resources/konnect_portal_auth/resource.tf
   - examples/resources/konnect_portal_product_version/import.sh
   - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_portal_team/import.sh
+  - examples/resources/konnect_portal_team/resource.tf
   - examples/resources/konnect_serverless_cloud_gateway/import.sh
   - examples/resources/konnect_serverless_cloud_gateway/resource.tf
   - examples/resources/konnect_system_account/import.sh
@@ -1105,6 +1108,10 @@ generatedFiles:
   - internal/provider/portalproductversion_data_source_sdk.go
   - internal/provider/portalproductversion_resource.go
   - internal/provider/portalproductversion_resource_sdk.go
+  - internal/provider/portalteam_data_source.go
+  - internal/provider/portalteam_data_source_sdk.go
+  - internal/provider/portalteam_resource.go
+  - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
   - internal/provider/reflect/diags.go
   - internal/provider/reflect/doc.go
@@ -1164,7 +1171,6 @@ generatedFiles:
   - internal/provider/types/ai_prompt_decorator_plugin_config.go
   - internal/provider/types/ai_prompt_guard_plugin_config.go
   - internal/provider/types/ai_prompt_template_plugin_config.go
-  - internal/provider/types/ai_proxy_plugin_auth.go
   - internal/provider/types/ai_proxy_plugin_config.go
   - internal/provider/types/ai_proxy_plugin_logging.go
   - internal/provider/types/ai_request_transformer_plugin_config.go
@@ -1215,6 +1221,7 @@ generatedFiles:
   - internal/provider/types/bootstrap_servers.go
   - internal/provider/types/bot_detection_plugin_config.go
   - internal/provider/types/builtin_certificate_authority_config.go
+  - internal/provider/types/builtin_certificate_authority_config_conf_ca_cert.go
   - internal/provider/types/button.go
   - internal/provider/types/ca_cert.go
   - internal/provider/types/canary_plugin_config.go
@@ -1225,6 +1232,7 @@ generatedFiles:
   - internal/provider/types/cluster_nodes.go
   - internal/provider/types/conditions.go
   - internal/provider/types/conf.go
+  - internal/provider/types/conf_auth.go
   - internal/provider/types/config.go
   - internal/provider/types/configuration_data_plane_group.go
   - internal/provider/types/configuration_data_plane_group_autoscale.go
@@ -1342,9 +1350,7 @@ generatedFiles:
   - internal/provider/types/mesh_circuit_breaker_item_spec.go
   - internal/provider/types/mesh_external_service.go
   - internal/provider/types/mesh_external_service_item.go
-  - internal/provider/types/mesh_external_service_item_ca_cert.go
   - internal/provider/types/mesh_external_service_item_spec.go
-  - internal/provider/types/mesh_external_service_item_tls.go
   - internal/provider/types/mesh_external_service_item_version.go
   - internal/provider/types/mesh_fault_injection_item.go
   - internal/provider/types/mesh_fault_injection_item_default.go
@@ -1568,6 +1574,7 @@ generatedFiles:
   - internal/provider/types/tcp_logging_backend_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
+  - internal/provider/types/tls.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
   - internal/provider/types/tracing.go
@@ -1730,6 +1737,7 @@ generatedFiles:
   - internal/sdk/models/operations/createplugin.go
   - internal/sdk/models/operations/createpluginschemas.go
   - internal/sdk/models/operations/createportal.go
+  - internal/sdk/models/operations/createportalteam.go
   - internal/sdk/models/operations/createpostfunctionplugin.go
   - internal/sdk/models/operations/createprefunctionplugin.go
   - internal/sdk/models/operations/createprometheusplugin.go
@@ -1868,6 +1876,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletepluginschemas.go
   - internal/sdk/models/operations/deleteportal.go
   - internal/sdk/models/operations/deleteportalproductversion.go
+  - internal/sdk/models/operations/deleteportalteam.go
   - internal/sdk/models/operations/deletepostfunctionplugin.go
   - internal/sdk/models/operations/deleteprefunctionplugin.go
   - internal/sdk/models/operations/deleteprometheusplugin.go
@@ -2037,6 +2046,7 @@ generatedFiles:
   - internal/sdk/models/operations/getportalappearance.go
   - internal/sdk/models/operations/getportalauthenticationsettings.go
   - internal/sdk/models/operations/getportalproductversion.go
+  - internal/sdk/models/operations/getportalteam.go
   - internal/sdk/models/operations/getpostfunctionplugin.go
   - internal/sdk/models/operations/getprefunctionplugin.go
   - internal/sdk/models/operations/getprometheusplugin.go
@@ -2179,6 +2189,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateportal.go
   - internal/sdk/models/operations/updateportalappearance.go
   - internal/sdk/models/operations/updateportalauthenticationsettings.go
+  - internal/sdk/models/operations/updateportalteam.go
   - internal/sdk/models/operations/updatepostfunctionplugin.go
   - internal/sdk/models/operations/updateprefunctionplugin.go
   - internal/sdk/models/operations/updateprometheusplugin.go
@@ -2227,7 +2238,6 @@ generatedFiles:
   - internal/sdk/models/shared/acl.go
   - internal/sdk/models/shared/aclplugin.go
   - internal/sdk/models/shared/aclwithoutparents.go
-  - internal/sdk/models/shared/acmcertificateauthorityconfig.go
   - internal/sdk/models/shared/acmeplugin.go
   - internal/sdk/models/shared/addsystemaccounttoteam.go
   - internal/sdk/models/shared/addusertoteam.go
@@ -2270,13 +2280,11 @@ generatedFiles:
   - internal/sdk/models/shared/basicauthplugin.go
   - internal/sdk/models/shared/basicauthwithoutparents.go
   - internal/sdk/models/shared/botdetectionplugin.go
-  - internal/sdk/models/shared/builtincertificateauthorityconfig.go
   - internal/sdk/models/shared/cacertificate.go
   - internal/sdk/models/shared/cacertificateinput.go
   - internal/sdk/models/shared/canaryplugin.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/certificateinput.go
-  - internal/sdk/models/shared/certmanagercertificateauthorityconfig.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
@@ -2318,14 +2326,12 @@ generatedFiles:
   - internal/sdk/models/shared/customdomain.go
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/datadogplugin.go
-  - internal/sdk/models/shared/datadogtracingbackendconfig.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/entityregion.go
   - internal/sdk/models/shared/exittransformerplugin.go
-  - internal/sdk/models/shared/fileloggingbackendconfig.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
   - internal/sdk/models/shared/forwardproxyplugin.go
@@ -2498,15 +2504,16 @@ generatedFiles:
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalclaimmappings.go
+  - internal/sdk/models/shared/portalcreateteamrequest.go
   - internal/sdk/models/shared/portaloidcconfig.go
   - internal/sdk/models/shared/portalproductversion.go
   - internal/sdk/models/shared/portalproductversionpublishstatus.go
+  - internal/sdk/models/shared/portalteamresponse.go
   - internal/sdk/models/shared/portaltheme.go
+  - internal/sdk/models/shared/portalupdateteamrequest.go
   - internal/sdk/models/shared/postfunctionplugin.go
   - internal/sdk/models/shared/prefunctionplugin.go
-  - internal/sdk/models/shared/prometheusmetricsbackendconfig.go
   - internal/sdk/models/shared/prometheusplugin.go
-  - internal/sdk/models/shared/providedcertificateauthorityconfig.go
   - internal/sdk/models/shared/provideraccount.go
   - internal/sdk/models/shared/providername.go
   - internal/sdk/models/shared/proxycacheadvancedplugin.go
@@ -2544,7 +2551,6 @@ generatedFiles:
   - internal/sdk/models/shared/systemaccountaccesstokencreated.go
   - internal/sdk/models/shared/target.go
   - internal/sdk/models/shared/targetwithoutparents.go
-  - internal/sdk/models/shared/tcploggingbackendconfig.go
   - internal/sdk/models/shared/tcplogplugin.go
   - internal/sdk/models/shared/team.go
   - internal/sdk/models/shared/tlshandshakemodifierplugin.go
@@ -2574,13 +2580,11 @@ generatedFiles:
   - internal/sdk/models/shared/upstreamtimeoutplugin.go
   - internal/sdk/models/shared/vault.go
   - internal/sdk/models/shared/vaultauthplugin.go
-  - internal/sdk/models/shared/vaultcertificateauthorityconfig.go
   - internal/sdk/models/shared/vaultinput.go
   - internal/sdk/models/shared/websocketsizelimitplugin.go
   - internal/sdk/models/shared/websocketvalidatorplugin.go
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
-  - internal/sdk/models/shared/zipkintracingbackendconfig.go
   - internal/sdk/mtlsauthcredentials.go
   - internal/sdk/networks.go
   - internal/sdk/plugins.go
@@ -2588,6 +2592,7 @@ generatedFiles:
   - internal/sdk/portalauthsettings.go
   - internal/sdk/portalproductversions.go
   - internal/sdk/portals.go
+  - internal/sdk/portalteams.go
   - internal/sdk/provideraccounts.go
   - internal/sdk/retry/config.go
   - internal/sdk/roles.go
@@ -9170,4 +9175,83 @@ examples:
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "200": {}
+  create-portal-team:
+    speakeasy-default-create-portal-team:
+      parameters:
+        path:
+          portalId: "3a300723-7ea3-4f19-9e29-ab2b3ba29902"
+      requestBody:
+        application/json: {"name": "IDM - Developers", "description": "The Identity Management (IDM) team."}
+      responses:
+        "201":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-02-07T17:00:00.52Z"}
+        "400":
+          application/problem+json: {"status": 68246, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>", "<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  get-portal-team:
+    speakeasy-default-get-portal-team:
+      parameters:
+        path:
+          teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          portalId: "a58b37e0-d176-4468-88bf-462ad74af60d"
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-02-07T17:00:00.52Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-portal-team:
+    speakeasy-default-update-portal-team:
+      parameters:
+        path:
+          teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          portalId: "dc59a967-7d09-4076-9d5e-0471dd093a93"
+      requestBody:
+        application/json: {"name": "IDM - Developers", "description": "The Identity Management (IDM) API team."}
+      responses:
+        "200":
+          application/json: {"id": "7f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "IDM - Developers", "description": "The developers for the IDM API.", "created_at": "1992-02-07T17:46:57.52Z", "updated_at": "2022-02-07T17:00:00.52Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-portal-team:
+    speakeasy-default-delete-portal-team:
+      parameters:
+        path:
+          teamId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+          portalId: "37b24879-18b1-4d98-aa79-f197e88f4565"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  updateMesh:
+    "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"name": "<value>", "type": "<value>"}
+  createMesh:
+    "":
+      parameters:
+        path:
+          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+          name: "<value>"
+      requestBody:
+        application/json: {"name": "<value>", "type": "<value>"}
 generatedTests: {}

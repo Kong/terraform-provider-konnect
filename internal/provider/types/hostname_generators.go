@@ -3,6 +3,6 @@
 package types
 
 type HostnameGenerators struct {
-	Conditions           []Conditions         `tfsdk:"conditions"`
-	HostnameGeneratorRef HostnameGeneratorRef `tfsdk:"hostname_generator_ref"`
+	Conditions           []Conditions         `tfsdk:"conditions" tfPlanOnly:"true"`
+	HostnameGeneratorRef HostnameGeneratorRef `tfsdk:"hostname_generator_ref" tfPlanOnly:"true"`
 }

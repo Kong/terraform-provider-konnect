@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshLoadBalancingStrategyItemSpecHeader struct {
-	Name types.String `tfsdk:"name"`
+	Name types.String `tfsdk:"name" tfPlanOnly:"true"`
 }

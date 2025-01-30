@@ -24,7 +24,7 @@ func (r *GatewayPluginAiRequestTransformerDataSourceModel) RefreshFromSharedAiRe
 			if resp.Config.Llm.Auth == nil {
 				r.Config.Llm.Auth = nil
 			} else {
-				r.Config.Llm.Auth = &tfTypes.AiProxyPluginAuth{}
+				r.Config.Llm.Auth = &tfTypes.Auth{}
 				r.Config.Llm.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Llm.Auth.AllowOverride)
 				r.Config.Llm.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Llm.Auth.AwsAccessKeyID)
 				r.Config.Llm.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Llm.Auth.AwsSecretAccessKey)

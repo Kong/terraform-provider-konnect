@@ -257,9 +257,9 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 
 						tags2[tagsKey2] = tagsInst2
 					}
-					var tls *shared.TLS
+					var tls *shared.ConfTLS
 					if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS != nil {
-						var mode1 *shared.PrometheusMetricsBackendConfigMode
+						var mode1 *shared.ConfMode
 						if backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode != nil {
 							str1 := new(string)
 							if !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str.IsUnknown() && !backendsItem1.Conf.PrometheusMetricsBackendConfig.TLS.Mode.Str.IsNull() {
@@ -268,7 +268,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 								str1 = nil
 							}
 							if str1 != nil {
-								mode1 = &shared.PrometheusMetricsBackendConfigMode{
+								mode1 = &shared.ConfMode{
 									Str: str1,
 								}
 							}
@@ -279,12 +279,12 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 								integer1 = nil
 							}
 							if integer1 != nil {
-								mode1 = &shared.PrometheusMetricsBackendConfigMode{
+								mode1 = &shared.ConfMode{
 									Integer: integer1,
 								}
 							}
 						}
-						tls = &shared.TLS{
+						tls = &shared.ConfTLS{
 							Mode: mode1,
 						}
 					}
@@ -349,11 +349,11 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 							Type: typeVar1,
 						}
 					}
-					var key *shared.ProvidedCertificateAuthorityConfigKey
+					var key *shared.ConfKey
 					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key != nil {
 						var typeVar2 interface{}
 						_ = json.Unmarshal([]byte(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type.ValueString()), &typeVar2)
-						key = &shared.ProvidedCertificateAuthorityConfigKey{
+						key = &shared.ConfKey{
 							Type: typeVar2,
 						}
 					}
@@ -369,7 +369,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 				}
 				var builtinCertificateAuthorityConfig *shared.BuiltinCertificateAuthorityConfig
 				if backendsItem2.Conf.BuiltinCertificateAuthorityConfig != nil {
-					var caCert *shared.CaCert
+					var caCert *shared.BuiltinCertificateAuthorityConfigConfCaCert
 					if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert != nil {
 						rsAbits := new(int64)
 						if !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits.IsUnknown() && !backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits.IsNull() {
@@ -383,7 +383,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 						} else {
 							expiration = nil
 						}
-						caCert = &shared.CaCert{
+						caCert = &shared.BuiltinCertificateAuthorityConfigConfCaCert{
 							RSAbits:    rsAbits,
 							Expiration: expiration,
 						}
@@ -420,7 +420,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					} else {
 						arn = nil
 					}
-					var auth *shared.Auth
+					var auth *shared.ConfAuth
 					if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth != nil {
 						var awsCredentials *shared.AwsCredentials
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials != nil {
@@ -445,15 +445,15 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 								AccessKeySecret: accessKeySecret,
 							}
 						}
-						auth = &shared.Auth{
+						auth = &shared.ConfAuth{
 							AwsCredentials: awsCredentials,
 						}
 					}
-					var caCert1 *shared.ACMCertificateAuthorityConfigCaCert
+					var caCert1 *shared.ConfCaCert
 					if backendsItem2.Conf.ACMCertificateAuthorityConfig.CaCert != nil {
 						var typeVar5 interface{}
 						_ = json.Unmarshal([]byte(backendsItem2.Conf.ACMCertificateAuthorityConfig.CaCert.Type.ValueString()), &typeVar5)
-						caCert1 = &shared.ACMCertificateAuthorityConfigCaCert{
+						caCert1 = &shared.ConfCaCert{
 							Type: typeVar5,
 						}
 					}
@@ -477,11 +477,11 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 				}
 				var certManagerCertificateAuthorityConfig *shared.CertManagerCertificateAuthorityConfig
 				if backendsItem2.Conf.CertManagerCertificateAuthorityConfig != nil {
-					var caCert2 *shared.CertManagerCertificateAuthorityConfigCaCert
+					var caCert2 *shared.CertManagerCertificateAuthorityConfigConfCaCert
 					if backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CaCert != nil {
 						var typeVar6 interface{}
 						_ = json.Unmarshal([]byte(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type.ValueString()), &typeVar6)
-						caCert2 = &shared.CertManagerCertificateAuthorityConfigCaCert{
+						caCert2 = &shared.CertManagerCertificateAuthorityConfigConfCaCert{
 							Type: typeVar6,
 						}
 					}
@@ -1060,7 +1060,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends5.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
-							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
+							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 								backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 							} else {
@@ -1095,7 +1095,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						if backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert == nil {
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = nil
 						} else {
-							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.CaCert{}
+							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert = &tfTypes.BuiltinCertificateAuthorityConfigConfCaCert{}
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration = types.StringPointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.Expiration)
 							backends5.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits = types.Int64PointerValue(backendsItem2.Conf.BuiltinCertificateAuthorityConfig.CaCert.RSAbits)
 						}

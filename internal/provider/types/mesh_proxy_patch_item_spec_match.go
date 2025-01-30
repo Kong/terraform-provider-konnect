@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshProxyPatchItemSpecMatch struct {
-	ListenerName types.String            `tfsdk:"listener_name"`
-	ListenerTags map[string]types.String `tfsdk:"listener_tags"`
-	Name         types.String            `tfsdk:"name"`
-	Origin       types.String            `tfsdk:"origin"`
+	ListenerName types.String            `tfsdk:"listener_name" tfPlanOnly:"true"`
+	ListenerTags map[string]types.String `tfsdk:"listener_tags" tfPlanOnly:"true"`
+	Name         types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Origin       types.String            `tfsdk:"origin" tfPlanOnly:"true"`
 }

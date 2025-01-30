@@ -3,5 +3,5 @@
 package types
 
 type BuiltinCertificateAuthorityConfig struct {
-	CaCert *CaCert `tfsdk:"ca_cert"`
+	CaCert *BuiltinCertificateAuthorityConfigConfCaCert `tfsdk:"ca_cert" tfPlanOnly:"true"`
 }

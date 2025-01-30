@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshGatewayItem struct {
-	Conf      *Conf                   `tfsdk:"conf"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	Mesh      types.String            `tfsdk:"mesh"`
-	Name      types.String            `tfsdk:"name"`
-	Selectors []Selectors             `tfsdk:"selectors"`
-	Tags      map[string]types.String `tfsdk:"tags"`
-	Type      types.String            `tfsdk:"type"`
+	Conf      *Conf                   `tfsdk:"conf" tfPlanOnly:"true"`
+	Labels    map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
+	Mesh      types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
+	Name      types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Selectors []Selectors             `tfsdk:"selectors" tfPlanOnly:"true"`
+	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
+	Type      types.String            `tfsdk:"type" tfPlanOnly:"true"`
 }

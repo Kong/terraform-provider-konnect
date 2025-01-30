@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type SuccessRate struct {
-	MinimumHosts            types.Int64 `tfsdk:"minimum_hosts"`
-	RequestVolume           types.Int64 `tfsdk:"request_volume"`
-	StandardDeviationFactor *Mode       `tfsdk:"standard_deviation_factor"`
+	MinimumHosts            types.Int64 `tfsdk:"minimum_hosts" tfPlanOnly:"true"`
+	RequestVolume           types.Int64 `tfsdk:"request_volume" tfPlanOnly:"true"`
+	StandardDeviationFactor *Mode       `tfsdk:"standard_deviation_factor" tfPlanOnly:"true"`
 }

@@ -3,6 +3,6 @@
 package types
 
 type MeshFaultInjectionItemFrom struct {
-	Default   *MeshFaultInjectionItemDefault `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef     `tfsdk:"target_ref"`
+	Default   *MeshFaultInjectionItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef     `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

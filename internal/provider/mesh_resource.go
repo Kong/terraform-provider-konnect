@@ -39,20 +39,20 @@ type MeshResource struct {
 
 // MeshResourceModel describes the resource data model.
 type MeshResourceModel struct {
-	Constraints                 *tfTypes.Constraints    `tfsdk:"constraints"`
+	Constraints                 *tfTypes.Constraints    `tfsdk:"constraints" tfPlanOnly:"true"`
 	CpID                        types.String            `tfsdk:"cp_id"`
-	Labels                      map[string]types.String `tfsdk:"labels"`
-	Logging                     *tfTypes.Logging        `tfsdk:"logging"`
-	MeshServices                *tfTypes.MeshServices   `tfsdk:"mesh_services"`
-	Metrics                     *tfTypes.Metrics        `tfsdk:"metrics"`
-	Mtls                        *tfTypes.Mtls           `tfsdk:"mtls"`
-	Name                        types.String            `tfsdk:"name"`
-	Networking                  *tfTypes.Networking     `tfsdk:"networking"`
-	Routing                     *tfTypes.Routing        `tfsdk:"routing"`
-	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies"`
-	Tracing                     *tfTypes.Tracing        `tfsdk:"tracing"`
-	Type                        types.String            `tfsdk:"type"`
-	Warnings                    []types.String          `tfsdk:"warnings"`
+	Labels                      map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
+	Logging                     *tfTypes.Logging        `tfsdk:"logging" tfPlanOnly:"true"`
+	MeshServices                *tfTypes.MeshServices   `tfsdk:"mesh_services" tfPlanOnly:"true"`
+	Metrics                     *tfTypes.Metrics        `tfsdk:"metrics" tfPlanOnly:"true"`
+	Mtls                        *tfTypes.Mtls           `tfsdk:"mtls" tfPlanOnly:"true"`
+	Name                        types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Networking                  *tfTypes.Networking     `tfsdk:"networking" tfPlanOnly:"true"`
+	Routing                     *tfTypes.Routing        `tfsdk:"routing" tfPlanOnly:"true"`
+	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies" tfPlanOnly:"true"`
+	Tracing                     *tfTypes.Tracing        `tfsdk:"tracing" tfPlanOnly:"true"`
+	Type                        types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	Warnings                    []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
 }
 
 func (r *MeshResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

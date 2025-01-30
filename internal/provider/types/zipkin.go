@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Zipkin struct {
-	APIVersion        types.String `tfsdk:"api_version"`
-	SharedSpanContext types.Bool   `tfsdk:"shared_span_context"`
-	TraceId128bit     types.Bool   `tfsdk:"trace_id128bit"`
-	URL               types.String `tfsdk:"url"`
+	APIVersion        types.String `tfsdk:"api_version" tfPlanOnly:"true"`
+	SharedSpanContext types.Bool   `tfsdk:"shared_span_context" tfPlanOnly:"true"`
+	TraceId128bit     types.Bool   `tfsdk:"trace_id128bit" tfPlanOnly:"true"`
+	URL               types.String `tfsdk:"url" tfPlanOnly:"true"`
 }

@@ -5,10 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type OutlierDetection struct {
-	BaseEjectionTime            types.String `tfsdk:"base_ejection_time"`
-	Detectors                   *Detectors   `tfsdk:"detectors"`
-	Disabled                    types.Bool   `tfsdk:"disabled"`
-	Interval                    types.String `tfsdk:"interval"`
-	MaxEjectionPercent          types.Int64  `tfsdk:"max_ejection_percent"`
-	SplitExternalAndLocalErrors types.Bool   `tfsdk:"split_external_and_local_errors"`
+	BaseEjectionTime            types.String `tfsdk:"base_ejection_time" tfPlanOnly:"true"`
+	Detectors                   *Detectors   `tfsdk:"detectors" tfPlanOnly:"true"`
+	Disabled                    types.Bool   `tfsdk:"disabled" tfPlanOnly:"true"`
+	Interval                    types.String `tfsdk:"interval" tfPlanOnly:"true"`
+	MaxEjectionPercent          types.Int64  `tfsdk:"max_ejection_percent" tfPlanOnly:"true"`
+	SplitExternalAndLocalErrors types.Bool   `tfsdk:"split_external_and_local_errors" tfPlanOnly:"true"`
 }

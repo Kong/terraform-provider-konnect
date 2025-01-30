@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type JSONPatches struct {
-	From  types.String `tfsdk:"from"`
-	Op    types.String `tfsdk:"op"`
-	Path  types.String `tfsdk:"path"`
-	Value types.String `tfsdk:"value"`
+	From  types.String `tfsdk:"from" tfPlanOnly:"true"`
+	Op    types.String `tfsdk:"op" tfPlanOnly:"true"`
+	Path  types.String `tfsdk:"path" tfPlanOnly:"true"`
+	Value types.String `tfsdk:"value" tfPlanOnly:"true"`
 }

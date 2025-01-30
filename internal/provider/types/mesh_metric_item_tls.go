@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshMetricItemTLS struct {
-	Mode types.String `tfsdk:"mode"`
+	Mode types.String `tfsdk:"mode" tfPlanOnly:"true"`
 }

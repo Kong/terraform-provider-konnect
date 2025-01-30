@@ -10,7 +10,7 @@ import (
 )
 
 func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPluginInput() *shared.AiProxyPluginInput {
-	var auth *shared.AiProxyPluginAuth
+	var auth *shared.Auth
 	if r.Config.Auth != nil {
 		allowOverride := new(bool)
 		if !r.Config.Auth.AllowOverride.IsUnknown() && !r.Config.Auth.AllowOverride.IsNull() {
@@ -96,7 +96,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPluginInput() *shared
 		} else {
 			paramValue = nil
 		}
-		auth = &shared.AiProxyPluginAuth{
+		auth = &shared.Auth{
 			AllowOverride:           allowOverride,
 			AwsAccessKeyID:          awsAccessKeyID,
 			AwsSecretAccessKey:      awsSecretAccessKey,
@@ -450,7 +450,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp 
 		if resp.Config.Auth == nil {
 			r.Config.Auth = nil
 		} else {
-			r.Config.Auth = &tfTypes.AiProxyPluginAuth{}
+			r.Config.Auth = &tfTypes.Auth{}
 			r.Config.Auth.AllowOverride = types.BoolPointerValue(resp.Config.Auth.AllowOverride)
 			r.Config.Auth.AwsAccessKeyID = types.StringPointerValue(resp.Config.Auth.AwsAccessKeyID)
 			r.Config.Auth.AwsSecretAccessKey = types.StringPointerValue(resp.Config.Auth.AwsSecretAccessKey)

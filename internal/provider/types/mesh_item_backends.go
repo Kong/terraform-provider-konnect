@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshItemBackends struct {
-	Conf *MeshItemConf `tfsdk:"conf"`
-	Name types.String  `tfsdk:"name"`
-	Type types.String  `tfsdk:"type"`
+	Conf *MeshItemConf `tfsdk:"conf" tfPlanOnly:"true"`
+	Name types.String  `tfsdk:"name" tfPlanOnly:"true"`
+	Type types.String  `tfsdk:"type" tfPlanOnly:"true"`
 }

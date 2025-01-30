@@ -38,15 +38,15 @@ type MeshGatewayResource struct {
 
 // MeshGatewayResourceModel describes the resource data model.
 type MeshGatewayResourceModel struct {
-	Conf      *tfTypes.Conf           `tfsdk:"conf"`
+	Conf      *tfTypes.Conf           `tfsdk:"conf" tfPlanOnly:"true"`
 	CpID      types.String            `tfsdk:"cp_id"`
-	Labels    map[string]types.String `tfsdk:"labels"`
-	Mesh      types.String            `tfsdk:"mesh"`
-	Name      types.String            `tfsdk:"name"`
-	Selectors []tfTypes.Selectors     `tfsdk:"selectors"`
-	Tags      map[string]types.String `tfsdk:"tags"`
-	Type      types.String            `tfsdk:"type"`
-	Warnings  []types.String          `tfsdk:"warnings"`
+	Labels    map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
+	Mesh      types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
+	Name      types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Selectors []tfTypes.Selectors     `tfsdk:"selectors" tfPlanOnly:"true"`
+	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
+	Type      types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	Warnings  []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
 }
 
 func (r *MeshGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

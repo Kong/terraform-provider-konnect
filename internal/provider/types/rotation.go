@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Rotation struct {
-	Expiration types.String `tfsdk:"expiration"`
+	Expiration types.String `tfsdk:"expiration" tfPlanOnly:"true"`
 }

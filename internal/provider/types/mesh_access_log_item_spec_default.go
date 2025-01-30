@@ -3,5 +3,5 @@
 package types
 
 type MeshAccessLogItemSpecDefault struct {
-	Backends []MeshAccessLogItemBackends `tfsdk:"backends"`
+	Backends []MeshAccessLogItemBackends `tfsdk:"backends" tfPlanOnly:"true"`
 }

@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Outbound struct {
-	Passthrough types.Bool `tfsdk:"passthrough"`
+	Passthrough types.Bool `tfsdk:"passthrough" tfPlanOnly:"true"`
 }

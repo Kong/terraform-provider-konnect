@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTraceItemBackends struct {
-	Datadog       *Datadog                    `tfsdk:"datadog"`
-	OpenTelemetry *MeshTraceItemOpenTelemetry `tfsdk:"open_telemetry"`
-	Type          types.String                `tfsdk:"type"`
-	Zipkin        *Zipkin                     `tfsdk:"zipkin"`
+	Datadog       *Datadog                    `tfsdk:"datadog" tfPlanOnly:"true"`
+	OpenTelemetry *MeshTraceItemOpenTelemetry `tfsdk:"open_telemetry" tfPlanOnly:"true"`
+	Type          types.String                `tfsdk:"type" tfPlanOnly:"true"`
+	Zipkin        *Zipkin                     `tfsdk:"zipkin" tfPlanOnly:"true"`
 }

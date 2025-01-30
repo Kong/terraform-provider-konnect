@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshGlobalRateLimitItemDefault struct {
-	Backend Backend                     `tfsdk:"backend"`
-	HTTP    MeshGlobalRateLimitItemHTTP `tfsdk:"http"`
-	Mode    types.String                `tfsdk:"mode"`
+	Backend Backend                     `tfsdk:"backend" tfPlanOnly:"true"`
+	HTTP    MeshGlobalRateLimitItemHTTP `tfsdk:"http" tfPlanOnly:"true"`
+	Mode    types.String                `tfsdk:"mode" tfPlanOnly:"true"`
 }

@@ -3,6 +3,6 @@
 package types
 
 type MeshGlobalRateLimitItemFrom struct {
-	Default   *MeshGlobalRateLimitItemDefault `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef      `tfsdk:"target_ref"`
+	Default   *MeshGlobalRateLimitItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef      `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

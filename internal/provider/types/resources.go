@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Resources struct {
-	ConnectionLimit types.Int64 `tfsdk:"connection_limit"`
+	ConnectionLimit types.Int64 `tfsdk:"connection_limit" tfPlanOnly:"true"`
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Mtls struct {
-	Backends       []MeshItemMtlsBackends `tfsdk:"backends"`
-	EnabledBackend types.String           `tfsdk:"enabled_backend"`
-	SkipValidation types.Bool             `tfsdk:"skip_validation"`
+	Backends       []MeshItemMtlsBackends `tfsdk:"backends" tfPlanOnly:"true"`
+	EnabledBackend types.String           `tfsdk:"enabled_backend" tfPlanOnly:"true"`
+	SkipValidation types.Bool             `tfsdk:"skip_validation" tfPlanOnly:"true"`
 }

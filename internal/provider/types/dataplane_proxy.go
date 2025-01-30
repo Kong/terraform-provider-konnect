@@ -3,6 +3,6 @@
 package types
 
 type DataplaneProxy struct {
-	Requirements []Requirements `tfsdk:"requirements"`
-	Restrictions []Requirements `tfsdk:"restrictions"`
+	Requirements []Requirements `tfsdk:"requirements" tfPlanOnly:"true"`
+	Restrictions []Requirements `tfsdk:"restrictions" tfPlanOnly:"true"`
 }

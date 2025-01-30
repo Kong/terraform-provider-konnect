@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Addresses struct {
-	Hostname             types.String          `tfsdk:"hostname"`
-	HostnameGeneratorRef *HostnameGeneratorRef `tfsdk:"hostname_generator_ref"`
-	Origin               types.String          `tfsdk:"origin"`
+	Hostname             types.String          `tfsdk:"hostname" tfPlanOnly:"true"`
+	HostnameGeneratorRef *HostnameGeneratorRef `tfsdk:"hostname_generator_ref" tfPlanOnly:"true"`
+	Origin               types.String          `tfsdk:"origin" tfPlanOnly:"true"`
 }

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type JSON struct {
-	Key   types.String `tfsdk:"key"`
-	Value types.String `tfsdk:"value"`
+	Key   types.String `tfsdk:"key" tfPlanOnly:"true"`
+	Value types.String `tfsdk:"value" tfPlanOnly:"true"`
 }

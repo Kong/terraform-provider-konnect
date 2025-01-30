@@ -3,6 +3,6 @@
 package types
 
 type MeshHTTPRouteItemDefault struct {
-	BackendRefs []BackendRefs `tfsdk:"backend_refs"`
-	Filters     []Filters     `tfsdk:"filters"`
+	BackendRefs []BackendRefs `tfsdk:"backend_refs" tfPlanOnly:"true"`
+	Filters     []Filters     `tfsdk:"filters" tfPlanOnly:"true"`
 }

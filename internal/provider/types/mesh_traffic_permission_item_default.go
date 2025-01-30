@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTrafficPermissionItemDefault struct {
-	Action types.String `tfsdk:"action"`
+	Action types.String `tfsdk:"action" tfPlanOnly:"true"`
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type URLRewrite struct {
-	Hostname              types.String               `tfsdk:"hostname"`
-	HostToBackendHostname types.Bool                 `tfsdk:"host_to_backend_hostname"`
-	Path                  *MeshHTTPRouteItemSpecPath `tfsdk:"path"`
+	Hostname              types.String               `tfsdk:"hostname" tfPlanOnly:"true"`
+	HostToBackendHostname types.Bool                 `tfsdk:"host_to_backend_hostname" tfPlanOnly:"true"`
+	Path                  *MeshHTTPRouteItemSpecPath `tfsdk:"path" tfPlanOnly:"true"`
 }

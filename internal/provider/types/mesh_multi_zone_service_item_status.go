@@ -3,8 +3,8 @@
 package types
 
 type MeshMultiZoneServiceItemStatus struct {
-	Addresses          []Addresses                            `tfsdk:"addresses"`
-	HostnameGenerators []HostnameGenerators                   `tfsdk:"hostname_generators"`
-	MeshServices       []MeshMultiZoneServiceItemMeshServices `tfsdk:"mesh_services"`
-	Vips               []Vip                                  `tfsdk:"vips"`
+	Addresses          []Addresses                            `tfsdk:"addresses" tfPlanOnly:"true"`
+	HostnameGenerators []HostnameGenerators                   `tfsdk:"hostname_generators" tfPlanOnly:"true"`
+	MeshServices       []MeshMultiZoneServiceItemMeshServices `tfsdk:"mesh_services" tfPlanOnly:"true"`
+	Vips               []Vip                                  `tfsdk:"vips" tfPlanOnly:"true"`
 }

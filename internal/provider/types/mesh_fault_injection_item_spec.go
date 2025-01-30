@@ -3,7 +3,7 @@
 package types
 
 type MeshFaultInjectionItemSpec struct {
-	From      []MeshFaultInjectionItemFrom `tfsdk:"from"`
-	TargetRef *MeshAccessLogItemTargetRef  `tfsdk:"target_ref"`
-	To        []MeshFaultInjectionItemFrom `tfsdk:"to"`
+	From      []MeshFaultInjectionItemFrom `tfsdk:"from" tfPlanOnly:"true"`
+	TargetRef *MeshAccessLogItemTargetRef  `tfsdk:"target_ref" tfPlanOnly:"true"`
+	To        []MeshFaultInjectionItemFrom `tfsdk:"to" tfPlanOnly:"true"`
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshHTTPRouteItemTo struct {
-	Hostnames []types.String              `tfsdk:"hostnames"`
-	Rules     []MeshHTTPRouteItemRules    `tfsdk:"rules"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
+	Hostnames []types.String              `tfsdk:"hostnames" tfPlanOnly:"true"`
+	Rules     []MeshHTTPRouteItemRules    `tfsdk:"rules" tfPlanOnly:"true"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

@@ -3,7 +3,7 @@
 package types
 
 type MeshAccessLogItemSpec struct {
-	From      []From                      `tfsdk:"from"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
-	To        []From                      `tfsdk:"to"`
+	From      []From                      `tfsdk:"from" tfPlanOnly:"true"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
+	To        []From                      `tfsdk:"to" tfPlanOnly:"true"`
 }

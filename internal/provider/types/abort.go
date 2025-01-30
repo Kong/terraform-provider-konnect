@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Abort struct {
-	HTTPStatus types.Int64 `tfsdk:"http_status"`
-	Percentage Mode        `tfsdk:"percentage"`
+	HTTPStatus types.Int64 `tfsdk:"http_status" tfPlanOnly:"true"`
+	Percentage Mode        `tfsdk:"percentage" tfPlanOnly:"true"`
 }

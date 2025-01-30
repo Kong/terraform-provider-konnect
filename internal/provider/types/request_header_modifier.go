@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RequestHeaderModifier struct {
-	Add    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"add"`
-	Remove []types.String                                `tfsdk:"remove"`
-	Set    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"set"`
+	Add    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"add" tfPlanOnly:"true"`
+	Remove []types.String                                `tfsdk:"remove" tfPlanOnly:"true"`
+	Set    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"set" tfPlanOnly:"true"`
 }

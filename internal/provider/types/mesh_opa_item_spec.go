@@ -3,6 +3,6 @@
 package types
 
 type MeshOPAItemSpec struct {
-	Default   *MeshOPAItemDefault         `tfsdk:"default"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
+	Default   *MeshOPAItemDefault         `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

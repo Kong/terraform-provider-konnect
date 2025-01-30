@@ -36,13 +36,13 @@ type HostnameGeneratorResource struct {
 // HostnameGeneratorResourceModel describes the resource data model.
 type HostnameGeneratorResourceModel struct {
 	CpID             types.String            `tfsdk:"cp_id"`
-	CreationTime     types.String            `tfsdk:"creation_time"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	ModificationTime types.String            `tfsdk:"modification_time"`
-	Name             types.String            `tfsdk:"name"`
-	Spec             tfTypes.Spec            `tfsdk:"spec"`
-	Type             types.String            `tfsdk:"type"`
-	Warnings         []types.String          `tfsdk:"warnings"`
+	CreationTime     types.String            `tfsdk:"creation_time" tfPlanOnly:"true"`
+	Labels           map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
+	ModificationTime types.String            `tfsdk:"modification_time" tfPlanOnly:"true"`
+	Name             types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Spec             tfTypes.Spec            `tfsdk:"spec" tfPlanOnly:"true"`
+	Type             types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	Warnings         []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
 }
 
 func (r *HostnameGeneratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

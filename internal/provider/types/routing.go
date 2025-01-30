@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Routing struct {
-	DefaultForbidMeshExternalServiceAccess types.Bool `tfsdk:"default_forbid_mesh_external_service_access"`
-	LocalityAwareLoadBalancing             types.Bool `tfsdk:"locality_aware_load_balancing"`
-	ZoneEgress                             types.Bool `tfsdk:"zone_egress"`
+	DefaultForbidMeshExternalServiceAccess types.Bool `tfsdk:"default_forbid_mesh_external_service_access" tfPlanOnly:"true"`
+	LocalityAwareLoadBalancing             types.Bool `tfsdk:"locality_aware_load_balancing" tfPlanOnly:"true"`
+	ZoneEgress                             types.Bool `tfsdk:"zone_egress" tfPlanOnly:"true"`
 }

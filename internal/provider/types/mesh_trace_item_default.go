@@ -3,7 +3,7 @@
 package types
 
 type MeshTraceItemDefault struct {
-	Backends []MeshTraceItemBackends `tfsdk:"backends"`
-	Sampling *Sampling               `tfsdk:"sampling"`
-	Tags     []Tags                  `tfsdk:"tags"`
+	Backends []MeshTraceItemBackends `tfsdk:"backends" tfPlanOnly:"true"`
+	Sampling *Sampling               `tfsdk:"sampling" tfPlanOnly:"true"`
+	Tags     []Tags                  `tfsdk:"tags" tfPlanOnly:"true"`
 }

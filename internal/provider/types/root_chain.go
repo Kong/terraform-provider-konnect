@@ -3,5 +3,5 @@
 package types
 
 type RootChain struct {
-	RequestTimeout *RequestTimeout `tfsdk:"request_timeout"`
+	RequestTimeout *RequestTimeout `tfsdk:"request_timeout" tfPlanOnly:"true"`
 }

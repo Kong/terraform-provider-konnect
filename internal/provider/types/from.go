@@ -3,6 +3,6 @@
 package types
 
 type From struct {
-	Default   *MeshAccessLogItemSpecDefault `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef    `tfsdk:"target_ref"`
+	Default   *MeshAccessLogItemSpecDefault `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef    `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Exclude struct {
-	Match types.String `tfsdk:"match"`
-	Type  types.String `tfsdk:"type"`
+	Match types.String `tfsdk:"match" tfPlanOnly:"true"`
+	Type  types.String `tfsdk:"type" tfPlanOnly:"true"`
 }

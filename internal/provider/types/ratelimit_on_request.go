@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RatelimitOnRequest struct {
-	Kind   types.String `tfsdk:"kind"`
-	Limits []Limits     `tfsdk:"limits"`
-	Name   types.String `tfsdk:"name"`
+	Kind   types.String `tfsdk:"kind" tfPlanOnly:"true"`
+	Limits []Limits     `tfsdk:"limits" tfPlanOnly:"true"`
+	Name   types.String `tfsdk:"name" tfPlanOnly:"true"`
 }

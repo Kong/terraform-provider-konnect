@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RequestTimeout struct {
-	Nanos   types.Int64 `tfsdk:"nanos"`
-	Seconds types.Int64 `tfsdk:"seconds"`
+	Nanos   types.Int64 `tfsdk:"nanos" tfPlanOnly:"true"`
+	Seconds types.Int64 `tfsdk:"seconds" tfPlanOnly:"true"`
 }

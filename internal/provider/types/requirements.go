@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Requirements struct {
-	Tags map[string]types.String `tfsdk:"tags"`
+	Tags map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
 }

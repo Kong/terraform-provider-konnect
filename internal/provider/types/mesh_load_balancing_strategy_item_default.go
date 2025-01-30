@@ -3,6 +3,6 @@
 package types
 
 type MeshLoadBalancingStrategyItemDefault struct {
-	LoadBalancer      *LoadBalancer      `tfsdk:"load_balancer"`
-	LocalityAwareness *LocalityAwareness `tfsdk:"locality_awareness"`
+	LoadBalancer      *LoadBalancer      `tfsdk:"load_balancer" tfPlanOnly:"true"`
+	LocalityAwareness *LocalityAwareness `tfsdk:"locality_awareness" tfPlanOnly:"true"`
 }

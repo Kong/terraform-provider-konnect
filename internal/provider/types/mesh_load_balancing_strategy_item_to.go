@@ -3,6 +3,6 @@
 package types
 
 type MeshLoadBalancingStrategyItemTo struct {
-	Default   *MeshLoadBalancingStrategyItemDefault `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef            `tfsdk:"target_ref"`
+	Default   *MeshLoadBalancingStrategyItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef            `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

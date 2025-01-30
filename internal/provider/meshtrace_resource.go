@@ -40,14 +40,14 @@ type MeshTraceResource struct {
 // MeshTraceResourceModel describes the resource data model.
 type MeshTraceResourceModel struct {
 	CpID             types.String              `tfsdk:"cp_id"`
-	CreationTime     types.String              `tfsdk:"creation_time"`
-	Labels           map[string]types.String   `tfsdk:"labels"`
-	Mesh             types.String              `tfsdk:"mesh"`
-	ModificationTime types.String              `tfsdk:"modification_time"`
-	Name             types.String              `tfsdk:"name"`
-	Spec             tfTypes.MeshTraceItemSpec `tfsdk:"spec"`
-	Type             types.String              `tfsdk:"type"`
-	Warnings         []types.String            `tfsdk:"warnings"`
+	CreationTime     types.String              `tfsdk:"creation_time" tfPlanOnly:"true"`
+	Labels           map[string]types.String   `tfsdk:"labels" tfPlanOnly:"true"`
+	Mesh             types.String              `tfsdk:"mesh" tfPlanOnly:"true"`
+	ModificationTime types.String              `tfsdk:"modification_time" tfPlanOnly:"true"`
+	Name             types.String              `tfsdk:"name" tfPlanOnly:"true"`
+	Spec             tfTypes.MeshTraceItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
+	Type             types.String              `tfsdk:"type" tfPlanOnly:"true"`
+	Warnings         []types.String            `tfsdk:"warnings" tfPlanOnly:"true"`
 }
 
 func (r *MeshTraceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

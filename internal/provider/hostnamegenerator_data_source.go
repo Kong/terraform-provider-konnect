@@ -30,12 +30,12 @@ type HostnameGeneratorDataSource struct {
 // HostnameGeneratorDataSourceModel describes the data model.
 type HostnameGeneratorDataSourceModel struct {
 	CpID             types.String            `tfsdk:"cp_id"`
-	CreationTime     types.String            `tfsdk:"creation_time"`
-	Labels           map[string]types.String `tfsdk:"labels"`
-	ModificationTime types.String            `tfsdk:"modification_time"`
-	Name             types.String            `tfsdk:"name"`
-	Spec             tfTypes.Spec            `tfsdk:"spec"`
-	Type             types.String            `tfsdk:"type"`
+	CreationTime     types.String            `tfsdk:"creation_time" tfPlanOnly:"true"`
+	Labels           map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
+	ModificationTime types.String            `tfsdk:"modification_time" tfPlanOnly:"true"`
+	Name             types.String            `tfsdk:"name" tfPlanOnly:"true"`
+	Spec             tfTypes.Spec            `tfsdk:"spec" tfPlanOnly:"true"`
+	Type             types.String            `tfsdk:"type" tfPlanOnly:"true"`
 }
 
 // Metadata returns the data source type name.

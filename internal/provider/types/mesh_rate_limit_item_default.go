@@ -3,5 +3,5 @@
 package types
 
 type MeshRateLimitItemDefault struct {
-	Local *Local `tfsdk:"local"`
+	Local *Local `tfsdk:"local" tfPlanOnly:"true"`
 }

@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type FilterState struct {
-	Key types.String `tfsdk:"key"`
+	Key types.String `tfsdk:"key" tfPlanOnly:"true"`
 }

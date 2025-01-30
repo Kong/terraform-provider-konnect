@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Listeners struct {
-	CrossMesh types.Bool              `tfsdk:"cross_mesh"`
-	Hostname  types.String            `tfsdk:"hostname"`
-	Port      types.Int64             `tfsdk:"port"`
-	Protocol  *Mode                   `tfsdk:"protocol"`
-	Resources *Resources              `tfsdk:"resources"`
-	Tags      map[string]types.String `tfsdk:"tags"`
-	TLS       *MeshGatewayItemTLS     `tfsdk:"tls"`
+	CrossMesh types.Bool              `tfsdk:"cross_mesh" tfPlanOnly:"true"`
+	Hostname  types.String            `tfsdk:"hostname" tfPlanOnly:"true"`
+	Port      types.Int64             `tfsdk:"port" tfPlanOnly:"true"`
+	Protocol  *Mode                   `tfsdk:"protocol" tfPlanOnly:"true"`
+	Resources *Resources              `tfsdk:"resources" tfPlanOnly:"true"`
+	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
+	TLS       *MeshGatewayItemTLS     `tfsdk:"tls" tfPlanOnly:"true"`
 }

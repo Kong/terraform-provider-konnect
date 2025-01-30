@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshLoadBalancingStrategyItemFrom struct {
-	Zones []types.String `tfsdk:"zones"`
+	Zones []types.String `tfsdk:"zones" tfPlanOnly:"true"`
 }

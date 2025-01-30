@@ -3,6 +3,6 @@
 package types
 
 type MeshHealthCheckItemTo struct {
-	Default   *MeshHealthCheckItemDefault `tfsdk:"default"`
-	TargetRef MeshAccessLogItemTargetRef  `tfsdk:"target_ref"`
+	Default   *MeshHealthCheckItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	TargetRef MeshAccessLogItemTargetRef  `tfsdk:"target_ref" tfPlanOnly:"true"`
 }

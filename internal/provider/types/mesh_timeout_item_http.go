@@ -5,9 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTimeoutItemHTTP struct {
-	MaxConnectionDuration types.String `tfsdk:"max_connection_duration"`
-	MaxStreamDuration     types.String `tfsdk:"max_stream_duration"`
-	RequestHeadersTimeout types.String `tfsdk:"request_headers_timeout"`
-	RequestTimeout        types.String `tfsdk:"request_timeout"`
-	StreamIdleTimeout     types.String `tfsdk:"stream_idle_timeout"`
+	MaxConnectionDuration types.String `tfsdk:"max_connection_duration" tfPlanOnly:"true"`
+	MaxStreamDuration     types.String `tfsdk:"max_stream_duration" tfPlanOnly:"true"`
+	RequestHeadersTimeout types.String `tfsdk:"request_headers_timeout" tfPlanOnly:"true"`
+	RequestTimeout        types.String `tfsdk:"request_timeout" tfPlanOnly:"true"`
+	StreamIdleTimeout     types.String `tfsdk:"stream_idle_timeout" tfPlanOnly:"true"`
 }
