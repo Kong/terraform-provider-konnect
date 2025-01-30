@@ -751,6 +751,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Data-Plane Group Configurations
+      x-speakeasy-group: CloudGateways
   '/v2/cloud-gateways/configurations/{configurationId}':
     get:
       x-speakeasy-entity-operation: CloudGatewayConfiguration#get
@@ -772,6 +773,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Data-Plane Group Configurations
+      x-speakeasy-group: CloudGateways
   /v2/cloud-gateways/custom-domains:
     post:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#create
@@ -803,6 +805,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Custom Domains
+      x-speakeasy-group: CloudGateways
   '/v2/cloud-gateways/custom-domains/{customDomainId}':
     get:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#read
@@ -824,6 +827,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Custom Domains
+      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation: CloudGatewayCustomDomain#delete
       operationId: delete-custom-domain
@@ -846,6 +850,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Custom Domains
+      x-speakeasy-group: CloudGateways
       x-speakeasy-retries:
         strategy: backoff
         backoff:
@@ -883,6 +888,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Networks
+      x-speakeasy-group: CloudGateways
   '/v2/cloud-gateways/networks/{networkId}':
     get:
       x-speakeasy-entity-operation: CloudGatewayNetwork#read
@@ -904,6 +910,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Networks
+      x-speakeasy-group: CloudGateways
     patch:
       x-speakeasy-entity-operation: CloudGatewayNetwork#update
       operationId: update-network
@@ -956,6 +963,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Networks
+      x-speakeasy-group: CloudGateways
       x-speakeasy-retries:
         strategy: backoff
         backoff:
@@ -1002,6 +1010,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Transit Gateways
+      x-speakeasy-group: CloudGateways
       x-speakeasy-retries:
         strategy: backoff
         backoff:
@@ -1039,6 +1048,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Transit Gateways
+      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation: CloudGatewayTransitGateway#delete
       operationId: delete-transit-gateway
@@ -1067,6 +1077,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Transit Gateways
+      x-speakeasy-group: CloudGateways
       x-speakeasy-retries:
         strategy: backoff
         backoff:
@@ -1099,6 +1110,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Provider Accounts
+      x-speakeasy-group: CloudGateways
   /v2/control-planes:
     parameters: []
     post:
