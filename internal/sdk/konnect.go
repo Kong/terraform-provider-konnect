@@ -205,7 +205,9 @@ type Konnect struct {
 	//   - Application registration settings like auto approve or whether application registration is enabled
 	//   - The authentication strategy that is enabled for Application Registration
 	//
-	PortalProductVersions        *PortalProductVersions
+	PortalProductVersions *PortalProductVersions
+	// APIs related to Konnect Developer Portal Developer Teams.
+	PortalTeams                  *PortalTeams
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -389,6 +391,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
 
 	sdk.PortalProductVersions = newPortalProductVersions(sdk.sdkConfiguration)
+
+	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
 
 	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
 

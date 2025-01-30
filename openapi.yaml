@@ -9560,6 +9560,87 @@ paths:
           $ref: '#/components/responses/NotFound'
       tags:
         - Portal Product Versions
+  '/v2/portals/{portalId}/teams':
+    parameters:
+      - $ref: '#/components/parameters/PortalId'
+    post:
+      x-speakeasy-entity-operation: PortalTeam#create
+      operationId: create-portal-team
+      summary: Create Team
+      description: Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalCreateTeam'
+      responses:
+        '201':
+          $ref: '#/components/responses/PortalTeam'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+  '/v2/portals/{portalId}/teams/{teamId}':
+    parameters:
+      - $ref: '#/components/parameters/TeamId'
+      - $ref: '#/components/parameters/PortalId'
+    get:
+      x-speakeasy-entity-operation: PortalTeam#read
+      operationId: get-portal-team
+      summary: Get Team
+      description: Get an individual team.
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    patch:
+      x-speakeasy-entity-operation: PortalTeam#update
+      operationId: update-portal-team
+      summary: Update Team
+      description: Updates an individual developer team for a portal.
+      requestBody:
+        $ref: '#/components/requestBodies/PortalUpdateTeam'
+      responses:
+        '200':
+          $ref: '#/components/responses/PortalTeam'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
+    delete:
+      x-speakeasy-entity-operation: PortalTeam#delete
+      operationId: delete-portal-team
+      summary: Delete Team
+      description: 'Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.'
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Portal Teams
   /v3/system-accounts:
     post:
       x-speakeasy-entity-operation: SystemAccount#create
@@ -10359,6 +10440,16 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    TeamId:
+      x-speakeasy-match: id
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: teamId
+      in: path
+      required: true
+      description: ID of the team.
     TransitGatewayId:
       name: transitGatewayId
       in: path
@@ -12822,6 +12913,80 @@ components:
           email: email
           groups: custom-group-claim
       title: PortalAuthenticationSettingsUpdateRequest
+    PortalUpdateTeamRequest:
+      description: Properties to update on a team.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) API team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) API team.
+      title: PortalUpdateTeamRequest
+    PortalCreateTeamRequest:
+      x-speakeasy-entity: PortalTeam
+      description: Details about a team to create.
+      type: object
+      properties:
+        name:
+          type: string
+          example: IDM - Developers
+          pattern: '^[\w \W]+$'
+          writeOnly: true
+        description:
+          type: string
+          example: The Identity Management (IDM) team.
+          maxLength: 250
+          writeOnly: true
+      example:
+        name: IDM - Developers
+        description: The Identity Management (IDM) team.
+      required:
+        - name
+      title: PortalCreateTeamRequest
+    PortalTeamResponse:
+      description: Details about a developer team.
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+          readOnly: true
+        name:
+          type: string
+          example: IDM - Developers
+          maxLength: 250
+          pattern: '^[\w \W]+$'
+        description:
+          type: string
+          example: The developers for the IDM API.
+          maxLength: 250
+        created_at:
+          type: string
+          format: date-time
+          example: '1992-02-07T17:46:57.52Z'
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          example: '2022-02-07T17:00:00.52Z'
+          readOnly: true
+      example:
+        id: 7f9fd312-a987-4628-b4c5-bb4f4fddd5f7
+        name: IDM - Developers
+        description: The developers for the IDM API.
+        created_at: '1992-02-07T17:46:57.52Z'
+        updated_at: '2022-08-31T17:00:00.52Z'
+      title: PortalTeamResponse
     ListPortalsResponse:
       x-speakeasy-entity: PortalList
       description: A paginated list of portals in the current region in the organization.
@@ -25912,6 +26077,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdateAPIProductVersionSpecDTO'
+    PortalUpdateTeam:
+      description: Update a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalUpdateTeamRequest'
+    PortalCreateTeam:
+      description: Create a team in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalCreateTeamRequest'
     UpdatePortalAuthenticationSettings:
       description: Update a portal's developer authentication settings.
       content:
@@ -26572,6 +26749,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PortalAuthenticationSettingsResponse'
+    PortalTeam:
+      description: Details about a team of developers in a portal.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PortalTeamResponse'
     ListPortals:
       description: A paginated list of portals in the current region of an organization.
       content:
