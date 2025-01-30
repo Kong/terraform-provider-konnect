@@ -830,13 +830,13 @@ func (r *MeshAccessLogResource) Create(ctx context.Context, req resource.CreateR
 	name = data.Name.ValueString()
 
 	meshAccessLogItem := *data.ToSharedMeshAccessLogItem()
-	request := operations.PutMeshAccessLogRequest{
+	request := operations.CreateMeshAccessLogRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,
 		MeshAccessLogItem: meshAccessLogItem,
 	}
-	res, err := r.client.MeshAccessLog.PutMeshAccessLog(ctx, request)
+	res, err := r.client.MeshAccessLog.CreateMeshAccessLog(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -848,7 +848,7 @@ func (r *MeshAccessLogResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -985,13 +985,13 @@ func (r *MeshAccessLogResource) Update(ctx context.Context, req resource.UpdateR
 	name = data.Name.ValueString()
 
 	meshAccessLogItem := *data.ToSharedMeshAccessLogItem()
-	request := operations.PutMeshAccessLogRequest{
+	request := operations.UpdateMeshAccessLogRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,
 		MeshAccessLogItem: meshAccessLogItem,
 	}
-	res, err := r.client.MeshAccessLog.PutMeshAccessLog(ctx, request)
+	res, err := r.client.MeshAccessLog.UpdateMeshAccessLog(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

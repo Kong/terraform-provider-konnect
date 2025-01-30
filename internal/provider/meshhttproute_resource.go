@@ -1032,13 +1032,13 @@ func (r *MeshHTTPRouteResource) Create(ctx context.Context, req resource.CreateR
 	name = data.Name.ValueString()
 
 	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItem()
-	request := operations.PutMeshHTTPRouteRequest{
+	request := operations.CreateMeshHTTPRouteRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,
 		MeshHTTPRouteItem: meshHTTPRouteItem,
 	}
-	res, err := r.client.MeshHTTPRoute.PutMeshHTTPRoute(ctx, request)
+	res, err := r.client.MeshHTTPRoute.CreateMeshHTTPRoute(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1050,7 +1050,7 @@ func (r *MeshHTTPRouteResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1187,13 +1187,13 @@ func (r *MeshHTTPRouteResource) Update(ctx context.Context, req resource.UpdateR
 	name = data.Name.ValueString()
 
 	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItem()
-	request := operations.PutMeshHTTPRouteRequest{
+	request := operations.UpdateMeshHTTPRouteRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
 		Name:              name,
 		MeshHTTPRouteItem: meshHTTPRouteItem,
 	}
-	res, err := r.client.MeshHTTPRoute.PutMeshHTTPRoute(ctx, request)
+	res, err := r.client.MeshHTTPRoute.UpdateMeshHTTPRoute(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

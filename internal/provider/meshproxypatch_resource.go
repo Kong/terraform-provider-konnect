@@ -820,13 +820,13 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 	name = data.Name.ValueString()
 
 	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItem()
-	request := operations.PutMeshProxyPatchRequest{
+	request := operations.CreateMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,
 		Name:               name,
 		MeshProxyPatchItem: meshProxyPatchItem,
 	}
-	res, err := r.client.MeshProxyPatch.PutMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.CreateMeshProxyPatch(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -838,7 +838,7 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -975,13 +975,13 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 	name = data.Name.ValueString()
 
 	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItem()
-	request := operations.PutMeshProxyPatchRequest{
+	request := operations.UpdateMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,
 		Name:               name,
 		MeshProxyPatchItem: meshProxyPatchItem,
 	}
-	res, err := r.client.MeshProxyPatch.PutMeshProxyPatch(ctx, request)
+	res, err := r.client.MeshProxyPatch.UpdateMeshProxyPatch(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

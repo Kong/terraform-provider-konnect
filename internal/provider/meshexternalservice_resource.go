@@ -575,13 +575,13 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 	name = data.Name.ValueString()
 
 	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItem()
-	request := operations.PutMeshExternalServiceRequest{
+	request := operations.CreateMeshExternalServiceRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,
 		Name:                    name,
 		MeshExternalServiceItem: meshExternalServiceItem,
 	}
-	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, request)
+	res, err := r.client.MeshExternalService.CreateMeshExternalService(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -593,7 +593,7 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -730,13 +730,13 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 	name = data.Name.ValueString()
 
 	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItem()
-	request := operations.PutMeshExternalServiceRequest{
+	request := operations.UpdateMeshExternalServiceRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,
 		Name:                    name,
 		MeshExternalServiceItem: meshExternalServiceItem,
 	}
-	res, err := r.client.MeshExternalService.PutMeshExternalService(ctx, request)
+	res, err := r.client.MeshExternalService.UpdateMeshExternalService(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

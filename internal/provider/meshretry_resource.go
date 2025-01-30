@@ -683,13 +683,13 @@ func (r *MeshRetryResource) Create(ctx context.Context, req resource.CreateReque
 	name = data.Name.ValueString()
 
 	meshRetryItem := *data.ToSharedMeshRetryItem()
-	request := operations.PutMeshRetryRequest{
+	request := operations.CreateMeshRetryRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,
 		MeshRetryItem: meshRetryItem,
 	}
-	res, err := r.client.MeshRetry.PutMeshRetry(ctx, request)
+	res, err := r.client.MeshRetry.CreateMeshRetry(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -701,7 +701,7 @@ func (r *MeshRetryResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -838,13 +838,13 @@ func (r *MeshRetryResource) Update(ctx context.Context, req resource.UpdateReque
 	name = data.Name.ValueString()
 
 	meshRetryItem := *data.ToSharedMeshRetryItem()
-	request := operations.PutMeshRetryRequest{
+	request := operations.UpdateMeshRetryRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,
 		MeshRetryItem: meshRetryItem,
 	}
-	res, err := r.client.MeshRetry.PutMeshRetry(ctx, request)
+	res, err := r.client.MeshRetry.UpdateMeshRetry(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

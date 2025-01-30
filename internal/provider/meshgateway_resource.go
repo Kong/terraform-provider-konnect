@@ -330,13 +330,13 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 	name = data.Name.ValueString()
 
 	meshGatewayItem := *data.ToSharedMeshGatewayItem()
-	request := operations.PutMeshGatewayRequest{
+	request := operations.CreateMeshGatewayRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,
 		MeshGatewayItem: meshGatewayItem,
 	}
-	res, err := r.client.MeshGateway.PutMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.CreateMeshGateway(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -348,7 +348,7 @@ func (r *MeshGatewayResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -485,13 +485,13 @@ func (r *MeshGatewayResource) Update(ctx context.Context, req resource.UpdateReq
 	name = data.Name.ValueString()
 
 	meshGatewayItem := *data.ToSharedMeshGatewayItem()
-	request := operations.PutMeshGatewayRequest{
+	request := operations.UpdateMeshGatewayRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,
 		MeshGatewayItem: meshGatewayItem,
 	}
-	res, err := r.client.MeshGateway.PutMeshGateway(ctx, request)
+	res, err := r.client.MeshGateway.UpdateMeshGateway(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -507,13 +507,13 @@ func (r *MeshTraceResource) Create(ctx context.Context, req resource.CreateReque
 	name = data.Name.ValueString()
 
 	meshTraceItem := *data.ToSharedMeshTraceItem()
-	request := operations.PutMeshTraceRequest{
+	request := operations.CreateMeshTraceRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,
 		MeshTraceItem: meshTraceItem,
 	}
-	res, err := r.client.MeshTrace.PutMeshTrace(ctx, request)
+	res, err := r.client.MeshTrace.CreateMeshTrace(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -525,7 +525,7 @@ func (r *MeshTraceResource) Create(ctx context.Context, req resource.CreateReque
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -662,13 +662,13 @@ func (r *MeshTraceResource) Update(ctx context.Context, req resource.UpdateReque
 	name = data.Name.ValueString()
 
 	meshTraceItem := *data.ToSharedMeshTraceItem()
-	request := operations.PutMeshTraceRequest{
+	request := operations.UpdateMeshTraceRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
 		Name:          name,
 		MeshTraceItem: meshTraceItem,
 	}
-	res, err := r.client.MeshTrace.PutMeshTrace(ctx, request)
+	res, err := r.client.MeshTrace.UpdateMeshTrace(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

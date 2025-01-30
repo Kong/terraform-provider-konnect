@@ -975,13 +975,13 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 	name = data.Name.ValueString()
 
 	meshCircuitBreakerItem := *data.ToSharedMeshCircuitBreakerItem()
-	request := operations.PutMeshCircuitBreakerRequest{
+	request := operations.CreateMeshCircuitBreakerRequest{
 		CpID:                   cpID,
 		Mesh:                   mesh,
 		Name:                   name,
 		MeshCircuitBreakerItem: meshCircuitBreakerItem,
 	}
-	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, request)
+	res, err := r.client.MeshCircuitBreaker.CreateMeshCircuitBreaker(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -993,7 +993,7 @@ func (r *MeshCircuitBreakerResource) Create(ctx context.Context, req resource.Cr
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1130,13 +1130,13 @@ func (r *MeshCircuitBreakerResource) Update(ctx context.Context, req resource.Up
 	name = data.Name.ValueString()
 
 	meshCircuitBreakerItem := *data.ToSharedMeshCircuitBreakerItem()
-	request := operations.PutMeshCircuitBreakerRequest{
+	request := operations.UpdateMeshCircuitBreakerRequest{
 		CpID:                   cpID,
 		Mesh:                   mesh,
 		Name:                   name,
 		MeshCircuitBreakerItem: meshCircuitBreakerItem,
 	}
-	res, err := r.client.MeshCircuitBreaker.PutMeshCircuitBreaker(ctx, request)
+	res, err := r.client.MeshCircuitBreaker.UpdateMeshCircuitBreaker(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

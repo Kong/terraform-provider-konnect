@@ -449,13 +449,13 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 	name = data.Name.ValueString()
 
 	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItem()
-	request := operations.PutMeshTCPRouteRequest{
+	request := operations.CreateMeshTCPRouteRequest{
 		CpID:             cpID,
 		Mesh:             mesh,
 		Name:             name,
 		MeshTCPRouteItem: meshTCPRouteItem,
 	}
-	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, request)
+	res, err := r.client.MeshTCPRoute.CreateMeshTCPRoute(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -467,7 +467,7 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -604,13 +604,13 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	name = data.Name.ValueString()
 
 	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItem()
-	request := operations.PutMeshTCPRouteRequest{
+	request := operations.UpdateMeshTCPRouteRequest{
 		CpID:             cpID,
 		Mesh:             mesh,
 		Name:             name,
 		MeshTCPRouteItem: meshTCPRouteItem,
 	}
-	res, err := r.client.MeshTCPRoute.PutMeshTCPRoute(ctx, request)
+	res, err := r.client.MeshTCPRoute.UpdateMeshTCPRoute(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

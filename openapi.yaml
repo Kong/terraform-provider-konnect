@@ -190,7 +190,7 @@ paths:
         - HostnameGenerator
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}#create':
     get:
       x-speakeasy-entity-operation: HostnameGenerator#get
       operationId: getHostnameGenerator
@@ -207,39 +207,6 @@ paths:
           $ref: '#/components/responses/HostnameGeneratorItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - HostnameGenerator
-    put:
-      x-speakeasy-entity-operation: 'HostnameGenerator#create,update'
-      operationId: putHostnameGenerator
-      summary: Creates or Updates HostnameGenerator entity
-      parameters:
-        - name: name
-          in: path
-          description: name of the HostnameGenerator
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/HostnameGeneratorItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
       tags:
         - HostnameGenerator
     delete:
@@ -262,6 +229,63 @@ paths:
                 $ref: '#/components/schemas/HostnameGeneratorDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - HostnameGenerator
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: HostnameGenerator#create
+      operationId: createHostnameGenerator
+      summary: Creates or Updates HostnameGenerator entity
+      parameters:
+        - name: name
+          in: path
+          description: name of the HostnameGenerator
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostnameGeneratorItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
+      tags:
+        - HostnameGenerator
+  '/v1/mesh/control-planes/{cpId}/api/hostnamegenerators/{name}#update':
+    put:
+      x-speakeasy-entity-operation: HostnameGenerator#update
+      operationId: updateHostnameGenerator
+      summary: Creates or Updates HostnameGenerator entity
+      parameters:
+        - name: name
+          in: path
+          description: name of the HostnameGenerator
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HostnameGeneratorItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HostnameGeneratorCreateOrUpdateSuccessResponse'
       tags:
         - HostnameGenerator
     parameters:
@@ -297,7 +321,7 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshAccessLog#get
       operationId: getMeshAccessLog
@@ -320,45 +344,6 @@ paths:
           $ref: '#/components/responses/MeshAccessLogItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshAccessLog
-    put:
-      x-speakeasy-entity-operation: 'MeshAccessLog#create,update'
-      operationId: putMeshAccessLog
-      summary: Creates or Updates MeshAccessLog entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshAccessLog
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshAccessLogItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
       tags:
         - MeshAccessLog
     delete:
@@ -391,6 +376,75 @@ paths:
         - MeshAccessLog
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshAccessLog#create
+      operationId: createMeshAccessLog
+      summary: Creates or Updates MeshAccessLog entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshAccessLog
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshAccessLogItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshAccessLog
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshaccesslogs/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshAccessLog#update
+      operationId: updateMeshAccessLog
+      summary: Creates or Updates MeshAccessLog entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshAccessLog
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshAccessLogItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshAccessLogCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshAccessLog
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers':
     get:
       x-speakeasy-entity-operation: MeshCircuitBreakerList#get
@@ -410,7 +464,7 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshCircuitBreaker#get
       operationId: getMeshCircuitBreaker
@@ -433,45 +487,6 @@ paths:
           $ref: '#/components/responses/MeshCircuitBreakerItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshCircuitBreaker
-    put:
-      x-speakeasy-entity-operation: 'MeshCircuitBreaker#create,update'
-      operationId: putMeshCircuitBreaker
-      summary: Creates or Updates MeshCircuitBreaker entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshCircuitBreaker
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshCircuitBreakerItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
       tags:
         - MeshCircuitBreaker
     delete:
@@ -504,6 +519,75 @@ paths:
         - MeshCircuitBreaker
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshCircuitBreaker#create
+      operationId: createMeshCircuitBreaker
+      summary: Creates or Updates MeshCircuitBreaker entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshCircuitBreaker
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshCircuitBreakerItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshCircuitBreaker
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshcircuitbreakers/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshCircuitBreaker#update
+      operationId: updateMeshCircuitBreaker
+      summary: Creates or Updates MeshCircuitBreaker entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshCircuitBreaker
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshCircuitBreakerItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshCircuitBreakerCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshCircuitBreaker
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices':
     get:
       x-speakeasy-entity-operation: MeshExternalServiceList#get
@@ -523,7 +607,7 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshExternalService#get
       operationId: getMeshExternalService
@@ -546,45 +630,6 @@ paths:
           $ref: '#/components/responses/MeshExternalServiceItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshExternalService
-    put:
-      x-speakeasy-entity-operation: 'MeshExternalService#create,update'
-      operationId: putMeshExternalService
-      summary: Creates or Updates MeshExternalService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshExternalService
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshExternalServiceItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
       tags:
         - MeshExternalService
     delete:
@@ -617,6 +662,75 @@ paths:
         - MeshExternalService
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshExternalService#create
+      operationId: createMeshExternalService
+      summary: Creates or Updates MeshExternalService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshExternalService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshExternalServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshExternalService
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshexternalservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshExternalService#update
+      operationId: updateMeshExternalService
+      summary: Creates or Updates MeshExternalService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshExternalService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshExternalServiceItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshExternalServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshExternalService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections':
     get:
       x-speakeasy-entity-operation: MeshFaultInjectionList#get
@@ -636,7 +750,7 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshFaultInjection#get
       operationId: getMeshFaultInjection
@@ -659,45 +773,6 @@ paths:
           $ref: '#/components/responses/MeshFaultInjectionItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshFaultInjection
-    put:
-      x-speakeasy-entity-operation: 'MeshFaultInjection#create,update'
-      operationId: putMeshFaultInjection
-      summary: Creates or Updates MeshFaultInjection entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshFaultInjection
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshFaultInjectionItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
       tags:
         - MeshFaultInjection
     delete:
@@ -730,6 +805,75 @@ paths:
         - MeshFaultInjection
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshFaultInjection#create
+      operationId: createMeshFaultInjection
+      summary: Creates or Updates MeshFaultInjection entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshFaultInjection
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshFaultInjectionItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshFaultInjection
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshfaultinjections/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshFaultInjection#update
+      operationId: updateMeshFaultInjection
+      summary: Creates or Updates MeshFaultInjection entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshFaultInjection
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshFaultInjectionItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshFaultInjectionCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshFaultInjection
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways':
     get:
       x-speakeasy-entity-operation: MeshGatewayList#get
@@ -749,7 +893,7 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshGateway#get
       operationId: getMeshGateway
@@ -772,45 +916,6 @@ paths:
           $ref: '#/components/responses/MeshGatewayItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshGateway
-    put:
-      x-speakeasy-entity-operation: 'MeshGateway#create,update'
-      operationId: putMeshGateway
-      summary: Creates or Updates MeshGateway entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshGateway
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshGatewayItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
       tags:
         - MeshGateway
     delete:
@@ -843,6 +948,75 @@ paths:
         - MeshGateway
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshGateway#create
+      operationId: createMeshGateway
+      summary: Creates or Updates MeshGateway entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGateway
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGatewayItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGateway
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshgateways/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshGateway#update
+      operationId: updateMeshGateway
+      summary: Creates or Updates MeshGateway entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGateway
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGatewayItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGatewayCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGateway
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits':
     get:
       x-speakeasy-entity-operation: MeshGlobalRateLimitList#get
@@ -862,7 +1036,7 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshGlobalRateLimit#get
       operationId: getMeshGlobalRateLimit
@@ -885,45 +1059,6 @@ paths:
           $ref: '#/components/responses/MeshGlobalRateLimitItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshGlobalRateLimit
-    put:
-      x-speakeasy-entity-operation: 'MeshGlobalRateLimit#create,update'
-      operationId: putMeshGlobalRateLimit
-      summary: Creates or Updates MeshGlobalRateLimit entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshGlobalRateLimit
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshGlobalRateLimitItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
       tags:
         - MeshGlobalRateLimit
     delete:
@@ -956,6 +1091,75 @@ paths:
         - MeshGlobalRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshGlobalRateLimit#create
+      operationId: createMeshGlobalRateLimit
+      summary: Creates or Updates MeshGlobalRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGlobalRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGlobalRateLimitItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGlobalRateLimit
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshglobalratelimits/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshGlobalRateLimit#update
+      operationId: updateMeshGlobalRateLimit
+      summary: Creates or Updates MeshGlobalRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshGlobalRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshGlobalRateLimitItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshGlobalRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshGlobalRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks':
     get:
       x-speakeasy-entity-operation: MeshHealthCheckList#get
@@ -975,7 +1179,7 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshHealthCheck#get
       operationId: getMeshHealthCheck
@@ -998,45 +1202,6 @@ paths:
           $ref: '#/components/responses/MeshHealthCheckItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshHealthCheck
-    put:
-      x-speakeasy-entity-operation: 'MeshHealthCheck#create,update'
-      operationId: putMeshHealthCheck
-      summary: Creates or Updates MeshHealthCheck entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshHealthCheck
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshHealthCheckItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
       tags:
         - MeshHealthCheck
     delete:
@@ -1069,6 +1234,75 @@ paths:
         - MeshHealthCheck
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshHealthCheck#create
+      operationId: createMeshHealthCheck
+      summary: Creates or Updates MeshHealthCheck entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHealthCheck
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHealthCheckItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHealthCheck
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhealthchecks/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshHealthCheck#update
+      operationId: updateMeshHealthCheck
+      summary: Creates or Updates MeshHealthCheck entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHealthCheck
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHealthCheckItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHealthCheckCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHealthCheck
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes':
     get:
       x-speakeasy-entity-operation: MeshHTTPRouteList#get
@@ -1088,7 +1322,7 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshHTTPRoute#get
       operationId: getMeshHTTPRoute
@@ -1111,45 +1345,6 @@ paths:
           $ref: '#/components/responses/MeshHTTPRouteItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshHTTPRoute
-    put:
-      x-speakeasy-entity-operation: 'MeshHTTPRoute#create,update'
-      operationId: putMeshHTTPRoute
-      summary: Creates or Updates MeshHTTPRoute entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshHTTPRoute
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshHTTPRouteItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
       tags:
         - MeshHTTPRoute
     delete:
@@ -1182,6 +1377,75 @@ paths:
         - MeshHTTPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshHTTPRoute#create
+      operationId: createMeshHTTPRoute
+      summary: Creates or Updates MeshHTTPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHTTPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHTTPRouteItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHTTPRoute
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshhttproutes/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshHTTPRoute#update
+      operationId: updateMeshHTTPRoute
+      summary: Creates or Updates MeshHTTPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshHTTPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshHTTPRouteItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshHTTPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshHTTPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies':
     get:
       x-speakeasy-entity-operation: MeshLoadBalancingStrategyList#get
@@ -1201,7 +1465,7 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshLoadBalancingStrategy#get
       operationId: getMeshLoadBalancingStrategy
@@ -1224,45 +1488,6 @@ paths:
           $ref: '#/components/responses/MeshLoadBalancingStrategyItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshLoadBalancingStrategy
-    put:
-      x-speakeasy-entity-operation: 'MeshLoadBalancingStrategy#create,update'
-      operationId: putMeshLoadBalancingStrategy
-      summary: Creates or Updates MeshLoadBalancingStrategy entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshLoadBalancingStrategy
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshLoadBalancingStrategyItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
       tags:
         - MeshLoadBalancingStrategy
     delete:
@@ -1295,6 +1520,75 @@ paths:
         - MeshLoadBalancingStrategy
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#create
+      operationId: createMeshLoadBalancingStrategy
+      summary: Creates or Updates MeshLoadBalancingStrategy entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshLoadBalancingStrategy
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshLoadBalancingStrategyItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshLoadBalancingStrategy
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshloadbalancingstrategies/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshLoadBalancingStrategy#update
+      operationId: updateMeshLoadBalancingStrategy
+      summary: Creates or Updates MeshLoadBalancingStrategy entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshLoadBalancingStrategy
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshLoadBalancingStrategyItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshLoadBalancingStrategy
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics':
     get:
       x-speakeasy-entity-operation: MeshMetricList#get
@@ -1314,7 +1608,7 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshMetric#get
       operationId: getMeshMetric
@@ -1337,45 +1631,6 @@ paths:
           $ref: '#/components/responses/MeshMetricItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshMetric
-    put:
-      x-speakeasy-entity-operation: 'MeshMetric#create,update'
-      operationId: putMeshMetric
-      summary: Creates or Updates MeshMetric entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshMetric
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshMetricItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
       tags:
         - MeshMetric
     delete:
@@ -1408,6 +1663,75 @@ paths:
         - MeshMetric
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshMetric#create
+      operationId: createMeshMetric
+      summary: Creates or Updates MeshMetric entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMetric
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMetricItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMetric
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmetrics/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshMetric#update
+      operationId: updateMeshMetric
+      summary: Creates or Updates MeshMetric entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMetric
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMetricItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMetricCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMetric
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices':
     get:
       x-speakeasy-entity-operation: MeshMultiZoneServiceList#get
@@ -1427,7 +1751,7 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshMultiZoneService#get
       operationId: getMeshMultiZoneService
@@ -1450,45 +1774,6 @@ paths:
           $ref: '#/components/responses/MeshMultiZoneServiceItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshMultiZoneService
-    put:
-      x-speakeasy-entity-operation: 'MeshMultiZoneService#create,update'
-      operationId: putMeshMultiZoneService
-      summary: Creates or Updates MeshMultiZoneService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshMultiZoneService
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshMultiZoneServiceItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
       tags:
         - MeshMultiZoneService
     delete:
@@ -1521,6 +1806,75 @@ paths:
         - MeshMultiZoneService
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshMultiZoneService#create
+      operationId: createMeshMultiZoneService
+      summary: Creates or Updates MeshMultiZoneService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMultiZoneService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMultiZoneServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMultiZoneService
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshmultizoneservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshMultiZoneService#update
+      operationId: updateMeshMultiZoneService
+      summary: Creates or Updates MeshMultiZoneService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshMultiZoneService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshMultiZoneServiceItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshMultiZoneServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshMultiZoneService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas':
     get:
       x-speakeasy-entity-operation: MeshOPAList#get
@@ -1540,7 +1894,7 @@ paths:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshOPA#get
       operationId: getMeshOPA
@@ -1563,45 +1917,6 @@ paths:
           $ref: '#/components/responses/MeshOPAItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshOPA
-    put:
-      x-speakeasy-entity-operation: 'MeshOPA#create,update'
-      operationId: putMeshOPA
-      summary: Creates or Updates MeshOPA entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshOPA
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshOPAItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
       tags:
         - MeshOPA
     delete:
@@ -1634,6 +1949,75 @@ paths:
         - MeshOPA
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshOPA#create
+      operationId: createMeshOPA
+      summary: Creates or Updates MeshOPA entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOPA
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshOPAItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
+      tags:
+        - MeshOPA
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshopas/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshOPA#update
+      operationId: updateMeshOPA
+      summary: Creates or Updates MeshOPA entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshOPA
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshOPAItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshOPACreateOrUpdateSuccessResponse'
+      tags:
+        - MeshOPA
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs':
     get:
       x-speakeasy-entity-operation: MeshPassthroughList#get
@@ -1653,7 +2037,7 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshPassthrough#get
       operationId: getMeshPassthrough
@@ -1676,45 +2060,6 @@ paths:
           $ref: '#/components/responses/MeshPassthroughItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshPassthrough
-    put:
-      x-speakeasy-entity-operation: 'MeshPassthrough#create,update'
-      operationId: putMeshPassthrough
-      summary: Creates or Updates MeshPassthrough entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshPassthrough
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshPassthroughItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
       tags:
         - MeshPassthrough
     delete:
@@ -1747,6 +2092,75 @@ paths:
         - MeshPassthrough
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshPassthrough#create
+      operationId: createMeshPassthrough
+      summary: Creates or Updates MeshPassthrough entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshPassthrough
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshPassthroughItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshPassthrough
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshpassthroughs/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshPassthrough#update
+      operationId: updateMeshPassthrough
+      summary: Creates or Updates MeshPassthrough entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshPassthrough
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshPassthroughItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshPassthroughCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshPassthrough
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches':
     get:
       x-speakeasy-entity-operation: MeshProxyPatchList#get
@@ -1766,7 +2180,7 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshProxyPatch#get
       operationId: getMeshProxyPatch
@@ -1789,45 +2203,6 @@ paths:
           $ref: '#/components/responses/MeshProxyPatchItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshProxyPatch
-    put:
-      x-speakeasy-entity-operation: 'MeshProxyPatch#create,update'
-      operationId: putMeshProxyPatch
-      summary: Creates or Updates MeshProxyPatch entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshProxyPatch
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshProxyPatchItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
       tags:
         - MeshProxyPatch
     delete:
@@ -1860,6 +2235,75 @@ paths:
         - MeshProxyPatch
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshProxyPatch#create
+      operationId: createMeshProxyPatch
+      summary: Creates or Updates MeshProxyPatch entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshProxyPatch
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshProxyPatchItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshProxyPatch
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshproxypatches/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshProxyPatch#update
+      operationId: updateMeshProxyPatch
+      summary: Creates or Updates MeshProxyPatch entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshProxyPatch
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshProxyPatchItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshProxyPatchCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshProxyPatch
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits':
     get:
       x-speakeasy-entity-operation: MeshRateLimitList#get
@@ -1879,7 +2323,7 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshRateLimit#get
       operationId: getMeshRateLimit
@@ -1902,45 +2346,6 @@ paths:
           $ref: '#/components/responses/MeshRateLimitItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshRateLimit
-    put:
-      x-speakeasy-entity-operation: 'MeshRateLimit#create,update'
-      operationId: putMeshRateLimit
-      summary: Creates or Updates MeshRateLimit entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshRateLimit
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshRateLimitItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
       tags:
         - MeshRateLimit
     delete:
@@ -1973,6 +2378,75 @@ paths:
         - MeshRateLimit
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshRateLimit#create
+      operationId: createMeshRateLimit
+      summary: Creates or Updates MeshRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRateLimitItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRateLimit
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshratelimits/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshRateLimit#update
+      operationId: updateMeshRateLimit
+      summary: Creates or Updates MeshRateLimit entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRateLimit
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRateLimitItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRateLimitCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRateLimit
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries':
     get:
       x-speakeasy-entity-operation: MeshRetryList#get
@@ -1992,7 +2466,7 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshRetry#get
       operationId: getMeshRetry
@@ -2015,45 +2489,6 @@ paths:
           $ref: '#/components/responses/MeshRetryItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshRetry
-    put:
-      x-speakeasy-entity-operation: 'MeshRetry#create,update'
-      operationId: putMeshRetry
-      summary: Creates or Updates MeshRetry entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshRetry
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshRetryItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
       tags:
         - MeshRetry
     delete:
@@ -2086,6 +2521,75 @@ paths:
         - MeshRetry
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshRetry#create
+      operationId: createMeshRetry
+      summary: Creates or Updates MeshRetry entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRetry
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRetryItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRetry
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshretries/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshRetry#update
+      operationId: updateMeshRetry
+      summary: Creates or Updates MeshRetry entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshRetry
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshRetryItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshRetryCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshRetry
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices':
     get:
       x-speakeasy-entity-operation: MeshServiceList#get
@@ -2105,7 +2609,7 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshService#get
       operationId: getMeshService
@@ -2128,45 +2632,6 @@ paths:
           $ref: '#/components/responses/MeshServiceItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshService
-    put:
-      x-speakeasy-entity-operation: 'MeshService#create,update'
-      operationId: putMeshService
-      summary: Creates or Updates MeshService entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshService
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshServiceItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
       tags:
         - MeshService
     delete:
@@ -2199,6 +2664,75 @@ paths:
         - MeshService
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshService#create
+      operationId: createMeshService
+      summary: Creates or Updates MeshService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshServiceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshService
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshservices/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshService#update
+      operationId: updateMeshService
+      summary: Creates or Updates MeshService entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshService
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshServiceItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshServiceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshService
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes':
     get:
       x-speakeasy-entity-operation: MeshTCPRouteList#get
@@ -2218,7 +2752,7 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshTCPRoute#get
       operationId: getMeshTCPRoute
@@ -2241,45 +2775,6 @@ paths:
           $ref: '#/components/responses/MeshTCPRouteItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshTCPRoute
-    put:
-      x-speakeasy-entity-operation: 'MeshTCPRoute#create,update'
-      operationId: putMeshTCPRoute
-      summary: Creates or Updates MeshTCPRoute entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTCPRoute
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshTCPRouteItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
       tags:
         - MeshTCPRoute
     delete:
@@ -2312,6 +2807,75 @@ paths:
         - MeshTCPRoute
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshTCPRoute#create
+      operationId: createMeshTCPRoute
+      summary: Creates or Updates MeshTCPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTCPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTCPRouteItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTCPRoute
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtcproutes/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshTCPRoute#update
+      operationId: updateMeshTCPRoute
+      summary: Creates or Updates MeshTCPRoute entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTCPRoute
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTCPRouteItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTCPRouteCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTCPRoute
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts':
     get:
       x-speakeasy-entity-operation: MeshTimeoutList#get
@@ -2331,7 +2895,7 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshTimeout#get
       operationId: getMeshTimeout
@@ -2354,45 +2918,6 @@ paths:
           $ref: '#/components/responses/MeshTimeoutItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshTimeout
-    put:
-      x-speakeasy-entity-operation: 'MeshTimeout#create,update'
-      operationId: putMeshTimeout
-      summary: Creates or Updates MeshTimeout entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTimeout
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshTimeoutItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
       tags:
         - MeshTimeout
     delete:
@@ -2425,6 +2950,75 @@ paths:
         - MeshTimeout
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshTimeout#create
+      operationId: createMeshTimeout
+      summary: Creates or Updates MeshTimeout entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTimeout
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTimeoutItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTimeout
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtimeouts/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshTimeout#update
+      operationId: updateMeshTimeout
+      summary: Creates or Updates MeshTimeout entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTimeout
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTimeoutItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTimeoutCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTimeout
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses':
     get:
       x-speakeasy-entity-operation: MeshTLSList#get
@@ -2444,7 +3038,7 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshTLS#get
       operationId: getMeshTLS
@@ -2467,45 +3061,6 @@ paths:
           $ref: '#/components/responses/MeshTLSItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshTLS
-    put:
-      x-speakeasy-entity-operation: 'MeshTLS#create,update'
-      operationId: putMeshTLS
-      summary: Creates or Updates MeshTLS entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTLS
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshTLSItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
       tags:
         - MeshTLS
     delete:
@@ -2538,6 +3093,75 @@ paths:
         - MeshTLS
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshTLS#create
+      operationId: createMeshTLS
+      summary: Creates or Updates MeshTLS entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTLS
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTLSItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTLS
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtlses/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshTLS#update
+      operationId: updateMeshTLS
+      summary: Creates or Updates MeshTLS entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTLS
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTLSItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTLSCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTLS
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces':
     get:
       x-speakeasy-entity-operation: MeshTraceList#get
@@ -2557,7 +3181,7 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshTrace#get
       operationId: getMeshTrace
@@ -2580,45 +3204,6 @@ paths:
           $ref: '#/components/responses/MeshTraceItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshTrace
-    put:
-      x-speakeasy-entity-operation: 'MeshTrace#create,update'
-      operationId: putMeshTrace
-      summary: Creates or Updates MeshTrace entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTrace
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshTraceItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
       tags:
         - MeshTrace
     delete:
@@ -2651,6 +3236,75 @@ paths:
         - MeshTrace
     parameters:
       - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshTrace#create
+      operationId: createMeshTrace
+      summary: Creates or Updates MeshTrace entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrace
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTraceItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrace
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtraces/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshTrace#update
+      operationId: updateMeshTrace
+      summary: Creates or Updates MeshTrace entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrace
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTraceItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTraceCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrace
+    parameters:
+      - $ref: '#/components/parameters/cpId'
   '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions':
     get:
       x-speakeasy-entity-operation: MeshTrafficPermissionList#get
@@ -2670,7 +3324,7 @@ paths:
         - MeshTrafficPermission
     parameters:
       - $ref: '#/components/parameters/cpId'
-  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}':
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}#create':
     get:
       x-speakeasy-entity-operation: MeshTrafficPermission#get
       operationId: getMeshTrafficPermission
@@ -2693,45 +3347,6 @@ paths:
           $ref: '#/components/responses/MeshTrafficPermissionItem'
         '404':
           $ref: '#/components/responses/NotFound'
-      tags:
-        - MeshTrafficPermission
-    put:
-      x-speakeasy-entity-operation: 'MeshTrafficPermission#create,update'
-      operationId: putMeshTrafficPermission
-      summary: Creates or Updates MeshTrafficPermission entity
-      parameters:
-        - name: mesh
-          in: path
-          description: name of the mesh
-          required: true
-          schema:
-            type: string
-        - name: name
-          in: path
-          description: name of the MeshTrafficPermission
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: Put request
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/MeshTrafficPermissionItem'
-      responses:
-        '200':
-          description: Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
       tags:
         - MeshTrafficPermission
     delete:
@@ -2760,6 +3375,75 @@ paths:
                 $ref: '#/components/schemas/MeshTrafficPermissionDeleteSuccessResponse'
         '404':
           $ref: '#/components/responses/NotFound'
+      tags:
+        - MeshTrafficPermission
+    parameters:
+      - $ref: '#/components/parameters/cpId'
+    put:
+      x-speakeasy-entity-operation: MeshTrafficPermission#create
+      operationId: createMeshTrafficPermission
+      summary: Creates or Updates MeshTrafficPermission entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrafficPermission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTrafficPermissionItem'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
+      tags:
+        - MeshTrafficPermission
+  '/v1/mesh/control-planes/{cpId}/api/meshes/{mesh}/meshtrafficpermissions/{name}#update':
+    put:
+      x-speakeasy-entity-operation: MeshTrafficPermission#update
+      operationId: updateMeshTrafficPermission
+      summary: Creates or Updates MeshTrafficPermission entity
+      parameters:
+        - name: mesh
+          in: path
+          description: name of the mesh
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          description: name of the MeshTrafficPermission
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Put request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MeshTrafficPermissionItem'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeshTrafficPermissionCreateOrUpdateSuccessResponse'
       tags:
         - MeshTrafficPermission
     parameters:
@@ -22134,7 +22818,6 @@ components:
       type: object
       properties:
         constraints:
-          x-speakeasy-terraform-plan-only: true
           description: Constraints that applies to the mesh and its entities
           type: object
           properties:
@@ -22152,18 +22835,18 @@ components:
                     requirements means that any proxy that is not explicitly denied can join.
                   type: array
                   items:
-                    x-speakeasy-terraform-plan-only: true
                     description: Rules defines a set of rules for data plane proxies to be member of the mesh.
                     properties:
                       tags:
-                        x-speakeasy-terraform-plan-only: true
                         description: |-
                           Tags defines set of required tags. You can specify '*' in value to
                           require non empty value of tag
                         type: object
                         additionalProperties:
                           type: string
+                        x-speakeasy-terraform-plan-only: true
                     type: object
+                  x-speakeasy-terraform-plan-only: true
                 restrictions:
                   description: |-
                     Restrictions defines a set of restrictions that data plane proxies cannot
@@ -22185,6 +22868,7 @@ components:
                     type: object
                   x-speakeasy-terraform-plan-only: true
               x-speakeasy-terraform-plan-only: true
+          x-speakeasy-terraform-plan-only: true
         labels:
           type: object
           additionalProperties:

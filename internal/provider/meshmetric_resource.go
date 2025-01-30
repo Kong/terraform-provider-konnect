@@ -489,13 +489,13 @@ func (r *MeshMetricResource) Create(ctx context.Context, req resource.CreateRequ
 	name = data.Name.ValueString()
 
 	meshMetricItem := *data.ToSharedMeshMetricItem()
-	request := operations.PutMeshMetricRequest{
+	request := operations.CreateMeshMetricRequest{
 		CpID:           cpID,
 		Mesh:           mesh,
 		Name:           name,
 		MeshMetricItem: meshMetricItem,
 	}
-	res, err := r.client.MeshMetric.PutMeshMetric(ctx, request)
+	res, err := r.client.MeshMetric.CreateMeshMetric(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -507,7 +507,7 @@ func (r *MeshMetricResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -644,13 +644,13 @@ func (r *MeshMetricResource) Update(ctx context.Context, req resource.UpdateRequ
 	name = data.Name.ValueString()
 
 	meshMetricItem := *data.ToSharedMeshMetricItem()
-	request := operations.PutMeshMetricRequest{
+	request := operations.UpdateMeshMetricRequest{
 		CpID:           cpID,
 		Mesh:           mesh,
 		Name:           name,
 		MeshMetricItem: meshMetricItem,
 	}
-	res, err := r.client.MeshMetric.PutMeshMetric(ctx, request)
+	res, err := r.client.MeshMetric.UpdateMeshMetric(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

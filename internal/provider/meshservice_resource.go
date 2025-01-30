@@ -467,13 +467,13 @@ func (r *MeshServiceResource) Create(ctx context.Context, req resource.CreateReq
 	name = data.Name.ValueString()
 
 	meshServiceItem := *data.ToSharedMeshServiceItem()
-	request := operations.PutMeshServiceRequest{
+	request := operations.CreateMeshServiceRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,
 		MeshServiceItem: meshServiceItem,
 	}
-	res, err := r.client.MeshService.PutMeshService(ctx, request)
+	res, err := r.client.MeshService.CreateMeshService(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -485,7 +485,7 @@ func (r *MeshServiceResource) Create(ctx context.Context, req resource.CreateReq
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -622,13 +622,13 @@ func (r *MeshServiceResource) Update(ctx context.Context, req resource.UpdateReq
 	name = data.Name.ValueString()
 
 	meshServiceItem := *data.ToSharedMeshServiceItem()
-	request := operations.PutMeshServiceRequest{
+	request := operations.UpdateMeshServiceRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
 		Name:            name,
 		MeshServiceItem: meshServiceItem,
 	}
-	res, err := r.client.MeshService.PutMeshService(ctx, request)
+	res, err := r.client.MeshService.UpdateMeshService(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

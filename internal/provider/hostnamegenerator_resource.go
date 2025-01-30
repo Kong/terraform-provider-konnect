@@ -196,12 +196,12 @@ func (r *HostnameGeneratorResource) Create(ctx context.Context, req resource.Cre
 	name = data.Name.ValueString()
 
 	hostnameGeneratorItem := *data.ToSharedHostnameGeneratorItem()
-	request := operations.PutHostnameGeneratorRequest{
+	request := operations.CreateHostnameGeneratorRequest{
 		CpID:                  cpID,
 		Name:                  name,
 		HostnameGeneratorItem: hostnameGeneratorItem,
 	}
-	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.CreateHostnameGenerator(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -213,7 +213,7 @@ func (r *HostnameGeneratorResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -339,12 +339,12 @@ func (r *HostnameGeneratorResource) Update(ctx context.Context, req resource.Upd
 	name = data.Name.ValueString()
 
 	hostnameGeneratorItem := *data.ToSharedHostnameGeneratorItem()
-	request := operations.PutHostnameGeneratorRequest{
+	request := operations.UpdateHostnameGeneratorRequest{
 		CpID:                  cpID,
 		Name:                  name,
 		HostnameGeneratorItem: hostnameGeneratorItem,
 	}
-	res, err := r.client.HostnameGenerator.PutHostnameGenerator(ctx, request)
+	res, err := r.client.HostnameGenerator.UpdateHostnameGenerator(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

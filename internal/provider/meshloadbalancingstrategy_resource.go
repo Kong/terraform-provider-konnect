@@ -889,13 +889,13 @@ func (r *MeshLoadBalancingStrategyResource) Create(ctx context.Context, req reso
 	name = data.Name.ValueString()
 
 	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItem()
-	request := operations.PutMeshLoadBalancingStrategyRequest{
+	request := operations.CreateMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,
 		Name:                          name,
 		MeshLoadBalancingStrategyItem: meshLoadBalancingStrategyItem,
 	}
-	res, err := r.client.MeshLoadBalancingStrategy.PutMeshLoadBalancingStrategy(ctx, request)
+	res, err := r.client.MeshLoadBalancingStrategy.CreateMeshLoadBalancingStrategy(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -907,7 +907,7 @@ func (r *MeshLoadBalancingStrategyResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1044,13 +1044,13 @@ func (r *MeshLoadBalancingStrategyResource) Update(ctx context.Context, req reso
 	name = data.Name.ValueString()
 
 	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItem()
-	request := operations.PutMeshLoadBalancingStrategyRequest{
+	request := operations.UpdateMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,
 		Name:                          name,
 		MeshLoadBalancingStrategyItem: meshLoadBalancingStrategyItem,
 	}
-	res, err := r.client.MeshLoadBalancingStrategy.PutMeshLoadBalancingStrategy(ctx, request)
+	res, err := r.client.MeshLoadBalancingStrategy.UpdateMeshLoadBalancingStrategy(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

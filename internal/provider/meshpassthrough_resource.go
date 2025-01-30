@@ -306,13 +306,13 @@ func (r *MeshPassthroughResource) Create(ctx context.Context, req resource.Creat
 	name = data.Name.ValueString()
 
 	meshPassthroughItem := *data.ToSharedMeshPassthroughItem()
-	request := operations.PutMeshPassthroughRequest{
+	request := operations.CreateMeshPassthroughRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
 		Name:                name,
 		MeshPassthroughItem: meshPassthroughItem,
 	}
-	res, err := r.client.MeshPassthrough.PutMeshPassthrough(ctx, request)
+	res, err := r.client.MeshPassthrough.CreateMeshPassthrough(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -324,7 +324,7 @@ func (r *MeshPassthroughResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -461,13 +461,13 @@ func (r *MeshPassthroughResource) Update(ctx context.Context, req resource.Updat
 	name = data.Name.ValueString()
 
 	meshPassthroughItem := *data.ToSharedMeshPassthroughItem()
-	request := operations.PutMeshPassthroughRequest{
+	request := operations.UpdateMeshPassthroughRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
 		Name:                name,
 		MeshPassthroughItem: meshPassthroughItem,
 	}
-	res, err := r.client.MeshPassthrough.PutMeshPassthrough(ctx, request)
+	res, err := r.client.MeshPassthrough.UpdateMeshPassthrough(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
