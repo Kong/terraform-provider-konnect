@@ -470,7 +470,7 @@ func (r *CloudGatewayConfigurationResource) Create(ctx context.Context, req reso
 	}
 
 	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.DataPlaneGroupConfigurations.CreateConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -521,7 +521,7 @@ func (r *CloudGatewayConfigurationResource) Read(ctx context.Context, req resour
 	request := operations.GetConfigurationRequest{
 		ConfigurationID: configurationID,
 	}
-	res, err := r.client.DataPlaneGroupConfigurations.GetConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.GetConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -566,7 +566,7 @@ func (r *CloudGatewayConfigurationResource) Update(ctx context.Context, req reso
 	}
 
 	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.DataPlaneGroupConfigurations.CreateConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

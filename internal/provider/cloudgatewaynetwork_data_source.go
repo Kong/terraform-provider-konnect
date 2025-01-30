@@ -169,7 +169,7 @@ func (r *CloudGatewayNetworkDataSource) Read(ctx context.Context, req datasource
 	request := operations.GetNetworkRequest{
 		NetworkID: networkID,
 	}
-	res, err := r.client.Networks.GetNetwork(ctx, request)
+	res, err := r.client.CloudGateways.GetNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

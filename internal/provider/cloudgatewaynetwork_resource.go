@@ -206,7 +206,7 @@ func (r *CloudGatewayNetworkResource) Create(ctx context.Context, req resource.C
 	}
 
 	request := *data.ToSharedCreateNetworkRequest()
-	res, err := r.client.Networks.CreateNetwork(ctx, request)
+	res, err := r.client.CloudGateways.CreateNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -257,7 +257,7 @@ func (r *CloudGatewayNetworkResource) Read(ctx context.Context, req resource.Rea
 	request := operations.GetNetworkRequest{
 		NetworkID: networkID,
 	}
-	res, err := r.client.Networks.GetNetwork(ctx, request)
+	res, err := r.client.CloudGateways.GetNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -360,7 +360,7 @@ func (r *CloudGatewayNetworkResource) Delete(ctx context.Context, req resource.D
 	request := operations.DeleteNetworkRequest{
 		NetworkID: networkID,
 	}
-	res, err := r.client.Networks.DeleteNetwork(ctx, request)
+	res, err := r.client.CloudGateways.DeleteNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
