@@ -18,12 +18,12 @@ func (r *GatewayPluginDatadogDataSourceModel) RefreshFromSharedDatadogPlugin(res
 			r.Config.FlushTimeout = types.NumberNull()
 		}
 		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Metrics = []tfTypes.DatadogPluginMetrics{}
+		r.Config.Metrics = []tfTypes.Metrics{}
 		if len(r.Config.Metrics) > len(resp.Config.Metrics) {
 			r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 		}
 		for metricsCount, metricsItem := range resp.Config.Metrics {
-			var metrics1 tfTypes.DatadogPluginMetrics
+			var metrics1 tfTypes.Metrics
 			if metricsItem.ConsumerIdentifier != nil {
 				metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 			} else {

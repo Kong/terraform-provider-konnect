@@ -2,6 +2,9 @@
 
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/types"
+
 type Rules struct {
-	Default *MeshTimeoutItemDefault `tfsdk:"default"`
+	Condition    map[string]types.String `tfsdk:"condition"`
+	UpstreamName types.String            `tfsdk:"upstream_name"`
 }

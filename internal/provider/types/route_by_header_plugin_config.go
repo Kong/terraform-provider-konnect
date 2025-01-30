@@ -3,5 +3,5 @@
 package types
 
 type RouteByHeaderPluginConfig struct {
-	Rules []RouteByHeaderPluginRules `tfsdk:"rules"`
+	Rules []Rules `tfsdk:"rules"`
 }

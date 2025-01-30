@@ -9,17 +9,17 @@ import (
 	"time"
 )
 
-type APIProductDocumentStatus string
+type Status string
 
 const (
-	APIProductDocumentStatusUnpublished APIProductDocumentStatus = "unpublished"
-	APIProductDocumentStatusPublished   APIProductDocumentStatus = "published"
+	StatusUnpublished Status = "unpublished"
+	StatusPublished   Status = "published"
 )
 
-func (e APIProductDocumentStatus) ToPointer() *APIProductDocumentStatus {
+func (e Status) ToPointer() *Status {
 	return &e
 }
-func (e *APIProductDocumentStatus) UnmarshalJSON(data []byte) error {
+func (e *Status) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -28,10 +28,10 @@ func (e *APIProductDocumentStatus) UnmarshalJSON(data []byte) error {
 	case "unpublished":
 		fallthrough
 	case "published":
-		*e = APIProductDocumentStatus(v)
+		*e = Status(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for APIProductDocumentStatus: %v", v)
+		return fmt.Errorf("invalid value for Status: %v", v)
 	}
 }
 
@@ -44,7 +44,7 @@ type APIProductDocument struct {
 	ParentDocumentID *string                    `json:"parent_document_id"`
 	Title            string                     `json:"title"`
 	Slug             string                     `json:"slug"`
-	Status           APIProductDocumentStatus   `json:"status"`
+	Status           Status                     `json:"status"`
 	Metadata         APIProductDocumentMetadata `json:"metadata"`
 	// The unencoded markdown string of the api product document.
 	Content string `json:"content"`
@@ -93,9 +93,9 @@ func (o *APIProductDocument) GetSlug() string {
 	return o.Slug
 }
 
-func (o *APIProductDocument) GetStatus() APIProductDocumentStatus {
+func (o *APIProductDocument) GetStatus() Status {
 	if o == nil {
-		return APIProductDocumentStatus("")
+		return Status("")
 	}
 	return o.Status
 }

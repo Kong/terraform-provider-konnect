@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AiProxyPluginConfig struct {
-	Auth               *Auth                 `tfsdk:"auth"`
-	Logging            *AiProxyPluginLogging `tfsdk:"logging"`
-	MaxRequestBodySize types.Int64           `tfsdk:"max_request_body_size"`
-	Model              *Model                `tfsdk:"model"`
-	ModelNameHeader    types.Bool            `tfsdk:"model_name_header"`
-	ResponseStreaming  types.String          `tfsdk:"response_streaming"`
-	RouteType          types.String          `tfsdk:"route_type"`
+	Auth               *Auth        `tfsdk:"auth"`
+	Logging            *Logging     `tfsdk:"logging"`
+	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
+	Model              *Model       `tfsdk:"model"`
+	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`
+	ResponseStreaming  types.String `tfsdk:"response_streaming"`
+	RouteType          types.String `tfsdk:"route_type"`
 }

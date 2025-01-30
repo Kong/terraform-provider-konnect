@@ -11,12 +11,12 @@ import (
 
 func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
+		r.Config.Rules = []tfTypes.Rules{}
 		if len(r.Config.Rules) > len(resp.Config.Rules) {
 			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 		}
 		for rulesCount, rulesItem := range resp.Config.Rules {
-			var rules1 tfTypes.RouteByHeaderPluginRules
+			var rules1 tfTypes.Rules
 			if len(rulesItem.Condition) > 0 {
 				rules1.Condition = make(map[string]types.String)
 				for key, value := range rulesItem.Condition {

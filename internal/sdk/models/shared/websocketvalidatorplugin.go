@@ -8,6 +8,51 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+// WebsocketValidatorPluginConfigClientType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
+type WebsocketValidatorPluginConfigClientType string
+
+const (
+	WebsocketValidatorPluginConfigClientTypeDraft4 WebsocketValidatorPluginConfigClientType = "draft4"
+)
+
+func (e WebsocketValidatorPluginConfigClientType) ToPointer() *WebsocketValidatorPluginConfigClientType {
+	return &e
+}
+func (e *WebsocketValidatorPluginConfigClientType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "draft4":
+		*e = WebsocketValidatorPluginConfigClientType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for WebsocketValidatorPluginConfigClientType: %v", v)
+	}
+}
+
+type Binary struct {
+	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+	Schema string `json:"schema"`
+	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
+	Type WebsocketValidatorPluginConfigClientType `json:"type"`
+}
+
+func (o *Binary) GetSchema() string {
+	if o == nil {
+		return ""
+	}
+	return o.Schema
+}
+
+func (o *Binary) GetType() WebsocketValidatorPluginConfigClientType {
+	if o == nil {
+		return WebsocketValidatorPluginConfigClientType("")
+	}
+	return o.Type
+}
+
 // WebsocketValidatorPluginType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 type WebsocketValidatorPluginType string
 
@@ -32,25 +77,44 @@ func (e *WebsocketValidatorPluginType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Binary struct {
+type WebsocketValidatorPluginConfigText struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 	Type WebsocketValidatorPluginType `json:"type"`
 }
 
-func (o *Binary) GetSchema() string {
+func (o *WebsocketValidatorPluginConfigText) GetSchema() string {
 	if o == nil {
 		return ""
 	}
 	return o.Schema
 }
 
-func (o *Binary) GetType() WebsocketValidatorPluginType {
+func (o *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginType {
 	if o == nil {
 		return WebsocketValidatorPluginType("")
 	}
 	return o.Type
+}
+
+type Client struct {
+	Binary *Binary                             `json:"binary,omitempty"`
+	Text   *WebsocketValidatorPluginConfigText `json:"text,omitempty"`
+}
+
+func (o *Client) GetBinary() *Binary {
+	if o == nil {
+		return nil
+	}
+	return o.Binary
+}
+
+func (o *Client) GetText() *WebsocketValidatorPluginConfigText {
+	if o == nil {
+		return nil
+	}
+	return o.Text
 }
 
 // WebsocketValidatorPluginConfigType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -77,44 +141,25 @@ func (e *WebsocketValidatorPluginConfigType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type WebsocketValidatorPluginConfigText struct {
+type WebsocketValidatorPluginBinary struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 	Type WebsocketValidatorPluginConfigType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetSchema() string {
+func (o *WebsocketValidatorPluginBinary) GetSchema() string {
 	if o == nil {
 		return ""
 	}
 	return o.Schema
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginConfigType {
+func (o *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigType {
 	if o == nil {
 		return WebsocketValidatorPluginConfigType("")
 	}
 	return o.Type
-}
-
-type Client struct {
-	Binary *Binary                             `json:"binary,omitempty"`
-	Text   *WebsocketValidatorPluginConfigText `json:"text,omitempty"`
-}
-
-func (o *Client) GetBinary() *Binary {
-	if o == nil {
-		return nil
-	}
-	return o.Binary
-}
-
-func (o *Client) GetText() *WebsocketValidatorPluginConfigText {
-	if o == nil {
-		return nil
-	}
-	return o.Text
 }
 
 // WebsocketValidatorPluginConfigUpstreamType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -141,56 +186,11 @@ func (e *WebsocketValidatorPluginConfigUpstreamType) UnmarshalJSON(data []byte) 
 	}
 }
 
-type WebsocketValidatorPluginBinary struct {
-	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
-	Schema string `json:"schema"`
-	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
-	Type WebsocketValidatorPluginConfigUpstreamType `json:"type"`
-}
-
-func (o *WebsocketValidatorPluginBinary) GetSchema() string {
-	if o == nil {
-		return ""
-	}
-	return o.Schema
-}
-
-func (o *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigUpstreamType {
-	if o == nil {
-		return WebsocketValidatorPluginConfigUpstreamType("")
-	}
-	return o.Type
-}
-
-// WebsocketValidatorPluginConfigUpstreamTextType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
-type WebsocketValidatorPluginConfigUpstreamTextType string
-
-const (
-	WebsocketValidatorPluginConfigUpstreamTextTypeDraft4 WebsocketValidatorPluginConfigUpstreamTextType = "draft4"
-)
-
-func (e WebsocketValidatorPluginConfigUpstreamTextType) ToPointer() *WebsocketValidatorPluginConfigUpstreamTextType {
-	return &e
-}
-func (e *WebsocketValidatorPluginConfigUpstreamTextType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "draft4":
-		*e = WebsocketValidatorPluginConfigUpstreamTextType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WebsocketValidatorPluginConfigUpstreamTextType: %v", v)
-	}
-}
-
 type WebsocketValidatorPluginText struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
-	Type WebsocketValidatorPluginConfigUpstreamTextType `json:"type"`
+	Type WebsocketValidatorPluginConfigUpstreamType `json:"type"`
 }
 
 func (o *WebsocketValidatorPluginText) GetSchema() string {
@@ -200,9 +200,9 @@ func (o *WebsocketValidatorPluginText) GetSchema() string {
 	return o.Schema
 }
 
-func (o *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamTextType {
+func (o *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamType {
 	if o == nil {
-		return WebsocketValidatorPluginConfigUpstreamTextType("")
+		return WebsocketValidatorPluginConfigUpstreamType("")
 	}
 	return o.Type
 }

@@ -16,7 +16,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			var schema string
 			schema = r.Config.Client.Binary.Schema.ValueString()
 
-			typeVar := shared.WebsocketValidatorPluginType(r.Config.Client.Binary.Type.ValueString())
+			typeVar := shared.WebsocketValidatorPluginConfigClientType(r.Config.Client.Binary.Type.ValueString())
 			binary = &shared.Binary{
 				Schema: schema,
 				Type:   typeVar,
@@ -27,7 +27,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			var schema1 string
 			schema1 = r.Config.Client.Text.Schema.ValueString()
 
-			typeVar1 := shared.WebsocketValidatorPluginConfigType(r.Config.Client.Text.Type.ValueString())
+			typeVar1 := shared.WebsocketValidatorPluginType(r.Config.Client.Text.Type.ValueString())
 			text = &shared.WebsocketValidatorPluginConfigText{
 				Schema: schema1,
 				Type:   typeVar1,
@@ -45,7 +45,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			var schema2 string
 			schema2 = r.Config.Upstream.Binary.Schema.ValueString()
 
-			typeVar2 := shared.WebsocketValidatorPluginConfigUpstreamType(r.Config.Upstream.Binary.Type.ValueString())
+			typeVar2 := shared.WebsocketValidatorPluginConfigType(r.Config.Upstream.Binary.Type.ValueString())
 			binary1 = &shared.WebsocketValidatorPluginBinary{
 				Schema: schema2,
 				Type:   typeVar2,
@@ -56,7 +56,7 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			var schema3 string
 			schema3 = r.Config.Upstream.Text.Schema.ValueString()
 
-			typeVar3 := shared.WebsocketValidatorPluginConfigUpstreamTextType(r.Config.Upstream.Text.Type.ValueString())
+			typeVar3 := shared.WebsocketValidatorPluginConfigUpstreamType(r.Config.Upstream.Text.Type.ValueString())
 			text1 = &shared.WebsocketValidatorPluginText{
 				Schema: schema3,
 				Type:   typeVar3,
