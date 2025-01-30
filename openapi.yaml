@@ -1253,6 +1253,105 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Planes
+  '/v2/control-planes/{controlPlaneId}/config-stores':
+    post:
+      x-speakeasy-entity-operation: GatewayConfigStore#create
+      operationId: create-config-store
+      summary: Create Config Store
+      description: Create a Config Store
+      parameters:
+        - $ref: '#/components/parameters/controlPlaneId'
+      requestBody:
+        $ref: '#/components/requestBodies/CreateConfigStoreRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Stores
+  '/v2/control-planes/{controlPlaneId}/config-stores/{configStoreId}':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+      - $ref: '#/components/parameters/configStoreId'
+    get:
+      x-speakeasy-entity-operation: GatewayConfigStore#read
+      operationId: get-config-store
+      summary: Fetch Config Store
+      description: Returns a Config Store
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Config Stores
+    put:
+      x-speakeasy-entity-operation: GatewayConfigStore#update
+      operationId: update-config-store
+      summary: Update an individual Config Store
+      description: Updates a Config Store
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateConfigStoreRequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/ConfigStoreResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/ConfigStoreNotFound'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaType'
+      tags:
+        - Config Stores
+    delete:
+      x-speakeasy-entity-operation: GatewayConfigStore#delete
+      operationId: delete-config-store
+      summary: Delete Config Store
+      description: Removes a config store
+      parameters:
+        - name: force
+          in: query
+          description: '[Overlay change] Always cascade delete when being managed with declarative configuation'
+          required: true
+          schema:
+            type: string
+            const: 'true'
+      responses:
+        '204':
+          description: Config Store was deleted successfully.
+        '400':
+          description: Bad Request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/BadRequestError'
+        '401':
+          $ref: '#/components/responses/ConfigStoreUnauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Config Stores
   '/v2/control-planes/{controlPlaneId}/core-entities/ca_certificates':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -11781,6 +11880,16 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    configStoreId:
+      schema:
+        type: string
+        format: uuid
+        example: d32d905a-ed33-46a3-a093-d8f536af9a8a
+      name: configStoreId
+      in: path
+      required: true
+      description: Config Store identifier
+      x-speakeasy-match: id
     controlPlaneId:
       x-speakeasy-param-force-new: true
       name: controlPlaneId
@@ -16026,6 +16135,45 @@ components:
             cert:
               description: JSON escaped string of the certificate.
               type: string
+    ConfigStore:
+      type: object
+      properties:
+        id:
+          description: The Config Store ID.
+          type: string
+          format: uuid
+          example: b9e81174-b5bb-4638-a3c3-8afe61a0abf8
+          readOnly: true
+        name:
+          description: The name of the Config Store
+          type: string
+          example: My Name
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+    CreateConfigStore:
+      description: The request schema to create a Config Store.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Config Store
+          maxLength: 100
+          minLength: 1
+      additionalProperties: false
+      title: Create Config Store Request
+    UpdateConfigStore:
+      description: The request schema to update a Config Store.
+      type: object
+      properties:
+        name:
+          type: string
+          example: Config Store
+          maxLength: 100
+          minLength: 1
+      additionalProperties: false
+      title: Update Config Store Request
     ACL:
       x-speakeasy-entity: GatewayACL
       type: object
@@ -32839,6 +32987,18 @@ components:
                 example: 'return { name = \"myplugin\", fields = { { config = { type = \"record\", fields = { } } } } }'
             required:
               - lua_schema
+    CreateConfigStoreRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateConfigStore'
+    UpdateConfigStoreRequest:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateConfigStore'
   responses:
     RetrieveControlPlaneResponse:
       description: A response to retrieving a single control plane.
@@ -33479,6 +33639,24 @@ components:
                     description: An ISO-8604 timestamp representation of custom plugin schema update date.
                     type: integer
                     example: 1422412345
+    ConfigStoreResponse:
+      description: Config Store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ConfigStore'
+    ConfigStoreUnauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedError'
+    ConfigStoreNotFound:
+      description: Not Found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/NotFoundError'
     HTTP401Error:
       description: Unauthorized
       content:
