@@ -1,9 +1,12 @@
 # Changelog
 
 ## 2.3.0
+> Released on 2025/??/??
+
 * Add support for `konnect_portal_team` resource
 * Add support for `konnect_audit_log` resource
 * Add support for `konnect_audit_log_destination` resource
+* Add support for `konnect_gateway_config_store` resource
 
 ### Bug fixes
 
