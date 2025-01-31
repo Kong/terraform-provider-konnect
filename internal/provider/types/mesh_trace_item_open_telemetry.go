@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTraceItemOpenTelemetry struct {
-	Endpoint types.String `tfsdk:"endpoint" tfPlanOnly:"true"`
+	Endpoint types.String `tfsdk:"endpoint"`
 }

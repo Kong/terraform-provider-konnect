@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Connection struct {
-	SourceIP types.Bool `tfsdk:"source_ip" tfPlanOnly:"true"`
+	SourceIP types.Bool `tfsdk:"source_ip"`
 }

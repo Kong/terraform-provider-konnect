@@ -702,7 +702,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to1.Default.LoadBalancer.Random = nil
 					} else {
-						to1.Default.LoadBalancer.Random = &tfTypes.Metadata{}
+						to1.Default.LoadBalancer.Random = &tfTypes.MeshGatewayItemOptions{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to1.Default.LoadBalancer.RingHash = nil
@@ -776,7 +776,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to1.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to1.Default.LoadBalancer.RoundRobin = &tfTypes.Metadata{}
+						to1.Default.LoadBalancer.RoundRobin = &tfTypes.MeshGatewayItemOptions{}
 					}
 					to1.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}

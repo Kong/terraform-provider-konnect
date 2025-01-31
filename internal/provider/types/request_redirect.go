@@ -5,9 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RequestRedirect struct {
-	Hostname   types.String               `tfsdk:"hostname" tfPlanOnly:"true"`
-	Path       *MeshHTTPRouteItemSpecPath `tfsdk:"path" tfPlanOnly:"true"`
-	Port       types.Int64                `tfsdk:"port" tfPlanOnly:"true"`
-	Scheme     types.String               `tfsdk:"scheme" tfPlanOnly:"true"`
-	StatusCode types.Int64                `tfsdk:"status_code" tfPlanOnly:"true"`
+	Hostname   types.String               `tfsdk:"hostname"`
+	Path       *MeshHTTPRouteItemSpecPath `tfsdk:"path"`
+	Port       types.Int64                `tfsdk:"port"`
+	Scheme     types.String               `tfsdk:"scheme"`
+	StatusCode types.Int64                `tfsdk:"status_code"`
 }

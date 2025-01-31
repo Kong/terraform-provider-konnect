@@ -377,25 +377,25 @@ func (o *MeshAccessLogItemSpecDefault) GetBackends() []MeshAccessLogItemBackends
 	return o.Backends
 }
 
-// MeshAccessLogItemSpecFromKind - Kind of the referenced resource
-type MeshAccessLogItemSpecFromKind string
+// MeshAccessLogItemKind - Kind of the referenced resource
+type MeshAccessLogItemKind string
 
 const (
-	MeshAccessLogItemSpecFromKindMesh                 MeshAccessLogItemSpecFromKind = "Mesh"
-	MeshAccessLogItemSpecFromKindMeshSubset           MeshAccessLogItemSpecFromKind = "MeshSubset"
-	MeshAccessLogItemSpecFromKindMeshGateway          MeshAccessLogItemSpecFromKind = "MeshGateway"
-	MeshAccessLogItemSpecFromKindMeshService          MeshAccessLogItemSpecFromKind = "MeshService"
-	MeshAccessLogItemSpecFromKindMeshExternalService  MeshAccessLogItemSpecFromKind = "MeshExternalService"
-	MeshAccessLogItemSpecFromKindMeshMultiZoneService MeshAccessLogItemSpecFromKind = "MeshMultiZoneService"
-	MeshAccessLogItemSpecFromKindMeshServiceSubset    MeshAccessLogItemSpecFromKind = "MeshServiceSubset"
-	MeshAccessLogItemSpecFromKindMeshHTTPRoute        MeshAccessLogItemSpecFromKind = "MeshHTTPRoute"
-	MeshAccessLogItemSpecFromKindDataplane            MeshAccessLogItemSpecFromKind = "Dataplane"
+	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
+	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
+	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
+	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
+	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
+	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
+	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
+	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
+	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
 )
 
-func (e MeshAccessLogItemSpecFromKind) ToPointer() *MeshAccessLogItemSpecFromKind {
+func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
 	return &e
 }
-func (e *MeshAccessLogItemSpecFromKind) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -418,10 +418,10 @@ func (e *MeshAccessLogItemSpecFromKind) UnmarshalJSON(data []byte) error {
 	case "MeshHTTPRoute":
 		fallthrough
 	case "Dataplane":
-		*e = MeshAccessLogItemSpecFromKind(v)
+		*e = MeshAccessLogItemKind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromKind: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemKind: %v", v)
 	}
 }
 
@@ -455,7 +455,7 @@ func (e *MeshAccessLogItemProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshAccessLogItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemSpecFromKind `json:"kind,omitempty"`
+	Kind *MeshAccessLogItemKind `json:"kind,omitempty"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -478,7 +478,7 @@ type MeshAccessLogItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshAccessLogItemTargetRef) GetKind() *MeshAccessLogItemSpecFromKind {
+func (o *MeshAccessLogItemTargetRef) GetKind() *MeshAccessLogItemKind {
 	if o == nil {
 		return nil
 	}
@@ -557,25 +557,25 @@ func (o *From) GetTargetRef() MeshAccessLogItemTargetRef {
 	return o.TargetRef
 }
 
-// MeshAccessLogItemKind - Kind of the referenced resource
-type MeshAccessLogItemKind string
+// Kind of the referenced resource
+type Kind string
 
 const (
-	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
-	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
-	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
-	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
-	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
-	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
-	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
-	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
-	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
+	KindMesh                 Kind = "Mesh"
+	KindMeshSubset           Kind = "MeshSubset"
+	KindMeshGateway          Kind = "MeshGateway"
+	KindMeshService          Kind = "MeshService"
+	KindMeshExternalService  Kind = "MeshExternalService"
+	KindMeshMultiZoneService Kind = "MeshMultiZoneService"
+	KindMeshServiceSubset    Kind = "MeshServiceSubset"
+	KindMeshHTTPRoute        Kind = "MeshHTTPRoute"
+	KindDataplane            Kind = "Dataplane"
 )
 
-func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
+func (e Kind) ToPointer() *Kind {
 	return &e
 }
-func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
+func (e *Kind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -598,10 +598,10 @@ func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
 	case "MeshHTTPRoute":
 		fallthrough
 	case "Dataplane":
-		*e = MeshAccessLogItemKind(v)
+		*e = Kind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemKind: %v", v)
+		return fmt.Errorf("invalid value for Kind: %v", v)
 	}
 }
 
@@ -636,7 +636,7 @@ func (e *ProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type TargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemKind `json:"kind,omitempty"`
+	Kind *Kind `json:"kind,omitempty"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -659,7 +659,7 @@ type TargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *TargetRef) GetKind() *MeshAccessLogItemKind {
+func (o *TargetRef) GetKind() *Kind {
 	if o == nil {
 		return nil
 	}

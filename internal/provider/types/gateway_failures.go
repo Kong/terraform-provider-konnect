@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type GatewayFailures struct {
-	Consecutive types.Int64 `tfsdk:"consecutive" tfPlanOnly:"true"`
+	Consecutive types.Int64 `tfsdk:"consecutive"`
 }

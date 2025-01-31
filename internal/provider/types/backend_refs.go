@@ -5,14 +5,14 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type BackendRefs struct {
-	Kind        types.String            `tfsdk:"kind" tfPlanOnly:"true"`
-	Labels      map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh        types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
-	Name        types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Namespace   types.String            `tfsdk:"namespace" tfPlanOnly:"true"`
-	Port        types.Int64             `tfsdk:"port" tfPlanOnly:"true"`
-	ProxyTypes  []types.String          `tfsdk:"proxy_types" tfPlanOnly:"true"`
-	SectionName types.String            `tfsdk:"section_name" tfPlanOnly:"true"`
-	Tags        map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
-	Weight      types.Int64             `tfsdk:"weight" tfPlanOnly:"true"`
+	Kind        types.String            `tfsdk:"kind"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Mesh        types.String            `tfsdk:"mesh"`
+	Name        types.String            `tfsdk:"name"`
+	Namespace   types.String            `tfsdk:"namespace"`
+	Port        types.Int64             `tfsdk:"port"`
+	ProxyTypes  []types.String          `tfsdk:"proxy_types"`
+	SectionName types.String            `tfsdk:"section_name"`
+	Tags        map[string]types.String `tfsdk:"tags"`
+	Weight      types.Int64             `tfsdk:"weight"`
 }

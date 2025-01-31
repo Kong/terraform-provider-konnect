@@ -35,7 +35,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPluginInput() *shared.ACLPlug
 	} else {
 		includeConsumerGroups = nil
 	}
-	config := shared.ACLPluginConfig{
+	config := shared.Config{
 		Allow:                        allow,
 		AlwaysUseAuthenticatedGroups: alwaysUseAuthenticatedGroups,
 		Deny:                         deny,

@@ -39,14 +39,14 @@ type MeshAccessLogResource struct {
 // MeshAccessLogResourceModel describes the resource data model.
 type MeshAccessLogResourceModel struct {
 	CpID             types.String                  `tfsdk:"cp_id"`
-	CreationTime     types.String                  `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String       `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                  `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                  `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                  `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshAccessLogItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                  `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Labels           map[string]types.String       `tfsdk:"labels"`
+	Mesh             types.String                  `tfsdk:"mesh"`
+	ModificationTime types.String                  `tfsdk:"modification_time"`
+	Name             types.String                  `tfsdk:"name"`
+	Spec             tfTypes.MeshAccessLogItemSpec `tfsdk:"spec"`
+	Type             types.String                  `tfsdk:"type"`
+	Warnings         []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshAccessLogResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -70,7 +69,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -80,7 +78,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -95,7 +92,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -103,11 +99,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backends": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
@@ -115,15 +109,12 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 												Attributes: map[string]schema.Attribute{
 													"file": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"format": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
@@ -131,26 +122,21 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																			Attributes: map[string]schema.Attribute{
 																				"key": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"value": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																			},
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"plain": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Plain", "Json"]`,
 																		Validators: []validator.String{
@@ -166,7 +152,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path to a file that logs will be written to. Not Null`,
 																Validators: []validator.String{
@@ -178,11 +163,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `FileBackend defines configuration for file based access logs`,
 													},
 													"open_telemetry": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"attributes": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
@@ -190,11 +173,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																	Attributes: map[string]schema.Attribute{
 																		"key": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																		},
 																		"value": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																		},
 																	},
@@ -203,7 +184,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
@@ -215,7 +195,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 															},
 															"endpoint": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Endpoint of OpenTelemetry collector. An empty port defaults to 4317. Not Null`,
 																Validators: []validator.String{
@@ -227,11 +206,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `Defines an OpenTelemetry logging backend.`,
 													},
 													"tcp": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"address": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Address of the TCP logging backend. Not Null`,
 																Validators: []validator.String{
@@ -240,11 +217,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 															},
 															"format": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
@@ -252,26 +227,21 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																			Attributes: map[string]schema.Attribute{
 																				"key": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"value": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																			},
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"plain": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Plain", "Json"]`,
 																		Validators: []validator.String{
@@ -290,7 +260,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `TCPBackend defines a TCP logging backend.`,
 													},
 													"type": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Not Null; must be one of ["Tcp", "File", "OpenTelemetry"]`,
 														Validators: []validator.String{
@@ -310,11 +279,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -332,31 +299,26 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -366,13 +328,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -391,11 +351,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -413,31 +371,26 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -447,13 +400,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -465,7 +416,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined in-place.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -473,11 +423,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backends": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
@@ -485,15 +433,12 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 												Attributes: map[string]schema.Attribute{
 													"file": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"format": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
@@ -501,26 +446,21 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																			Attributes: map[string]schema.Attribute{
 																				"key": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"value": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																			},
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"plain": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Plain", "Json"]`,
 																		Validators: []validator.String{
@@ -536,7 +476,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path to a file that logs will be written to. Not Null`,
 																Validators: []validator.String{
@@ -548,11 +487,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `FileBackend defines configuration for file based access logs`,
 													},
 													"open_telemetry": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"attributes": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
@@ -560,11 +497,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																	Attributes: map[string]schema.Attribute{
 																		"key": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																		},
 																		"value": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																		},
 																	},
@@ -573,7 +508,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
@@ -585,7 +519,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 															},
 															"endpoint": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Endpoint of OpenTelemetry collector. An empty port defaults to 4317. Not Null`,
 																Validators: []validator.String{
@@ -597,11 +530,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `Defines an OpenTelemetry logging backend.`,
 													},
 													"tcp": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"address": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Address of the TCP logging backend. Not Null`,
 																Validators: []validator.String{
@@ -610,11 +541,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 															},
 															"format": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
@@ -622,26 +551,21 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																			Attributes: map[string]schema.Attribute{
 																				"key": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"value": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																			},
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"plain": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Plain", "Json"]`,
 																		Validators: []validator.String{
@@ -660,7 +584,6 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Description: `TCPBackend defines a TCP logging backend.`,
 													},
 													"type": schema.StringAttribute{
-														Computed:    true,
 														Optional:    true,
 														Description: `Not Null; must be one of ["Tcp", "File", "OpenTelemetry"]`,
 														Validators: []validator.String{
@@ -680,11 +603,9 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -702,31 +623,26 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -736,13 +652,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

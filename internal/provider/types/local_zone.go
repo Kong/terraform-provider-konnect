@@ -3,5 +3,5 @@
 package types
 
 type LocalZone struct {
-	AffinityTags []AffinityTags `tfsdk:"affinity_tags" tfPlanOnly:"true"`
+	AffinityTags []AffinityTags `tfsdk:"affinity_tags"`
 }

@@ -3,7 +3,7 @@
 package types
 
 type MeshRetryItemDefault struct {
-	Grpc *MeshRetryItemGrpc `tfsdk:"grpc" tfPlanOnly:"true"`
-	HTTP *MeshRetryItemHTTP `tfsdk:"http" tfPlanOnly:"true"`
-	TCP  *MeshRetryItemTCP  `tfsdk:"tcp" tfPlanOnly:"true"`
+	Grpc *MeshRetryItemGrpc `tfsdk:"grpc"`
+	HTTP *MeshRetryItemHTTP `tfsdk:"http"`
+	TCP  *MeshRetryItemTCP  `tfsdk:"tcp"`
 }

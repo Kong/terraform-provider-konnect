@@ -39,14 +39,14 @@ type MeshProxyPatchResource struct {
 // MeshProxyPatchResourceModel describes the resource data model.
 type MeshProxyPatchResourceModel struct {
 	CpID             types.String                   `tfsdk:"cp_id"`
-	CreationTime     types.String                   `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String        `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                   `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                   `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                   `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshProxyPatchItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                   `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                 `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                   `tfsdk:"creation_time"`
+	Labels           map[string]types.String        `tfsdk:"labels"`
+	Mesh             types.String                   `tfsdk:"mesh"`
+	ModificationTime types.String                   `tfsdk:"modification_time"`
+	Name             types.String                   `tfsdk:"name"`
+	Spec             tfTypes.MeshProxyPatchItemSpec `tfsdk:"spec"`
+	Type             types.String                   `tfsdk:"type"`
+	Warnings         []types.String                 `tfsdk:"warnings"`
 }
 
 func (r *MeshProxyPatchResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -70,7 +69,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -80,7 +78,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -105,11 +102,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 									},
 									Attributes: map[string]schema.Attribute{
 										"cluster": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -117,12 +112,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														},
 														Attributes: map[string]schema.Attribute{
 															"from": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `From is a jsonpatch from string, used by move and copy operations.`,
 															},
 															"op": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
 																Validators: []validator.String{
@@ -137,7 +130,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path is a jsonpatch path string. Not Null`,
 																Validators: []validator.String{
@@ -145,7 +137,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 																Validators: []validator.String{
@@ -158,16 +149,13 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														`resource`,
 												},
 												"match": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the cluster to match.`,
 														},
 														"origin": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Origin is the name of the component or plugin that generated the resource.` + "\n" +
 																`` + "\n" +
@@ -188,7 +176,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Match is a set of conditions that have to be matched for modification operation to happen.`,
 												},
 												"operation": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Operation to execute on matched cluster. Not Null; must be one of ["Add", "Remove", "Patch"]`,
 													Validators: []validator.String{
@@ -201,7 +188,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value of xDS resource in YAML format to add or patch.`,
 												},
@@ -209,11 +195,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Description: `Cluster is a modification of Envoy's Cluster resource.`,
 										},
 										"http_filter": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -221,12 +205,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														},
 														Attributes: map[string]schema.Attribute{
 															"from": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `From is a jsonpatch from string, used by move and copy operations.`,
 															},
 															"op": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
 																Validators: []validator.String{
@@ -241,7 +223,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path is a jsonpatch path string. Not Null`,
 																Validators: []validator.String{
@@ -249,7 +230,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 																Validators: []validator.String{
@@ -262,27 +242,22 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														`HTTP Filter available in HTTP Connection Manager in a Listener resource.`,
 												},
 												"match": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"listener_name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the listener to match.`,
 														},
 														"listener_tags": schema.MapAttribute{
-															Computed:    true,
 															Optional:    true,
 															ElementType: types.StringType,
 															Description: `Listener tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]`,
 														},
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the HTTP filter. For example "envoy.filters.http.local_ratelimit"`,
 														},
 														"origin": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Origin is the name of the component or plugin that generated the resource.` + "\n" +
 																`` + "\n" +
@@ -303,7 +278,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Match is a set of conditions that have to be matched for modification operation to happen.`,
 												},
 												"operation": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]`,
 													Validators: []validator.String{
@@ -319,7 +293,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value of xDS resource in YAML format to add or patch.`,
 												},
@@ -328,11 +301,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 												`available in HTTP Connection Manager in a Listener resource.`,
 										},
 										"listener": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -340,12 +311,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														},
 														Attributes: map[string]schema.Attribute{
 															"from": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `From is a jsonpatch from string, used by move and copy operations.`,
 															},
 															"op": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
 																Validators: []validator.String{
@@ -360,7 +329,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path is a jsonpatch path string. Not Null`,
 																Validators: []validator.String{
@@ -368,7 +336,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 																Validators: []validator.String{
@@ -381,16 +348,13 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														`resource`,
 												},
 												"match": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the listener to match.`,
 														},
 														"origin": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Origin is the name of the component or plugin that generated the resource.` + "\n" +
 																`` + "\n" +
@@ -408,7 +372,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																`For example MeshTrace plugin can create Cluster with "mesh-trace" origin.`,
 														},
 														"tags": schema.MapAttribute{
-															Computed:    true,
 															Optional:    true,
 															ElementType: types.StringType,
 															Description: `Tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]`,
@@ -417,7 +380,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Match is a set of conditions that have to be matched for modification operation to happen.`,
 												},
 												"operation": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]`,
 													Validators: []validator.String{
@@ -430,7 +392,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value of xDS resource in YAML format to add or patch.`,
 												},
@@ -438,11 +399,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Description: `Listener is a modification of Envoy's Listener resource.`,
 										},
 										"network_filter": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -450,12 +409,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														},
 														Attributes: map[string]schema.Attribute{
 															"from": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `From is a jsonpatch from string, used by move and copy operations.`,
 															},
 															"op": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
 																Validators: []validator.String{
@@ -470,7 +427,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path is a jsonpatch path string. Not Null`,
 																Validators: []validator.String{
@@ -478,7 +434,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 																Validators: []validator.String{
@@ -491,27 +446,22 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														`filter.`,
 												},
 												"match": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"listener_name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the listener to match.`,
 														},
 														"listener_tags": schema.MapAttribute{
-															Computed:    true,
 															Optional:    true,
 															ElementType: types.StringType,
 															Description: `Listener tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]`,
 														},
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the network filter. For example "envoy.filters.network.ratelimit"`,
 														},
 														"origin": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Origin is the name of the component or plugin that generated the resource.` + "\n" +
 																`` + "\n" +
@@ -532,7 +482,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													Description: `Match is a set of conditions that have to be matched for modification operation to happen.`,
 												},
 												"operation": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Operation to execute on matched listener. Not Null; must be one of ["Remove", "Patch", "AddFirst", "AddBefore", "AddAfter", "AddLast"]`,
 													Validators: []validator.String{
@@ -548,7 +497,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value of xDS resource in YAML format to add or patch.`,
 												},
@@ -556,11 +504,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Description: `NetworkFilter is a modification of Envoy Listener's filter.`,
 										},
 										"virtual_host": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -568,12 +514,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														},
 														Attributes: map[string]schema.Attribute{
 															"from": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `From is a jsonpatch from string, used by move and copy operations.`,
 															},
 															"op": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Op is a jsonpatch operation string. Not Null; must be one of ["add", "remove", "replace", "move", "copy"]`,
 																Validators: []validator.String{
@@ -588,7 +532,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path is a jsonpatch path string. Not Null`,
 																Validators: []validator.String{
@@ -596,7 +539,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value must be a valid json value used by replace and add operations. Parsed as JSON.`,
 																Validators: []validator.String{
@@ -609,16 +551,13 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 														`VirtualHost resource`,
 												},
 												"match": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the VirtualHost to match.`,
 														},
 														"origin": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Origin is the name of the component or plugin that generated the resource.` + "\n" +
 																`` + "\n" +
@@ -636,7 +575,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 																`For example MeshTrace plugin can create Cluster with "mesh-trace" origin.`,
 														},
 														"route_configuration_name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the RouteConfiguration resource to match.`,
 														},
@@ -647,7 +585,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"operation": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Operation to execute on matched listener. Not Null; must be one of ["Add", "Remove", "Patch"]`,
 													Validators: []validator.String{
@@ -660,7 +597,6 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value of xDS resource in YAML format to add or patch.`,
 												},
@@ -677,11 +613,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 							`referenced in 'targetRef'.`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -699,31 +633,26 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -733,13 +662,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

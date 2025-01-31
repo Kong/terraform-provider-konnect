@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Matches struct {
-	Headers     []Headers     `tfsdk:"headers" tfPlanOnly:"true"`
-	Method      types.String  `tfsdk:"method" tfPlanOnly:"true"`
-	Path        *Path         `tfsdk:"path" tfPlanOnly:"true"`
-	QueryParams []QueryParams `tfsdk:"query_params" tfPlanOnly:"true"`
+	Headers     []Headers     `tfsdk:"headers"`
+	Method      types.String  `tfsdk:"method"`
+	Path        *Path         `tfsdk:"path"`
+	QueryParams []QueryParams `tfsdk:"query_params"`
 }

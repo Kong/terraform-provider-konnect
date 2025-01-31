@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Selectors struct {
-	Match map[string]types.String `tfsdk:"match" tfPlanOnly:"true"`
+	Match map[string]types.String `tfsdk:"match"`
 }

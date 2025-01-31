@@ -3,6 +3,6 @@
 package types
 
 type AwsCredentials struct {
-	AccessKey       *AccessKey `tfsdk:"access_key" tfPlanOnly:"true"`
-	AccessKeySecret *AccessKey `tfsdk:"access_key_secret" tfPlanOnly:"true"`
+	AccessKey       *AccessKey `tfsdk:"access_key"`
+	AccessKeySecret *AccessKey `tfsdk:"access_key_secret"`
 }

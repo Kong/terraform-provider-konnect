@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshServiceItemPorts struct {
-	AppProtocol types.String `tfsdk:"app_protocol" tfPlanOnly:"true"`
-	Name        types.String `tfsdk:"name" tfPlanOnly:"true"`
-	Port        types.Int64  `tfsdk:"port" tfPlanOnly:"true"`
-	TargetPort  *Mode        `tfsdk:"target_port" tfPlanOnly:"true"`
+	AppProtocol types.String `tfsdk:"app_protocol"`
+	Name        types.String `tfsdk:"name"`
+	Port        types.Int64  `tfsdk:"port"`
+	TargetPort  *Mode        `tfsdk:"target_port"`
 }

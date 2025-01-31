@@ -3,7 +3,7 @@
 package types
 
 type Default struct {
-	Applications []Applications           `tfsdk:"applications" tfPlanOnly:"true"`
-	Backends     []MeshMetricItemBackends `tfsdk:"backends" tfPlanOnly:"true"`
-	Sidecar      *Sidecar                 `tfsdk:"sidecar" tfPlanOnly:"true"`
+	Applications []Applications           `tfsdk:"applications"`
+	Backends     []MeshMetricItemBackends `tfsdk:"backends"`
+	Sidecar      *Sidecar                 `tfsdk:"sidecar"`
 }

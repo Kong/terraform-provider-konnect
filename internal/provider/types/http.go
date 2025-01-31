@@ -3,7 +3,7 @@
 package types
 
 type HTTP struct {
-	Abort             *Abort             `tfsdk:"abort" tfPlanOnly:"true"`
-	Delay             *Delay             `tfsdk:"delay" tfPlanOnly:"true"`
-	ResponseBandwidth *ResponseBandwidth `tfsdk:"response_bandwidth" tfPlanOnly:"true"`
+	Abort             *Abort             `tfsdk:"abort"`
+	Delay             *Delay             `tfsdk:"delay"`
+	ResponseBandwidth *ResponseBandwidth `tfsdk:"response_bandwidth"`
 }

@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Prometheus struct {
-	ClientID types.String       `tfsdk:"client_id" tfPlanOnly:"true"`
-	Path     types.String       `tfsdk:"path" tfPlanOnly:"true"`
-	Port     types.Int64        `tfsdk:"port" tfPlanOnly:"true"`
-	TLS      *MeshMetricItemTLS `tfsdk:"tls" tfPlanOnly:"true"`
+	ClientID types.String       `tfsdk:"client_id"`
+	Path     types.String       `tfsdk:"path"`
+	Port     types.Int64        `tfsdk:"port"`
+	TLS      *MeshMetricItemTLS `tfsdk:"tls"`
 }

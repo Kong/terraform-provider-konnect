@@ -3,5 +3,5 @@
 package types
 
 type MeshFaultInjectionItemDefault struct {
-	HTTP []HTTP `tfsdk:"http" tfPlanOnly:"true"`
+	HTTP []HTTP `tfsdk:"http"`
 }

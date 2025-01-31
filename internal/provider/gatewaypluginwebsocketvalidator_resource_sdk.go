@@ -22,13 +22,13 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 				Type:   typeVar,
 			}
 		}
-		var text *shared.WebsocketValidatorPluginConfigText
+		var text *shared.Text
 		if r.Config.Client.Text != nil {
 			var schema1 string
 			schema1 = r.Config.Client.Text.Schema.ValueString()
 
 			typeVar1 := shared.WebsocketValidatorPluginConfigType(r.Config.Client.Text.Type.ValueString())
-			text = &shared.WebsocketValidatorPluginConfigText{
+			text = &shared.Text{
 				Schema: schema1,
 				Type:   typeVar1,
 			}

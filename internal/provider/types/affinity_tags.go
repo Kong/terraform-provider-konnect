@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AffinityTags struct {
-	Key    types.String `tfsdk:"key" tfPlanOnly:"true"`
-	Weight types.Int64  `tfsdk:"weight" tfPlanOnly:"true"`
+	Key    types.String `tfsdk:"key"`
+	Weight types.Int64  `tfsdk:"weight"`
 }

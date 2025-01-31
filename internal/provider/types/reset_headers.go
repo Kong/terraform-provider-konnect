@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ResetHeaders struct {
-	Format types.String `tfsdk:"format" tfPlanOnly:"true"`
-	Name   types.String `tfsdk:"name" tfPlanOnly:"true"`
+	Format types.String `tfsdk:"format"`
+	Name   types.String `tfsdk:"name"`
 }

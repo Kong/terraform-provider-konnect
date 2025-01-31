@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Format struct {
-	JSON            []JSON       `tfsdk:"json" tfPlanOnly:"true"`
-	OmitEmptyValues types.Bool   `tfsdk:"omit_empty_values" tfPlanOnly:"true"`
-	Plain           types.String `tfsdk:"plain" tfPlanOnly:"true"`
-	Type            types.String `tfsdk:"type" tfPlanOnly:"true"`
+	JSON            []JSON       `tfsdk:"json"`
+	OmitEmptyValues types.Bool   `tfsdk:"omit_empty_values"`
+	Plain           types.String `tfsdk:"plain"`
+	Type            types.String `tfsdk:"type"`
 }

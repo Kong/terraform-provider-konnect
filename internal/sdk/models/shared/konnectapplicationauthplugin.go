@@ -8,19 +8,19 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-// KonnectApplicationAuthPluginAuthType - The type of authentication to be performed. Possible values are: 'openid-connect', 'key-auth', 'v2-strategies'.
-type KonnectApplicationAuthPluginAuthType string
+// AuthType - The type of authentication to be performed. Possible values are: 'openid-connect', 'key-auth', 'v2-strategies'.
+type AuthType string
 
 const (
-	KonnectApplicationAuthPluginAuthTypeOpenidConnect KonnectApplicationAuthPluginAuthType = "openid-connect"
-	KonnectApplicationAuthPluginAuthTypeKeyAuth       KonnectApplicationAuthPluginAuthType = "key-auth"
-	KonnectApplicationAuthPluginAuthTypeV2Strategies  KonnectApplicationAuthPluginAuthType = "v2-strategies"
+	AuthTypeOpenidConnect AuthType = "openid-connect"
+	AuthTypeKeyAuth       AuthType = "key-auth"
+	AuthTypeV2Strategies  AuthType = "v2-strategies"
 )
 
-func (e KonnectApplicationAuthPluginAuthType) ToPointer() *KonnectApplicationAuthPluginAuthType {
+func (e AuthType) ToPointer() *AuthType {
 	return &e
 }
-func (e *KonnectApplicationAuthPluginAuthType) UnmarshalJSON(data []byte) error {
+func (e *AuthType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -31,10 +31,10 @@ func (e *KonnectApplicationAuthPluginAuthType) UnmarshalJSON(data []byte) error 
 	case "key-auth":
 		fallthrough
 	case "v2-strategies":
-		*e = KonnectApplicationAuthPluginAuthType(v)
+		*e = AuthType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for KonnectApplicationAuthPluginAuthType: %v", v)
+		return fmt.Errorf("invalid value for AuthType: %v", v)
 	}
 }
 
@@ -3995,7 +3995,7 @@ func (o *V2Strategies) GetOpenidConnect() []OpenidConnect {
 
 type KonnectApplicationAuthPluginConfig struct {
 	// The type of authentication to be performed. Possible values are: 'openid-connect', 'key-auth', 'v2-strategies'.
-	AuthType *KonnectApplicationAuthPluginAuthType `json:"auth_type,omitempty"`
+	AuthType *AuthType `json:"auth_type,omitempty"`
 	// The names of the headers containing the API key. You can specify multiple header names.
 	KeyNames []string `json:"key_names,omitempty"`
 	// The unique scope identifier for the plugin configuration.
@@ -4004,7 +4004,7 @@ type KonnectApplicationAuthPluginConfig struct {
 	V2Strategies *V2Strategies `json:"v2_strategies,omitempty"`
 }
 
-func (o *KonnectApplicationAuthPluginConfig) GetAuthType() *KonnectApplicationAuthPluginAuthType {
+func (o *KonnectApplicationAuthPluginConfig) GetAuthType() *AuthType {
 	if o == nil {
 		return nil
 	}

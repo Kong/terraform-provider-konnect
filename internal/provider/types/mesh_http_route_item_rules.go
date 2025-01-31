@@ -3,6 +3,6 @@
 package types
 
 type MeshHTTPRouteItemRules struct {
-	Default MeshHTTPRouteItemDefault `tfsdk:"default" tfPlanOnly:"true"`
-	Matches []Matches                `tfsdk:"matches" tfPlanOnly:"true"`
+	Default MeshHTTPRouteItemDefault `tfsdk:"default"`
+	Matches []Matches                `tfsdk:"matches"`
 }

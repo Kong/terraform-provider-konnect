@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type DataplaneProxies struct {
-	Connected types.Int64 `tfsdk:"connected" tfPlanOnly:"true"`
-	Healthy   types.Int64 `tfsdk:"healthy" tfPlanOnly:"true"`
-	Total     types.Int64 `tfsdk:"total" tfPlanOnly:"true"`
+	Connected types.Int64 `tfsdk:"connected"`
+	Healthy   types.Int64 `tfsdk:"healthy"`
+	Total     types.Int64 `tfsdk:"total"`
 }

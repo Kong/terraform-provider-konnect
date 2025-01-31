@@ -182,9 +182,9 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAcc
 				Backends: backends,
 			}
 		}
-		kind := new(shared.MeshAccessLogItemSpecFromKind)
+		kind := new(shared.MeshAccessLogItemKind)
 		if !fromItem.TargetRef.Kind.IsUnknown() && !fromItem.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshAccessLogItemSpecFromKind(fromItem.TargetRef.Kind.ValueString())
+			*kind = shared.MeshAccessLogItemKind(fromItem.TargetRef.Kind.ValueString())
 		} else {
 			kind = nil
 		}
@@ -247,9 +247,9 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAcc
 	}
 	var targetRef1 *shared.TargetRef
 	if r.Spec.TargetRef != nil {
-		kind1 := new(shared.MeshAccessLogItemKind)
+		kind1 := new(shared.Kind)
 		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind1 = shared.MeshAccessLogItemKind(r.Spec.TargetRef.Kind.ValueString())
+			*kind1 = shared.Kind(r.Spec.TargetRef.Kind.ValueString())
 		} else {
 			kind1 = nil
 		}

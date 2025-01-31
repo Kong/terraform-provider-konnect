@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type BuiltinCertificateAuthorityConfigConfCaCert struct {
-	Expiration types.String `tfsdk:"expiration" tfPlanOnly:"true"`
-	RSAbits    types.Int64  `tfsdk:"rs_abits" tfPlanOnly:"true"`
+	Expiration types.String `tfsdk:"expiration"`
+	RSAbits    types.Int64  `tfsdk:"rs_abits"`
 }

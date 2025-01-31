@@ -3,6 +3,6 @@
 package types
 
 type MeshTimeoutItemFrom struct {
-	Default   *MeshTimeoutItemDefault    `tfsdk:"default" tfPlanOnly:"true"`
-	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
+	Default   *MeshTimeoutItemDefault    `tfsdk:"default"`
+	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
 }

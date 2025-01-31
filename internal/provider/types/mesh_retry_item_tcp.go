@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshRetryItemTCP struct {
-	MaxConnectAttempt types.Int64 `tfsdk:"max_connect_attempt" tfPlanOnly:"true"`
+	MaxConnectAttempt types.Int64 `tfsdk:"max_connect_attempt"`
 }

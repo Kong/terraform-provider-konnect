@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type BackOff struct {
-	BaseInterval types.String `tfsdk:"base_interval" tfPlanOnly:"true"`
-	MaxInterval  types.String `tfsdk:"max_interval" tfPlanOnly:"true"`
+	BaseInterval types.String `tfsdk:"base_interval"`
+	MaxInterval  types.String `tfsdk:"max_interval"`
 }

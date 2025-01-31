@@ -40,14 +40,14 @@ type MeshRetryResource struct {
 // MeshRetryResourceModel describes the resource data model.
 type MeshRetryResourceModel struct {
 	CpID             types.String              `tfsdk:"cp_id"`
-	CreationTime     types.String              `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String   `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String              `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String              `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String              `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshRetryItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String              `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String            `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String              `tfsdk:"creation_time"`
+	Labels           map[string]types.String   `tfsdk:"labels"`
+	Mesh             types.String              `tfsdk:"mesh"`
+	ModificationTime types.String              `tfsdk:"modification_time"`
+	Name             types.String              `tfsdk:"name"`
+	Spec             tfTypes.MeshRetryItemSpec `tfsdk:"spec"`
+	Type             types.String              `tfsdk:"type"`
+	Warnings         []types.String            `tfsdk:"warnings"`
 }
 
 func (r *MeshRetryResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -71,7 +70,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -81,7 +79,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -96,11 +93,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -118,31 +113,26 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -152,13 +142,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -170,7 +158,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -178,25 +165,20 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"grpc": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"back_off": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"base_interval": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `BaseInterval is an amount of time which should be taken between retries.` + "\n" +
 																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.`,
 														},
 														"max_interval": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `MaxInterval is a maximal amount of time which will be taken between retries.` + "\n" +
 																`Default is 10 times the "BaseInterval".`,
@@ -206,29 +188,24 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`backoff strategy between retries.`,
 												},
 												"num_retries": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests. If not set, the default value is 1.`,
 												},
 												"per_try_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `PerTryTimeout is the maximum amount of time each retry attempt can take` + "\n" +
 														`before it times out. If not set, the global request timeout for the route` + "\n" +
 														`will be used. Setting this value to 0 will disable the per-try timeout.`,
 												},
 												"rate_limited_back_off": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"max_interval": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `MaxInterval is a maximal amount of time which will be taken between retries.`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -236,7 +213,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 																Attributes: map[string]schema.Attribute{
 																	"format": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `The format of the reset header. Not Null; must be one of ["Seconds", "UnixTimestamp"]`,
 																		Validators: []validator.String{
@@ -248,7 +224,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																		},
 																	},
 																	"name": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `The Name of the reset header. Not Null`,
 																		Validators: []validator.String{
@@ -269,7 +244,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`the upstream returns one of the headers configured.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													Description: `RetryOn is a list of conditions which will cause a retry.`,
@@ -278,21 +252,17 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 											Description: `GRPC defines a configuration of retries for GRPC traffic`,
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"back_off": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"base_interval": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `BaseInterval is an amount of time which should be taken between retries.` + "\n" +
 																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.`,
 														},
 														"max_interval": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `MaxInterval is a maximal amount of time which will be taken between retries.` + "\n" +
 																`Default is 10 times the "BaseInterval".`,
@@ -302,7 +272,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`backoff strategy between retries.`,
 												},
 												"host_selection": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -310,7 +279,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														},
 														Attributes: map[string]schema.Attribute{
 															"predicate": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Type is requested predicate mode. Not Null; must be one of ["OmitPreviousHosts", "OmitHostsWithTags", "OmitPreviousPriorities"]`,
 																Validators: []validator.String{
@@ -323,14 +291,12 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"tags": schema.MapAttribute{
-																Computed:    true,
 																Optional:    true,
 																ElementType: types.StringType,
 																MarkdownDescription: `Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is` + "\n" +
 																	`OmitHostsWithTags`,
 															},
 															"update_frequency": schema.Int64Attribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.` + "\n" +
 																	`Used for OmitPreviousPriorities.`,
@@ -341,20 +307,17 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`when requests are retried.`,
 												},
 												"host_selection_max_attempts": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `HostSelectionMaxAttempts is the maximum number of times host selection will be` + "\n" +
 														`reattempted before giving up, at which point the host that was last selected will` + "\n" +
 														`be routed to. If unspecified, this will default to retrying once.`,
 												},
 												"num_retries": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `NumRetries is the number of attempts that will be made on failed (and` + "\n" +
 														`retriable) requests.  If not set, the default value is 1.`,
 												},
 												"per_try_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `PerTryTimeout is the amount of time after which retry attempt should time out.` + "\n" +
 														`If left unspecified, the global route timeout for the request will be used.` + "\n" +
@@ -363,16 +326,13 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`Setting this timeout to 0 will disable it.`,
 												},
 												"rate_limited_back_off": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"max_interval": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `MaxInterval is a maximal amount of time which will be taken between retries.`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -380,7 +340,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 																Attributes: map[string]schema.Attribute{
 																	"format": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `The format of the reset header. Not Null; must be one of ["Seconds", "UnixTimestamp"]`,
 																		Validators: []validator.String{
@@ -392,7 +351,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																		},
 																	},
 																	"name": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `The Name of the reset header. Not Null`,
 																		Validators: []validator.String{
@@ -413,7 +371,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`when the upstream returns one of the headers configured.`,
 												},
 												"retriable_request_headers": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -421,7 +378,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														},
 														Attributes: map[string]schema.Attribute{
 															"name": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Name is the name of the HTTP Header to be matched. Name MUST be lower case` + "\n" +
 																	`as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).` + "\n" +
@@ -433,7 +389,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"type": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
@@ -447,7 +402,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value is the value of HTTP Header to be matched.`,
 															},
@@ -457,7 +411,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`for retries to be attempted.`,
 												},
 												"retriable_response_headers": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -465,7 +418,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														},
 														Attributes: map[string]schema.Attribute{
 															"name": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Name is the name of the HTTP Header to be matched. Name MUST be lower case` + "\n" +
 																	`as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).` + "\n" +
@@ -477,7 +429,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"type": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
@@ -491,7 +442,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Value is the value of HTTP Header to be matched.`,
 															},
@@ -502,7 +452,6 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`matches the upstream response headers.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													MarkdownDescription: `RetryOn is a list of conditions which will cause a retry. Available values are:` + "\n" +
@@ -516,11 +465,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 											Description: `HTTP defines a configuration of retries for HTTP traffic`,
 										},
 										"tcp": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connect_attempt": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxConnectAttempt is a maximal amount of TCP connection attempts` + "\n" +
 														`which will be made before giving up`,
@@ -533,11 +480,9 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -555,31 +500,26 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -589,13 +529,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

@@ -3,5 +3,5 @@
 package types
 
 type Rules struct {
-	Default *MeshTimeoutItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	Default *MeshTimeoutItemDefault `tfsdk:"default"`
 }

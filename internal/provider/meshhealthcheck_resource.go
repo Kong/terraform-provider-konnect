@@ -41,14 +41,14 @@ type MeshHealthCheckResource struct {
 // MeshHealthCheckResourceModel describes the resource data model.
 type MeshHealthCheckResourceModel struct {
 	CpID             types.String                    `tfsdk:"cp_id"`
-	CreationTime     types.String                    `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String         `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                    `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                    `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                    `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshHealthCheckItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                    `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                  `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                    `tfsdk:"creation_time"`
+	Labels           map[string]types.String         `tfsdk:"labels"`
+	Mesh             types.String                    `tfsdk:"mesh"`
+	ModificationTime types.String                    `tfsdk:"modification_time"`
+	Name             types.String                    `tfsdk:"name"`
+	Spec             tfTypes.MeshHealthCheckItemSpec `tfsdk:"spec"`
+	Type             types.String                    `tfsdk:"type"`
+	Warnings         []types.String                  `tfsdk:"warnings"`
 }
 
 func (r *MeshHealthCheckResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -72,7 +71,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -82,7 +80,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -97,11 +94,9 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -119,31 +114,26 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -153,13 +143,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -171,7 +159,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -179,24 +166,20 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"always_log_health_check_failures": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `If set to true, health check failure events will always be logged. If set` + "\n" +
 												`to false, only the initial health check failure event will be logged. The` + "\n" +
 												`default value is false.`,
 										},
 										"event_log_path": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Specifies the path to the file where Envoy can log health check events.` + "\n" +
 												`If empty, no event log will be written.`,
 										},
 										"fail_traffic_on_panic": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `If set to true, Envoy will not consider any hosts when the cluster is in` + "\n" +
 												`'panic mode'. Instead, the cluster will fail all requests as if all hosts` + "\n" +
@@ -204,22 +187,18 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`service.`,
 										},
 										"grpc": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"authority": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The value of the :authority header in the gRPC health check request,` + "\n" +
 														`by default name of the cluster this health check is associated with`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `If true the GrpcHealthCheck is disabled`,
 												},
 												"service_name": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Service name parameter which will be sent to gRPC service`,
 												},
@@ -228,11 +207,9 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`the health check will be made for is a gRPC service.`,
 										},
 										"healthy_panic_threshold": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"integer": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													Validators: []validator.Int64{
 														int64validator.ConflictsWith(path.Expressions{
@@ -241,7 +218,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 													},
 												},
 												"str": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													Validators: []validator.String{
 														stringvalidator.ConflictsWith(path.Expressions{
@@ -255,37 +231,30 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`Either int or decimal represented as string.`,
 										},
 										"healthy_threshold": schema.Int64Attribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Number of consecutive healthy checks before considering a host healthy.`,
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `If true the HttpHealthCheck is disabled`,
 												},
 												"expected_statuses": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.Int64Type,
 													Description: `List of HTTP response statuses which are considered healthy`,
 												},
 												"path": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The HTTP path which will be requested during the health check` + "\n" +
 														`(ie. /health)`,
 												},
 												"request_headers_to_add": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"add": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -293,7 +262,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 																},
 																Attributes: map[string]schema.Attribute{
 																	"name": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -303,7 +271,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 																		},
 																	},
 																	"value": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -317,7 +284,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 															},
 														},
 														"set": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -325,7 +291,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 																},
 																Attributes: map[string]schema.Attribute{
 																	"name": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -335,7 +300,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 																		},
 																	},
 																	"value": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -357,25 +321,21 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`the health check will be made for is an HTTP service.`,
 										},
 										"initial_jitter": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `If specified, Envoy will start health checking after a random time in` + "\n" +
 												`ms between 0 and initialJitter. This only applies to the first health` + "\n" +
 												`check.`,
 										},
 										"interval": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Interval between consecutive health checks.`,
 										},
 										"interval_jitter": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `If specified, during every interval Envoy will add IntervalJitter to the` + "\n" +
 												`wait time.`,
 										},
 										"interval_jitter_percent": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `If specified, during every interval Envoy will add IntervalJitter *` + "\n" +
 												`IntervalJitterPercent / 100 to the wait time. If IntervalJitter and` + "\n" +
@@ -383,7 +343,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`increase the wait time.`,
 										},
 										"no_traffic_interval": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `The "no traffic interval" is a special health check interval that is used` + "\n" +
 												`when a cluster has never had traffic routed to it. This lower interval` + "\n" +
@@ -395,21 +354,17 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`traffic interval" is 60 seconds.`,
 										},
 										"reuse_connection": schema.BoolAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Reuse health check connection between health checks. Default is true.`,
 										},
 										"tcp": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `If true the TcpHealthCheck is disabled`,
 												},
 												"receive": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													MarkdownDescription: `List of Base64 encoded blocks of strings expected as a response. When checking the response,` + "\n" +
@@ -418,7 +373,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 														`If not provided or empty, checks will be performed as "connect only" and be marked as successful when TCP connection is successfully established.`,
 												},
 												"send": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Base64 encoded content of the message which will be sent during the health check to the target`,
 												},
@@ -427,12 +381,10 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`expected response during the health check`,
 										},
 										"timeout": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Maximum time to wait for a health check response.`,
 										},
 										"unhealthy_threshold": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Number of consecutive unhealthy checks before considering a host` + "\n" +
 												`unhealthy.`,
@@ -442,11 +394,9 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -464,31 +414,26 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -498,13 +443,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

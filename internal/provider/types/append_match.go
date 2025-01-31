@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AppendMatch struct {
-	Port     types.Int64  `tfsdk:"port" tfPlanOnly:"true"`
-	Protocol types.String `tfsdk:"protocol" tfPlanOnly:"true"`
-	Type     types.String `tfsdk:"type" tfPlanOnly:"true"`
-	Value    types.String `tfsdk:"value" tfPlanOnly:"true"`
+	Port     types.Int64  `tfsdk:"port"`
+	Protocol types.String `tfsdk:"protocol"`
+	Type     types.String `tfsdk:"type"`
+	Value    types.String `tfsdk:"value"`
 }

@@ -5,16 +5,16 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshItem struct {
-	Constraints                 *Constraints            `tfsdk:"constraints" tfPlanOnly:"true"`
-	Labels                      map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Logging                     *Logging                `tfsdk:"logging" tfPlanOnly:"true"`
-	MeshServices                *MeshServices           `tfsdk:"mesh_services" tfPlanOnly:"true"`
-	Metrics                     *Metrics                `tfsdk:"metrics" tfPlanOnly:"true"`
-	Mtls                        *Mtls                   `tfsdk:"mtls" tfPlanOnly:"true"`
-	Name                        types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Networking                  *Networking             `tfsdk:"networking" tfPlanOnly:"true"`
-	Routing                     *Routing                `tfsdk:"routing" tfPlanOnly:"true"`
-	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies" tfPlanOnly:"true"`
-	Tracing                     *Tracing                `tfsdk:"tracing" tfPlanOnly:"true"`
-	Type                        types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	Constraints                 *Constraints            `tfsdk:"constraints"`
+	Labels                      map[string]types.String `tfsdk:"labels"`
+	Logging                     *Logging                `tfsdk:"logging"`
+	MeshServices                *MeshServices           `tfsdk:"mesh_services"`
+	Metrics                     *Metrics                `tfsdk:"metrics"`
+	Mtls                        *Mtls                   `tfsdk:"mtls"`
+	Name                        types.String            `tfsdk:"name"`
+	Networking                  *Networking             `tfsdk:"networking"`
+	Routing                     *Routing                `tfsdk:"routing"`
+	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies"`
+	Tracing                     *Tracing                `tfsdk:"tracing"`
+	Type                        types.String            `tfsdk:"type"`
 }

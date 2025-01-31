@@ -3,5 +3,5 @@
 package types
 
 type Networking struct {
-	Outbound *Outbound `tfsdk:"outbound" tfPlanOnly:"true"`
+	Outbound *Outbound `tfsdk:"outbound"`
 }

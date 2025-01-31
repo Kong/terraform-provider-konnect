@@ -41,15 +41,15 @@ type MeshServiceResource struct {
 // MeshServiceResourceModel describes the resource data model.
 type MeshServiceResourceModel struct {
 	CpID             types.String                   `tfsdk:"cp_id"`
-	CreationTime     types.String                   `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String        `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                   `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                   `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                   `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshServiceItemSpec    `tfsdk:"spec" tfPlanOnly:"true"`
-	Status           *tfTypes.MeshServiceItemStatus `tfsdk:"status" tfPlanOnly:"true"`
-	Type             types.String                   `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                 `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                   `tfsdk:"creation_time"`
+	Labels           map[string]types.String        `tfsdk:"labels"`
+	Mesh             types.String                   `tfsdk:"mesh"`
+	ModificationTime types.String                   `tfsdk:"modification_time"`
+	Name             types.String                   `tfsdk:"name"`
+	Spec             tfTypes.MeshServiceItemSpec    `tfsdk:"spec"`
+	Status           *tfTypes.MeshServiceItemStatus `tfsdk:"status"`
+	Type             types.String                   `tfsdk:"type"`
+	Warnings         []types.String                 `tfsdk:"warnings"`
 }
 
 func (r *MeshServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -73,7 +72,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -83,7 +81,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -98,7 +95,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"identities": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -106,7 +102,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"type": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null; must be "ServiceTag"`,
 									Validators: []validator.String{
@@ -117,7 +112,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 									},
 								},
 								"value": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.String{
@@ -128,7 +122,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"ports": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -136,16 +129,13 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"app_protocol": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Protocol identifies a protocol supported by a service.`,
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 								"port": schema.Int64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.Int64{
@@ -153,11 +143,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 									},
 								},
 								"target_port": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"integer": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.Int64{
 												int64validator.ConflictsWith(path.Expressions{
@@ -166,7 +154,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"str": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.String{
 												stringvalidator.ConflictsWith(path.Expressions{
@@ -180,28 +167,23 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"selector": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"dataplane_ref": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"name": schema.StringAttribute{
-										Computed: true,
 										Optional: true,
 									},
 								},
 							},
 							"dataplane_tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 							},
 						},
 					},
 					"state": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 						MarkdownDescription: `State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.` + "\n" +
 							`It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.` + "\n" +
@@ -217,11 +199,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Spec is the specification of the Kuma MeshService resource.`,
 			},
 			"status": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -229,15 +209,12 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostname": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -247,28 +224,23 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 									},
 								},
 								"origin": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 							},
 						},
 					},
 					"dataplane_proxies": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"connected": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Number of data plane proxies connected to the zone control plane`,
 							},
 							"healthy": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Number of data plane proxies with all healthy inbounds selected by this MeshService.`,
 							},
 							"total": schema.Int64Attribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Total number of data plane proxies.`,
 							},
@@ -276,7 +248,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `Data plane proxies statistics selected by this MeshService.`,
 					},
 					"hostname_generators": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -284,7 +255,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"conditions": schema.ListNestedAttribute{
-									Computed: true,
 									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
@@ -292,7 +262,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 										},
 										Attributes: map[string]schema.Attribute{
 											"message": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `message is a human readable message indicating details about the transition.` + "\n" +
 													`This may be an empty string.` + "\n" +
@@ -303,7 +272,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 												},
 											},
 											"reason": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `reason contains a programmatic identifier indicating the reason for the condition's last transition.` + "\n" +
 													`Producers of specific condition types may define expected values and meanings for this field,` + "\n" +
@@ -318,7 +286,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 												},
 											},
 											"status": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]`,
 												Validators: []validator.String{
@@ -331,7 +298,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 												},
 											},
 											"type": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `type of condition in CamelCase or in foo.example.com/CamelCase. Not Null`,
 												Validators: []validator.String{
@@ -345,11 +311,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 									Description: `Conditions is an array of hostname generator conditions.`,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -366,11 +330,9 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"tls": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"status": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `must be one of ["Ready", "NotReady"]`,
 								Validators: []validator.String{
@@ -383,7 +345,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 						},
 					},
 					"vips": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -391,7 +352,6 @@ func (r *MeshServiceResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"ip": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 							},

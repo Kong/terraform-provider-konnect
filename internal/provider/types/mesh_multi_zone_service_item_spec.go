@@ -3,6 +3,6 @@
 package types
 
 type MeshMultiZoneServiceItemSpec struct {
-	Ports    []Ports                          `tfsdk:"ports" tfPlanOnly:"true"`
-	Selector MeshMultiZoneServiceItemSelector `tfsdk:"selector" tfPlanOnly:"true"`
+	Ports    []Ports                          `tfsdk:"ports"`
+	Selector MeshMultiZoneServiceItemSelector `tfsdk:"selector"`
 }

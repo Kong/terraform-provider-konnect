@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshAccessLogItemSpecTCP struct {
-	Address types.String `tfsdk:"address" tfPlanOnly:"true"`
-	Format  *Format      `tfsdk:"format" tfPlanOnly:"true"`
+	Address types.String `tfsdk:"address"`
+	Format  *Format      `tfsdk:"format"`
 }

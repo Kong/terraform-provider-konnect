@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RateLimitedBackOff struct {
-	MaxInterval  types.String   `tfsdk:"max_interval" tfPlanOnly:"true"`
-	ResetHeaders []ResetHeaders `tfsdk:"reset_headers" tfPlanOnly:"true"`
+	MaxInterval  types.String   `tfsdk:"max_interval"`
+	ResetHeaders []ResetHeaders `tfsdk:"reset_headers"`
 }

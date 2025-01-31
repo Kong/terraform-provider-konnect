@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshHealthCheckItemHTTP struct {
-	Disabled            types.Bool                          `tfsdk:"disabled" tfPlanOnly:"true"`
-	ExpectedStatuses    []types.Int64                       `tfsdk:"expected_statuses" tfPlanOnly:"true"`
-	Path                types.String                        `tfsdk:"path" tfPlanOnly:"true"`
-	RequestHeadersToAdd *MeshGlobalRateLimitItemSpecHeaders `tfsdk:"request_headers_to_add" tfPlanOnly:"true"`
+	Disabled            types.Bool                          `tfsdk:"disabled"`
+	ExpectedStatuses    []types.Int64                       `tfsdk:"expected_statuses"`
+	Path                types.String                        `tfsdk:"path"`
+	RequestHeadersToAdd *MeshGlobalRateLimitItemSpecHeaders `tfsdk:"request_headers_to_add"`
 }

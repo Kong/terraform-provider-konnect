@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AppendPolicies struct {
-	IgnoreDecision types.Bool `tfsdk:"ignore_decision" tfPlanOnly:"true"`
-	Rego           CaCert     `tfsdk:"rego" tfPlanOnly:"true"`
+	IgnoreDecision types.Bool `tfsdk:"ignore_decision"`
+	Rego           CaCert     `tfsdk:"rego"`
 }

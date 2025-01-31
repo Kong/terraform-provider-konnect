@@ -39,14 +39,14 @@ type MeshCircuitBreakerResource struct {
 // MeshCircuitBreakerResourceModel describes the resource data model.
 type MeshCircuitBreakerResourceModel struct {
 	CpID             types.String                       `tfsdk:"cp_id"`
-	CreationTime     types.String                       `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String            `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                       `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                       `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                       `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshCircuitBreakerItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                       `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                     `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                       `tfsdk:"creation_time"`
+	Labels           map[string]types.String            `tfsdk:"labels"`
+	Mesh             types.String                       `tfsdk:"mesh"`
+	ModificationTime types.String                       `tfsdk:"modification_time"`
+	Name             types.String                       `tfsdk:"name"`
+	Spec             tfTypes.MeshCircuitBreakerItemSpec `tfsdk:"spec"`
+	Type             types.String                       `tfsdk:"type"`
+	Warnings         []types.String                     `tfsdk:"warnings"`
 }
 
 func (r *MeshCircuitBreakerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -70,7 +69,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -80,7 +78,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -95,7 +92,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -103,41 +99,34 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_limits": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connection_pools": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of connection pools per cluster that are concurrently` + "\n" +
 														`supported at once. Set this for clusters which create a large number of` + "\n" +
 														`connection pools.`,
 												},
 												"max_connections": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of connections allowed to be made to the upstream` + "\n" +
 														`cluster.`,
 												},
 												"max_pending_requests": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of pending requests that are allowed to the upstream` + "\n" +
 														`cluster. This limit is applied as a connection limit for non-HTTP` + "\n" +
 														`traffic.`,
 												},
 												"max_requests": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of parallel requests that are allowed to be made` + "\n" +
 														`to the upstream cluster. This limit does not apply to non-HTTP traffic.`,
 												},
 												"max_retries": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of parallel retries that will be allowed to` + "\n" +
 														`the upstream cluster.`,
@@ -149,26 +138,21 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 												`circuit breaker ir open)`,
 										},
 										"outlier_detection": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"base_ejection_time": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The base time that a host is ejected for. The real time is equal to` + "\n" +
 														`the base time multiplied by the number of times the host has been` + "\n" +
 														`ejected.`,
 												},
 												"detectors": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"failure_percentage": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"minimum_hosts": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of hosts in a cluster in order to perform failure` + "\n" +
 																		`percentage-based ejection. If the total number of hosts in the cluster is` + "\n" +
@@ -176,7 +160,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`performed.`,
 																},
 																"request_volume": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																		`interval (as defined by the interval duration above) to perform failure` + "\n" +
@@ -185,7 +168,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`host.`,
 																},
 																"threshold": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The failure percentage to use when determining failure percentage-based` + "\n" +
 																		`outlier detection. If the failure percentage of a given host is greater` + "\n" +
@@ -208,11 +190,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`outlierDetection.detectors.failurePercentage.minimumHosts value.`,
 														},
 														"gateway_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive gateway failures (502, 503, 504 status codes)` + "\n" +
 																		`before a consecutive gateway failure ejection occurs.`,
@@ -228,11 +208,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`the http router.`,
 														},
 														"local_origin_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive locally originated failures before ejection` + "\n" +
 																		`occurs. Parameter takes effect only when splitExternalAndLocalErrors` + "\n" +
@@ -249,11 +227,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`tcp proxy.`,
 														},
 														"success_rate": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"minimum_hosts": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of hosts in a cluster that must have enough request volume to` + "\n" +
 																		`detect success rate outliers. If the number of hosts is less than this` + "\n" +
@@ -261,7 +237,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`for any host in the cluster.`,
 																},
 																"request_volume": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																		`interval (as defined by the interval duration configured in` + "\n" +
@@ -270,11 +245,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`detection via success rate statistics is not performed for that host.`,
 																},
 																"standard_deviation_factor": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"integer": schema.Int64Attribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.Int64{
 																				int64validator.ConflictsWith(path.Expressions{
@@ -283,7 +256,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																			},
 																		},
 																		"str": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.String{
 																				stringvalidator.ConflictsWith(path.Expressions{
@@ -318,11 +290,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`are counted and treated separately.`,
 														},
 														"total_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive server-side error responses (for HTTP traffic,` + "\n" +
 																		`5xx responses; for TCP traffic, connection failures; for Redis, failure` + "\n" +
@@ -345,25 +315,21 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													Description: `Contains configuration for supported outlier detectors`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
 												},
 												"interval": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
 														`both new ejections and hosts being returned to service.`,
 												},
 												"max_ejection_percent": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum % of an upstream cluster that can be ejected due to outlier` + "\n" +
 														`detection. Defaults to 10% but will eject at least one host regardless of` + "\n" +
 														`the value.`,
 												},
 												"split_external_and_local_errors": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines whether to distinguish local origin failures from external` + "\n" +
 														`errors. If set to true the following configuration parameters are taken` + "\n" +
@@ -382,11 +348,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 										`referenced in 'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -404,31 +368,26 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -438,13 +397,11 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -463,11 +420,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -485,31 +440,26 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -519,13 +469,11 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -537,7 +485,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 							`defined in place.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -545,41 +492,34 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_limits": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connection_pools": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of connection pools per cluster that are concurrently` + "\n" +
 														`supported at once. Set this for clusters which create a large number of` + "\n" +
 														`connection pools.`,
 												},
 												"max_connections": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of connections allowed to be made to the upstream` + "\n" +
 														`cluster.`,
 												},
 												"max_pending_requests": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of pending requests that are allowed to the upstream` + "\n" +
 														`cluster. This limit is applied as a connection limit for non-HTTP` + "\n" +
 														`traffic.`,
 												},
 												"max_requests": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of parallel requests that are allowed to be made` + "\n" +
 														`to the upstream cluster. This limit does not apply to non-HTTP traffic.`,
 												},
 												"max_retries": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum number of parallel retries that will be allowed to` + "\n" +
 														`the upstream cluster.`,
@@ -591,26 +531,21 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 												`circuit breaker ir open)`,
 										},
 										"outlier_detection": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"base_ejection_time": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The base time that a host is ejected for. The real time is equal to` + "\n" +
 														`the base time multiplied by the number of times the host has been` + "\n" +
 														`ejected.`,
 												},
 												"detectors": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"failure_percentage": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"minimum_hosts": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of hosts in a cluster in order to perform failure` + "\n" +
 																		`percentage-based ejection. If the total number of hosts in the cluster is` + "\n" +
@@ -618,7 +553,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`performed.`,
 																},
 																"request_volume": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																		`interval (as defined by the interval duration above) to perform failure` + "\n" +
@@ -627,7 +561,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`host.`,
 																},
 																"threshold": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The failure percentage to use when determining failure percentage-based` + "\n" +
 																		`outlier detection. If the failure percentage of a given host is greater` + "\n" +
@@ -650,11 +583,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`outlierDetection.detectors.failurePercentage.minimumHosts value.`,
 														},
 														"gateway_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive gateway failures (502, 503, 504 status codes)` + "\n" +
 																		`before a consecutive gateway failure ejection occurs.`,
@@ -670,11 +601,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`the http router.`,
 														},
 														"local_origin_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive locally originated failures before ejection` + "\n" +
 																		`occurs. Parameter takes effect only when splitExternalAndLocalErrors` + "\n" +
@@ -691,11 +620,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`tcp proxy.`,
 														},
 														"success_rate": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"minimum_hosts": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of hosts in a cluster that must have enough request volume to` + "\n" +
 																		`detect success rate outliers. If the number of hosts is less than this` + "\n" +
@@ -703,7 +630,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`for any host in the cluster.`,
 																},
 																"request_volume": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The minimum number of total requests that must be collected in one` + "\n" +
 																		`interval (as defined by the interval duration configured in` + "\n" +
@@ -712,11 +638,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																		`detection via success rate statistics is not performed for that host.`,
 																},
 																"standard_deviation_factor": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"integer": schema.Int64Attribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.Int64{
 																				int64validator.ConflictsWith(path.Expressions{
@@ -725,7 +649,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																			},
 																		},
 																		"str": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.String{
 																				stringvalidator.ConflictsWith(path.Expressions{
@@ -760,11 +683,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 																`are counted and treated separately.`,
 														},
 														"total_failures": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"consecutive": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `The number of consecutive server-side error responses (for HTTP traffic,` + "\n" +
 																		`5xx responses; for TCP traffic, connection failures; for Redis, failure` + "\n" +
@@ -787,25 +708,21 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													Description: `Contains configuration for supported outlier detectors`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
 												},
 												"interval": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
 														`both new ejections and hosts being returned to service.`,
 												},
 												"max_ejection_percent": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `The maximum % of an upstream cluster that can be ejected due to outlier` + "\n" +
 														`detection. Defaults to 10% but will eject at least one host regardless of` + "\n" +
 														`the value.`,
 												},
 												"split_external_and_local_errors": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines whether to distinguish local origin failures from external` + "\n" +
 														`errors. If set to true the following configuration parameters are taken` + "\n" +
@@ -824,11 +741,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 										`referenced in 'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -846,31 +761,26 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -880,13 +790,11 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

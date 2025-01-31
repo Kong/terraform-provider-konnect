@@ -166,10 +166,10 @@ Optional:
 <a id="nestedatt--spec--extension"></a>
 ### Nested Schema for `spec.extension`
 
-Optional:
+Required:
 
-- `config` (String) Config freeform configuration for the extension. Not Null; Parsed as JSON.
-- `type` (String) Type of the extension. Not Null
+- `config` (String) Config freeform configuration for the extension. Parsed as JSON.
+- `type` (String) Type of the extension.
 
 
 <a id="nestedatt--spec--tls"></a>

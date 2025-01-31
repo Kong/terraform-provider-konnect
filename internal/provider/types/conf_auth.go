@@ -3,5 +3,5 @@
 package types
 
 type ConfAuth struct {
-	AwsCredentials *AwsCredentials `tfsdk:"aws_credentials" tfPlanOnly:"true"`
+	AwsCredentials *AwsCredentials `tfsdk:"aws_credentials"`
 }

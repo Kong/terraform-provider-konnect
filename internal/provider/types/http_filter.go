@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type HTTPFilter struct {
-	JSONPatches []JSONPatches                `tfsdk:"json_patches" tfPlanOnly:"true"`
-	Match       *MeshProxyPatchItemSpecMatch `tfsdk:"match" tfPlanOnly:"true"`
-	Operation   types.String                 `tfsdk:"operation" tfPlanOnly:"true"`
-	Value       types.String                 `tfsdk:"value" tfPlanOnly:"true"`
+	JSONPatches []JSONPatches                `tfsdk:"json_patches"`
+	Match       *MeshProxyPatchItemSpecMatch `tfsdk:"match"`
+	Operation   types.String                 `tfsdk:"operation"`
+	Value       types.String                 `tfsdk:"value"`
 }

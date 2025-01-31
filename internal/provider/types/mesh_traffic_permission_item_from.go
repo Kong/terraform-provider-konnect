@@ -3,6 +3,6 @@
 package types
 
 type MeshTrafficPermissionItemFrom struct {
-	Default   *MeshTrafficPermissionItemDefault `tfsdk:"default" tfPlanOnly:"true"`
-	TargetRef MeshAccessLogItemTargetRef        `tfsdk:"target_ref" tfPlanOnly:"true"`
+	Default   *MeshTrafficPermissionItemDefault `tfsdk:"default"`
+	TargetRef MeshAccessLogItemTargetRef        `tfsdk:"target_ref"`
 }

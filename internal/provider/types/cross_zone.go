@@ -3,6 +3,6 @@
 package types
 
 type CrossZone struct {
-	Failover          []Failover         `tfsdk:"failover" tfPlanOnly:"true"`
-	FailoverThreshold *FailoverThreshold `tfsdk:"failover_threshold" tfPlanOnly:"true"`
+	Failover          []Failover         `tfsdk:"failover"`
+	FailoverThreshold *FailoverThreshold `tfsdk:"failover_threshold"`
 }

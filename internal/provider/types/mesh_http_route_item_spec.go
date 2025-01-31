@@ -3,6 +3,6 @@
 package types
 
 type MeshHTTPRouteItemSpec struct {
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
-	To        []MeshHTTPRouteItemTo       `tfsdk:"to" tfPlanOnly:"true"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
+	To        []MeshHTTPRouteItemTo       `tfsdk:"to"`
 }

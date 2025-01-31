@@ -38,14 +38,14 @@ type MeshOPAResource struct {
 // MeshOPAResourceModel describes the resource data model.
 type MeshOPAResourceModel struct {
 	CpID             types.String            `tfsdk:"cp_id"`
-	CreationTime     types.String            `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String            `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshOPAItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String            `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String            `tfsdk:"creation_time"`
+	Labels           map[string]types.String `tfsdk:"labels"`
+	Mesh             types.String            `tfsdk:"mesh"`
+	ModificationTime types.String            `tfsdk:"modification_time"`
+	Name             types.String            `tfsdk:"name"`
+	Spec             tfTypes.MeshOPAItemSpec `tfsdk:"spec"`
+	Type             types.String            `tfsdk:"type"`
+	Warnings         []types.String          `tfsdk:"warnings"`
 }
 
 func (r *MeshOPAResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,7 +61,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -69,7 +68,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -79,7 +77,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -94,25 +91,20 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"default": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"agent_config": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"inline": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Data source is inline bytes.`,
 									},
 									"inline_string": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Data source is inline string` + "`" + ``,
 									},
 									"secret": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Data source is a secret with given Secret key.`,
 									},
@@ -120,7 +112,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 								Description: `AgentConfig defines bootstrap OPA agent configuration.`,
 							},
 							"append_policies": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -128,26 +119,21 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 									},
 									Attributes: map[string]schema.Attribute{
 										"ignore_decision": schema.BoolAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `If true, then policy won't be taken into account when making a decision.`,
 										},
 										"rego": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"inline": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Data source is inline bytes.`,
 												},
 												"inline_string": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Data source is inline string` + "`" + ``,
 												},
 												"secret": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Data source is a secret with given Secret key.`,
 												},
@@ -162,11 +148,9 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 								Description: `Policies define OPA policies that will be applied on OPA Agent.`,
 							},
 							"auth_config": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"on_agent_failure": schema.StringAttribute{
-										Computed: true,
 										Optional: true,
 										MarkdownDescription: `OnAgentFailure either 'allow' or 'deny' (default to deny) whether` + "\n" +
 											`to allow requests when the authorization agent failed.` + "\n" +
@@ -179,11 +163,9 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 										},
 									},
 									"request_body": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"max_size": schema.Int64Attribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `MaxSize defines the maximum payload size sent to authorization agent. If the payload` + "\n" +
 													`is larger it will be truncated and there will be a header` + "\n" +
@@ -191,7 +173,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 													`sent to the agent.`,
 											},
 											"send_raw_body": schema.BoolAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `SendRawBody enable sending raw body instead of the body encoded into UTF-8`,
 											},
@@ -200,13 +181,11 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 											`authorization agent (if absent, the body is not sent).`,
 									},
 									"status_on_error": schema.Int64Attribute{
-										Computed: true,
 										Optional: true,
 										MarkdownDescription: `StatusOnError is the http status to return when there's a connection` + "\n" +
 											`failure between the dataplane and the authorization agent`,
 									},
 									"timeout": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Timeout for the single gRPC request from Envoy to OPA Agent.`,
 									},
@@ -216,11 +195,9 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 						},
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -238,31 +215,26 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -272,13 +244,11 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

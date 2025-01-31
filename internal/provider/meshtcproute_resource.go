@@ -39,14 +39,14 @@ type MeshTCPRouteResource struct {
 // MeshTCPRouteResourceModel describes the resource data model.
 type MeshTCPRouteResourceModel struct {
 	CpID             types.String                 `tfsdk:"cp_id"`
-	CreationTime     types.String                 `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String      `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                 `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                 `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                 `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshTCPRouteItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                 `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String               `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                 `tfsdk:"creation_time"`
+	Labels           map[string]types.String      `tfsdk:"labels"`
+	Mesh             types.String                 `tfsdk:"mesh"`
+	ModificationTime types.String                 `tfsdk:"modification_time"`
+	Name             types.String                 `tfsdk:"name"`
+	Spec             tfTypes.MeshTCPRouteItemSpec `tfsdk:"spec"`
+	Type             types.String                 `tfsdk:"type"`
+	Warnings         []types.String               `tfsdk:"warnings"`
 }
 
 func (r *MeshTCPRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -70,7 +69,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -80,7 +78,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -95,11 +92,9 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -117,31 +112,26 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -151,13 +141,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -169,7 +157,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							`defined in-place.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -177,7 +164,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							},
 							Attributes: map[string]schema.Attribute{
 								"rules": schema.ListNestedAttribute{
-									Computed: true,
 									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
@@ -185,11 +171,9 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 										},
 										Attributes: map[string]schema.Attribute{
 											"default": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"backend_refs": schema.ListNestedAttribute{
-														Computed: true,
 														Optional: true,
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
@@ -197,7 +181,6 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 															},
 															Attributes: map[string]schema.Attribute{
 																"kind": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 																	Validators: []validator.String{
@@ -215,36 +198,30 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																	},
 																},
 																"labels": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 																		`Name and Namespace can be used.`,
 																},
 																"mesh": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 																},
 																"name": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 																		`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 																},
 																"namespace": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																		`will be targeted.`,
 																},
 																"port": schema.Int64Attribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
 																"proxy_types": schema.ListAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -254,20 +231,17 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																	},
 																},
 																"section_name": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 																		`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 																},
 																"tags": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
 																		`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																},
 																"weight": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																},
 															},
@@ -295,11 +269,9 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 									},
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -317,31 +289,26 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -351,13 +318,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

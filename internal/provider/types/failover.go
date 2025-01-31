@@ -3,6 +3,6 @@
 package types
 
 type Failover struct {
-	From *MeshLoadBalancingStrategyItemFrom  `tfsdk:"from" tfPlanOnly:"true"`
-	To   MeshLoadBalancingStrategyItemSpecTo `tfsdk:"to" tfPlanOnly:"true"`
+	From *MeshLoadBalancingStrategyItemFrom  `tfsdk:"from"`
+	To   MeshLoadBalancingStrategyItemSpecTo `tfsdk:"to"`
 }

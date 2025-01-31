@@ -3,7 +3,7 @@
 package types
 
 type Profiles struct {
-	AppendProfiles []AppendProfiles `tfsdk:"append_profiles" tfPlanOnly:"true"`
-	Exclude        []Exclude        `tfsdk:"exclude" tfPlanOnly:"true"`
-	Include        []Exclude        `tfsdk:"include" tfPlanOnly:"true"`
+	AppendProfiles []AppendProfiles `tfsdk:"append_profiles"`
+	Exclude        []Exclude        `tfsdk:"exclude"`
+	Include        []Exclude        `tfsdk:"include"`
 }

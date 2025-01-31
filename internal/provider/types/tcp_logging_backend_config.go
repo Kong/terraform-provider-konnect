@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type TCPLoggingBackendConfig struct {
-	Address types.String `tfsdk:"address" tfPlanOnly:"true"`
+	Address types.String `tfsdk:"address"`
 }

@@ -41,15 +41,15 @@ type MeshExternalServiceResource struct {
 // MeshExternalServiceResourceModel describes the resource data model.
 type MeshExternalServiceResourceModel struct {
 	CpID             types.String                        `tfsdk:"cp_id"`
-	CreationTime     types.String                        `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String             `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                        `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                        `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                        `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshExternalServiceItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Status           *tfTypes.Status                     `tfsdk:"status" tfPlanOnly:"true"`
-	Type             types.String                        `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                      `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                        `tfsdk:"creation_time"`
+	Labels           map[string]types.String             `tfsdk:"labels"`
+	Mesh             types.String                        `tfsdk:"mesh"`
+	ModificationTime types.String                        `tfsdk:"modification_time"`
+	Name             types.String                        `tfsdk:"name"`
+	Spec             tfTypes.MeshExternalServiceItemSpec `tfsdk:"spec"`
+	Status           *tfTypes.Status                     `tfsdk:"status"`
+	Type             types.String                        `tfsdk:"type"`
+	Warnings         []types.String                      `tfsdk:"warnings"`
 }
 
 func (r *MeshExternalServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -73,7 +72,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -83,7 +81,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -98,7 +95,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"endpoints": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -106,7 +102,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 							},
 							Attributes: map[string]schema.Attribute{
 								"address": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Address defines an address to which a user want to send a request. Is possible to provide ` + "`" + `domain` + "`" + `, ` + "`" + `ip` + "`" + `. Not Null`,
 									Validators: []validator.String{
@@ -115,7 +110,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									},
 								},
 								"port": schema.Int64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Port of the endpoint. Not Null`,
 									Validators: []validator.Int64{
@@ -128,25 +122,18 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Description: `Endpoints defines a list of destinations to send traffic to.`,
 					},
 					"extension": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Config freeform configuration for the extension. Not Null; Parsed as JSON.`,
+								Required:    true,
+								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
 								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
 									validators.IsValidJSON(),
 								},
 							},
 							"type": schema.StringAttribute{
-								Computed:    true,
-								Optional:    true,
-								Description: `Type of the extension. Not Null`,
-								Validators: []validator.String{
-									speakeasy_stringvalidators.NotNull(),
-								},
+								Required:    true,
+								Description: `Type of the extension.`,
 							},
 						},
 						Description: `Extension struct for a plugin configuration, in the presence of an extension ` + "`" + `endpoints` + "`" + ` and ` + "`" + `tls` + "`" + ` are not required anymore - it's up to the extension to validate them independently.`,
@@ -162,7 +149,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"protocol": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. must be one of ["tcp", "grpc", "http", "http2"]`,
 								Validators: []validator.String{
@@ -175,7 +161,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"type": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Type of the match, only ` + "`" + `HostnameGenerator` + "`" + ` is available at the moment. must be "HostnameGenerator"`,
 								Validators: []validator.String{
@@ -188,40 +173,32 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Description: `Match defines traffic that should be routed through the sidecar.`,
 					},
 					"tls": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"allow_renegotiation": schema.BoolAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `AllowRenegotiation defines if TLS sessions will allow renegotiation.` + "\n" +
 									`Setting this to true is not recommended for security reasons.`,
 							},
 							"enabled": schema.BoolAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Enabled defines if proxy should originate TLS.`,
 							},
 							"verification": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"ca_cert": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline bytes.`,
 											},
 											"inline_string": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline string` + "`" + ``,
 											},
 											"secret": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is a secret with given Secret key.`,
 											},
@@ -229,21 +206,17 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Description: `CaCert defines a certificate of CA.`,
 									},
 									"client_cert": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline bytes.`,
 											},
 											"inline_string": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline string` + "`" + ``,
 											},
 											"secret": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is a secret with given Secret key.`,
 											},
@@ -251,21 +224,17 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Description: `ClientCert defines a certificate of a client.`,
 									},
 									"client_key": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"inline": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline bytes.`,
 											},
 											"inline_string": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is inline string` + "`" + ``,
 											},
 											"secret": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `Data source is a secret with given Secret key.`,
 											},
@@ -273,7 +242,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Description: `ClientKey defines a client private key.`,
 									},
 									"mode": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]`,
 										Validators: []validator.String{
@@ -286,12 +254,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										},
 									},
 									"server_name": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `ServerName overrides the default Server Name Indicator set by Kuma.`,
 									},
 									"subject_alt_names": schema.ListNestedAttribute{
-										Computed: true,
 										Optional: true,
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
@@ -299,7 +265,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 											},
 											Attributes: map[string]schema.Attribute{
 												"type": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. must be one of ["Exact", "Prefix"]`,
 													Validators: []validator.String{
@@ -310,7 +275,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 													},
 												},
 												"value": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Value to match. Not Null`,
 													Validators: []validator.String{
@@ -325,11 +289,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								Description: `Verification section for providing TLS verification details.`,
 							},
 							"version": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"max": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
@@ -343,7 +305,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										},
 									},
 									"min": schema.StringAttribute{
-										Computed:    true,
 										Optional:    true,
 										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
@@ -366,11 +327,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `Spec is the specification of the Kuma MeshExternalService resource.`,
 			},
 			"status": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -378,15 +337,12 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostname": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -396,7 +352,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									},
 								},
 								"origin": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 							},
@@ -404,7 +359,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Description: `Addresses section for generated domains`,
 					},
 					"hostname_generators": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -412,7 +366,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 							},
 							Attributes: map[string]schema.Attribute{
 								"conditions": schema.ListNestedAttribute{
-									Computed: true,
 									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
@@ -420,7 +373,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										},
 										Attributes: map[string]schema.Attribute{
 											"message": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `message is a human readable message indicating details about the transition.` + "\n" +
 													`This may be an empty string.` + "\n" +
@@ -431,7 +383,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 												},
 											},
 											"reason": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `reason contains a programmatic identifier indicating the reason for the condition's last transition.` + "\n" +
 													`Producers of specific condition types may define expected values and meanings for this field,` + "\n" +
@@ -446,7 +397,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 												},
 											},
 											"status": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]`,
 												Validators: []validator.String{
@@ -459,7 +409,6 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 												},
 											},
 											"type": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `type of condition in CamelCase or in foo.example.com/CamelCase. Not Null`,
 												Validators: []validator.String{
@@ -473,11 +422,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									Description: `Conditions is an array of hostname generator conditions.`,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -494,11 +441,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						},
 					},
 					"vip": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"ip": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Value allocated IP for a provided domain with ` + "`" + `HostnameGenerator` + "`" + ` type in a match section.`,
 							},

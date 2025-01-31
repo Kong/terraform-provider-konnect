@@ -259,7 +259,7 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(resp *shared
 					if listenersItem.TLS.Options == nil {
 						listeners1.TLS.Options = nil
 					} else {
-						listeners1.TLS.Options = &tfTypes.Metadata{}
+						listeners1.TLS.Options = &tfTypes.MeshGatewayItemOptions{}
 					}
 				}
 				if listenersCount+1 > len(r.Conf.Listeners) {

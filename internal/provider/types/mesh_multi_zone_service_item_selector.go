@@ -3,5 +3,5 @@
 package types
 
 type MeshMultiZoneServiceItemSelector struct {
-	MeshService MeshMultiZoneServiceItemMeshService `tfsdk:"mesh_service" tfPlanOnly:"true"`
+	MeshService MeshMultiZoneServiceItemMeshService `tfsdk:"mesh_service"`
 }

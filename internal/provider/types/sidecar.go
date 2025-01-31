@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Sidecar struct {
-	IncludeUnused types.Bool `tfsdk:"include_unused" tfPlanOnly:"true"`
-	Profiles      *Profiles  `tfsdk:"profiles" tfPlanOnly:"true"`
+	IncludeUnused types.Bool `tfsdk:"include_unused"`
+	Profiles      *Profiles  `tfsdk:"profiles"`
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Cookie struct {
-	Name types.String `tfsdk:"name" tfPlanOnly:"true"`
-	Path types.String `tfsdk:"path" tfPlanOnly:"true"`
-	TTL  types.String `tfsdk:"ttl" tfPlanOnly:"true"`
+	Name types.String `tfsdk:"name"`
+	Path types.String `tfsdk:"path"`
+	TTL  types.String `tfsdk:"ttl"`
 }

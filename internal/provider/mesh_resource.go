@@ -39,20 +39,20 @@ type MeshResource struct {
 
 // MeshResourceModel describes the resource data model.
 type MeshResourceModel struct {
-	Constraints                 *tfTypes.Constraints    `tfsdk:"constraints" tfPlanOnly:"true"`
+	Constraints                 *tfTypes.Constraints    `tfsdk:"constraints"`
 	CpID                        types.String            `tfsdk:"cp_id"`
-	Labels                      map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Logging                     *tfTypes.Logging        `tfsdk:"logging" tfPlanOnly:"true"`
-	MeshServices                *tfTypes.MeshServices   `tfsdk:"mesh_services" tfPlanOnly:"true"`
-	Metrics                     *tfTypes.Metrics        `tfsdk:"metrics" tfPlanOnly:"true"`
-	Mtls                        *tfTypes.Mtls           `tfsdk:"mtls" tfPlanOnly:"true"`
-	Name                        types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Networking                  *tfTypes.Networking     `tfsdk:"networking" tfPlanOnly:"true"`
-	Routing                     *tfTypes.Routing        `tfsdk:"routing" tfPlanOnly:"true"`
-	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies" tfPlanOnly:"true"`
-	Tracing                     *tfTypes.Tracing        `tfsdk:"tracing" tfPlanOnly:"true"`
-	Type                        types.String            `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings                    []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
+	Labels                      map[string]types.String `tfsdk:"labels"`
+	Logging                     *tfTypes.Logging        `tfsdk:"logging"`
+	MeshServices                *tfTypes.MeshServices   `tfsdk:"mesh_services"`
+	Metrics                     *tfTypes.Metrics        `tfsdk:"metrics"`
+	Mtls                        *tfTypes.Mtls           `tfsdk:"mtls"`
+	Name                        types.String            `tfsdk:"name"`
+	Networking                  *tfTypes.Networking     `tfsdk:"networking"`
+	Routing                     *tfTypes.Routing        `tfsdk:"routing"`
+	SkipCreatingInitialPolicies []types.String          `tfsdk:"skip_creating_initial_policies"`
+	Tracing                     *tfTypes.Tracing        `tfsdk:"tracing"`
+	Type                        types.String            `tfsdk:"type"`
+	Warnings                    []types.String          `tfsdk:"warnings"`
 }
 
 func (r *MeshResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,15 +64,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 		MarkdownDescription: "Mesh Resource",
 		Attributes: map[string]schema.Attribute{
 			"constraints": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"dataplane_proxy": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"requirements": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -80,7 +77,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 									Attributes: map[string]schema.Attribute{
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags defines set of required tags. You can specify '*' in value to` + "\n" +
@@ -94,7 +90,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									`requirements means that any proxy that is not explicitly denied can join.`,
 							},
 							"restrictions": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -102,7 +97,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 									Attributes: map[string]schema.Attribute{
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags defines set of required tags. You can specify '*' in value to` + "\n" +
@@ -127,16 +121,13 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 			},
 			"logging": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -144,15 +135,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 							Attributes: map[string]schema.Attribute{
 								"conf": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"file_logging_backend_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"path": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Path to a file that logs will be written to`,
 												},
@@ -164,11 +152,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"tcp_logging_backend_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"address": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Address to TCP service that will receive logs`,
 												},
@@ -182,19 +168,16 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 								},
 								"format": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Format of access logs. Placeholders available on` + "\n" +
 										`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log`,
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Name of the backend, can be then used in Mesh.logging.defaultBackend or in` + "\n" +
 										`TrafficLogging`,
 								},
 								"type": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Type of the backend (Kuma ships with 'tcp' and 'file')`,
 								},
@@ -203,7 +186,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `List of available logging backends`,
 					},
 					"default_backend": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Name of the default backend`,
 					},
@@ -212,15 +194,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					`+optional`,
 			},
 			"mesh_services": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"mode": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"integer": schema.Int64Attribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.Int64{
 									int64validator.ConflictsWith(path.Expressions{
@@ -229,7 +208,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 								},
 							},
 							"str": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								Validators: []validator.String{
 									stringvalidator.ConflictsWith(path.Expressions{
@@ -242,11 +220,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				},
 			},
 			"metrics": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -254,15 +230,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 							Attributes: map[string]schema.Attribute{
 								"conf": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"prometheus_metrics_backend_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aggregate": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -270,28 +243,23 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														},
 														Attributes: map[string]schema.Attribute{
 															"address": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Address on which a service expose HTTP endpoint with Prometheus metrics.`,
 															},
 															"enabled": schema.BoolAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `If false then the application won't be scrapped. If nil, then it is treated` + "\n" +
 																	`as true and kuma-dp scrapes metrics from the service.`,
 															},
 															"name": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Name which identify given configuration.`,
 															},
 															"path": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Path on which a service expose HTTP endpoint with Prometheus metrics.`,
 															},
 															"port": schema.Int64Attribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Port on which a service expose HTTP endpoint with Prometheus metrics.`,
 															},
@@ -301,17 +269,14 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`scrapped by kuma-dp.`,
 												},
 												"envoy": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"filter_regex": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `FilterRegex value that is going to be passed to Envoy for filtering` + "\n" +
 																`Envoy metrics.`,
 														},
 														"used_only": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `If true then return metrics that Envoy has updated (counters incremented` + "\n" +
 																`at least once, gauges changed at least once, and histograms added to at` + "\n" +
@@ -321,25 +286,21 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Description: `Configuration of Envoy's metrics.`,
 												},
 												"path": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Path on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
 														`metrics.`,
 												},
 												"port": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Port on which a dataplane should expose HTTP endpoint with Prometheus` + "\n" +
 														`metrics.`,
 												},
 												"skip_mtls": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `If true then endpoints for scraping metrics won't require mTLS even if mTLS` + "\n" +
 														`is enabled in Mesh. If nil, then it is treated as false.`,
 												},
 												"tags": schema.MapAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 													MarkdownDescription: `Tags associated with an application this dataplane is deployed next to,` + "\n" +
@@ -347,15 +308,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`` + "`" + `service` + "`" + ` tag is mandatory.`,
 												},
 												"tls": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"integer": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.Int64{
 																		int64validator.ConflictsWith(path.Expressions{
@@ -364,7 +322,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 																"str": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.String{
 																		stringvalidator.ConflictsWith(path.Expressions{
@@ -385,12 +342,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 								},
 								"name": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Name of the backend, can be then used in Mesh.metrics.enabledBackend`,
 								},
 								"type": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Type of the backend (Kuma ships with 'prometheus')`,
 								},
@@ -399,7 +354,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `List of available Metrics backends`,
 					},
 					"enabled_backend": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Name of the enabled backend`,
 					},
@@ -412,11 +366,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					`+optional`,
 			},
 			"mtls": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -424,27 +376,21 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 							Attributes: map[string]schema.Attribute{
 								"conf": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"acm_certificate_authority_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"arn": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 												},
 												"auth": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"aws_credentials": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"access_key": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
@@ -459,7 +405,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 																"access_key_secret": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"type": schema.StringAttribute{
@@ -478,7 +423,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"ca_cert": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
@@ -493,7 +437,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"common_name": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 												},
 											},
@@ -507,19 +450,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"builtin_certificate_authority_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"ca_cert": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"expiration": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 														},
 														"rs_abits": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 														},
 													},
@@ -535,11 +474,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"cert_manager_certificate_authority_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"ca_cert": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
@@ -554,28 +491,22 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"common_name": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 												},
 												"dns_names": schema.ListAttribute{
-													Computed:    true,
 													Optional:    true,
 													ElementType: types.StringType,
 												},
 												"issuer_ref": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"group": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 														},
 														"kind": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 														},
 														"name": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 														},
 													},
@@ -591,11 +522,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"provided_certificate_authority_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"cert": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
@@ -610,7 +539,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													},
 												},
 												"key": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"type": schema.StringAttribute{
@@ -635,7 +563,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"vault_certificate_authority_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"mode": schema.StringAttribute{
@@ -659,30 +586,24 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 								},
 								"dp_cert": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"request_timeout": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"nanos": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 												},
 												"seconds": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 												},
 											},
 											Description: `Timeout on request to CA for DP certificate generation and retrieval`,
 										},
 										"rotation": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"expiration": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Time after which generated certificate for Dataplane will expire`,
 												},
@@ -693,11 +614,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									Description: `Dataplane certificate settings`,
 								},
 								"mode": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"integer": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.Int64{
 												int64validator.ConflictsWith(path.Expressions{
@@ -706,7 +625,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"str": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.String{
 												stringvalidator.ConflictsWith(path.Expressions{
@@ -719,24 +637,19 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 										`encryption`,
 								},
 								"name": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Name of the backend`,
 								},
 								"root_chain": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"request_timeout": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"nanos": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 												},
 												"seconds": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 												},
 											},
@@ -746,7 +659,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 								},
 								"type": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Type of the backend. Has to be one of the loaded plugins (Kuma ships with` + "\n" +
 										`builtin and provided)`,
@@ -756,12 +668,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `List of available Certificate Authority backends`,
 					},
 					"enabled_backend": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Name of the enabled backend`,
 					},
 					"skip_validation": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `If enabled, skips CA validation.`,
 					},
@@ -774,15 +684,12 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `name of the Mesh`,
 			},
 			"networking": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"outbound": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"passthrough": schema.BoolAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Control the passthrough cluster`,
 							},
@@ -793,22 +700,18 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Networking settings of the mesh`,
 			},
 			"routing": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"default_forbid_mesh_external_service_access": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						MarkdownDescription: `If true, blocks traffic to MeshExternalServices.` + "\n" +
 							`Default: false`,
 					},
 					"locality_aware_load_balancing": schema.BoolAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Enable the Locality Aware Load Balancing`,
 					},
 					"zone_egress": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						MarkdownDescription: `Enable routing traffic to services in other zone or external services` + "\n" +
 							`through ZoneEgress. Default: false`,
@@ -817,7 +720,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Routing settings of the mesh`,
 			},
 			"skip_creating_initial_policies": schema.ListAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `List of policies to skip creating by default when the mesh is created.` + "\n" +
@@ -825,11 +727,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					`policies.`,
 			},
 			"tracing": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -837,25 +737,20 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							},
 							Attributes: map[string]schema.Attribute{
 								"conf": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"datadog_tracing_backend_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"address": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Address of datadog collector.`,
 												},
 												"port": schema.Int64Attribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Port of datadog collector`,
 												},
 												"split_service": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
 														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
@@ -871,30 +766,25 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											},
 										},
 										"zipkin_tracing_backend_config": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"api_version": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Version of the API. values: httpJson, httpJsonV1, httpProto. Default:` + "\n" +
 														`httpJson see` + "\n" +
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion`,
 												},
 												"shared_span_context": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
 														`context. Default: true.` + "\n" +
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig`,
 												},
 												"trace_id128bit": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Generate 128bit traces. Default: false`,
 												},
 												"url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Address of Zipkin collector.`,
 												},
@@ -908,19 +798,16 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									},
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Name of the backend, can be then used in Mesh.tracing.defaultBackend or in` + "\n" +
 										`TrafficTrace`,
 								},
 								"sampling": schema.NumberAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Percentage of traces that will be sent to the backend (range 0.0 - 100.0).` + "\n" +
 										`Empty value defaults to 100.0%`,
 								},
 								"type": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Type of the backend (Kuma ships with 'zipkin')`,
 								},
@@ -929,7 +816,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `List of available tracing backends`,
 					},
 					"default_backend": schema.StringAttribute{
-						Computed:    true,
 						Optional:    true,
 						Description: `Name of the default backend`,
 					},

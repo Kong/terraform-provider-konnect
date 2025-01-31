@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type TCP struct {
-	Disabled types.Bool     `tfsdk:"disabled" tfPlanOnly:"true"`
-	Receive  []types.String `tfsdk:"receive" tfPlanOnly:"true"`
-	Send     types.String   `tfsdk:"send" tfPlanOnly:"true"`
+	Disabled types.Bool     `tfsdk:"disabled"`
+	Receive  []types.String `tfsdk:"receive"`
+	Send     types.String   `tfsdk:"send"`
 }

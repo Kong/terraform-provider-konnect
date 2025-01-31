@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshHTTPRouteItem struct {
-	CreationTime     types.String            `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String            `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             MeshHTTPRouteItemSpec   `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	CreationTime     types.String            `tfsdk:"creation_time"`
+	Labels           map[string]types.String `tfsdk:"labels"`
+	Mesh             types.String            `tfsdk:"mesh"`
+	ModificationTime types.String            `tfsdk:"modification_time"`
+	Name             types.String            `tfsdk:"name"`
+	Spec             MeshHTTPRouteItemSpec   `tfsdk:"spec"`
+	Type             types.String            `tfsdk:"type"`
 }

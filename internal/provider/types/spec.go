@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Spec struct {
-	Selector *Selector    `tfsdk:"selector" tfPlanOnly:"true"`
-	Template types.String `tfsdk:"template" tfPlanOnly:"true"`
+	Selector *Selector    `tfsdk:"selector"`
+	Template types.String `tfsdk:"template"`
 }

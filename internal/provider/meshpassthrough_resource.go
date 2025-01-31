@@ -38,14 +38,14 @@ type MeshPassthroughResource struct {
 // MeshPassthroughResourceModel describes the resource data model.
 type MeshPassthroughResourceModel struct {
 	CpID             types.String                    `tfsdk:"cp_id"`
-	CreationTime     types.String                    `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String         `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                    `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                    `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                    `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshPassthroughItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                    `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                  `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                    `tfsdk:"creation_time"`
+	Labels           map[string]types.String         `tfsdk:"labels"`
+	Mesh             types.String                    `tfsdk:"mesh"`
+	ModificationTime types.String                    `tfsdk:"modification_time"`
+	Name             types.String                    `tfsdk:"name"`
+	Spec             tfTypes.MeshPassthroughItemSpec `tfsdk:"spec"`
+	Type             types.String                    `tfsdk:"type"`
+	Warnings         []types.String                  `tfsdk:"warnings"`
 }
 
 func (r *MeshPassthroughResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,7 +61,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -69,7 +68,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -79,7 +77,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -94,11 +91,9 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"default": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"append_match": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -106,12 +101,10 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 									},
 									Attributes: map[string]schema.Attribute{
 										"port": schema.Int64Attribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Port defines the port to which a user makes a request.`,
 										},
 										"protocol": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. must be one of ["tcp", "tls", "grpc", "http", "http2"]`,
 											Validators: []validator.String{
@@ -125,7 +118,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 											},
 										},
 										"type": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Type of the match, one of ` + "`" + `Domain` + "`" + `, ` + "`" + `IP` + "`" + ` or ` + "`" + `CIDR` + "`" + ` is available. must be one of ["Domain", "IP", "CIDR"]`,
 											Validators: []validator.String{
@@ -137,7 +129,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 											},
 										},
 										"value": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Value for the specified Type.`,
 										},
@@ -146,7 +137,6 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 								Description: `AppendMatch is a list of destinations that should be allowed through the sidecar.`,
 							},
 							"passthrough_mode": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Defines the passthrough behavior. Possible values: ` + "`" + `All` + "`" + `, ` + "`" + `None` + "`" + `, ` + "`" + `Matched` + "`" + `` + "\n" +
 									`When ` + "`" + `All` + "`" + ` or ` + "`" + `None` + "`" + ` ` + "`" + `appendMatch` + "`" + ` has no effect.` + "\n" +
@@ -163,11 +153,9 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 						Description: `MeshPassthrough configuration.`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -185,31 +173,26 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -219,13 +202,11 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

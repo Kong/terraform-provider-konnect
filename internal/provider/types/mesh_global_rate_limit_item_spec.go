@@ -3,7 +3,7 @@
 package types
 
 type MeshGlobalRateLimitItemSpec struct {
-	From      []MeshGlobalRateLimitItemFrom `tfsdk:"from" tfPlanOnly:"true"`
-	TargetRef *MeshAccessLogItemTargetRef   `tfsdk:"target_ref" tfPlanOnly:"true"`
-	To        []MeshGlobalRateLimitItemFrom `tfsdk:"to" tfPlanOnly:"true"`
+	From      []MeshGlobalRateLimitItemFrom `tfsdk:"from"`
+	TargetRef *MeshAccessLogItemTargetRef   `tfsdk:"target_ref"`
+	To        []MeshGlobalRateLimitItemFrom `tfsdk:"to"`
 }

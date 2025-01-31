@@ -42,14 +42,14 @@ type MeshHTTPRouteResource struct {
 // MeshHTTPRouteResourceModel describes the resource data model.
 type MeshHTTPRouteResourceModel struct {
 	CpID             types.String                  `tfsdk:"cp_id"`
-	CreationTime     types.String                  `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String       `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                  `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                  `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                  `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshHTTPRouteItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                  `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                  `tfsdk:"creation_time"`
+	Labels           map[string]types.String       `tfsdk:"labels"`
+	Mesh             types.String                  `tfsdk:"mesh"`
+	ModificationTime types.String                  `tfsdk:"modification_time"`
+	Name             types.String                  `tfsdk:"name"`
+	Spec             tfTypes.MeshHTTPRouteItemSpec `tfsdk:"spec"`
+	Type             types.String                  `tfsdk:"type"`
+	Warnings         []types.String                `tfsdk:"warnings"`
 }
 
 func (r *MeshHTTPRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -73,7 +72,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -83,7 +81,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -98,11 +95,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -120,31 +115,26 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -154,13 +144,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -172,7 +160,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -180,7 +167,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostnames": schema.ListAttribute{
-									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
 									MarkdownDescription: `Hostnames is only valid when targeting MeshGateway and limits the` + "\n" +
@@ -189,7 +175,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										`route attaches to.`,
 								},
 								"rules": schema.ListNestedAttribute{
-									Computed: true,
 									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
@@ -197,11 +182,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										},
 										Attributes: map[string]schema.Attribute{
 											"default": schema.SingleNestedAttribute{
-												Computed: true,
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"backend_refs": schema.ListNestedAttribute{
-														Computed: true,
 														Optional: true,
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
@@ -209,7 +192,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 															Attributes: map[string]schema.Attribute{
 																"kind": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 																	Validators: []validator.String{
@@ -227,36 +209,30 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"labels": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 																		`Name and Namespace can be used.`,
 																},
 																"mesh": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 																},
 																"name": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 																		`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 																},
 																"namespace": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																		`will be targeted.`,
 																},
 																"port": schema.Int64Attribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
 																"proxy_types": schema.ListAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -266,27 +242,23 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"section_name": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 																		`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 																},
 																"tags": schema.MapAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	ElementType: types.StringType,
 																	MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
 																		`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																},
 																"weight": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																},
 															},
 														},
 													},
 													"filters": schema.ListNestedAttribute{
-														Computed: true,
 														Optional: true,
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
@@ -294,11 +266,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 															Attributes: map[string]schema.Attribute{
 																"request_header_modifier": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
@@ -306,7 +276,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				},
 																				Attributes: map[string]schema.Attribute{
 																					"name": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -316,7 +285,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																						},
 																					},
 																					"value": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -330,7 +298,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			ElementType: types.StringType,
 																			Validators: []validator.List{
@@ -338,7 +305,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
@@ -346,7 +312,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				},
 																				Attributes: map[string]schema.Attribute{
 																					"name": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -356,7 +321,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																						},
 																					},
 																					"value": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -375,15 +339,12 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		`header value formatting, separating each value with a comma.`,
 																},
 																"request_mirror": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"backend_ref": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"kind": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 																					Validators: []validator.String{
@@ -401,36 +362,30 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					},
 																				},
 																				"labels": schema.MapAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					ElementType: types.StringType,
 																					MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 																						`Name and Namespace can be used.`,
 																				},
 																				"mesh": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 																				},
 																				"name": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 																						`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 																				},
 																				"namespace": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 																						`will be targeted.`,
 																				},
 																				"port": schema.Int64Attribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `Port is only supported when this ref refers to a real MeshService object`,
 																				},
 																				"proxy_types": schema.ListAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					ElementType: types.StringType,
 																					MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -440,20 +395,17 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					},
 																				},
 																				"section_name": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 																						`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 																				},
 																				"tags": schema.MapAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					ElementType: types.StringType,
 																					MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
 																						`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																				},
 																				"weight": schema.Int64Attribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																			},
@@ -463,11 +415,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"percentage": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"integer": schema.Int64Attribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.Int64{
 																						int64validator.ConflictsWith(path.Expressions{
@@ -476,7 +426,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					},
 																				},
 																				"str": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																					Validators: []validator.String{
 																						stringvalidator.ConflictsWith(path.Expressions{
@@ -491,11 +440,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"request_redirect": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"hostname": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																			MarkdownDescription: `PreciseHostname is the fully qualified domain name of a network host. This` + "\n" +
 																				`matches the RFC 1123 definition of a hostname with 1 notable exception that` + "\n" +
@@ -510,19 +457,15 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"path": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"replace_full_path": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"replace_prefix_match": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"type": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `Not Null; must be one of ["ReplaceFullPath", "ReplacePrefixMatch"]`,
 																					Validators: []validator.String{
@@ -539,7 +482,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				`When empty, the request path is used as-is.`,
 																		},
 																		"port": schema.Int64Attribute{
-																			Computed: true,
 																			Optional: true,
 																			MarkdownDescription: `Port is the port to be used in the value of the ` + "`" + `Location` + "`" + `` + "\n" +
 																				`header in the response.` + "\n" +
@@ -549,7 +491,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"scheme": schema.StringAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `must be one of ["http", "https"]`,
 																			Validators: []validator.String{
@@ -560,7 +501,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"status_code": schema.Int64Attribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `StatusCode is the HTTP status code to be used in response. must be one of ["301", "302", "303", "307", "308"]`,
 																			Validators: []validator.Int64{
@@ -576,11 +516,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"response_header_modifier": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
@@ -588,7 +526,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				},
 																				Attributes: map[string]schema.Attribute{
 																					"name": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -598,7 +535,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																						},
 																					},
 																					"value": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -612,7 +548,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			ElementType: types.StringType,
 																			Validators: []validator.List{
@@ -620,7 +555,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
@@ -628,7 +562,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																				},
 																				Attributes: map[string]schema.Attribute{
 																					"name": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -638,7 +571,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																						},
 																					},
 																					"value": schema.StringAttribute{
-																						Computed:    true,
 																						Optional:    true,
 																						Description: `Not Null`,
 																						Validators: []validator.String{
@@ -657,7 +589,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		`header value formatting, separating each value with a comma.`,
 																},
 																"type": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Not Null; must be one of ["RequestHeaderModifier", "ResponseHeaderModifier", "RequestRedirect", "URLRewrite", "RequestMirror"]`,
 																	Validators: []validator.String{
@@ -672,17 +603,14 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"url_rewrite": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"host_to_backend_hostname": schema.BoolAttribute{
-																			Computed: true,
 																			Optional: true,
 																			MarkdownDescription: `HostToBackendHostname rewrites the hostname to the hostname of the` + "\n" +
 																				`upstream host. This option is only available when targeting MeshGateways.`,
 																		},
 																		"hostname": schema.StringAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `Hostname is the value to be used to replace the host header value during forwarding.`,
 																			Validators: []validator.String{
@@ -691,19 +619,15 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"path": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"replace_full_path": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"replace_prefix_match": schema.StringAttribute{
-																					Computed: true,
 																					Optional: true,
 																				},
 																				"type": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `Not Null; must be one of ["ReplaceFullPath", "ReplacePrefixMatch"]`,
 																					Validators: []validator.String{
@@ -731,7 +655,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 											},
 											"matches": schema.ListNestedAttribute{
-												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -739,7 +662,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 													},
 													Attributes: map[string]schema.Attribute{
 														"headers": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -747,7 +669,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 																Attributes: map[string]schema.Attribute{
 																	"name": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		MarkdownDescription: `Name is the name of the HTTP Header to be matched. Name MUST be lower case` + "\n" +
 																			`as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).` + "\n" +
@@ -759,7 +680,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																		Validators: []validator.String{
@@ -773,7 +693,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"value": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Value is the value of HTTP Header to be matched.`,
 																	},
@@ -781,7 +700,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 														},
 														"method": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `must be one of ["CONNECT", "DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT", "TRACE"]`,
 															Validators: []validator.String{
@@ -799,11 +717,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 														},
 														"path": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"type": schema.StringAttribute{
-																	Computed:    true,
 																	Optional:    true,
 																	Description: `Not Null; must be one of ["Exact", "PathPrefix", "RegularExpression"]`,
 																	Validators: []validator.String{
@@ -816,7 +732,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	},
 																},
 																"value": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	MarkdownDescription: `Exact or prefix matches must be an absolute path. A prefix matches only` + "\n" +
 																		`if separated by a slash or the entire path.` + "\n" +
@@ -829,7 +744,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 														},
 														"query_params": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -837,7 +751,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																},
 																Attributes: map[string]schema.Attribute{
 																	"name": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -846,7 +759,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Exact", "RegularExpression"]`,
 																		Validators: []validator.String{
@@ -858,7 +770,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"value": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null`,
 																		Validators: []validator.String{
@@ -886,11 +797,9 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										`targetRef and the targetRef in this entry.`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -908,31 +817,26 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -942,13 +846,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

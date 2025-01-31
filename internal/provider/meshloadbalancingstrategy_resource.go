@@ -41,14 +41,14 @@ type MeshLoadBalancingStrategyResource struct {
 // MeshLoadBalancingStrategyResourceModel describes the resource data model.
 type MeshLoadBalancingStrategyResourceModel struct {
 	CpID             types.String                              `tfsdk:"cp_id"`
-	CreationTime     types.String                              `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String                   `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                              `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                              `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                              `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshLoadBalancingStrategyItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                              `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                            `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                              `tfsdk:"creation_time"`
+	Labels           map[string]types.String                   `tfsdk:"labels"`
+	Mesh             types.String                              `tfsdk:"mesh"`
+	ModificationTime types.String                              `tfsdk:"modification_time"`
+	Name             types.String                              `tfsdk:"name"`
+	Spec             tfTypes.MeshLoadBalancingStrategyItemSpec `tfsdk:"spec"`
+	Type             types.String                              `tfsdk:"type"`
+	Warnings         []types.String                            `tfsdk:"warnings"`
 }
 
 func (r *MeshLoadBalancingStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -72,7 +71,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -82,7 +80,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -97,11 +94,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -119,31 +114,26 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -153,13 +143,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -171,7 +159,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -179,23 +166,18 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"load_balancer": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"least_request": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"active_request_bias": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"integer": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.Int64{
 																		int64validator.ConflictsWith(path.Expressions{
@@ -204,7 +186,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																	},
 																},
 																"str": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.String{
 																		stringvalidator.ConflictsWith(path.Expressions{
@@ -220,7 +201,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`actively serving requests.`,
 														},
 														"choice_count": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `ChoiceCount is the number of random healthy hosts from which the host with` + "\n" +
 																`the fewest active requests will be chosen. Defaults to 2 so that Envoy performs` + "\n" +
@@ -234,11 +214,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`and picks the host which has the fewest active requests`,
 												},
 												"maglev": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"hash_policies": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -246,22 +224,18 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																},
 																Attributes: map[string]schema.Attribute{
 																	"connection": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Hash on source IP address.`,
 																			},
 																		},
 																	},
 																	"cookie": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the cookie that will be used to obtain the hash key. Not Null`,
 																				Validators: []validator.String{
@@ -270,23 +244,19 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																				},
 																			},
 																			"path": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the path for the cookie.`,
 																			},
 																			"ttl": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `If specified, a cookie with the TTL will be generated if the cookie is not present.`,
 																			},
 																		},
 																	},
 																	"filter_state": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"key": schema.StringAttribute{
-																				Computed: true,
 																				Optional: true,
 																				MarkdownDescription: `The name of the Object in the per-request filterState, which is` + "\n" +
 																					`an Envoy::Hashable object. If there is no data associated with the key,` + "\n" +
@@ -300,11 +270,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"header": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the request header that will be used to obtain the hash key. Not Null`,
 																				Validators: []validator.String{
@@ -315,11 +283,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"query_parameter": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed: true,
 																				Optional: true,
 																				MarkdownDescription: `The name of the URL query parameter that will be used to obtain the hash key.` + "\n" +
 																					`If the parameter is not present, no hash will be produced. Query parameter names` + "\n" +
@@ -333,7 +299,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																		MarkdownDescription: `Terminal is a flag that short-circuits the hash computing. This field provides` + "\n" +
 																			`a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback` + "\n" +
@@ -341,7 +306,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																			`If true, and there is already a hash computed, ignore rest of the list of hash polices.`,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Header", "Cookie", "Connection", "SourceIP", "QueryParameter", "FilterState"]`,
 																		Validators: []validator.String{
@@ -364,7 +328,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`ignoring the rest of the hash policy list.`,
 														},
 														"table_size": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `The table size for Maglev hashing. Maglev aims for “minimal disruption”` + "\n" +
 																`rather than an absolute guarantee. Minimal disruption means that when` + "\n" +
@@ -382,18 +345,15 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`consistent hashing is desired.`,
 												},
 												"random": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Random selects a random available host. The random load balancer generally` + "\n" +
 														`performs better than round-robin if no health checking policy is configured.` + "\n" +
 														`Random selection avoids bias towards the host in the set that comes after a failed host.`,
 												},
 												"ring_hash": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"hash_function": schema.StringAttribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `HashFunction is a function used to hash hosts onto the ketama ring.` + "\n" +
 																`The value defaults to XX_HASH. Available values – XX_HASH, MURMUR_HASH_2.` + "\n" +
@@ -406,7 +366,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 															},
 														},
 														"hash_policies": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -414,22 +373,18 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																},
 																Attributes: map[string]schema.Attribute{
 																	"connection": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Hash on source IP address.`,
 																			},
 																		},
 																	},
 																	"cookie": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the cookie that will be used to obtain the hash key. Not Null`,
 																				Validators: []validator.String{
@@ -438,23 +393,19 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																				},
 																			},
 																			"path": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the path for the cookie.`,
 																			},
 																			"ttl": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `If specified, a cookie with the TTL will be generated if the cookie is not present.`,
 																			},
 																		},
 																	},
 																	"filter_state": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"key": schema.StringAttribute{
-																				Computed: true,
 																				Optional: true,
 																				MarkdownDescription: `The name of the Object in the per-request filterState, which is` + "\n" +
 																					`an Envoy::Hashable object. If there is no data associated with the key,` + "\n" +
@@ -468,11 +419,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"header": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `The name of the request header that will be used to obtain the hash key. Not Null`,
 																				Validators: []validator.String{
@@ -483,11 +432,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"query_parameter": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed: true,
 																				Optional: true,
 																				MarkdownDescription: `The name of the URL query parameter that will be used to obtain the hash key.` + "\n" +
 																					`If the parameter is not present, no hash will be produced. Query parameter names` + "\n" +
@@ -501,7 +448,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																		MarkdownDescription: `Terminal is a flag that short-circuits the hash computing. This field provides` + "\n" +
 																			`a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback` + "\n" +
@@ -509,7 +455,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																			`If true, and there is already a hash computed, ignore rest of the list of hash polices.`,
 																	},
 																	"type": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Not Null; must be one of ["Header", "Cookie", "Connection", "SourceIP", "QueryParameter", "FilterState"]`,
 																		Validators: []validator.String{
@@ -532,7 +477,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																`ignoring the rest of the hash policy list.`,
 														},
 														"max_ring_size": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Maximum hash ring size. Defaults to 8M entries, and limited to 8M entries,` + "\n" +
 																`but can be lowered to further constrain resource use.`,
@@ -541,7 +485,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 															},
 														},
 														"min_ring_size": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Minimum hash ring size. The larger the ring is (that is,` + "\n" +
 																`the more hashes there are for each provided host) the better the request distribution` + "\n" +
@@ -557,13 +500,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`corresponding host clockwise around the ring.`,
 												},
 												"round_robin": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RoundRobin is a load balancing algorithm that distributes requests` + "\n" +
 														`across available upstream hosts in round-robin order.`,
 												},
 												"type": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Not Null; must be one of ["RoundRobin", "LeastRequest", "RingHash", "Random", "Maglev"]`,
 													Validators: []validator.String{
@@ -581,15 +522,12 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 											Description: `LoadBalancer allows to specify load balancing algorithm.`,
 										},
 										"locality_awareness": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"cross_zone": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"failover": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -597,11 +535,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																},
 																Attributes: map[string]schema.Attribute{
 																	"from": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"zones": schema.ListAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				ElementType: types.StringType,
 																				Description: `Not Null`,
@@ -613,11 +549,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Description: `From defines the list of zones to which the rule applies`,
 																	},
 																	"to": schema.SingleNestedAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"type": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Type defines how target zones will be picked from available zones. Not Null; must be one of ["None", "Only", "Any", "AnyExcept"]`,
 																				Validators: []validator.String{
@@ -631,7 +565,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																				},
 																			},
 																			"zones": schema.ListAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				ElementType: types.StringType,
 																			},
@@ -646,15 +579,12 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 															Description: `Failover defines list of load balancing rules in order of priority`,
 														},
 														"failover_threshold": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"percentage": schema.SingleNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"integer": schema.Int64Attribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.Int64{
 																				int64validator.ConflictsWith(path.Expressions{
@@ -663,7 +593,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																			},
 																		},
 																		"str": schema.StringAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Validators: []validator.String{
 																				stringvalidator.ConflictsWith(path.Expressions{
@@ -689,17 +618,14 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`are unavailable`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Disabled allows to disable locality-aware load balancing.` + "\n" +
 														`When disabled requests are distributed across all endpoints regardless of locality.`,
 												},
 												"local_zone": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"affinity_tags": schema.ListNestedAttribute{
-															Computed: true,
 															Optional: true,
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
@@ -707,7 +633,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																},
 																Attributes: map[string]schema.Attribute{
 																	"key": schema.StringAttribute{
-																		Computed:    true,
 																		Optional:    true,
 																		Description: `Key defines tag for which affinity is configured. Not Null`,
 																		Validators: []validator.String{
@@ -715,7 +640,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"weight": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		MarkdownDescription: `Weight of the tag used for load balancing. The bigger the weight the bigger the priority.` + "\n" +
 																			`Percentage of local traffic load balanced to tag is computed by dividing weight by sum of weights from all tags.` + "\n" +
@@ -739,11 +663,9 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -761,31 +683,26 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -795,13 +712,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

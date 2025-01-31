@@ -205,19 +205,19 @@ func (o *MeshServiceItemSelector) GetDataplaneTags() map[string]string {
 	return o.DataplaneTags
 }
 
-// MeshServiceItemState - State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
+// State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
 // It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.
-type MeshServiceItemState string
+type State string
 
 const (
-	MeshServiceItemStateAvailable   MeshServiceItemState = "Available"
-	MeshServiceItemStateUnavailable MeshServiceItemState = "Unavailable"
+	StateAvailable   State = "Available"
+	StateUnavailable State = "Unavailable"
 )
 
-func (e MeshServiceItemState) ToPointer() *MeshServiceItemState {
+func (e State) ToPointer() *State {
 	return &e
 }
-func (e *MeshServiceItemState) UnmarshalJSON(data []byte) error {
+func (e *State) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -226,10 +226,10 @@ func (e *MeshServiceItemState) UnmarshalJSON(data []byte) error {
 	case "Available":
 		fallthrough
 	case "Unavailable":
-		*e = MeshServiceItemState(v)
+		*e = State(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshServiceItemState: %v", v)
+		return fmt.Errorf("invalid value for State: %v", v)
 	}
 }
 
@@ -240,7 +240,7 @@ type MeshServiceItemSpec struct {
 	Selector   *MeshServiceItemSelector `json:"selector,omitempty"`
 	// State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
 	// It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.
-	State *MeshServiceItemState `json:"state,omitempty"`
+	State *State `json:"state,omitempty"`
 }
 
 func (o *MeshServiceItemSpec) GetIdentities() []Identities {
@@ -264,7 +264,7 @@ func (o *MeshServiceItemSpec) GetSelector() *MeshServiceItemSelector {
 	return o.Selector
 }
 
-func (o *MeshServiceItemSpec) GetState() *MeshServiceItemState {
+func (o *MeshServiceItemSpec) GetState() *State {
 	if o == nil {
 		return nil
 	}

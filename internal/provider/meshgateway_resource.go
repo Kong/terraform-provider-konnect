@@ -38,15 +38,15 @@ type MeshGatewayResource struct {
 
 // MeshGatewayResourceModel describes the resource data model.
 type MeshGatewayResourceModel struct {
-	Conf      *tfTypes.Conf           `tfsdk:"conf" tfPlanOnly:"true"`
+	Conf      *tfTypes.Conf           `tfsdk:"conf"`
 	CpID      types.String            `tfsdk:"cp_id"`
-	Labels    map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh      types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
-	Name      types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Selectors []tfTypes.Selectors     `tfsdk:"selectors" tfPlanOnly:"true"`
-	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
-	Type      types.String            `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings  []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
+	Labels    map[string]types.String `tfsdk:"labels"`
+	Mesh      types.String            `tfsdk:"mesh"`
+	Name      types.String            `tfsdk:"name"`
+	Selectors []tfTypes.Selectors     `tfsdk:"selectors"`
+	Tags      map[string]types.String `tfsdk:"tags"`
+	Type      types.String            `tfsdk:"type"`
+	Warnings  []types.String          `tfsdk:"warnings"`
 }
 
 func (r *MeshGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,11 +58,9 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 		MarkdownDescription: "MeshGateway Resource",
 		Attributes: map[string]schema.Attribute{
 			"conf": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"listeners": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -70,13 +68,11 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"cross_mesh": schema.BoolAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `CrossMesh enables traffic to flow to this listener only from other` + "\n" +
 										`meshes.`,
 								},
 								"hostname": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Hostname specifies the virtual hostname to match for protocol types that` + "\n" +
 										`define this concept. When unspecified, "", or ` + "`" + `*` + "`" + `, all hostnames are` + "\n" +
@@ -84,17 +80,14 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 										`hostname based matching.`,
 								},
 								"port": schema.Int64Attribute{
-									Computed: true,
 									Optional: true,
 									MarkdownDescription: `Port is the network port. Multiple listeners may use the` + "\n" +
 										`same port, subject to the Listener compatibility rules.`,
 								},
 								"protocol": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"integer": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.Int64{
 												int64validator.ConflictsWith(path.Expressions{
@@ -103,7 +96,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"str": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											Validators: []validator.String{
 												stringvalidator.ConflictsWith(path.Expressions{
@@ -115,18 +107,15 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 									Description: `Protocol specifies the network protocol this listener expects to receive.`,
 								},
 								"resources": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_limit": schema.Int64Attribute{
-											Computed: true,
 											Optional: true,
 										},
 									},
 									Description: `Resources is used to specify listener-specific resource settings.`,
 								},
 								"tags": schema.MapAttribute{
-									Computed:    true,
 									Optional:    true,
 									ElementType: types.StringType,
 									MarkdownDescription: `Tags specifies a unique combination of tags that routes can use` + "\n" +
@@ -138,11 +127,9 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 										`listener if all of the route's tags are preset in the matching tags`,
 								},
 								"tls": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"certificates": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
@@ -150,7 +137,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 												},
 												Attributes: map[string]schema.Attribute{
 													"type": schema.StringAttribute{
-														Computed: true,
 														Optional: true,
 														MarkdownDescription: `Types that are assignable to Type:` + "\n" +
 															`` + "\n" +
@@ -179,11 +165,9 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 												`ECDSA key and certificate.`,
 										},
 										"mode": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"integer": schema.Int64Attribute{
-													Computed: true,
 													Optional: true,
 													Validators: []validator.Int64{
 														int64validator.ConflictsWith(path.Expressions{
@@ -192,7 +176,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 													},
 												},
 												"str": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													Validators: []validator.String{
 														stringvalidator.ConflictsWith(path.Expressions{
@@ -205,7 +188,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 												`by the client.`,
 										},
 										"options": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Options should eventually configure how TLS is configured. This` + "\n" +
 												`is where cipher suite and version configuration can be specified,` + "\n" +
@@ -229,7 +211,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 			},
@@ -242,7 +223,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the MeshGateway`,
 			},
 			"selectors": schema.ListNestedAttribute{
-				Computed: true,
 				Optional: true,
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
@@ -250,7 +230,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 					},
 					Attributes: map[string]schema.Attribute{
 						"match": schema.MapAttribute{
-							Computed:    true,
 							Optional:    true,
 							ElementType: types.StringType,
 							Description: `Tags to match, can be used for both source and destinations`,
@@ -261,7 +240,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 					`gateway dataplanes that will receive this MeshGateway configuration.`,
 			},
 			"tags": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `Tags is the set of tags common to all of the gateway's listeners.` + "\n" +

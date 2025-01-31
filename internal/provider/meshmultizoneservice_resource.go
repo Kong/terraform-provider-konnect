@@ -41,15 +41,15 @@ type MeshMultiZoneServiceResource struct {
 // MeshMultiZoneServiceResourceModel describes the resource data model.
 type MeshMultiZoneServiceResourceModel struct {
 	CpID             types.String                            `tfsdk:"cp_id"`
-	CreationTime     types.String                            `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String                 `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                            `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                            `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                            `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshMultiZoneServiceItemSpec    `tfsdk:"spec" tfPlanOnly:"true"`
-	Status           *tfTypes.MeshMultiZoneServiceItemStatus `tfsdk:"status" tfPlanOnly:"true"`
-	Type             types.String                            `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                          `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                            `tfsdk:"creation_time"`
+	Labels           map[string]types.String                 `tfsdk:"labels"`
+	Mesh             types.String                            `tfsdk:"mesh"`
+	ModificationTime types.String                            `tfsdk:"modification_time"`
+	Name             types.String                            `tfsdk:"name"`
+	Spec             tfTypes.MeshMultiZoneServiceItemSpec    `tfsdk:"spec"`
+	Status           *tfTypes.MeshMultiZoneServiceItemStatus `tfsdk:"status"`
+	Type             types.String                            `tfsdk:"type"`
+	Warnings         []types.String                          `tfsdk:"warnings"`
 }
 
 func (r *MeshMultiZoneServiceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -73,7 +72,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -83,7 +81,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -98,7 +95,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ports": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -106,16 +102,13 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"app_protocol": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Protocol identifies a protocol supported by a service.`,
 								},
 								"name": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 								"port": schema.Int64Attribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.Int64{
@@ -150,11 +143,9 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `Spec is the specification of the Kuma MeshMultiZoneService resource.`,
 			},
 			"status": schema.SingleNestedAttribute{
-				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -162,15 +153,12 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostname": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -180,7 +168,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"origin": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 							},
@@ -188,7 +175,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 						Description: `Addresses is a list of addresses generated by HostnameGenerator`,
 					},
 					"hostname_generators": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -196,7 +182,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"conditions": schema.ListNestedAttribute{
-									Computed: true,
 									Optional: true,
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
@@ -204,7 +189,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 										},
 										Attributes: map[string]schema.Attribute{
 											"message": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `message is a human readable message indicating details about the transition.` + "\n" +
 													`This may be an empty string.` + "\n" +
@@ -215,7 +199,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 												},
 											},
 											"reason": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												MarkdownDescription: `reason contains a programmatic identifier indicating the reason for the condition's last transition.` + "\n" +
 													`Producers of specific condition types may define expected values and meanings for this field,` + "\n" +
@@ -230,7 +213,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 												},
 											},
 											"status": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]`,
 												Validators: []validator.String{
@@ -243,7 +225,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 												},
 											},
 											"type": schema.StringAttribute{
-												Computed:    true,
 												Optional:    true,
 												Description: `type of condition in CamelCase or in foo.example.com/CamelCase. Not Null`,
 												Validators: []validator.String{
@@ -257,11 +238,9 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									Description: `Conditions is an array of hostname generator conditions.`,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null`,
 											Validators: []validator.String{
@@ -279,7 +258,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 						Description: `Status of hostnames generator applied on this resource`,
 					},
 					"mesh_services": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -287,7 +265,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"mesh": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.String{
@@ -295,7 +272,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"name": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Name is a core name of MeshService. Not Null`,
 									Validators: []validator.String{
@@ -303,7 +279,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"namespace": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.String{
@@ -311,7 +286,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									},
 								},
 								"zone": schema.StringAttribute{
-									Computed:    true,
 									Optional:    true,
 									Description: `Not Null`,
 									Validators: []validator.String{
@@ -323,7 +297,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 						Description: `MeshServices is a list of matched MeshServices`,
 					},
 					"vips": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -331,7 +304,6 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 							},
 							Attributes: map[string]schema.Attribute{
 								"ip": schema.StringAttribute{
-									Computed: true,
 									Optional: true,
 								},
 							},

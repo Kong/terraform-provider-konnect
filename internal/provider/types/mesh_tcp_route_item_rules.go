@@ -3,5 +3,5 @@
 package types
 
 type MeshTCPRouteItemRules struct {
-	Default MeshTCPRouteItemDefault `tfsdk:"default" tfPlanOnly:"true"`
+	Default MeshTCPRouteItemDefault `tfsdk:"default"`
 }

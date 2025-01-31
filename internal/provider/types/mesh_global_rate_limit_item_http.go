@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshGlobalRateLimitItemHTTP struct {
-	Disabled           types.Bool                                  `tfsdk:"disabled" tfPlanOnly:"true"`
-	OnRateLimit        *OnRateLimit                                `tfsdk:"on_rate_limit" tfPlanOnly:"true"`
-	RatelimitOnRequest []RatelimitOnRequest                        `tfsdk:"ratelimit_on_request" tfPlanOnly:"true"`
-	RequestRate        *MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"request_rate" tfPlanOnly:"true"`
+	Disabled           types.Bool                                  `tfsdk:"disabled"`
+	OnRateLimit        *OnRateLimit                                `tfsdk:"on_rate_limit"`
+	RatelimitOnRequest []RatelimitOnRequest                        `tfsdk:"ratelimit_on_request"`
+	RequestRate        *MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"request_rate"`
 }

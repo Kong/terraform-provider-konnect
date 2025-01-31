@@ -3,6 +3,6 @@
 package types
 
 type MeshTLSItemSpec struct {
-	From      []MeshTLSItemFrom           `tfsdk:"from" tfPlanOnly:"true"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
+	From      []MeshTLSItemFrom           `tfsdk:"from"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
 }

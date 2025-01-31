@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type ACLPluginConfig struct {
+type Config struct {
 	// Arbitrary group names that are allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 	Allow []string `json:"allow,omitempty"`
 	// If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
@@ -20,35 +20,35 @@ type ACLPluginConfig struct {
 	IncludeConsumerGroups *bool `json:"include_consumer_groups,omitempty"`
 }
 
-func (o *ACLPluginConfig) GetAllow() []string {
+func (o *Config) GetAllow() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Allow
 }
 
-func (o *ACLPluginConfig) GetAlwaysUseAuthenticatedGroups() *bool {
+func (o *Config) GetAlwaysUseAuthenticatedGroups() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.AlwaysUseAuthenticatedGroups
 }
 
-func (o *ACLPluginConfig) GetDeny() []string {
+func (o *Config) GetDeny() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Deny
 }
 
-func (o *ACLPluginConfig) GetHideGroupsHeader() *bool {
+func (o *Config) GetHideGroupsHeader() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.HideGroupsHeader
 }
 
-func (o *ACLPluginConfig) GetIncludeConsumerGroups() *bool {
+func (o *Config) GetIncludeConsumerGroups() *bool {
 	if o == nil {
 		return nil
 	}
@@ -195,7 +195,7 @@ func (o *ACLPluginService) GetID() *string {
 
 // ACLPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ACLPlugin struct {
-	Config ACLPluginConfig `json:"config"`
+	Config Config `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer      *ACLPluginConsumer      `json:"consumer"`
 	ConsumerGroup *ACLPluginConsumerGroup `json:"consumer_group"`
@@ -230,9 +230,9 @@ func (a *ACLPlugin) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ACLPlugin) GetConfig() ACLPluginConfig {
+func (o *ACLPlugin) GetConfig() Config {
 	if o == nil {
-		return ACLPluginConfig{}
+		return Config{}
 	}
 	return o.Config
 }
@@ -327,7 +327,7 @@ func (o *ACLPlugin) GetUpdatedAt() *int64 {
 
 // ACLPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ACLPluginInput struct {
-	Config ACLPluginConfig `json:"config"`
+	Config Config `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer      *ACLPluginConsumer      `json:"consumer"`
 	ConsumerGroup *ACLPluginConsumerGroup `json:"consumer_group"`
@@ -358,9 +358,9 @@ func (a *ACLPluginInput) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *ACLPluginInput) GetConfig() ACLPluginConfig {
+func (o *ACLPluginInput) GetConfig() Config {
 	if o == nil {
-		return ACLPluginConfig{}
+		return Config{}
 	}
 	return o.Config
 }

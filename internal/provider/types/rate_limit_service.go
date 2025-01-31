@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RateLimitService struct {
-	LimitOnServiceFail types.Bool   `tfsdk:"limit_on_service_fail" tfPlanOnly:"true"`
-	Timeout            types.String `tfsdk:"timeout" tfPlanOnly:"true"`
-	URL                types.String `tfsdk:"url" tfPlanOnly:"true"`
+	LimitOnServiceFail types.Bool   `tfsdk:"limit_on_service_fail"`
+	Timeout            types.String `tfsdk:"timeout"`
+	URL                types.String `tfsdk:"url"`
 }

@@ -5,11 +5,11 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type HashPolicies struct {
-	Connection     *Connection                              `tfsdk:"connection" tfPlanOnly:"true"`
-	Cookie         *Cookie                                  `tfsdk:"cookie" tfPlanOnly:"true"`
-	FilterState    *FilterState                             `tfsdk:"filter_state" tfPlanOnly:"true"`
-	Header         *MeshLoadBalancingStrategyItemSpecHeader `tfsdk:"header" tfPlanOnly:"true"`
-	QueryParameter *MeshLoadBalancingStrategyItemSpecHeader `tfsdk:"query_parameter" tfPlanOnly:"true"`
-	Terminal       types.Bool                               `tfsdk:"terminal" tfPlanOnly:"true"`
-	Type           types.String                             `tfsdk:"type" tfPlanOnly:"true"`
+	Connection     *Connection                              `tfsdk:"connection"`
+	Cookie         *Cookie                                  `tfsdk:"cookie"`
+	FilterState    *FilterState                             `tfsdk:"filter_state"`
+	Header         *MeshLoadBalancingStrategyItemSpecHeader `tfsdk:"header"`
+	QueryParameter *MeshLoadBalancingStrategyItemSpecHeader `tfsdk:"query_parameter"`
+	Terminal       types.Bool                               `tfsdk:"terminal"`
+	Type           types.String                             `tfsdk:"type"`
 }

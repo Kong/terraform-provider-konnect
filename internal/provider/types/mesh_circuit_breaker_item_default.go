@@ -3,6 +3,6 @@
 package types
 
 type MeshCircuitBreakerItemDefault struct {
-	ConnectionLimits *ConnectionLimits `tfsdk:"connection_limits" tfPlanOnly:"true"`
-	OutlierDetection *OutlierDetection `tfsdk:"outlier_detection" tfPlanOnly:"true"`
+	ConnectionLimits *ConnectionLimits `tfsdk:"connection_limits"`
+	OutlierDetection *OutlierDetection `tfsdk:"outlier_detection"`
 }

@@ -3,9 +3,9 @@
 package types
 
 type MeshServiceItemStatus struct {
-	Addresses          []Addresses          `tfsdk:"addresses" tfPlanOnly:"true"`
-	DataplaneProxies   *DataplaneProxies    `tfsdk:"dataplane_proxies" tfPlanOnly:"true"`
-	HostnameGenerators []HostnameGenerators `tfsdk:"hostname_generators" tfPlanOnly:"true"`
-	TLS                *MeshServiceItemTLS  `tfsdk:"tls" tfPlanOnly:"true"`
-	Vips               []Vip                `tfsdk:"vips" tfPlanOnly:"true"`
+	Addresses          []Addresses          `tfsdk:"addresses"`
+	DataplaneProxies   *DataplaneProxies    `tfsdk:"dataplane_proxies"`
+	HostnameGenerators []HostnameGenerators `tfsdk:"hostname_generators"`
+	TLS                *MeshServiceItemTLS  `tfsdk:"tls"`
+	Vips               []Vip                `tfsdk:"vips"`
 }

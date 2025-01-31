@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type IssuerRef struct {
-	Group types.String `tfsdk:"group" tfPlanOnly:"true"`
-	Kind  types.String `tfsdk:"kind" tfPlanOnly:"true"`
-	Name  types.String `tfsdk:"name" tfPlanOnly:"true"`
+	Group types.String `tfsdk:"group"`
+	Kind  types.String `tfsdk:"kind"`
+	Name  types.String `tfsdk:"name"`
 }

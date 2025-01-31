@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Logging struct {
-	Backends       []Backends   `tfsdk:"backends" tfPlanOnly:"true"`
-	DefaultBackend types.String `tfsdk:"default_backend" tfPlanOnly:"true"`
+	Backends       []Backends   `tfsdk:"backends"`
+	DefaultBackend types.String `tfsdk:"default_backend"`
 }

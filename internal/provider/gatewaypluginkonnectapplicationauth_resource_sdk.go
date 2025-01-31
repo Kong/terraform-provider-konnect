@@ -10,9 +10,9 @@ import (
 )
 
 func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplicationAuthPluginInput() *shared.KonnectApplicationAuthPluginInput {
-	authType := new(shared.KonnectApplicationAuthPluginAuthType)
+	authType := new(shared.AuthType)
 	if !r.Config.AuthType.IsUnknown() && !r.Config.AuthType.IsNull() {
-		*authType = shared.KonnectApplicationAuthPluginAuthType(r.Config.AuthType.ValueString())
+		*authType = shared.AuthType(r.Config.AuthType.ValueString())
 	} else {
 		authType = nil
 	}

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Headers struct {
-	Name  types.String `tfsdk:"name" tfPlanOnly:"true"`
-	Type  types.String `tfsdk:"type" tfPlanOnly:"true"`
-	Value types.String `tfsdk:"value" tfPlanOnly:"true"`
+	Name  types.String `tfsdk:"name"`
+	Type  types.String `tfsdk:"type"`
+	Value types.String `tfsdk:"value"`
 }

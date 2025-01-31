@@ -5,13 +5,13 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshRetryItemHTTP struct {
-	BackOff                  *BackOff            `tfsdk:"back_off" tfPlanOnly:"true"`
-	HostSelection            []HostSelection     `tfsdk:"host_selection" tfPlanOnly:"true"`
-	HostSelectionMaxAttempts types.Int64         `tfsdk:"host_selection_max_attempts" tfPlanOnly:"true"`
-	NumRetries               types.Int64         `tfsdk:"num_retries" tfPlanOnly:"true"`
-	PerTryTimeout            types.String        `tfsdk:"per_try_timeout" tfPlanOnly:"true"`
-	RateLimitedBackOff       *RateLimitedBackOff `tfsdk:"rate_limited_back_off" tfPlanOnly:"true"`
-	RetriableRequestHeaders  []Headers           `tfsdk:"retriable_request_headers" tfPlanOnly:"true"`
-	RetriableResponseHeaders []Headers           `tfsdk:"retriable_response_headers" tfPlanOnly:"true"`
-	RetryOn                  []types.String      `tfsdk:"retry_on" tfPlanOnly:"true"`
+	BackOff                  *BackOff            `tfsdk:"back_off"`
+	HostSelection            []HostSelection     `tfsdk:"host_selection"`
+	HostSelectionMaxAttempts types.Int64         `tfsdk:"host_selection_max_attempts"`
+	NumRetries               types.Int64         `tfsdk:"num_retries"`
+	PerTryTimeout            types.String        `tfsdk:"per_try_timeout"`
+	RateLimitedBackOff       *RateLimitedBackOff `tfsdk:"rate_limited_back_off"`
+	RetriableRequestHeaders  []Headers           `tfsdk:"retriable_request_headers"`
+	RetriableResponseHeaders []Headers           `tfsdk:"retriable_response_headers"`
+	RetryOn                  []types.String      `tfsdk:"retry_on"`
 }

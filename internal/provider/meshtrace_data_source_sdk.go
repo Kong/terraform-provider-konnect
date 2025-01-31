@@ -113,12 +113,12 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(resp *shared.M
 					}
 				}
 			}
-			r.Spec.Default.Tags = []tfTypes.Tags{}
+			r.Spec.Default.Tags = []tfTypes.Tags1{}
 			if len(r.Spec.Default.Tags) > len(resp.Spec.Default.Tags) {
 				r.Spec.Default.Tags = r.Spec.Default.Tags[:len(resp.Spec.Default.Tags)]
 			}
 			for tagsCount, tagsItem := range resp.Spec.Default.Tags {
-				var tags1 tfTypes.Tags
+				var tags1 tfTypes.Tags1
 				if tagsItem.Header == nil {
 					tags1.Header = nil
 				} else {

@@ -3,7 +3,7 @@
 package types
 
 type MeshCircuitBreakerItemSpec struct {
-	From      []MeshCircuitBreakerItemFrom `tfsdk:"from" tfPlanOnly:"true"`
-	TargetRef *MeshAccessLogItemTargetRef  `tfsdk:"target_ref" tfPlanOnly:"true"`
-	To        []MeshCircuitBreakerItemFrom `tfsdk:"to" tfPlanOnly:"true"`
+	From      []MeshCircuitBreakerItemFrom `tfsdk:"from"`
+	TargetRef *MeshAccessLogItemTargetRef  `tfsdk:"target_ref"`
+	To        []MeshCircuitBreakerItemFrom `tfsdk:"to"`
 }

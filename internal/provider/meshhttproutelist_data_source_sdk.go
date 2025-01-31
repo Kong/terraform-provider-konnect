@@ -132,9 +132,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							filters1.RequestHeaderModifier = nil
 						} else {
 							filters1.RequestHeaderModifier = &tfTypes.RequestHeaderModifier{}
-							filters1.RequestHeaderModifier.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+							filters1.RequestHeaderModifier.Add = []tfTypes.StaticTags{}
 							for addCount, addItem := range filtersItem.RequestHeaderModifier.Add {
-								var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+								var add1 tfTypes.StaticTags
 								add1.Name = types.StringValue(addItem.Name)
 								add1.Value = types.StringValue(addItem.Value)
 								if addCount+1 > len(filters1.RequestHeaderModifier.Add) {
@@ -148,9 +148,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							for _, v := range filtersItem.RequestHeaderModifier.Remove {
 								filters1.RequestHeaderModifier.Remove = append(filters1.RequestHeaderModifier.Remove, types.StringValue(v))
 							}
-							filters1.RequestHeaderModifier.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+							filters1.RequestHeaderModifier.Set = []tfTypes.StaticTags{}
 							for setCount, setItem := range filtersItem.RequestHeaderModifier.Set {
-								var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+								var set1 tfTypes.StaticTags
 								set1.Name = types.StringValue(setItem.Name)
 								set1.Value = types.StringValue(setItem.Value)
 								if setCount+1 > len(filters1.RequestHeaderModifier.Set) {
@@ -241,9 +241,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							filters1.ResponseHeaderModifier = nil
 						} else {
 							filters1.ResponseHeaderModifier = &tfTypes.RequestHeaderModifier{}
-							filters1.ResponseHeaderModifier.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+							filters1.ResponseHeaderModifier.Add = []tfTypes.StaticTags{}
 							for addCount1, addItem1 := range filtersItem.ResponseHeaderModifier.Add {
-								var add3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+								var add3 tfTypes.StaticTags
 								add3.Name = types.StringValue(addItem1.Name)
 								add3.Value = types.StringValue(addItem1.Value)
 								if addCount1+1 > len(filters1.ResponseHeaderModifier.Add) {
@@ -257,9 +257,9 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							for _, v := range filtersItem.ResponseHeaderModifier.Remove {
 								filters1.ResponseHeaderModifier.Remove = append(filters1.ResponseHeaderModifier.Remove, types.StringValue(v))
 							}
-							filters1.ResponseHeaderModifier.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+							filters1.ResponseHeaderModifier.Set = []tfTypes.StaticTags{}
 							for setCount1, setItem1 := range filtersItem.ResponseHeaderModifier.Set {
-								var set3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+								var set3 tfTypes.StaticTags
 								set3.Name = types.StringValue(setItem1.Name)
 								set3.Value = types.StringValue(setItem1.Value)
 								if setCount1+1 > len(filters1.ResponseHeaderModifier.Set) {

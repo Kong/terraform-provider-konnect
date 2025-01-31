@@ -5,8 +5,8 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Listener struct {
-	JSONPatches []JSONPatches                       `tfsdk:"json_patches" tfPlanOnly:"true"`
-	Match       *MeshProxyPatchItemSpecDefaultMatch `tfsdk:"match" tfPlanOnly:"true"`
-	Operation   types.String                        `tfsdk:"operation" tfPlanOnly:"true"`
-	Value       types.String                        `tfsdk:"value" tfPlanOnly:"true"`
+	JSONPatches []JSONPatches                       `tfsdk:"json_patches"`
+	Match       *MeshProxyPatchItemSpecDefaultMatch `tfsdk:"match"`
+	Operation   types.String                        `tfsdk:"operation"`
+	Value       types.String                        `tfsdk:"value"`
 }

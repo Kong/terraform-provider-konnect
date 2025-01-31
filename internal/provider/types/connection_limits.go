@@ -5,9 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ConnectionLimits struct {
-	MaxConnectionPools types.Int64 `tfsdk:"max_connection_pools" tfPlanOnly:"true"`
-	MaxConnections     types.Int64 `tfsdk:"max_connections" tfPlanOnly:"true"`
-	MaxPendingRequests types.Int64 `tfsdk:"max_pending_requests" tfPlanOnly:"true"`
-	MaxRequests        types.Int64 `tfsdk:"max_requests" tfPlanOnly:"true"`
-	MaxRetries         types.Int64 `tfsdk:"max_retries" tfPlanOnly:"true"`
+	MaxConnectionPools types.Int64 `tfsdk:"max_connection_pools"`
+	MaxConnections     types.Int64 `tfsdk:"max_connections"`
+	MaxPendingRequests types.Int64 `tfsdk:"max_pending_requests"`
+	MaxRequests        types.Int64 `tfsdk:"max_requests"`
+	MaxRetries         types.Int64 `tfsdk:"max_retries"`
 }

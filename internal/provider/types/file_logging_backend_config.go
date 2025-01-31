@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type FileLoggingBackendConfig struct {
-	Path types.String `tfsdk:"path" tfPlanOnly:"true"`
+	Path types.String `tfsdk:"path"`
 }

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Limits struct {
-	RequestRate MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"request_rate" tfPlanOnly:"true"`
-	Value       types.String                               `tfsdk:"value" tfPlanOnly:"true"`
+	RequestRate MeshGlobalRateLimitItemSpecFromRequestRate `tfsdk:"request_rate"`
+	Value       types.String                               `tfsdk:"value"`
 }

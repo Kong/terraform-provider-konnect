@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTimeoutItemDefault struct {
-	ConnectionTimeout types.String         `tfsdk:"connection_timeout" tfPlanOnly:"true"`
-	HTTP              *MeshTimeoutItemHTTP `tfsdk:"http" tfPlanOnly:"true"`
-	IdleTimeout       types.String         `tfsdk:"idle_timeout" tfPlanOnly:"true"`
+	ConnectionTimeout types.String         `tfsdk:"connection_timeout"`
+	HTTP              *MeshTimeoutItemHTTP `tfsdk:"http"`
+	IdleTimeout       types.String         `tfsdk:"idle_timeout"`
 }

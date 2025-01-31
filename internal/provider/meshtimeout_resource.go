@@ -38,14 +38,14 @@ type MeshTimeoutResource struct {
 // MeshTimeoutResourceModel describes the resource data model.
 type MeshTimeoutResourceModel struct {
 	CpID             types.String                `tfsdk:"cp_id"`
-	CreationTime     types.String                `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String     `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshTimeoutItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String              `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                `tfsdk:"creation_time"`
+	Labels           map[string]types.String     `tfsdk:"labels"`
+	Mesh             types.String                `tfsdk:"mesh"`
+	ModificationTime types.String                `tfsdk:"modification_time"`
+	Name             types.String                `tfsdk:"name"`
+	Spec             tfTypes.MeshTimeoutItemSpec `tfsdk:"spec"`
+	Type             types.String                `tfsdk:"type"`
+	Warnings         []types.String              `tfsdk:"warnings"`
 }
 
 func (r *MeshTimeoutResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,7 +61,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -69,7 +68,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -79,7 +77,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -94,7 +91,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -102,34 +98,28 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.` + "\n" +
 												`Default value is 5 seconds. Cannot be set to 0.`,
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connection_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxConnectionDuration is the time after which a connection will be drained and/or closed,` + "\n" +
 														`starting from when it was first established. Setting this timeout to 0 will disable it.` + "\n" +
 														`Disabled by default.`,
 												},
 												"max_stream_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxStreamDuration is the maximum time that a stream’s lifetime will span.` + "\n" +
 														`Setting this timeout to 0 will disable it. Disabled by default.`,
 												},
 												"request_headers_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is` + "\n" +
 														`activated when the first byte of the headers is received, and is disarmed when the last byte of` + "\n" +
@@ -137,7 +127,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Disabled by default.`,
 												},
 												"request_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestTimeout The amount of time that proxy will wait for the entire request to be received.` + "\n" +
 														`The timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,` + "\n" +
@@ -145,7 +134,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Default is 15s.`,
 												},
 												"stream_idle_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.` + "\n" +
 														`Setting this timeout to 0 will disable it. Default is 30m`,
@@ -154,7 +142,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											Description: `Http provides configuration for HTTP specific timeouts`,
 										},
 										"idle_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `IdleTimeout is defined as the period in which there are no bytes sent or received on connection` + "\n" +
 												`Setting this timeout to 0 will disable it. Be cautious when disabling it because` + "\n" +
@@ -165,11 +152,9 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -187,31 +172,26 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -221,13 +201,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -246,7 +224,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"rules": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -254,34 +231,28 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.` + "\n" +
 												`Default value is 5 seconds. Cannot be set to 0.`,
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connection_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxConnectionDuration is the time after which a connection will be drained and/or closed,` + "\n" +
 														`starting from when it was first established. Setting this timeout to 0 will disable it.` + "\n" +
 														`Disabled by default.`,
 												},
 												"max_stream_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxStreamDuration is the maximum time that a stream’s lifetime will span.` + "\n" +
 														`Setting this timeout to 0 will disable it. Disabled by default.`,
 												},
 												"request_headers_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is` + "\n" +
 														`activated when the first byte of the headers is received, and is disarmed when the last byte of` + "\n" +
@@ -289,7 +260,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Disabled by default.`,
 												},
 												"request_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestTimeout The amount of time that proxy will wait for the entire request to be received.` + "\n" +
 														`The timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,` + "\n" +
@@ -297,7 +267,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Default is 15s.`,
 												},
 												"stream_idle_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.` + "\n" +
 														`Setting this timeout to 0 will disable it. Default is 30m`,
@@ -306,7 +275,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											Description: `Http provides configuration for HTTP specific timeouts`,
 										},
 										"idle_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `IdleTimeout is defined as the period in which there are no bytes sent or received on connection` + "\n" +
 												`Setting this timeout to 0 will disable it. Be cautious when disabling it because` + "\n" +
@@ -321,11 +289,9 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							`default timeouts that apply to all inbound traffic, as L7 matching is not yet implemented.`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -343,31 +309,26 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -377,13 +338,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -395,7 +354,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -403,34 +361,28 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"connection_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.` + "\n" +
 												`Default value is 5 seconds. Cannot be set to 0.`,
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max_connection_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxConnectionDuration is the time after which a connection will be drained and/or closed,` + "\n" +
 														`starting from when it was first established. Setting this timeout to 0 will disable it.` + "\n" +
 														`Disabled by default.`,
 												},
 												"max_stream_duration": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `MaxStreamDuration is the maximum time that a stream’s lifetime will span.` + "\n" +
 														`Setting this timeout to 0 will disable it. Disabled by default.`,
 												},
 												"request_headers_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is` + "\n" +
 														`activated when the first byte of the headers is received, and is disarmed when the last byte of` + "\n" +
@@ -438,7 +390,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Disabled by default.`,
 												},
 												"request_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `RequestTimeout The amount of time that proxy will wait for the entire request to be received.` + "\n" +
 														`The timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,` + "\n" +
@@ -446,7 +397,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 														`Default is 15s.`,
 												},
 												"stream_idle_timeout": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.` + "\n" +
 														`Setting this timeout to 0 will disable it. Default is 30m`,
@@ -455,7 +405,6 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											Description: `Http provides configuration for HTTP specific timeouts`,
 										},
 										"idle_timeout": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `IdleTimeout is defined as the period in which there are no bytes sent or received on connection` + "\n" +
 												`Setting this timeout to 0 will disable it. Be cautious when disabling it because` + "\n" +
@@ -466,11 +415,9 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -488,31 +435,26 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -522,13 +464,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

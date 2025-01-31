@@ -40,14 +40,14 @@ type MeshTraceResource struct {
 // MeshTraceResourceModel describes the resource data model.
 type MeshTraceResourceModel struct {
 	CpID             types.String              `tfsdk:"cp_id"`
-	CreationTime     types.String              `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String   `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String              `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String              `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String              `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshTraceItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String              `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String            `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String              `tfsdk:"creation_time"`
+	Labels           map[string]types.String   `tfsdk:"labels"`
+	Mesh             types.String              `tfsdk:"mesh"`
+	ModificationTime types.String              `tfsdk:"modification_time"`
+	Name             types.String              `tfsdk:"name"`
+	Spec             tfTypes.MeshTraceItemSpec `tfsdk:"spec"`
+	Type             types.String              `tfsdk:"type"`
+	Warnings         []types.String            `tfsdk:"warnings"`
 }
 
 func (r *MeshTraceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -71,7 +70,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -81,7 +79,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -96,11 +93,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"default": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"backends": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -108,11 +103,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 									},
 									Attributes: map[string]schema.Attribute{
 										"datadog": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"split_service": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
 														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
@@ -121,7 +114,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 														`` + "`" + `backend_OUTBOUND_db2` + "`" + ` in Datadog.`,
 												},
 												"url": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Address of Datadog collector, only host and port are allowed (no paths,` + "\n" +
 														`fragments etc.)` + "\n" +
@@ -134,11 +126,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											Description: `Datadog backend configuration.`,
 										},
 										"open_telemetry": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"endpoint": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Address of OpenTelemetry collector. Not Null`,
 													Validators: []validator.String{
@@ -150,7 +140,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											Description: `OpenTelemetry backend configuration.`,
 										},
 										"type": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Not Null; must be one of ["Zipkin", "Datadog", "OpenTelemetry"]`,
 											Validators: []validator.String{
@@ -163,11 +152,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											},
 										},
 										"zipkin": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"api_version": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Version of the API.` + "\n" +
 														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66` + "\n" +
@@ -180,19 +167,16 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 													},
 												},
 												"shared_span_context": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
 														`context.` + "\n" +
 														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63`,
 												},
 												"trace_id128bit": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Generate 128bit traces.`,
 												},
 												"url": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Address of Zipkin collector. Not Null`,
 													Validators: []validator.String{
@@ -214,15 +198,12 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 							"sampling": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"client": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"integer": schema.Int64Attribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.Int64{
 													int64validator.ConflictsWith(path.Expressions{
@@ -231,7 +212,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 												},
 											},
 											"str": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.ConflictsWith(path.Expressions{
@@ -246,11 +226,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											`Either int or decimal represented as string.`,
 									},
 									"overall": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"integer": schema.Int64Attribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.Int64{
 													int64validator.ConflictsWith(path.Expressions{
@@ -259,7 +237,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 												},
 											},
 											"str": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.ConflictsWith(path.Expressions{
@@ -279,11 +256,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											`Either int or decimal represented as string.`,
 									},
 									"random": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"integer": schema.Int64Attribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.Int64{
 													int64validator.ConflictsWith(path.Expressions{
@@ -292,7 +267,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 												},
 											},
 											"str": schema.StringAttribute{
-												Computed: true,
 												Optional: true,
 												Validators: []validator.String{
 													stringvalidator.ConflictsWith(path.Expressions{
@@ -313,7 +287,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 									`process/export a span or not.`,
 							},
 							"tags": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -321,18 +294,15 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 									},
 									Attributes: map[string]schema.Attribute{
 										"header": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"default": schema.StringAttribute{
-													Computed: true,
 													Optional: true,
 													MarkdownDescription: `Default value to use if header is missing.` + "\n" +
 														`If the default is missing and there is no value the tag will not be` + "\n" +
 														`included.`,
 												},
 												"name": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Name of the header. Not Null`,
 													Validators: []validator.String{
@@ -343,12 +313,10 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											Description: `Tag taken from a header.`,
 										},
 										"literal": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Tag taken from literal value.`,
 										},
 										"name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Name of the tag. Not Null`,
 											Validators: []validator.String{
@@ -364,11 +332,9 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 						Description: `MeshTrace configuration.`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -386,31 +352,26 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -420,13 +381,11 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

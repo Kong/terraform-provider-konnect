@@ -3,6 +3,6 @@
 package types
 
 type MeshTraceItemSpec struct {
-	Default   *MeshTraceItemDefault       `tfsdk:"default" tfPlanOnly:"true"`
-	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
+	Default   *MeshTraceItemDefault       `tfsdk:"default"`
+	TargetRef *MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
 }

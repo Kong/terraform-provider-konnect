@@ -42,14 +42,14 @@ type MeshGlobalRateLimitResource struct {
 // MeshGlobalRateLimitResourceModel describes the resource data model.
 type MeshGlobalRateLimitResourceModel struct {
 	CpID             types.String                        `tfsdk:"cp_id"`
-	CreationTime     types.String                        `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String             `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                        `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                        `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                        `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshGlobalRateLimitItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                        `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                      `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                        `tfsdk:"creation_time"`
+	Labels           map[string]types.String             `tfsdk:"labels"`
+	Mesh             types.String                        `tfsdk:"mesh"`
+	ModificationTime types.String                        `tfsdk:"modification_time"`
+	Name             types.String                        `tfsdk:"name"`
+	Spec             tfTypes.MeshGlobalRateLimitItemSpec `tfsdk:"spec"`
+	Type             types.String                        `tfsdk:"type"`
+	Warnings         []types.String                      `tfsdk:"warnings"`
 }
 
 func (r *MeshGlobalRateLimitResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -73,7 +72,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -83,7 +81,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -98,7 +95,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -106,24 +102,19 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backend": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"rate_limit_service": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"limit_on_service_fail": schema.BoolAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `LimitOnServiceFail will pass limit requests if ratelimit service is not reachable.`,
 														},
 														"timeout": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Timeout for rate limit request made form Data Plane Proxy to rate limit service. Not Null`,
 															Validators: []validator.String{
@@ -131,7 +122,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 														},
 														"url": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Url defines address of rate limit service. Not Null`,
 															Validators: []validator.String{
@@ -151,24 +141,19 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Define if rate limiting should be disabled.`,
 												},
 												"on_rate_limit": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"headers": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"add": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	NestedObject: schema.NestedAttributeObject{
 																		Validators: []validator.Object{
@@ -176,7 +161,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																		},
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -186,7 +170,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																				},
 																			},
 																			"value": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -200,7 +183,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																},
 																"set": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	NestedObject: schema.NestedAttributeObject{
 																		Validators: []validator.Object{
@@ -208,7 +190,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																		},
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -218,7 +199,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																				},
 																			},
 																			"value": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -235,7 +215,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															Description: `The Headers to be added to the HTTP response on a rate limit event`,
 														},
 														"status": schema.Int64Attribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The HTTP status code to be set on a rate limit event`,
 														},
@@ -243,7 +222,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Describes the actions to take on a rate limit event`,
 												},
 												"ratelimit_on_request": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -251,7 +229,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 														},
 														Attributes: map[string]schema.Attribute{
 															"kind": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Kind defines type of rate limit config. Possible options: OnHeader. Not Null; must be "OnHeader"`,
 																Validators: []validator.String{
@@ -260,7 +237,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"limits": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
@@ -268,11 +244,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																	Attributes: map[string]schema.Attribute{
 																		"request_rate": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"interval": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured. Not Null`,
 																					Validators: []validator.String{
@@ -280,7 +254,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																					},
 																				},
 																				"num": schema.Int64Attribute{
-																					Computed: true,
 																					Optional: true,
 																					MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																						`or a number of connections).` + "\n" +
@@ -296,7 +269,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																			},
 																		},
 																		"value": schema.StringAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `Value of the request element on which rate limit should apply. E.g. header value. Not Null`,
 																			Validators: []validator.String{
@@ -311,7 +283,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"name": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Name of the request element on which rate limit should apply. E.g. header name. Not Null`,
 																Validators: []validator.String{
@@ -323,11 +294,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Defines rate limit based on request content`,
 												},
 												"request_rate": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"interval": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured. Not Null`,
 															Validators: []validator.String{
@@ -335,7 +304,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 														},
 														"num": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																`or a number of connections).` + "\n" +
@@ -354,7 +322,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"mode": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Mode defines rate limit behavior when limits are reached. Possible options: Limit and Shadow. Setting Shadow will` + "\n" +
 												`not block over the limit requests but will update metrics. This is useful for testing rate limit configuration.` + "\n" +
@@ -371,11 +338,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -393,31 +358,26 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -427,13 +387,11 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -452,11 +410,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -474,31 +430,26 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -508,13 +459,11 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -526,7 +475,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -534,24 +482,19 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backend": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"rate_limit_service": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"limit_on_service_fail": schema.BoolAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `LimitOnServiceFail will pass limit requests if ratelimit service is not reachable.`,
 														},
 														"timeout": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Timeout for rate limit request made form Data Plane Proxy to rate limit service. Not Null`,
 															Validators: []validator.String{
@@ -559,7 +502,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 														},
 														"url": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Url defines address of rate limit service. Not Null`,
 															Validators: []validator.String{
@@ -579,24 +521,19 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"http": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Define if rate limiting should be disabled.`,
 												},
 												"on_rate_limit": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"headers": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"add": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	NestedObject: schema.NestedAttributeObject{
 																		Validators: []validator.Object{
@@ -604,7 +541,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																		},
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -614,7 +550,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																				},
 																			},
 																			"value": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -628,7 +563,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																},
 																"set": schema.ListNestedAttribute{
-																	Computed: true,
 																	Optional: true,
 																	NestedObject: schema.NestedAttributeObject{
 																		Validators: []validator.Object{
@@ -636,7 +570,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																		},
 																		Attributes: map[string]schema.Attribute{
 																			"name": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -646,7 +579,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																				},
 																			},
 																			"value": schema.StringAttribute{
-																				Computed:    true,
 																				Optional:    true,
 																				Description: `Not Null`,
 																				Validators: []validator.String{
@@ -663,7 +595,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															Description: `The Headers to be added to the HTTP response on a rate limit event`,
 														},
 														"status": schema.Int64Attribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The HTTP status code to be set on a rate limit event`,
 														},
@@ -671,7 +602,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Describes the actions to take on a rate limit event`,
 												},
 												"ratelimit_on_request": schema.ListNestedAttribute{
-													Computed: true,
 													Optional: true,
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
@@ -679,7 +609,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 														},
 														Attributes: map[string]schema.Attribute{
 															"kind": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Kind defines type of rate limit config. Possible options: OnHeader. Not Null; must be "OnHeader"`,
 																Validators: []validator.String{
@@ -688,7 +617,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"limits": schema.ListNestedAttribute{
-																Computed: true,
 																Optional: true,
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
@@ -696,11 +624,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																	},
 																	Attributes: map[string]schema.Attribute{
 																		"request_rate": schema.SingleNestedAttribute{
-																			Computed: true,
 																			Optional: true,
 																			Attributes: map[string]schema.Attribute{
 																				"interval": schema.StringAttribute{
-																					Computed:    true,
 																					Optional:    true,
 																					Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured. Not Null`,
 																					Validators: []validator.String{
@@ -708,7 +634,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																					},
 																				},
 																				"num": schema.Int64Attribute{
-																					Computed: true,
 																					Optional: true,
 																					MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																						`or a number of connections).` + "\n" +
@@ -724,7 +649,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																			},
 																		},
 																		"value": schema.StringAttribute{
-																			Computed:    true,
 																			Optional:    true,
 																			Description: `Value of the request element on which rate limit should apply. E.g. header value. Not Null`,
 																			Validators: []validator.String{
@@ -739,7 +663,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 																},
 															},
 															"name": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `Name of the request element on which rate limit should apply. E.g. header name. Not Null`,
 																Validators: []validator.String{
@@ -751,11 +674,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Description: `Defines rate limit based on request content`,
 												},
 												"request_rate": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"interval": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `The interval the number of units is accounted for. Only 1s, 1m, 1h or 24h can be configured. Not Null`,
 															Validators: []validator.String{
@@ -763,7 +684,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 															},
 														},
 														"num": schema.Int64Attribute{
-															Computed: true,
 															Optional: true,
 															MarkdownDescription: `Number of units per interval (depending on usage it can be a number of requests,` + "\n" +
 																`or a number of connections).` + "\n" +
@@ -782,7 +702,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"mode": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Mode defines rate limit behavior when limits are reached. Possible options: Limit and Shadow. Setting Shadow will` + "\n" +
 												`not block over the limit requests but will update metrics. This is useful for testing rate limit configuration.` + "\n" +
@@ -799,11 +718,9 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -821,31 +738,26 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -855,13 +767,11 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

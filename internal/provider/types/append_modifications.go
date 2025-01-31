@@ -3,9 +3,9 @@
 package types
 
 type AppendModifications struct {
-	Cluster       *Cluster     `tfsdk:"cluster" tfPlanOnly:"true"`
-	HTTPFilter    *HTTPFilter  `tfsdk:"http_filter" tfPlanOnly:"true"`
-	Listener      *Listener    `tfsdk:"listener" tfPlanOnly:"true"`
-	NetworkFilter *HTTPFilter  `tfsdk:"network_filter" tfPlanOnly:"true"`
-	VirtualHost   *VirtualHost `tfsdk:"virtual_host" tfPlanOnly:"true"`
+	Cluster       *Cluster     `tfsdk:"cluster"`
+	HTTPFilter    *HTTPFilter  `tfsdk:"http_filter"`
+	Listener      *Listener    `tfsdk:"listener"`
+	NetworkFilter *HTTPFilter  `tfsdk:"network_filter"`
+	VirtualHost   *VirtualHost `tfsdk:"virtual_host"`
 }

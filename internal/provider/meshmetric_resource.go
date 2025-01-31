@@ -40,14 +40,14 @@ type MeshMetricResource struct {
 // MeshMetricResourceModel describes the resource data model.
 type MeshMetricResourceModel struct {
 	CpID             types.String               `tfsdk:"cp_id"`
-	CreationTime     types.String               `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String    `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String               `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String               `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String               `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshMetricItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String               `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String             `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String               `tfsdk:"creation_time"`
+	Labels           map[string]types.String    `tfsdk:"labels"`
+	Mesh             types.String               `tfsdk:"mesh"`
+	ModificationTime types.String               `tfsdk:"modification_time"`
+	Name             types.String               `tfsdk:"name"`
+	Spec             tfTypes.MeshMetricItemSpec `tfsdk:"spec"`
+	Type             types.String               `tfsdk:"type"`
+	Warnings         []types.String             `tfsdk:"warnings"`
 }
 
 func (r *MeshMetricResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -71,7 +70,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -81,7 +79,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -96,11 +93,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"default": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"applications": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -108,22 +103,18 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Attributes: map[string]schema.Attribute{
 										"address": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Address on which an application listens.`,
 										},
 										"name": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Name of the application to scrape`,
 										},
 										"path": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Path on which an application expose HTTP endpoint with metrics.`,
 										},
 										"port": schema.Int64Attribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Port on which an application expose HTTP endpoint with metrics. Not Null`,
 											Validators: []validator.Int64{
@@ -135,7 +126,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								Description: `Applications is a list of application that Dataplane Proxy will scrape`,
 							},
 							"backends": schema.ListNestedAttribute{
-								Computed: true,
 								Optional: true,
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
@@ -143,11 +133,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 									},
 									Attributes: map[string]schema.Attribute{
 										"open_telemetry": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"endpoint": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Endpoint for OpenTelemetry collector. Not Null`,
 													Validators: []validator.String{
@@ -155,7 +143,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 												},
 												"refresh_interval": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `RefreshInterval defines how frequent metrics should be pushed to collector`,
 												},
@@ -163,16 +150,13 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `OpenTelemetry backend configuration`,
 										},
 										"prometheus": schema.SingleNestedAttribute{
-											Computed: true,
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"client_id": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `ClientId of the Prometheus backend. Needed when using MADS for DP discovery.`,
 												},
 												"path": schema.StringAttribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null`,
 													Validators: []validator.String{
@@ -180,7 +164,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 												},
 												"port": schema.Int64Attribute{
-													Computed:    true,
 													Optional:    true,
 													Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null`,
 													Validators: []validator.Int64{
@@ -188,11 +171,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 												},
 												"tls": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Configuration of TLS for Prometheus listener. Not Null; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]`,
 															Validators: []validator.String{
@@ -211,7 +192,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `Prometheus backend configuration.`,
 										},
 										"type": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available. Not Null; must be one of ["Prometheus", "OpenTelemetry"]`,
 											Validators: []validator.String{
@@ -227,22 +207,18 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								Description: `Backends list that will be used to collect metrics.`,
 							},
 							"sidecar": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"include_unused": schema.BoolAttribute{
-										Computed: true,
 										Optional: true,
 										MarkdownDescription: `IncludeUnused if false will scrape only metrics that has been by sidecar (counters incremented` + "\n" +
 											`at least once, gauges changed at least once, and histograms added to at` + "\n" +
 											`least once). If true will scrape all metrics (even the ones with zeros).`,
 									},
 									"profiles": schema.SingleNestedAttribute{
-										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"append_profiles": schema.ListNestedAttribute{
-												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -250,7 +226,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Attributes: map[string]schema.Attribute{
 														"name": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Name of the predefined profile, one of: all, basic, none. Not Null; must be one of ["All", "Basic", "None"]`,
 															Validators: []validator.String{
@@ -267,7 +242,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Description: `AppendProfiles allows to combine the metrics from multiple predefined profiles.`,
 											},
 											"exclude": schema.ListNestedAttribute{
-												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -275,7 +249,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Attributes: map[string]schema.Attribute{
 														"match": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Match is the value used to match using particular Type. Not Null`,
 															Validators: []validator.String{
@@ -283,7 +256,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 															},
 														},
 														"type": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]`,
 															Validators: []validator.String{
@@ -302,7 +274,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													`Exclude is subordinate to Include.`,
 											},
 											"include": schema.ListNestedAttribute{
-												Computed: true,
 												Optional: true,
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
@@ -310,7 +281,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													},
 													Attributes: map[string]schema.Attribute{
 														"match": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Match is the value used to match using particular Type. Not Null`,
 															Validators: []validator.String{
@@ -318,7 +288,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 															},
 														},
 														"type": schema.StringAttribute{
-															Computed:    true,
 															Optional:    true,
 															Description: `Type defined the type of selector, one of: prefix, regex, exact. Not Null; must be one of ["Prefix", "Regex", "Exact", "Contains"]`,
 															Validators: []validator.String{
@@ -346,11 +315,9 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Description: `MeshMetric configuration.`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -368,31 +335,26 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -402,13 +364,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

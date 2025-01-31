@@ -36,13 +36,13 @@ type HostnameGeneratorResource struct {
 // HostnameGeneratorResourceModel describes the resource data model.
 type HostnameGeneratorResourceModel struct {
 	CpID             types.String            `tfsdk:"cp_id"`
-	CreationTime     types.String            `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	ModificationTime types.String            `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.Spec            `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String            `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String          `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String            `tfsdk:"creation_time"`
+	Labels           map[string]types.String `tfsdk:"labels"`
+	ModificationTime types.String            `tfsdk:"modification_time"`
+	Name             types.String            `tfsdk:"name"`
+	Spec             tfTypes.Spec            `tfsdk:"spec"`
+	Type             types.String            `tfsdk:"type"`
+	Warnings         []types.String          `tfsdk:"warnings"`
 }
 
 func (r *HostnameGeneratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,7 +58,6 @@ func (r *HostnameGeneratorResource) Schema(ctx context.Context, req resource.Sch
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -66,13 +65,11 @@ func (r *HostnameGeneratorResource) Schema(ctx context.Context, req resource.Sch
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -87,37 +84,30 @@ func (r *HostnameGeneratorResource) Schema(ctx context.Context, req resource.Sch
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"selector": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"mesh_external_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 									},
 								},
 							},
 							"mesh_multi_zone_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 									},
 								},
 							},
 							"mesh_service": schema.SingleNestedAttribute{
-								Computed: true,
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"match_labels": schema.MapAttribute{
-										Computed:    true,
 										Optional:    true,
 										ElementType: types.StringType,
 									},
@@ -126,7 +116,6 @@ func (r *HostnameGeneratorResource) Schema(ctx context.Context, req resource.Sch
 						},
 					},
 					"template": schema.StringAttribute{
-						Computed: true,
 						Optional: true,
 					},
 				},

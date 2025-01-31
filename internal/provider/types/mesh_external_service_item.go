@@ -5,12 +5,12 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshExternalServiceItem struct {
-	CreationTime     types.String                `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String     `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             MeshExternalServiceItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Status           *Status                     `tfsdk:"status" tfPlanOnly:"true"`
-	Type             types.String                `tfsdk:"type" tfPlanOnly:"true"`
+	CreationTime     types.String                `tfsdk:"creation_time"`
+	Labels           map[string]types.String     `tfsdk:"labels"`
+	Mesh             types.String                `tfsdk:"mesh"`
+	ModificationTime types.String                `tfsdk:"modification_time"`
+	Name             types.String                `tfsdk:"name"`
+	Spec             MeshExternalServiceItemSpec `tfsdk:"spec"`
+	Status           *Status                     `tfsdk:"status"`
+	Type             types.String                `tfsdk:"type"`
 }

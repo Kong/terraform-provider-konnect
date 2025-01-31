@@ -117,9 +117,9 @@ func (r *MeshTraceListDataSourceModel) RefreshFromSharedMeshTraceList(resp *shar
 						}
 					}
 				}
-				items1.Spec.Default.Tags = []tfTypes.Tags{}
+				items1.Spec.Default.Tags = []tfTypes.Tags1{}
 				for tagsCount, tagsItem := range itemsItem.Spec.Default.Tags {
-					var tags1 tfTypes.Tags
+					var tags1 tfTypes.Tags1
 					if tagsItem.Header == nil {
 						tags1.Header = nil
 					} else {

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type OnRateLimit struct {
-	Headers *MeshGlobalRateLimitItemSpecHeaders `tfsdk:"headers" tfPlanOnly:"true"`
-	Status  types.Int64                         `tfsdk:"status" tfPlanOnly:"true"`
+	Headers *MeshGlobalRateLimitItemSpecHeaders `tfsdk:"headers"`
+	Status  types.Int64                         `tfsdk:"status"`
 }

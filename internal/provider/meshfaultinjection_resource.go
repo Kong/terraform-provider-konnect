@@ -41,14 +41,14 @@ type MeshFaultInjectionResource struct {
 // MeshFaultInjectionResourceModel describes the resource data model.
 type MeshFaultInjectionResourceModel struct {
 	CpID             types.String                       `tfsdk:"cp_id"`
-	CreationTime     types.String                       `tfsdk:"creation_time" tfPlanOnly:"true"`
-	Labels           map[string]types.String            `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh             types.String                       `tfsdk:"mesh" tfPlanOnly:"true"`
-	ModificationTime types.String                       `tfsdk:"modification_time" tfPlanOnly:"true"`
-	Name             types.String                       `tfsdk:"name" tfPlanOnly:"true"`
-	Spec             tfTypes.MeshFaultInjectionItemSpec `tfsdk:"spec" tfPlanOnly:"true"`
-	Type             types.String                       `tfsdk:"type" tfPlanOnly:"true"`
-	Warnings         []types.String                     `tfsdk:"warnings" tfPlanOnly:"true"`
+	CreationTime     types.String                       `tfsdk:"creation_time"`
+	Labels           map[string]types.String            `tfsdk:"labels"`
+	Mesh             types.String                       `tfsdk:"mesh"`
+	ModificationTime types.String                       `tfsdk:"modification_time"`
+	Name             types.String                       `tfsdk:"name"`
+	Spec             tfTypes.MeshFaultInjectionItemSpec `tfsdk:"spec"`
+	Type             types.String                       `tfsdk:"type"`
+	Warnings         []types.String                     `tfsdk:"warnings"`
 }
 
 func (r *MeshFaultInjectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
@@ -72,7 +71,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				},
 			},
 			"labels": schema.MapAttribute{
-				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `The labels to help identity resources`,
@@ -82,7 +80,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
@@ -97,7 +94,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -105,11 +101,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"http": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
@@ -117,11 +111,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 												},
 												Attributes: map[string]schema.Attribute{
 													"abort": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"http_status": schema.Int64Attribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `HTTP status code which will be returned to source side. Not Null`,
 																Validators: []validator.Int64{
@@ -129,11 +121,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -142,7 +132,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -164,15 +153,12 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 															`predefined status code`,
 													},
 													"delay": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -181,7 +167,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -198,7 +183,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `The duration during which the response will be delayed. Not Null`,
 																Validators: []validator.String{
@@ -209,11 +193,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Delay defines configuration of delaying a response from a destination`,
 													},
 													"response_bandwidth": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"limit": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Limit is represented by value measure in Gbps, Mbps, kbps, e.g.` + "\n" +
 																	`10kbps` + "\n" +
@@ -223,11 +205,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -236,7 +216,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -265,11 +244,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -287,31 +264,26 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -321,13 +293,11 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -346,11 +316,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"target_ref": schema.SingleNestedAttribute{
-						Computed: true,
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
@@ -368,31 +336,26 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 							"labels": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 									`Name and Namespace can be used.`,
 							},
 							"mesh": schema.StringAttribute{
-								Computed:    true,
 								Optional:    true,
 								Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 							},
 							"name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 									`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 							},
 							"namespace": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -402,13 +365,11 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 								},
 							},
 							"section_name": schema.StringAttribute{
-								Computed: true,
 								Optional: true,
 								MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 									`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 							},
 							"tags": schema.MapAttribute{
-								Computed:    true,
 								Optional:    true,
 								ElementType: types.StringType,
 								MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +
@@ -420,7 +381,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
-						Computed: true,
 						Optional: true,
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
@@ -428,11 +388,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 							},
 							Attributes: map[string]schema.Attribute{
 								"default": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"http": schema.ListNestedAttribute{
-											Computed: true,
 											Optional: true,
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
@@ -440,11 +398,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 												},
 												Attributes: map[string]schema.Attribute{
 													"abort": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"http_status": schema.Int64Attribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `HTTP status code which will be returned to source side. Not Null`,
 																Validators: []validator.Int64{
@@ -452,11 +408,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -465,7 +419,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -487,15 +440,12 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 															`predefined status code`,
 													},
 													"delay": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -504,7 +454,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -521,7 +470,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"value": schema.StringAttribute{
-																Computed:    true,
 																Optional:    true,
 																Description: `The duration during which the response will be delayed. Not Null`,
 																Validators: []validator.String{
@@ -532,11 +480,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 														Description: `Delay defines configuration of delaying a response from a destination`,
 													},
 													"response_bandwidth": schema.SingleNestedAttribute{
-														Computed: true,
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"limit": schema.StringAttribute{
-																Computed: true,
 																Optional: true,
 																MarkdownDescription: `Limit is represented by value measure in Gbps, Mbps, kbps, e.g.` + "\n" +
 																	`10kbps` + "\n" +
@@ -546,11 +492,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																},
 															},
 															"percentage": schema.SingleNestedAttribute{
-																Computed: true,
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"integer": schema.Int64Attribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.Int64{
 																			int64validator.ConflictsWith(path.Expressions{
@@ -559,7 +503,6 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 																		},
 																	},
 																	"str": schema.StringAttribute{
-																		Computed: true,
 																		Optional: true,
 																		Validators: []validator.String{
 																			stringvalidator.ConflictsWith(path.Expressions{
@@ -588,11 +531,9 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 										`'targetRef'`,
 								},
 								"target_ref": schema.SingleNestedAttribute{
-									Computed: true,
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
@@ -610,31 +551,26 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"labels": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Labels are used to select group of MeshServices that match labels. Either Labels or` + "\n" +
 												`Name and Namespace can be used.`,
 										},
 										"mesh": schema.StringAttribute{
-											Computed:    true,
 											Optional:    true,
 											Description: `Mesh is reserved for future use to identify cross mesh resources.`,
 										},
 										"name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Name of the referenced resource. Can only be used with kinds: ` + "`" + `MeshService` + "`" + `,` + "\n" +
 												`` + "`" + `MeshServiceSubset` + "`" + ` and ` + "`" + `MeshGatewayRoute` + "`" + ``,
 										},
 										"namespace": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `Namespace specifies the namespace of target resource. If empty only resources in policy namespace` + "\n" +
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
@@ -644,13 +580,11 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 											},
 										},
 										"section_name": schema.StringAttribute{
-											Computed: true,
 											Optional: true,
 											MarkdownDescription: `SectionName is used to target specific section of resource.` + "\n" +
 												`For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.`,
 										},
 										"tags": schema.MapAttribute{
-											Computed:    true,
 											Optional:    true,
 											ElementType: types.StringType,
 											MarkdownDescription: `Tags used to select a subset of proxies by tags. Can only be used with kinds` + "\n" +

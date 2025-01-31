@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Envoy struct {
-	FilterRegex types.String `tfsdk:"filter_regex" tfPlanOnly:"true"`
-	UsedOnly    types.Bool   `tfsdk:"used_only" tfPlanOnly:"true"`
+	FilterRegex types.String `tfsdk:"filter_regex"`
+	UsedOnly    types.Bool   `tfsdk:"used_only"`
 }

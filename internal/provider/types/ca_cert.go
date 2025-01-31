@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CaCert struct {
-	Inline       types.String `tfsdk:"inline" tfPlanOnly:"true"`
-	InlineString types.String `tfsdk:"inline_string" tfPlanOnly:"true"`
-	Secret       types.String `tfsdk:"secret" tfPlanOnly:"true"`
+	Inline       types.String `tfsdk:"inline"`
+	InlineString types.String `tfsdk:"inline_string"`
+	Secret       types.String `tfsdk:"secret"`
 }

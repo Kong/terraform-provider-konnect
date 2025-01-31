@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshPassthroughItemDefault struct {
-	AppendMatch     []AppendMatch `tfsdk:"append_match" tfPlanOnly:"true"`
-	PassthroughMode types.String  `tfsdk:"passthrough_mode" tfPlanOnly:"true"`
+	AppendMatch     []AppendMatch `tfsdk:"append_match"`
+	PassthroughMode types.String  `tfsdk:"passthrough_mode"`
 }

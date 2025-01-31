@@ -95,12 +95,12 @@ func (r *GatewayPluginZipkinDataSourceModel) RefreshFromSharedZipkinPlugin(resp 
 			r.Config.SampleRatio = types.NumberNull()
 		}
 		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-		r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+		r.Config.StaticTags = []tfTypes.StaticTags{}
 		if len(r.Config.StaticTags) > len(resp.Config.StaticTags) {
 			r.Config.StaticTags = r.Config.StaticTags[:len(resp.Config.StaticTags)]
 		}
 		for staticTagsCount, staticTagsItem := range resp.Config.StaticTags {
-			var staticTags1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+			var staticTags1 tfTypes.StaticTags
 			staticTags1.Name = types.StringValue(staticTagsItem.Name)
 			staticTags1.Value = types.StringValue(staticTagsItem.Value)
 			if staticTagsCount+1 > len(r.Config.StaticTags) {

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshHTTPRouteItemSpecPath struct {
-	ReplaceFullPath    types.String `tfsdk:"replace_full_path" tfPlanOnly:"true"`
-	ReplacePrefixMatch types.String `tfsdk:"replace_prefix_match" tfPlanOnly:"true"`
-	Type               types.String `tfsdk:"type" tfPlanOnly:"true"`
+	ReplaceFullPath    types.String `tfsdk:"replace_full_path"`
+	ReplacePrefixMatch types.String `tfsdk:"replace_prefix_match"`
+	Type               types.String `tfsdk:"type"`
 }

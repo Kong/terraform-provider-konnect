@@ -3,6 +3,6 @@
 package types
 
 type MeshTLSItemFrom struct {
-	Default   *MeshTLSItemDefault        `tfsdk:"default" tfPlanOnly:"true"`
-	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref" tfPlanOnly:"true"`
+	Default   *MeshTLSItemDefault        `tfsdk:"default"`
+	TargetRef MeshAccessLogItemTargetRef `tfsdk:"target_ref"`
 }

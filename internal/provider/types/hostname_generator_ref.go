@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type HostnameGeneratorRef struct {
-	CoreName types.String `tfsdk:"core_name" tfPlanOnly:"true"`
+	CoreName types.String `tfsdk:"core_name"`
 }

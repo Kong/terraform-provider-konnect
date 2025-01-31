@@ -3,5 +3,5 @@
 package types
 
 type MeshTCPRouteItemDefault struct {
-	BackendRefs []BackendRefs `tfsdk:"backend_refs" tfPlanOnly:"true"`
+	BackendRefs []BackendRefs `tfsdk:"backend_refs"`
 }

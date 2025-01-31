@@ -5,20 +5,20 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshHealthCheckItemDefault struct {
-	AlwaysLogHealthCheckFailures types.Bool               `tfsdk:"always_log_health_check_failures" tfPlanOnly:"true"`
-	EventLogPath                 types.String             `tfsdk:"event_log_path" tfPlanOnly:"true"`
-	FailTrafficOnPanic           types.Bool               `tfsdk:"fail_traffic_on_panic" tfPlanOnly:"true"`
-	Grpc                         *Grpc                    `tfsdk:"grpc" tfPlanOnly:"true"`
-	HealthyPanicThreshold        *Mode                    `tfsdk:"healthy_panic_threshold" tfPlanOnly:"true"`
-	HealthyThreshold             types.Int64              `tfsdk:"healthy_threshold" tfPlanOnly:"true"`
-	HTTP                         *MeshHealthCheckItemHTTP `tfsdk:"http" tfPlanOnly:"true"`
-	InitialJitter                types.String             `tfsdk:"initial_jitter" tfPlanOnly:"true"`
-	Interval                     types.String             `tfsdk:"interval" tfPlanOnly:"true"`
-	IntervalJitter               types.String             `tfsdk:"interval_jitter" tfPlanOnly:"true"`
-	IntervalJitterPercent        types.Int64              `tfsdk:"interval_jitter_percent" tfPlanOnly:"true"`
-	NoTrafficInterval            types.String             `tfsdk:"no_traffic_interval" tfPlanOnly:"true"`
-	ReuseConnection              types.Bool               `tfsdk:"reuse_connection" tfPlanOnly:"true"`
-	TCP                          *TCP                     `tfsdk:"tcp" tfPlanOnly:"true"`
-	Timeout                      types.String             `tfsdk:"timeout" tfPlanOnly:"true"`
-	UnhealthyThreshold           types.Int64              `tfsdk:"unhealthy_threshold" tfPlanOnly:"true"`
+	AlwaysLogHealthCheckFailures types.Bool               `tfsdk:"always_log_health_check_failures"`
+	EventLogPath                 types.String             `tfsdk:"event_log_path"`
+	FailTrafficOnPanic           types.Bool               `tfsdk:"fail_traffic_on_panic"`
+	Grpc                         *Grpc                    `tfsdk:"grpc"`
+	HealthyPanicThreshold        *Mode                    `tfsdk:"healthy_panic_threshold"`
+	HealthyThreshold             types.Int64              `tfsdk:"healthy_threshold"`
+	HTTP                         *MeshHealthCheckItemHTTP `tfsdk:"http"`
+	InitialJitter                types.String             `tfsdk:"initial_jitter"`
+	Interval                     types.String             `tfsdk:"interval"`
+	IntervalJitter               types.String             `tfsdk:"interval_jitter"`
+	IntervalJitterPercent        types.Int64              `tfsdk:"interval_jitter_percent"`
+	NoTrafficInterval            types.String             `tfsdk:"no_traffic_interval"`
+	ReuseConnection              types.Bool               `tfsdk:"reuse_connection"`
+	TCP                          *TCP                     `tfsdk:"tcp"`
+	Timeout                      types.String             `tfsdk:"timeout"`
+	UnhealthyThreshold           types.Int64              `tfsdk:"unhealthy_threshold"`
 }

@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Datadog struct {
-	SplitService types.Bool   `tfsdk:"split_service" tfPlanOnly:"true"`
-	URL          types.String `tfsdk:"url" tfPlanOnly:"true"`
+	SplitService types.Bool   `tfsdk:"split_service"`
+	URL          types.String `tfsdk:"url"`
 }

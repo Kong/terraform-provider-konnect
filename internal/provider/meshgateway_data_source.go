@@ -29,14 +29,14 @@ type MeshGatewayDataSource struct {
 
 // MeshGatewayDataSourceModel describes the data model.
 type MeshGatewayDataSourceModel struct {
-	Conf      *tfTypes.Conf           `tfsdk:"conf" tfPlanOnly:"true"`
+	Conf      *tfTypes.Conf           `tfsdk:"conf"`
 	CpID      types.String            `tfsdk:"cp_id"`
-	Labels    map[string]types.String `tfsdk:"labels" tfPlanOnly:"true"`
-	Mesh      types.String            `tfsdk:"mesh" tfPlanOnly:"true"`
-	Name      types.String            `tfsdk:"name" tfPlanOnly:"true"`
-	Selectors []tfTypes.Selectors     `tfsdk:"selectors" tfPlanOnly:"true"`
-	Tags      map[string]types.String `tfsdk:"tags" tfPlanOnly:"true"`
-	Type      types.String            `tfsdk:"type" tfPlanOnly:"true"`
+	Labels    map[string]types.String `tfsdk:"labels"`
+	Mesh      types.String            `tfsdk:"mesh"`
+	Name      types.String            `tfsdk:"name"`
+	Selectors []tfTypes.Selectors     `tfsdk:"selectors"`
+	Tags      map[string]types.String `tfsdk:"tags"`
+	Type      types.String            `tfsdk:"type"`
 }
 
 // Metadata returns the data source type name.
