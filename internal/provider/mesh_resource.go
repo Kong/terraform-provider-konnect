@@ -720,6 +720,7 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Routing settings of the mesh`,
 			},
 			"skip_creating_initial_policies": schema.ListAttribute{
+				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				MarkdownDescription: `List of policies to skip creating by default when the mesh is created.` + "\n" +

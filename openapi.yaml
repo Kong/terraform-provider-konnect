@@ -19544,8 +19544,6 @@ components:
           type: array
           items:
             type: string
-            x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
         tracing:
           description: |-
             Tracing settings.
