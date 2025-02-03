@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: dbe5589d7995eb65ae5a7054db636c9c
+  docChecksum: 85127b07e1609cf7fc305362922fb46f
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -36,6 +36,7 @@ generatedFiles:
   - examples/data-sources/konnect_api_product_specification/data-source.tf
   - examples/data-sources/konnect_api_product_version/data-source.tf
   - examples/data-sources/konnect_application_auth_strategy/data-source.tf
+  - examples/data-sources/konnect_audit_log/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
@@ -162,6 +163,7 @@ generatedFiles:
   - examples/resources/konnect_api_product_version/resource.tf
   - examples/resources/konnect_application_auth_strategy/import.sh
   - examples/resources/konnect_application_auth_strategy/resource.tf
+  - examples/resources/konnect_audit_log/resource.tf
   - examples/resources/konnect_cloud_gateway_configuration/import.sh
   - examples/resources/konnect_cloud_gateway_configuration/resource.tf
   - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
@@ -427,6 +429,10 @@ generatedFiles:
   - internal/provider/applicationauthstrategy_data_source_sdk.go
   - internal/provider/applicationauthstrategy_resource.go
   - internal/provider/applicationauthstrategy_resource_sdk.go
+  - internal/provider/auditlog_data_source.go
+  - internal/provider/auditlog_data_source_sdk.go
+  - internal/provider/auditlog_resource.go
+  - internal/provider/auditlog_resource_sdk.go
   - internal/provider/cloudgatewayconfiguration_data_source.go
   - internal/provider/cloudgatewayconfiguration_data_source_sdk.go
   - internal/provider/cloudgatewayconfiguration_resource.go
@@ -1119,6 +1125,7 @@ generatedFiles:
   - internal/sdk/apiproductversions.go
   - internal/sdk/apiproductversionspecification.go
   - internal/sdk/appauthstrategies.go
+  - internal/sdk/auditlogs.go
   - internal/sdk/basicauthcredentials.go
   - internal/sdk/cacertificates.go
   - internal/sdk/certificates.go
@@ -1279,6 +1286,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteapiproductversion.go
   - internal/sdk/models/operations/deleteapiproductversionspec.go
   - internal/sdk/models/operations/deleteappauthstrategy.go
+  - internal/sdk/models/operations/deleteauditlogwebhook.go
   - internal/sdk/models/operations/deleteawslambdaplugin.go
   - internal/sdk/models/operations/deleteazurefunctionsplugin.go
   - internal/sdk/models/operations/deletebasicauthplugin.go
@@ -1399,6 +1407,7 @@ generatedFiles:
   - internal/sdk/models/operations/getapiproductversion.go
   - internal/sdk/models/operations/getapiproductversionspec.go
   - internal/sdk/models/operations/getappauthstrategy.go
+  - internal/sdk/models/operations/getauditlogwebhook.go
   - internal/sdk/models/operations/getawslambdaplugin.go
   - internal/sdk/models/operations/getazurefunctionsplugin.go
   - internal/sdk/models/operations/getbasicauthplugin.go
@@ -1533,6 +1542,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateapiproductversion.go
   - internal/sdk/models/operations/updateapiproductversionspec.go
   - internal/sdk/models/operations/updateappauthstrategy.go
+  - internal/sdk/models/operations/updateauditlogwebhook.go
   - internal/sdk/models/operations/updateawslambdaplugin.go
   - internal/sdk/models/operations/updateazurefunctionsplugin.go
   - internal/sdk/models/operations/updatebasicauthplugin.go
@@ -1655,6 +1665,7 @@ generatedFiles:
   - internal/sdk/models/shared/appearancethemecolorvariables.go
   - internal/sdk/models/shared/assignedrole.go
   - internal/sdk/models/shared/assignrole.go
+  - internal/sdk/models/shared/auditlogwebhook.go
   - internal/sdk/models/shared/authstrategy.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
   - internal/sdk/models/shared/authstrategykeyauth.go
@@ -1861,6 +1872,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductversionspecdto.go
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
   - internal/sdk/models/shared/updateappauthstrategyresponse.go
+  - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/updateportalappearancerequest.go
@@ -8457,4 +8469,37 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-audit-log-webhook:
+    speakeasy-default-update-audit-log-webhook:
+      requestBody:
+        application/json: {"endpoint": "https://example.com/audit-logs", "authorization": "Bearer sometoken", "enabled": true, "log_format": "cef", "skip_ssl_verification": false}
+      responses:
+        "200":
+          application/json: {"endpoint": "https://example.com/audit-logs", "enabled": true, "log_format": "cef", "skip_ssl_verification": false}
+        "400":
+          application/problem+json: {"status": 286051, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-audit-log-webhook:
+    speakeasy-default-get-audit-log-webhook:
+      responses:
+        "200":
+          application/json: {"endpoint": "https://example.com/audit-logs", "enabled": true, "log_format": "cef", "skip_ssl_verification": false}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-audit-log-webhook:
+    speakeasy-default-delete-audit-log-webhook:
+      responses:
+        "200":
+          application/json: {"endpoint": "https://example.com/audit-logs", "enabled": true, "log_format": "cef", "skip_ssl_verification": false}
+        "400":
+          application/problem+json: {"status": 989635, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}, {"field": "name", "rule": "max", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 generatedTests: {}
