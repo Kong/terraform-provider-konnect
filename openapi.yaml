@@ -27204,10 +27204,6 @@ tags:
     name: DP Certificates
   - description: Custom Plugin Schemas
     name: Custom Plugin Schemas
-  - description: Config Stores
-    name: Config Stores
-  - description: Config Store Secrets
-    name: Config Store Secrets
   - description: |
       Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
       <br><br>
