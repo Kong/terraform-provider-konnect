@@ -85,6 +85,7 @@ type Konnect struct {
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
 	//
 	AppAuthStrategies *AppAuthStrategies
+	AuditLogs         *AuditLogs
 	CloudGateways     *CloudGateways
 	Networks          *Networks
 	ControlPlanes     *ControlPlanes
@@ -143,6 +144,7 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+	//
 	//
 	//
 	//
@@ -324,6 +326,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIProductVersionSpecification = newAPIProductVersionSpecification(sdk.sdkConfiguration)
 
 	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
+
+	sdk.AuditLogs = newAuditLogs(sdk.sdkConfiguration)
 
 	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
 

@@ -716,6 +716,41 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - App Auth Strategies
+  /v2/audit-log-webhook:
+    patch:
+      x-speakeasy-entity-operation:
+        - AuditLog#create
+        - AuditLog#update
+      operationId: update-audit-log-webhook
+      summary: Update Audit Log Webhook
+      description: Updates the configuration for a webhook to receive audit logs.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuditLogWebhook'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/WebhookBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Audit Logs
+    get:
+      x-speakeasy-entity-operation: AuditLog#read
+      operationId: get-audit-log-webhook
+      summary: Get Audit Log Webhook
+      description: Returns configuration for the audit log webhook.
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Audit Logs
   /v2/cloud-gateways/configurations:
     put:
       x-speakeasy-entity-operation: 'CloudGatewayConfiguration#create,update'
@@ -10190,6 +10225,35 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Team Membership
+  /v2/audit-log-webhook#delete:
+    patch:
+      x-speakeasy-entity-operation: AuditLog#delete
+      operationId: delete-audit-log-webhook
+      summary: Delete the audit log webhook
+      description: Disables the audit log webhook.
+      requestBody:
+        description: The request schema to disable an audit log webhook.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  description: Indicates that the data should not be sent to the webhook.
+                  type: boolean
+                  const: false
+                  required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogWebhook'
+        '400':
+          $ref: '#/components/responses/WebhookBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Audit Logs
 components:
   parameters:
     ACLId:
@@ -26351,6 +26415,40 @@ components:
                 format: uuid
                 x-speakeasy-name-override: account_id
       description: The request schema for adding a system account to a team.
+    UpdateAuditLogWebhook:
+      description: The request schema to modify an audit log webhook.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: AuditLog
+            type: object
+            properties:
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              authorization:
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
+                type: string
+                example: Bearer sometoken
+              enabled:
+                description: Indicates if the data should be sent to the webhook.
+                type: boolean
+                example: true
+              log_format:
+                description: The output format of each log message.
+                type: string
+                example: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                type: boolean
+                example: false
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -26935,6 +27033,43 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ServerlessCloudGateway'
+    AuditLogWebhook:
+      description: Get response for audit log webhook
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              enabled:
+                description: Indicates whether audit data should be sent to the webhook.
+                type: boolean
+                example: true
+              log_format:
+                description: The output format of each log messages.
+                type: string
+                example: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                type: boolean
+                example: false
+              updated_at:
+                description: 'Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.'
+                type: string
+                format: date-time
+                readOnly: true
+    WebhookBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
     DataPlaneClientCertificateResponse:
       description: Response body for retrieving a dp-client-certificate.
       content:
@@ -27062,6 +27197,7 @@ tags:
   - name: Authentication
   - name: Impersonation Settings
   - name: Serverless Cloud Gateways
+  - name: Audit Logs
   - description: DP Nodes
     name: DP Nodes
   - description: DP Certificates
@@ -27094,6 +27230,7 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
 
 
 
