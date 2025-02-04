@@ -22,11 +22,11 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
     header_name         = "...my_header_name..."
     hide_client_headers = false
     hour                = 0.92
-    limit_by            = "header"
+    limit_by            = "ip"
     minute              = 3.29
     month               = 7.22
     path                = "...my_path..."
-    policy              = "cluster"
+    policy              = "local"
     redis = {
       database    = 3
       host        = "...my_host..."
@@ -90,12 +90,12 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
+- `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -117,11 +117,11 @@ Optional:
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers.
 - `hour` (Number) The number of HTTP requests that can be made per hour.
-- `limit_by` (String) The entity that is used when aggregating the limits. must be one of ["consumer", "credential", "ip", "service", "header", "path", "consumer-group"]
+- `limit_by` (String) The entity that is used when aggregating the limits. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
 - `minute` (Number) The number of HTTP requests that can be made per minute.
 - `month` (Number) The number of HTTP requests that can be made per month.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["local", "cluster", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 - `second` (Number) The number of HTTP requests that can be made per second.
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.

@@ -27,12 +27,6 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
     realm                 = "...my_realm..."
     validate_request_body = true
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   id               = "...my_id..."
@@ -50,7 +44,7 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
     }
   }
   protocols = [
-    "tls_passthrough"
+    "https"
   ]
   route = {
     id = "...my_id..."
@@ -74,13 +68,11 @@ resource "konnect_gateway_plugin_hmac_auth" "my_gatewaypluginhmacauth" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -102,22 +94,6 @@ Optional:
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service.
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `validate_request_body` (Boolean) A boolean value telling the plugin to enable body validation.
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>
