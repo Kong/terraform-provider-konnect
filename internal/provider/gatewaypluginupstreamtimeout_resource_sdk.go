@@ -9,64 +9,17 @@ import (
 )
 
 func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPluginInput() *shared.UpstreamTimeoutPluginInput {
-	connectTimeout := new(int64)
-	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
-		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
-	} else {
-		connectTimeout = nil
-	}
-	readTimeout := new(int64)
-	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
-		*readTimeout = r.Config.ReadTimeout.ValueInt64()
-	} else {
-		readTimeout = nil
-	}
-	sendTimeout := new(int64)
-	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
-		*sendTimeout = r.Config.SendTimeout.ValueInt64()
-	} else {
-		sendTimeout = nil
-	}
-	config := shared.UpstreamTimeoutPluginConfig{
-		ConnectTimeout: connectTimeout,
-		ReadTimeout:    readTimeout,
-		SendTimeout:    sendTimeout,
-	}
-	var consumer *shared.UpstreamTimeoutPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.UpstreamTimeoutPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.UpstreamTimeoutPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.UpstreamTimeoutPluginConsumerGroup{
-			ID: id1,
-		}
-	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
 	}
-	id2 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id2 = nil
+		id = nil
 	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
@@ -101,50 +54,84 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 			Before: before,
 		}
 	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
+	connectTimeout := new(int64)
+	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
+		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+	} else {
+		connectTimeout = nil
+	}
+	readTimeout := new(int64)
+	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
+		*readTimeout = r.Config.ReadTimeout.ValueInt64()
+	} else {
+		readTimeout = nil
+	}
+	sendTimeout := new(int64)
+	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
+		*sendTimeout = r.Config.SendTimeout.ValueInt64()
+	} else {
+		sendTimeout = nil
+	}
+	config := shared.UpstreamTimeoutPluginConfig{
+		ConnectTimeout: connectTimeout,
+		ReadTimeout:    readTimeout,
+		SendTimeout:    sendTimeout,
+	}
+	var consumer *shared.UpstreamTimeoutPluginConsumer
+	if r.Consumer != nil {
+		id1 := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumer = &shared.UpstreamTimeoutPluginConsumer{
+			ID: id1,
+		}
+	}
 	var protocols []shared.UpstreamTimeoutPluginProtocols = []shared.UpstreamTimeoutPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.UpstreamTimeoutPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.UpstreamTimeoutPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.UpstreamTimeoutPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.UpstreamTimeoutPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.UpstreamTimeoutPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.UpstreamTimeoutPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Consumer:     consumer,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -159,12 +146,6 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) RefreshFromSharedUpstreamTim
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

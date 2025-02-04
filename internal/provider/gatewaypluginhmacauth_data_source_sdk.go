@@ -28,18 +28,6 @@ func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(r
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		r.Config.ValidateRequestBody = types.BoolPointerValue(resp.Config.ValidateRequestBody)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

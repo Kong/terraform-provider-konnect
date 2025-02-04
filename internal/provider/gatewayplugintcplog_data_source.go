@@ -30,8 +30,7 @@ type GatewayPluginTCPLogDataSource struct {
 // GatewayPluginTCPLogDataSourceModel describes the data model.
 type GatewayPluginTCPLogDataSourceModel struct {
 	Config         tfTypes.TCPLogPluginConfig         `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -39,8 +38,8 @@ type GatewayPluginTCPLogDataSourceModel struct {
 	InstanceName   types.String                       `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
@@ -99,14 +98,6 @@ func (r *GatewayPluginTCPLogDataSource) Schema(ctx context.Context, req datasour
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
 			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -151,7 +142,7 @@ func (r *GatewayPluginTCPLogDataSource) Schema(ctx context.Context, req datasour
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
@@ -160,7 +151,7 @@ func (r *GatewayPluginTCPLogDataSource) Schema(ctx context.Context, req datasour
 						Computed: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,

@@ -8,18 +8,59 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-// AuthenticatedGroupBy - Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
-type AuthenticatedGroupBy string
+type MtlsAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *MtlsAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type MtlsAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *MtlsAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type MtlsAuthPluginOrdering struct {
+	After  *MtlsAuthPluginAfter  `json:"after,omitempty"`
+	Before *MtlsAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *MtlsAuthPluginOrdering) GetAfter() *MtlsAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *MtlsAuthPluginOrdering) GetBefore() *MtlsAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+// MtlsAuthPluginAuthenticatedGroupBy - Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
+type MtlsAuthPluginAuthenticatedGroupBy string
 
 const (
-	AuthenticatedGroupByCn AuthenticatedGroupBy = "CN"
-	AuthenticatedGroupByDn AuthenticatedGroupBy = "DN"
+	MtlsAuthPluginAuthenticatedGroupByCn MtlsAuthPluginAuthenticatedGroupBy = "CN"
+	MtlsAuthPluginAuthenticatedGroupByDn MtlsAuthPluginAuthenticatedGroupBy = "DN"
 )
 
-func (e AuthenticatedGroupBy) ToPointer() *AuthenticatedGroupBy {
+func (e MtlsAuthPluginAuthenticatedGroupBy) ToPointer() *MtlsAuthPluginAuthenticatedGroupBy {
 	return &e
 }
-func (e *AuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
+func (e *MtlsAuthPluginAuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -28,18 +69,18 @@ func (e *AuthenticatedGroupBy) UnmarshalJSON(data []byte) error {
 	case "CN":
 		fallthrough
 	case "DN":
-		*e = AuthenticatedGroupBy(v)
+		*e = MtlsAuthPluginAuthenticatedGroupBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for AuthenticatedGroupBy: %v", v)
+		return fmt.Errorf("invalid value for MtlsAuthPluginAuthenticatedGroupBy: %v", v)
 	}
 }
 
 type MtlsAuthPluginConsumerBy string
 
 const (
-	MtlsAuthPluginConsumerByUsername MtlsAuthPluginConsumerBy = "username"
 	MtlsAuthPluginConsumerByCustomID MtlsAuthPluginConsumerBy = "custom_id"
+	MtlsAuthPluginConsumerByUsername MtlsAuthPluginConsumerBy = "username"
 )
 
 func (e MtlsAuthPluginConsumerBy) ToPointer() *MtlsAuthPluginConsumerBy {
@@ -51,9 +92,9 @@ func (e *MtlsAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "username":
-		fallthrough
 	case "custom_id":
+		fallthrough
+	case "username":
 		*e = MtlsAuthPluginConsumerBy(v)
 		return nil
 	default:
@@ -61,33 +102,33 @@ func (e *MtlsAuthPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
-type RevocationCheckMode string
+// MtlsAuthPluginRevocationCheckMode - Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
+type MtlsAuthPluginRevocationCheckMode string
 
 const (
-	RevocationCheckModeSkip          RevocationCheckMode = "SKIP"
-	RevocationCheckModeIgnoreCaError RevocationCheckMode = "IGNORE_CA_ERROR"
-	RevocationCheckModeStrict        RevocationCheckMode = "STRICT"
+	MtlsAuthPluginRevocationCheckModeIgnoreCaError MtlsAuthPluginRevocationCheckMode = "IGNORE_CA_ERROR"
+	MtlsAuthPluginRevocationCheckModeSkip          MtlsAuthPluginRevocationCheckMode = "SKIP"
+	MtlsAuthPluginRevocationCheckModeStrict        MtlsAuthPluginRevocationCheckMode = "STRICT"
 )
 
-func (e RevocationCheckMode) ToPointer() *RevocationCheckMode {
+func (e MtlsAuthPluginRevocationCheckMode) ToPointer() *MtlsAuthPluginRevocationCheckMode {
 	return &e
 }
-func (e *RevocationCheckMode) UnmarshalJSON(data []byte) error {
+func (e *MtlsAuthPluginRevocationCheckMode) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "SKIP":
-		fallthrough
 	case "IGNORE_CA_ERROR":
 		fallthrough
+	case "SKIP":
+		fallthrough
 	case "STRICT":
-		*e = RevocationCheckMode(v)
+		*e = MtlsAuthPluginRevocationCheckMode(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RevocationCheckMode: %v", v)
+		return fmt.Errorf("invalid value for MtlsAuthPluginRevocationCheckMode: %v", v)
 	}
 }
 
@@ -97,12 +138,12 @@ type MtlsAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
-	AuthenticatedGroupBy *AuthenticatedGroupBy `json:"authenticated_group_by,omitempty"`
+	AuthenticatedGroupBy *MtlsAuthPluginAuthenticatedGroupBy `json:"authenticated_group_by,omitempty"`
 	// List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (`id`).
 	CaCertificates []string `json:"ca_certificates,omitempty"`
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `json:"cache_ttl,omitempty"`
-	// The length of time in milliseconds between refreshes of the revocation check status cache.
+	// The length of time in seconds between refreshes of the revocation check status cache.
 	CertCacheTTL *float64 `json:"cert_cache_ttl,omitempty"`
 	// Whether to match the subject name of the client-supplied certificate against consumer's `username` and/or `custom_id` attribute. If set to `[]` (the empty array), then auto-matching is disabled.
 	ConsumerBy []MtlsAuthPluginConsumerBy `json:"consumer_by,omitempty"`
@@ -119,7 +160,7 @@ type MtlsAuthPluginConfig struct {
 	// An integer representing a port number between 0 and 65535, inclusive.
 	HTTPSProxyPort *int64 `json:"https_proxy_port,omitempty"`
 	// Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status.
-	RevocationCheckMode *RevocationCheckMode `json:"revocation_check_mode,omitempty"`
+	RevocationCheckMode *MtlsAuthPluginRevocationCheckMode `json:"revocation_check_mode,omitempty"`
 	// Sends the distinguished names (DN) of the configured CA list in the TLS handshake message.
 	SendCaDn *bool `json:"send_ca_dn,omitempty"`
 	// Skip consumer lookup once certificate is trusted against the configured CA list.
@@ -140,7 +181,7 @@ func (o *MtlsAuthPluginConfig) GetAnonymous() *string {
 	return o.Anonymous
 }
 
-func (o *MtlsAuthPluginConfig) GetAuthenticatedGroupBy() *AuthenticatedGroupBy {
+func (o *MtlsAuthPluginConfig) GetAuthenticatedGroupBy() *MtlsAuthPluginAuthenticatedGroupBy {
 	if o == nil {
 		return nil
 	}
@@ -217,7 +258,7 @@ func (o *MtlsAuthPluginConfig) GetHTTPSProxyPort() *int64 {
 	return o.HTTPSProxyPort
 }
 
-func (o *MtlsAuthPluginConfig) GetRevocationCheckMode() *RevocationCheckMode {
+func (o *MtlsAuthPluginConfig) GetRevocationCheckMode() *MtlsAuthPluginRevocationCheckMode {
 	if o == nil {
 		return nil
 	}
@@ -238,83 +279,13 @@ func (o *MtlsAuthPluginConfig) GetSkipConsumerLookup() *bool {
 	return o.SkipConsumerLookup
 }
 
-// MtlsAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type MtlsAuthPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *MtlsAuthPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type MtlsAuthPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *MtlsAuthPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type MtlsAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *MtlsAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type MtlsAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *MtlsAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type MtlsAuthPluginOrdering struct {
-	After  *MtlsAuthPluginAfter  `json:"after,omitempty"`
-	Before *MtlsAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *MtlsAuthPluginOrdering) GetAfter() *MtlsAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *MtlsAuthPluginOrdering) GetBefore() *MtlsAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type MtlsAuthPluginProtocols string
 
 const (
-	MtlsAuthPluginProtocolsGrpc           MtlsAuthPluginProtocols = "grpc"
-	MtlsAuthPluginProtocolsGrpcs          MtlsAuthPluginProtocols = "grpcs"
-	MtlsAuthPluginProtocolsHTTP           MtlsAuthPluginProtocols = "http"
-	MtlsAuthPluginProtocolsHTTPS          MtlsAuthPluginProtocols = "https"
-	MtlsAuthPluginProtocolsTCP            MtlsAuthPluginProtocols = "tcp"
-	MtlsAuthPluginProtocolsTLS            MtlsAuthPluginProtocols = "tls"
-	MtlsAuthPluginProtocolsTLSPassthrough MtlsAuthPluginProtocols = "tls_passthrough"
-	MtlsAuthPluginProtocolsUDP            MtlsAuthPluginProtocols = "udp"
-	MtlsAuthPluginProtocolsWs             MtlsAuthPluginProtocols = "ws"
-	MtlsAuthPluginProtocolsWss            MtlsAuthPluginProtocols = "wss"
+	MtlsAuthPluginProtocolsGrpc  MtlsAuthPluginProtocols = "grpc"
+	MtlsAuthPluginProtocolsGrpcs MtlsAuthPluginProtocols = "grpcs"
+	MtlsAuthPluginProtocolsHTTP  MtlsAuthPluginProtocols = "http"
+	MtlsAuthPluginProtocolsHTTPS MtlsAuthPluginProtocols = "https"
 )
 
 func (e MtlsAuthPluginProtocols) ToPointer() *MtlsAuthPluginProtocols {
@@ -333,18 +304,6 @@ func (e *MtlsAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = MtlsAuthPluginProtocols(v)
 		return nil
 	default:
@@ -352,7 +311,7 @@ func (e *MtlsAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// MtlsAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// MtlsAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type MtlsAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -378,10 +337,6 @@ func (o *MtlsAuthPluginService) GetID() *string {
 
 // MtlsAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type MtlsAuthPlugin struct {
-	Config MtlsAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *MtlsAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *MtlsAuthPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -390,16 +345,17 @@ type MtlsAuthPlugin struct {
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"mtls-auth" json:"name"`
 	Ordering     *MtlsAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *MtlsAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *MtlsAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    MtlsAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *MtlsAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *MtlsAuthPluginService `json:"service,omitempty"`
 }
 
 func (m MtlsAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -411,27 +367,6 @@ func (m *MtlsAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *MtlsAuthPlugin) GetConfig() MtlsAuthPluginConfig {
-	if o == nil {
-		return MtlsAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *MtlsAuthPlugin) GetConsumer() *MtlsAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *MtlsAuthPlugin) GetConsumerGroup() *MtlsAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *MtlsAuthPlugin) GetCreatedAt() *int64 {
@@ -473,6 +408,27 @@ func (o *MtlsAuthPlugin) GetOrdering() *MtlsAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *MtlsAuthPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *MtlsAuthPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *MtlsAuthPlugin) GetConfig() MtlsAuthPluginConfig {
+	if o == nil {
+		return MtlsAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *MtlsAuthPlugin) GetProtocols() []MtlsAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -494,40 +450,23 @@ func (o *MtlsAuthPlugin) GetService() *MtlsAuthPluginService {
 	return o.Service
 }
 
-func (o *MtlsAuthPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *MtlsAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // MtlsAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type MtlsAuthPluginInput struct {
-	Config MtlsAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *MtlsAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *MtlsAuthPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                   `json:"enabled,omitempty"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"mtls-auth" json:"name"`
 	Ordering     *MtlsAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *MtlsAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *MtlsAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string             `json:"tags,omitempty"`
+	Config MtlsAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *MtlsAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *MtlsAuthPluginService `json:"service,omitempty"`
 }
 
 func (m MtlsAuthPluginInput) MarshalJSON() ([]byte, error) {
@@ -539,27 +478,6 @@ func (m *MtlsAuthPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *MtlsAuthPluginInput) GetConfig() MtlsAuthPluginConfig {
-	if o == nil {
-		return MtlsAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *MtlsAuthPluginInput) GetConsumer() *MtlsAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *MtlsAuthPluginInput) GetConsumerGroup() *MtlsAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *MtlsAuthPluginInput) GetEnabled() *bool {
@@ -594,6 +512,20 @@ func (o *MtlsAuthPluginInput) GetOrdering() *MtlsAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *MtlsAuthPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *MtlsAuthPluginInput) GetConfig() MtlsAuthPluginConfig {
+	if o == nil {
+		return MtlsAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *MtlsAuthPluginInput) GetProtocols() []MtlsAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -613,11 +545,4 @@ func (o *MtlsAuthPluginInput) GetService() *MtlsAuthPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *MtlsAuthPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

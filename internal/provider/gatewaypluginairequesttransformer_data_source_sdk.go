@@ -78,6 +78,13 @@ func (r *GatewayPluginAiRequestTransformerDataSourceModel) RefreshFromSharedAiRe
 						r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
 						r.Config.Llm.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.ProjectID)
 					}
+					if resp.Config.Llm.Model.Options.Huggingface == nil {
+						r.Config.Llm.Model.Options.Huggingface = nil
+					} else {
+						r.Config.Llm.Model.Options.Huggingface = &tfTypes.Huggingface{}
+						r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
+						r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
+					}
 					if resp.Config.Llm.Model.Options.InputCost != nil {
 						r.Config.Llm.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.InputCost)))
 					} else {
@@ -128,12 +135,6 @@ func (r *GatewayPluginAiRequestTransformerDataSourceModel) RefreshFromSharedAiRe
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		r.Config.Prompt = types.StringPointerValue(resp.Config.Prompt)
 		r.Config.TransformationExtractPattern = types.StringPointerValue(resp.Config.TransformationExtractPattern)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {

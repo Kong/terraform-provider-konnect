@@ -11,6 +11,7 @@ type OptionsObj struct {
 	AzureInstance     types.String `tfsdk:"azure_instance"`
 	Bedrock           *Bedrock     `tfsdk:"bedrock"`
 	Gemini            *Gemini      `tfsdk:"gemini"`
+	Huggingface       *Huggingface `tfsdk:"huggingface"`
 	InputCost         types.Number `tfsdk:"input_cost"`
 	Llama2Format      types.String `tfsdk:"llama2_format"`
 	MaxTokens         types.Int64  `tfsdk:"max_tokens"`

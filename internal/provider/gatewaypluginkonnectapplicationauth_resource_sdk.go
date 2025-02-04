@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplicationAuthPluginInput() *shared.KonnectApplicationAuthPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.KonnectApplicationAuthPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.KonnectApplicationAuthPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.KonnectApplicationAuthPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.KonnectApplicationAuthPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.KonnectApplicationAuthPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.KonnectApplicationAuthPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	authType := new(shared.KonnectApplicationAuthPluginAuthType)
 	if !r.Config.AuthType.IsUnknown() && !r.Config.AuthType.IsNull() {
 		*authType = shared.KonnectApplicationAuthPluginAuthType(r.Config.AuthType.ValueString())
@@ -865,6 +914,10 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 				var introspectionPostArgsClient []string = []string{}
 				for _, introspectionPostArgsClientItem := range openidConnectItem.Config.IntrospectionPostArgsClient {
 					introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+				}
+				var introspectionPostArgsClientHeaders []string = []string{}
+				for _, introspectionPostArgsClientHeadersItem := range openidConnectItem.Config.IntrospectionPostArgsClientHeaders {
+					introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, introspectionPostArgsClientHeadersItem.ValueString())
 				}
 				var introspectionPostArgsNames []string = []string{}
 				for _, introspectionPostArgsNamesItem := range openidConnectItem.Config.IntrospectionPostArgsNames {
@@ -1838,6 +1891,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 					IntrospectionHeadersValues:             introspectionHeadersValues,
 					IntrospectionHint:                      introspectionHint,
 					IntrospectionPostArgsClient:            introspectionPostArgsClient,
+					IntrospectionPostArgsClientHeaders:     introspectionPostArgsClientHeaders,
 					IntrospectionPostArgsNames:             introspectionPostArgsNames,
 					IntrospectionPostArgsValues:            introspectionPostArgsValues,
 					IntrospectionTokenParamName:            introspectionTokenParamName,
@@ -1988,119 +2042,44 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 		Scope:        scope,
 		V2Strategies: v2Strategies,
 	}
-	var consumer *shared.KonnectApplicationAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.KonnectApplicationAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.KonnectApplicationAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.KonnectApplicationAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.KonnectApplicationAuthPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.KonnectApplicationAuthPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.KonnectApplicationAuthPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.KonnectApplicationAuthPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.KonnectApplicationAuthPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.KonnectApplicationAuthPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.KonnectApplicationAuthPluginProtocols = []shared.KonnectApplicationAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KonnectApplicationAuthPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.KonnectApplicationAuthPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.KonnectApplicationAuthPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.KonnectApplicationAuthPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.KonnectApplicationAuthPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.KonnectApplicationAuthPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -2324,9 +2303,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
 					}
 					openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
-					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-						var clusterNodes1 tfTypes.ClusterNodes
+						var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 						if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
@@ -2347,9 +2326,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
-					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-						var sentinelNodes1 tfTypes.SentinelNodes
+						var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 						if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
@@ -2499,6 +2478,10 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
 						openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
 					}
+					openidConnect1.Config.IntrospectionPostArgsClientHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClientHeaders {
+						openidConnect1.Config.IntrospectionPostArgsClientHeaders = append(openidConnect1.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+					}
 					openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
 						openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
@@ -2593,9 +2576,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
 					}
 					openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
-					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-						var clusterNodes3 tfTypes.ClusterNodes
+						var clusterNodes3 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 						if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
@@ -2617,9 +2600,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
 					openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
 					openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
-					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-						var sentinelNodes3 tfTypes.SentinelNodes
+						var sentinelNodes3 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 						if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
@@ -2876,18 +2859,6 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
 				}
 			}
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

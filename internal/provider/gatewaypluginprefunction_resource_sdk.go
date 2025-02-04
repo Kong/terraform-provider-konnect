@@ -9,9 +9,58 @@ import (
 )
 
 func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput() *shared.PreFunctionPluginInput {
-	var access []string = []string{}
-	for _, accessItem := range r.Config.Access {
-		access = append(access, accessItem.ValueString())
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.PreFunctionPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.PreFunctionPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.PreFunctionPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.PreFunctionPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.PreFunctionPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.PreFunctionPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
+	var access2 []string = []string{}
+	for _, accessItem2 := range r.Config.Access {
+		access2 = append(access2, accessItem2.ValueString())
 	}
 	var bodyFilter []string = []string{}
 	for _, bodyFilterItem := range r.Config.BodyFilter {
@@ -50,7 +99,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
 	}
 	config := shared.PreFunctionPluginConfig{
-		Access:          access,
+		Access:          access2,
 		BodyFilter:      bodyFilter,
 		Certificate:     certificate,
 		HeaderFilter:    headerFilter,
@@ -61,119 +110,44 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 		WsHandshake:     wsHandshake,
 		WsUpstreamFrame: wsUpstreamFrame,
 	}
-	var consumer *shared.PreFunctionPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.PreFunctionPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.PreFunctionPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.PreFunctionPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.PreFunctionPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.PreFunctionPluginAfter
-		if r.Ordering.After != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.After.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			after = &shared.PreFunctionPluginAfter{
-				Access: access1,
-			}
-		}
-		var before *shared.PreFunctionPluginBefore
-		if r.Ordering.Before != nil {
-			var access2 []string = []string{}
-			for _, accessItem2 := range r.Ordering.Before.Access {
-				access2 = append(access2, accessItem2.ValueString())
-			}
-			before = &shared.PreFunctionPluginBefore{
-				Access: access2,
-			}
-		}
-		ordering = &shared.PreFunctionPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.PreFunctionPluginProtocols = []shared.PreFunctionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.PreFunctionPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.PreFunctionPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.PreFunctionPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.PreFunctionPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.PreFunctionPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.PreFunctionPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -219,18 +193,6 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 		r.Config.WsUpstreamFrame = []types.String{}
 		for _, v := range resp.Config.WsUpstreamFrame {
 			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

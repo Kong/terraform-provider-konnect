@@ -9,64 +9,17 @@ import (
 )
 
 func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPluginInput() *shared.BasicAuthPluginInput {
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
-	} else {
-		anonymous = nil
-	}
-	hideCredentials := new(bool)
-	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-		*hideCredentials = r.Config.HideCredentials.ValueBool()
-	} else {
-		hideCredentials = nil
-	}
-	realm := new(string)
-	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-		*realm = r.Config.Realm.ValueString()
-	} else {
-		realm = nil
-	}
-	config := shared.BasicAuthPluginConfig{
-		Anonymous:       anonymous,
-		HideCredentials: hideCredentials,
-		Realm:           realm,
-	}
-	var consumer *shared.BasicAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.BasicAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.BasicAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.BasicAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
 	}
-	id2 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id2 = nil
+		id = nil
 	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
@@ -101,50 +54,71 @@ func (r *GatewayPluginBasicAuthResourceModel) ToSharedBasicAuthPluginInput() *sh
 			Before: before,
 		}
 	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
+	anonymous := new(string)
+	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+		*anonymous = r.Config.Anonymous.ValueString()
+	} else {
+		anonymous = nil
+	}
+	hideCredentials := new(bool)
+	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+		*hideCredentials = r.Config.HideCredentials.ValueBool()
+	} else {
+		hideCredentials = nil
+	}
+	realm := new(string)
+	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+		*realm = r.Config.Realm.ValueString()
+	} else {
+		realm = nil
+	}
+	config := shared.BasicAuthPluginConfig{
+		Anonymous:       anonymous,
+		HideCredentials: hideCredentials,
+		Realm:           realm,
+	}
 	var protocols []shared.BasicAuthPluginProtocols = []shared.BasicAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.BasicAuthPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.BasicAuthPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.BasicAuthPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.BasicAuthPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.BasicAuthPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.BasicAuthPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -154,18 +128,6 @@ func (r *GatewayPluginBasicAuthResourceModel) RefreshFromSharedBasicAuthPlugin(r
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

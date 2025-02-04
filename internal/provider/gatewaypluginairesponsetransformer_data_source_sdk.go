@@ -78,6 +78,13 @@ func (r *GatewayPluginAiResponseTransformerDataSourceModel) RefreshFromSharedAiR
 						r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
 						r.Config.Llm.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.ProjectID)
 					}
+					if resp.Config.Llm.Model.Options.Huggingface == nil {
+						r.Config.Llm.Model.Options.Huggingface = nil
+					} else {
+						r.Config.Llm.Model.Options.Huggingface = &tfTypes.Huggingface{}
+						r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
+						r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
+					}
 					if resp.Config.Llm.Model.Options.InputCost != nil {
 						r.Config.Llm.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.InputCost)))
 					} else {

@@ -228,9 +228,9 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 						openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
 					}
 					openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
-					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-						var clusterNodes1 tfTypes.ClusterNodes
+						var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 						if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
@@ -251,9 +251,9 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 					openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
-					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-						var sentinelNodes1 tfTypes.SentinelNodes
+						var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 						if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
@@ -403,6 +403,10 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
 						openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
 					}
+					openidConnect1.Config.IntrospectionPostArgsClientHeaders = []types.String{}
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClientHeaders {
+						openidConnect1.Config.IntrospectionPostArgsClientHeaders = append(openidConnect1.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+					}
 					openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
 						openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
@@ -497,9 +501,9 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 						openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
 					}
 					openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
-					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-						var clusterNodes3 tfTypes.ClusterNodes
+						var clusterNodes3 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 						if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
@@ -521,9 +525,9 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 					openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
 					openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
 					openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
-					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-						var sentinelNodes3 tfTypes.SentinelNodes
+						var sentinelNodes3 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 						if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
@@ -780,18 +784,6 @@ func (r *GatewayPluginKonnectApplicationAuthDataSourceModel) RefreshFromSharedKo
 					r.Config.V2Strategies.OpenidConnect[openidConnectCount].StrategyID = openidConnect1.StrategyID
 				}
 			}
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

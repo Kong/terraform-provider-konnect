@@ -191,14 +191,14 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.Redis{}
+			r.Config.ClusterCacheRedis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
-			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
 				r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-				var clusterNodes1 tfTypes.ClusterNodes
+				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
@@ -219,12 +219,12 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 			r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
-			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
 				r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-				var sentinelNodes1 tfTypes.SentinelNodes
+				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
@@ -375,6 +375,10 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		for _, v := range resp.Config.IntrospectionPostArgsClient {
 			r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
 		}
+		r.Config.IntrospectionPostArgsClientHeaders = []types.String{}
+		for _, v := range resp.Config.IntrospectionPostArgsClientHeaders {
+			r.Config.IntrospectionPostArgsClientHeaders = append(r.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+		}
 		r.Config.IntrospectionPostArgsNames = []types.String{}
 		for _, v := range resp.Config.IntrospectionPostArgsNames {
 			r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
@@ -473,12 +477,12 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		} else {
 			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes3 tfTypes.ClusterNodes
+				var clusterNodes3 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
 				clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 				if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
@@ -500,12 +504,12 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes3 tfTypes.SentinelNodes
+				var sentinelNodes3 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 				sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 				if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
@@ -754,18 +758,6 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		r.Config.VerifyNonce = types.BoolPointerValue(resp.Config.VerifyNonce)
 		r.Config.VerifyParameters = types.BoolPointerValue(resp.Config.VerifyParameters)
 		r.Config.VerifySignature = types.BoolPointerValue(resp.Config.VerifySignature)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

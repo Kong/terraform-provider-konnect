@@ -171,12 +171,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
-		r.Destinations = []tfTypes.ClusterNodes{}
+		r.Destinations = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 		if len(r.Destinations) > len(resp.Destinations) {
 			r.Destinations = r.Destinations[:len(resp.Destinations)]
 		}
 		for destinationsCount, destinationsItem := range resp.Destinations {
-			var destinations1 tfTypes.ClusterNodes
+			var destinations1 tfTypes.AiProxyAdvancedPluginClusterNodes
 			destinations1.IP = types.StringPointerValue(destinationsItem.IP)
 			destinations1.Port = types.Int64PointerValue(destinationsItem.Port)
 			if destinationsCount+1 > len(r.Destinations) {
@@ -234,12 +234,12 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
 		for _, v := range resp.Snis {
 			r.Snis = append(r.Snis, types.StringValue(v))
 		}
-		r.Sources = []tfTypes.ClusterNodes{}
+		r.Sources = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 		if len(r.Sources) > len(resp.Sources) {
 			r.Sources = r.Sources[:len(resp.Sources)]
 		}
 		for sourcesCount, sourcesItem := range resp.Sources {
-			var sources1 tfTypes.ClusterNodes
+			var sources1 tfTypes.AiProxyAdvancedPluginClusterNodes
 			sources1.IP = types.StringPointerValue(sourcesItem.IP)
 			sources1.Port = types.Int64PointerValue(sourcesItem.Port)
 			if sourcesCount+1 > len(r.Sources) {

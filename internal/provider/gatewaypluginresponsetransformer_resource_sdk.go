@@ -9,6 +9,55 @@ import (
 )
 
 func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransformerPluginInput() *shared.ResponseTransformerPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.ResponseTransformerPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.ResponseTransformerPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.ResponseTransformerPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.ResponseTransformerPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.ResponseTransformerPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.ResponseTransformerPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	var add *shared.ResponseTransformerPluginAdd
 	if r.Config.Add != nil {
 		var headers []string = []string{}
@@ -108,71 +157,26 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 	}
 	var consumer *shared.ResponseTransformerPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
+		id1 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
-			id = nil
+			id1 = nil
 		}
 		consumer = &shared.ResponseTransformerPluginConsumer{
-			ID: id,
+			ID: id1,
 		}
 	}
 	var consumerGroup *shared.ResponseTransformerPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+			*id2 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumerGroup = &shared.ResponseTransformerPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.ResponseTransformerPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.ResponseTransformerPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.ResponseTransformerPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.ResponseTransformerPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.ResponseTransformerPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.ResponseTransformerPluginOrdering{
-			After:  after,
-			Before: before,
+			ID: id2,
 		}
 	}
 	var protocols []shared.ResponseTransformerPluginProtocols = []shared.ResponseTransformerPluginProtocols{}
@@ -203,22 +207,18 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 			ID: id4,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.ResponseTransformerPluginInput{
+		Enabled:       enabled,
+		ID:            id,
+		InstanceName:  instanceName,
+		Ordering:      ordering,
+		Tags:          tags,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
 		Protocols:     protocols,
 		Route:         route,
 		Service:       service,
-		Tags:          tags,
 	}
 	return &out
 }

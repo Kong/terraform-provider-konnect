@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPluginInput() *shared.OpenidConnectPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.OpenidConnectPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.OpenidConnectPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.OpenidConnectPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.OpenidConnectPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.OpenidConnectPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.OpenidConnectPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	anonymous := new(string)
 	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
 		*anonymous = r.Config.Anonymous.ValueString()
@@ -829,6 +878,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPluginInp
 	var introspectionPostArgsClient []string = []string{}
 	for _, introspectionPostArgsClientItem := range r.Config.IntrospectionPostArgsClient {
 		introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+	}
+	var introspectionPostArgsClientHeaders []string = []string{}
+	for _, introspectionPostArgsClientHeadersItem := range r.Config.IntrospectionPostArgsClientHeaders {
+		introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, introspectionPostArgsClientHeadersItem.ValueString())
 	}
 	var introspectionPostArgsNames []string = []string{}
 	for _, introspectionPostArgsNamesItem := range r.Config.IntrospectionPostArgsNames {
@@ -1808,6 +1861,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPluginInp
 		IntrospectionHeadersValues:             introspectionHeadersValues,
 		IntrospectionHint:                      introspectionHint,
 		IntrospectionPostArgsClient:            introspectionPostArgsClient,
+		IntrospectionPostArgsClientHeaders:     introspectionPostArgsClientHeaders,
 		IntrospectionPostArgsNames:             introspectionPostArgsNames,
 		IntrospectionPostArgsValues:            introspectionPostArgsValues,
 		IntrospectionTokenParamName:            introspectionTokenParamName,
@@ -1938,119 +1992,44 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPluginInp
 		VerifyParameters:                   verifyParameters,
 		VerifySignature:                    verifySignature,
 	}
-	var consumer *shared.OpenidConnectPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.OpenidConnectPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.OpenidConnectPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.OpenidConnectPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.OpenidConnectPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.OpenidConnectPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.OpenidConnectPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.OpenidConnectPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.OpenidConnectPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.OpenidConnectPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.OpenidConnectPluginProtocols = []shared.OpenidConnectPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.OpenidConnectPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.OpenidConnectPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.OpenidConnectPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.OpenidConnectPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.OpenidConnectPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.OpenidConnectPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -2237,14 +2216,14 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.ClusterCacheRedis == nil {
 			r.Config.ClusterCacheRedis = nil
 		} else {
-			r.Config.ClusterCacheRedis = &tfTypes.Redis{}
+			r.Config.ClusterCacheRedis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ClusterMaxRedirections)
-			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.ClusterCacheRedis.ClusterNodes) > len(resp.Config.ClusterCacheRedis.ClusterNodes) {
 				r.Config.ClusterCacheRedis.ClusterNodes = r.Config.ClusterCacheRedis.ClusterNodes[:len(resp.Config.ClusterCacheRedis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.ClusterCacheRedis.ClusterNodes {
-				var clusterNodes1 tfTypes.ClusterNodes
+				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.ClusterCacheRedis.ClusterNodes) {
@@ -2265,12 +2244,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.ReadTimeout)
 			r.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(resp.Config.ClusterCacheRedis.SendTimeout)
 			r.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(resp.Config.ClusterCacheRedis.SentinelMaster)
-			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.ClusterCacheRedis.SentinelNodes) > len(resp.Config.ClusterCacheRedis.SentinelNodes) {
 				r.Config.ClusterCacheRedis.SentinelNodes = r.Config.ClusterCacheRedis.SentinelNodes[:len(resp.Config.ClusterCacheRedis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.ClusterCacheRedis.SentinelNodes {
-				var sentinelNodes1 tfTypes.SentinelNodes
+				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.ClusterCacheRedis.SentinelNodes) {
@@ -2421,6 +2400,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.IntrospectionPostArgsClient {
 			r.Config.IntrospectionPostArgsClient = append(r.Config.IntrospectionPostArgsClient, types.StringValue(v))
 		}
+		r.Config.IntrospectionPostArgsClientHeaders = []types.String{}
+		for _, v := range resp.Config.IntrospectionPostArgsClientHeaders {
+			r.Config.IntrospectionPostArgsClientHeaders = append(r.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+		}
 		r.Config.IntrospectionPostArgsNames = []types.String{}
 		for _, v := range resp.Config.IntrospectionPostArgsNames {
 			r.Config.IntrospectionPostArgsNames = append(r.Config.IntrospectionPostArgsNames, types.StringValue(v))
@@ -2519,12 +2502,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		} else {
 			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount1, clusterNodesItem1 := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes3 tfTypes.ClusterNodes
+				var clusterNodes3 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
 				clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 				if clusterNodesCount1+1 > len(r.Config.Redis.ClusterNodes) {
@@ -2546,12 +2529,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount1, sentinelNodesItem1 := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes3 tfTypes.SentinelNodes
+				var sentinelNodes3 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 				sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 				if sentinelNodesCount1+1 > len(r.Config.Redis.SentinelNodes) {
@@ -2800,18 +2783,6 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Config.VerifyNonce = types.BoolPointerValue(resp.Config.VerifyNonce)
 		r.Config.VerifyParameters = types.BoolPointerValue(resp.Config.VerifyParameters)
 		r.Config.VerifySignature = types.BoolPointerValue(resp.Config.VerifySignature)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shared.KafkaLogPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.KafkaLogPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.KafkaLogPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.KafkaLogPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.KafkaLogPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.KafkaLogPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.KafkaLogPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	var authentication *shared.Authentication
 	if r.Config.Authentication != nil {
 		mechanism := new(shared.Mechanism)
@@ -50,7 +99,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shar
 			User:      user,
 		}
 	}
-	var bootstrapServers []shared.BootstrapServers = []shared.BootstrapServers{}
+	var bootstrapServers []shared.KafkaLogPluginBootstrapServers = []shared.KafkaLogPluginBootstrapServers{}
 	for _, bootstrapServersItem := range r.Config.BootstrapServers {
 		var host string
 		host = bootstrapServersItem.Host.ValueString()
@@ -58,7 +107,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shar
 		var port int64
 		port = bootstrapServersItem.Port.ValueInt64()
 
-		bootstrapServers = append(bootstrapServers, shared.BootstrapServers{
+		bootstrapServers = append(bootstrapServers, shared.KafkaLogPluginBootstrapServers{
 			Host: host,
 			Port: port,
 		})
@@ -105,9 +154,9 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shar
 	} else {
 		producerAsyncFlushTimeout = nil
 	}
-	producerRequestAcks := new(shared.ProducerRequestAcks)
+	producerRequestAcks := new(shared.KafkaLogPluginProducerRequestAcks)
 	if !r.Config.ProducerRequestAcks.IsUnknown() && !r.Config.ProducerRequestAcks.IsNull() {
-		*producerRequestAcks = shared.ProducerRequestAcks(r.Config.ProducerRequestAcks.ValueInt64())
+		*producerRequestAcks = shared.KafkaLogPluginProducerRequestAcks(r.Config.ProducerRequestAcks.ValueInt64())
 	} else {
 		producerRequestAcks = nil
 	}
@@ -194,71 +243,14 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shar
 	}
 	var consumer *shared.KafkaLogPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.KafkaLogPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.KafkaLogPluginConsumerGroup
-	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.KafkaLogPluginConsumerGroup{
+		consumer = &shared.KafkaLogPluginConsumer{
 			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.KafkaLogPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.KafkaLogPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.KafkaLogPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.KafkaLogPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.KafkaLogPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.KafkaLogPluginOrdering{
-			After:  after,
-			Before: before,
 		}
 	}
 	var protocols []shared.KafkaLogPluginProtocols = []shared.KafkaLogPluginProtocols{}
@@ -267,44 +259,39 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPluginInput() *shar
 	}
 	var route *shared.KafkaLogPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.KafkaLogPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.KafkaLogPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.KafkaLogPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.KafkaLogPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Consumer:     consumer,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -381,12 +368,6 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(res
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

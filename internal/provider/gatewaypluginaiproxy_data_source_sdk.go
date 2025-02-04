@@ -69,6 +69,13 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(res
 					r.Config.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Model.Options.Gemini.LocationID)
 					r.Config.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Model.Options.Gemini.ProjectID)
 				}
+				if resp.Config.Model.Options.Huggingface == nil {
+					r.Config.Model.Options.Huggingface = nil
+				} else {
+					r.Config.Model.Options.Huggingface = &tfTypes.Huggingface{}
+					r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
+					r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
+				}
 				if resp.Config.Model.Options.InputCost != nil {
 					r.Config.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.InputCost)))
 				} else {

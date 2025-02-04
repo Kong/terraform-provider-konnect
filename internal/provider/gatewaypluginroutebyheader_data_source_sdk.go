@@ -11,12 +11,12 @@ import (
 
 func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		r.Config.Rules = []tfTypes.Rules{}
+		r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
 		if len(r.Config.Rules) > len(resp.Config.Rules) {
 			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 		}
 		for rulesCount, rulesItem := range resp.Config.Rules {
-			var rules1 tfTypes.Rules
+			var rules1 tfTypes.RouteByHeaderPluginRules
 			if len(rulesItem.Condition) > 0 {
 				rules1.Condition = make(map[string]types.String)
 				for key, value := range rulesItem.Condition {
@@ -37,12 +37,6 @@ func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHead
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

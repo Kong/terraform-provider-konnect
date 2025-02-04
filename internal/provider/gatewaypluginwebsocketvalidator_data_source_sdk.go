@@ -13,7 +13,7 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 		if resp.Config.Client == nil {
 			r.Config.Client = nil
 		} else {
-			r.Config.Client = &tfTypes.Client{}
+			r.Config.Client = &tfTypes.WebsocketValidatorPluginClient{}
 			if resp.Config.Client.Binary == nil {
 				r.Config.Client.Binary = nil
 			} else {
@@ -32,7 +32,7 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 		if resp.Config.Upstream == nil {
 			r.Config.Upstream = nil
 		} else {
-			r.Config.Upstream = &tfTypes.Client{}
+			r.Config.Upstream = &tfTypes.WebsocketValidatorPluginClient{}
 			if resp.Config.Upstream.Binary == nil {
 				r.Config.Upstream.Binary = nil
 			} else {
@@ -53,12 +53,6 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
