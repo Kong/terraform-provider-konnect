@@ -3,7 +3,7 @@
 all: speakeasy
 
 speakeasy: check-speakeasy
-	speakeasy run --skip-versioning --output console
+	speakeasy run --skip-versioning --output console --minimal
 	@go mod tidy
 	@go generate .
 	@git clean -fd examples docs > /dev/null
