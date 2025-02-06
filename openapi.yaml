@@ -976,6 +976,7 @@ paths:
         - url: 'https://global.api.konghq.com/'
       tags:
         - Networks
+      x-speakeasy-group: CloudGateways
     delete:
       x-speakeasy-entity-operation: CloudGatewayNetwork#delete
       operationId: delete-network
@@ -12284,6 +12285,7 @@ components:
       type: string
       format: uuid
       example: 36ae63d3-efd1-4bec-b246-62aa5d3f5695
+      x-speakeasy-param-suppress-computed-diff: true
     TransitGatewayId:
       type: string
       format: uuid
@@ -12629,6 +12631,7 @@ components:
         - terminated
       readOnly: true
       title: Network State
+      x-speakeasy-terraform-ignore: true
     NetworkProviderMetadata:
       description: Metadata describing attributes returned by cloud-provider for the network.
       type: object
@@ -12644,6 +12647,7 @@ components:
       additionalProperties: false
       readOnly: true
       title: Network Provider Metadata
+      x-speakeasy-param-suppress-computed-diff: true
     NetworkName:
       description: Human-readable name of the network.
       type: string
@@ -12678,6 +12682,7 @@ components:
             automatically by Konnect when an organization is linked to a provider account.
           type: boolean
           example: false
+          x-speakeasy-param-suppress-computed-diff: true
         cloud_gateway_provider_account_id:
           $ref: '#/components/schemas/ProviderAccountId'
         region:
@@ -12695,29 +12700,34 @@ components:
           type: integer
           example: 0
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         configuration_reference_count:
           description: The number of configurations that reference this network.
           type: integer
           example: 0
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         entity_version:
           description: |
             Monotonically-increasing version count of the network, to indicate the order of updates to the network.
           type: integer
           example: 1
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         created_at:
           description: An RFC-3339 timestamp representation of network creation date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
           description: An RFC-3339 timestamp representation of network update date.
           type: string
           format: date-time
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - id
         - name
@@ -33367,7 +33377,6 @@ tags:
     name: Config Stores
   - description: Config Store Secrets
     name: Config Store Secrets
-  - name: CustomPlugins
   - description: |
       Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
       <br><br>
@@ -33394,6 +33403,7 @@ tags:
       - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
       - `ws`: At least one of `hosts`, `headers`, or `paths`
       - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+
 
 
 

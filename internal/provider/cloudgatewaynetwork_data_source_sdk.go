@@ -28,7 +28,6 @@ func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shar
 		}
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)
-		r.State = types.StringValue(string(resp.State))
 		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	}

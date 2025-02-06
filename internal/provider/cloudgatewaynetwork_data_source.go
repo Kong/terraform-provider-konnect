@@ -40,7 +40,6 @@ type CloudGatewayNetworkDataSourceModel struct {
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
 	Region                        types.String                    `tfsdk:"region"`
-	State                         types.String                    `tfsdk:"state"`
 	TransitGatewayCount           types.Int64                     `tfsdk:"transit_gateway_count"`
 	UpdatedAt                     types.String                    `tfsdk:"updated_at"`
 }
@@ -108,10 +107,6 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 			"region": schema.StringAttribute{
 				Computed:    true,
 				Description: `Region ID for cloud provider region.`,
-			},
-			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the network.`,
 			},
 			"transit_gateway_count": schema.Int64Attribute{
 				Computed:    true,

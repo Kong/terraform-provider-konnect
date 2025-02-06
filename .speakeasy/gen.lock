@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e62d6ba9d16478ab7be815684eb7a9c8
+  docChecksum: 09a018a853abc91f62946872fd726328
   docVersion: 2.0.0
   speakeasyVersion: 1.454.0
   generationVersion: 2.477.0
@@ -2095,7 +2095,6 @@ generatedFiles:
   - internal/sdk/models/shared/xmlthreatprotectionplugin.go
   - internal/sdk/models/shared/zipkinplugin.go
   - internal/sdk/mtlsauthcredentials.go
-  - internal/sdk/networks.go
   - internal/sdk/plugins.go
   - internal/sdk/portalappearance.go
   - internal/sdk/portalauthsettings.go
