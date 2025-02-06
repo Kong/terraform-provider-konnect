@@ -10,9 +10,9 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
     metrics = [
       {
         consumer_identifier  = "username"
-        name                 = "shdict_usage"
+        name                 = "status_count_per_workspace"
         sample_rate          = 3.92
-        service_identifier   = "service_name"
+        service_identifier   = "service_id"
         stat_type            = "set"
         workspace_identifier = "workspace_name"
       }
@@ -31,16 +31,13 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
     }
     queue_size                   = 10
     retry_count                  = 8
-    service_identifier_default   = "service_host"
+    service_identifier_default   = "service_name"
     tag_style                    = "librato"
     udp_packet_size              = 61921
     use_tcp                      = false
     workspace_identifier_default = "workspace_name"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

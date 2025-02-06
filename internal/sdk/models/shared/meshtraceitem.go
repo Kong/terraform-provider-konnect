@@ -41,10 +41,21 @@ type Datadog struct {
 	// `backend` service that communicates with a couple of databases, you would
 	// get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
 	// `backend_OUTBOUND_db2` in Datadog.
-	SplitService *bool `json:"splitService,omitempty"`
+	SplitService *bool `default:"false" json:"splitService"`
 	// Address of Datadog collector, only host and port are allowed (no paths,
 	// fragments etc.)
 	URL string `json:"url"`
+}
+
+func (d Datadog) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *Datadog) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Datadog) GetSplitService() *bool {
@@ -135,15 +146,26 @@ func (e *APIVersion) UnmarshalJSON(data []byte) error {
 type Zipkin struct {
 	// Version of the API.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-	APIVersion *APIVersion `json:"apiVersion,omitempty"`
+	APIVersion *APIVersion `default:"httpJson" json:"apiVersion"`
 	// Determines whether client and server spans will share the same span
 	// context.
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
-	SharedSpanContext *bool `json:"sharedSpanContext,omitempty"`
+	SharedSpanContext *bool `default:"true" json:"sharedSpanContext"`
 	// Generate 128bit traces.
-	TraceId128bit *bool `json:"traceId128bit,omitempty"`
+	TraceId128bit *bool `default:"false" json:"traceId128bit"`
 	// Address of Zipkin collector.
 	URL string `json:"url"`
+}
+
+func (z Zipkin) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(z, "", false)
+}
+
+func (z *Zipkin) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &z, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Zipkin) GetAPIVersion() *APIVersion {
@@ -225,8 +247,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133
 // Either int or decimal represented as string.
 type MeshTraceItemClient struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshTraceItemClientType
 }
@@ -297,8 +319,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L142-L150
 // Either int or decimal represented as string.
 type Overall struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type OverallType
 }
@@ -365,8 +387,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L135-L140
 // Either int or decimal represented as string.
 type Random struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type RandomType
 }
@@ -748,7 +770,7 @@ type MeshTraceItem struct {
 	// the type of the resource
 	Type MeshTraceItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -819,4 +841,63 @@ func (o *MeshTraceItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshTraceItemInput struct {
+	// the type of the resource
+	Type MeshTraceItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshTrace resource.
+	Spec MeshTraceItemSpec `json:"spec"`
+}
+
+func (m MeshTraceItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshTraceItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshTraceItemInput) GetType() MeshTraceItemType {
+	if o == nil {
+		return MeshTraceItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshTraceItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshTraceItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshTraceItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshTraceItemInput) GetSpec() MeshTraceItemSpec {
+	if o == nil {
+		return MeshTraceItemSpec{}
+	}
+	return o.Spec
 }

@@ -8,14 +8,55 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type SessionPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SessionPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SessionPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *SessionPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type SessionPluginOrdering struct {
+	After  *SessionPluginAfter  `json:"after,omitempty"`
+	Before *SessionPluginBefore `json:"before,omitempty"`
+}
+
+func (o *SessionPluginOrdering) GetAfter() *SessionPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *SessionPluginOrdering) GetBefore() *SessionPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // CookieSameSite - Determines whether and how a cookie may be sent with cross-site requests.
 type CookieSameSite string
 
 const (
-	CookieSameSiteStrict  CookieSameSite = "Strict"
+	CookieSameSiteDefault CookieSameSite = "Default"
 	CookieSameSiteLax     CookieSameSite = "Lax"
 	CookieSameSiteNone    CookieSameSite = "None"
-	CookieSameSiteDefault CookieSameSite = "Default"
+	CookieSameSiteStrict  CookieSameSite = "Strict"
 )
 
 func (e CookieSameSite) ToPointer() *CookieSameSite {
@@ -27,13 +68,13 @@ func (e *CookieSameSite) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "Strict":
+	case "Default":
 		fallthrough
 	case "Lax":
 		fallthrough
 	case "None":
 		fallthrough
-	case "Default":
+	case "Strict":
 		*e = CookieSameSite(v)
 		return nil
 	default:
@@ -44,9 +85,9 @@ func (e *CookieSameSite) UnmarshalJSON(data []byte) error {
 type SessionPluginLogoutMethods string
 
 const (
+	SessionPluginLogoutMethodsDelete SessionPluginLogoutMethods = "DELETE"
 	SessionPluginLogoutMethodsGet    SessionPluginLogoutMethods = "GET"
 	SessionPluginLogoutMethodsPost   SessionPluginLogoutMethods = "POST"
-	SessionPluginLogoutMethodsDelete SessionPluginLogoutMethods = "DELETE"
 )
 
 func (e SessionPluginLogoutMethods) ToPointer() *SessionPluginLogoutMethods {
@@ -58,11 +99,11 @@ func (e *SessionPluginLogoutMethods) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "DELETE":
+		fallthrough
 	case "GET":
 		fallthrough
 	case "POST":
-		fallthrough
-	case "DELETE":
 		*e = SessionPluginLogoutMethods(v)
 		return nil
 	default:
@@ -73,13 +114,13 @@ func (e *SessionPluginLogoutMethods) UnmarshalJSON(data []byte) error {
 type RequestHeaders string
 
 const (
-	RequestHeadersID              RequestHeaders = "id"
+	RequestHeadersAbsoluteTimeout RequestHeaders = "absolute-timeout"
 	RequestHeadersAudience        RequestHeaders = "audience"
-	RequestHeadersSubject         RequestHeaders = "subject"
-	RequestHeadersTimeout         RequestHeaders = "timeout"
+	RequestHeadersID              RequestHeaders = "id"
 	RequestHeadersIdlingTimeout   RequestHeaders = "idling-timeout"
 	RequestHeadersRollingTimeout  RequestHeaders = "rolling-timeout"
-	RequestHeadersAbsoluteTimeout RequestHeaders = "absolute-timeout"
+	RequestHeadersSubject         RequestHeaders = "subject"
+	RequestHeadersTimeout         RequestHeaders = "timeout"
 )
 
 func (e RequestHeaders) ToPointer() *RequestHeaders {
@@ -91,19 +132,19 @@ func (e *RequestHeaders) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = RequestHeaders(v)
 		return nil
 	default:
@@ -114,13 +155,13 @@ func (e *RequestHeaders) UnmarshalJSON(data []byte) error {
 type SessionPluginResponseHeaders string
 
 const (
-	SessionPluginResponseHeadersID              SessionPluginResponseHeaders = "id"
+	SessionPluginResponseHeadersAbsoluteTimeout SessionPluginResponseHeaders = "absolute-timeout"
 	SessionPluginResponseHeadersAudience        SessionPluginResponseHeaders = "audience"
-	SessionPluginResponseHeadersSubject         SessionPluginResponseHeaders = "subject"
-	SessionPluginResponseHeadersTimeout         SessionPluginResponseHeaders = "timeout"
+	SessionPluginResponseHeadersID              SessionPluginResponseHeaders = "id"
 	SessionPluginResponseHeadersIdlingTimeout   SessionPluginResponseHeaders = "idling-timeout"
 	SessionPluginResponseHeadersRollingTimeout  SessionPluginResponseHeaders = "rolling-timeout"
-	SessionPluginResponseHeadersAbsoluteTimeout SessionPluginResponseHeaders = "absolute-timeout"
+	SessionPluginResponseHeadersSubject         SessionPluginResponseHeaders = "subject"
+	SessionPluginResponseHeadersTimeout         SessionPluginResponseHeaders = "timeout"
 )
 
 func (e SessionPluginResponseHeaders) ToPointer() *SessionPluginResponseHeaders {
@@ -132,19 +173,19 @@ func (e *SessionPluginResponseHeaders) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = SessionPluginResponseHeaders(v)
 		return nil
 	default:
@@ -388,70 +429,7 @@ func (o *SessionPluginConfig) GetStorage() *SessionPluginStorage {
 	return o.Storage
 }
 
-// SessionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type SessionPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SessionPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type SessionPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *SessionPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type SessionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *SessionPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type SessionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *SessionPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type SessionPluginOrdering struct {
-	After  *SessionPluginAfter  `json:"after,omitempty"`
-	Before *SessionPluginBefore `json:"before,omitempty"`
-}
-
-func (o *SessionPluginOrdering) GetAfter() *SessionPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *SessionPluginOrdering) GetBefore() *SessionPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
+// SessionPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
 type SessionPluginProtocols string
 
 const (
@@ -502,7 +480,7 @@ func (e *SessionPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// SessionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// SessionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type SessionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -528,10 +506,6 @@ func (o *SessionPluginService) GetID() *string {
 
 // SessionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SessionPlugin struct {
-	Config SessionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *SessionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *SessionPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -540,16 +514,17 @@ type SessionPlugin struct {
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"session" json:"name"`
 	Ordering     *SessionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *SessionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SessionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    SessionPluginConfig `json:"config"`
+	// A set of strings representing protocols.
+	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *SessionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *SessionPluginService `json:"service,omitempty"`
 }
 
 func (s SessionPlugin) MarshalJSON() ([]byte, error) {
@@ -561,27 +536,6 @@ func (s *SessionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *SessionPlugin) GetConfig() SessionPluginConfig {
-	if o == nil {
-		return SessionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *SessionPlugin) GetConsumer() *SessionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *SessionPlugin) GetConsumerGroup() *SessionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *SessionPlugin) GetCreatedAt() *int64 {
@@ -623,6 +577,27 @@ func (o *SessionPlugin) GetOrdering() *SessionPluginOrdering {
 	return o.Ordering
 }
 
+func (o *SessionPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *SessionPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *SessionPlugin) GetConfig() SessionPluginConfig {
+	if o == nil {
+		return SessionPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *SessionPlugin) GetProtocols() []SessionPluginProtocols {
 	if o == nil {
 		return nil
@@ -644,40 +619,23 @@ func (o *SessionPlugin) GetService() *SessionPluginService {
 	return o.Service
 }
 
-func (o *SessionPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *SessionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // SessionPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type SessionPluginInput struct {
-	Config SessionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *SessionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *SessionPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                  `json:"enabled,omitempty"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"session" json:"name"`
 	Ordering     *SessionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *SessionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SessionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string            `json:"tags,omitempty"`
+	Config SessionPluginConfig `json:"config"`
+	// A set of strings representing protocols.
+	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *SessionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *SessionPluginService `json:"service,omitempty"`
 }
 
 func (s SessionPluginInput) MarshalJSON() ([]byte, error) {
@@ -689,27 +647,6 @@ func (s *SessionPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *SessionPluginInput) GetConfig() SessionPluginConfig {
-	if o == nil {
-		return SessionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *SessionPluginInput) GetConsumer() *SessionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *SessionPluginInput) GetConsumerGroup() *SessionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *SessionPluginInput) GetEnabled() *bool {
@@ -744,6 +681,20 @@ func (o *SessionPluginInput) GetOrdering() *SessionPluginOrdering {
 	return o.Ordering
 }
 
+func (o *SessionPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *SessionPluginInput) GetConfig() SessionPluginConfig {
+	if o == nil {
+		return SessionPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *SessionPluginInput) GetProtocols() []SessionPluginProtocols {
 	if o == nil {
 		return nil
@@ -763,11 +714,4 @@ func (o *SessionPluginInput) GetService() *SessionPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *SessionPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

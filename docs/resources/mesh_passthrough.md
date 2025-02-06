@@ -14,14 +14,12 @@ MeshPassthrough Resource
 
 ```terraform
 resource "konnect_mesh_passthrough" "my_meshpassthrough" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     default = {
       append_match = [
@@ -68,12 +66,12 @@ resource "konnect_mesh_passthrough" "my_meshpassthrough" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -95,7 +93,7 @@ Optional:
 - `append_match` (Attributes List) AppendMatch is a list of destinations that should be allowed through the sidecar. (see [below for nested schema](#nestedatt--spec--default--append_match))
 - `passthrough_mode` (String) Defines the passthrough behavior. Possible values: `All`, `None`, `Matched`
 When `All` or `None` `appendMatch` has no effect.
-must be one of ["All", "Matched", "None"]
+Default: "None"; must be one of ["All", "Matched", "None"]
 
 <a id="nestedatt--spec--default--append_match"></a>
 ### Nested Schema for `spec.default.append_match`
@@ -103,7 +101,7 @@ must be one of ["All", "Matched", "None"]
 Optional:
 
 - `port` (Number) Port defines the port to which a user makes a request.
-- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`. must be one of ["tcp", "tls", "grpc", "http", "http2"]
+- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2"]
 - `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available. must be one of ["Domain", "IP", "CIDR"]
 - `value` (String) Value for the specified Type.
 

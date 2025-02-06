@@ -29,14 +29,14 @@ data "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
+- `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) The ID of this resource.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
@@ -104,6 +104,7 @@ Read-Only:
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--model--options--bedrock))
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--model--options--gemini))
+- `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--model--options--huggingface))
 - `input_cost` (Number) Defines the cost per 1M tokens in your prompt.
 - `llama2_format` (String) If using llama2 provider, select the upstream message format.
 - `max_tokens` (Number) Defines the max_tokens, if using chat or completion models.
@@ -131,6 +132,15 @@ Read-Only:
 - `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 - `location_id` (String) If running Gemini on Vertex, specify the location ID.
 - `project_id` (String) If running Gemini on Vertex, specify the project ID.
+
+
+<a id="nestedatt--config--model--options--huggingface"></a>
+### Nested Schema for `config.model.options.huggingface`
+
+Read-Only:
+
+- `use_cache` (Boolean) Use the cache layer on the inference API
+- `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
 

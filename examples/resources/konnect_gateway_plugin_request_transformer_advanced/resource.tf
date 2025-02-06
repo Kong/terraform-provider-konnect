@@ -96,7 +96,7 @@ resource "konnect_gateway_plugin_request_transformer_advanced" "my_gatewayplugin
     }
   }
   protocols = [
-    "https"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

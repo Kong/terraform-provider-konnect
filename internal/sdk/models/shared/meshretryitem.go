@@ -196,10 +196,21 @@ func (o *MeshRetryItemTargetRef) GetTags() map[string]string {
 type BackOff struct {
 	// BaseInterval is an amount of time which should be taken between retries.
 	// Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.
-	BaseInterval *string `json:"baseInterval,omitempty"`
+	BaseInterval *string `default:"25ms" json:"baseInterval"`
 	// MaxInterval is a maximal amount of time which will be taken between retries.
 	// Default is 10 times the "BaseInterval".
 	MaxInterval *string `json:"maxInterval,omitempty"`
+}
+
+func (b BackOff) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BackOff) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BackOff) GetBaseInterval() *string {
@@ -268,12 +279,23 @@ func (o *ResetHeaders) GetName() string {
 // the upstream returns one of the headers configured.
 type RateLimitedBackOff struct {
 	// MaxInterval is a maximal amount of time which will be taken between retries.
-	MaxInterval *string `json:"maxInterval,omitempty"`
+	MaxInterval *string `default:"300s" json:"maxInterval"`
 	// ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)
 	// to match against the response. Headers are tried in order, and matched
 	// case-insensitive. The first header to be parsed successfully is used.
 	// If no headers match the default exponential BackOff is used instead.
 	ResetHeaders []ResetHeaders `json:"resetHeaders,omitempty"`
+}
+
+func (r RateLimitedBackOff) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RateLimitedBackOff) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RateLimitedBackOff) GetMaxInterval() *string {
@@ -384,10 +406,21 @@ func (o *MeshRetryItemGrpc) GetRetryOn() []RetryOn {
 type MeshRetryItemBackOff struct {
 	// BaseInterval is an amount of time which should be taken between retries.
 	// Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.
-	BaseInterval *string `json:"baseInterval,omitempty"`
+	BaseInterval *string `default:"25ms" json:"baseInterval"`
 	// MaxInterval is a maximal amount of time which will be taken between retries.
 	// Default is 10 times the "BaseInterval".
 	MaxInterval *string `json:"maxInterval,omitempty"`
+}
+
+func (m MeshRetryItemBackOff) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshRetryItemBackOff) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshRetryItemBackOff) GetBaseInterval() *string {
@@ -442,7 +475,18 @@ type HostSelection struct {
 	Tags map[string]string `json:"tags,omitempty"`
 	// UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.
 	// Used for OmitPreviousPriorities.
-	UpdateFrequency *int `json:"updateFrequency,omitempty"`
+	UpdateFrequency *int `default:"2" json:"updateFrequency"`
+}
+
+func (h HostSelection) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *HostSelection) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *HostSelection) GetPredicate() Predicate {
@@ -518,12 +562,23 @@ func (o *MeshRetryItemResetHeaders) GetName() string {
 // when the upstream returns one of the headers configured.
 type MeshRetryItemRateLimitedBackOff struct {
 	// MaxInterval is a maximal amount of time which will be taken between retries.
-	MaxInterval *string `json:"maxInterval,omitempty"`
+	MaxInterval *string `default:"300s" json:"maxInterval"`
 	// ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)
 	// to match against the response. Headers are tried in order, and matched
 	// case-insensitive. The first header to be parsed successfully is used.
 	// If no headers match the default exponential BackOff is used instead.
 	ResetHeaders []MeshRetryItemResetHeaders `json:"resetHeaders,omitempty"`
+}
+
+func (m MeshRetryItemRateLimitedBackOff) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshRetryItemRateLimitedBackOff) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshRetryItemRateLimitedBackOff) GetMaxInterval() *string {
@@ -583,9 +638,20 @@ type RetriableRequestHeaders struct {
 	// as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 	Name string `json:"name"`
 	// Type specifies how to match against the value of the header.
-	Type *MeshRetryItemSpecType `json:"type,omitempty"`
+	Type *MeshRetryItemSpecType `default:"Exact" json:"type"`
 	// Value is the value of HTTP Header to be matched.
 	Value *string `json:"value,omitempty"`
+}
+
+func (r RetriableRequestHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RetriableRequestHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RetriableRequestHeaders) GetName() string {
@@ -652,9 +718,20 @@ type RetriableResponseHeaders struct {
 	// as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 	Name string `json:"name"`
 	// Type specifies how to match against the value of the header.
-	Type *MeshRetryItemSpecToType `json:"type,omitempty"`
+	Type *MeshRetryItemSpecToType `default:"Exact" json:"type"`
 	// Value is the value of HTTP Header to be matched.
 	Value *string `json:"value,omitempty"`
+}
+
+func (r RetriableResponseHeaders) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RetriableResponseHeaders) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RetriableResponseHeaders) GetName() string {
@@ -1035,7 +1112,7 @@ type MeshRetryItem struct {
 	// the type of the resource
 	Type MeshRetryItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1106,4 +1183,63 @@ func (o *MeshRetryItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshRetryItemInput struct {
+	// the type of the resource
+	Type MeshRetryItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshRetry resource.
+	Spec MeshRetryItemSpec `json:"spec"`
+}
+
+func (m MeshRetryItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshRetryItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshRetryItemInput) GetType() MeshRetryItemType {
+	if o == nil {
+		return MeshRetryItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshRetryItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshRetryItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshRetryItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshRetryItemInput) GetSpec() MeshRetryItemSpec {
+	if o == nil {
+		return MeshRetryItemSpec{}
+	}
+	return o.Spec
 }

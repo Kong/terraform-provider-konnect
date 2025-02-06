@@ -1,7 +1,7 @@
 resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
   config = {
     access_token_consumer_by = [
-      "id"
+      "custom_id"
     ]
     access_token_consumer_claim = [
       "..."
@@ -9,7 +9,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_introspection_authorization = "...my_access_token_introspection_authorization..."
     access_token_introspection_body_args     = "...my_access_token_introspection_body_args..."
     access_token_introspection_consumer_by = [
-      "id"
+      "custom_id"
     ]
     access_token_introspection_consumer_claim = [
       "..."
@@ -47,7 +47,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_scopes_required = [
       "..."
     ]
-    access_token_signing_algorithm = "PS256"
+    access_token_signing_algorithm = "PS384"
     access_token_upstream_header   = "...my_access_token_upstream_header..."
     access_token_upstream_leeway   = 1.88
     add_access_token_claims = {
@@ -62,7 +62,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     cache_access_token_introspection  = false
     cache_channel_token_introspection = true
     channel_token_consumer_by = [
-      "username"
+      "id"
     ]
     channel_token_consumer_claim = [
       "..."
@@ -70,7 +70,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_introspection_authorization = "...my_channel_token_introspection_authorization..."
     channel_token_introspection_body_args     = "...my_channel_token_introspection_body_args..."
     channel_token_introspection_consumer_by = [
-      "id"
+      "custom_id"
     ]
     channel_token_introspection_consumer_claim = [
       "..."
@@ -108,7 +108,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_scopes_required = [
       "..."
     ]
-    channel_token_signing_algorithm        = "PS384"
+    channel_token_signing_algorithm        = "PS512"
     channel_token_upstream_header          = "...my_channel_token_upstream_header..."
     channel_token_upstream_leeway          = 5.01
     enable_access_token_introspection      = false
@@ -146,12 +146,6 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     verify_channel_token_scopes               = false
     verify_channel_token_signature            = false
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
   id               = "...my_id..."
@@ -169,7 +163,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     }
   }
   protocols = [
-    "wss"
+    "https"
   ]
   route = {
     id = "...my_id..."

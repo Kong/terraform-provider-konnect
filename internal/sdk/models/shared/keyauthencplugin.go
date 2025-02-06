@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type KeyAuthEncPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *KeyAuthEncPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type KeyAuthEncPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *KeyAuthEncPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type KeyAuthEncPluginOrdering struct {
+	After  *KeyAuthEncPluginAfter  `json:"after,omitempty"`
+	Before *KeyAuthEncPluginBefore `json:"before,omitempty"`
+}
+
+func (o *KeyAuthEncPluginOrdering) GetAfter() *KeyAuthEncPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *KeyAuthEncPluginOrdering) GetBefore() *KeyAuthEncPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type KeyAuthEncPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Note that this value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -83,83 +124,15 @@ func (o *KeyAuthEncPluginConfig) GetRunOnPreflight() *bool {
 	return o.RunOnPreflight
 }
 
-// KeyAuthEncPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type KeyAuthEncPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KeyAuthEncPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type KeyAuthEncPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KeyAuthEncPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type KeyAuthEncPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *KeyAuthEncPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type KeyAuthEncPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *KeyAuthEncPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type KeyAuthEncPluginOrdering struct {
-	After  *KeyAuthEncPluginAfter  `json:"after,omitempty"`
-	Before *KeyAuthEncPluginBefore `json:"before,omitempty"`
-}
-
-func (o *KeyAuthEncPluginOrdering) GetAfter() *KeyAuthEncPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *KeyAuthEncPluginOrdering) GetBefore() *KeyAuthEncPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type KeyAuthEncPluginProtocols string
 
 const (
-	KeyAuthEncPluginProtocolsGrpc           KeyAuthEncPluginProtocols = "grpc"
-	KeyAuthEncPluginProtocolsGrpcs          KeyAuthEncPluginProtocols = "grpcs"
-	KeyAuthEncPluginProtocolsHTTP           KeyAuthEncPluginProtocols = "http"
-	KeyAuthEncPluginProtocolsHTTPS          KeyAuthEncPluginProtocols = "https"
-	KeyAuthEncPluginProtocolsTCP            KeyAuthEncPluginProtocols = "tcp"
-	KeyAuthEncPluginProtocolsTLS            KeyAuthEncPluginProtocols = "tls"
-	KeyAuthEncPluginProtocolsTLSPassthrough KeyAuthEncPluginProtocols = "tls_passthrough"
-	KeyAuthEncPluginProtocolsUDP            KeyAuthEncPluginProtocols = "udp"
-	KeyAuthEncPluginProtocolsWs             KeyAuthEncPluginProtocols = "ws"
-	KeyAuthEncPluginProtocolsWss            KeyAuthEncPluginProtocols = "wss"
+	KeyAuthEncPluginProtocolsGrpc  KeyAuthEncPluginProtocols = "grpc"
+	KeyAuthEncPluginProtocolsGrpcs KeyAuthEncPluginProtocols = "grpcs"
+	KeyAuthEncPluginProtocolsHTTP  KeyAuthEncPluginProtocols = "http"
+	KeyAuthEncPluginProtocolsHTTPS KeyAuthEncPluginProtocols = "https"
+	KeyAuthEncPluginProtocolsWs    KeyAuthEncPluginProtocols = "ws"
+	KeyAuthEncPluginProtocolsWss   KeyAuthEncPluginProtocols = "wss"
 )
 
 func (e KeyAuthEncPluginProtocols) ToPointer() *KeyAuthEncPluginProtocols {
@@ -179,14 +152,6 @@ func (e *KeyAuthEncPluginProtocols) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "https":
 		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
 	case "ws":
 		fallthrough
 	case "wss":
@@ -197,7 +162,7 @@ func (e *KeyAuthEncPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// KeyAuthEncPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// KeyAuthEncPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type KeyAuthEncPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -223,10 +188,6 @@ func (o *KeyAuthEncPluginService) GetID() *string {
 
 // KeyAuthEncPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KeyAuthEncPlugin struct {
-	Config KeyAuthEncPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KeyAuthEncPluginConsumer      `json:"consumer"`
-	ConsumerGroup *KeyAuthEncPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -235,16 +196,17 @@ type KeyAuthEncPlugin struct {
 	InstanceName *string                   `json:"instance_name,omitempty"`
 	name         string                    `const:"key-auth-enc" json:"name"`
 	Ordering     *KeyAuthEncPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KeyAuthEncPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthEncPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                 `json:"updated_at,omitempty"`
+	Config    KeyAuthEncPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *KeyAuthEncPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *KeyAuthEncPluginService `json:"service,omitempty"`
 }
 
 func (k KeyAuthEncPlugin) MarshalJSON() ([]byte, error) {
@@ -256,27 +218,6 @@ func (k *KeyAuthEncPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *KeyAuthEncPlugin) GetConfig() KeyAuthEncPluginConfig {
-	if o == nil {
-		return KeyAuthEncPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *KeyAuthEncPlugin) GetConsumer() *KeyAuthEncPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *KeyAuthEncPlugin) GetConsumerGroup() *KeyAuthEncPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *KeyAuthEncPlugin) GetCreatedAt() *int64 {
@@ -318,6 +259,27 @@ func (o *KeyAuthEncPlugin) GetOrdering() *KeyAuthEncPluginOrdering {
 	return o.Ordering
 }
 
+func (o *KeyAuthEncPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *KeyAuthEncPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *KeyAuthEncPlugin) GetConfig() KeyAuthEncPluginConfig {
+	if o == nil {
+		return KeyAuthEncPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *KeyAuthEncPlugin) GetProtocols() []KeyAuthEncPluginProtocols {
 	if o == nil {
 		return nil
@@ -339,40 +301,23 @@ func (o *KeyAuthEncPlugin) GetService() *KeyAuthEncPluginService {
 	return o.Service
 }
 
-func (o *KeyAuthEncPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *KeyAuthEncPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // KeyAuthEncPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KeyAuthEncPluginInput struct {
-	Config KeyAuthEncPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KeyAuthEncPluginConsumer      `json:"consumer"`
-	ConsumerGroup *KeyAuthEncPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                     `json:"enabled,omitempty"`
 	ID           *string                   `json:"id,omitempty"`
 	InstanceName *string                   `json:"instance_name,omitempty"`
 	name         string                    `const:"key-auth-enc" json:"name"`
 	Ordering     *KeyAuthEncPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KeyAuthEncPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthEncPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string               `json:"tags,omitempty"`
+	Config KeyAuthEncPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *KeyAuthEncPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *KeyAuthEncPluginService `json:"service,omitempty"`
 }
 
 func (k KeyAuthEncPluginInput) MarshalJSON() ([]byte, error) {
@@ -384,27 +329,6 @@ func (k *KeyAuthEncPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *KeyAuthEncPluginInput) GetConfig() KeyAuthEncPluginConfig {
-	if o == nil {
-		return KeyAuthEncPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *KeyAuthEncPluginInput) GetConsumer() *KeyAuthEncPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *KeyAuthEncPluginInput) GetConsumerGroup() *KeyAuthEncPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *KeyAuthEncPluginInput) GetEnabled() *bool {
@@ -439,6 +363,20 @@ func (o *KeyAuthEncPluginInput) GetOrdering() *KeyAuthEncPluginOrdering {
 	return o.Ordering
 }
 
+func (o *KeyAuthEncPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *KeyAuthEncPluginInput) GetConfig() KeyAuthEncPluginConfig {
+	if o == nil {
+		return KeyAuthEncPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *KeyAuthEncPluginInput) GetProtocols() []KeyAuthEncPluginProtocols {
 	if o == nil {
 		return nil
@@ -458,11 +396,4 @@ func (o *KeyAuthEncPluginInput) GetService() *KeyAuthEncPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *KeyAuthEncPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

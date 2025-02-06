@@ -73,7 +73,7 @@ resource "konnect_gateway_plugin_response_transformer" "my_gatewaypluginresponse
     }
   }
   protocols = [
-    "wss"
+    "https"
   ]
   route = {
     id = "...my_id..."

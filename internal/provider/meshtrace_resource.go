@@ -13,9 +13,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -63,7 +69,10 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -79,7 +88,10 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -96,7 +108,11 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"backends": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -106,12 +122,15 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"split_service": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													Default:  booldefault.StaticBool(false),
 													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
 														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
 														`` + "`" + `backend` + "`" + ` service that communicates with a couple of databases, you would` + "\n" +
 														`get service names like ` + "`" + `backend_INBOUND` + "`" + `, ` + "`" + `backend_OUTBOUND_db1` + "`" + `, and` + "\n" +
-														`` + "`" + `backend_OUTBOUND_db2` + "`" + ` in Datadog.`,
+														`` + "`" + `backend_OUTBOUND_db2` + "`" + ` in Datadog.` + "\n" +
+														`Default: false`,
 												},
 												"url": schema.StringAttribute{
 													Optional: true,
@@ -155,10 +174,12 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"api_version": schema.StringAttribute{
+													Computed: true,
 													Optional: true,
+													Default:  stringdefault.StaticString("httpJson"),
 													MarkdownDescription: `Version of the API.` + "\n" +
 														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66` + "\n" +
-														`must be one of ["httpJson", "httpProto"]`,
+														`Default: "httpJson"; must be one of ["httpJson", "httpProto"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
 															"httpJson",
@@ -167,14 +188,19 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 													},
 												},
 												"shared_span_context": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													Default:  booldefault.StaticBool(true),
 													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
 														`context.` + "\n" +
-														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63`,
+														`https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63` + "\n" +
+														`Default: true`,
 												},
 												"trace_id128bit": schema.BoolAttribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Generate 128bit traces.`,
+													Default:     booldefault.StaticBool(false),
+													Description: `Generate 128bit traces. Default: false`,
 												},
 												"url": schema.StringAttribute{
 													Optional:    true,
@@ -287,7 +313,11 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 									`process/export a span or not.`,
 							},
 							"tags": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -372,7 +402,11 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -409,7 +443,11 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -465,7 +503,7 @@ func (r *MeshTraceResource) Create(ctx context.Context, req resource.CreateReque
 	var name string
 	name = data.Name.ValueString()
 
-	meshTraceItem := *data.ToSharedMeshTraceItem()
+	meshTraceItem := *data.ToSharedMeshTraceItemInput()
 	request := operations.CreateMeshTraceRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
@@ -620,7 +658,7 @@ func (r *MeshTraceResource) Update(ctx context.Context, req resource.UpdateReque
 	var name string
 	name = data.Name.ValueString()
 
-	meshTraceItem := *data.ToSharedMeshTraceItem()
+	meshTraceItem := *data.ToSharedMeshTraceItemInput()
 	request := operations.UpdateMeshTraceRequest{
 		CpID:          cpID,
 		Mesh:          mesh,

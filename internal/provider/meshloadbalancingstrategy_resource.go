@@ -13,9 +13,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -64,7 +69,10 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -80,7 +88,10 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -134,7 +145,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -159,7 +174,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -217,7 +236,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"hash_policies": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -227,7 +250,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Optional:    true,
+																				Computed: true,
+																				Optional: true,
+																				PlanModifiers: []planmodifier.Bool{
+																					custom_boolplanmodifier.SupressZeroNullModifier(),
+																				},
 																				Description: `Hash on source IP address.`,
 																			},
 																		},
@@ -299,7 +326,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.Bool{
+																			custom_boolplanmodifier.SupressZeroNullModifier(),
+																		},
 																		MarkdownDescription: `Terminal is a flag that short-circuits the hash computing. This field provides` + "\n" +
 																			`a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback` + "\n" +
 																			`to rest of the policy list”, it saves time when the terminal policy works.` + "\n" +
@@ -366,7 +397,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 															},
 														},
 														"hash_policies": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -376,7 +411,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Optional:    true,
+																				Computed: true,
+																				Optional: true,
+																				PlanModifiers: []planmodifier.Bool{
+																					custom_boolplanmodifier.SupressZeroNullModifier(),
+																				},
 																				Description: `Hash on source IP address.`,
 																			},
 																		},
@@ -448,7 +487,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.Bool{
+																			custom_boolplanmodifier.SupressZeroNullModifier(),
+																		},
 																		MarkdownDescription: `Terminal is a flag that short-circuits the hash computing. This field provides` + "\n" +
 																			`a ‘fallback’ style of configuration: “if a terminal policy doesn’t work, fallback` + "\n" +
 																			`to rest of the policy list”, it saves time when the terminal policy works.` + "\n" +
@@ -528,7 +571,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"failover": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -538,7 +585,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"zones": schema.ListAttribute{
-																				Optional:    true,
+																				Computed: true,
+																				Optional: true,
+																				PlanModifiers: []planmodifier.List{
+																					custom_listplanmodifier.SupressZeroNullModifier(),
+																				},
 																				ElementType: types.StringType,
 																				Description: `Not Null`,
 																				Validators: []validator.List{
@@ -565,7 +616,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																				},
 																			},
 																			"zones": schema.ListAttribute{
-																				Optional:    true,
+																				Computed: true,
+																				Optional: true,
+																				PlanModifiers: []planmodifier.List{
+																					custom_listplanmodifier.SupressZeroNullModifier(),
+																				},
 																				ElementType: types.StringType,
 																			},
 																		},
@@ -618,7 +673,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`are unavailable`,
 												},
 												"disabled": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													MarkdownDescription: `Disabled allows to disable locality-aware load balancing.` + "\n" +
 														`When disabled requests are distributed across all endpoints regardless of locality.`,
 												},
@@ -626,7 +685,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"affinity_tags": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -703,7 +766,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -747,7 +814,11 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -803,7 +874,7 @@ func (r *MeshLoadBalancingStrategyResource) Create(ctx context.Context, req reso
 	var name string
 	name = data.Name.ValueString()
 
-	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItem()
+	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItemInput()
 	request := operations.CreateMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,
@@ -958,7 +1029,7 @@ func (r *MeshLoadBalancingStrategyResource) Update(ctx context.Context, req reso
 	var name string
 	name = data.Name.ValueString()
 
-	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItem()
+	meshLoadBalancingStrategyItem := *data.ToSharedMeshLoadBalancingStrategyItemInput()
 	request := operations.UpdateMeshLoadBalancingStrategyRequest{
 		CpID:                          cpID,
 		Mesh:                          mesh,

@@ -15,7 +15,7 @@ type UpdateMeshAccessLogRequest struct {
 	// name of the MeshAccessLog
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshAccessLogItem shared.MeshAccessLogItem `request:"mediaType=application/json"`
+	MeshAccessLogItem shared.MeshAccessLogItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshAccessLogRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshAccessLogRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshAccessLogRequest) GetMeshAccessLogItem() shared.MeshAccessLogItem {
+func (o *UpdateMeshAccessLogRequest) GetMeshAccessLogItem() shared.MeshAccessLogItemInput {
 	if o == nil {
-		return shared.MeshAccessLogItem{}
+		return shared.MeshAccessLogItemInput{}
 	}
 	return o.MeshAccessLogItem
 }

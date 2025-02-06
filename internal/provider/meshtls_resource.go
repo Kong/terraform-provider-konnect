@@ -12,9 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,7 +66,10 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -77,7 +85,10 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -91,7 +102,11 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -111,7 +126,11 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 											},
 										},
 										"tls_ciphers": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											Description: `TlsCiphers section for providing ciphers specification.`,
 										},
@@ -119,8 +138,10 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"max": schema.StringAttribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
+													Default:     stringdefault.StaticString("TLSAuto"),
+													Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
 															"TLSAuto",
@@ -132,8 +153,10 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 													},
 												},
 												"min": schema.StringAttribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
+													Default:     stringdefault.StaticString("TLSAuto"),
+													Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
 															"TLSAuto",
@@ -192,7 +215,11 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -264,7 +291,11 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -299,7 +330,11 @@ func (r *MeshTLSResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -355,7 +390,7 @@ func (r *MeshTLSResource) Create(ctx context.Context, req resource.CreateRequest
 	var name string
 	name = data.Name.ValueString()
 
-	meshTLSItem := *data.ToSharedMeshTLSItem()
+	meshTLSItem := *data.ToSharedMeshTLSItemInput()
 	request := operations.CreateMeshTLSRequest{
 		CpID:        cpID,
 		Mesh:        mesh,
@@ -510,7 +545,7 @@ func (r *MeshTLSResource) Update(ctx context.Context, req resource.UpdateRequest
 	var name string
 	name = data.Name.ValueString()
 
-	meshTLSItem := *data.ToSharedMeshTLSItem()
+	meshTLSItem := *data.ToSharedMeshTLSItemInput()
 	request := operations.UpdateMeshTLSRequest{
 		CpID:        cpID,
 		Mesh:        mesh,

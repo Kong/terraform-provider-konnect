@@ -1,5 +1,8 @@
 resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginratelimitingadvanced" {
   config = {
+    compound_identifier = [
+      "header"
+    ]
     consumer_groups = [
       "..."
     ]
@@ -10,12 +13,13 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     error_message           = "...my_error_message..."
     header_name             = "...my_header_name..."
     hide_client_headers     = true
-    identifier              = "ip"
+    identifier              = "consumer"
     limit = [
       4.52
     ]
-    namespace = "...my_namespace..."
-    path      = "...my_path..."
+    lock_dictionary_name = "...my_lock_dictionary_name..."
+    namespace            = "...my_namespace..."
+    path                 = "...my_path..."
     redis = {
       cluster_max_redirections = 7
       cluster_nodes = [
@@ -33,6 +37,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
       password              = "...my_password..."
       port                  = 63483
       read_timeout          = 382621324
+      redis_proxy_type      = "envoy_v1.31"
       send_timeout          = 1710404950
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
@@ -42,7 +47,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -80,7 +85,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     }
   }
   protocols = [
-    "https"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

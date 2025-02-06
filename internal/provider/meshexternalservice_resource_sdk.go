@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItem() *shared.MeshExternalServiceItem {
+func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput() *shared.MeshExternalServiceItemInput {
 	typeVar := shared.MeshExternalServiceItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -236,115 +236,19 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItem() *sh
 		Match:     match,
 		TLS:       tls,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	var status *shared.Status
-	if r.Status != nil {
-		var addresses []shared.Addresses = []shared.Addresses{}
-		for _, addressesItem := range r.Status.Addresses {
-			hostname := new(string)
-			if !addressesItem.Hostname.IsUnknown() && !addressesItem.Hostname.IsNull() {
-				*hostname = addressesItem.Hostname.ValueString()
-			} else {
-				hostname = nil
-			}
-			var hostnameGeneratorRef *shared.HostnameGeneratorRef
-			if addressesItem.HostnameGeneratorRef != nil {
-				var coreName string
-				coreName = addressesItem.HostnameGeneratorRef.CoreName.ValueString()
-
-				hostnameGeneratorRef = &shared.HostnameGeneratorRef{
-					CoreName: coreName,
-				}
-			}
-			origin := new(string)
-			if !addressesItem.Origin.IsUnknown() && !addressesItem.Origin.IsNull() {
-				*origin = addressesItem.Origin.ValueString()
-			} else {
-				origin = nil
-			}
-			addresses = append(addresses, shared.Addresses{
-				Hostname:             hostname,
-				HostnameGeneratorRef: hostnameGeneratorRef,
-				Origin:               origin,
-			})
-		}
-		var hostnameGenerators []shared.HostnameGenerators = []shared.HostnameGenerators{}
-		for _, hostnameGeneratorsItem := range r.Status.HostnameGenerators {
-			var conditions []shared.Conditions = []shared.Conditions{}
-			for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-				var message string
-				message = conditionsItem.Message.ValueString()
-
-				var reason string
-				reason = conditionsItem.Reason.ValueString()
-
-				status1 := shared.MeshExternalServiceItemStatus(conditionsItem.Status.ValueString())
-				var type2 string
-				type2 = conditionsItem.Type.ValueString()
-
-				conditions = append(conditions, shared.Conditions{
-					Message: message,
-					Reason:  reason,
-					Status:  status1,
-					Type:    type2,
-				})
-			}
-			var coreName1 string
-			coreName1 = hostnameGeneratorsItem.HostnameGeneratorRef.CoreName.ValueString()
-
-			hostnameGeneratorRef1 := shared.MeshExternalServiceItemHostnameGeneratorRef{
-				CoreName: coreName1,
-			}
-			hostnameGenerators = append(hostnameGenerators, shared.HostnameGenerators{
-				Conditions:           conditions,
-				HostnameGeneratorRef: hostnameGeneratorRef1,
-			})
-		}
-		var vip *shared.Vip
-		if r.Status.Vip != nil {
-			ip := new(string)
-			if !r.Status.Vip.IP.IsUnknown() && !r.Status.Vip.IP.IsNull() {
-				*ip = r.Status.Vip.IP.ValueString()
-			} else {
-				ip = nil
-			}
-			vip = &shared.Vip{
-				IP: ip,
-			}
-		}
-		status = &shared.Status{
-			Addresses:          addresses,
-			HostnameGenerators: hostnameGenerators,
-			Vip:                vip,
-		}
-	}
-	out := shared.MeshExternalServiceItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
-		Status:           status,
+	out := shared.MeshExternalServiceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceCreateOrUpdateSuccessResponse(resp *shared.MeshExternalServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

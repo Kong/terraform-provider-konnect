@@ -6,11 +6,11 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     cookie_http_only = true
     cookie_name      = "...my_cookie_name..."
     cookie_path      = "...my_cookie_path..."
-    cookie_same_site = "Default"
+    cookie_same_site = "Strict"
     cookie_secure    = true
     idling_timeout   = 6.27
     logout_methods = [
-      "POST"
+      "GET"
     ]
     logout_post_arg           = "...my_logout_post_arg..."
     logout_query_arg          = "...my_logout_query_arg..."
@@ -20,7 +20,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     remember_cookie_name      = "...my_remember_cookie_name..."
     remember_rolling_timeout  = 6.77
     request_headers = [
-      "timeout"
+      "idling-timeout"
     ]
     response_headers = [
       "audience"
@@ -29,12 +29,6 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     secret          = "...my_secret..."
     stale_ttl       = 3.88
     storage         = "cookie"
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false

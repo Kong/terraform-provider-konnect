@@ -428,7 +428,7 @@ type MeshOPAItem struct {
 	// the type of the resource
 	Type MeshOPAItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -499,4 +499,63 @@ func (o *MeshOPAItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshOPAItemInput struct {
+	// the type of the resource
+	Type MeshOPAItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshOPA resource.
+	Spec MeshOPAItemSpec `json:"spec"`
+}
+
+func (m MeshOPAItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshOPAItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshOPAItemInput) GetType() MeshOPAItemType {
+	if o == nil {
+		return MeshOPAItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshOPAItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshOPAItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshOPAItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshOPAItemInput) GetSpec() MeshOPAItemSpec {
+	if o == nil {
+		return MeshOPAItemSpec{}
+	}
+	return o.Spec
 }

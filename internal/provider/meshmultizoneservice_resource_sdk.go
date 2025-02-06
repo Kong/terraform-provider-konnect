@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItem() *shared.MeshMultiZoneServiceItem {
+func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItemInput() *shared.MeshMultiZoneServiceItemInput {
 	typeVar := shared.MeshMultiZoneServiceItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -67,137 +67,19 @@ func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItem() *
 		Ports:    ports,
 		Selector: selector,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	var status *shared.MeshMultiZoneServiceItemStatus
-	if r.Status != nil {
-		var addresses []shared.MeshMultiZoneServiceItemAddresses = []shared.MeshMultiZoneServiceItemAddresses{}
-		for _, addressesItem := range r.Status.Addresses {
-			hostname := new(string)
-			if !addressesItem.Hostname.IsUnknown() && !addressesItem.Hostname.IsNull() {
-				*hostname = addressesItem.Hostname.ValueString()
-			} else {
-				hostname = nil
-			}
-			var hostnameGeneratorRef *shared.MeshMultiZoneServiceItemHostnameGeneratorRef
-			if addressesItem.HostnameGeneratorRef != nil {
-				var coreName string
-				coreName = addressesItem.HostnameGeneratorRef.CoreName.ValueString()
-
-				hostnameGeneratorRef = &shared.MeshMultiZoneServiceItemHostnameGeneratorRef{
-					CoreName: coreName,
-				}
-			}
-			origin := new(string)
-			if !addressesItem.Origin.IsUnknown() && !addressesItem.Origin.IsNull() {
-				*origin = addressesItem.Origin.ValueString()
-			} else {
-				origin = nil
-			}
-			addresses = append(addresses, shared.MeshMultiZoneServiceItemAddresses{
-				Hostname:             hostname,
-				HostnameGeneratorRef: hostnameGeneratorRef,
-				Origin:               origin,
-			})
-		}
-		var hostnameGenerators []shared.MeshMultiZoneServiceItemHostnameGenerators = []shared.MeshMultiZoneServiceItemHostnameGenerators{}
-		for _, hostnameGeneratorsItem := range r.Status.HostnameGenerators {
-			var conditions []shared.MeshMultiZoneServiceItemConditions = []shared.MeshMultiZoneServiceItemConditions{}
-			for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-				var message string
-				message = conditionsItem.Message.ValueString()
-
-				var reason string
-				reason = conditionsItem.Reason.ValueString()
-
-				status1 := shared.MeshMultiZoneServiceItemStatusStatus(conditionsItem.Status.ValueString())
-				var type1 string
-				type1 = conditionsItem.Type.ValueString()
-
-				conditions = append(conditions, shared.MeshMultiZoneServiceItemConditions{
-					Message: message,
-					Reason:  reason,
-					Status:  status1,
-					Type:    type1,
-				})
-			}
-			var coreName1 string
-			coreName1 = hostnameGeneratorsItem.HostnameGeneratorRef.CoreName.ValueString()
-
-			hostnameGeneratorRef1 := shared.MeshMultiZoneServiceItemStatusHostnameGeneratorRef{
-				CoreName: coreName1,
-			}
-			hostnameGenerators = append(hostnameGenerators, shared.MeshMultiZoneServiceItemHostnameGenerators{
-				Conditions:           conditions,
-				HostnameGeneratorRef: hostnameGeneratorRef1,
-			})
-		}
-		var meshServices []shared.MeshMultiZoneServiceItemMeshServices = []shared.MeshMultiZoneServiceItemMeshServices{}
-		for _, meshServicesItem := range r.Status.MeshServices {
-			var mesh1 string
-			mesh1 = meshServicesItem.Mesh.ValueString()
-
-			var name2 string
-			name2 = meshServicesItem.Name.ValueString()
-
-			var namespace string
-			namespace = meshServicesItem.Namespace.ValueString()
-
-			var zone string
-			zone = meshServicesItem.Zone.ValueString()
-
-			meshServices = append(meshServices, shared.MeshMultiZoneServiceItemMeshServices{
-				Mesh:      mesh1,
-				Name:      name2,
-				Namespace: namespace,
-				Zone:      zone,
-			})
-		}
-		var vips []shared.Vips = []shared.Vips{}
-		for _, vipsItem := range r.Status.Vips {
-			ip := new(string)
-			if !vipsItem.IP.IsUnknown() && !vipsItem.IP.IsNull() {
-				*ip = vipsItem.IP.ValueString()
-			} else {
-				ip = nil
-			}
-			vips = append(vips, shared.Vips{
-				IP: ip,
-			})
-		}
-		status = &shared.MeshMultiZoneServiceItemStatus{
-			Addresses:          addresses,
-			HostnameGenerators: hostnameGenerators,
-			MeshServices:       meshServices,
-			Vips:               vips,
-		}
-	}
-	out := shared.MeshMultiZoneServiceItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
-		Status:           status,
+	out := shared.MeshMultiZoneServiceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServiceCreateOrUpdateSuccessResponse(resp *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

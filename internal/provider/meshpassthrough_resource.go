@@ -12,9 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,7 +66,10 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -77,7 +85,10 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -94,7 +105,11 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"append_match": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -105,8 +120,10 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 											Description: `Port defines the port to which a user makes a request.`,
 										},
 										"protocol": schema.StringAttribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. must be one of ["tcp", "tls", "grpc", "http", "http2"]`,
+											Default:     stringdefault.StaticString("tcp"),
+											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"tcp",
@@ -137,10 +154,12 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 								Description: `AppendMatch is a list of destinations that should be allowed through the sidecar.`,
 							},
 							"passthrough_mode": schema.StringAttribute{
+								Computed: true,
 								Optional: true,
+								Default:  stringdefault.StaticString("None"),
 								MarkdownDescription: `Defines the passthrough behavior. Possible values: ` + "`" + `All` + "`" + `, ` + "`" + `None` + "`" + `, ` + "`" + `Matched` + "`" + `` + "\n" +
 									`When ` + "`" + `All` + "`" + ` or ` + "`" + `None` + "`" + ` ` + "`" + `appendMatch` + "`" + ` has no effect.` + "\n" +
-									`must be one of ["All", "Matched", "None"]`,
+									`Default: "None"; must be one of ["All", "Matched", "None"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"All",
@@ -193,7 +212,11 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -230,7 +253,11 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -286,7 +313,7 @@ func (r *MeshPassthroughResource) Create(ctx context.Context, req resource.Creat
 	var name string
 	name = data.Name.ValueString()
 
-	meshPassthroughItem := *data.ToSharedMeshPassthroughItem()
+	meshPassthroughItem := *data.ToSharedMeshPassthroughItemInput()
 	request := operations.CreateMeshPassthroughRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
@@ -441,7 +468,7 @@ func (r *MeshPassthroughResource) Update(ctx context.Context, req resource.Updat
 	var name string
 	name = data.Name.ValueString()
 
-	meshPassthroughItem := *data.ToSharedMeshPassthroughItem()
+	meshPassthroughItem := *data.ToSharedMeshPassthroughItemInput()
 	request := operations.UpdateMeshPassthroughRequest{
 		CpID:                cpID,
 		Mesh:                mesh,

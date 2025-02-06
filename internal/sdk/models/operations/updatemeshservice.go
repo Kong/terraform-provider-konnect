@@ -15,7 +15,7 @@ type UpdateMeshServiceRequest struct {
 	// name of the MeshService
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshServiceItem shared.MeshServiceItem `request:"mediaType=application/json"`
+	MeshServiceItem shared.MeshServiceItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshServiceRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshServiceRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshServiceRequest) GetMeshServiceItem() shared.MeshServiceItem {
+func (o *UpdateMeshServiceRequest) GetMeshServiceItem() shared.MeshServiceItemInput {
 	if o == nil {
-		return shared.MeshServiceItem{}
+		return shared.MeshServiceItemInput{}
 	}
 	return o.MeshServiceItem
 }

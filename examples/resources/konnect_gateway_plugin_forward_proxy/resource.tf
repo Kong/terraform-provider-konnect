@@ -8,12 +8,9 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
     https_proxy_port = 38011
     https_verify     = false
     proxy_scheme     = "http"
-    x_headers        = "transparent"
+    x_headers        = "delete"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -33,7 +30,7 @@ resource "konnect_gateway_plugin_forward_proxy" "my_gatewaypluginforwardproxy" {
     }
   }
   protocols = [
-    "ws"
+    "https"
   ]
   route = {
     id = "...my_id..."

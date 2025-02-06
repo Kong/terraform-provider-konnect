@@ -205,8 +205,8 @@ const (
 // value, the more forcefully it reduces the load balancing weight of endpoints that are
 // actively serving requests.
 type ActiveRequestBias struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type ActiveRequestBiasType
 }
@@ -972,8 +972,8 @@ const (
 )
 
 type MeshLoadBalancingStrategyItemPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshLoadBalancingStrategyItemPercentageType
 }
@@ -1373,7 +1373,7 @@ type MeshLoadBalancingStrategyItem struct {
 	// the type of the resource
 	Type MeshLoadBalancingStrategyItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1444,4 +1444,63 @@ func (o *MeshLoadBalancingStrategyItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshLoadBalancingStrategyItemInput struct {
+	// the type of the resource
+	Type MeshLoadBalancingStrategyItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshLoadBalancingStrategy resource.
+	Spec MeshLoadBalancingStrategyItemSpec `json:"spec"`
+}
+
+func (m MeshLoadBalancingStrategyItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshLoadBalancingStrategyItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshLoadBalancingStrategyItemInput) GetType() MeshLoadBalancingStrategyItemType {
+	if o == nil {
+		return MeshLoadBalancingStrategyItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshLoadBalancingStrategyItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshLoadBalancingStrategyItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshLoadBalancingStrategyItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshLoadBalancingStrategyItemInput) GetSpec() MeshLoadBalancingStrategyItemSpec {
+	if o == nil {
+		return MeshLoadBalancingStrategyItemSpec{}
+	}
+	return o.Spec
 }

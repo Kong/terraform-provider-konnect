@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_ai_prompt_template" "my_gatewaypluginaipromptte
     }
   }
   protocols = [
-    "wss"
+    "https"
   ]
   route = {
     id = "...my_id..."

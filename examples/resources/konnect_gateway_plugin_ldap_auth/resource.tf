@@ -15,12 +15,6 @@ resource "konnect_gateway_plugin_ldap_auth" "my_gatewaypluginldapauth" {
     timeout          = 2.42
     verify_ldap_host = true
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
   id               = "...my_id..."

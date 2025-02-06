@@ -15,7 +15,7 @@ type UpdateMeshCircuitBreakerRequest struct {
 	// name of the MeshCircuitBreaker
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshCircuitBreakerItem shared.MeshCircuitBreakerItem `request:"mediaType=application/json"`
+	MeshCircuitBreakerItem shared.MeshCircuitBreakerItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshCircuitBreakerRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshCircuitBreakerRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshCircuitBreakerRequest) GetMeshCircuitBreakerItem() shared.MeshCircuitBreakerItem {
+func (o *UpdateMeshCircuitBreakerRequest) GetMeshCircuitBreakerItem() shared.MeshCircuitBreakerItemInput {
 	if o == nil {
-		return shared.MeshCircuitBreakerItem{}
+		return shared.MeshCircuitBreakerItemInput{}
 	}
 	return o.MeshCircuitBreakerItem
 }

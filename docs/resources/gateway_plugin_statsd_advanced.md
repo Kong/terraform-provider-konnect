@@ -24,9 +24,9 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
     metrics = [
       {
         consumer_identifier  = "custom_id"
-        name                 = "status_count_per_user"
+        name                 = "response_size"
         sample_rate          = 2.11
-        service_identifier   = "service_id"
+        service_identifier   = "service_host"
         stat_type            = "timer"
         workspace_identifier = "workspace_name"
       }
@@ -43,15 +43,12 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
       max_retry_delay      = 686342.11
       max_retry_time       = 8.95
     }
-    service_identifier_default   = "service_host"
+    service_identifier_default   = "service_name"
     udp_packet_size              = 19205.04
     use_tcp                      = false
     workspace_identifier_default = "workspace_id"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -96,12 +93,11 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -124,7 +120,7 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `prefix` (String) String to prefix to each metric's name.
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
-- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]
+- `service_identifier_default` (String) The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are `service_name_or_host`, `service_id`, `service_name`, `service_host`. must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
 - `udp_packet_size` (Number) Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).
 - `use_tcp` (Boolean) Use TCP instead of UDP.
 - `workspace_identifier_default` (String) The default workspace identifier for metrics. This will take effect when a metric's workspace identifier is omitted. Allowed values are `workspace_id`, `workspace_name`. must be one of ["workspace_id", "workspace_name"]
@@ -135,9 +131,9 @@ Optional:
 Optional:
 
 - `consumer_identifier` (String) must be one of ["consumer_id", "custom_id", "username"]
-- `name` (String) Not Null; must be one of ["kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "status_count", "status_count_per_user", "unique_users", "upstream_latency", "status_count_per_workspace", "status_count_per_user_per_route", "shdict_usage", "cache_datastore_hits_total", "cache_datastore_misses_total"]
+- `name` (String) Not Null; must be one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]
 - `sample_rate` (Number)
-- `service_identifier` (String) must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]
+- `service_identifier` (String) must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
 - `stat_type` (String) Not Null; must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]
 - `workspace_identifier` (String) must be one of ["workspace_id", "workspace_name"]
 
@@ -160,14 +156,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

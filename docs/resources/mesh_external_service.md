@@ -14,14 +14,12 @@ MeshExternalService Resource
 
 ```terraform
 resource "konnect_mesh_external_service" "my_meshexternalservice" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     endpoints = [
       {
@@ -72,35 +70,6 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
       }
     }
   }
-  status = {
-    addresses = [
-      {
-        hostname = "...my_hostname..."
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-        origin = "...my_origin..."
-      }
-    ]
-    hostname_generators = [
-      {
-        conditions = [
-          {
-            message = "...my_message..."
-            reason  = "...my_reason..."
-            status  = "True"
-            type    = "...my_type..."
-          }
-        ]
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-      }
-    ]
-    vip = {
-      ip = "...my_ip..."
-    }
-  }
   type = "MeshExternalService"
 }
 ```
@@ -118,13 +87,13 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
-- `status` (Attributes) Status is the current status of the Kuma MeshExternalService resource. (see [below for nested schema](#nestedatt--status))
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
+- `status` (Attributes) Status is the current status of the Kuma MeshExternalService resource. (see [below for nested schema](#nestedatt--status))
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -150,8 +119,8 @@ Required:
 
 Optional:
 
-- `protocol` (String) Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`. must be one of ["tcp", "grpc", "http", "http2"]
-- `type` (String) Type of the match, only `HostnameGenerator` is available at the moment. must be "HostnameGenerator"
+- `protocol` (String) Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`. Default: "tcp"; must be one of ["tcp", "grpc", "http", "http2"]
+- `type` (String) Type of the match, only `HostnameGenerator` is available at the moment. Default: "HostnameGenerator"; must be "HostnameGenerator"
 
 
 <a id="nestedatt--spec--endpoints"></a>
@@ -179,7 +148,8 @@ Optional:
 
 - `allow_renegotiation` (Boolean) AllowRenegotiation defines if TLS sessions will allow renegotiation.
 Setting this to true is not recommended for security reasons.
-- `enabled` (Boolean) Enabled defines if proxy should originate TLS.
+Default: false
+- `enabled` (Boolean) Enabled defines if proxy should originate TLS. Default: false
 - `verification` (Attributes) Verification section for providing TLS verification details. (see [below for nested schema](#nestedatt--spec--tls--verification))
 - `version` (Attributes) Version section for providing version specification. (see [below for nested schema](#nestedatt--spec--tls--version))
 
@@ -191,7 +161,7 @@ Optional:
 - `ca_cert` (Attributes) CaCert defines a certificate of CA. (see [below for nested schema](#nestedatt--spec--tls--verification--ca_cert))
 - `client_cert` (Attributes) ClientCert defines a certificate of a client. (see [below for nested schema](#nestedatt--spec--tls--verification--client_cert))
 - `client_key` (Attributes) ClientKey defines a client private key. (see [below for nested schema](#nestedatt--spec--tls--verification--client_key))
-- `mode` (String) Mode defines if proxy should skip verification, one of `SkipSAN`, `SkipCA`, `Secured`, `SkipAll`. Default `Secured`. must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]
+- `mode` (String) Mode defines if proxy should skip verification, one of `SkipSAN`, `SkipCA`, `Secured`, `SkipAll`. Default `Secured`. Default: "Secured"; must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]
 - `server_name` (String) ServerName overrides the default Server Name Indicator set by Kuma.
 - `subject_alt_names` (Attributes List) SubjectAltNames list of names to verify in the certificate. (see [below for nested schema](#nestedatt--spec--tls--verification--subject_alt_names))
 
@@ -230,7 +200,7 @@ Optional:
 
 Optional:
 
-- `type` (String) Type specifies matching type, one of `Exact`, `Prefix`. Default: `Exact`. must be one of ["Exact", "Prefix"]
+- `type` (String) Type specifies matching type, one of `Exact`, `Prefix`. Default: `Exact`. Default: "Exact"; must be one of ["Exact", "Prefix"]
 - `value` (String) Value to match. Not Null
 
 
@@ -240,8 +210,8 @@ Optional:
 
 Optional:
 
-- `max` (String) Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]
-- `min` (String) Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]
+- `max` (String) Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]
+- `min` (String) Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]
 
 
 
@@ -249,7 +219,7 @@ Optional:
 <a id="nestedatt--status"></a>
 ### Nested Schema for `status`
 
-Optional:
+Read-Only:
 
 - `addresses` (Attributes List) Addresses section for generated domains (see [below for nested schema](#nestedatt--status--addresses))
 - `hostname_generators` (Attributes List) (see [below for nested schema](#nestedatt--status--hostname_generators))
@@ -258,7 +228,7 @@ Optional:
 <a id="nestedatt--status--addresses"></a>
 ### Nested Schema for `status.addresses`
 
-Optional:
+Read-Only:
 
 - `hostname` (String)
 - `hostname_generator_ref` (Attributes) (see [below for nested schema](#nestedatt--status--addresses--hostname_generator_ref))
@@ -267,51 +237,49 @@ Optional:
 <a id="nestedatt--status--addresses--hostname_generator_ref"></a>
 ### Nested Schema for `status.addresses.hostname_generator_ref`
 
-Optional:
+Read-Only:
 
-- `core_name` (String) Not Null
+- `core_name` (String)
 
 
 
 <a id="nestedatt--status--hostname_generators"></a>
 ### Nested Schema for `status.hostname_generators`
 
-Optional:
+Read-Only:
 
 - `conditions` (Attributes List) Conditions is an array of hostname generator conditions. (see [below for nested schema](#nestedatt--status--hostname_generators--conditions))
-- `hostname_generator_ref` (Attributes) Not Null (see [below for nested schema](#nestedatt--status--hostname_generators--hostname_generator_ref))
+- `hostname_generator_ref` (Attributes) (see [below for nested schema](#nestedatt--status--hostname_generators--hostname_generator_ref))
 
 <a id="nestedatt--status--hostname_generators--conditions"></a>
 ### Nested Schema for `status.hostname_generators.conditions`
 
-Optional:
+Read-Only:
 
 - `message` (String) message is a human readable message indicating details about the transition.
 This may be an empty string.
-Not Null
 - `reason` (String) reason contains a programmatic identifier indicating the reason for the condition's last transition.
 Producers of specific condition types may define expected values and meanings for this field,
 and whether the values are considered a guaranteed API.
 The value should be a CamelCase string.
 This field may not be empty.
-Not Null
-- `status` (String) status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]
-- `type` (String) type of condition in CamelCase or in foo.example.com/CamelCase. Not Null
+- `status` (String) status of the condition, one of True, False, Unknown. must be one of ["True", "False", "Unknown"]
+- `type` (String) type of condition in CamelCase or in foo.example.com/CamelCase.
 
 
 <a id="nestedatt--status--hostname_generators--hostname_generator_ref"></a>
 ### Nested Schema for `status.hostname_generators.hostname_generator_ref`
 
-Optional:
+Read-Only:
 
-- `core_name` (String) Not Null
+- `core_name` (String)
 
 
 
 <a id="nestedatt--status--vip"></a>
 ### Nested Schema for `status.vip`
 
-Optional:
+Read-Only:
 
 - `ip` (String) Value allocated IP for a provided domain with `HostnameGenerator` type in a match section.
 

@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrategyItem() *shared.MeshLoadBalancingStrategyItem {
+func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrategyItemInput() *shared.MeshLoadBalancingStrategyItemInput {
 	typeVar := shared.MeshLoadBalancingStrategyItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -522,33 +522,19 @@ func (r *MeshLoadBalancingStrategyResourceModel) ToSharedMeshLoadBalancingStrate
 		TargetRef: targetRef,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshLoadBalancingStrategyItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshLoadBalancingStrategyItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalancingStrategyCreateOrUpdateSuccessResponse(resp *shared.MeshLoadBalancingStrategyCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -593,7 +579,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -702,7 +688,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.Random == nil {
 						to1.Default.LoadBalancer.Random = nil
 					} else {
-						to1.Default.LoadBalancer.Random = &tfTypes.MeshGatewayItemOptions{}
+						to1.Default.LoadBalancer.Random = &tfTypes.Metadata{}
 					}
 					if toItem.Default.LoadBalancer.RingHash == nil {
 						to1.Default.LoadBalancer.RingHash = nil
@@ -776,7 +762,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 					if toItem.Default.LoadBalancer.RoundRobin == nil {
 						to1.Default.LoadBalancer.RoundRobin = nil
 					} else {
-						to1.Default.LoadBalancer.RoundRobin = &tfTypes.MeshGatewayItemOptions{}
+						to1.Default.LoadBalancer.RoundRobin = &tfTypes.Metadata{}
 					}
 					to1.Default.LoadBalancer.Type = types.StringValue(string(toItem.Default.LoadBalancer.Type))
 				}
@@ -795,13 +781,13 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 								failover1.From = nil
 							} else {
 								failover1.From = &tfTypes.MeshLoadBalancingStrategyItemFrom{}
-								failover1.From.Zones = []types.String{}
+								failover1.From.Zones = make([]types.String, 0, len(failoverItem.From.Zones))
 								for _, v := range failoverItem.From.Zones {
 									failover1.From.Zones = append(failover1.From.Zones, types.StringValue(v))
 								}
 							}
 							failover1.To.Type = types.StringValue(string(failoverItem.To.Type))
-							failover1.To.Zones = []types.String{}
+							failover1.To.Zones = make([]types.String, 0, len(failoverItem.To.Zones))
 							for _, v := range failoverItem.To.Zones {
 								failover1.To.Zones = append(failover1.To.Zones, types.StringValue(v))
 							}
@@ -862,7 +848,7 @@ func (r *MeshLoadBalancingStrategyResourceModel) RefreshFromSharedMeshLoadBalanc
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

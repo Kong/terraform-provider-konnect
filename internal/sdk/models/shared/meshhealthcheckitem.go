@@ -236,8 +236,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type HealthyPanicThreshold struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type HealthyPanicThresholdType
 }
@@ -359,10 +359,21 @@ type MeshHealthCheckItemHTTP struct {
 	ExpectedStatuses []int64 `json:"expectedStatuses,omitempty"`
 	// The HTTP path which will be requested during the health check
 	// (ie. /health)
-	Path *string `json:"path,omitempty"`
+	Path *string `default:"/" json:"path"`
 	// The list of HTTP headers which should be added to each health check
 	// request
 	RequestHeadersToAdd *RequestHeadersToAdd `json:"requestHeadersToAdd,omitempty"`
+}
+
+func (m MeshHealthCheckItemHTTP) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshHealthCheckItemHTTP) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshHealthCheckItemHTTP) GetDisabled() *bool {
@@ -451,7 +462,7 @@ type MeshHealthCheckItemDefault struct {
 	// Either int or decimal represented as string.
 	HealthyPanicThreshold *HealthyPanicThreshold `json:"healthyPanicThreshold,omitempty"`
 	// Number of consecutive healthy checks before considering a host healthy.
-	HealthyThreshold *int `json:"healthyThreshold,omitempty"`
+	HealthyThreshold *int `default:"1" json:"healthyThreshold"`
 	// HttpHealthCheck defines HTTP configuration which will instruct the service
 	// the health check will be made for is an HTTP service.
 	HTTP *MeshHealthCheckItemHTTP `json:"http,omitempty"`
@@ -460,7 +471,7 @@ type MeshHealthCheckItemDefault struct {
 	// check.
 	InitialJitter *string `json:"initialJitter,omitempty"`
 	// Interval between consecutive health checks.
-	Interval *string `json:"interval,omitempty"`
+	Interval *string `default:"1m" json:"interval"`
 	// If specified, during every interval Envoy will add IntervalJitter to the
 	// wait time.
 	IntervalJitter *string `json:"intervalJitter,omitempty"`
@@ -484,10 +495,21 @@ type MeshHealthCheckItemDefault struct {
 	// expected response during the health check
 	TCP *TCP `json:"tcp,omitempty"`
 	// Maximum time to wait for a health check response.
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string `default:"15s" json:"timeout"`
 	// Number of consecutive unhealthy checks before considering a host
 	// unhealthy.
-	UnhealthyThreshold *int `json:"unhealthyThreshold,omitempty"`
+	UnhealthyThreshold *int `default:"5" json:"unhealthyThreshold"`
+}
+
+func (m MeshHealthCheckItemDefault) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshHealthCheckItemDefault) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshHealthCheckItemDefault) GetAlwaysLogHealthCheckFailures() *bool {
@@ -810,7 +832,7 @@ type MeshHealthCheckItem struct {
 	// the type of the resource
 	Type MeshHealthCheckItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -881,4 +903,63 @@ func (o *MeshHealthCheckItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshHealthCheckItemInput struct {
+	// the type of the resource
+	Type MeshHealthCheckItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshHealthCheck resource.
+	Spec MeshHealthCheckItemSpec `json:"spec"`
+}
+
+func (m MeshHealthCheckItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshHealthCheckItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshHealthCheckItemInput) GetType() MeshHealthCheckItemType {
+	if o == nil {
+		return MeshHealthCheckItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshHealthCheckItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshHealthCheckItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshHealthCheckItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshHealthCheckItemInput) GetSpec() MeshHealthCheckItemSpec {
+	if o == nil {
+		return MeshHealthCheckItemSpec{}
+	}
+	return o.Spec
 }

@@ -2,7 +2,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
   config = {
     anonymous           = "...my_anonymous..."
     authorization_value = "...my_authorization_value..."
-    consumer_by         = "client_id"
+    consumer_by         = "username"
     custom_claims_forward = [
       "..."
     ]
@@ -17,12 +17,6 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
     timeout            = 8
     token_type_hint    = "...my_token_type_hint..."
     ttl                = 1.29
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
@@ -41,7 +35,7 @@ resource "konnect_gateway_plugin_oauth2_introspection" "my_gatewaypluginoauth2in
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."

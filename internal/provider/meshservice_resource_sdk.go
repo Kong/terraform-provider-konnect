@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshServiceResourceModel) ToSharedMeshServiceItem() *shared.MeshServiceItem {
+func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput() *shared.MeshServiceItemInput {
 	typeVar := shared.MeshServiceItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -113,9 +113,9 @@ func (r *MeshServiceResourceModel) ToSharedMeshServiceItem() *shared.MeshService
 			DataplaneTags: dataplaneTags,
 		}
 	}
-	state := new(shared.State)
+	state := new(shared.MeshServiceItemState)
 	if !r.Spec.State.IsUnknown() && !r.Spec.State.IsNull() {
-		*state = shared.State(r.Spec.State.ValueString())
+		*state = shared.MeshServiceItemState(r.Spec.State.ValueString())
 	} else {
 		state = nil
 	}
@@ -125,155 +125,19 @@ func (r *MeshServiceResourceModel) ToSharedMeshServiceItem() *shared.MeshService
 		Selector:   selector,
 		State:      state,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	var status *shared.MeshServiceItemStatus
-	if r.Status != nil {
-		var addresses []shared.MeshServiceItemAddresses = []shared.MeshServiceItemAddresses{}
-		for _, addressesItem := range r.Status.Addresses {
-			hostname := new(string)
-			if !addressesItem.Hostname.IsUnknown() && !addressesItem.Hostname.IsNull() {
-				*hostname = addressesItem.Hostname.ValueString()
-			} else {
-				hostname = nil
-			}
-			var hostnameGeneratorRef *shared.MeshServiceItemHostnameGeneratorRef
-			if addressesItem.HostnameGeneratorRef != nil {
-				var coreName string
-				coreName = addressesItem.HostnameGeneratorRef.CoreName.ValueString()
-
-				hostnameGeneratorRef = &shared.MeshServiceItemHostnameGeneratorRef{
-					CoreName: coreName,
-				}
-			}
-			origin := new(string)
-			if !addressesItem.Origin.IsUnknown() && !addressesItem.Origin.IsNull() {
-				*origin = addressesItem.Origin.ValueString()
-			} else {
-				origin = nil
-			}
-			addresses = append(addresses, shared.MeshServiceItemAddresses{
-				Hostname:             hostname,
-				HostnameGeneratorRef: hostnameGeneratorRef,
-				Origin:               origin,
-			})
-		}
-		var dataplaneProxies *shared.DataplaneProxies
-		if r.Status.DataplaneProxies != nil {
-			connected := new(int64)
-			if !r.Status.DataplaneProxies.Connected.IsUnknown() && !r.Status.DataplaneProxies.Connected.IsNull() {
-				*connected = r.Status.DataplaneProxies.Connected.ValueInt64()
-			} else {
-				connected = nil
-			}
-			healthy := new(int64)
-			if !r.Status.DataplaneProxies.Healthy.IsUnknown() && !r.Status.DataplaneProxies.Healthy.IsNull() {
-				*healthy = r.Status.DataplaneProxies.Healthy.ValueInt64()
-			} else {
-				healthy = nil
-			}
-			total := new(int64)
-			if !r.Status.DataplaneProxies.Total.IsUnknown() && !r.Status.DataplaneProxies.Total.IsNull() {
-				*total = r.Status.DataplaneProxies.Total.ValueInt64()
-			} else {
-				total = nil
-			}
-			dataplaneProxies = &shared.DataplaneProxies{
-				Connected: connected,
-				Healthy:   healthy,
-				Total:     total,
-			}
-		}
-		var hostnameGenerators []shared.MeshServiceItemHostnameGenerators = []shared.MeshServiceItemHostnameGenerators{}
-		for _, hostnameGeneratorsItem := range r.Status.HostnameGenerators {
-			var conditions []shared.MeshServiceItemConditions = []shared.MeshServiceItemConditions{}
-			for _, conditionsItem := range hostnameGeneratorsItem.Conditions {
-				var message string
-				message = conditionsItem.Message.ValueString()
-
-				var reason string
-				reason = conditionsItem.Reason.ValueString()
-
-				status1 := shared.MeshServiceItemStatusHostnameGeneratorsStatus(conditionsItem.Status.ValueString())
-				var type2 string
-				type2 = conditionsItem.Type.ValueString()
-
-				conditions = append(conditions, shared.MeshServiceItemConditions{
-					Message: message,
-					Reason:  reason,
-					Status:  status1,
-					Type:    type2,
-				})
-			}
-			var coreName1 string
-			coreName1 = hostnameGeneratorsItem.HostnameGeneratorRef.CoreName.ValueString()
-
-			hostnameGeneratorRef1 := shared.MeshServiceItemStatusHostnameGeneratorRef{
-				CoreName: coreName1,
-			}
-			hostnameGenerators = append(hostnameGenerators, shared.MeshServiceItemHostnameGenerators{
-				Conditions:           conditions,
-				HostnameGeneratorRef: hostnameGeneratorRef1,
-			})
-		}
-		var tls *shared.MeshServiceItemTLS
-		if r.Status.TLS != nil {
-			status2 := new(shared.MeshServiceItemStatusStatus)
-			if !r.Status.TLS.Status.IsUnknown() && !r.Status.TLS.Status.IsNull() {
-				*status2 = shared.MeshServiceItemStatusStatus(r.Status.TLS.Status.ValueString())
-			} else {
-				status2 = nil
-			}
-			tls = &shared.MeshServiceItemTLS{
-				Status: status2,
-			}
-		}
-		var vips []shared.MeshServiceItemVips = []shared.MeshServiceItemVips{}
-		for _, vipsItem := range r.Status.Vips {
-			ip := new(string)
-			if !vipsItem.IP.IsUnknown() && !vipsItem.IP.IsNull() {
-				*ip = vipsItem.IP.ValueString()
-			} else {
-				ip = nil
-			}
-			vips = append(vips, shared.MeshServiceItemVips{
-				IP: ip,
-			})
-		}
-		status = &shared.MeshServiceItemStatus{
-			Addresses:          addresses,
-			DataplaneProxies:   dataplaneProxies,
-			HostnameGenerators: hostnameGenerators,
-			TLS:                tls,
-			Vips:               vips,
-		}
-	}
-	out := shared.MeshServiceItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
-		Status:           status,
+	out := shared.MeshServiceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceCreateOrUpdateSuccessResponse(resp *shared.MeshServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -300,12 +164,12 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(resp *shared
 			r.ModificationTime = types.StringNull()
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.Spec.Identities = []tfTypes.Identities{}
+		r.Spec.Identities = []tfTypes.Path{}
 		if len(r.Spec.Identities) > len(resp.Spec.Identities) {
 			r.Spec.Identities = r.Spec.Identities[:len(resp.Spec.Identities)]
 		}
 		for identitiesCount, identitiesItem := range resp.Spec.Identities {
-			var identities1 tfTypes.Identities
+			var identities1 tfTypes.Path
 			identities1.Type = types.StringValue(string(identitiesItem.Type))
 			identities1.Value = types.StringValue(identitiesItem.Value)
 			if identitiesCount+1 > len(r.Spec.Identities) {

@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_request_termination" "my_gatewaypluginrequestte
     }
   }
   protocols = [
-    "wss"
+    "https"
   ]
   route = {
     id = "...my_id..."

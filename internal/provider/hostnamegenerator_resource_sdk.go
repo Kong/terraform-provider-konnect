@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *HostnameGeneratorResourceModel) ToSharedHostnameGeneratorItem() *shared.HostnameGeneratorItem {
+func (r *HostnameGeneratorResourceModel) ToSharedHostnameGeneratorItemInput() *shared.HostnameGeneratorItemInput {
 	typeVar := shared.Type(r.Type.ValueString())
 	var name string
 	name = r.Name.ValueString()
@@ -78,32 +78,18 @@ func (r *HostnameGeneratorResourceModel) ToSharedHostnameGeneratorItem() *shared
 		Selector: selector,
 		Template: template,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.HostnameGeneratorItem{
-		Type:             typeVar,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.HostnameGeneratorItemInput{
+		Type:   typeVar,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(resp *shared.HostnameGeneratorCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

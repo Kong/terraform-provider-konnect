@@ -1268,7 +1268,7 @@ type MeshProxyPatchItem struct {
 	// the type of the resource
 	Type MeshProxyPatchItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1339,4 +1339,63 @@ func (o *MeshProxyPatchItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshProxyPatchItemInput struct {
+	// the type of the resource
+	Type MeshProxyPatchItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshProxyPatch resource.
+	Spec MeshProxyPatchItemSpec `json:"spec"`
+}
+
+func (m MeshProxyPatchItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshProxyPatchItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshProxyPatchItemInput) GetType() MeshProxyPatchItemType {
+	if o == nil {
+		return MeshProxyPatchItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshProxyPatchItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshProxyPatchItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshProxyPatchItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshProxyPatchItemInput) GetSpec() MeshProxyPatchItemSpec {
+	if o == nil {
+		return MeshProxyPatchItemSpec{}
+	}
+	return o.Spec
 }

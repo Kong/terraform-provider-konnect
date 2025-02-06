@@ -7,12 +7,6 @@ resource "konnect_gateway_plugin_bot_detection" "my_gatewaypluginbotdetection" {
       "..."
     ]
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   id               = "...my_id..."
@@ -30,7 +24,7 @@ resource "konnect_gateway_plugin_bot_detection" "my_gatewaypluginbotdetection" {
     }
   }
   protocols = [
-    "ws"
+    "https"
   ]
   route = {
     id = "...my_id..."

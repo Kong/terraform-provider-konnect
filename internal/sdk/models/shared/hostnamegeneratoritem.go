@@ -180,3 +180,42 @@ func (o *HostnameGeneratorItem) GetModificationTime() *time.Time {
 	}
 	return o.ModificationTime
 }
+
+type HostnameGeneratorItemInput struct {
+	// the type of the resource
+	Type Type `json:"type"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma HostnameGenerator resource.
+	Spec Spec `json:"spec"`
+}
+
+func (o *HostnameGeneratorItemInput) GetType() Type {
+	if o == nil {
+		return Type("")
+	}
+	return o.Type
+}
+
+func (o *HostnameGeneratorItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *HostnameGeneratorItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *HostnameGeneratorItemInput) GetSpec() Spec {
+	if o == nil {
+		return Spec{}
+	}
+	return o.Spec
+}

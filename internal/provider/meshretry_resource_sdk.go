@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshRetryResourceModel) ToSharedMeshRetryItem() *shared.MeshRetryItem {
+func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryItemInput {
 	typeVar := shared.MeshRetryItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -393,33 +393,19 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItem() *shared.MeshRetryItem {
 		TargetRef: targetRef,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshRetryItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshRetryItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryCreateOrUpdateSuccessResponse(resp *shared.MeshRetryCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -464,7 +450,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -521,7 +507,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 							}
 						}
 					}
-					to1.Default.Grpc.RetryOn = []types.String{}
+					to1.Default.Grpc.RetryOn = make([]types.String, 0, len(toItem.Default.Grpc.RetryOn))
 					for _, v := range toItem.Default.Grpc.RetryOn {
 						to1.Default.Grpc.RetryOn = append(to1.Default.Grpc.RetryOn, types.StringValue(string(v)))
 					}
@@ -621,7 +607,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 							to1.Default.HTTP.RetriableResponseHeaders[retriableResponseHeadersCount].Value = retriableResponseHeaders1.Value
 						}
 					}
-					to1.Default.HTTP.RetryOn = []types.String{}
+					to1.Default.HTTP.RetryOn = make([]types.String, 0, len(toItem.Default.HTTP.RetryOn))
 					for _, v := range toItem.Default.HTTP.RetryOn {
 						to1.Default.HTTP.RetryOn = append(to1.Default.HTTP.RetryOn, types.StringValue(v))
 					}
@@ -651,7 +637,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

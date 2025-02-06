@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItem() *shared.MeshGlobalRateLimitItem {
+func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput() *shared.MeshGlobalRateLimitItemInput {
 	typeVar := shared.MeshGlobalRateLimitItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -497,33 +497,19 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItem() *sh
 		TargetRef: targetRef1,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshGlobalRateLimitItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshGlobalRateLimitItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitCreateOrUpdateSuccessResponse(resp *shared.MeshGlobalRateLimitCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -572,9 +558,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						from1.Default.HTTP.OnRateLimit.Headers = nil
 					} else {
 						from1.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						from1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.StaticTags{}
+						from1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount, addItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Add {
-							var add1 tfTypes.StaticTags
+							var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add1.Name = types.StringValue(addItem.Name)
 							add1.Value = types.StringValue(addItem.Value)
 							if addCount+1 > len(from1.Default.HTTP.OnRateLimit.Headers.Add) {
@@ -584,9 +570,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 								from1.Default.HTTP.OnRateLimit.Headers.Add[addCount].Value = add1.Value
 							}
 						}
-						from1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.StaticTags{}
+						from1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount, setItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Set {
-							var set1 tfTypes.StaticTags
+							var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set1.Name = types.StringValue(setItem.Name)
 							set1.Value = types.StringValue(setItem.Value)
 							if setCount+1 > len(from1.Default.HTTP.OnRateLimit.Headers.Set) {
@@ -656,7 +642,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 			from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 			from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-			from1.TargetRef.ProxyTypes = []types.String{}
+			from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
 			for _, v := range fromItem.TargetRef.ProxyTypes {
 				from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -692,7 +678,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -726,9 +712,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 						to1.Default.HTTP.OnRateLimit.Headers = nil
 					} else {
 						to1.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						to1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.StaticTags{}
+						to1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount1, addItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Add {
-							var add3 tfTypes.StaticTags
+							var add3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add3.Name = types.StringValue(addItem1.Name)
 							add3.Value = types.StringValue(addItem1.Value)
 							if addCount1+1 > len(to1.Default.HTTP.OnRateLimit.Headers.Add) {
@@ -738,9 +724,9 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 								to1.Default.HTTP.OnRateLimit.Headers.Add[addCount1].Value = add3.Value
 							}
 						}
-						to1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.StaticTags{}
+						to1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount1, setItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Set {
-							var set3 tfTypes.StaticTags
+							var set3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set3.Name = types.StringValue(setItem1.Name)
 							set3.Value = types.StringValue(setItem1.Value)
 							if setCount1+1 > len(to1.Default.HTTP.OnRateLimit.Headers.Set) {
@@ -810,7 +796,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

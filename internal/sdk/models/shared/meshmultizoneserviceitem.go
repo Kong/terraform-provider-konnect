@@ -35,9 +35,20 @@ func (e *MeshMultiZoneServiceItemType) UnmarshalJSON(data []byte) error {
 
 type Ports struct {
 	// Protocol identifies a protocol supported by a service.
-	AppProtocol *string `json:"appProtocol,omitempty"`
+	AppProtocol *string `default:"tcp" json:"appProtocol"`
 	Name        *string `json:"name,omitempty"`
 	Port        int     `json:"port"`
+}
+
+func (p Ports) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Ports) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Ports) GetAppProtocol() *string {
@@ -343,7 +354,7 @@ type MeshMultiZoneServiceItem struct {
 	// the type of the resource
 	Type MeshMultiZoneServiceItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -423,4 +434,63 @@ func (o *MeshMultiZoneServiceItem) GetStatus() *MeshMultiZoneServiceItemStatus {
 		return nil
 	}
 	return o.Status
+}
+
+type MeshMultiZoneServiceItemInput struct {
+	// the type of the resource
+	Type MeshMultiZoneServiceItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshMultiZoneService resource.
+	Spec MeshMultiZoneServiceItemSpec `json:"spec"`
+}
+
+func (m MeshMultiZoneServiceItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshMultiZoneServiceItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshMultiZoneServiceItemInput) GetType() MeshMultiZoneServiceItemType {
+	if o == nil {
+		return MeshMultiZoneServiceItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshMultiZoneServiceItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshMultiZoneServiceItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshMultiZoneServiceItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshMultiZoneServiceItemInput) GetSpec() MeshMultiZoneServiceItemSpec {
+	if o == nil {
+		return MeshMultiZoneServiceItemSpec{}
+	}
+	return o.Spec
 }

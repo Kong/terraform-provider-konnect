@@ -5,5 +5,5 @@ package types
 type MeshTraceItemDefault struct {
 	Backends []MeshTraceItemBackends `tfsdk:"backends"`
 	Sampling *Sampling               `tfsdk:"sampling"`
-	Tags     []Tags1                 `tfsdk:"tags"`
+	Tags     []Tags                  `tfsdk:"tags"`
 }

@@ -12,9 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -62,7 +67,10 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -78,7 +86,10 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -132,7 +143,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -157,14 +172,22 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 							`defined in-place.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
 								"rules": schema.ListNestedAttribute{
+									Computed: true,
 									Optional: true,
+									PlanModifiers: []planmodifier.List{
+										custom_listplanmodifier.SupressZeroNullModifier(),
+									},
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
 											speakeasy_objectvalidators.NotNull(),
@@ -174,7 +197,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"backend_refs": schema.ListNestedAttribute{
+														Computed: true,
 														Optional: true,
+														PlanModifiers: []planmodifier.List{
+															custom_listplanmodifier.SupressZeroNullModifier(),
+														},
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
 																speakeasy_objectvalidators.NotNull(),
@@ -222,7 +249,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
 																"proxy_types": schema.ListAttribute{
-																	Optional:    true,
+																	Computed: true,
+																	Optional: true,
+																	PlanModifiers: []planmodifier.List{
+																		custom_listplanmodifier.SupressZeroNullModifier(),
+																	},
 																	ElementType: types.StringType,
 																	MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 																		`all data plane types are targeted by the policy.`,
@@ -242,7 +273,10 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 																		`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																},
 																"weight": schema.Int64Attribute{
-																	Optional: true,
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(1),
+																	Description: `Default: 1`,
 																},
 															},
 														},
@@ -309,7 +343,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -357,7 +395,11 @@ func (r *MeshTCPRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -413,7 +455,7 @@ func (r *MeshTCPRouteResource) Create(ctx context.Context, req resource.CreateRe
 	var name string
 	name = data.Name.ValueString()
 
-	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItem()
+	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItemInput()
 	request := operations.CreateMeshTCPRouteRequest{
 		CpID:             cpID,
 		Mesh:             mesh,
@@ -568,7 +610,7 @@ func (r *MeshTCPRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	var name string
 	name = data.Name.ValueString()
 
-	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItem()
+	meshTCPRouteItem := *data.ToSharedMeshTCPRouteItemInput()
 	request := operations.UpdateMeshTCPRouteRequest{
 		CpID:             cpID,
 		Mesh:             mesh,

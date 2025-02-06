@@ -3,7 +3,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     batch_flush_delay = 7
     batch_span_count  = 5
     connect_timeout   = 1207240418
-    header_type       = "w3c"
+    header_type       = "gcp"
     headers = {
       key = jsonencode("value"),
     }
@@ -13,12 +13,12 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
       clear = [
         "..."
       ]
-      default_format = "w3c"
+      default_format = "aws"
       extract = [
         "jaeger"
       ]
       inject = [
-        "w3c"
+        "b3"
       ]
     }
     queue = {
@@ -42,9 +42,6 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
   consumer = {
     id = "...my_id..."
   }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
   id               = "...my_id..."
@@ -62,7 +59,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

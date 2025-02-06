@@ -8,29 +8,70 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type ConsumerBy string
+type LdapAuthAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type LdapAuthAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type LdapAuthAdvancedPluginOrdering struct {
+	After  *LdapAuthAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *LdapAuthAdvancedPluginOrdering) GetBefore() *LdapAuthAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type LdapAuthAdvancedPluginConsumerBy string
 
 const (
-	ConsumerByUsername ConsumerBy = "username"
-	ConsumerByCustomID ConsumerBy = "custom_id"
+	LdapAuthAdvancedPluginConsumerByCustomID LdapAuthAdvancedPluginConsumerBy = "custom_id"
+	LdapAuthAdvancedPluginConsumerByUsername LdapAuthAdvancedPluginConsumerBy = "username"
 )
 
-func (e ConsumerBy) ToPointer() *ConsumerBy {
+func (e LdapAuthAdvancedPluginConsumerBy) ToPointer() *LdapAuthAdvancedPluginConsumerBy {
 	return &e
 }
-func (e *ConsumerBy) UnmarshalJSON(data []byte) error {
+func (e *LdapAuthAdvancedPluginConsumerBy) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
-	case "username":
-		fallthrough
 	case "custom_id":
-		*e = ConsumerBy(v)
+		fallthrough
+	case "username":
+		*e = LdapAuthAdvancedPluginConsumerBy(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for ConsumerBy: %v", v)
+		return fmt.Errorf("invalid value for LdapAuthAdvancedPluginConsumerBy: %v", v)
 	}
 }
 
@@ -46,7 +87,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	// Cache expiry time in seconds.
 	CacheTTL *float64 `json:"cache_ttl,omitempty"`
 	// Whether to authenticate consumers based on `username`, `custom_id`, or both.
-	ConsumerBy []ConsumerBy `json:"consumer_by,omitempty"`
+	ConsumerBy []LdapAuthAdvancedPluginConsumerBy `json:"consumer_by,omitempty"`
 	// Whether consumer mapping is optional. If `consumer_optional=true`, the plugin will not attempt to associate a consumer with the LDAP authenticated user.
 	ConsumerOptional *bool `json:"consumer_optional,omitempty"`
 	// Sets a distinguished name (DN) for the entry where LDAP searches for groups begin. This field is case-insensitive.',dc=com'.
@@ -118,7 +159,7 @@ func (o *LdapAuthAdvancedPluginConfig) GetCacheTTL() *float64 {
 	return o.CacheTTL
 }
 
-func (o *LdapAuthAdvancedPluginConfig) GetConsumerBy() []ConsumerBy {
+func (o *LdapAuthAdvancedPluginConfig) GetConsumerBy() []LdapAuthAdvancedPluginConsumerBy {
 	if o == nil {
 		return nil
 	}
@@ -244,83 +285,15 @@ func (o *LdapAuthAdvancedPluginConfig) GetVerifyLdapHost() *bool {
 	return o.VerifyLdapHost
 }
 
-// LdapAuthAdvancedPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type LdapAuthAdvancedPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *LdapAuthAdvancedPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type LdapAuthAdvancedPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *LdapAuthAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type LdapAuthAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LdapAuthAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LdapAuthAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LdapAuthAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LdapAuthAdvancedPluginOrdering struct {
-	After  *LdapAuthAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *LdapAuthAdvancedPluginBefore `json:"before,omitempty"`
-}
-
-func (o *LdapAuthAdvancedPluginOrdering) GetAfter() *LdapAuthAdvancedPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *LdapAuthAdvancedPluginOrdering) GetBefore() *LdapAuthAdvancedPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type LdapAuthAdvancedPluginProtocols string
 
 const (
-	LdapAuthAdvancedPluginProtocolsGrpc           LdapAuthAdvancedPluginProtocols = "grpc"
-	LdapAuthAdvancedPluginProtocolsGrpcs          LdapAuthAdvancedPluginProtocols = "grpcs"
-	LdapAuthAdvancedPluginProtocolsHTTP           LdapAuthAdvancedPluginProtocols = "http"
-	LdapAuthAdvancedPluginProtocolsHTTPS          LdapAuthAdvancedPluginProtocols = "https"
-	LdapAuthAdvancedPluginProtocolsTCP            LdapAuthAdvancedPluginProtocols = "tcp"
-	LdapAuthAdvancedPluginProtocolsTLS            LdapAuthAdvancedPluginProtocols = "tls"
-	LdapAuthAdvancedPluginProtocolsTLSPassthrough LdapAuthAdvancedPluginProtocols = "tls_passthrough"
-	LdapAuthAdvancedPluginProtocolsUDP            LdapAuthAdvancedPluginProtocols = "udp"
-	LdapAuthAdvancedPluginProtocolsWs             LdapAuthAdvancedPluginProtocols = "ws"
-	LdapAuthAdvancedPluginProtocolsWss            LdapAuthAdvancedPluginProtocols = "wss"
+	LdapAuthAdvancedPluginProtocolsGrpc  LdapAuthAdvancedPluginProtocols = "grpc"
+	LdapAuthAdvancedPluginProtocolsGrpcs LdapAuthAdvancedPluginProtocols = "grpcs"
+	LdapAuthAdvancedPluginProtocolsHTTP  LdapAuthAdvancedPluginProtocols = "http"
+	LdapAuthAdvancedPluginProtocolsHTTPS LdapAuthAdvancedPluginProtocols = "https"
+	LdapAuthAdvancedPluginProtocolsWs    LdapAuthAdvancedPluginProtocols = "ws"
+	LdapAuthAdvancedPluginProtocolsWss   LdapAuthAdvancedPluginProtocols = "wss"
 )
 
 func (e LdapAuthAdvancedPluginProtocols) ToPointer() *LdapAuthAdvancedPluginProtocols {
@@ -340,14 +313,6 @@ func (e *LdapAuthAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "https":
 		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
 	case "ws":
 		fallthrough
 	case "wss":
@@ -358,7 +323,7 @@ func (e *LdapAuthAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// LdapAuthAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// LdapAuthAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type LdapAuthAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -384,10 +349,6 @@ func (o *LdapAuthAdvancedPluginService) GetID() *string {
 
 // LdapAuthAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LdapAuthAdvancedPlugin struct {
-	Config LdapAuthAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LdapAuthAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *LdapAuthAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -396,16 +357,17 @@ type LdapAuthAdvancedPlugin struct {
 	InstanceName *string                         `json:"instance_name,omitempty"`
 	name         string                          `const:"ldap-auth-advanced" json:"name"`
 	Ordering     *LdapAuthAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LdapAuthAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LdapAuthAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                       `json:"updated_at,omitempty"`
+	Config    LdapAuthAdvancedPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *LdapAuthAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *LdapAuthAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (l LdapAuthAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -417,27 +379,6 @@ func (l *LdapAuthAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *LdapAuthAdvancedPlugin) GetConfig() LdapAuthAdvancedPluginConfig {
-	if o == nil {
-		return LdapAuthAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *LdapAuthAdvancedPlugin) GetConsumer() *LdapAuthAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *LdapAuthAdvancedPlugin) GetConsumerGroup() *LdapAuthAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *LdapAuthAdvancedPlugin) GetCreatedAt() *int64 {
@@ -479,6 +420,27 @@ func (o *LdapAuthAdvancedPlugin) GetOrdering() *LdapAuthAdvancedPluginOrdering {
 	return o.Ordering
 }
 
+func (o *LdapAuthAdvancedPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *LdapAuthAdvancedPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *LdapAuthAdvancedPlugin) GetConfig() LdapAuthAdvancedPluginConfig {
+	if o == nil {
+		return LdapAuthAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *LdapAuthAdvancedPlugin) GetProtocols() []LdapAuthAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -500,40 +462,23 @@ func (o *LdapAuthAdvancedPlugin) GetService() *LdapAuthAdvancedPluginService {
 	return o.Service
 }
 
-func (o *LdapAuthAdvancedPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *LdapAuthAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // LdapAuthAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LdapAuthAdvancedPluginInput struct {
-	Config LdapAuthAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LdapAuthAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *LdapAuthAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                           `json:"enabled,omitempty"`
 	ID           *string                         `json:"id,omitempty"`
 	InstanceName *string                         `json:"instance_name,omitempty"`
 	name         string                          `const:"ldap-auth-advanced" json:"name"`
 	Ordering     *LdapAuthAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LdapAuthAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LdapAuthAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                     `json:"tags,omitempty"`
+	Config LdapAuthAdvancedPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []LdapAuthAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *LdapAuthAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *LdapAuthAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (l LdapAuthAdvancedPluginInput) MarshalJSON() ([]byte, error) {
@@ -545,27 +490,6 @@ func (l *LdapAuthAdvancedPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *LdapAuthAdvancedPluginInput) GetConfig() LdapAuthAdvancedPluginConfig {
-	if o == nil {
-		return LdapAuthAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *LdapAuthAdvancedPluginInput) GetConsumer() *LdapAuthAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *LdapAuthAdvancedPluginInput) GetConsumerGroup() *LdapAuthAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *LdapAuthAdvancedPluginInput) GetEnabled() *bool {
@@ -600,6 +524,20 @@ func (o *LdapAuthAdvancedPluginInput) GetOrdering() *LdapAuthAdvancedPluginOrder
 	return o.Ordering
 }
 
+func (o *LdapAuthAdvancedPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *LdapAuthAdvancedPluginInput) GetConfig() LdapAuthAdvancedPluginConfig {
+	if o == nil {
+		return LdapAuthAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *LdapAuthAdvancedPluginInput) GetProtocols() []LdapAuthAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -619,11 +557,4 @@ func (o *LdapAuthAdvancedPluginInput) GetService() *LdapAuthAdvancedPluginServic
 		return nil
 	}
 	return o.Service
-}
-
-func (o *LdapAuthAdvancedPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

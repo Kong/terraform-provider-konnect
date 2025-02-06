@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
               "..."
             ]
             auth_methods = [
-              "client_credentials"
+              "bearer"
             ]
             authenticated_groups_claim = [
               "..."
@@ -39,7 +39,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             authorization_cookie_http_only = false
             authorization_cookie_name      = "...my_authorization_cookie_name..."
             authorization_cookie_path      = "...my_authorization_cookie_path..."
-            authorization_cookie_same_site = "Default"
+            authorization_cookie_same_site = "Strict"
             authorization_cookie_secure    = true
             authorization_endpoint         = "...my_authorization_endpoint..."
             authorization_query_args_client = [
@@ -71,14 +71,14 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
               "..."
             ]
             client_alg = [
-              "RS256"
+              "EdDSA"
             ]
             client_arg = "...my_client_arg..."
             client_auth = [
               "self_signed_tls_client_auth"
             ]
             client_credentials_param_type = [
-              "body"
+              "query"
             ]
             client_id = [
               "..."
@@ -145,7 +145,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
                 }
               ]
               sentinel_password = "...my_sentinel_password..."
-              sentinel_role     = "any"
+              sentinel_role     = "slave"
               sentinel_username = "...my_sentinel_username..."
               server_name       = "...my_server_name..."
               ssl               = true
@@ -154,7 +154,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             }
             cluster_cache_strategy = "off"
             consumer_by = [
-              "username"
+              "id"
             ]
             consumer_claim = [
               "..."
@@ -164,7 +164,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
               "..."
             ]
             disable_session = [
-              "bearer"
+              "introspection"
             ]
             discovery_headers_names = [
               "..."
@@ -219,7 +219,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             https_proxy_authorization = "...my_https_proxy_authorization..."
             id_token_param_name       = "...my_id_token_param_name..."
             id_token_param_type = [
-              "query"
+              "header"
             ]
             ignore_signature = [
               "client_credentials"
@@ -228,7 +228,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             introspection_accept               = "application/json"
             introspection_check_active         = true
             introspection_endpoint             = "...my_introspection_endpoint..."
-            introspection_endpoint_auth_method = "none"
+            introspection_endpoint_auth_method = "tls_client_auth"
             introspection_headers_client = [
               "..."
             ]
@@ -240,6 +240,9 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             ]
             introspection_hint = "...my_introspection_hint..."
             introspection_post_args_client = [
+              "..."
+            ]
+            introspection_post_args_client_headers = [
               "..."
             ]
             introspection_post_args_names = [
@@ -259,14 +262,14 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             leeway             = 5
             login_action       = "response"
             login_methods = [
-              "password"
+              "authorization_code"
             ]
-            login_redirect_mode = "fragment"
+            login_redirect_mode = "query"
             login_redirect_uri = [
               "..."
             ]
             login_tokens = [
-              "id_token"
+              "access_token"
             ]
             logout_methods = [
               "GET"
@@ -286,14 +289,14 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             mtls_token_endpoint         = "...my_mtls_token_endpoint..."
             no_proxy                    = "...my_no_proxy..."
             password_param_type = [
-              "header"
+              "body"
             ]
             preserve_query_args                               = false
             proof_of_possession_auth_methods_validation       = false
-            proof_of_possession_dpop                          = "strict"
-            proof_of_possession_mtls                          = "strict"
+            proof_of_possession_dpop                          = "optional"
+            proof_of_possession_mtls                          = "optional"
             pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
-            pushed_authorization_request_endpoint_auth_method = "private_key_jwt"
+            pushed_authorization_request_endpoint_auth_method = "none"
             redirect_uri = [
               "..."
             ]
@@ -324,7 +327,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
                 }
               ]
               sentinel_password = "...my_sentinel_password..."
-              sentinel_role     = "master"
+              sentinel_role     = "any"
               sentinel_username = "...my_sentinel_username..."
               server_name       = "...my_server_name..."
               socket            = "...my_socket..."
@@ -335,20 +338,20 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             rediscovery_lifetime     = 3.59
             refresh_token_param_name = "...my_refresh_token_param_name..."
             refresh_token_param_type = [
-              "body"
+              "query"
             ]
             refresh_tokens                        = false
             require_proof_key_for_code_exchange   = true
             require_pushed_authorization_requests = false
             require_signed_request_object         = true
             resolve_distributed_claims            = true
-            response_mode                         = "query"
+            response_mode                         = "form_post"
             response_type = [
               "..."
             ]
             reverify                        = true
             revocation_endpoint             = "...my_revocation_endpoint..."
-            revocation_endpoint_auth_method = "tls_client_auth"
+            revocation_endpoint_auth_method = "private_key_jwt"
             revocation_token_param_name     = "...my_revocation_token_param_name..."
             roles_claim = [
               "..."
@@ -388,10 +391,10 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             session_remember_cookie_name      = "...my_session_remember_cookie_name..."
             session_remember_rolling_timeout  = 7.84
             session_request_headers = [
-              "timeout"
+              "idling-timeout"
             ]
             session_response_headers = [
-              "idling-timeout"
+              "rolling-timeout"
             ]
             session_rolling_timeout       = 2.38
             session_secret                = "...my_session_secret..."
@@ -403,13 +406,13 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
             tls_client_auth_ssl_verify    = false
             token_cache_key_include_scope = true
             token_endpoint                = "...my_token_endpoint..."
-            token_endpoint_auth_method    = "client_secret_jwt"
+            token_endpoint_auth_method    = "client_secret_post"
             token_exchange_endpoint       = "...my_token_exchange_endpoint..."
             token_headers_client = [
               "..."
             ]
             token_headers_grants = [
-              "password"
+              "authorization_code"
             ]
             token_headers_names = [
               "..."
@@ -485,12 +488,6 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
       ]
     }
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
   id               = "...my_id..."
@@ -508,7 +505,7 @@ resource "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonn
     }
   }
   protocols = [
-    "tcp"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

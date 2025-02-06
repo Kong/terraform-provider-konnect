@@ -25,17 +25,17 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     awsgateway_compatible     = true
     base64_encode_body        = false
     disable_https             = false
-    empty_arrays_mode         = "correct"
+    empty_arrays_mode         = "legacy"
     forward_request_body      = false
     forward_request_headers   = true
     forward_request_method    = true
     forward_request_uri       = true
     function_name             = "...my_function_name..."
     host                      = "...my_host..."
-    invocation_type           = "RequestResponse"
+    invocation_type           = "DryRun"
     is_proxy_integration      = false
     keepalive                 = 6.97
-    log_type                  = "Tail"
+    log_type                  = "None"
     port                      = 25235
     proxy_url                 = "...my_proxy_url..."
     qualifier                 = "...my_qualifier..."
@@ -44,9 +44,6 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     unhandled_status          = 115
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -66,7 +63,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."
@@ -91,12 +88,11 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -121,17 +117,17 @@ Optional:
 - `awsgateway_compatible` (Boolean) An optional value that defines whether the plugin should wrap requests into the Amazon API gateway.
 - `base64_encode_body` (Boolean) An optional value that Base64-encodes the request body.
 - `disable_https` (Boolean)
-- `empty_arrays_mode` (String) An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response. must be one of ["legacy", "correct"]
+- `empty_arrays_mode` (String) An optional value that defines whether Kong should send empty arrays (returned by Lambda function) as `[]` arrays or `{}` objects in JSON responses. The value `legacy` means Kong will send empty arrays as `{}` objects in response. must be one of ["correct", "legacy"]
 - `forward_request_body` (Boolean) An optional value that defines whether the request body is sent in the request_body field of the JSON-encoded request. If the body arguments can be parsed, they are sent in the separate request_body_args field of the request.
 - `forward_request_headers` (Boolean) An optional value that defines whether the original HTTP request headers are sent as a map in the request_headers field of the JSON-encoded request.
 - `forward_request_method` (Boolean) An optional value that defines whether the original HTTP request method verb is sent in the request_method field of the JSON-encoded request.
 - `forward_request_uri` (Boolean) An optional value that defines whether the original HTTP request URI is sent in the request_uri field of the JSON-encoded request.
 - `function_name` (String) The AWS Lambda function to invoke. Both function name and function ARN (including partial) are supported.
 - `host` (String) A string representing a host name, such as example.com.
-- `invocation_type` (String) The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["RequestResponse", "Event", "DryRun"]
+- `invocation_type` (String) The InvocationType to use when invoking the function. Available types are RequestResponse, Event, DryRun. must be one of ["DryRun", "Event", "RequestResponse"]
 - `is_proxy_integration` (Boolean) An optional value that defines whether the response format to receive from the Lambda to this format.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection lives before being closed.
-- `log_type` (String) The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["Tail", "None"]
+- `log_type` (String) The LogType to use when invoking the function. By default, None and Tail are supported. must be one of ["None", "Tail"]
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `proxy_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `qualifier` (String) The qualifier to use when invoking the function.
@@ -142,14 +138,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

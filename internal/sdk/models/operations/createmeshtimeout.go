@@ -15,7 +15,7 @@ type CreateMeshTimeoutRequest struct {
 	// name of the MeshTimeout
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshTimeoutItem shared.MeshTimeoutItem `request:"mediaType=application/json"`
+	MeshTimeoutItem shared.MeshTimeoutItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshTimeoutRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshTimeoutRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshTimeoutRequest) GetMeshTimeoutItem() shared.MeshTimeoutItem {
+func (o *CreateMeshTimeoutRequest) GetMeshTimeoutItem() shared.MeshTimeoutItemInput {
 	if o == nil {
-		return shared.MeshTimeoutItem{}
+		return shared.MeshTimeoutItemInput{}
 	}
 	return o.MeshTimeoutItem
 }

@@ -54,7 +54,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = []types.String{}
+				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -105,7 +105,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 					} else {
 						to1.Default.HTTP = &tfTypes.MeshHealthCheckItemHTTP{}
 						to1.Default.HTTP.Disabled = types.BoolPointerValue(toItem.Default.HTTP.Disabled)
-						to1.Default.HTTP.ExpectedStatuses = []types.Int64{}
+						to1.Default.HTTP.ExpectedStatuses = make([]types.Int64, 0, len(toItem.Default.HTTP.ExpectedStatuses))
 						for _, v := range toItem.Default.HTTP.ExpectedStatuses {
 							to1.Default.HTTP.ExpectedStatuses = append(to1.Default.HTTP.ExpectedStatuses, types.Int64Value(v))
 						}
@@ -114,9 +114,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 							to1.Default.HTTP.RequestHeadersToAdd = nil
 						} else {
 							to1.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-							to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.StaticTags{}
+							to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 							for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
-								var add1 tfTypes.StaticTags
+								var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 								add1.Name = types.StringValue(addItem.Name)
 								add1.Value = types.StringValue(addItem.Value)
 								if addCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Add) {
@@ -126,9 +126,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 									to1.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add1.Value
 								}
 							}
-							to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.StaticTags{}
+							to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 							for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
-								var set1 tfTypes.StaticTags
+								var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 								set1.Name = types.StringValue(setItem.Name)
 								set1.Value = types.StringValue(setItem.Value)
 								if setCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Set) {
@@ -155,7 +155,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 					} else {
 						to1.Default.TCP = &tfTypes.TCP{}
 						to1.Default.TCP.Disabled = types.BoolPointerValue(toItem.Default.TCP.Disabled)
-						to1.Default.TCP.Receive = []types.String{}
+						to1.Default.TCP.Receive = make([]types.String, 0, len(toItem.Default.TCP.Receive))
 						for _, v := range toItem.Default.TCP.Receive {
 							to1.Default.TCP.Receive = append(to1.Default.TCP.Receive, types.StringValue(v))
 						}
@@ -182,7 +182,7 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 				to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 				to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 				to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-				to1.TargetRef.ProxyTypes = []types.String{}
+				to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 				for _, v := range toItem.TargetRef.ProxyTypes {
 					to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

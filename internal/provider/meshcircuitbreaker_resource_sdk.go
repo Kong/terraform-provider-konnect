@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItem() *shared.MeshCircuitBreakerItem {
+func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() *shared.MeshCircuitBreakerItemInput {
 	typeVar := shared.MeshCircuitBreakerItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -633,33 +633,19 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItem() *shar
 		TargetRef: targetRef1,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshCircuitBreakerItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshCircuitBreakerItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerCreateOrUpdateSuccessResponse(resp *shared.MeshCircuitBreakerCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -836,7 +822,7 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 			from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 			from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 			from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-			from1.TargetRef.ProxyTypes = []types.String{}
+			from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
 			for _, v := range fromItem.TargetRef.ProxyTypes {
 				from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -872,7 +858,7 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -1034,7 +1020,7 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

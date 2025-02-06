@@ -15,6 +15,9 @@ GatewayPluginRateLimitingAdvanced Resource
 ```terraform
 resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginratelimitingadvanced" {
   config = {
+    compound_identifier = [
+      "header"
+    ]
     consumer_groups = [
       "..."
     ]
@@ -25,12 +28,13 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     error_message           = "...my_error_message..."
     header_name             = "...my_header_name..."
     hide_client_headers     = true
-    identifier              = "ip"
+    identifier              = "consumer"
     limit = [
       4.52
     ]
-    namespace = "...my_namespace..."
-    path      = "...my_path..."
+    lock_dictionary_name = "...my_lock_dictionary_name..."
+    namespace            = "...my_namespace..."
+    path                 = "...my_path..."
     redis = {
       cluster_max_redirections = 7
       cluster_nodes = [
@@ -48,6 +52,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
       password              = "...my_password..."
       port                  = 63483
       read_timeout          = 382621324
+      redis_proxy_type      = "envoy_v1.31"
       send_timeout          = 1710404950
       sentinel_master       = "...my_sentinel_master..."
       sentinel_nodes = [
@@ -57,7 +62,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -95,7 +100,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
     }
   }
   protocols = [
-    "https"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."
@@ -120,12 +125,12 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
+- `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -140,6 +145,7 @@ resource "konnect_gateway_plugin_rate_limiting_advanced" "my_gatewaypluginrateli
 
 Optional:
 
+- `compound_identifier` (List of String) Similar to `identifer`, but supports combining multiple items. The priority of `compound_identifier` is higher than `identifier`, which means if `compound_identifer` is set, it will be used, otherwise `identifier` will be used.
 - `consumer_groups` (List of String) List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
 - `dictionary_name` (String) The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
 - `disable_penalty` (Boolean) If set to `true`, this doesn't count denied requests (status = `429`). If set to `false`, all requests, including denied ones, are counted. This parameter only affects the `sliding` window_type.
@@ -148,13 +154,14 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded.
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
-- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. must be one of ["ip", "credential", "consumer", "service", "header", "path", "consumer-group"]
+- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
 - `limit` (List of Number) One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
-- `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
+- `lock_dictionary_name` (String) The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf.
+- `namespace` (String) The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `retry_after_jitter_max` (Number) The upper bound of a jitter (random delay) in seconds to be added to the `Retry-After` header of denied requests (status = `429`) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is `0`; in this case, the `Retry-After` header is equal to the `RateLimit-Reset` header.
-- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`. must be one of ["cluster", "redis", "local"]
+- `strategy` (String) The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: `local` and `cluster`. must be one of ["cluster", "local", "redis"]
 - `sync_rate` (Number) How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).
 - `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
 - `window_type` (String) Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters. must be one of ["fixed", "sliding"]
@@ -175,11 +182,12 @@ Optional:
 - `password` (String) Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 - `read_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+- `redis_proxy_type` (String) If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy. must be "envoy_v1.31"
 - `send_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.

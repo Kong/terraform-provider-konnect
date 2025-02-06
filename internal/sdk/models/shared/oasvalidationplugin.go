@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type OasValidationPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OasValidationPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OasValidationPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OasValidationPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OasValidationPluginOrdering struct {
+	After  *OasValidationPluginAfter  `json:"after,omitempty"`
+	Before *OasValidationPluginBefore `json:"before,omitempty"`
+}
+
+func (o *OasValidationPluginOrdering) GetAfter() *OasValidationPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *OasValidationPluginOrdering) GetBefore() *OasValidationPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type OasValidationPluginConfig struct {
 	// List of header parameters in the request that will be ignored when performing HTTP header validation. These are additional headers added to an API request beyond those defined in the API specification.  For example, you might include the HTTP header `User-Agent`, which lets servers and network peers identify the application, operating system, vendor, and/or version of the requesting user agent.
 	AllowedHeaderParameters *string `json:"allowed_header_parameters,omitempty"`
@@ -158,71 +199,13 @@ func (o *OasValidationPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type OasValidationPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OasValidationPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type OasValidationPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *OasValidationPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type OasValidationPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *OasValidationPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type OasValidationPluginOrdering struct {
-	After  *OasValidationPluginAfter  `json:"after,omitempty"`
-	Before *OasValidationPluginBefore `json:"before,omitempty"`
-}
-
-func (o *OasValidationPluginOrdering) GetAfter() *OasValidationPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *OasValidationPluginOrdering) GetBefore() *OasValidationPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type OasValidationPluginProtocols string
 
 const (
-	OasValidationPluginProtocolsGrpc           OasValidationPluginProtocols = "grpc"
-	OasValidationPluginProtocolsGrpcs          OasValidationPluginProtocols = "grpcs"
-	OasValidationPluginProtocolsHTTP           OasValidationPluginProtocols = "http"
-	OasValidationPluginProtocolsHTTPS          OasValidationPluginProtocols = "https"
-	OasValidationPluginProtocolsTCP            OasValidationPluginProtocols = "tcp"
-	OasValidationPluginProtocolsTLS            OasValidationPluginProtocols = "tls"
-	OasValidationPluginProtocolsTLSPassthrough OasValidationPluginProtocols = "tls_passthrough"
-	OasValidationPluginProtocolsUDP            OasValidationPluginProtocols = "udp"
-	OasValidationPluginProtocolsWs             OasValidationPluginProtocols = "ws"
-	OasValidationPluginProtocolsWss            OasValidationPluginProtocols = "wss"
+	OasValidationPluginProtocolsGrpc  OasValidationPluginProtocols = "grpc"
+	OasValidationPluginProtocolsGrpcs OasValidationPluginProtocols = "grpcs"
+	OasValidationPluginProtocolsHTTP  OasValidationPluginProtocols = "http"
+	OasValidationPluginProtocolsHTTPS OasValidationPluginProtocols = "https"
 )
 
 func (e OasValidationPluginProtocols) ToPointer() *OasValidationPluginProtocols {
@@ -241,18 +224,6 @@ func (e *OasValidationPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = OasValidationPluginProtocols(v)
 		return nil
 	default:
@@ -260,7 +231,7 @@ func (e *OasValidationPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// OasValidationPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// OasValidationPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type OasValidationPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -286,10 +257,6 @@ func (o *OasValidationPluginService) GetID() *string {
 
 // OasValidationPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OasValidationPlugin struct {
-	Config OasValidationPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *OasValidationPluginConsumer      `json:"consumer"`
-	ConsumerGroup *OasValidationPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -298,16 +265,19 @@ type OasValidationPlugin struct {
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"oas-validation" json:"name"`
 	Ordering     *OasValidationPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *OasValidationPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OasValidationPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    OasValidationPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *OasValidationPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *OasValidationPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *OasValidationPluginService `json:"service,omitempty"`
 }
 
 func (o OasValidationPlugin) MarshalJSON() ([]byte, error) {
@@ -319,27 +289,6 @@ func (o *OasValidationPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *OasValidationPlugin) GetConfig() OasValidationPluginConfig {
-	if o == nil {
-		return OasValidationPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *OasValidationPlugin) GetConsumer() *OasValidationPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *OasValidationPlugin) GetConsumerGroup() *OasValidationPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *OasValidationPlugin) GetCreatedAt() *int64 {
@@ -381,6 +330,34 @@ func (o *OasValidationPlugin) GetOrdering() *OasValidationPluginOrdering {
 	return o.Ordering
 }
 
+func (o *OasValidationPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *OasValidationPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *OasValidationPlugin) GetConfig() OasValidationPluginConfig {
+	if o == nil {
+		return OasValidationPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *OasValidationPlugin) GetConsumer() *OasValidationPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *OasValidationPlugin) GetProtocols() []OasValidationPluginProtocols {
 	if o == nil {
 		return nil
@@ -402,40 +379,25 @@ func (o *OasValidationPlugin) GetService() *OasValidationPluginService {
 	return o.Service
 }
 
-func (o *OasValidationPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *OasValidationPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // OasValidationPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OasValidationPluginInput struct {
-	Config OasValidationPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *OasValidationPluginConsumer      `json:"consumer"`
-	ConsumerGroup *OasValidationPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                        `json:"enabled,omitempty"`
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"oas-validation" json:"name"`
 	Ordering     *OasValidationPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *OasValidationPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OasValidationPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                  `json:"tags,omitempty"`
+	Config OasValidationPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *OasValidationPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *OasValidationPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *OasValidationPluginService `json:"service,omitempty"`
 }
 
 func (o OasValidationPluginInput) MarshalJSON() ([]byte, error) {
@@ -447,27 +409,6 @@ func (o *OasValidationPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *OasValidationPluginInput) GetConfig() OasValidationPluginConfig {
-	if o == nil {
-		return OasValidationPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *OasValidationPluginInput) GetConsumer() *OasValidationPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *OasValidationPluginInput) GetConsumerGroup() *OasValidationPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *OasValidationPluginInput) GetEnabled() *bool {
@@ -502,6 +443,27 @@ func (o *OasValidationPluginInput) GetOrdering() *OasValidationPluginOrdering {
 	return o.Ordering
 }
 
+func (o *OasValidationPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *OasValidationPluginInput) GetConfig() OasValidationPluginConfig {
+	if o == nil {
+		return OasValidationPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *OasValidationPluginInput) GetConsumer() *OasValidationPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *OasValidationPluginInput) GetProtocols() []OasValidationPluginProtocols {
 	if o == nil {
 		return nil
@@ -521,11 +483,4 @@ func (o *OasValidationPluginInput) GetService() *OasValidationPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *OasValidationPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

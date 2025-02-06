@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshTLSResourceModel) ToSharedMeshTLSItem() *shared.MeshTLSItem {
+func (r *MeshTLSResourceModel) ToSharedMeshTLSItemInput() *shared.MeshTLSItemInput {
 	typeVar := shared.MeshTLSItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -194,33 +194,19 @@ func (r *MeshTLSResourceModel) ToSharedMeshTLSItem() *shared.MeshTLSItem {
 		From:      from,
 		TargetRef: targetRef1,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshTLSItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshTLSItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSCreateOrUpdateSuccessResponse(resp *shared.MeshTLSCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -262,7 +248,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 				} else {
 					from1.Default.Mode = types.StringNull()
 				}
-				from1.Default.TLSCiphers = []types.String{}
+				from1.Default.TLSCiphers = make([]types.String, 0, len(fromItem.Default.TLSCiphers))
 				for _, v := range fromItem.Default.TLSCiphers {
 					from1.Default.TLSCiphers = append(from1.Default.TLSCiphers, types.StringValue(string(v)))
 				}
@@ -296,7 +282,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 			from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 			from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-			from1.TargetRef.ProxyTypes = []types.String{}
+			from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
 			for _, v := range fromItem.TargetRef.ProxyTypes {
 				from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -332,7 +318,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

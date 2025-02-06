@@ -292,7 +292,18 @@ type BackendRefs struct {
 	// Tags used to select a subset of proxies by tags. Can only be used with kinds
 	// `MeshSubset` and `MeshServiceSubset`
 	Tags   map[string]string `json:"tags,omitempty"`
-	Weight *int64            `json:"weight,omitempty"`
+	Weight *int64            `default:"1" json:"weight"`
+}
+
+func (b BackendRefs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BackendRefs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BackendRefs) GetKind() *MeshHTTPRouteItemSpecToKind {
@@ -533,7 +544,18 @@ type BackendRef struct {
 	// Tags used to select a subset of proxies by tags. Can only be used with kinds
 	// `MeshSubset` and `MeshServiceSubset`
 	Tags   map[string]string `json:"tags,omitempty"`
-	Weight *int64            `json:"weight,omitempty"`
+	Weight *int64            `default:"1" json:"weight"`
+}
+
+func (b BackendRef) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(b, "", false)
+}
+
+func (b *BackendRef) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &b, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *BackendRef) GetKind() *MeshHTTPRouteItemSpecToRulesKind {
@@ -616,8 +638,8 @@ const (
 // MeshHTTPRouteItemPercentage - Percentage of requests to mirror. If not specified, all requests
 // to the target cluster will be mirrored.
 type MeshHTTPRouteItemPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshHTTPRouteItemPercentageType
 }
@@ -830,7 +852,18 @@ type RequestRedirect struct {
 	Port   *int    `json:"port,omitempty"`
 	Scheme *Scheme `json:"scheme,omitempty"`
 	// StatusCode is the HTTP status code to be used in response.
-	StatusCode *StatusCode `json:"statusCode,omitempty"`
+	StatusCode *StatusCode `default:"302" json:"statusCode"`
+}
+
+func (r RequestRedirect) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(r, "", false)
+}
+
+func (r *RequestRedirect) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *RequestRedirect) GetHostname() *string {
@@ -1177,9 +1210,20 @@ type Headers struct {
 	// as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 	Name string `json:"name"`
 	// Type specifies how to match against the value of the header.
-	Type *MeshHTTPRouteItemSpecToType `json:"type,omitempty"`
+	Type *MeshHTTPRouteItemSpecToType `default:"Exact" json:"type"`
 	// Value is the value of HTTP Header to be matched.
 	Value *string `json:"value,omitempty"`
+}
+
+func (h Headers) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(h, "", false)
+}
+
+func (h *Headers) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &h, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Headers) GetName() string {
@@ -1633,7 +1677,7 @@ type MeshHTTPRouteItem struct {
 	// the type of the resource
 	Type MeshHTTPRouteItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1704,4 +1748,63 @@ func (o *MeshHTTPRouteItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshHTTPRouteItemInput struct {
+	// the type of the resource
+	Type MeshHTTPRouteItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshHTTPRoute resource.
+	Spec MeshHTTPRouteItemSpec `json:"spec"`
+}
+
+func (m MeshHTTPRouteItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshHTTPRouteItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshHTTPRouteItemInput) GetType() MeshHTTPRouteItemType {
+	if o == nil {
+		return MeshHTTPRouteItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshHTTPRouteItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshHTTPRouteItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshHTTPRouteItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshHTTPRouteItemInput) GetSpec() MeshHTTPRouteItemSpec {
+	if o == nil {
+		return MeshHTTPRouteItemSpec{}
+	}
+	return o.Spec
 }

@@ -42,7 +42,7 @@ func (r *GatewayPluginLogglyDataSourceModel) RefreshFromSharedLogglyPlugin(resp 
 		} else {
 			r.Config.SuccessfulSeverity = types.StringNull()
 		}
-		r.Config.Tags = []types.String{}
+		r.Config.Tags = make([]types.String, 0, len(resp.Config.Tags))
 		for _, v := range resp.Config.Tags {
 			r.Config.Tags = append(r.Config.Tags, types.StringValue(v))
 		}
@@ -57,12 +57,6 @@ func (r *GatewayPluginLogglyDataSourceModel) RefreshFromSharedLogglyPlugin(resp 
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -75,7 +69,7 @@ func (r *GatewayPluginLogglyDataSourceModel) RefreshFromSharedLogglyPlugin(resp 
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -84,13 +78,13 @@ func (r *GatewayPluginLogglyDataSourceModel) RefreshFromSharedLogglyPlugin(resp 
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -106,7 +100,7 @@ func (r *GatewayPluginLogglyDataSourceModel) RefreshFromSharedLogglyPlugin(resp 
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

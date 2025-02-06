@@ -15,7 +15,7 @@ type CreateMeshPassthroughRequest struct {
 	// name of the MeshPassthrough
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshPassthroughItem shared.MeshPassthroughItem `request:"mediaType=application/json"`
+	MeshPassthroughItem shared.MeshPassthroughItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshPassthroughRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshPassthroughRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshPassthroughRequest) GetMeshPassthroughItem() shared.MeshPassthroughItem {
+func (o *CreateMeshPassthroughRequest) GetMeshPassthroughItem() shared.MeshPassthroughItemInput {
 	if o == nil {
-		return shared.MeshPassthroughItem{}
+		return shared.MeshPassthroughItemInput{}
 	}
 	return o.MeshPassthroughItem
 }

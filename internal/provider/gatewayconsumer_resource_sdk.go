@@ -44,7 +44,7 @@ func (r *GatewayConsumerResourceModel) RefreshFromSharedConsumer(resp *shared.Co
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.CustomID = types.StringPointerValue(resp.CustomID)
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

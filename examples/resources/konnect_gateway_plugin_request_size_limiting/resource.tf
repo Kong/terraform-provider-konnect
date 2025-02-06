@@ -2,12 +2,9 @@ resource "konnect_gateway_plugin_request_size_limiting" "my_gatewaypluginrequest
   config = {
     allowed_payload_size   = 7
     require_content_length = true
-    size_unit              = "bytes"
+    size_unit              = "megabytes"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -27,7 +24,7 @@ resource "konnect_gateway_plugin_request_size_limiting" "my_gatewaypluginrequest
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

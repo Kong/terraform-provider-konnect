@@ -15,7 +15,7 @@ type CreateMeshHTTPRouteRequest struct {
 	// name of the MeshHTTPRoute
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshHTTPRouteItem shared.MeshHTTPRouteItem `request:"mediaType=application/json"`
+	MeshHTTPRouteItem shared.MeshHTTPRouteItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshHTTPRouteRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshHTTPRouteRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshHTTPRouteRequest) GetMeshHTTPRouteItem() shared.MeshHTTPRouteItem {
+func (o *CreateMeshHTTPRouteRequest) GetMeshHTTPRouteItem() shared.MeshHTTPRouteItemInput {
 	if o == nil {
-		return shared.MeshHTTPRouteItem{}
+		return shared.MeshHTTPRouteItemInput{}
 	}
 	return o.MeshHTTPRouteItem
 }

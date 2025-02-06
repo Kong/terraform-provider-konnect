@@ -19,7 +19,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
-        param_location             = "body"
+        param_location             = "query"
         param_name                 = "...my_param_name..."
         param_value                = "...my_param_value..."
       }
@@ -42,10 +42,14 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
             location_id  = "...my_location_id..."
             project_id   = "...my_project_id..."
           }
+          huggingface = {
+            use_cache      = true
+            wait_for_model = false
+          }
           input_cost     = 4.69
-          llama2_format  = "raw"
+          llama2_format  = "ollama"
           max_tokens     = 5
-          mistral_format = "ollama"
+          mistral_format = "openai"
           output_cost    = 4.92
           temperature    = 0.05
           top_k          = 349
@@ -85,7 +89,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."

@@ -1,12 +1,10 @@
 resource "konnect_mesh_external_service" "my_meshexternalservice" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     endpoints = [
       {
@@ -55,35 +53,6 @@ resource "konnect_mesh_external_service" "my_meshexternalservice" {
         max = "TLS12"
         min = "TLS10"
       }
-    }
-  }
-  status = {
-    addresses = [
-      {
-        hostname = "...my_hostname..."
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-        origin = "...my_origin..."
-      }
-    ]
-    hostname_generators = [
-      {
-        conditions = [
-          {
-            message = "...my_message..."
-            reason  = "...my_reason..."
-            status  = "True"
-            type    = "...my_type..."
-          }
-        ]
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-      }
-    ]
-    vip = {
-      ip = "...my_ip..."
     }
   }
   type = "MeshExternalService"

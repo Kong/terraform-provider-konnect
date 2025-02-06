@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItem() *shared.MeshTCPRouteItem {
+func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItemInput() *shared.MeshTCPRouteItemInput {
 	typeVar := shared.MeshTCPRouteItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -241,33 +241,19 @@ func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItem() *shared.MeshTCPRo
 		TargetRef: targetRef,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshTCPRouteItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshTCPRouteItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteCreateOrUpdateSuccessResponse(resp *shared.MeshTCPRouteCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -312,7 +298,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -355,7 +341,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 					} else {
 						backendRefs1.Port = types.Int64Null()
 					}
-					backendRefs1.ProxyTypes = []types.String{}
+					backendRefs1.ProxyTypes = make([]types.String, 0, len(backendRefsItem.ProxyTypes))
 					for _, v := range backendRefsItem.ProxyTypes {
 						backendRefs1.ProxyTypes = append(backendRefs1.ProxyTypes, types.StringValue(string(v)))
 					}
@@ -402,7 +388,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

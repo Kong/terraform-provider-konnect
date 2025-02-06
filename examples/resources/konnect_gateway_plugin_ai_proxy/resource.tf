@@ -12,7 +12,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
       gcp_use_service_account    = false
       header_name                = "...my_header_name..."
       header_value               = "...my_header_value..."
-      param_location             = "body"
+      param_location             = "query"
       param_name                 = "...my_param_name..."
       param_value                = "...my_param_value..."
     }
@@ -36,10 +36,14 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
           location_id  = "...my_location_id..."
           project_id   = "...my_project_id..."
         }
+        huggingface = {
+          use_cache      = true
+          wait_for_model = false
+        }
         input_cost     = 7.42
         llama2_format  = "openai"
         max_tokens     = 9
-        mistral_format = "openai"
+        mistral_format = "ollama"
         output_cost    = 1.81
         temperature    = 2.26
         top_k          = 359
@@ -47,7 +51,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
         upstream_path  = "...my_upstream_path..."
         upstream_url   = "...my_upstream_url..."
       }
-      provider = "openai"
+      provider = "anthropic"
     }
     model_name_header  = true
     response_streaming = "allow"
@@ -76,7 +80,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
     }
   }
   protocols = [
-    "tcp"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

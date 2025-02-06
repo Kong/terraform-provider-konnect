@@ -8,20 +8,17 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
     parameter_schema = [
       {
         explode  = true
-        in       = "path"
+        in       = "query"
         name     = "...my_name..."
         required = false
         schema   = "...my_schema..."
-        style    = "simple"
+        style    = "matrix"
       }
     ]
     verbose_response = true
-    version          = "draft4"
+    version          = "kong"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -41,7 +38,7 @@ resource "konnect_gateway_plugin_request_validator" "my_gatewaypluginrequestvali
     }
   }
   protocols = [
-    "http"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

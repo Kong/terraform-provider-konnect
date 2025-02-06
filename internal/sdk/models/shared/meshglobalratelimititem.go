@@ -1272,7 +1272,7 @@ type MeshGlobalRateLimitItem struct {
 	// the type of the resource
 	Type MeshGlobalRateLimitItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1343,4 +1343,63 @@ func (o *MeshGlobalRateLimitItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshGlobalRateLimitItemInput struct {
+	// the type of the resource
+	Type MeshGlobalRateLimitItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshGlobalRateLimit resource.
+	Spec MeshGlobalRateLimitItemSpec `json:"spec"`
+}
+
+func (m MeshGlobalRateLimitItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshGlobalRateLimitItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshGlobalRateLimitItemInput) GetType() MeshGlobalRateLimitItemType {
+	if o == nil {
+		return MeshGlobalRateLimitItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshGlobalRateLimitItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshGlobalRateLimitItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshGlobalRateLimitItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshGlobalRateLimitItemInput) GetSpec() MeshGlobalRateLimitItemSpec {
+	if o == nil {
+		return MeshGlobalRateLimitItemSpec{}
+	}
+	return o.Spec
 }

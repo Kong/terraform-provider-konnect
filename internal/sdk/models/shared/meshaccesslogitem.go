@@ -82,9 +82,20 @@ func (e *MeshAccessLogItemSpecFromDefaultType) UnmarshalJSON(data []byte) error 
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type Format struct {
 	JSON            []JSON                               `json:"json,omitempty"`
-	OmitEmptyValues *bool                                `json:"omitEmptyValues,omitempty"`
+	OmitEmptyValues *bool                                `default:"false" json:"omitEmptyValues"`
 	Plain           *string                              `json:"plain,omitempty"`
 	Type            MeshAccessLogItemSpecFromDefaultType `json:"type"`
+}
+
+func (f Format) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(f, "", false)
+}
+
+func (f *Format) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Format) GetJSON() []JSON {
@@ -241,9 +252,20 @@ func (e *MeshAccessLogItemSpecFromType) UnmarshalJSON(data []byte) error {
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type MeshAccessLogItemFormat struct {
 	JSON            []MeshAccessLogItemJSON       `json:"json,omitempty"`
-	OmitEmptyValues *bool                         `json:"omitEmptyValues,omitempty"`
+	OmitEmptyValues *bool                         `default:"false" json:"omitEmptyValues"`
 	Plain           *string                       `json:"plain,omitempty"`
 	Type            MeshAccessLogItemSpecFromType `json:"type"`
+}
+
+func (m MeshAccessLogItemFormat) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshAccessLogItemFormat) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshAccessLogItemFormat) GetJSON() []MeshAccessLogItemJSON {
@@ -377,25 +399,25 @@ func (o *MeshAccessLogItemSpecDefault) GetBackends() []MeshAccessLogItemBackends
 	return o.Backends
 }
 
-// MeshAccessLogItemKind - Kind of the referenced resource
-type MeshAccessLogItemKind string
+// MeshAccessLogItemSpecFromKind - Kind of the referenced resource
+type MeshAccessLogItemSpecFromKind string
 
 const (
-	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
-	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
-	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
-	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
-	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
-	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
-	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
-	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
-	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
+	MeshAccessLogItemSpecFromKindMesh                 MeshAccessLogItemSpecFromKind = "Mesh"
+	MeshAccessLogItemSpecFromKindMeshSubset           MeshAccessLogItemSpecFromKind = "MeshSubset"
+	MeshAccessLogItemSpecFromKindMeshGateway          MeshAccessLogItemSpecFromKind = "MeshGateway"
+	MeshAccessLogItemSpecFromKindMeshService          MeshAccessLogItemSpecFromKind = "MeshService"
+	MeshAccessLogItemSpecFromKindMeshExternalService  MeshAccessLogItemSpecFromKind = "MeshExternalService"
+	MeshAccessLogItemSpecFromKindMeshMultiZoneService MeshAccessLogItemSpecFromKind = "MeshMultiZoneService"
+	MeshAccessLogItemSpecFromKindMeshServiceSubset    MeshAccessLogItemSpecFromKind = "MeshServiceSubset"
+	MeshAccessLogItemSpecFromKindMeshHTTPRoute        MeshAccessLogItemSpecFromKind = "MeshHTTPRoute"
+	MeshAccessLogItemSpecFromKindDataplane            MeshAccessLogItemSpecFromKind = "Dataplane"
 )
 
-func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
+func (e MeshAccessLogItemSpecFromKind) ToPointer() *MeshAccessLogItemSpecFromKind {
 	return &e
 }
-func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemSpecFromKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -418,10 +440,10 @@ func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
 	case "MeshHTTPRoute":
 		fallthrough
 	case "Dataplane":
-		*e = MeshAccessLogItemKind(v)
+		*e = MeshAccessLogItemSpecFromKind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshAccessLogItemKind: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemSpecFromKind: %v", v)
 	}
 }
 
@@ -455,7 +477,7 @@ func (e *MeshAccessLogItemProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshAccessLogItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemKind `json:"kind,omitempty"`
+	Kind *MeshAccessLogItemSpecFromKind `json:"kind,omitempty"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -478,7 +500,7 @@ type MeshAccessLogItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshAccessLogItemTargetRef) GetKind() *MeshAccessLogItemKind {
+func (o *MeshAccessLogItemTargetRef) GetKind() *MeshAccessLogItemSpecFromKind {
 	if o == nil {
 		return nil
 	}
@@ -557,25 +579,25 @@ func (o *From) GetTargetRef() MeshAccessLogItemTargetRef {
 	return o.TargetRef
 }
 
-// Kind of the referenced resource
-type Kind string
+// MeshAccessLogItemKind - Kind of the referenced resource
+type MeshAccessLogItemKind string
 
 const (
-	KindMesh                 Kind = "Mesh"
-	KindMeshSubset           Kind = "MeshSubset"
-	KindMeshGateway          Kind = "MeshGateway"
-	KindMeshService          Kind = "MeshService"
-	KindMeshExternalService  Kind = "MeshExternalService"
-	KindMeshMultiZoneService Kind = "MeshMultiZoneService"
-	KindMeshServiceSubset    Kind = "MeshServiceSubset"
-	KindMeshHTTPRoute        Kind = "MeshHTTPRoute"
-	KindDataplane            Kind = "Dataplane"
+	MeshAccessLogItemKindMesh                 MeshAccessLogItemKind = "Mesh"
+	MeshAccessLogItemKindMeshSubset           MeshAccessLogItemKind = "MeshSubset"
+	MeshAccessLogItemKindMeshGateway          MeshAccessLogItemKind = "MeshGateway"
+	MeshAccessLogItemKindMeshService          MeshAccessLogItemKind = "MeshService"
+	MeshAccessLogItemKindMeshExternalService  MeshAccessLogItemKind = "MeshExternalService"
+	MeshAccessLogItemKindMeshMultiZoneService MeshAccessLogItemKind = "MeshMultiZoneService"
+	MeshAccessLogItemKindMeshServiceSubset    MeshAccessLogItemKind = "MeshServiceSubset"
+	MeshAccessLogItemKindMeshHTTPRoute        MeshAccessLogItemKind = "MeshHTTPRoute"
+	MeshAccessLogItemKindDataplane            MeshAccessLogItemKind = "Dataplane"
 )
 
-func (e Kind) ToPointer() *Kind {
+func (e MeshAccessLogItemKind) ToPointer() *MeshAccessLogItemKind {
 	return &e
 }
-func (e *Kind) UnmarshalJSON(data []byte) error {
+func (e *MeshAccessLogItemKind) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -598,10 +620,10 @@ func (e *Kind) UnmarshalJSON(data []byte) error {
 	case "MeshHTTPRoute":
 		fallthrough
 	case "Dataplane":
-		*e = Kind(v)
+		*e = MeshAccessLogItemKind(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Kind: %v", v)
+		return fmt.Errorf("invalid value for MeshAccessLogItemKind: %v", v)
 	}
 }
 
@@ -636,7 +658,7 @@ func (e *ProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type TargetRef struct {
 	// Kind of the referenced resource
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *MeshAccessLogItemKind `json:"kind,omitempty"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -659,7 +681,7 @@ type TargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *TargetRef) GetKind() *Kind {
+func (o *TargetRef) GetKind() *MeshAccessLogItemKind {
 	if o == nil {
 		return nil
 	}
@@ -764,9 +786,20 @@ func (e *MeshAccessLogItemSpecToDefaultBackendsType) UnmarshalJSON(data []byte) 
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type MeshAccessLogItemSpecFormat struct {
 	JSON            []MeshAccessLogItemSpecJSON                `json:"json,omitempty"`
-	OmitEmptyValues *bool                                      `json:"omitEmptyValues,omitempty"`
+	OmitEmptyValues *bool                                      `default:"false" json:"omitEmptyValues"`
 	Plain           *string                                    `json:"plain,omitempty"`
 	Type            MeshAccessLogItemSpecToDefaultBackendsType `json:"type"`
+}
+
+func (m MeshAccessLogItemSpecFormat) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshAccessLogItemSpecFormat) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshAccessLogItemSpecFormat) GetJSON() []MeshAccessLogItemSpecJSON {
@@ -923,9 +956,20 @@ func (e *MeshAccessLogItemSpecToDefaultType) UnmarshalJSON(data []byte) error {
 // https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators
 type MeshAccessLogItemSpecToFormat struct {
 	JSON            []MeshAccessLogItemSpecToJSON      `json:"json,omitempty"`
-	OmitEmptyValues *bool                              `json:"omitEmptyValues,omitempty"`
+	OmitEmptyValues *bool                              `default:"false" json:"omitEmptyValues"`
 	Plain           *string                            `json:"plain,omitempty"`
 	Type            MeshAccessLogItemSpecToDefaultType `json:"type"`
+}
+
+func (m MeshAccessLogItemSpecToFormat) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshAccessLogItemSpecToFormat) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshAccessLogItemSpecToFormat) GetJSON() []MeshAccessLogItemSpecToJSON {
@@ -1276,7 +1320,7 @@ type MeshAccessLogItem struct {
 	// the type of the resource
 	Type MeshAccessLogItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1347,4 +1391,63 @@ func (o *MeshAccessLogItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshAccessLogItemInput struct {
+	// the type of the resource
+	Type MeshAccessLogItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshAccessLog resource.
+	Spec MeshAccessLogItemSpec `json:"spec"`
+}
+
+func (m MeshAccessLogItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshAccessLogItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshAccessLogItemInput) GetType() MeshAccessLogItemType {
+	if o == nil {
+		return MeshAccessLogItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshAccessLogItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshAccessLogItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshAccessLogItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshAccessLogItemInput) GetSpec() MeshAccessLogItemSpec {
+	if o == nil {
+		return MeshAccessLogItemSpec{}
+	}
+	return o.Spec
 }

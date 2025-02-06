@@ -16,9 +16,9 @@ GatewayPluginZipkin Resource
 resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
   config = {
     connect_timeout                  = 1674102719
-    default_header_type              = "w3c"
+    default_header_type              = "b3-single"
     default_service_name             = "...my_default_service_name..."
-    header_type                      = "jaeger"
+    header_type                      = "ignore"
     http_endpoint                    = "...my_http_endpoint..."
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     http_span_name                   = "method_path"
@@ -29,12 +29,12 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
       clear = [
         "..."
       ]
-      default_format = "b3-single"
+      default_format = "gcp"
       extract = [
-        "b3"
+        "datadog"
       ]
       inject = [
-        "w3c"
+        "b3"
       ]
     }
     queue = {
@@ -60,9 +60,6 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
     traceid_byte_count = 8
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -107,12 +104,11 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -128,9 +124,9 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
 Optional:
 
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. must be one of ["b3", "b3-single", "w3c", "jaeger", "ot", "aws", "datadog", "gcp"]
+- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]
 - `default_service_name` (String) Set a default service name to override `unknown-service-name` in the Zipkin spans.
-- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["preserve", "ignore", "b3", "b3-single", "w3c", "jaeger", "ot", "aws", "datadog", "gcp"]
+- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "jaeger", "ot", "preserve", "w3c"]
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `http_response_header_for_traceid` (String)
 - `http_span_name` (String) Specify whether to include the HTTP path in the span name. must be one of ["method", "method_path"]
@@ -152,7 +148,7 @@ Optional:
 Optional:
 
 - `clear` (List of String) Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["w3c", "datadog", "b3", "gcp", "b3-single", "jaeger", "aws", "ot"]
+- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]
 - `extract` (List of String) Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 - `inject` (List of String) Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
 
@@ -184,14 +180,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

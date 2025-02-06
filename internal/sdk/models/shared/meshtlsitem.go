@@ -173,9 +173,20 @@ func (e *MeshTLSItemMin) UnmarshalJSON(data []byte) error {
 // TLSVersion - Version section for providing version specification.
 type TLSVersion struct {
 	// Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Max *MeshTLSItemMax `json:"max,omitempty"`
+	Max *MeshTLSItemMax `default:"TLSAuto" json:"max"`
 	// Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Min *MeshTLSItemMin `json:"min,omitempty"`
+	Min *MeshTLSItemMin `default:"TLSAuto" json:"min"`
+}
+
+func (t TLSVersion) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLSVersion) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLSVersion) GetMax() *MeshTLSItemMax {
@@ -590,7 +601,7 @@ type MeshTLSItem struct {
 	// the type of the resource
 	Type MeshTLSItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -661,4 +672,63 @@ func (o *MeshTLSItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshTLSItemInput struct {
+	// the type of the resource
+	Type MeshTLSItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshTLS resource.
+	Spec MeshTLSItemSpec `json:"spec"`
+}
+
+func (m MeshTLSItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshTLSItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshTLSItemInput) GetType() MeshTLSItemType {
+	if o == nil {
+		return MeshTLSItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshTLSItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshTLSItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshTLSItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshTLSItemInput) GetSpec() MeshTLSItemSpec {
+	if o == nil {
+		return MeshTLSItemSpec{}
+	}
+	return o.Spec
 }

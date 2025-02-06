@@ -443,7 +443,7 @@ type MeshTrafficPermissionItem struct {
 	// the type of the resource
 	Type MeshTrafficPermissionItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -514,4 +514,63 @@ func (o *MeshTrafficPermissionItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshTrafficPermissionItemInput struct {
+	// the type of the resource
+	Type MeshTrafficPermissionItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshTrafficPermission resource.
+	Spec MeshTrafficPermissionItemSpec `json:"spec"`
+}
+
+func (m MeshTrafficPermissionItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshTrafficPermissionItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshTrafficPermissionItemInput) GetType() MeshTrafficPermissionItemType {
+	if o == nil {
+		return MeshTrafficPermissionItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshTrafficPermissionItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshTrafficPermissionItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshTrafficPermissionItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshTrafficPermissionItemInput) GetSpec() MeshTrafficPermissionItemSpec {
+	if o == nil {
+		return MeshTrafficPermissionItemSpec{}
+	}
+	return o.Spec
 }

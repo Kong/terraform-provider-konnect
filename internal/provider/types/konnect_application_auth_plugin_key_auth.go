@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type KonnectApplicationAuthPluginKeyAuth struct {
-	Config     KonnectApplicationAuthPluginConfigV2StrategiesConfig `tfsdk:"config"`
-	StrategyID types.String                                         `tfsdk:"strategy_id"`
+	Config     AppAuthStrategyConfigKeyAuth `tfsdk:"config"`
+	StrategyID types.String                 `tfsdk:"strategy_id"`
 }

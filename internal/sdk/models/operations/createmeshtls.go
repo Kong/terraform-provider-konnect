@@ -15,7 +15,7 @@ type CreateMeshTLSRequest struct {
 	// name of the MeshTLS
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshTLSItem shared.MeshTLSItem `request:"mediaType=application/json"`
+	MeshTLSItem shared.MeshTLSItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshTLSRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshTLSRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshTLSRequest) GetMeshTLSItem() shared.MeshTLSItem {
+func (o *CreateMeshTLSRequest) GetMeshTLSItem() shared.MeshTLSItemInput {
 	if o == nil {
-		return shared.MeshTLSItem{}
+		return shared.MeshTLSItemInput{}
 	}
 	return o.MeshTLSItem
 }

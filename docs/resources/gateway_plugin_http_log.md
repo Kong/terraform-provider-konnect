@@ -25,7 +25,7 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
     }
     http_endpoint = "...my_http_endpoint..."
     keepalive     = 2.25
-    method        = "PUT"
+    method        = "POST"
     queue = {
       concurrency_limit    = 0
       initial_retry_delay  = 154435.3
@@ -41,9 +41,6 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
     timeout     = 6.49
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -88,12 +85,11 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -114,7 +110,7 @@ Optional:
 - `headers` (Map of String) An optional table of headers included in the HTTP message to the upstream server. Values are indexed by header name, and each header name accepts a single string.
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `keepalive` (Number) An optional value in milliseconds that defines how long an idle connection will live before being closed.
-- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. must be one of ["POST", "PUT", "PATCH"]
+- `method` (String) An optional method used to send data to the HTTP server. Supported values are `POST` (default), `PUT`, and `PATCH`. must be one of ["PATCH", "POST", "PUT"]
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number) Maximum number of log entries to be sent on each message to the upstream server.
 - `retry_count` (Number) Number of times to retry when sending data to the upstream server.
@@ -138,14 +134,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

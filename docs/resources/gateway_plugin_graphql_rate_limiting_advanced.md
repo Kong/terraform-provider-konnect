@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -66,9 +66,6 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
     window_type = "fixed"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -88,7 +85,7 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
     }
   }
   protocols = [
-    "udp"
+    "http"
   ]
   route = {
     id = "...my_id..."
@@ -113,12 +110,11 @@ resource "konnect_gateway_plugin_graphql_rate_limiting_advanced" "my_gatewayplug
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -136,7 +132,7 @@ Optional:
 - `cost_strategy` (String) Strategy to use to evaluate query costs. Either `default` or `node_quantifier`. must be one of ["default", "node_quantifier"]
 - `dictionary_name` (String) The shared dictionary where counters will be stored until the next sync cycle.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers. Available options: `true` or `false`.
-- `identifier` (String) How to define the rate limit key. Can be `ip`, `credential`, `consumer`. must be one of ["ip", "credential", "consumer"]
+- `identifier` (String) How to define the rate limit key. Can be `ip`, `credential`, `consumer`. must be one of ["consumer", "credential", "ip"]
 - `limit` (List of Number) One or more requests-per-window limits to apply.
 - `max_cost` (Number) A defined maximum cost per query. 0 means unlimited.
 - `namespace` (String) The rate limiting namespace to use for this plugin instance. This namespace is used to share rate limiting counters across different instances. If it is not provided, a random UUID is generated. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
@@ -167,7 +163,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
@@ -196,14 +192,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

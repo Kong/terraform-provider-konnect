@@ -15,7 +15,7 @@ type UpdateMeshRetryRequest struct {
 	// name of the MeshRetry
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshRetryItem shared.MeshRetryItem `request:"mediaType=application/json"`
+	MeshRetryItem shared.MeshRetryItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshRetryRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshRetryRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshRetryRequest) GetMeshRetryItem() shared.MeshRetryItem {
+func (o *UpdateMeshRetryRequest) GetMeshRetryItem() shared.MeshRetryItemInput {
 	if o == nil {
-		return shared.MeshRetryItem{}
+		return shared.MeshRetryItemInput{}
 	}
 	return o.MeshRetryItem
 }

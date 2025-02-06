@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

@@ -103,7 +103,7 @@ resource "konnect_gateway_plugin_response_transformer_advanced" "my_gatewayplugi
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."

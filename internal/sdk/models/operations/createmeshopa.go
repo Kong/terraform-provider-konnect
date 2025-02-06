@@ -15,7 +15,7 @@ type CreateMeshOPARequest struct {
 	// name of the MeshOPA
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshOPAItem shared.MeshOPAItem `request:"mediaType=application/json"`
+	MeshOPAItem shared.MeshOPAItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshOPARequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshOPARequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshOPARequest) GetMeshOPAItem() shared.MeshOPAItem {
+func (o *CreateMeshOPARequest) GetMeshOPAItem() shared.MeshOPAItemInput {
 	if o == nil {
-		return shared.MeshOPAItem{}
+		return shared.MeshOPAItemInput{}
 	}
 	return o.MeshOPAItem
 }

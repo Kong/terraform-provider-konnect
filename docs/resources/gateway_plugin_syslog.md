@@ -15,19 +15,16 @@ GatewayPluginSyslog Resource
 ```terraform
 resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
   config = {
-    client_errors_severity = "emerg"
+    client_errors_severity = "warning"
     custom_fields_by_lua = {
       key = jsonencode("value"),
     }
-    facility               = "local7"
-    log_level              = "info"
-    server_errors_severity = "alert"
-    successful_severity    = "notice"
+    facility               = "uucp"
+    log_level              = "crit"
+    server_errors_severity = "notice"
+    successful_severity    = "debug"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -72,12 +69,11 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -92,24 +88,16 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
 
 Optional:
 
-- `client_errors_severity` (String) must be one of ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg"]
+- `client_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 - `custom_fields_by_lua` (Map of String) Lua code as a key-value map
-- `facility` (String) The facility is used by the operating system to decide how to handle each log message. must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "lpr", "mail", "news", "syslog", "user", "uucp", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
-- `log_level` (String) must be one of ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg"]
-- `server_errors_severity` (String) must be one of ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg"]
-- `successful_severity` (String) must be one of ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg"]
+- `facility` (String) The facility is used by the operating system to decide how to handle each log message. must be one of ["auth", "authpriv", "cron", "daemon", "ftp", "kern", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7", "lpr", "mail", "news", "syslog", "user", "uucp"]
+- `log_level` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `server_errors_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
+- `successful_severity` (String) must be one of ["alert", "crit", "debug", "emerg", "err", "info", "notice", "warning"]
 
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

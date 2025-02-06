@@ -8,17 +8,99 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type RateLimitingAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RateLimitingAdvancedPluginOrdering struct {
+	After  *RateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
+type CompoundIdentifier string
+
+const (
+	CompoundIdentifierConsumer      CompoundIdentifier = "consumer"
+	CompoundIdentifierConsumerGroup CompoundIdentifier = "consumer-group"
+	CompoundIdentifierCredential    CompoundIdentifier = "credential"
+	CompoundIdentifierHeader        CompoundIdentifier = "header"
+	CompoundIdentifierIP            CompoundIdentifier = "ip"
+	CompoundIdentifierPath          CompoundIdentifier = "path"
+	CompoundIdentifierService       CompoundIdentifier = "service"
+)
+
+func (e CompoundIdentifier) ToPointer() *CompoundIdentifier {
+	return &e
+}
+func (e *CompoundIdentifier) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "consumer":
+		fallthrough
+	case "consumer-group":
+		fallthrough
+	case "credential":
+		fallthrough
+	case "header":
+		fallthrough
+	case "ip":
+		fallthrough
+	case "path":
+		fallthrough
+	case "service":
+		*e = CompoundIdentifier(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for CompoundIdentifier: %v", v)
+	}
+}
+
 // RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
 type RateLimitingAdvancedPluginIdentifier string
 
 const (
-	RateLimitingAdvancedPluginIdentifierIP            RateLimitingAdvancedPluginIdentifier = "ip"
-	RateLimitingAdvancedPluginIdentifierCredential    RateLimitingAdvancedPluginIdentifier = "credential"
 	RateLimitingAdvancedPluginIdentifierConsumer      RateLimitingAdvancedPluginIdentifier = "consumer"
-	RateLimitingAdvancedPluginIdentifierService       RateLimitingAdvancedPluginIdentifier = "service"
-	RateLimitingAdvancedPluginIdentifierHeader        RateLimitingAdvancedPluginIdentifier = "header"
-	RateLimitingAdvancedPluginIdentifierPath          RateLimitingAdvancedPluginIdentifier = "path"
 	RateLimitingAdvancedPluginIdentifierConsumerGroup RateLimitingAdvancedPluginIdentifier = "consumer-group"
+	RateLimitingAdvancedPluginIdentifierCredential    RateLimitingAdvancedPluginIdentifier = "credential"
+	RateLimitingAdvancedPluginIdentifierHeader        RateLimitingAdvancedPluginIdentifier = "header"
+	RateLimitingAdvancedPluginIdentifierIP            RateLimitingAdvancedPluginIdentifier = "ip"
+	RateLimitingAdvancedPluginIdentifierPath          RateLimitingAdvancedPluginIdentifier = "path"
+	RateLimitingAdvancedPluginIdentifierService       RateLimitingAdvancedPluginIdentifier = "service"
 )
 
 func (e RateLimitingAdvancedPluginIdentifier) ToPointer() *RateLimitingAdvancedPluginIdentifier {
@@ -30,19 +112,19 @@ func (e *RateLimitingAdvancedPluginIdentifier) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	switch v {
-	case "ip":
+	case "consumer":
+		fallthrough
+	case "consumer-group":
 		fallthrough
 	case "credential":
 		fallthrough
-	case "consumer":
-		fallthrough
-	case "service":
-		fallthrough
 	case "header":
+		fallthrough
+	case "ip":
 		fallthrough
 	case "path":
 		fallthrough
-	case "consumer-group":
+	case "service":
 		*e = RateLimitingAdvancedPluginIdentifier(v)
 		return nil
 	default:
@@ -71,6 +153,30 @@ func (o *RateLimitingAdvancedPluginClusterNodes) GetPort() *int64 {
 	return o.Port
 }
 
+// RedisProxyType - If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.
+type RedisProxyType string
+
+const (
+	RedisProxyTypeEnvoyV131 RedisProxyType = "envoy_v1.31"
+)
+
+func (e RedisProxyType) ToPointer() *RedisProxyType {
+	return &e
+}
+func (e *RedisProxyType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "envoy_v1.31":
+		*e = RedisProxyType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for RedisProxyType: %v", v)
+	}
+}
+
 type RateLimitingAdvancedPluginSentinelNodes struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
@@ -96,9 +202,9 @@ func (o *RateLimitingAdvancedPluginSentinelNodes) GetPort() *int64 {
 type RateLimitingAdvancedPluginSentinelRole string
 
 const (
+	RateLimitingAdvancedPluginSentinelRoleAny    RateLimitingAdvancedPluginSentinelRole = "any"
 	RateLimitingAdvancedPluginSentinelRoleMaster RateLimitingAdvancedPluginSentinelRole = "master"
 	RateLimitingAdvancedPluginSentinelRoleSlave  RateLimitingAdvancedPluginSentinelRole = "slave"
-	RateLimitingAdvancedPluginSentinelRoleAny    RateLimitingAdvancedPluginSentinelRole = "any"
 )
 
 func (e RateLimitingAdvancedPluginSentinelRole) ToPointer() *RateLimitingAdvancedPluginSentinelRole {
@@ -110,11 +216,11 @@ func (e *RateLimitingAdvancedPluginSentinelRole) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = RateLimitingAdvancedPluginSentinelRole(v)
 		return nil
 	default:
@@ -145,6 +251,8 @@ type RateLimitingAdvancedPluginRedis struct {
 	Port *int64 `json:"port,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
+	// If the `connection_is_proxied` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.
+	RedisProxyType *RedisProxyType `json:"redis_proxy_type,omitempty"`
 	// An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
 	SendTimeout *int64 `json:"send_timeout,omitempty"`
 	// Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
@@ -244,6 +352,13 @@ func (o *RateLimitingAdvancedPluginRedis) GetReadTimeout() *int64 {
 	return o.ReadTimeout
 }
 
+func (o *RateLimitingAdvancedPluginRedis) GetRedisProxyType() *RedisProxyType {
+	if o == nil {
+		return nil
+	}
+	return o.RedisProxyType
+}
+
 func (o *RateLimitingAdvancedPluginRedis) GetSendTimeout() *int64 {
 	if o == nil {
 		return nil
@@ -319,8 +434,8 @@ type RateLimitingAdvancedPluginStrategy string
 
 const (
 	RateLimitingAdvancedPluginStrategyCluster RateLimitingAdvancedPluginStrategy = "cluster"
-	RateLimitingAdvancedPluginStrategyRedis   RateLimitingAdvancedPluginStrategy = "redis"
 	RateLimitingAdvancedPluginStrategyLocal   RateLimitingAdvancedPluginStrategy = "local"
+	RateLimitingAdvancedPluginStrategyRedis   RateLimitingAdvancedPluginStrategy = "redis"
 )
 
 func (e RateLimitingAdvancedPluginStrategy) ToPointer() *RateLimitingAdvancedPluginStrategy {
@@ -334,9 +449,9 @@ func (e *RateLimitingAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "cluster":
 		fallthrough
-	case "redis":
-		fallthrough
 	case "local":
+		fallthrough
+	case "redis":
 		*e = RateLimitingAdvancedPluginStrategy(v)
 		return nil
 	default:
@@ -372,6 +487,8 @@ func (e *RateLimitingAdvancedPluginWindowType) UnmarshalJSON(data []byte) error 
 }
 
 type RateLimitingAdvancedPluginConfig struct {
+	// Similar to `identifer`, but supports combining multiple items. The priority of `compound_identifier` is higher than `identifier`, which means if `compound_identifer` is set, it will be used, otherwise `identifier` will be used.
+	CompoundIdentifier []CompoundIdentifier `json:"compound_identifier,omitempty"`
 	// List of consumer groups allowed to override the rate limiting settings for the given Route or Service. Required if `enforce_consumer_groups` is set to `true`.
 	ConsumerGroups []string `json:"consumer_groups,omitempty"`
 	// The shared dictionary where counters are stored. When the plugin is configured to synchronize counter data externally (that is `config.strategy` is `cluster` or `redis` and `config.sync_rate` isn't `-1`), this dictionary serves as a buffer to populate counters in the data store on each synchronization cycle.
@@ -392,7 +509,9 @@ type RateLimitingAdvancedPluginConfig struct {
 	Identifier *RateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
 	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
 	Limit []float64 `json:"limit,omitempty"`
-	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `window_size`, `dictionary_name`, need to be the same.
+	// The shared dictionary where concurrency control locks are stored. The default shared dictionary is `kong_locks`. The shared dictionary should be declare in nginx-kong.conf.
+	LockDictionaryName *string `json:"lock_dictionary_name,omitempty"`
+	// The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. `strategy`, `redis`, `sync_rate`, `dictionary_name`, need to be the same.
 	Namespace *string `json:"namespace,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 	Path  *string                          `json:"path,omitempty"`
@@ -407,6 +526,13 @@ type RateLimitingAdvancedPluginConfig struct {
 	WindowSize []float64 `json:"window_size,omitempty"`
 	// Sets the time window type to either `sliding` (default) or `fixed`. Sliding windows apply the rate limiting logic while taking into account previous hit rates (from the window that immediately precedes the current) using a dynamic weight. Fixed windows consist of buckets that are statically assigned to a definitive time range, each request is mapped to only one fixed window based on its timestamp and will affect only that window's counters.
 	WindowType *RateLimitingAdvancedPluginWindowType `json:"window_type,omitempty"`
+}
+
+func (o *RateLimitingAdvancedPluginConfig) GetCompoundIdentifier() []CompoundIdentifier {
+	if o == nil {
+		return nil
+	}
+	return o.CompoundIdentifier
 }
 
 func (o *RateLimitingAdvancedPluginConfig) GetConsumerGroups() []string {
@@ -479,6 +605,13 @@ func (o *RateLimitingAdvancedPluginConfig) GetLimit() []float64 {
 	return o.Limit
 }
 
+func (o *RateLimitingAdvancedPluginConfig) GetLockDictionaryName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LockDictionaryName
+}
+
 func (o *RateLimitingAdvancedPluginConfig) GetNamespace() *string {
 	if o == nil {
 		return nil
@@ -547,6 +680,7 @@ func (o *RateLimitingAdvancedPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+// RateLimitingAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RateLimitingAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -558,60 +692,13 @@ func (o *RateLimitingAdvancedPluginConsumerGroup) GetID() *string {
 	return o.ID
 }
 
-type RateLimitingAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RateLimitingAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RateLimitingAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RateLimitingAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RateLimitingAdvancedPluginOrdering struct {
-	After  *RateLimitingAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RateLimitingAdvancedPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RateLimitingAdvancedPluginOrdering) GetAfter() *RateLimitingAdvancedPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RateLimitingAdvancedPluginOrdering) GetBefore() *RateLimitingAdvancedPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type RateLimitingAdvancedPluginProtocols string
 
 const (
-	RateLimitingAdvancedPluginProtocolsGrpc           RateLimitingAdvancedPluginProtocols = "grpc"
-	RateLimitingAdvancedPluginProtocolsGrpcs          RateLimitingAdvancedPluginProtocols = "grpcs"
-	RateLimitingAdvancedPluginProtocolsHTTP           RateLimitingAdvancedPluginProtocols = "http"
-	RateLimitingAdvancedPluginProtocolsHTTPS          RateLimitingAdvancedPluginProtocols = "https"
-	RateLimitingAdvancedPluginProtocolsTCP            RateLimitingAdvancedPluginProtocols = "tcp"
-	RateLimitingAdvancedPluginProtocolsTLS            RateLimitingAdvancedPluginProtocols = "tls"
-	RateLimitingAdvancedPluginProtocolsTLSPassthrough RateLimitingAdvancedPluginProtocols = "tls_passthrough"
-	RateLimitingAdvancedPluginProtocolsUDP            RateLimitingAdvancedPluginProtocols = "udp"
-	RateLimitingAdvancedPluginProtocolsWs             RateLimitingAdvancedPluginProtocols = "ws"
-	RateLimitingAdvancedPluginProtocolsWss            RateLimitingAdvancedPluginProtocols = "wss"
+	RateLimitingAdvancedPluginProtocolsGrpc  RateLimitingAdvancedPluginProtocols = "grpc"
+	RateLimitingAdvancedPluginProtocolsGrpcs RateLimitingAdvancedPluginProtocols = "grpcs"
+	RateLimitingAdvancedPluginProtocolsHTTP  RateLimitingAdvancedPluginProtocols = "http"
+	RateLimitingAdvancedPluginProtocolsHTTPS RateLimitingAdvancedPluginProtocols = "https"
 )
 
 func (e RateLimitingAdvancedPluginProtocols) ToPointer() *RateLimitingAdvancedPluginProtocols {
@@ -630,18 +717,6 @@ func (e *RateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = RateLimitingAdvancedPluginProtocols(v)
 		return nil
 	default:
@@ -649,7 +724,7 @@ func (e *RateLimitingAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// RateLimitingAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type RateLimitingAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -675,10 +750,6 @@ func (o *RateLimitingAdvancedPluginService) GetID() *string {
 
 // RateLimitingAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RateLimitingAdvancedPlugin struct {
-	Config RateLimitingAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RateLimitingAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -687,16 +758,21 @@ type RateLimitingAdvancedPlugin struct {
 	InstanceName *string                             `json:"instance_name,omitempty"`
 	name         string                              `const:"rate-limiting-advanced" json:"name"`
 	Ordering     *RateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RateLimitingAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                           `json:"updated_at,omitempty"`
+	Config    RateLimitingAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RateLimitingAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RateLimitingAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (r RateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -708,27 +784,6 @@ func (r *RateLimitingAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *RateLimitingAdvancedPlugin) GetConfig() RateLimitingAdvancedPluginConfig {
-	if o == nil {
-		return RateLimitingAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RateLimitingAdvancedPlugin) GetConsumer() *RateLimitingAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RateLimitingAdvancedPlugin) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RateLimitingAdvancedPlugin) GetCreatedAt() *int64 {
@@ -770,6 +825,41 @@ func (o *RateLimitingAdvancedPlugin) GetOrdering() *RateLimitingAdvancedPluginOr
 	return o.Ordering
 }
 
+func (o *RateLimitingAdvancedPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *RateLimitingAdvancedPlugin) GetConfig() RateLimitingAdvancedPluginConfig {
+	if o == nil {
+		return RateLimitingAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RateLimitingAdvancedPlugin) GetConsumer() *RateLimitingAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *RateLimitingAdvancedPlugin) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *RateLimitingAdvancedPlugin) GetProtocols() []RateLimitingAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -791,40 +881,27 @@ func (o *RateLimitingAdvancedPlugin) GetService() *RateLimitingAdvancedPluginSer
 	return o.Service
 }
 
-func (o *RateLimitingAdvancedPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *RateLimitingAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // RateLimitingAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RateLimitingAdvancedPluginInput struct {
-	Config RateLimitingAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RateLimitingAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                               `json:"enabled,omitempty"`
 	ID           *string                             `json:"id,omitempty"`
 	InstanceName *string                             `json:"instance_name,omitempty"`
 	name         string                              `const:"rate-limiting-advanced" json:"name"`
 	Ordering     *RateLimitingAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RateLimitingAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                         `json:"tags,omitempty"`
+	Config RateLimitingAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RateLimitingAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RateLimitingAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (r RateLimitingAdvancedPluginInput) MarshalJSON() ([]byte, error) {
@@ -836,27 +913,6 @@ func (r *RateLimitingAdvancedPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *RateLimitingAdvancedPluginInput) GetConfig() RateLimitingAdvancedPluginConfig {
-	if o == nil {
-		return RateLimitingAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RateLimitingAdvancedPluginInput) GetConsumer() *RateLimitingAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RateLimitingAdvancedPluginInput) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RateLimitingAdvancedPluginInput) GetEnabled() *bool {
@@ -891,6 +947,34 @@ func (o *RateLimitingAdvancedPluginInput) GetOrdering() *RateLimitingAdvancedPlu
 	return o.Ordering
 }
 
+func (o *RateLimitingAdvancedPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RateLimitingAdvancedPluginInput) GetConfig() RateLimitingAdvancedPluginConfig {
+	if o == nil {
+		return RateLimitingAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RateLimitingAdvancedPluginInput) GetConsumer() *RateLimitingAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *RateLimitingAdvancedPluginInput) GetConsumerGroup() *RateLimitingAdvancedPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *RateLimitingAdvancedPluginInput) GetProtocols() []RateLimitingAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -910,11 +994,4 @@ func (o *RateLimitingAdvancedPluginInput) GetService() *RateLimitingAdvancedPlug
 		return nil
 	}
 	return o.Service
-}
-
-func (o *RateLimitingAdvancedPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

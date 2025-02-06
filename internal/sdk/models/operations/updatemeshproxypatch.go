@@ -15,7 +15,7 @@ type UpdateMeshProxyPatchRequest struct {
 	// name of the MeshProxyPatch
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshProxyPatchItem shared.MeshProxyPatchItem `request:"mediaType=application/json"`
+	MeshProxyPatchItem shared.MeshProxyPatchItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshProxyPatchRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshProxyPatchRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshProxyPatchRequest) GetMeshProxyPatchItem() shared.MeshProxyPatchItem {
+func (o *UpdateMeshProxyPatchRequest) GetMeshProxyPatchItem() shared.MeshProxyPatchItemInput {
 	if o == nil {
-		return shared.MeshProxyPatchItem{}
+		return shared.MeshProxyPatchItemInput{}
 	}
 	return o.MeshProxyPatchItem
 }

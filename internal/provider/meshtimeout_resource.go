@@ -12,9 +12,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,7 +65,10 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -77,7 +84,10 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -91,7 +101,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -192,7 +206,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -224,7 +242,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 						Description: `From list makes a match between clients and corresponding configurations`,
 					},
 					"rules": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -329,7 +351,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -354,7 +380,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -455,7 +485,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -499,7 +533,11 @@ func (r *MeshTimeoutResource) Schema(ctx context.Context, req resource.SchemaReq
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -555,7 +593,7 @@ func (r *MeshTimeoutResource) Create(ctx context.Context, req resource.CreateReq
 	var name string
 	name = data.Name.ValueString()
 
-	meshTimeoutItem := *data.ToSharedMeshTimeoutItem()
+	meshTimeoutItem := *data.ToSharedMeshTimeoutItemInput()
 	request := operations.CreateMeshTimeoutRequest{
 		CpID:            cpID,
 		Mesh:            mesh,
@@ -710,7 +748,7 @@ func (r *MeshTimeoutResource) Update(ctx context.Context, req resource.UpdateReq
 	var name string
 	name = data.Name.ValueString()
 
-	meshTimeoutItem := *data.ToSharedMeshTimeoutItem()
+	meshTimeoutItem := *data.ToSharedMeshTimeoutItemInput()
 	request := operations.UpdateMeshTimeoutRequest{
 		CpID:            cpID,
 		Mesh:            mesh,

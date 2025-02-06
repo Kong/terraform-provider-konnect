@@ -138,9 +138,20 @@ type Match struct {
 	// Port defines a port to which a user does request.
 	Port int64 `json:"port"`
 	// Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.
-	Protocol *MeshExternalServiceItemProtocol `json:"protocol,omitempty"`
+	Protocol *MeshExternalServiceItemProtocol `default:"tcp" json:"protocol"`
 	// Type of the match, only `HostnameGenerator` is available at the moment.
-	Type *MeshExternalServiceItemSpecType `json:"type,omitempty"`
+	Type *MeshExternalServiceItemSpecType `default:"HostnameGenerator" json:"type"`
+}
+
+func (m Match) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *Match) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Match) GetPort() int64 {
@@ -319,9 +330,20 @@ func (e *MeshExternalServiceItemSpecTLSType) UnmarshalJSON(data []byte) error {
 
 type SubjectAltNames struct {
 	// Type specifies matching type, one of `Exact`, `Prefix`. Default: `Exact`
-	Type *MeshExternalServiceItemSpecTLSType `json:"type,omitempty"`
+	Type *MeshExternalServiceItemSpecTLSType `default:"Exact" json:"type"`
 	// Value to match.
 	Value string `json:"value"`
+}
+
+func (s SubjectAltNames) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *SubjectAltNames) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *SubjectAltNames) GetType() *MeshExternalServiceItemSpecTLSType {
@@ -347,11 +369,22 @@ type Verification struct {
 	// ClientKey defines a client private key.
 	ClientKey *ClientKey `json:"clientKey,omitempty"`
 	// Mode defines if proxy should skip verification, one of `SkipSAN`, `SkipCA`, `Secured`, `SkipAll`. Default `Secured`.
-	Mode *MeshExternalServiceItemMode `json:"mode,omitempty"`
+	Mode *MeshExternalServiceItemMode `default:"Secured" json:"mode"`
 	// ServerName overrides the default Server Name Indicator set by Kuma.
 	ServerName *string `json:"serverName,omitempty"`
 	// SubjectAltNames list of names to verify in the certificate.
 	SubjectAltNames []SubjectAltNames `json:"subjectAltNames,omitempty"`
+}
+
+func (v Verification) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(v, "", false)
+}
+
+func (v *Verification) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Verification) GetCaCert() *CaCert {
@@ -471,9 +504,20 @@ func (e *Min) UnmarshalJSON(data []byte) error {
 // MeshExternalServiceItemVersion - Version section for providing version specification.
 type MeshExternalServiceItemVersion struct {
 	// Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Max *Max `json:"max,omitempty"`
+	Max *Max `default:"TLSAuto" json:"max"`
 	// Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
-	Min *Min `json:"min,omitempty"`
+	Min *Min `default:"TLSAuto" json:"min"`
+}
+
+func (m MeshExternalServiceItemVersion) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshExternalServiceItemVersion) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshExternalServiceItemVersion) GetMax() *Max {
@@ -494,13 +538,24 @@ func (o *MeshExternalServiceItemVersion) GetMin() *Min {
 type TLS struct {
 	// AllowRenegotiation defines if TLS sessions will allow renegotiation.
 	// Setting this to true is not recommended for security reasons.
-	AllowRenegotiation *bool `json:"allowRenegotiation,omitempty"`
+	AllowRenegotiation *bool `default:"false" json:"allowRenegotiation"`
 	// Enabled defines if proxy should originate TLS.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool `default:"false" json:"enabled"`
 	// Verification section for providing TLS verification details.
 	Verification *Verification `json:"verification,omitempty"`
 	// Version section for providing version specification.
 	Version *MeshExternalServiceItemVersion `json:"version,omitempty"`
+}
+
+func (t TLS) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(t, "", false)
+}
+
+func (t *TLS) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &t, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *TLS) GetAllowRenegotiation() *bool {
@@ -761,7 +816,7 @@ type MeshExternalServiceItem struct {
 	// the type of the resource
 	Type MeshExternalServiceItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -841,4 +896,63 @@ func (o *MeshExternalServiceItem) GetStatus() *Status {
 		return nil
 	}
 	return o.Status
+}
+
+type MeshExternalServiceItemInput struct {
+	// the type of the resource
+	Type MeshExternalServiceItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshExternalService resource.
+	Spec MeshExternalServiceItemSpec `json:"spec"`
+}
+
+func (m MeshExternalServiceItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshExternalServiceItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshExternalServiceItemInput) GetType() MeshExternalServiceItemType {
+	if o == nil {
+		return MeshExternalServiceItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshExternalServiceItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshExternalServiceItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshExternalServiceItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshExternalServiceItemInput) GetSpec() MeshExternalServiceItemSpec {
+	if o == nil {
+		return MeshExternalServiceItemSpec{}
+	}
+	return o.Spec
 }

@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type XMLThreatProtectionPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *XMLThreatProtectionPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type XMLThreatProtectionPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *XMLThreatProtectionPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type XMLThreatProtectionPluginOrdering struct {
+	After  *XMLThreatProtectionPluginAfter  `json:"after,omitempty"`
+	Before *XMLThreatProtectionPluginBefore `json:"before,omitempty"`
+}
+
+func (o *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *XMLThreatProtectionPluginOrdering) GetBefore() *XMLThreatProtectionPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type XMLThreatProtectionPluginConfig struct {
 	// Indicates whether an XML Document Type Definition (DTD) section is allowed.
 	AllowDtd *bool `json:"allow_dtd,omitempty"`
@@ -230,71 +271,13 @@ func (o *XMLThreatProtectionPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type XMLThreatProtectionPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *XMLThreatProtectionPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type XMLThreatProtectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *XMLThreatProtectionPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type XMLThreatProtectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *XMLThreatProtectionPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type XMLThreatProtectionPluginOrdering struct {
-	After  *XMLThreatProtectionPluginAfter  `json:"after,omitempty"`
-	Before *XMLThreatProtectionPluginBefore `json:"before,omitempty"`
-}
-
-func (o *XMLThreatProtectionPluginOrdering) GetAfter() *XMLThreatProtectionPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *XMLThreatProtectionPluginOrdering) GetBefore() *XMLThreatProtectionPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type XMLThreatProtectionPluginProtocols string
 
 const (
-	XMLThreatProtectionPluginProtocolsGrpc           XMLThreatProtectionPluginProtocols = "grpc"
-	XMLThreatProtectionPluginProtocolsGrpcs          XMLThreatProtectionPluginProtocols = "grpcs"
-	XMLThreatProtectionPluginProtocolsHTTP           XMLThreatProtectionPluginProtocols = "http"
-	XMLThreatProtectionPluginProtocolsHTTPS          XMLThreatProtectionPluginProtocols = "https"
-	XMLThreatProtectionPluginProtocolsTCP            XMLThreatProtectionPluginProtocols = "tcp"
-	XMLThreatProtectionPluginProtocolsTLS            XMLThreatProtectionPluginProtocols = "tls"
-	XMLThreatProtectionPluginProtocolsTLSPassthrough XMLThreatProtectionPluginProtocols = "tls_passthrough"
-	XMLThreatProtectionPluginProtocolsUDP            XMLThreatProtectionPluginProtocols = "udp"
-	XMLThreatProtectionPluginProtocolsWs             XMLThreatProtectionPluginProtocols = "ws"
-	XMLThreatProtectionPluginProtocolsWss            XMLThreatProtectionPluginProtocols = "wss"
+	XMLThreatProtectionPluginProtocolsGrpc  XMLThreatProtectionPluginProtocols = "grpc"
+	XMLThreatProtectionPluginProtocolsGrpcs XMLThreatProtectionPluginProtocols = "grpcs"
+	XMLThreatProtectionPluginProtocolsHTTP  XMLThreatProtectionPluginProtocols = "http"
+	XMLThreatProtectionPluginProtocolsHTTPS XMLThreatProtectionPluginProtocols = "https"
 )
 
 func (e XMLThreatProtectionPluginProtocols) ToPointer() *XMLThreatProtectionPluginProtocols {
@@ -313,18 +296,6 @@ func (e *XMLThreatProtectionPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = XMLThreatProtectionPluginProtocols(v)
 		return nil
 	default:
@@ -332,7 +303,7 @@ func (e *XMLThreatProtectionPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// XMLThreatProtectionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// XMLThreatProtectionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type XMLThreatProtectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -358,10 +329,6 @@ func (o *XMLThreatProtectionPluginService) GetID() *string {
 
 // XMLThreatProtectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type XMLThreatProtectionPlugin struct {
-	Config XMLThreatProtectionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -370,16 +337,19 @@ type XMLThreatProtectionPlugin struct {
 	InstanceName *string                            `json:"instance_name,omitempty"`
 	name         string                             `const:"xml-threat-protection" json:"name"`
 	Ordering     *XMLThreatProtectionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *XMLThreatProtectionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *XMLThreatProtectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                          `json:"updated_at,omitempty"`
+	Config    XMLThreatProtectionPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *XMLThreatProtectionPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *XMLThreatProtectionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *XMLThreatProtectionPluginService `json:"service,omitempty"`
 }
 
 func (x XMLThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
@@ -391,27 +361,6 @@ func (x *XMLThreatProtectionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *XMLThreatProtectionPlugin) GetConfig() XMLThreatProtectionPluginConfig {
-	if o == nil {
-		return XMLThreatProtectionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *XMLThreatProtectionPlugin) GetConsumer() *XMLThreatProtectionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *XMLThreatProtectionPlugin) GetConsumerGroup() *XMLThreatProtectionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *XMLThreatProtectionPlugin) GetCreatedAt() *int64 {
@@ -453,6 +402,34 @@ func (o *XMLThreatProtectionPlugin) GetOrdering() *XMLThreatProtectionPluginOrde
 	return o.Ordering
 }
 
+func (o *XMLThreatProtectionPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *XMLThreatProtectionPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *XMLThreatProtectionPlugin) GetConfig() XMLThreatProtectionPluginConfig {
+	if o == nil {
+		return XMLThreatProtectionPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *XMLThreatProtectionPlugin) GetConsumer() *XMLThreatProtectionPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *XMLThreatProtectionPlugin) GetProtocols() []XMLThreatProtectionPluginProtocols {
 	if o == nil {
 		return nil
@@ -474,40 +451,25 @@ func (o *XMLThreatProtectionPlugin) GetService() *XMLThreatProtectionPluginServi
 	return o.Service
 }
 
-func (o *XMLThreatProtectionPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *XMLThreatProtectionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // XMLThreatProtectionPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type XMLThreatProtectionPluginInput struct {
-	Config XMLThreatProtectionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *XMLThreatProtectionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *XMLThreatProtectionPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                              `json:"enabled,omitempty"`
 	ID           *string                            `json:"id,omitempty"`
 	InstanceName *string                            `json:"instance_name,omitempty"`
 	name         string                             `const:"xml-threat-protection" json:"name"`
 	Ordering     *XMLThreatProtectionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *XMLThreatProtectionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *XMLThreatProtectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                        `json:"tags,omitempty"`
+	Config XMLThreatProtectionPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *XMLThreatProtectionPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []XMLThreatProtectionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *XMLThreatProtectionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *XMLThreatProtectionPluginService `json:"service,omitempty"`
 }
 
 func (x XMLThreatProtectionPluginInput) MarshalJSON() ([]byte, error) {
@@ -519,27 +481,6 @@ func (x *XMLThreatProtectionPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *XMLThreatProtectionPluginInput) GetConfig() XMLThreatProtectionPluginConfig {
-	if o == nil {
-		return XMLThreatProtectionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *XMLThreatProtectionPluginInput) GetConsumer() *XMLThreatProtectionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *XMLThreatProtectionPluginInput) GetConsumerGroup() *XMLThreatProtectionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *XMLThreatProtectionPluginInput) GetEnabled() *bool {
@@ -574,6 +515,27 @@ func (o *XMLThreatProtectionPluginInput) GetOrdering() *XMLThreatProtectionPlugi
 	return o.Ordering
 }
 
+func (o *XMLThreatProtectionPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *XMLThreatProtectionPluginInput) GetConfig() XMLThreatProtectionPluginConfig {
+	if o == nil {
+		return XMLThreatProtectionPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *XMLThreatProtectionPluginInput) GetConsumer() *XMLThreatProtectionPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *XMLThreatProtectionPluginInput) GetProtocols() []XMLThreatProtectionPluginProtocols {
 	if o == nil {
 		return nil
@@ -593,11 +555,4 @@ func (o *XMLThreatProtectionPluginInput) GetService() *XMLThreatProtectionPlugin
 		return nil
 	}
 	return o.Service
-}
-
-func (o *XMLThreatProtectionPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

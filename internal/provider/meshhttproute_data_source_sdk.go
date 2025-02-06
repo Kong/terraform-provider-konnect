@@ -47,7 +47,7 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -65,7 +65,7 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 		}
 		for toCount, toItem := range resp.Spec.To {
 			var to1 tfTypes.MeshHTTPRouteItemTo
-			to1.Hostnames = []types.String{}
+			to1.Hostnames = make([]types.String, 0, len(toItem.Hostnames))
 			for _, v := range toItem.Hostnames {
 				to1.Hostnames = append(to1.Hostnames, types.StringValue(v))
 			}
@@ -94,7 +94,7 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 					} else {
 						backendRefs1.Port = types.Int64Null()
 					}
-					backendRefs1.ProxyTypes = []types.String{}
+					backendRefs1.ProxyTypes = make([]types.String, 0, len(backendRefsItem.ProxyTypes))
 					for _, v := range backendRefsItem.ProxyTypes {
 						backendRefs1.ProxyTypes = append(backendRefs1.ProxyTypes, types.StringValue(string(v)))
 					}
@@ -128,9 +128,9 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 						filters1.RequestHeaderModifier = nil
 					} else {
 						filters1.RequestHeaderModifier = &tfTypes.RequestHeaderModifier{}
-						filters1.RequestHeaderModifier.Add = []tfTypes.StaticTags{}
+						filters1.RequestHeaderModifier.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount, addItem := range filtersItem.RequestHeaderModifier.Add {
-							var add1 tfTypes.StaticTags
+							var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add1.Name = types.StringValue(addItem.Name)
 							add1.Value = types.StringValue(addItem.Value)
 							if addCount+1 > len(filters1.RequestHeaderModifier.Add) {
@@ -140,13 +140,13 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 								filters1.RequestHeaderModifier.Add[addCount].Value = add1.Value
 							}
 						}
-						filters1.RequestHeaderModifier.Remove = []types.String{}
+						filters1.RequestHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.RequestHeaderModifier.Remove))
 						for _, v := range filtersItem.RequestHeaderModifier.Remove {
 							filters1.RequestHeaderModifier.Remove = append(filters1.RequestHeaderModifier.Remove, types.StringValue(v))
 						}
-						filters1.RequestHeaderModifier.Set = []tfTypes.StaticTags{}
+						filters1.RequestHeaderModifier.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount, setItem := range filtersItem.RequestHeaderModifier.Set {
-							var set1 tfTypes.StaticTags
+							var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set1.Name = types.StringValue(setItem.Name)
 							set1.Value = types.StringValue(setItem.Value)
 							if setCount+1 > len(filters1.RequestHeaderModifier.Set) {
@@ -180,7 +180,7 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 						} else {
 							filters1.RequestMirror.BackendRef.Port = types.Int64Null()
 						}
-						filters1.RequestMirror.BackendRef.ProxyTypes = []types.String{}
+						filters1.RequestMirror.BackendRef.ProxyTypes = make([]types.String, 0, len(filtersItem.RequestMirror.BackendRef.ProxyTypes))
 						for _, v := range filtersItem.RequestMirror.BackendRef.ProxyTypes {
 							filters1.RequestMirror.BackendRef.ProxyTypes = append(filters1.RequestMirror.BackendRef.ProxyTypes, types.StringValue(string(v)))
 						}
@@ -237,9 +237,9 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 						filters1.ResponseHeaderModifier = nil
 					} else {
 						filters1.ResponseHeaderModifier = &tfTypes.RequestHeaderModifier{}
-						filters1.ResponseHeaderModifier.Add = []tfTypes.StaticTags{}
+						filters1.ResponseHeaderModifier.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount1, addItem1 := range filtersItem.ResponseHeaderModifier.Add {
-							var add3 tfTypes.StaticTags
+							var add3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add3.Name = types.StringValue(addItem1.Name)
 							add3.Value = types.StringValue(addItem1.Value)
 							if addCount1+1 > len(filters1.ResponseHeaderModifier.Add) {
@@ -249,13 +249,13 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 								filters1.ResponseHeaderModifier.Add[addCount1].Value = add3.Value
 							}
 						}
-						filters1.ResponseHeaderModifier.Remove = []types.String{}
+						filters1.ResponseHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.ResponseHeaderModifier.Remove))
 						for _, v := range filtersItem.ResponseHeaderModifier.Remove {
 							filters1.ResponseHeaderModifier.Remove = append(filters1.ResponseHeaderModifier.Remove, types.StringValue(v))
 						}
-						filters1.ResponseHeaderModifier.Set = []tfTypes.StaticTags{}
+						filters1.ResponseHeaderModifier.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount1, setItem1 := range filtersItem.ResponseHeaderModifier.Set {
-							var set3 tfTypes.StaticTags
+							var set3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set3.Name = types.StringValue(setItem1.Name)
 							set3.Value = types.StringValue(setItem1.Value)
 							if setCount1+1 > len(filters1.ResponseHeaderModifier.Set) {
@@ -374,7 +374,7 @@ func (r *MeshHTTPRouteDataSourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *
 				to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 				to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 				to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-				to1.TargetRef.ProxyTypes = []types.String{}
+				to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 				for _, v := range toItem.TargetRef.ProxyTypes {
 					to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

@@ -103,11 +103,22 @@ type AppendMatch struct {
 	// Port defines the port to which a user makes a request.
 	Port *int `json:"port,omitempty"`
 	// Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.
-	Protocol *MeshPassthroughItemProtocol `json:"protocol,omitempty"`
+	Protocol *MeshPassthroughItemProtocol `default:"tcp" json:"protocol"`
 	// Type of the match, one of `Domain`, `IP` or `CIDR` is available.
 	Type *MeshPassthroughItemSpecType `json:"type,omitempty"`
 	// Value for the specified Type.
 	Value *string `json:"value,omitempty"`
+}
+
+func (a AppendMatch) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *AppendMatch) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *AppendMatch) GetPort() *int {
@@ -175,7 +186,18 @@ type MeshPassthroughItemDefault struct {
 	AppendMatch []AppendMatch `json:"appendMatch,omitempty"`
 	// Defines the passthrough behavior. Possible values: `All`, `None`, `Matched`
 	// When `All` or `None` `appendMatch` has no effect.
-	PassthroughMode *PassthroughMode `json:"passthroughMode,omitempty"`
+	PassthroughMode *PassthroughMode `default:"None" json:"passthroughMode"`
+}
+
+func (m MeshPassthroughItemDefault) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshPassthroughItemDefault) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshPassthroughItemDefault) GetAppendMatch() []AppendMatch {
@@ -378,7 +400,7 @@ type MeshPassthroughItem struct {
 	// the type of the resource
 	Type MeshPassthroughItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -449,4 +471,63 @@ func (o *MeshPassthroughItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshPassthroughItemInput struct {
+	// the type of the resource
+	Type MeshPassthroughItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshPassthrough resource.
+	Spec MeshPassthroughItemSpec `json:"spec"`
+}
+
+func (m MeshPassthroughItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshPassthroughItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshPassthroughItemInput) GetType() MeshPassthroughItemType {
+	if o == nil {
+		return MeshPassthroughItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshPassthroughItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshPassthroughItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshPassthroughItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshPassthroughItemInput) GetSpec() MeshPassthroughItemSpec {
+	if o == nil {
+		return MeshPassthroughItemSpec{}
+	}
+	return o.Spec
 }

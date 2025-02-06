@@ -14,14 +14,12 @@ MeshAccessLog Resource
 
 ```terraform
 resource "konnect_mesh_access_log" "my_meshaccesslog" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     from = [
       {
@@ -187,12 +185,12 @@ resource "konnect_mesh_access_log" "my_meshaccesslog" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -250,7 +248,7 @@ https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_l
 Optional:
 
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--from--default--backends--file--format--json))
-- `omit_empty_values` (Boolean)
+- `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
 - `type` (String) Not Null; must be one of ["Plain", "Json"]
 
@@ -304,7 +302,7 @@ https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_l
 Optional:
 
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--from--default--backends--tcp--format--json))
-- `omit_empty_values` (Boolean)
+- `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
 - `type` (String) Not Null; must be one of ["Plain", "Json"]
 
@@ -407,7 +405,7 @@ https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_l
 Optional:
 
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--to--default--backends--file--format--json))
-- `omit_empty_values` (Boolean)
+- `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
 - `type` (String) Not Null; must be one of ["Plain", "Json"]
 
@@ -461,7 +459,7 @@ https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_l
 Optional:
 
 - `json` (Attributes List) (see [below for nested schema](#nestedatt--spec--to--default--backends--tcp--format--json))
-- `omit_empty_values` (Boolean)
+- `omit_empty_values` (Boolean) Default: false
 - `plain` (String)
 - `type` (String) Not Null; must be one of ["Plain", "Json"]
 

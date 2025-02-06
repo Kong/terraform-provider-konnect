@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshTraceResourceModel) ToSharedMeshTraceItem() *shared.MeshTraceItem {
+func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput() *shared.MeshTraceItemInput {
 	typeVar := shared.MeshTraceItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -281,33 +281,19 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItem() *shared.MeshTraceItem {
 		Default:   defaultVar,
 		TargetRef: targetRef,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshTraceItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshTraceItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceCreateOrUpdateSuccessResponse(resp *shared.MeshTraceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -418,12 +404,12 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 					}
 				}
 			}
-			r.Spec.Default.Tags = []tfTypes.Tags1{}
+			r.Spec.Default.Tags = []tfTypes.Tags{}
 			if len(r.Spec.Default.Tags) > len(resp.Spec.Default.Tags) {
 				r.Spec.Default.Tags = r.Spec.Default.Tags[:len(resp.Spec.Default.Tags)]
 			}
 			for tagsCount, tagsItem := range resp.Spec.Default.Tags {
-				var tags1 tfTypes.Tags1
+				var tags1 tfTypes.Tags
 				if tagsItem.Header == nil {
 					tags1.Header = nil
 				} else {
@@ -460,7 +446,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

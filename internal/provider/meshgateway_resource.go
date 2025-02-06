@@ -12,9 +12,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,14 +65,22 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"listeners": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
 								"cross_mesh": schema.BoolAttribute{
+									Computed: true,
 									Optional: true,
+									PlanModifiers: []planmodifier.Bool{
+										custom_boolplanmodifier.SupressZeroNullModifier(),
+									},
 									MarkdownDescription: `CrossMesh enables traffic to flow to this listener only from other` + "\n" +
 										`meshes.`,
 								},
@@ -130,7 +142,11 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"certificates": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
 													speakeasy_objectvalidators.NotNull(),
@@ -223,7 +239,11 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `name of the MeshGateway`,
 			},
 			"selectors": schema.ListNestedAttribute{
+				Computed: true,
 				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+				},
 				NestedObject: schema.NestedAttributeObject{
 					Validators: []validator.Object{
 						speakeasy_objectvalidators.NotNull(),
@@ -251,7 +271,11 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Required: true,
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,

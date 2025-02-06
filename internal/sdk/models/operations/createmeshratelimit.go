@@ -15,7 +15,7 @@ type CreateMeshRateLimitRequest struct {
 	// name of the MeshRateLimit
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshRateLimitItem shared.MeshRateLimitItem `request:"mediaType=application/json"`
+	MeshRateLimitItem shared.MeshRateLimitItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshRateLimitRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshRateLimitRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshRateLimitRequest) GetMeshRateLimitItem() shared.MeshRateLimitItem {
+func (o *CreateMeshRateLimitRequest) GetMeshRateLimitItem() shared.MeshRateLimitItemInput {
 	if o == nil {
-		return shared.MeshRateLimitItem{}
+		return shared.MeshRateLimitItemInput{}
 	}
 	return o.MeshRateLimitItem
 }

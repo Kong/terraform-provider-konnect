@@ -5,18 +5,18 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ProxyCacheAdvancedPluginConfig struct {
-	BypassOnErr     types.Bool       `tfsdk:"bypass_on_err"`
-	CacheControl    types.Bool       `tfsdk:"cache_control"`
-	CacheTTL        types.Int64      `tfsdk:"cache_ttl"`
-	ContentType     []types.String   `tfsdk:"content_type"`
-	IgnoreURICase   types.Bool       `tfsdk:"ignore_uri_case"`
-	Memory          *Memory          `tfsdk:"memory"`
-	Redis           *Redis           `tfsdk:"redis"`
-	RequestMethod   []types.String   `tfsdk:"request_method"`
-	ResponseCode    []types.Int64    `tfsdk:"response_code"`
-	ResponseHeaders *ResponseHeaders `tfsdk:"response_headers"`
-	StorageTTL      types.Int64      `tfsdk:"storage_ttl"`
-	Strategy        types.String     `tfsdk:"strategy"`
-	VaryHeaders     []types.String   `tfsdk:"vary_headers"`
-	VaryQueryParams []types.String   `tfsdk:"vary_query_params"`
+	BypassOnErr     types.Bool                  `tfsdk:"bypass_on_err"`
+	CacheControl    types.Bool                  `tfsdk:"cache_control"`
+	CacheTTL        types.Int64                 `tfsdk:"cache_ttl"`
+	ContentType     []types.String              `tfsdk:"content_type"`
+	IgnoreURICase   types.Bool                  `tfsdk:"ignore_uri_case"`
+	Memory          *Memory                     `tfsdk:"memory"`
+	Redis           *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
+	RequestMethod   []types.String              `tfsdk:"request_method"`
+	ResponseCode    []types.Int64               `tfsdk:"response_code"`
+	ResponseHeaders *ResponseHeaders            `tfsdk:"response_headers"`
+	StorageTTL      types.Int64                 `tfsdk:"storage_ttl"`
+	Strategy        types.String                `tfsdk:"strategy"`
+	VaryHeaders     []types.String              `tfsdk:"vary_headers"`
+	VaryQueryParams []types.String              `tfsdk:"vary_query_params"`
 }

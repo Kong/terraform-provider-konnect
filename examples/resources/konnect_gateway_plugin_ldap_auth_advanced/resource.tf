@@ -6,7 +6,7 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
     bind_dn   = "...my_bind_dn..."
     cache_ttl = 2.41
     consumer_by = [
-      "custom_id"
+      "username"
     ]
     consumer_optional      = true
     group_base_dn          = "...my_group_base_dn..."
@@ -27,12 +27,6 @@ resource "konnect_gateway_plugin_ldap_auth_advanced" "my_gatewaypluginldapauthad
     start_tls          = true
     timeout            = 8.28
     verify_ldap_host   = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true

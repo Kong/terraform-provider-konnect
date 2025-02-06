@@ -34,7 +34,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
         gcp_use_service_account    = false
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
-        param_location             = "body"
+        param_location             = "query"
         param_name                 = "...my_param_name..."
         param_value                = "...my_param_value..."
       }
@@ -57,10 +57,14 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
             location_id  = "...my_location_id..."
             project_id   = "...my_project_id..."
           }
+          huggingface = {
+            use_cache      = true
+            wait_for_model = false
+          }
           input_cost     = 4.69
-          llama2_format  = "raw"
+          llama2_format  = "ollama"
           max_tokens     = 5
-          mistral_format = "ollama"
+          mistral_format = "openai"
           output_cost    = 4.92
           temperature    = 0.05
           top_k          = 349
@@ -100,7 +104,7 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."
@@ -125,12 +129,12 @@ resource "konnect_gateway_plugin_ai_response_transformer" "my_gatewaypluginaires
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
+- `consumer_group` (Attributes) If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -183,7 +187,7 @@ Optional:
 - `gcp_use_service_account` (Boolean) Use service account auth for GCP-based providers and models.
 - `header_name` (String) If AI model requires authentication via Authorization or API key header, specify its name here.
 - `header_value` (String) Specify the full auth header value for 'header_name', for example 'Bearer key' or just 'key'.
-- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["query", "body"]
+- `param_location` (String) Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body. must be one of ["body", "query"]
 - `param_name` (String) If AI model requires authentication via query parameter, specify its name here.
 - `param_value` (String) Specify the full parameter value for 'param_name'.
 
@@ -204,7 +208,7 @@ Optional:
 
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--llm--model--options))
-- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["openai", "azure", "anthropic", "cohere", "mistral", "llama2", "gemini", "bedrock"]
+- `provider` (String) AI provider request format - Kong translates requests to and from the specified backend compatible formats. must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai"]
 
 <a id="nestedatt--config--llm--model--options"></a>
 ### Nested Schema for `config.llm.model.options`
@@ -217,10 +221,11 @@ Optional:
 - `azure_instance` (String) Instance name for Azure OpenAI hosted models.
 - `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--bedrock))
 - `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--gemini))
+- `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--llm--model--options--huggingface))
 - `input_cost` (Number) Defines the cost per 1M tokens in your prompt.
-- `llama2_format` (String) If using llama2 provider, select the upstream message format. must be one of ["raw", "openai", "ollama"]
+- `llama2_format` (String) If using llama2 provider, select the upstream message format. must be one of ["ollama", "openai", "raw"]
 - `max_tokens` (Number) Defines the max_tokens, if using chat or completion models.
-- `mistral_format` (String) If using mistral provider, select the upstream message format. must be one of ["openai", "ollama"]
+- `mistral_format` (String) If using mistral provider, select the upstream message format. must be one of ["ollama", "openai"]
 - `output_cost` (Number) Defines the cost per 1M tokens in the output of the AI.
 - `temperature` (Number) Defines the matching temperature, if using chat or completion models.
 - `top_k` (Number) Defines the top-k most likely tokens, if supported.
@@ -244,6 +249,15 @@ Optional:
 - `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 - `location_id` (String) If running Gemini on Vertex, specify the location ID.
 - `project_id` (String) If running Gemini on Vertex, specify the project ID.
+
+
+<a id="nestedatt--config--llm--model--options--huggingface"></a>
+### Nested Schema for `config.llm.model.options.huggingface`
+
+Optional:
+
+- `use_cache` (Boolean) Use the cache layer on the inference API
+- `wait_for_model` (Boolean) Wait for the model if it is not ready
 
 
 

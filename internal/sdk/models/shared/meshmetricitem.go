@@ -39,9 +39,20 @@ type Applications struct {
 	// Name of the application to scrape
 	Name *string `json:"name,omitempty"`
 	// Path on which an application expose HTTP endpoint with metrics.
-	Path *string `json:"path,omitempty"`
+	Path *string `default:"/metrics/prometheus" json:"path"`
 	// Port on which an application expose HTTP endpoint with metrics.
 	Port int `json:"port"`
+}
+
+func (a Applications) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(a, "", false)
+}
+
+func (a *Applications) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &a, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Applications) GetAddress() *string {
@@ -127,12 +138,23 @@ func (e *MeshMetricItemMode) UnmarshalJSON(data []byte) error {
 // MeshMetricItemTLS - Configuration of TLS for prometheus listener.
 type MeshMetricItemTLS struct {
 	// Configuration of TLS for Prometheus listener.
-	Mode MeshMetricItemMode `json:"mode"`
+	Mode *MeshMetricItemMode `default:"Disabled" json:"mode"`
 }
 
-func (o *MeshMetricItemTLS) GetMode() MeshMetricItemMode {
+func (m MeshMetricItemTLS) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshMetricItemTLS) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshMetricItemTLS) GetMode() *MeshMetricItemMode {
 	if o == nil {
-		return MeshMetricItemMode("")
+		return nil
 	}
 	return o.Mode
 }
@@ -142,11 +164,22 @@ type Prometheus struct {
 	// ClientId of the Prometheus backend. Needed when using MADS for DP discovery.
 	ClientID *string `json:"clientId,omitempty"`
 	// Path on which a dataplane should expose HTTP endpoint with Prometheus metrics.
-	Path string `json:"path"`
+	Path *string `default:"/metrics" json:"path"`
 	// Port on which a dataplane should expose HTTP endpoint with Prometheus metrics.
-	Port int `json:"port"`
+	Port *int `default:"5670" json:"port"`
 	// Configuration of TLS for prometheus listener.
 	TLS *MeshMetricItemTLS `json:"tls,omitempty"`
+}
+
+func (p Prometheus) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(p, "", false)
+}
+
+func (p *Prometheus) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &p, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Prometheus) GetClientID() *string {
@@ -156,16 +189,16 @@ func (o *Prometheus) GetClientID() *string {
 	return o.ClientID
 }
 
-func (o *Prometheus) GetPath() string {
+func (o *Prometheus) GetPath() *string {
 	if o == nil {
-		return ""
+		return nil
 	}
 	return o.Path
 }
 
-func (o *Prometheus) GetPort() int {
+func (o *Prometheus) GetPort() *int {
 	if o == nil {
-		return 0
+		return nil
 	}
 	return o.Port
 }
@@ -422,9 +455,20 @@ type Sidecar struct {
 	// IncludeUnused if false will scrape only metrics that has been by sidecar (counters incremented
 	// at least once, gauges changed at least once, and histograms added to at
 	// least once). If true will scrape all metrics (even the ones with zeros).
-	IncludeUnused *bool `json:"includeUnused,omitempty"`
+	IncludeUnused *bool `default:"false" json:"includeUnused"`
 	// Profiles allows to customize which metrics are published.
 	Profiles *Profiles `json:"profiles,omitempty"`
+}
+
+func (s Sidecar) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(s, "", false)
+}
+
+func (s *Sidecar) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *Sidecar) GetIncludeUnused() *bool {
@@ -658,7 +702,7 @@ type MeshMetricItem struct {
 	// the type of the resource
 	Type MeshMetricItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -729,4 +773,63 @@ func (o *MeshMetricItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshMetricItemInput struct {
+	// the type of the resource
+	Type MeshMetricItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshMetric resource.
+	Spec MeshMetricItemSpec `json:"spec"`
+}
+
+func (m MeshMetricItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshMetricItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshMetricItemInput) GetType() MeshMetricItemType {
+	if o == nil {
+		return MeshMetricItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshMetricItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshMetricItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshMetricItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshMetricItemInput) GetSpec() MeshMetricItemSpec {
+	if o == nil {
+		return MeshMetricItemSpec{}
+	}
+	return o.Spec
 }

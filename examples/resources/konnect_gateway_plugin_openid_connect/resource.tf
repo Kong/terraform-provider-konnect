@@ -11,7 +11,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     auth_methods = [
-      "session"
+      "userinfo"
     ]
     authenticated_groups_claim = [
       "..."
@@ -20,7 +20,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     authorization_cookie_http_only = false
     authorization_cookie_name      = "...my_authorization_cookie_name..."
     authorization_cookie_path      = "...my_authorization_cookie_path..."
-    authorization_cookie_same_site = "Default"
+    authorization_cookie_same_site = "Strict"
     authorization_cookie_secure    = false
     authorization_endpoint         = "...my_authorization_endpoint..."
     authorization_query_args_client = [
@@ -35,7 +35,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     authorization_rolling_timeout = 1.26
     bearer_token_cookie_name      = "...my_bearer_token_cookie_name..."
     bearer_token_param_type = [
-      "header"
+      "body"
     ]
     by_username_ignore_case = false
     cache_introspection     = true
@@ -52,14 +52,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     client_alg = [
-      "RS512"
+      "HS384"
     ]
     client_arg = "...my_client_arg..."
     client_auth = [
-      "client_secret_jwt"
+      "client_secret_post"
     ]
     client_credentials_param_type = [
-      "body"
+      "query"
     ]
     client_id = [
       "..."
@@ -126,7 +126,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -135,7 +135,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
     cluster_cache_strategy = "off"
     consumer_by = [
-      "username"
+      "id"
     ]
     consumer_claim = [
       "..."
@@ -145,7 +145,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     disable_session = [
-      "client_credentials"
+      "bearer"
     ]
     discovery_headers_names = [
       "..."
@@ -200,10 +200,10 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     https_proxy_authorization = "...my_https_proxy_authorization..."
     id_token_param_name       = "...my_id_token_param_name..."
     id_token_param_type = [
-      "body"
+      "query"
     ]
     ignore_signature = [
-      "session"
+      "refresh_token"
     ]
     introspect_jwt_tokens              = true
     introspection_accept               = "application/json"
@@ -223,6 +223,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     introspection_post_args_client = [
       "..."
     ]
+    introspection_post_args_client_headers = [
+      "..."
+    ]
     introspection_post_args_names = [
       "..."
     ]
@@ -238,16 +241,16 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     jwt_session_cookie = "...my_jwt_session_cookie..."
     keepalive          = true
     leeway             = 4.43
-    login_action       = "upstream"
+    login_action       = "redirect"
     login_methods = [
-      "password"
+      "authorization_code"
     ]
-    login_redirect_mode = "fragment"
+    login_redirect_mode = "query"
     login_redirect_uri = [
       "..."
     ]
     login_tokens = [
-      "tokens"
+      "refresh_token"
     ]
     logout_methods = [
       "GET"
@@ -267,14 +270,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     mtls_token_endpoint         = "...my_mtls_token_endpoint..."
     no_proxy                    = "...my_no_proxy..."
     password_param_type = [
-      "header"
+      "body"
     ]
     preserve_query_args                               = true
     proof_of_possession_auth_methods_validation       = true
-    proof_of_possession_dpop                          = "strict"
+    proof_of_possession_dpop                          = "optional"
     proof_of_possession_mtls                          = "off"
     pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
-    pushed_authorization_request_endpoint_auth_method = "none"
+    pushed_authorization_request_endpoint_auth_method = "tls_client_auth"
     redirect_uri = [
       "..."
     ]
@@ -305,7 +308,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "any"
+      sentinel_role     = "slave"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       socket            = "...my_socket..."
@@ -316,20 +319,20 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     rediscovery_lifetime     = 0.82
     refresh_token_param_name = "...my_refresh_token_param_name..."
     refresh_token_param_type = [
-      "query"
+      "header"
     ]
     refresh_tokens                        = true
     require_proof_key_for_code_exchange   = true
     require_pushed_authorization_requests = true
     require_signed_request_object         = false
     resolve_distributed_claims            = true
-    response_mode                         = "query.jwt"
+    response_mode                         = "fragment.jwt"
     response_type = [
       "..."
     ]
     reverify                        = false
     revocation_endpoint             = "...my_revocation_endpoint..."
-    revocation_endpoint_auth_method = "none"
+    revocation_endpoint_auth_method = "tls_client_auth"
     revocation_token_param_name     = "...my_revocation_token_param_name..."
     roles_claim = [
       "..."
@@ -354,7 +357,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_cookie_http_only          = false
     session_cookie_name               = "...my_session_cookie_name..."
     session_cookie_path               = "...my_session_cookie_path..."
-    session_cookie_same_site          = "Strict"
+    session_cookie_same_site          = "Default"
     session_cookie_secure             = true
     session_enforce_same_subject      = false
     session_hash_storage_key          = false
@@ -372,7 +375,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "audience"
     ]
     session_response_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_rolling_timeout       = 5.68
     session_secret                = "...my_session_secret..."
@@ -384,7 +387,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     tls_client_auth_ssl_verify    = false
     token_cache_key_include_scope = true
     token_endpoint                = "...my_token_endpoint..."
-    token_endpoint_auth_method    = "client_secret_jwt"
+    token_endpoint_auth_method    = "client_secret_post"
     token_exchange_endpoint       = "...my_token_exchange_endpoint..."
     token_headers_client = [
       "..."
@@ -461,12 +464,6 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     verify_parameters   = true
     verify_signature    = false
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   id               = "...my_id..."
@@ -484,7 +481,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

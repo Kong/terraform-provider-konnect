@@ -84,8 +84,8 @@ const (
 )
 
 type TargetPort struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type TargetPortType
 }
@@ -141,10 +141,21 @@ func (u TargetPort) MarshalJSON() ([]byte, error) {
 
 type MeshServiceItemPorts struct {
 	// Protocol identifies a protocol supported by a service.
-	AppProtocol *string     `json:"appProtocol,omitempty"`
+	AppProtocol *string     `default:"tcp" json:"appProtocol"`
 	Name        *string     `json:"name,omitempty"`
 	Port        int         `json:"port"`
 	TargetPort  *TargetPort `json:"targetPort,omitempty"`
+}
+
+func (m MeshServiceItemPorts) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshServiceItemPorts) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshServiceItemPorts) GetAppProtocol() *string {
@@ -205,19 +216,19 @@ func (o *MeshServiceItemSelector) GetDataplaneTags() map[string]string {
 	return o.DataplaneTags
 }
 
-// State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
+// MeshServiceItemState - State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
 // It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.
-type State string
+type MeshServiceItemState string
 
 const (
-	StateAvailable   State = "Available"
-	StateUnavailable State = "Unavailable"
+	MeshServiceItemStateAvailable   MeshServiceItemState = "Available"
+	MeshServiceItemStateUnavailable MeshServiceItemState = "Unavailable"
 )
 
-func (e State) ToPointer() *State {
+func (e MeshServiceItemState) ToPointer() *MeshServiceItemState {
 	return &e
 }
-func (e *State) UnmarshalJSON(data []byte) error {
+func (e *MeshServiceItemState) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -226,10 +237,10 @@ func (e *State) UnmarshalJSON(data []byte) error {
 	case "Available":
 		fallthrough
 	case "Unavailable":
-		*e = State(v)
+		*e = MeshServiceItemState(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for State: %v", v)
+		return fmt.Errorf("invalid value for MeshServiceItemState: %v", v)
 	}
 }
 
@@ -240,7 +251,7 @@ type MeshServiceItemSpec struct {
 	Selector   *MeshServiceItemSelector `json:"selector,omitempty"`
 	// State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.
 	// It's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.
-	State *State `json:"state,omitempty"`
+	State *MeshServiceItemState `json:"state,omitempty"`
 }
 
 func (o *MeshServiceItemSpec) GetIdentities() []Identities {
@@ -264,7 +275,7 @@ func (o *MeshServiceItemSpec) GetSelector() *MeshServiceItemSelector {
 	return o.Selector
 }
 
-func (o *MeshServiceItemSpec) GetState() *State {
+func (o *MeshServiceItemSpec) GetState() *MeshServiceItemState {
 	if o == nil {
 		return nil
 	}
@@ -542,7 +553,7 @@ type MeshServiceItem struct {
 	// the type of the resource
 	Type MeshServiceItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -622,4 +633,63 @@ func (o *MeshServiceItem) GetStatus() *MeshServiceItemStatus {
 		return nil
 	}
 	return o.Status
+}
+
+type MeshServiceItemInput struct {
+	// the type of the resource
+	Type MeshServiceItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshService resource.
+	Spec MeshServiceItemSpec `json:"spec"`
+}
+
+func (m MeshServiceItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshServiceItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshServiceItemInput) GetType() MeshServiceItemType {
+	if o == nil {
+		return MeshServiceItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshServiceItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshServiceItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshServiceItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshServiceItemInput) GetSpec() MeshServiceItemSpec {
+	if o == nil {
+		return MeshServiceItemSpec{}
+	}
+	return o.Spec
 }

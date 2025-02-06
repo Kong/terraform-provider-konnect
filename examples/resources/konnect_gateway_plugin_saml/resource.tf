@@ -5,7 +5,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
     idp_certificate         = "...my_idp_certificate..."
     idp_sso_url             = "...my_idp_sso_url..."
     issuer                  = "...my_issuer..."
-    nameid_format           = "Unspecified"
+    nameid_format           = "EmailAddress"
     redis = {
       cluster_max_redirections = 0
       cluster_nodes = [
@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       socket            = "...my_socket..."
@@ -41,11 +41,11 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
       ssl_verify        = false
       username          = "...my_username..."
     }
-    request_digest_algorithm          = "SHA1"
+    request_digest_algorithm          = "SHA256"
     request_signature_algorithm       = "SHA384"
     request_signing_certificate       = "...my_request_signing_certificate..."
     request_signing_key               = "...my_request_signing_key..."
-    response_digest_algorithm         = "SHA1"
+    response_digest_algorithm         = "SHA256"
     response_encryption_key           = "...my_response_encryption_key..."
     response_signature_algorithm      = "SHA384"
     session_absolute_timeout          = 8.17
@@ -69,22 +69,16 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
     session_remember_cookie_name      = "...my_session_remember_cookie_name..."
     session_remember_rolling_timeout  = 7.93
     session_request_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_response_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_rolling_timeout      = 5.35
     session_secret               = "...my_session_secret..."
     session_storage              = "cookie"
     session_store_metadata       = false
     validate_assertion_signature = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true

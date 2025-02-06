@@ -44,8 +44,8 @@ const (
 // Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type Percentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type PercentageType
 }
@@ -134,8 +134,8 @@ const (
 // MeshFaultInjectionItemPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemPercentageType
 }
@@ -222,8 +222,8 @@ const (
 // MeshFaultInjectionItemSpecPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecPercentageType
 }
@@ -698,8 +698,8 @@ const (
 // MeshFaultInjectionItemSpecToPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToPercentageType
 }
@@ -788,8 +788,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToDefaultPercentageType
 }
@@ -876,8 +876,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentage struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType
 }
@@ -1221,7 +1221,7 @@ type MeshFaultInjectionItem struct {
 	// the type of the resource
 	Type MeshFaultInjectionItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1292,4 +1292,63 @@ func (o *MeshFaultInjectionItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshFaultInjectionItemInput struct {
+	// the type of the resource
+	Type MeshFaultInjectionItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshFaultInjection resource.
+	Spec MeshFaultInjectionItemSpec `json:"spec"`
+}
+
+func (m MeshFaultInjectionItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshFaultInjectionItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshFaultInjectionItemInput) GetType() MeshFaultInjectionItemType {
+	if o == nil {
+		return MeshFaultInjectionItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshFaultInjectionItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshFaultInjectionItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshFaultInjectionItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshFaultInjectionItemInput) GetSpec() MeshFaultInjectionItemSpec {
+	if o == nil {
+		return MeshFaultInjectionItemSpec{}
+	}
+	return o.Spec
 }

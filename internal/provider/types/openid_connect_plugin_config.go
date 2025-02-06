@@ -43,7 +43,7 @@ type OpenidConnectPluginConfig struct {
 	ClientID                                     []types.String                          `tfsdk:"client_id"`
 	ClientJwk                                    []KonnectApplicationAuthPluginClientJwk `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                          `tfsdk:"client_secret"`
-	ClusterCacheRedis                            *Redis                                  `tfsdk:"cluster_cache_redis"`
+	ClusterCacheRedis                            *AiProxyAdvancedPluginRedis             `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                            `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                          `tfsdk:"consumer_by"`
 	ConsumerClaim                                []types.String                          `tfsdk:"consumer_claim"`
@@ -96,6 +96,7 @@ type OpenidConnectPluginConfig struct {
 	IntrospectionHeadersValues                   []types.String                          `tfsdk:"introspection_headers_values"`
 	IntrospectionHint                            types.String                            `tfsdk:"introspection_hint"`
 	IntrospectionPostArgsClient                  []types.String                          `tfsdk:"introspection_post_args_client"`
+	IntrospectionPostArgsClientHeaders           []types.String                          `tfsdk:"introspection_post_args_client_headers"`
 	IntrospectionPostArgsNames                   []types.String                          `tfsdk:"introspection_post_args_names"`
 	IntrospectionPostArgsValues                  []types.String                          `tfsdk:"introspection_post_args_values"`
 	IntrospectionTokenParamName                  types.String                            `tfsdk:"introspection_token_param_name"`

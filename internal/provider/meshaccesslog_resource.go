@@ -12,9 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -62,7 +68,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -78,7 +87,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -92,7 +104,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -102,7 +118,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backends": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
 													speakeasy_objectvalidators.NotNull(),
@@ -115,7 +135,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.List{
+																			custom_listplanmodifier.SupressZeroNullModifier(),
+																		},
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
 																				speakeasy_objectvalidators.NotNull(),
@@ -131,7 +155,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Optional: true,
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `Default: false`,
 																	},
 																	"plain": schema.StringAttribute{
 																		Optional: true,
@@ -166,7 +193,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"attributes": schema.ListNestedAttribute{
+																Computed: true,
 																Optional: true,
+																PlanModifiers: []planmodifier.List{
+																	custom_listplanmodifier.SupressZeroNullModifier(),
+																},
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
 																		speakeasy_objectvalidators.NotNull(),
@@ -184,7 +215,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
+																Computed: true,
 																Optional: true,
+																PlanModifiers: []planmodifier.String{
+																	custom_stringplanmodifier.ArbitraryJSONModifier(),
+																},
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
@@ -220,7 +255,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.List{
+																			custom_listplanmodifier.SupressZeroNullModifier(),
+																		},
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
 																				speakeasy_objectvalidators.NotNull(),
@@ -236,7 +275,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Optional: true,
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `Default: false`,
 																	},
 																	"plain": schema.StringAttribute{
 																		Optional: true,
@@ -319,7 +361,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -391,7 +437,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -416,7 +466,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined in-place.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -426,7 +480,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"backends": schema.ListNestedAttribute{
+											Computed: true,
 											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											NestedObject: schema.NestedAttributeObject{
 												Validators: []validator.Object{
 													speakeasy_objectvalidators.NotNull(),
@@ -439,7 +497,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.List{
+																			custom_listplanmodifier.SupressZeroNullModifier(),
+																		},
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
 																				speakeasy_objectvalidators.NotNull(),
@@ -455,7 +517,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Optional: true,
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `Default: false`,
 																	},
 																	"plain": schema.StringAttribute{
 																		Optional: true,
@@ -490,7 +555,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 														Optional: true,
 														Attributes: map[string]schema.Attribute{
 															"attributes": schema.ListNestedAttribute{
+																Computed: true,
 																Optional: true,
+																PlanModifiers: []planmodifier.List{
+																	custom_listplanmodifier.SupressZeroNullModifier(),
+																},
 																NestedObject: schema.NestedAttributeObject{
 																	Validators: []validator.Object{
 																		speakeasy_objectvalidators.NotNull(),
@@ -508,7 +577,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																	`https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators`,
 															},
 															"body": schema.StringAttribute{
+																Computed: true,
 																Optional: true,
+																PlanModifiers: []planmodifier.String{
+																	custom_stringplanmodifier.ArbitraryJSONModifier(),
+																},
 																MarkdownDescription: `Body is a raw string or an OTLP any value as described at` + "\n" +
 																	`https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body` + "\n" +
 																	`It can contain placeholders available on` + "\n" +
@@ -544,7 +617,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																Optional: true,
 																Attributes: map[string]schema.Attribute{
 																	"json": schema.ListNestedAttribute{
+																		Computed: true,
 																		Optional: true,
+																		PlanModifiers: []planmodifier.List{
+																			custom_listplanmodifier.SupressZeroNullModifier(),
+																		},
 																		NestedObject: schema.NestedAttributeObject{
 																			Validators: []validator.Object{
 																				speakeasy_objectvalidators.NotNull(),
@@ -560,7 +637,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"omit_empty_values": schema.BoolAttribute{
-																		Optional: true,
+																		Computed:    true,
+																		Optional:    true,
+																		Default:     booldefault.StaticBool(false),
+																		Description: `Default: false`,
 																	},
 																	"plain": schema.StringAttribute{
 																		Optional: true,
@@ -643,7 +723,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -687,7 +771,11 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -743,7 +831,7 @@ func (r *MeshAccessLogResource) Create(ctx context.Context, req resource.CreateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshAccessLogItem := *data.ToSharedMeshAccessLogItem()
+	meshAccessLogItem := *data.ToSharedMeshAccessLogItemInput()
 	request := operations.CreateMeshAccessLogRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
@@ -898,7 +986,7 @@ func (r *MeshAccessLogResource) Update(ctx context.Context, req resource.UpdateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshAccessLogItem := *data.ToSharedMeshAccessLogItem()
+	meshAccessLogItem := *data.ToSharedMeshAccessLogItemInput()
 	request := operations.UpdateMeshAccessLogRequest{
 		CpID:              cpID,
 		Mesh:              mesh,

@@ -8,11 +8,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,8 +37,6 @@ type GatewayPluginOauth2Resource struct {
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
 	Config         tfTypes.Oauth2PluginConfig         `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -48,8 +44,8 @@ type GatewayPluginOauth2ResourceModel struct {
 	InstanceName   types.String                       `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
@@ -122,11 +118,11 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 					"pkce": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["none", "lax", "strict"]`,
+						Description: `Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["lax", "none", "strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"none",
 								"lax",
+								"none",
 								"strict",
 							),
 						},
@@ -161,33 +157,6 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						Computed:    true,
 						Optional:    true,
 						Description: `An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to ` + "`" + `0` + "`" + ` to disable the expiration.`,
-					},
-				},
-			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
 					},
 				},
 			},
@@ -247,28 +216,22 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

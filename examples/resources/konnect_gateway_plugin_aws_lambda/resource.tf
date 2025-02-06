@@ -10,17 +10,17 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     awsgateway_compatible     = true
     base64_encode_body        = false
     disable_https             = false
-    empty_arrays_mode         = "correct"
+    empty_arrays_mode         = "legacy"
     forward_request_body      = false
     forward_request_headers   = true
     forward_request_method    = true
     forward_request_uri       = true
     function_name             = "...my_function_name..."
     host                      = "...my_host..."
-    invocation_type           = "RequestResponse"
+    invocation_type           = "DryRun"
     is_proxy_integration      = false
     keepalive                 = 6.97
-    log_type                  = "Tail"
+    log_type                  = "None"
     port                      = 25235
     proxy_url                 = "...my_proxy_url..."
     qualifier                 = "...my_qualifier..."
@@ -29,9 +29,6 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     unhandled_status          = 115
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -51,7 +48,7 @@ resource "konnect_gateway_plugin_aws_lambda" "my_gatewaypluginawslambda" {
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

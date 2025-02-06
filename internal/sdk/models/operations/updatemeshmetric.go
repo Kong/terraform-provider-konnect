@@ -15,7 +15,7 @@ type UpdateMeshMetricRequest struct {
 	// name of the MeshMetric
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshMetricItem shared.MeshMetricItem `request:"mediaType=application/json"`
+	MeshMetricItem shared.MeshMetricItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshMetricRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshMetricRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshMetricRequest) GetMeshMetricItem() shared.MeshMetricItem {
+func (o *UpdateMeshMetricRequest) GetMeshMetricItem() shared.MeshMetricItemInput {
 	if o == nil {
-		return shared.MeshMetricItem{}
+		return shared.MeshMetricItemInput{}
 	}
 	return o.MeshMetricItem
 }

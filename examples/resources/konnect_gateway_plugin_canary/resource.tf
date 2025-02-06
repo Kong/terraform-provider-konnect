@@ -5,7 +5,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
     groups = [
       "..."
     ]
-    hash              = "deny"
+    hash              = "ip"
     hash_header       = "...my_hash_header..."
     percentage        = 35.35
     start             = 7.39
@@ -14,12 +14,6 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
     upstream_host     = "...my_upstream_host..."
     upstream_port     = 15742
     upstream_uri      = "...my_upstream_uri..."
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
@@ -38,7 +32,7 @@ resource "konnect_gateway_plugin_canary" "my_gatewayplugincanary" {
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."

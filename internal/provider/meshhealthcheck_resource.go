@@ -13,9 +13,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -64,7 +71,10 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -80,7 +90,10 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -134,7 +147,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -159,7 +176,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -169,7 +190,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"always_log_health_check_failures": schema.BoolAttribute{
+											Computed: true,
 											Optional: true,
+											PlanModifiers: []planmodifier.Bool{
+												custom_boolplanmodifier.SupressZeroNullModifier(),
+											},
 											MarkdownDescription: `If set to true, health check failure events will always be logged. If set` + "\n" +
 												`to false, only the initial health check failure event will be logged. The` + "\n" +
 												`default value is false.`,
@@ -180,7 +205,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`If empty, no event log will be written.`,
 										},
 										"fail_traffic_on_panic": schema.BoolAttribute{
+											Computed: true,
 											Optional: true,
+											PlanModifiers: []planmodifier.Bool{
+												custom_boolplanmodifier.SupressZeroNullModifier(),
+											},
 											MarkdownDescription: `If set to true, Envoy will not consider any hosts when the cluster is in` + "\n" +
 												`'panic mode'. Instead, the cluster will fail all requests as if all hosts` + "\n" +
 												`are unhealthy. This can help avoid potentially overwhelming a failing` + "\n" +
@@ -195,7 +224,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 														`by default name of the cluster this health check is associated with`,
 												},
 												"disabled": schema.BoolAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													Description: `If true the GrpcHealthCheck is disabled`,
 												},
 												"service_name": schema.StringAttribute{
@@ -231,31 +264,48 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`Either int or decimal represented as string.`,
 										},
 										"healthy_threshold": schema.Int64Attribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Number of consecutive healthy checks before considering a host healthy.`,
+											Default:     int64default.StaticInt64(1),
+											Description: `Number of consecutive healthy checks before considering a host healthy. Default: 1`,
 										},
 										"http": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													Description: `If true the HttpHealthCheck is disabled`,
 												},
 												"expected_statuses": schema.ListAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													ElementType: types.Int64Type,
 													Description: `List of HTTP response statuses which are considered healthy`,
 												},
 												"path": schema.StringAttribute{
+													Computed: true,
 													Optional: true,
+													Default:  stringdefault.StaticString("/"),
 													MarkdownDescription: `The HTTP path which will be requested during the health check` + "\n" +
-														`(ie. /health)`,
+														`(ie. /health)` + "\n" +
+														`Default: "/"`,
 												},
 												"request_headers_to_add": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"add": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -284,7 +334,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 															},
 														},
 														"set": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -327,8 +381,10 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`check.`,
 										},
 										"interval": schema.StringAttribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Interval between consecutive health checks.`,
+											Default:     stringdefault.StaticString("1m"),
+											Description: `Interval between consecutive health checks. Default: "1m"`,
 										},
 										"interval_jitter": schema.StringAttribute{
 											Optional: true,
@@ -354,18 +410,30 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`traffic interval" is 60 seconds.`,
 										},
 										"reuse_connection": schema.BoolAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.Bool{
+												custom_boolplanmodifier.SupressZeroNullModifier(),
+											},
 											Description: `Reuse health check connection between health checks. Default is true.`,
 										},
 										"tcp": schema.SingleNestedAttribute{
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													Description: `If true the TcpHealthCheck is disabled`,
 												},
 												"receive": schema.ListAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													ElementType: types.StringType,
 													MarkdownDescription: `List of Base64 encoded blocks of strings expected as a response. When checking the response,` + "\n" +
 														`"fuzzy" matching is performed such that each block must be found, and` + "\n" +
@@ -381,13 +449,18 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`expected response during the health check`,
 										},
 										"timeout": schema.StringAttribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Maximum time to wait for a health check response.`,
+											Default:     stringdefault.StaticString("15s"),
+											Description: `Maximum time to wait for a health check response. Default: "15s"`,
 										},
 										"unhealthy_threshold": schema.Int64Attribute{
+											Computed: true,
 											Optional: true,
+											Default:  int64default.StaticInt64(5),
 											MarkdownDescription: `Number of consecutive unhealthy checks before considering a host` + "\n" +
-												`unhealthy.`,
+												`unhealthy.` + "\n" +
+												`Default: 5`,
 										},
 									},
 									MarkdownDescription: `Default is a configuration specific to the group of destinations referenced in` + "\n" +
@@ -434,7 +507,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -478,7 +555,11 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -534,7 +615,7 @@ func (r *MeshHealthCheckResource) Create(ctx context.Context, req resource.Creat
 	var name string
 	name = data.Name.ValueString()
 
-	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItem()
+	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItemInput()
 	request := operations.CreateMeshHealthCheckRequest{
 		CpID:                cpID,
 		Mesh:                mesh,
@@ -689,7 +770,7 @@ func (r *MeshHealthCheckResource) Update(ctx context.Context, req resource.Updat
 	var name string
 	name = data.Name.ValueString()
 
-	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItem()
+	meshHealthCheckItem := *data.ToSharedMeshHealthCheckItemInput()
 	request := operations.UpdateMeshHealthCheckRequest{
 		CpID:                cpID,
 		Mesh:                mesh,

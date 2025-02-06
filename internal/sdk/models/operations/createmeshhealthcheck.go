@@ -15,7 +15,7 @@ type CreateMeshHealthCheckRequest struct {
 	// name of the MeshHealthCheck
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshHealthCheckItem shared.MeshHealthCheckItem `request:"mediaType=application/json"`
+	MeshHealthCheckItem shared.MeshHealthCheckItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshHealthCheckRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshHealthCheckRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshHealthCheckRequest) GetMeshHealthCheckItem() shared.MeshHealthCheckItem {
+func (o *CreateMeshHealthCheckRequest) GetMeshHealthCheckItem() shared.MeshHealthCheckItemInput {
 	if o == nil {
-		return shared.MeshHealthCheckItem{}
+		return shared.MeshHealthCheckItemInput{}
 	}
 	return o.MeshHealthCheckItem
 }

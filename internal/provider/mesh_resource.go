@@ -13,9 +13,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	custom_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -70,7 +75,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"requirements": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -90,7 +99,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 									`requirements means that any proxy that is not explicitly denied can join.`,
 							},
 							"restrictions": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -128,7 +141,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -223,7 +240,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -236,7 +257,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"aggregate": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -247,7 +272,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																Description: `Address on which a service expose HTTP endpoint with Prometheus metrics.`,
 															},
 															"enabled": schema.BoolAttribute{
+																Computed: true,
 																Optional: true,
+																PlanModifiers: []planmodifier.Bool{
+																	custom_boolplanmodifier.SupressZeroNullModifier(),
+																},
 																MarkdownDescription: `If false then the application won't be scrapped. If nil, then it is treated` + "\n" +
 																	`as true and kuma-dp scrapes metrics from the service.`,
 															},
@@ -277,7 +306,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																`Envoy metrics.`,
 														},
 														"used_only": schema.BoolAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.Bool{
+																custom_boolplanmodifier.SupressZeroNullModifier(),
+															},
 															MarkdownDescription: `If true then return metrics that Envoy has updated (counters incremented` + "\n" +
 																`at least once, gauges changed at least once, and histograms added to at` + "\n" +
 																`least once). If nil, then it is treated as false.`,
@@ -296,7 +329,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`metrics.`,
 												},
 												"skip_mtls": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													MarkdownDescription: `If true then endpoints for scraping metrics won't require mTLS even if mTLS` + "\n" +
 														`is enabled in Mesh. If nil, then it is treated as false.`,
 												},
@@ -309,6 +346,9 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 												},
 												"tls": schema.SingleNestedAttribute{
 													Optional: true,
+													PlanModifiers: []planmodifier.Object{
+														custom_objectplanmodifier.SupressZeroNullModifier(),
+													},
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.SingleNestedAttribute{
 															Optional: true,
@@ -369,7 +409,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -494,7 +538,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Optional: true,
 												},
 												"dns_names": schema.ListAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													ElementType: types.StringType,
 												},
 												"issuer_ref": schema.SingleNestedAttribute{
@@ -672,7 +720,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `Name of the enabled backend`,
 					},
 					"skip_validation": schema.BoolAttribute{
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.Bool{
+							custom_boolplanmodifier.SupressZeroNullModifier(),
+						},
 						Description: `If enabled, skips CA validation.`,
 					},
 				},
@@ -690,7 +742,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"passthrough": schema.BoolAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.Bool{
+									custom_boolplanmodifier.SupressZeroNullModifier(),
+								},
 								Description: `Control the passthrough cluster`,
 							},
 						},
@@ -703,16 +759,28 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"default_forbid_mesh_external_service_access": schema.BoolAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.Bool{
+							custom_boolplanmodifier.SupressZeroNullModifier(),
+						},
 						MarkdownDescription: `If true, blocks traffic to MeshExternalServices.` + "\n" +
 							`Default: false`,
 					},
 					"locality_aware_load_balancing": schema.BoolAttribute{
-						Optional:    true,
+						Computed: true,
+						Optional: true,
+						PlanModifiers: []planmodifier.Bool{
+							custom_boolplanmodifier.SupressZeroNullModifier(),
+						},
 						Description: `Enable the Locality Aware Load Balancing`,
 					},
 					"zone_egress": schema.BoolAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.Bool{
+							custom_boolplanmodifier.SupressZeroNullModifier(),
+						},
 						MarkdownDescription: `Enable routing traffic to services in other zone or external services` + "\n" +
 							`through ZoneEgress. Default: false`,
 					},
@@ -720,8 +788,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Routing settings of the mesh`,
 			},
 			"skip_creating_initial_policies": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `List of policies to skip creating by default when the mesh is created.` + "\n" +
 					`e.g. TrafficPermission, MeshRetry, etc. An '*' can be used to skip all` + "\n" +
@@ -731,7 +802,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"backends": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -752,7 +827,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Description: `Port of datadog collector`,
 												},
 												"split_service": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													MarkdownDescription: `Determines if datadog service name should be split based on traffic` + "\n" +
 														`direction and destination. For example, with ` + "`" + `splitService: true` + "`" + ` and a` + "\n" +
 														`` + "`" + `backend` + "`" + ` service that communicates with a couple of databases, you would` + "\n" +
@@ -776,13 +855,21 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion`,
 												},
 												"shared_span_context": schema.BoolAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													MarkdownDescription: `Determines whether client and server spans will share the same span` + "\n" +
 														`context. Default: true.` + "\n" +
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig`,
 												},
 												"trace_id128bit": schema.BoolAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.Bool{
+														custom_boolplanmodifier.SupressZeroNullModifier(),
+													},
 													Description: `Generate 128bit traces. Default: false`,
 												},
 												"url": schema.StringAttribute{
@@ -828,7 +915,11 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Required: true,
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -899,7 +990,10 @@ func (r *MeshResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1042,7 +1136,10 @@ func (r *MeshResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	if res.StatusCode != 200 {
+	switch res.StatusCode {
+	case 200, 201:
+		break
+	default:
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

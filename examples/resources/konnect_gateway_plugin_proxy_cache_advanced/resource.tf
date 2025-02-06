@@ -36,7 +36,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = false
@@ -44,7 +44,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
       username          = "...my_username..."
     }
     request_method = [
-      "HEAD"
+      "GET"
     ]
     response_code = [
       269
@@ -86,7 +86,7 @@ resource "konnect_gateway_plugin_proxy_cache_advanced" "my_gatewaypluginproxycac
     }
   }
   protocols = [
-    "http"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

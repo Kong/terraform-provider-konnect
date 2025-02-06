@@ -7,7 +7,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     }
     allow_any_domain = false
     api_uri          = "...my_api_uri..."
-    cert_type        = "rsa"
+    cert_type        = "ecc"
     domains = [
       "..."
     ]
@@ -18,7 +18,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     preferred_chain         = "...my_preferred_chain..."
     renew_threshold_days    = 1.5
     rsa_key_size            = 3072
-    storage                 = "shm"
+    storage                 = "kong"
     storage_config = {
       consul = {
         host    = "...my_host..."
@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
         shm_name = "...my_shm_name..."
       }
       vault = {
-        auth_method     = "kubernetes"
+        auth_method     = "token"
         auth_path       = "...my_auth_path..."
         auth_role       = "...my_auth_role..."
         host            = "...my_host..."
@@ -65,12 +65,6 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
       }
     }
     tos_accepted = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
@@ -89,14 +83,8 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
-  route = {
-    id = "...my_id..."
-  }
-  service = {
-    id = "...my_id..."
-  }
   tags = [
     "..."
   ]

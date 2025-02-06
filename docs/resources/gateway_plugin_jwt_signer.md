@@ -16,7 +16,7 @@ GatewayPluginJwtSigner Resource
 resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
   config = {
     access_token_consumer_by = [
-      "id"
+      "custom_id"
     ]
     access_token_consumer_claim = [
       "..."
@@ -24,7 +24,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_introspection_authorization = "...my_access_token_introspection_authorization..."
     access_token_introspection_body_args     = "...my_access_token_introspection_body_args..."
     access_token_introspection_consumer_by = [
-      "id"
+      "custom_id"
     ]
     access_token_introspection_consumer_claim = [
       "..."
@@ -62,7 +62,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     access_token_scopes_required = [
       "..."
     ]
-    access_token_signing_algorithm = "PS256"
+    access_token_signing_algorithm = "PS384"
     access_token_upstream_header   = "...my_access_token_upstream_header..."
     access_token_upstream_leeway   = 1.88
     add_access_token_claims = {
@@ -77,7 +77,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     cache_access_token_introspection  = false
     cache_channel_token_introspection = true
     channel_token_consumer_by = [
-      "username"
+      "id"
     ]
     channel_token_consumer_claim = [
       "..."
@@ -85,7 +85,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_introspection_authorization = "...my_channel_token_introspection_authorization..."
     channel_token_introspection_body_args     = "...my_channel_token_introspection_body_args..."
     channel_token_introspection_consumer_by = [
-      "id"
+      "custom_id"
     ]
     channel_token_introspection_consumer_claim = [
       "..."
@@ -123,7 +123,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     channel_token_scopes_required = [
       "..."
     ]
-    channel_token_signing_algorithm        = "PS384"
+    channel_token_signing_algorithm        = "PS512"
     channel_token_upstream_header          = "...my_channel_token_upstream_header..."
     channel_token_upstream_leeway          = 5.01
     enable_access_token_introspection      = false
@@ -161,12 +161,6 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     verify_channel_token_scopes               = false
     verify_channel_token_signature            = false
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
   id               = "...my_id..."
@@ -184,7 +178,7 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
     }
   }
   protocols = [
-    "wss"
+    "https"
   ]
   route = {
     id = "...my_id..."
@@ -208,13 +202,11 @@ resource "konnect_gateway_plugin_jwt_signer" "my_gatewaypluginjwtsigner" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -258,7 +250,7 @@ Optional:
 - `access_token_request_header` (String) This parameter tells the name of the header where to look for the access token.
 - `access_token_scopes_claim` (List of String) Specify the claim in an access token to verify against values of `config.access_token_scopes_required`.
 - `access_token_scopes_required` (List of String) Specify the required values (or scopes) that are checked by a claim specified by `config.access_token_scopes_claim`.
-- `access_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm. must be one of ["HS256", "HS384", "HS512", "RS256", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]
+- `access_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.access_token_upstream_header`, re-signs the original access token using the private keys of the JWT Signer plugin. Specify the algorithm that is used to sign the token. The `config.access_token_issuer` specifies which `keyset` is used to sign the new token issued by Kong using the specified signing algorithm. must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]
 - `access_token_upstream_header` (String) Removes the `config.access_token_request_header` from the request after reading its value. With `config.access_token_upstream_header`, you can specify the upstream header where the plugin adds the Kong signed token. If you don't specify a value, such as use `null` or `""` (empty string), the plugin does not even try to sign or re-sign the token.
 - `access_token_upstream_leeway` (Number) If you want to add or subtract (using a negative value) expiry time (in seconds) of the original access token, you can specify a value that is added to the original access token's `exp` claim.
 - `add_access_token_claims` (Map of String) Add customized claims if they are not present yet. Value can be a regular or JSON string; if JSON, decoded data is used as the claim's value.
@@ -295,7 +287,7 @@ Optional:
 - `channel_token_request_header` (String) This parameter tells the name of the header where to look for the channel token. If you don't want to do anything with the channel token, then you can set this to `null` or `""` (empty string).
 - `channel_token_scopes_claim` (List of String) Specify the claim in a channel token to verify against values of `config.channel_token_scopes_required`. This supports nested claims.
 - `channel_token_scopes_required` (List of String) Specify the required values (or scopes) that are checked by a claim specified by `config.channel_token_scopes_claim`.
-- `channel_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token. must be one of ["HS256", "HS384", "HS512", "RS256", "RS512", "ES256", "ES384", "ES512", "PS256", "PS384", "PS512", "EdDSA"]
+- `channel_token_signing_algorithm` (String) When this plugin sets the upstream header as specified with `config.channel_token_upstream_header`, it also re-signs the original channel token using private keys of this plugin. Specify the algorithm that is used to sign the token. must be one of ["ES256", "ES384", "ES512", "EdDSA", "HS256", "HS384", "HS512", "PS256", "PS384", "PS512", "RS256", "RS512"]
 - `channel_token_upstream_header` (String) This plugin removes the `config.channel_token_request_header` from the request after reading its value.
 - `channel_token_upstream_leeway` (Number) If you want to add or perhaps subtract (using negative value) expiry time of the original channel token, you can specify a value that is added to the original channel token's `exp` claim.
 - `enable_access_token_introspection` (Boolean) If you don't want to support opaque access tokens, change this configuration parameter to `false` to disable introspection.
@@ -322,22 +314,6 @@ Optional:
 - `verify_channel_token_introspection_scopes` (Boolean) Quickly turn on/off the channel token introspection scopes verification specified with `config.channel_token_introspection_scopes_required`.
 - `verify_channel_token_scopes` (Boolean) Quickly turn on/off the channel token required scopes verification specified with `config.channel_token_scopes_required`.
 - `verify_channel_token_signature` (Boolean) Quickly turn on/off the channel token signature verification.
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

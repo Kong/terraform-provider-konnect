@@ -267,7 +267,7 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 							backends5.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult3))
 						}
 						backends5.Conf.CertManagerCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CommonName)
-						backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = []types.String{}
+						backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = make([]types.String, 0, len(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames))
 						for _, v := range backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames {
 							backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = append(backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames, types.StringValue(v))
 						}
@@ -384,7 +384,7 @@ func (r *MeshDataSourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 			r.Routing.LocalityAwareLoadBalancing = types.BoolPointerValue(resp.Routing.LocalityAwareLoadBalancing)
 			r.Routing.ZoneEgress = types.BoolPointerValue(resp.Routing.ZoneEgress)
 		}
-		r.SkipCreatingInitialPolicies = []types.String{}
+		r.SkipCreatingInitialPolicies = make([]types.String, 0, len(resp.SkipCreatingInitialPolicies))
 		for _, v := range resp.SkipCreatingInitialPolicies {
 			r.SkipCreatingInitialPolicies = append(r.SkipCreatingInitialPolicies, types.StringValue(v))
 		}

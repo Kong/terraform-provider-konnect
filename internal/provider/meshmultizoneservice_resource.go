@@ -12,16 +12,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
-	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -65,7 +70,10 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -81,7 +89,10 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -95,15 +106,21 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ports": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
 								"app_protocol": schema.StringAttribute{
+									Computed:    true,
 									Optional:    true,
-									Description: `Protocol identifies a protocol supported by a service.`,
+									Default:     stringdefault.StaticString("tcp"),
+									Description: `Protocol identifies a protocol supported by a service. Default: "tcp"`,
 								},
 								"name": schema.StringAttribute{
 									Optional: true,
@@ -143,80 +160,89 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Description: `Spec is the specification of the Kuma MeshMultiZoneService resource.`,
 			},
 			"status": schema.SingleNestedAttribute{
-				Optional: true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostname": schema.StringAttribute{
-									Optional: true,
+									Computed: true,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Optional: true,
+									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Optional:    true,
-											Description: `Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
-											},
+											Computed: true,
 										},
 									},
 								},
 								"origin": schema.StringAttribute{
-									Optional: true,
+									Computed: true,
 								},
 							},
 						},
 						Description: `Addresses is a list of addresses generated by HostnameGenerator`,
 					},
 					"hostname_generators": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"conditions": schema.ListNestedAttribute{
-									Optional: true,
+									Computed: true,
+									PlanModifiers: []planmodifier.List{
+										custom_listplanmodifier.SupressZeroNullModifier(),
+										speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+									},
 									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+										PlanModifiers: []planmodifier.Object{
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"message": schema.StringAttribute{
-												Optional: true,
+												Computed: true,
 												MarkdownDescription: `message is a human readable message indicating details about the transition.` + "\n" +
-													`This may be an empty string.` + "\n" +
-													`Not Null`,
+													`This may be an empty string.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthAtMost(32768),
 												},
 											},
 											"reason": schema.StringAttribute{
-												Optional: true,
+												Computed: true,
 												MarkdownDescription: `reason contains a programmatic identifier indicating the reason for the condition's last transition.` + "\n" +
 													`Producers of specific condition types may define expected values and meanings for this field,` + "\n" +
 													`and whether the values are considered a guaranteed API.` + "\n" +
 													`The value should be a CamelCase string.` + "\n" +
-													`This field may not be empty.` + "\n" +
-													`Not Null`,
+													`This field may not be empty.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthBetween(1, 1024),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$`).String()),
 												},
 											},
 											"status": schema.StringAttribute{
-												Optional:    true,
-												Description: `status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]`,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
+												Description: `status of the condition, one of True, False, Unknown. must be one of ["True", "False", "Unknown"]`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.OneOf(
 														"True",
 														"False",
@@ -225,10 +251,9 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 												},
 											},
 											"type": schema.StringAttribute{
-												Optional:    true,
-												Description: `type of condition in CamelCase or in foo.example.com/CamelCase. Not Null`,
+												Computed:    true,
+												Description: `type of condition in CamelCase or in foo.example.com/CamelCase.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthAtMost(316),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$`), "must match pattern "+regexp.MustCompile(`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$`).String()),
 												},
@@ -238,19 +263,11 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 									Description: `Conditions is an array of hostname generator conditions.`,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Optional: true,
+									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Optional:    true,
-											Description: `Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
-											},
+											Computed: true,
 										},
-									},
-									Description: `Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
 									},
 								},
 							},
@@ -258,53 +275,46 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 						Description: `Status of hostnames generator applied on this resource`,
 					},
 					"mesh_services": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"mesh": schema.StringAttribute{
-									Optional:    true,
-									Description: `Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
+									Computed: true,
 								},
 								"name": schema.StringAttribute{
-									Optional:    true,
-									Description: `Name is a core name of MeshService. Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
+									Computed:    true,
+									Description: `Name is a core name of MeshService`,
 								},
 								"namespace": schema.StringAttribute{
-									Optional:    true,
-									Description: `Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
+									Computed: true,
 								},
 								"zone": schema.StringAttribute{
-									Optional:    true,
-									Description: `Not Null`,
-									Validators: []validator.String{
-										speakeasy_stringvalidators.NotNull(),
-									},
+									Computed: true,
 								},
 							},
 						},
 						Description: `MeshServices is a list of matched MeshServices`,
 					},
 					"vips": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"ip": schema.StringAttribute{
-									Optional: true,
+									Computed: true,
 								},
 							},
 						},
@@ -323,7 +333,11 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -379,7 +393,7 @@ func (r *MeshMultiZoneServiceResource) Create(ctx context.Context, req resource.
 	var name string
 	name = data.Name.ValueString()
 
-	meshMultiZoneServiceItem := *data.ToSharedMeshMultiZoneServiceItem()
+	meshMultiZoneServiceItem := *data.ToSharedMeshMultiZoneServiceItemInput()
 	request := operations.CreateMeshMultiZoneServiceRequest{
 		CpID:                     cpID,
 		Mesh:                     mesh,
@@ -534,7 +548,7 @@ func (r *MeshMultiZoneServiceResource) Update(ctx context.Context, req resource.
 	var name string
 	name = data.Name.ValueString()
 
-	meshMultiZoneServiceItem := *data.ToSharedMeshMultiZoneServiceItem()
+	meshMultiZoneServiceItem := *data.ToSharedMeshMultiZoneServiceItemInput()
 	request := operations.UpdateMeshMultiZoneServiceRequest{
 		CpID:                     cpID,
 		Mesh:                     mesh,

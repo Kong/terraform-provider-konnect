@@ -20,7 +20,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
     idp_certificate         = "...my_idp_certificate..."
     idp_sso_url             = "...my_idp_sso_url..."
     issuer                  = "...my_issuer..."
-    nameid_format           = "Unspecified"
+    nameid_format           = "EmailAddress"
     redis = {
       cluster_max_redirections = 0
       cluster_nodes = [
@@ -48,7 +48,7 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       socket            = "...my_socket..."
@@ -56,11 +56,11 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
       ssl_verify        = false
       username          = "...my_username..."
     }
-    request_digest_algorithm          = "SHA1"
+    request_digest_algorithm          = "SHA256"
     request_signature_algorithm       = "SHA384"
     request_signing_certificate       = "...my_request_signing_certificate..."
     request_signing_key               = "...my_request_signing_key..."
-    response_digest_algorithm         = "SHA1"
+    response_digest_algorithm         = "SHA256"
     response_encryption_key           = "...my_response_encryption_key..."
     response_signature_algorithm      = "SHA384"
     session_absolute_timeout          = 8.17
@@ -84,22 +84,16 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
     session_remember_cookie_name      = "...my_session_remember_cookie_name..."
     session_remember_rolling_timeout  = 7.93
     session_request_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_response_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_rolling_timeout      = 5.35
     session_secret               = "...my_session_secret..."
     session_storage              = "cookie"
     session_store_metadata       = false
     validate_assertion_signature = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
@@ -142,13 +136,11 @@ resource "konnect_gateway_plugin_saml" "my_gatewaypluginsaml" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -168,13 +160,13 @@ Optional:
 - `idp_certificate` (String) The public certificate provided by the IdP. This is used to validate responses from the IdP.  Only include the contents of the certificate. Do not include the header (`BEGIN CERTIFICATE`) and footer (`END CERTIFICATE`) lines.
 - `idp_sso_url` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `issuer` (String) The unique identifier of the IdP application. Formatted as a URL containing information about the IdP so the SP can validate that the SAML assertions it receives are issued from the correct IdP.
-- `nameid_format` (String) The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`. must be one of ["Unspecified", "EmailAddress", "Persistent", "Transient"]
+- `nameid_format` (String) The requested `NameId` format. Options available are: - `Unspecified` - `EmailAddress` - `Persistent` - `Transient`. must be one of ["EmailAddress", "Persistent", "Transient", "Unspecified"]
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
-- `request_digest_algorithm` (String) The digest algorithm for Authn requests: - `SHA256` - `SHA1`. must be one of ["SHA256", "SHA1"]
+- `request_digest_algorithm` (String) The digest algorithm for Authn requests: - `SHA256` - `SHA1`. must be one of ["SHA1", "SHA256"]
 - `request_signature_algorithm` (String) The signature algorithm for signing Authn requests. Options available are: - `SHA256` - `SHA384` - `SHA512`. must be one of ["SHA256", "SHA384", "SHA512"]
 - `request_signing_certificate` (String) The certificate for signing requests.
 - `request_signing_key` (String) The private key for signing requests.  If this parameter is set, requests sent to the IdP are signed.  The `request_signing_certificate` parameter must be set as well.
-- `response_digest_algorithm` (String) The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`. must be one of ["SHA256", "SHA1"]
+- `response_digest_algorithm` (String) The algorithm for verifying digest in SAML responses: - `SHA256` - `SHA1`. must be one of ["SHA1", "SHA256"]
 - `response_encryption_key` (String) The private encryption key required to decrypt encrypted assertions.
 - `response_signature_algorithm` (String) The algorithm for validating signatures in SAML responses. Options available are: - `SHA256` - `SHA384` - `SHA512`. must be one of ["SHA256", "SHA384", "SHA512"]
 - `session_absolute_timeout` (Number) The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.
@@ -183,7 +175,7 @@ Optional:
 - `session_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
 - `session_cookie_name` (String) The session cookie name.
 - `session_cookie_path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
-- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]
+- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Default", "Lax", "None", "Strict"]
 - `session_cookie_secure` (Boolean) The cookie is only sent to the server when a request is made with the https:scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `session_enforce_same_subject` (Boolean) When set to `true`, audiences are forced to share the same subject.
 - `session_hash_storage_key` (Boolean) When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
@@ -226,7 +218,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `socket` (String) The Redis unix socket path.
@@ -252,22 +244,6 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

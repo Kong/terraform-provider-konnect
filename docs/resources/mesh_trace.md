@@ -14,14 +14,12 @@ MeshTrace Resource
 
 ```terraform
 resource "konnect_mesh_trace" "my_meshtrace" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     default = {
       backends = [
@@ -101,12 +99,12 @@ resource "konnect_mesh_trace" "my_meshtrace" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -156,6 +154,7 @@ direction and destination. For example, with `splitService: true` and a
 `backend` service that communicates with a couple of databases, you would
 get service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and
 `backend_OUTBOUND_db2` in Datadog.
+Default: false
 - `url` (String) Address of Datadog collector, only host and port are allowed (no paths,
 fragments etc.)
 Not Null
@@ -176,11 +175,12 @@ Optional:
 
 - `api_version` (String) Version of the API.
 https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66
-must be one of ["httpJson", "httpProto"]
+Default: "httpJson"; must be one of ["httpJson", "httpProto"]
 - `shared_span_context` (Boolean) Determines whether client and server spans will share the same span
 context.
 https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63
-- `trace_id128bit` (Boolean) Generate 128bit traces.
+Default: true
+- `trace_id128bit` (Boolean) Generate 128bit traces. Default: false
 - `url` (String) Address of Zipkin collector. Not Null
 
 

@@ -12,9 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,7 +66,10 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -77,7 +85,10 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -112,14 +123,22 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 								Description: `AgentConfig defines bootstrap OPA agent configuration.`,
 							},
 							"append_policies": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
 									},
 									Attributes: map[string]schema.Attribute{
 										"ignore_decision": schema.BoolAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.Bool{
+												custom_boolplanmodifier.SupressZeroNullModifier(),
+											},
 											Description: `If true, then policy won't be taken into account when making a decision.`,
 										},
 										"rego": schema.SingleNestedAttribute{
@@ -173,7 +192,11 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 													`sent to the agent.`,
 											},
 											"send_raw_body": schema.BoolAttribute{
-												Optional:    true,
+												Computed: true,
+												Optional: true,
+												PlanModifiers: []planmodifier.Bool{
+													custom_boolplanmodifier.SupressZeroNullModifier(),
+												},
 												Description: `SendRawBody enable sending raw body instead of the body encoded into UTF-8`,
 											},
 										},
@@ -235,7 +258,11 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -270,7 +297,11 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -326,7 +357,7 @@ func (r *MeshOPAResource) Create(ctx context.Context, req resource.CreateRequest
 	var name string
 	name = data.Name.ValueString()
 
-	meshOPAItem := *data.ToSharedMeshOPAItem()
+	meshOPAItem := *data.ToSharedMeshOPAItemInput()
 	request := operations.CreateMeshOPARequest{
 		CpID:        cpID,
 		Mesh:        mesh,
@@ -481,7 +512,7 @@ func (r *MeshOPAResource) Update(ctx context.Context, req resource.UpdateRequest
 	var name string
 	name = data.Name.ValueString()
 
-	meshOPAItem := *data.ToSharedMeshOPAItem()
+	meshOPAItem := *data.ToSharedMeshOPAItemInput()
 	request := operations.UpdateMeshOPARequest{
 		CpID:        cpID,
 		Mesh:        mesh,

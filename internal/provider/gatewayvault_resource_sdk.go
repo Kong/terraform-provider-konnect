@@ -53,7 +53,7 @@ func (r *GatewayVaultResourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
 		r.Prefix = types.StringValue(resp.Prefix)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

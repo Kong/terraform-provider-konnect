@@ -12,9 +12,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -65,7 +73,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -81,7 +92,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -95,7 +109,11 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"endpoints": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -125,7 +143,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
-								Required:    true,
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									custom_stringplanmodifier.ArbitraryJSONModifier(),
+								},
 								Description: `Config freeform configuration for the extension. Parsed as JSON.`,
 								Validators: []validator.String{
 									validators.IsValidJSON(),
@@ -149,8 +170,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"protocol": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. must be one of ["tcp", "grpc", "http", "http2"]`,
+								Default:     stringdefault.StaticString("tcp"),
+								Description: `Protocol defines a protocol of the communication. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. Default: "tcp"; must be one of ["tcp", "grpc", "http", "http2"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"tcp",
@@ -161,8 +184,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								},
 							},
 							"type": schema.StringAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `Type of the match, only ` + "`" + `HostnameGenerator` + "`" + ` is available at the moment. must be "HostnameGenerator"`,
+								Default:     stringdefault.StaticString("HostnameGenerator"),
+								Description: `Type of the match, only ` + "`" + `HostnameGenerator` + "`" + ` is available at the moment. Default: "HostnameGenerator"; must be "HostnameGenerator"`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"HostnameGenerator",
@@ -176,13 +201,18 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"allow_renegotiation": schema.BoolAttribute{
+								Computed: true,
 								Optional: true,
+								Default:  booldefault.StaticBool(false),
 								MarkdownDescription: `AllowRenegotiation defines if TLS sessions will allow renegotiation.` + "\n" +
-									`Setting this to true is not recommended for security reasons.`,
+									`Setting this to true is not recommended for security reasons.` + "\n" +
+									`Default: false`,
 							},
 							"enabled": schema.BoolAttribute{
+								Computed:    true,
 								Optional:    true,
-								Description: `Enabled defines if proxy should originate TLS.`,
+								Default:     booldefault.StaticBool(false),
+								Description: `Enabled defines if proxy should originate TLS. Default: false`,
 							},
 							"verification": schema.SingleNestedAttribute{
 								Optional: true,
@@ -242,8 +272,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Description: `ClientKey defines a client private key.`,
 									},
 									"mode": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
-										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]`,
+										Default:     stringdefault.StaticString("Secured"),
+										Description: `Mode defines if proxy should skip verification, one of ` + "`" + `SkipSAN` + "`" + `, ` + "`" + `SkipCA` + "`" + `, ` + "`" + `Secured` + "`" + `, ` + "`" + `SkipAll` + "`" + `. Default ` + "`" + `Secured` + "`" + `. Default: "Secured"; must be one of ["SkipSAN", "SkipCA", "Secured", "SkipAll"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"SkipSAN",
@@ -258,15 +290,21 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										Description: `ServerName overrides the default Server Name Indicator set by Kuma.`,
 									},
 									"subject_alt_names": schema.ListNestedAttribute{
+										Computed: true,
 										Optional: true,
+										PlanModifiers: []planmodifier.List{
+											custom_listplanmodifier.SupressZeroNullModifier(),
+										},
 										NestedObject: schema.NestedAttributeObject{
 											Validators: []validator.Object{
 												speakeasy_objectvalidators.NotNull(),
 											},
 											Attributes: map[string]schema.Attribute{
 												"type": schema.StringAttribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. must be one of ["Exact", "Prefix"]`,
+													Default:     stringdefault.StaticString("Exact"),
+													Description: `Type specifies matching type, one of ` + "`" + `Exact` + "`" + `, ` + "`" + `Prefix` + "`" + `. Default: ` + "`" + `Exact` + "`" + `. Default: "Exact"; must be one of ["Exact", "Prefix"]`,
 													Validators: []validator.String{
 														stringvalidator.OneOf(
 															"Exact",
@@ -292,8 +330,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"max": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
-										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
+										Default:     stringdefault.StaticString("TLSAuto"),
+										Description: `Max defines maximum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"TLSAuto",
@@ -305,8 +345,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 										},
 									},
 									"min": schema.StringAttribute{
+										Computed:    true,
 										Optional:    true,
-										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
+										Default:     stringdefault.StaticString("TLSAuto"),
+										Description: `Min defines minimum supported version. One of ` + "`" + `TLSAuto` + "`" + `, ` + "`" + `TLS10` + "`" + `, ` + "`" + `TLS11` + "`" + `, ` + "`" + `TLS12` + "`" + `, ` + "`" + `TLS13` + "`" + `. Default: "TLSAuto"; must be one of ["TLSAuto", "TLS10", "TLS11", "TLS12", "TLS13"]`,
 										Validators: []validator.String{
 											stringvalidator.OneOf(
 												"TLSAuto",
@@ -327,80 +369,89 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				Description: `Spec is the specification of the Kuma MeshExternalService resource.`,
 			},
 			"status": schema.SingleNestedAttribute{
-				Optional: true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"addresses": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostname": schema.StringAttribute{
-									Optional: true,
+									Computed: true,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Optional: true,
+									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Optional:    true,
-											Description: `Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
-											},
+											Computed: true,
 										},
 									},
 								},
 								"origin": schema.StringAttribute{
-									Optional: true,
+									Computed: true,
 								},
 							},
 						},
 						Description: `Addresses section for generated domains`,
 					},
 					"hostname_generators": schema.ListNestedAttribute{
-						Optional: true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						NestedObject: schema.NestedAttributeObject{
-							Validators: []validator.Object{
-								speakeasy_objectvalidators.NotNull(),
+							PlanModifiers: []planmodifier.Object{
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"conditions": schema.ListNestedAttribute{
-									Optional: true,
+									Computed: true,
+									PlanModifiers: []planmodifier.List{
+										custom_listplanmodifier.SupressZeroNullModifier(),
+										speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+									},
 									NestedObject: schema.NestedAttributeObject{
-										Validators: []validator.Object{
-											speakeasy_objectvalidators.NotNull(),
+										PlanModifiers: []planmodifier.Object{
+											speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 										},
 										Attributes: map[string]schema.Attribute{
 											"message": schema.StringAttribute{
-												Optional: true,
+												Computed: true,
 												MarkdownDescription: `message is a human readable message indicating details about the transition.` + "\n" +
-													`This may be an empty string.` + "\n" +
-													`Not Null`,
+													`This may be an empty string.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthAtMost(32768),
 												},
 											},
 											"reason": schema.StringAttribute{
-												Optional: true,
+												Computed: true,
 												MarkdownDescription: `reason contains a programmatic identifier indicating the reason for the condition's last transition.` + "\n" +
 													`Producers of specific condition types may define expected values and meanings for this field,` + "\n" +
 													`and whether the values are considered a guaranteed API.` + "\n" +
 													`The value should be a CamelCase string.` + "\n" +
-													`This field may not be empty.` + "\n" +
-													`Not Null`,
+													`This field may not be empty.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthBetween(1, 1024),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$`), "must match pattern "+regexp.MustCompile(`^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$`).String()),
 												},
 											},
 											"status": schema.StringAttribute{
-												Optional:    true,
-												Description: `status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]`,
+												Computed: true,
+												PlanModifiers: []planmodifier.String{
+													speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+												},
+												Description: `status of the condition, one of True, False, Unknown. must be one of ["True", "False", "Unknown"]`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.OneOf(
 														"True",
 														"False",
@@ -409,10 +460,9 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 												},
 											},
 											"type": schema.StringAttribute{
-												Optional:    true,
-												Description: `type of condition in CamelCase or in foo.example.com/CamelCase. Not Null`,
+												Computed:    true,
+												Description: `type of condition in CamelCase or in foo.example.com/CamelCase.`,
 												Validators: []validator.String{
-													speakeasy_stringvalidators.NotNull(),
 													stringvalidator.UTF8LengthAtMost(316),
 													stringvalidator.RegexMatches(regexp.MustCompile(`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$`), "must match pattern "+regexp.MustCompile(`^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$`).String()),
 												},
@@ -422,29 +472,21 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 									Description: `Conditions is an array of hostname generator conditions.`,
 								},
 								"hostname_generator_ref": schema.SingleNestedAttribute{
-									Optional: true,
+									Computed: true,
 									Attributes: map[string]schema.Attribute{
 										"core_name": schema.StringAttribute{
-											Optional:    true,
-											Description: `Not Null`,
-											Validators: []validator.String{
-												speakeasy_stringvalidators.NotNull(),
-											},
+											Computed: true,
 										},
-									},
-									Description: `Not Null`,
-									Validators: []validator.Object{
-										speakeasy_objectvalidators.NotNull(),
 									},
 								},
 							},
 						},
 					},
 					"vip": schema.SingleNestedAttribute{
-						Optional: true,
+						Computed: true,
 						Attributes: map[string]schema.Attribute{
 							"ip": schema.StringAttribute{
-								Optional:    true,
+								Computed:    true,
 								Description: `Value allocated IP for a provided domain with ` + "`" + `HostnameGenerator` + "`" + ` type in a match section.`,
 							},
 						},
@@ -463,7 +505,11 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -519,7 +565,7 @@ func (r *MeshExternalServiceResource) Create(ctx context.Context, req resource.C
 	var name string
 	name = data.Name.ValueString()
 
-	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItem()
+	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItemInput()
 	request := operations.CreateMeshExternalServiceRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,
@@ -674,7 +720,7 @@ func (r *MeshExternalServiceResource) Update(ctx context.Context, req resource.U
 	var name string
 	name = data.Name.ValueString()
 
-	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItem()
+	meshExternalServiceItem := *data.ToSharedMeshExternalServiceItemInput()
 	request := operations.UpdateMeshExternalServiceRequest{
 		CpID:                    cpID,
 		Mesh:                    mesh,

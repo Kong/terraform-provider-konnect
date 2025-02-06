@@ -12,9 +12,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -63,7 +69,10 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -79,7 +88,10 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -133,7 +145,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -158,7 +174,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -174,9 +194,12 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"base_interval": schema.StringAttribute{
+															Computed: true,
 															Optional: true,
+															Default:  stringdefault.StaticString("25ms"),
 															MarkdownDescription: `BaseInterval is an amount of time which should be taken between retries.` + "\n" +
-																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.`,
+																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.` + "\n" +
+																`Default: "25ms"`,
 														},
 														"max_interval": schema.StringAttribute{
 															Optional: true,
@@ -202,11 +225,17 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"max_interval": schema.StringAttribute{
+															Computed:    true,
 															Optional:    true,
-															Description: `MaxInterval is a maximal amount of time which will be taken between retries.`,
+															Default:     stringdefault.StaticString("300s"),
+															Description: `MaxInterval is a maximal amount of time which will be taken between retries. Default: "300s"`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -244,7 +273,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`the upstream returns one of the headers configured.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													ElementType: types.StringType,
 													Description: `RetryOn is a list of conditions which will cause a retry.`,
 												},
@@ -258,9 +291,12 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"base_interval": schema.StringAttribute{
+															Computed: true,
 															Optional: true,
+															Default:  stringdefault.StaticString("25ms"),
 															MarkdownDescription: `BaseInterval is an amount of time which should be taken between retries.` + "\n" +
-																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.`,
+																`Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.` + "\n" +
+																`Default: "25ms"`,
 														},
 														"max_interval": schema.StringAttribute{
 															Optional: true,
@@ -272,7 +308,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`backoff strategy between retries.`,
 												},
 												"host_selection": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -297,9 +337,12 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																	`OmitHostsWithTags`,
 															},
 															"update_frequency": schema.Int64Attribute{
+																Computed: true,
 																Optional: true,
+																Default:  int64default.StaticInt64(2),
 																MarkdownDescription: `UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.` + "\n" +
-																	`Used for OmitPreviousPriorities.`,
+																	`Used for OmitPreviousPriorities.` + "\n" +
+																	`Default: 2`,
 															},
 														},
 													},
@@ -329,11 +372,17 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"max_interval": schema.StringAttribute{
+															Computed:    true,
 															Optional:    true,
-															Description: `MaxInterval is a maximal amount of time which will be taken between retries.`,
+															Default:     stringdefault.StaticString("300s"),
+															Description: `MaxInterval is a maximal amount of time which will be taken between retries. Default: "300s"`,
 														},
 														"reset_headers": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -371,7 +420,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`when the upstream returns one of the headers configured.`,
 												},
 												"retriable_request_headers": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -389,8 +442,10 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"type": schema.StringAttribute{
+																Computed:    true,
 																Optional:    true,
-																Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
+																Default:     stringdefault.StaticString("Exact"),
+																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
 																	stringvalidator.OneOf(
 																		"Exact",
@@ -411,7 +466,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`for retries to be attempted.`,
 												},
 												"retriable_response_headers": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -429,8 +488,10 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 																},
 															},
 															"type": schema.StringAttribute{
+																Computed:    true,
 																Optional:    true,
-																Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
+																Default:     stringdefault.StaticString("Exact"),
+																Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																Validators: []validator.String{
 																	stringvalidator.OneOf(
 																		"Exact",
@@ -452,7 +513,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 														`matches the upstream response headers.`,
 												},
 												"retry_on": schema.ListAttribute{
-													Optional:    true,
+													Computed: true,
+													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													ElementType: types.StringType,
 													MarkdownDescription: `RetryOn is a list of conditions which will cause a retry. Available values are:` + "\n" +
 														`[5XX, GatewayError, Reset, Retriable4xx, ConnectFailure, EnvoyRatelimited,` + "\n" +
@@ -520,7 +585,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -564,7 +633,11 @@ func (r *MeshRetryResource) Schema(ctx context.Context, req resource.SchemaReque
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -620,7 +693,7 @@ func (r *MeshRetryResource) Create(ctx context.Context, req resource.CreateReque
 	var name string
 	name = data.Name.ValueString()
 
-	meshRetryItem := *data.ToSharedMeshRetryItem()
+	meshRetryItem := *data.ToSharedMeshRetryItemInput()
 	request := operations.CreateMeshRetryRequest{
 		CpID:          cpID,
 		Mesh:          mesh,
@@ -775,7 +848,7 @@ func (r *MeshRetryResource) Update(ctx context.Context, req resource.UpdateReque
 	var name string
 	name = data.Name.ValueString()
 
-	meshRetryItem := *data.ToSharedMeshRetryItem()
+	meshRetryItem := *data.ToSharedMeshRetryItemInput()
 	request := operations.UpdateMeshRetryRequest{
 		CpID:          cpID,
 		Mesh:          mesh,

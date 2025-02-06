@@ -185,7 +185,7 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem() *shared.MeshGateway
 
 func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayCreateOrUpdateSuccessResponse(resp *shared.MeshGatewayCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -259,7 +259,7 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(resp *shared
 					if listenersItem.TLS.Options == nil {
 						listeners1.TLS.Options = nil
 					} else {
-						listeners1.TLS.Options = &tfTypes.MeshGatewayItemOptions{}
+						listeners1.TLS.Options = &tfTypes.Metadata{}
 					}
 				}
 				if listenersCount+1 > len(r.Conf.Listeners) {

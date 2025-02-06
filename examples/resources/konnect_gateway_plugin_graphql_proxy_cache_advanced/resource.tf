@@ -31,7 +31,7 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "any"
+      sentinel_role     = "slave"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -44,9 +44,6 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
     ]
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -66,7 +63,7 @@ resource "konnect_gateway_plugin_graphql_proxy_cache_advanced" "my_gatewayplugin
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
   route = {
     id = "...my_id..."

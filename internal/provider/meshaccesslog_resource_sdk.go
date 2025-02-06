@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAccessLogItem {
+func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItemInput() *shared.MeshAccessLogItemInput {
 	typeVar := shared.MeshAccessLogItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -182,9 +182,9 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAcc
 				Backends: backends,
 			}
 		}
-		kind := new(shared.MeshAccessLogItemKind)
+		kind := new(shared.MeshAccessLogItemSpecFromKind)
 		if !fromItem.TargetRef.Kind.IsUnknown() && !fromItem.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshAccessLogItemKind(fromItem.TargetRef.Kind.ValueString())
+			*kind = shared.MeshAccessLogItemSpecFromKind(fromItem.TargetRef.Kind.ValueString())
 		} else {
 			kind = nil
 		}
@@ -247,9 +247,9 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAcc
 	}
 	var targetRef1 *shared.TargetRef
 	if r.Spec.TargetRef != nil {
-		kind1 := new(shared.Kind)
+		kind1 := new(shared.MeshAccessLogItemKind)
 		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind1 = shared.Kind(r.Spec.TargetRef.Kind.ValueString())
+			*kind1 = shared.MeshAccessLogItemKind(r.Spec.TargetRef.Kind.ValueString())
 		} else {
 			kind1 = nil
 		}
@@ -528,33 +528,19 @@ func (r *MeshAccessLogResourceModel) ToSharedMeshAccessLogItem() *shared.MeshAcc
 		TargetRef: targetRef1,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshAccessLogItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshAccessLogItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogCreateOrUpdateSuccessResponse(resp *shared.MeshAccessLogCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -695,7 +681,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 			from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 			from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-			from1.TargetRef.ProxyTypes = []types.String{}
+			from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
 			for _, v := range fromItem.TargetRef.ProxyTypes {
 				from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -731,7 +717,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -857,7 +843,7 @@ func (r *MeshAccessLogResourceModel) RefreshFromSharedMeshAccessLogItem(resp *sh
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

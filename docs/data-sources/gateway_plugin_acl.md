@@ -28,15 +28,13 @@ data "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 ### Read-Only
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) The ID of this resource.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
@@ -50,23 +48,7 @@ Read-Only:
 - `always_use_authenticated_groups` (Boolean) If enabled (`true`), the authenticated groups will always be used even when an authenticated consumer already exists. If the authenticated groups don't exist, it will fallback to use the groups associated with the consumer. By default the authenticated groups will only be used when there is no consumer or the consumer is anonymous.
 - `deny` (List of String) Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 - `hide_groups_header` (Boolean) If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
-- `include_consumer_groups` (Boolean)
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Read-Only:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Read-Only:
-
-- `id` (String)
+- `include_consumer_groups` (Boolean) If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields
 
 
 <a id="nestedatt--ordering"></a>

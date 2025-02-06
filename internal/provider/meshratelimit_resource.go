@@ -12,9 +12,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -64,7 +69,10 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -80,7 +88,10 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -94,7 +105,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"from": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -110,7 +125,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"disabled": schema.BoolAttribute{
-															Optional:    true,
+															Computed: true,
+															Optional: true,
+															PlanModifiers: []planmodifier.Bool{
+																custom_boolplanmodifier.SupressZeroNullModifier(),
+															},
 															Description: `Define if rate limiting should be disabled.`,
 														},
 														"on_rate_limit": schema.SingleNestedAttribute{
@@ -120,7 +139,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -149,7 +172,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -181,6 +208,7 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																	Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																},
 																"status": schema.Int64Attribute{
+																	Computed:    true,
 																	Optional:    true,
 																	Description: `The HTTP status code to be set on a rate limit event`,
 																},
@@ -239,7 +267,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 															Description: `Defines how many connections are allowed per interval.`,
 														},
 														"disabled": schema.BoolAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.Bool{
+																custom_boolplanmodifier.SupressZeroNullModifier(),
+															},
 															MarkdownDescription: `Define if rate limiting should be disabled.` + "\n" +
 																`Default: false`,
 														},
@@ -295,7 +327,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -367,7 +403,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -392,7 +432,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
@@ -408,7 +452,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"disabled": schema.BoolAttribute{
-															Optional:    true,
+															Computed: true,
+															Optional: true,
+															PlanModifiers: []planmodifier.Bool{
+																custom_boolplanmodifier.SupressZeroNullModifier(),
+															},
 															Description: `Define if rate limiting should be disabled.`,
 														},
 														"on_rate_limit": schema.SingleNestedAttribute{
@@ -418,7 +466,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -447,7 +499,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -479,6 +535,7 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 																	Description: `The Headers to be added to the HTTP response on a rate limit event`,
 																},
 																"status": schema.Int64Attribute{
+																	Computed:    true,
 																	Optional:    true,
 																	Description: `The HTTP status code to be set on a rate limit event`,
 																},
@@ -537,7 +594,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 															Description: `Defines how many connections are allowed per interval.`,
 														},
 														"disabled": schema.BoolAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.Bool{
+																custom_boolplanmodifier.SupressZeroNullModifier(),
+															},
 															MarkdownDescription: `Define if rate limiting should be disabled.` + "\n" +
 																`Default: false`,
 														},
@@ -593,7 +654,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -637,7 +702,11 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -693,7 +762,7 @@ func (r *MeshRateLimitResource) Create(ctx context.Context, req resource.CreateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshRateLimitItem := *data.ToSharedMeshRateLimitItem()
+	meshRateLimitItem := *data.ToSharedMeshRateLimitItemInput()
 	request := operations.CreateMeshRateLimitRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
@@ -848,7 +917,7 @@ func (r *MeshRateLimitResource) Update(ctx context.Context, req resource.UpdateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshRateLimitItem := *data.ToSharedMeshRateLimitItem()
+	meshRateLimitItem := *data.ToSharedMeshRateLimitItemInput()
 	request := operations.UpdateMeshRateLimitRequest{
 		CpID:              cpID,
 		Mesh:              mesh,

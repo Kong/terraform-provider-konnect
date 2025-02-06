@@ -14,14 +14,12 @@ MeshHTTPRoute Resource
 
 ```terraform
 resource "konnect_mesh_http_route" "my_meshhttproute" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     target_ref = {
       kind = "Dataplane"
@@ -212,12 +210,12 @@ resource "konnect_mesh_http_route" "my_meshhttproute" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -306,7 +304,7 @@ all data plane types are targeted by the policy.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 - `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
 `MeshSubset` and `MeshServiceSubset`
-- `weight` (Number)
+- `weight` (Number) Default: 1
 
 
 <a id="nestedatt--spec--to--rules--default--filters"></a>
@@ -382,7 +380,7 @@ all data plane types are targeted by the policy.
 For example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.
 - `tags` (Map of String) Tags used to select a subset of proxies by tags. Can only be used with kinds
 `MeshSubset` and `MeshServiceSubset`
-- `weight` (Number)
+- `weight` (Number) Default: 1
 
 
 <a id="nestedatt--spec--to--rules--default--filters--request_mirror--percentage"></a>
@@ -414,7 +412,7 @@ When empty, the request path is used as-is. (see [below for nested schema](#nest
 header in the response.
 When empty, port (if specified) of the request is used.
 - `scheme` (String) must be one of ["http", "https"]
-- `status_code` (Number) StatusCode is the HTTP status code to be used in response. must be one of ["301", "302", "303", "307", "308"]
+- `status_code` (Number) StatusCode is the HTTP status code to be used in response. Default: 302; must be one of ["301", "302", "303", "307", "308"]
 
 <a id="nestedatt--spec--to--rules--default--filters--request_redirect--path"></a>
 ### Nested Schema for `spec.to.rules.default.filters.request_redirect.path`
@@ -497,7 +495,7 @@ Optional:
 - `name` (String) Name is the name of the HTTP Header to be matched. Name MUST be lower case
 as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 Not Null
-- `type` (String) Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
+- `type` (String) Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
 - `value` (String) Value is the value of HTTP Header to be matched.
 
 

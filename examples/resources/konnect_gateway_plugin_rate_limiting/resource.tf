@@ -7,11 +7,11 @@ resource "konnect_gateway_plugin_rate_limiting" "my_gatewaypluginratelimiting" {
     header_name         = "...my_header_name..."
     hide_client_headers = false
     hour                = 0.92
-    limit_by            = "header"
+    limit_by            = "ip"
     minute              = 3.29
     month               = 7.22
     path                = "...my_path..."
-    policy              = "cluster"
+    policy              = "local"
     redis = {
       database    = 3
       host        = "...my_host..."

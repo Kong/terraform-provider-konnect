@@ -14,14 +14,12 @@ MeshHealthCheck Resource
 
 ```terraform
 resource "konnect_mesh_health_check" "my_meshhealthcheck" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     target_ref = {
       kind = "MeshHTTPRoute"
@@ -128,12 +126,12 @@ resource "konnect_mesh_health_check" "my_meshhealthcheck" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -198,13 +196,13 @@ the health check will be made for is a gRPC service. (see [below for nested sche
 - `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
 the default is 50%. To disable panic mode, set to 0%.
 Either int or decimal represented as string. (see [below for nested schema](#nestedatt--spec--to--default--healthy_panic_threshold))
-- `healthy_threshold` (Number) Number of consecutive healthy checks before considering a host healthy.
+- `healthy_threshold` (Number) Number of consecutive healthy checks before considering a host healthy. Default: 1
 - `http` (Attributes) HttpHealthCheck defines HTTP configuration which will instruct the service
 the health check will be made for is an HTTP service. (see [below for nested schema](#nestedatt--spec--to--default--http))
 - `initial_jitter` (String) If specified, Envoy will start health checking after a random time in
 ms between 0 and initialJitter. This only applies to the first health
 check.
-- `interval` (String) Interval between consecutive health checks.
+- `interval` (String) Interval between consecutive health checks. Default: "1m"
 - `interval_jitter` (String) If specified, during every interval Envoy will add IntervalJitter to the
 wait time.
 - `interval_jitter_percent` (Number) If specified, during every interval Envoy will add IntervalJitter *
@@ -222,9 +220,10 @@ traffic interval" is 60 seconds.
 - `reuse_connection` (Boolean) Reuse health check connection between health checks. Default is true.
 - `tcp` (Attributes) TcpHealthCheck defines configuration for specifying bytes to send and
 expected response during the health check (see [below for nested schema](#nestedatt--spec--to--default--tcp))
-- `timeout` (String) Maximum time to wait for a health check response.
+- `timeout` (String) Maximum time to wait for a health check response. Default: "15s"
 - `unhealthy_threshold` (Number) Number of consecutive unhealthy checks before considering a host
 unhealthy.
+Default: 5
 
 <a id="nestedatt--spec--to--default--grpc"></a>
 ### Nested Schema for `spec.to.default.grpc`
@@ -255,6 +254,7 @@ Optional:
 - `expected_statuses` (List of Number) List of HTTP response statuses which are considered healthy
 - `path` (String) The HTTP path which will be requested during the health check
 (ie. /health)
+Default: "/"
 - `request_headers_to_add` (Attributes) The list of HTTP headers which should be added to each health check
 request (see [below for nested schema](#nestedatt--spec--to--default--http--request_headers_to_add))
 

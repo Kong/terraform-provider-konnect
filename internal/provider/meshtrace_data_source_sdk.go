@@ -113,12 +113,12 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(resp *shared.M
 					}
 				}
 			}
-			r.Spec.Default.Tags = []tfTypes.Tags1{}
+			r.Spec.Default.Tags = []tfTypes.Tags{}
 			if len(r.Spec.Default.Tags) > len(resp.Spec.Default.Tags) {
 				r.Spec.Default.Tags = r.Spec.Default.Tags[:len(resp.Spec.Default.Tags)]
 			}
 			for tagsCount, tagsItem := range resp.Spec.Default.Tags {
-				var tags1 tfTypes.Tags1
+				var tags1 tfTypes.Tags
 				if tagsItem.Header == nil {
 					tags1.Header = nil
 				} else {
@@ -155,7 +155,7 @@ func (r *MeshTraceDataSourceModel) RefreshFromSharedMeshTraceItem(resp *shared.M
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

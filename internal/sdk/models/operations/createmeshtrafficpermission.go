@@ -15,7 +15,7 @@ type CreateMeshTrafficPermissionRequest struct {
 	// name of the MeshTrafficPermission
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshTrafficPermissionItem shared.MeshTrafficPermissionItem `request:"mediaType=application/json"`
+	MeshTrafficPermissionItem shared.MeshTrafficPermissionItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshTrafficPermissionRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshTrafficPermissionRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshTrafficPermissionRequest) GetMeshTrafficPermissionItem() shared.MeshTrafficPermissionItem {
+func (o *CreateMeshTrafficPermissionRequest) GetMeshTrafficPermissionItem() shared.MeshTrafficPermissionItemInput {
 	if o == nil {
-		return shared.MeshTrafficPermissionItem{}
+		return shared.MeshTrafficPermissionItemInput{}
 	}
 	return o.MeshTrafficPermissionItem
 }

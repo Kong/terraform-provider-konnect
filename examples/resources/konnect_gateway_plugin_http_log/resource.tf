@@ -10,7 +10,7 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
     }
     http_endpoint = "...my_http_endpoint..."
     keepalive     = 2.25
-    method        = "PUT"
+    method        = "POST"
     queue = {
       concurrency_limit    = 0
       initial_retry_delay  = 154435.3
@@ -26,9 +26,6 @@ resource "konnect_gateway_plugin_http_log" "my_gatewaypluginhttplog" {
     timeout     = 6.49
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

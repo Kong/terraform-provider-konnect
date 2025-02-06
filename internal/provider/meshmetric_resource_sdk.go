@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshMetricResourceModel) ToSharedMeshMetricItem() *shared.MeshMetricItem {
+func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput() *shared.MeshMetricItemInput {
 	typeVar := shared.MeshMetricItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -85,15 +85,26 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItem() *shared.MeshMetricIte
 				} else {
 					clientID = nil
 				}
-				var path1 string
-				path1 = backendsItem.Prometheus.Path.ValueString()
-
-				var port1 int
-				port1 = int(backendsItem.Prometheus.Port.ValueInt64())
-
+				path1 := new(string)
+				if !backendsItem.Prometheus.Path.IsUnknown() && !backendsItem.Prometheus.Path.IsNull() {
+					*path1 = backendsItem.Prometheus.Path.ValueString()
+				} else {
+					path1 = nil
+				}
+				port1 := new(int)
+				if !backendsItem.Prometheus.Port.IsUnknown() && !backendsItem.Prometheus.Port.IsNull() {
+					*port1 = int(backendsItem.Prometheus.Port.ValueInt64())
+				} else {
+					port1 = nil
+				}
 				var tls *shared.MeshMetricItemTLS
 				if backendsItem.Prometheus.TLS != nil {
-					mode := shared.MeshMetricItemMode(backendsItem.Prometheus.TLS.Mode.ValueString())
+					mode := new(shared.MeshMetricItemMode)
+					if !backendsItem.Prometheus.TLS.Mode.IsUnknown() && !backendsItem.Prometheus.TLS.Mode.IsNull() {
+						*mode = shared.MeshMetricItemMode(backendsItem.Prometheus.TLS.Mode.ValueString())
+					} else {
+						mode = nil
+					}
 					tls = &shared.MeshMetricItemTLS{
 						Mode: mode,
 					}
@@ -233,33 +244,19 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItem() *shared.MeshMetricIte
 		Default:   defaultVar,
 		TargetRef: targetRef,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshMetricItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshMetricItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricCreateOrUpdateSuccessResponse(resp *shared.MeshMetricCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -327,13 +324,21 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 				} else {
 					backends1.Prometheus = &tfTypes.Prometheus{}
 					backends1.Prometheus.ClientID = types.StringPointerValue(backendsItem.Prometheus.ClientID)
-					backends1.Prometheus.Path = types.StringValue(backendsItem.Prometheus.Path)
-					backends1.Prometheus.Port = types.Int64Value(int64(backendsItem.Prometheus.Port))
+					backends1.Prometheus.Path = types.StringPointerValue(backendsItem.Prometheus.Path)
+					if backendsItem.Prometheus.Port != nil {
+						backends1.Prometheus.Port = types.Int64Value(int64(*backendsItem.Prometheus.Port))
+					} else {
+						backends1.Prometheus.Port = types.Int64Null()
+					}
 					if backendsItem.Prometheus.TLS == nil {
 						backends1.Prometheus.TLS = nil
 					} else {
 						backends1.Prometheus.TLS = &tfTypes.MeshMetricItemTLS{}
-						backends1.Prometheus.TLS.Mode = types.StringValue(string(backendsItem.Prometheus.TLS.Mode))
+						if backendsItem.Prometheus.TLS.Mode != nil {
+							backends1.Prometheus.TLS.Mode = types.StringValue(string(*backendsItem.Prometheus.TLS.Mode))
+						} else {
+							backends1.Prometheus.TLS.Mode = types.StringNull()
+						}
 					}
 				}
 				backends1.Type = types.StringValue(string(backendsItem.Type))
@@ -354,12 +359,12 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.AppendProfiles{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
 					if len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) > len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 						r.Spec.Default.Sidecar.Profiles.AppendProfiles = r.Spec.Default.Sidecar.Profiles.AppendProfiles[:len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles)]
 					}
 					for appendProfilesCount, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles1 tfTypes.AppendProfiles
+						var appendProfiles1 tfTypes.MeshLoadBalancingStrategyItemSpecHeader
 						appendProfiles1.Name = types.StringValue(string(appendProfilesItem.Name))
 						if appendProfilesCount+1 > len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 							r.Spec.Default.Sidecar.Profiles.AppendProfiles = append(r.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles1)
@@ -418,7 +423,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

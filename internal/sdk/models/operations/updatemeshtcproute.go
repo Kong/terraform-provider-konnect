@@ -15,7 +15,7 @@ type UpdateMeshTCPRouteRequest struct {
 	// name of the MeshTCPRoute
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshTCPRouteItem shared.MeshTCPRouteItem `request:"mediaType=application/json"`
+	MeshTCPRouteItem shared.MeshTCPRouteItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshTCPRouteRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshTCPRouteRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshTCPRouteRequest) GetMeshTCPRouteItem() shared.MeshTCPRouteItem {
+func (o *UpdateMeshTCPRouteRequest) GetMeshTCPRouteItem() shared.MeshTCPRouteItemInput {
 	if o == nil {
-		return shared.MeshTCPRouteItem{}
+		return shared.MeshTCPRouteItemInput{}
 	}
 	return o.MeshTCPRouteItem
 }

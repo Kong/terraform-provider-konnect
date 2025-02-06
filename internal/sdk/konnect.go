@@ -74,30 +74,43 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 //
 // https://docs.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
-	Mesh                      *Mesh
-	HostnameGenerator         *HostnameGenerator
-	MeshAccessLog             *MeshAccessLog
-	MeshCircuitBreaker        *MeshCircuitBreaker
-	MeshExternalService       *MeshExternalService
-	MeshFaultInjection        *MeshFaultInjection
-	MeshGateway               *MeshGateway
-	MeshGlobalRateLimit       *MeshGlobalRateLimit
-	MeshHealthCheck           *MeshHealthCheck
-	MeshHTTPRoute             *MeshHTTPRoute
-	MeshLoadBalancingStrategy *MeshLoadBalancingStrategy
-	MeshMetric                *MeshMetric
-	MeshMultiZoneService      *MeshMultiZoneService
-	MeshOPA                   *MeshOPA
-	MeshPassthrough           *MeshPassthrough
-	MeshProxyPatch            *MeshProxyPatch
-	MeshRateLimit             *MeshRateLimit
-	MeshRetry                 *MeshRetry
-	MeshService               *MeshService
-	MeshTCPRoute              *MeshTCPRoute
-	MeshTimeout               *MeshTimeout
-	MeshTLS                   *MeshTLS
-	MeshTrace                 *MeshTrace
-	MeshTrafficPermission     *MeshTrafficPermission
+	ServerlessCloudGateways        *ServerlessCloudGateways
+	Mesh                           *Mesh
+	HostnameGenerator              *HostnameGenerator
+	MeshAccessLog                  *MeshAccessLog
+	MeshCircuitBreaker             *MeshCircuitBreaker
+	MeshExternalService            *MeshExternalService
+	MeshFaultInjection             *MeshFaultInjection
+	MeshGateway                    *MeshGateway
+	MeshGlobalRateLimit            *MeshGlobalRateLimit
+	MeshHealthCheck                *MeshHealthCheck
+	MeshHTTPRoute                  *MeshHTTPRoute
+	MeshLoadBalancingStrategy      *MeshLoadBalancingStrategy
+	MeshMetric                     *MeshMetric
+	MeshMultiZoneService           *MeshMultiZoneService
+	MeshOPA                        *MeshOPA
+	MeshPassthrough                *MeshPassthrough
+	MeshProxyPatch                 *MeshProxyPatch
+	MeshRateLimit                  *MeshRateLimit
+	MeshRetry                      *MeshRetry
+	MeshService                    *MeshService
+	MeshTCPRoute                   *MeshTCPRoute
+	MeshTimeout                    *MeshTimeout
+	MeshTLS                        *MeshTLS
+	MeshTrace                      *MeshTrace
+	MeshTrafficPermission          *MeshTrafficPermission
+	APIProducts                    *APIProducts
+	APIProductDocumentation        *APIProductDocumentation
+	APIProductVersions             *APIProductVersions
+	APIProductVersionSpecification *APIProductVersionSpecification
+	// Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version.
+	// Called “Auth Strategy” for short in the context of portals/applications.
+	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
+	//
+	AppAuthStrategies *AppAuthStrategies
+	AuditLogs         *AuditLogs
+	CloudGateways     *CloudGateways
+	ControlPlanes     *ControlPlanes
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
 	CACertificates *CACertificates
@@ -160,6 +173,8 @@ type Konnect struct {
 	//
 	//
 	//
+	//
+	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
@@ -197,7 +212,31 @@ type Konnect struct {
 	//
 	Vaults *Vaults
 	// DP Certificates
-	DPCertificates *DPCertificates
+	DPCertificates     *DPCertificates
+	ControlPlaneGroups *ControlPlaneGroups
+	// APIs related to Configuration of Konnect Developer Portals.
+	Portals *Portals
+	// APIs related to Konnect Developer Portal Appearance Settings.
+	PortalAppearance *PortalAppearance
+	// APIs related to Konnect Developer Portal Authentication Settings.
+	PortalAuthSettings *PortalAuthSettings
+	// Portal Product Versions hold metadata that describes how a Product Version is configured for a specific portal.
+	//
+	//   They contain:
+	//   - Lifecyle and deprecation statuses
+	//   - Application registration settings like auto approve or whether application registration is enabled
+	//   - The authentication strategy that is enabled for Application Registration
+	//
+	PortalProductVersions *PortalProductVersions
+	// APIs related to Konnect Developer Portal Developer Teams.
+	PortalTeams                  *PortalTeams
+	SystemAccounts               *SystemAccounts
+	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
+	SystemAccountsRoles          *SystemAccountsRoles
+	Teams                        *Teams
+	Roles                        *Roles
+	SystemAccountsTeamMembership *SystemAccountsTeamMembership
+	TeamMembership               *TeamMembership
 
 	sdkConfiguration sdkConfiguration
 }
@@ -275,9 +314,9 @@ func New(opts ...SDKOption) *Konnect {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "0.0.1",
-			GenVersion:        "2.477.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.477.0 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			SDKVersion:        "2.2.0",
+			GenVersion:        "2.503.2",
+			UserAgent:         "speakeasy-sdk/terraform 2.2.0 2.503.2 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -296,6 +335,8 @@ func New(opts ...SDKOption) *Konnect {
 	if serverURL != currentServerURL {
 		sdk.sdkConfiguration.ServerURL = serverURL
 	}
+
+	sdk.ServerlessCloudGateways = newServerlessCloudGateways(sdk.sdkConfiguration)
 
 	sdk.Mesh = newMesh(sdk.sdkConfiguration)
 
@@ -345,6 +386,22 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.MeshTrafficPermission = newMeshTrafficPermission(sdk.sdkConfiguration)
 
+	sdk.APIProducts = newAPIProducts(sdk.sdkConfiguration)
+
+	sdk.APIProductDocumentation = newAPIProductDocumentation(sdk.sdkConfiguration)
+
+	sdk.APIProductVersions = newAPIProductVersions(sdk.sdkConfiguration)
+
+	sdk.APIProductVersionSpecification = newAPIProductVersionSpecification(sdk.sdkConfiguration)
+
+	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
+
+	sdk.AuditLogs = newAuditLogs(sdk.sdkConfiguration)
+
+	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
+
+	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
+
 	sdk.CACertificates = newCACertificates(sdk.sdkConfiguration)
 
 	sdk.Certificates = newCertificates(sdk.sdkConfiguration)
@@ -386,6 +443,32 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.Vaults = newVaults(sdk.sdkConfiguration)
 
 	sdk.DPCertificates = newDPCertificates(sdk.sdkConfiguration)
+
+	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
+
+	sdk.Portals = newPortals(sdk.sdkConfiguration)
+
+	sdk.PortalAppearance = newPortalAppearance(sdk.sdkConfiguration)
+
+	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
+
+	sdk.PortalProductVersions = newPortalProductVersions(sdk.sdkConfiguration)
+
+	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
+
+	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsAccessTokens = newSystemAccountsAccessTokens(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsRoles = newSystemAccountsRoles(sdk.sdkConfiguration)
+
+	sdk.Teams = newTeams(sdk.sdkConfiguration)
+
+	sdk.Roles = newRoles(sdk.sdkConfiguration)
+
+	sdk.SystemAccountsTeamMembership = newSystemAccountsTeamMembership(sdk.sdkConfiguration)
+
+	sdk.TeamMembership = newTeamMembership(sdk.sdkConfiguration)
 
 	return sdk
 }

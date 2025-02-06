@@ -15,7 +15,7 @@ type UpdateMeshTraceRequest struct {
 	// name of the MeshTrace
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshTraceItem shared.MeshTraceItem `request:"mediaType=application/json"`
+	MeshTraceItem shared.MeshTraceItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshTraceRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshTraceRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshTraceRequest) GetMeshTraceItem() shared.MeshTraceItem {
+func (o *UpdateMeshTraceRequest) GetMeshTraceItem() shared.MeshTraceItemInput {
 	if o == nil {
-		return shared.MeshTraceItem{}
+		return shared.MeshTraceItemInput{}
 	}
 	return o.MeshTraceItem
 }

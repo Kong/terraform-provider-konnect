@@ -258,7 +258,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 								backends5.Conf.CertManagerCertificateAuthorityConfig.CaCert.Type = types.StringValue(string(typeVarResult3))
 							}
 							backends5.Conf.CertManagerCertificateAuthorityConfig.CommonName = types.StringPointerValue(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.CommonName)
-							backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = []types.String{}
+							backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = make([]types.String, 0, len(backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames))
 							for _, v := range backendsItem2.Conf.CertManagerCertificateAuthorityConfig.DNSNames {
 								backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames = append(backends5.Conf.CertManagerCertificateAuthorityConfig.DNSNames, types.StringValue(v))
 							}
@@ -375,7 +375,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 				items1.Routing.LocalityAwareLoadBalancing = types.BoolPointerValue(itemsItem.Routing.LocalityAwareLoadBalancing)
 				items1.Routing.ZoneEgress = types.BoolPointerValue(itemsItem.Routing.ZoneEgress)
 			}
-			items1.SkipCreatingInitialPolicies = []types.String{}
+			items1.SkipCreatingInitialPolicies = make([]types.String, 0, len(itemsItem.SkipCreatingInitialPolicies))
 			for _, v := range itemsItem.SkipCreatingInitialPolicies {
 				items1.SkipCreatingInitialPolicies = append(items1.SkipCreatingInitialPolicies, types.StringValue(v))
 			}

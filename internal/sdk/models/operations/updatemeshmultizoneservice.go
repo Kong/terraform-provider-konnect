@@ -15,7 +15,7 @@ type UpdateMeshMultiZoneServiceRequest struct {
 	// name of the MeshMultiZoneService
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshMultiZoneServiceItem shared.MeshMultiZoneServiceItem `request:"mediaType=application/json"`
+	MeshMultiZoneServiceItem shared.MeshMultiZoneServiceItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshMultiZoneServiceRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshMultiZoneServiceRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshMultiZoneServiceRequest) GetMeshMultiZoneServiceItem() shared.MeshMultiZoneServiceItem {
+func (o *UpdateMeshMultiZoneServiceRequest) GetMeshMultiZoneServiceItem() shared.MeshMultiZoneServiceItemInput {
 	if o == nil {
-		return shared.MeshMultiZoneServiceItem{}
+		return shared.MeshMultiZoneServiceItemInput{}
 	}
 	return o.MeshMultiZoneServiceItem
 }

@@ -70,13 +70,21 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(resp *shared
 				} else {
 					backends1.Prometheus = &tfTypes.Prometheus{}
 					backends1.Prometheus.ClientID = types.StringPointerValue(backendsItem.Prometheus.ClientID)
-					backends1.Prometheus.Path = types.StringValue(backendsItem.Prometheus.Path)
-					backends1.Prometheus.Port = types.Int64Value(int64(backendsItem.Prometheus.Port))
+					backends1.Prometheus.Path = types.StringPointerValue(backendsItem.Prometheus.Path)
+					if backendsItem.Prometheus.Port != nil {
+						backends1.Prometheus.Port = types.Int64Value(int64(*backendsItem.Prometheus.Port))
+					} else {
+						backends1.Prometheus.Port = types.Int64Null()
+					}
 					if backendsItem.Prometheus.TLS == nil {
 						backends1.Prometheus.TLS = nil
 					} else {
 						backends1.Prometheus.TLS = &tfTypes.MeshMetricItemTLS{}
-						backends1.Prometheus.TLS.Mode = types.StringValue(string(backendsItem.Prometheus.TLS.Mode))
+						if backendsItem.Prometheus.TLS.Mode != nil {
+							backends1.Prometheus.TLS.Mode = types.StringValue(string(*backendsItem.Prometheus.TLS.Mode))
+						} else {
+							backends1.Prometheus.TLS.Mode = types.StringNull()
+						}
 					}
 				}
 				backends1.Type = types.StringValue(string(backendsItem.Type))
@@ -97,12 +105,12 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(resp *shared
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.AppendProfiles{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
 					if len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) > len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 						r.Spec.Default.Sidecar.Profiles.AppendProfiles = r.Spec.Default.Sidecar.Profiles.AppendProfiles[:len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles)]
 					}
 					for appendProfilesCount, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles1 tfTypes.AppendProfiles
+						var appendProfiles1 tfTypes.MeshLoadBalancingStrategyItemSpecHeader
 						appendProfiles1.Name = types.StringValue(string(appendProfilesItem.Name))
 						if appendProfilesCount+1 > len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 							r.Spec.Default.Sidecar.Profiles.AppendProfiles = append(r.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles1)
@@ -161,7 +169,7 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(resp *shared
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

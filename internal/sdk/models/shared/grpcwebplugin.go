@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type GrpcWebPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *GrpcWebPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type GrpcWebPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *GrpcWebPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type GrpcWebPluginOrdering struct {
+	After  *GrpcWebPluginAfter  `json:"after,omitempty"`
+	Before *GrpcWebPluginBefore `json:"before,omitempty"`
+}
+
+func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type GrpcWebPluginConfig struct {
 	// The value of the `Access-Control-Allow-Origin` header in the response to the gRPC-Web client.
 	AllowOriginHeader *string `json:"allow_origin_header,omitempty"`
@@ -50,58 +91,7 @@ func (o *GrpcWebPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type GrpcWebPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *GrpcWebPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type GrpcWebPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *GrpcWebPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type GrpcWebPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *GrpcWebPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type GrpcWebPluginOrdering struct {
-	After  *GrpcWebPluginAfter  `json:"after,omitempty"`
-	Before *GrpcWebPluginBefore `json:"before,omitempty"`
-}
-
-func (o *GrpcWebPluginOrdering) GetAfter() *GrpcWebPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *GrpcWebPluginOrdering) GetBefore() *GrpcWebPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
+// GrpcWebPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
 type GrpcWebPluginProtocols string
 
 const (
@@ -152,7 +142,7 @@ func (e *GrpcWebPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// GrpcWebPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// GrpcWebPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type GrpcWebPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -178,10 +168,6 @@ func (o *GrpcWebPluginService) GetID() *string {
 
 // GrpcWebPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type GrpcWebPlugin struct {
-	Config GrpcWebPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *GrpcWebPluginConsumer      `json:"consumer"`
-	ConsumerGroup *GrpcWebPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -190,16 +176,19 @@ type GrpcWebPlugin struct {
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"grpc-web" json:"name"`
 	Ordering     *GrpcWebPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *GrpcWebPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *GrpcWebPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    GrpcWebPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *GrpcWebPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing protocols.
+	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *GrpcWebPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *GrpcWebPluginService `json:"service,omitempty"`
 }
 
 func (g GrpcWebPlugin) MarshalJSON() ([]byte, error) {
@@ -211,27 +200,6 @@ func (g *GrpcWebPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *GrpcWebPlugin) GetConfig() GrpcWebPluginConfig {
-	if o == nil {
-		return GrpcWebPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *GrpcWebPlugin) GetConsumer() *GrpcWebPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *GrpcWebPlugin) GetConsumerGroup() *GrpcWebPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *GrpcWebPlugin) GetCreatedAt() *int64 {
@@ -273,6 +241,34 @@ func (o *GrpcWebPlugin) GetOrdering() *GrpcWebPluginOrdering {
 	return o.Ordering
 }
 
+func (o *GrpcWebPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *GrpcWebPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *GrpcWebPlugin) GetConfig() GrpcWebPluginConfig {
+	if o == nil {
+		return GrpcWebPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *GrpcWebPlugin) GetConsumer() *GrpcWebPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *GrpcWebPlugin) GetProtocols() []GrpcWebPluginProtocols {
 	if o == nil {
 		return nil
@@ -294,40 +290,25 @@ func (o *GrpcWebPlugin) GetService() *GrpcWebPluginService {
 	return o.Service
 }
 
-func (o *GrpcWebPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *GrpcWebPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // GrpcWebPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type GrpcWebPluginInput struct {
-	Config GrpcWebPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *GrpcWebPluginConsumer      `json:"consumer"`
-	ConsumerGroup *GrpcWebPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                  `json:"enabled,omitempty"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"grpc-web" json:"name"`
 	Ordering     *GrpcWebPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *GrpcWebPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *GrpcWebPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string            `json:"tags,omitempty"`
+	Config GrpcWebPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *GrpcWebPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing protocols.
+	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *GrpcWebPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *GrpcWebPluginService `json:"service,omitempty"`
 }
 
 func (g GrpcWebPluginInput) MarshalJSON() ([]byte, error) {
@@ -339,27 +320,6 @@ func (g *GrpcWebPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *GrpcWebPluginInput) GetConfig() GrpcWebPluginConfig {
-	if o == nil {
-		return GrpcWebPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *GrpcWebPluginInput) GetConsumer() *GrpcWebPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *GrpcWebPluginInput) GetConsumerGroup() *GrpcWebPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *GrpcWebPluginInput) GetEnabled() *bool {
@@ -394,6 +354,27 @@ func (o *GrpcWebPluginInput) GetOrdering() *GrpcWebPluginOrdering {
 	return o.Ordering
 }
 
+func (o *GrpcWebPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *GrpcWebPluginInput) GetConfig() GrpcWebPluginConfig {
+	if o == nil {
+		return GrpcWebPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *GrpcWebPluginInput) GetConsumer() *GrpcWebPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *GrpcWebPluginInput) GetProtocols() []GrpcWebPluginProtocols {
 	if o == nil {
 		return nil
@@ -413,11 +394,4 @@ func (o *GrpcWebPluginInput) GetService() *GrpcWebPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *GrpcWebPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

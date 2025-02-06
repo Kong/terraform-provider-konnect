@@ -23,7 +23,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     limits = {
       key = jsonencode("value"),
     }
-    policy = "local"
+    policy = "cluster"
     redis = {
       database    = 9
       host        = "...my_host..."
@@ -37,9 +37,6 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     }
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -59,7 +56,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."
@@ -84,12 +81,11 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -110,7 +106,7 @@ Optional:
 - `hide_client_headers` (Boolean) Optionally hide informative response headers.
 - `limit_by` (String) The entity that will be used when aggregating the limits: `consumer`, `credential`, `ip`. If the `consumer` or the `credential` cannot be determined, the system will always fallback to `ip`. must be one of ["consumer", "credential", "ip"]
 - `limits` (Map of String) A map that defines rate limits for the plugin.
-- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["local", "cluster", "redis"]
+- `policy` (String) The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]
 - `redis` (Attributes) Redis configuration (see [below for nested schema](#nestedatt--config--redis))
 
 <a id="nestedatt--config--redis"></a>
@@ -132,14 +128,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

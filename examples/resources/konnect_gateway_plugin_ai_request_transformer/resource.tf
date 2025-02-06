@@ -19,7 +19,7 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
         gcp_use_service_account    = true
         header_name                = "...my_header_name..."
         header_value               = "...my_header_value..."
-        param_location             = "body"
+        param_location             = "query"
         param_name                 = "...my_param_name..."
         param_value                = "...my_param_value..."
       }
@@ -42,10 +42,14 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
             location_id  = "...my_location_id..."
             project_id   = "...my_project_id..."
           }
+          huggingface = {
+            use_cache      = false
+            wait_for_model = true
+          }
           input_cost     = 6.37
-          llama2_format  = "raw"
+          llama2_format  = "ollama"
           max_tokens     = 5
-          mistral_format = "openai"
+          mistral_format = "ollama"
           output_cost    = 8.25
           temperature    = 0.7
           top_k          = 420
@@ -53,16 +57,13 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
           upstream_path  = "...my_upstream_path..."
           upstream_url   = "...my_upstream_url..."
         }
-        provider = "gemini"
+        provider = "mistral"
       }
       route_type = "preserve"
     }
     max_request_body_size          = 7
     prompt                         = "...my_prompt..."
     transformation_extract_pattern = "...my_transformation_extract_pattern..."
-  }
-  consumer = {
-    id = "...my_id..."
   }
   consumer_group = {
     id = "...my_id..."
@@ -84,7 +85,7 @@ resource "konnect_gateway_plugin_ai_request_transformer" "my_gatewaypluginairequ
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

@@ -70,7 +70,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 				from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 				from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-				from1.TargetRef.ProxyTypes = []types.String{}
+				from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
 				for _, v := range fromItem.TargetRef.ProxyTypes {
 					from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -132,7 +132,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = []types.String{}
+				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -178,7 +178,7 @@ func (r *MeshTimeoutListDataSourceModel) RefreshFromSharedMeshTimeoutList(resp *
 				to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 				to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 				to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-				to1.TargetRef.ProxyTypes = []types.String{}
+				to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 				for _, v := range toItem.TargetRef.ProxyTypes {
 					to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

@@ -14,14 +14,12 @@ MeshService Resource
 
 ```terraform
 resource "konnect_mesh_service" "my_meshservice" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     identities = [
       {
@@ -50,45 +48,6 @@ resource "konnect_mesh_service" "my_meshservice" {
     }
     state = "Available"
   }
-  status = {
-    addresses = [
-      {
-        hostname = "...my_hostname..."
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-        origin = "...my_origin..."
-      }
-    ]
-    dataplane_proxies = {
-      connected = 8
-      healthy   = 6
-      total     = 2
-    }
-    hostname_generators = [
-      {
-        conditions = [
-          {
-            message = "...my_message..."
-            reason  = "...my_reason..."
-            status  = "True"
-            type    = "...my_type..."
-          }
-        ]
-        hostname_generator_ref = {
-          core_name = "...my_core_name..."
-        }
-      }
-    ]
-    tls = {
-      status = "Ready"
-    }
-    vips = [
-      {
-        ip = "...my_ip..."
-      }
-    ]
-  }
   type = "MeshService"
 }
 ```
@@ -106,13 +65,13 @@ resource "konnect_mesh_service" "my_meshservice" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
-- `status` (Attributes) Status is the current status of the Kuma MeshService resource. (see [below for nested schema](#nestedatt--status))
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
+- `status` (Attributes) Status is the current status of the Kuma MeshService resource. (see [below for nested schema](#nestedatt--status))
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -142,7 +101,7 @@ Optional:
 
 Optional:
 
-- `app_protocol` (String) Protocol identifies a protocol supported by a service.
+- `app_protocol` (String) Protocol identifies a protocol supported by a service. Default: "tcp"
 - `name` (String)
 - `port` (Number) Not Null
 - `target_port` (Attributes) (see [below for nested schema](#nestedatt--spec--ports--target_port))
@@ -178,7 +137,7 @@ Optional:
 <a id="nestedatt--status"></a>
 ### Nested Schema for `status`
 
-Optional:
+Read-Only:
 
 - `addresses` (Attributes List) (see [below for nested schema](#nestedatt--status--addresses))
 - `dataplane_proxies` (Attributes) Data plane proxies statistics selected by this MeshService. (see [below for nested schema](#nestedatt--status--dataplane_proxies))
@@ -189,7 +148,7 @@ Optional:
 <a id="nestedatt--status--addresses"></a>
 ### Nested Schema for `status.addresses`
 
-Optional:
+Read-Only:
 
 - `hostname` (String)
 - `hostname_generator_ref` (Attributes) (see [below for nested schema](#nestedatt--status--addresses--hostname_generator_ref))
@@ -198,16 +157,16 @@ Optional:
 <a id="nestedatt--status--addresses--hostname_generator_ref"></a>
 ### Nested Schema for `status.addresses.hostname_generator_ref`
 
-Optional:
+Read-Only:
 
-- `core_name` (String) Not Null
+- `core_name` (String)
 
 
 
 <a id="nestedatt--status--dataplane_proxies"></a>
 ### Nested Schema for `status.dataplane_proxies`
 
-Optional:
+Read-Only:
 
 - `connected` (Number) Number of data plane proxies connected to the zone control plane
 - `healthy` (Number) Number of data plane proxies with all healthy inbounds selected by this MeshService.
@@ -217,42 +176,40 @@ Optional:
 <a id="nestedatt--status--hostname_generators"></a>
 ### Nested Schema for `status.hostname_generators`
 
-Optional:
+Read-Only:
 
 - `conditions` (Attributes List) Conditions is an array of hostname generator conditions. (see [below for nested schema](#nestedatt--status--hostname_generators--conditions))
-- `hostname_generator_ref` (Attributes) Not Null (see [below for nested schema](#nestedatt--status--hostname_generators--hostname_generator_ref))
+- `hostname_generator_ref` (Attributes) (see [below for nested schema](#nestedatt--status--hostname_generators--hostname_generator_ref))
 
 <a id="nestedatt--status--hostname_generators--conditions"></a>
 ### Nested Schema for `status.hostname_generators.conditions`
 
-Optional:
+Read-Only:
 
 - `message` (String) message is a human readable message indicating details about the transition.
 This may be an empty string.
-Not Null
 - `reason` (String) reason contains a programmatic identifier indicating the reason for the condition's last transition.
 Producers of specific condition types may define expected values and meanings for this field,
 and whether the values are considered a guaranteed API.
 The value should be a CamelCase string.
 This field may not be empty.
-Not Null
-- `status` (String) status of the condition, one of True, False, Unknown. Not Null; must be one of ["True", "False", "Unknown"]
-- `type` (String) type of condition in CamelCase or in foo.example.com/CamelCase. Not Null
+- `status` (String) status of the condition, one of True, False, Unknown. must be one of ["True", "False", "Unknown"]
+- `type` (String) type of condition in CamelCase or in foo.example.com/CamelCase.
 
 
 <a id="nestedatt--status--hostname_generators--hostname_generator_ref"></a>
 ### Nested Schema for `status.hostname_generators.hostname_generator_ref`
 
-Optional:
+Read-Only:
 
-- `core_name` (String) Not Null
+- `core_name` (String)
 
 
 
 <a id="nestedatt--status--tls"></a>
 ### Nested Schema for `status.tls`
 
-Optional:
+Read-Only:
 
 - `status` (String) must be one of ["Ready", "NotReady"]
 
@@ -260,7 +217,7 @@ Optional:
 <a id="nestedatt--status--vips"></a>
 ### Nested Schema for `status.vips`
 
-Optional:
+Read-Only:
 
 - `ip` (String)
 

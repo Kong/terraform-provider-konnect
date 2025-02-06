@@ -3,7 +3,7 @@
 package types
 
 type MeshGatewayItemTLS struct {
-	Certificates []AccessKey             `tfsdk:"certificates"`
-	Mode         *Mode                   `tfsdk:"mode"`
-	Options      *MeshGatewayItemOptions `tfsdk:"options"`
+	Certificates []AccessKey `tfsdk:"certificates"`
+	Mode         *Mode       `tfsdk:"mode"`
+	Options      *Metadata   `tfsdk:"options"`
 }

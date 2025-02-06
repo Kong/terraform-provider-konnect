@@ -15,7 +15,7 @@ type UpdateMeshExternalServiceRequest struct {
 	// name of the MeshExternalService
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshExternalServiceItem shared.MeshExternalServiceItem `request:"mediaType=application/json"`
+	MeshExternalServiceItem shared.MeshExternalServiceItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshExternalServiceRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshExternalServiceRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshExternalServiceRequest) GetMeshExternalServiceItem() shared.MeshExternalServiceItem {
+func (o *UpdateMeshExternalServiceRequest) GetMeshExternalServiceItem() shared.MeshExternalServiceItemInput {
 	if o == nil {
-		return shared.MeshExternalServiceItem{}
+		return shared.MeshExternalServiceItemInput{}
 	}
 	return o.MeshExternalServiceItem
 }

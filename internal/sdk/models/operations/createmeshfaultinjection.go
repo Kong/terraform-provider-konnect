@@ -15,7 +15,7 @@ type CreateMeshFaultInjectionRequest struct {
 	// name of the MeshFaultInjection
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshFaultInjectionItem shared.MeshFaultInjectionItem `request:"mediaType=application/json"`
+	MeshFaultInjectionItem shared.MeshFaultInjectionItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshFaultInjectionRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshFaultInjectionRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshFaultInjectionRequest) GetMeshFaultInjectionItem() shared.MeshFaultInjectionItem {
+func (o *CreateMeshFaultInjectionRequest) GetMeshFaultInjectionItem() shared.MeshFaultInjectionItemInput {
 	if o == nil {
-		return shared.MeshFaultInjectionItem{}
+		return shared.MeshFaultInjectionItemInput{}
 	}
 	return o.MeshFaultInjectionItem
 }

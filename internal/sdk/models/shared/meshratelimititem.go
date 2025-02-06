@@ -1028,7 +1028,7 @@ type MeshRateLimitItem struct {
 	// the type of the resource
 	Type MeshRateLimitItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1099,4 +1099,63 @@ func (o *MeshRateLimitItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshRateLimitItemInput struct {
+	// the type of the resource
+	Type MeshRateLimitItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshRateLimit resource.
+	Spec MeshRateLimitItemSpec `json:"spec"`
+}
+
+func (m MeshRateLimitItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshRateLimitItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshRateLimitItemInput) GetType() MeshRateLimitItemType {
+	if o == nil {
+		return MeshRateLimitItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshRateLimitItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshRateLimitItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshRateLimitItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshRateLimitItemInput) GetSpec() MeshRateLimitItemSpec {
+	if o == nil {
+		return MeshRateLimitItemSpec{}
+	}
+	return o.Spec
 }

@@ -9,19 +9,13 @@ resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
     ]
     max_age = 8.8
     methods = [
-      "HEAD"
+      "DELETE"
     ]
     origins = [
       "..."
     ]
     preflight_continue = true
     private_network    = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
@@ -40,7 +34,7 @@ resource "konnect_gateway_plugin_cors" "my_gatewayplugincors" {
     }
   }
   protocols = [
-    "tcp"
+    "grpcs"
   ]
   route = {
     id = "...my_id..."

@@ -10,7 +10,7 @@ resource "konnect_gateway_plugin_proxy_cache" "my_gatewaypluginproxycache" {
       dictionary_name = "...my_dictionary_name..."
     }
     request_method = [
-      "POST"
+      "PATCH"
     ]
     response_code = [
       411

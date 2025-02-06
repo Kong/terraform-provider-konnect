@@ -13,9 +13,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -65,7 +72,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -81,7 +91,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -135,7 +148,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -160,14 +177,22 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 							`defined inplace.`,
 					},
 					"to": schema.ListNestedAttribute{
+						Computed: true,
 						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							custom_listplanmodifier.SupressZeroNullModifier(),
+						},
 						NestedObject: schema.NestedAttributeObject{
 							Validators: []validator.Object{
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
 								"hostnames": schema.ListAttribute{
-									Optional:    true,
+									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.List{
+										custom_listplanmodifier.SupressZeroNullModifier(),
+									},
 									ElementType: types.StringType,
 									MarkdownDescription: `Hostnames is only valid when targeting MeshGateway and limits the` + "\n" +
 										`effects of the rules to requests to this hostname.` + "\n" +
@@ -175,7 +200,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 										`route attaches to.`,
 								},
 								"rules": schema.ListNestedAttribute{
+									Computed: true,
 									Optional: true,
+									PlanModifiers: []planmodifier.List{
+										custom_listplanmodifier.SupressZeroNullModifier(),
+									},
 									NestedObject: schema.NestedAttributeObject{
 										Validators: []validator.Object{
 											speakeasy_objectvalidators.NotNull(),
@@ -185,7 +214,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												Optional: true,
 												Attributes: map[string]schema.Attribute{
 													"backend_refs": schema.ListNestedAttribute{
+														Computed: true,
 														Optional: true,
+														PlanModifiers: []planmodifier.List{
+															custom_listplanmodifier.SupressZeroNullModifier(),
+														},
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
 																speakeasy_objectvalidators.NotNull(),
@@ -233,7 +266,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Description: `Port is only supported when this ref refers to a real MeshService object`,
 																},
 																"proxy_types": schema.ListAttribute{
-																	Optional:    true,
+																	Computed: true,
+																	Optional: true,
+																	PlanModifiers: []planmodifier.List{
+																		custom_listplanmodifier.SupressZeroNullModifier(),
+																	},
 																	ElementType: types.StringType,
 																	MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 																		`all data plane types are targeted by the policy.`,
@@ -253,13 +290,20 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																},
 																"weight": schema.Int64Attribute{
-																	Optional: true,
+																	Computed:    true,
+																	Optional:    true,
+																	Default:     int64default.StaticInt64(1),
+																	Description: `Default: 1`,
 																},
 															},
 														},
 													},
 													"filters": schema.ListNestedAttribute{
+														Computed: true,
 														Optional: true,
+														PlanModifiers: []planmodifier.List{
+															custom_listplanmodifier.SupressZeroNullModifier(),
+														},
 														NestedObject: schema.NestedAttributeObject{
 															Validators: []validator.Object{
 																speakeasy_objectvalidators.NotNull(),
@@ -269,7 +313,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -298,14 +346,22 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
-																			Optional:    true,
+																			Computed: true,
+																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			ElementType: types.StringType,
 																			Validators: []validator.List{
 																				listvalidator.SizeAtMost(16),
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -386,7 +442,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																					Description: `Port is only supported when this ref refers to a real MeshService object`,
 																				},
 																				"proxy_types": schema.ListAttribute{
-																					Optional:    true,
+																					Computed: true,
+																					Optional: true,
+																					PlanModifiers: []planmodifier.List{
+																						custom_listplanmodifier.SupressZeroNullModifier(),
+																					},
 																					ElementType: types.StringType,
 																					MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 																						`all data plane types are targeted by the policy.`,
@@ -406,7 +466,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																						`` + "`" + `MeshSubset` + "`" + ` and ` + "`" + `MeshServiceSubset` + "`" + ``,
 																				},
 																				"weight": schema.Int64Attribute{
-																					Optional: true,
+																					Computed:    true,
+																					Optional:    true,
+																					Default:     int64default.StaticInt64(1),
+																					Description: `Default: 1`,
 																				},
 																			},
 																			Description: `BackendRef defines where to forward traffic. Not Null`,
@@ -501,8 +564,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"status_code": schema.Int64Attribute{
+																			Computed:    true,
 																			Optional:    true,
-																			Description: `StatusCode is the HTTP status code to be used in response. must be one of ["301", "302", "303", "307", "308"]`,
+																			Default:     int64default.StaticInt64(302),
+																			Description: `StatusCode is the HTTP status code to be used in response. Default: 302; must be one of ["301", "302", "303", "307", "308"]`,
 																			Validators: []validator.Int64{
 																				int64validator.OneOf(
 																					301,
@@ -519,7 +584,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"add": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -548,14 +617,22 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																			},
 																		},
 																		"remove": schema.ListAttribute{
-																			Optional:    true,
+																			Computed: true,
+																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			ElementType: types.StringType,
 																			Validators: []validator.List{
 																				listvalidator.SizeAtMost(16),
 																			},
 																		},
 																		"set": schema.ListNestedAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.List{
+																				custom_listplanmodifier.SupressZeroNullModifier(),
+																			},
 																			NestedObject: schema.NestedAttributeObject{
 																				Validators: []validator.Object{
 																					speakeasy_objectvalidators.NotNull(),
@@ -606,7 +683,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"host_to_backend_hostname": schema.BoolAttribute{
+																			Computed: true,
 																			Optional: true,
+																			PlanModifiers: []planmodifier.Bool{
+																				custom_boolplanmodifier.SupressZeroNullModifier(),
+																			},
 																			MarkdownDescription: `HostToBackendHostname rewrites the hostname to the hostname of the` + "\n" +
 																				`upstream host. This option is only available when targeting MeshGateways.`,
 																		},
@@ -655,14 +736,22 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												},
 											},
 											"matches": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
+												PlanModifiers: []planmodifier.List{
+													custom_listplanmodifier.SupressZeroNullModifier(),
+												},
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
 														speakeasy_objectvalidators.NotNull(),
 													},
 													Attributes: map[string]schema.Attribute{
 														"headers": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -680,8 +769,10 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																		},
 																	},
 																	"type": schema.StringAttribute{
+																		Computed:    true,
 																		Optional:    true,
-																		Description: `Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
+																		Default:     stringdefault.StaticString("Exact"),
+																		Description: `Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]`,
 																		Validators: []validator.String{
 																			stringvalidator.OneOf(
 																				"Exact",
@@ -744,7 +835,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 															},
 														},
 														"query_params": schema.ListNestedAttribute{
+															Computed: true,
 															Optional: true,
+															PlanModifiers: []planmodifier.List{
+																custom_listplanmodifier.SupressZeroNullModifier(),
+															},
 															NestedObject: schema.NestedAttributeObject{
 																Validators: []validator.Object{
 																	speakeasy_objectvalidators.NotNull(),
@@ -837,7 +932,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 												`will be targeted.`,
 										},
 										"proxy_types": schema.ListAttribute{
-											Optional:    true,
+											Computed: true,
+											Optional: true,
+											PlanModifiers: []planmodifier.List{
+												custom_listplanmodifier.SupressZeroNullModifier(),
+											},
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
@@ -877,7 +976,11 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -933,7 +1036,7 @@ func (r *MeshHTTPRouteResource) Create(ctx context.Context, req resource.CreateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItem()
+	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItemInput()
 	request := operations.CreateMeshHTTPRouteRequest{
 		CpID:              cpID,
 		Mesh:              mesh,
@@ -1088,7 +1191,7 @@ func (r *MeshHTTPRouteResource) Update(ctx context.Context, req resource.UpdateR
 	var name string
 	name = data.Name.ValueString()
 
-	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItem()
+	meshHTTPRouteItem := *data.ToSharedMeshHTTPRouteItemInput()
 	request := operations.UpdateMeshHTTPRouteRequest{
 		CpID:              cpID,
 		Mesh:              mesh,

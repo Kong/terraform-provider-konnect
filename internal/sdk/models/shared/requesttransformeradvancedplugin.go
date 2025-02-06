@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type RequestTransformerAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestTransformerAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestTransformerAdvancedPluginOrdering struct {
+	After  *RequestTransformerAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *RequestTransformerAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RequestTransformerAdvancedPluginOrdering) GetAfter() *RequestTransformerAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransformerAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type JSONTypes string
 
 const (
@@ -354,6 +395,7 @@ func (o *RequestTransformerAdvancedPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+// RequestTransformerAdvancedPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type RequestTransformerAdvancedPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -365,60 +407,13 @@ func (o *RequestTransformerAdvancedPluginConsumerGroup) GetID() *string {
 	return o.ID
 }
 
-type RequestTransformerAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestTransformerAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestTransformerAdvancedPluginOrdering struct {
-	After  *RequestTransformerAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *RequestTransformerAdvancedPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RequestTransformerAdvancedPluginOrdering) GetAfter() *RequestTransformerAdvancedPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RequestTransformerAdvancedPluginOrdering) GetBefore() *RequestTransformerAdvancedPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type RequestTransformerAdvancedPluginProtocols string
 
 const (
-	RequestTransformerAdvancedPluginProtocolsGrpc           RequestTransformerAdvancedPluginProtocols = "grpc"
-	RequestTransformerAdvancedPluginProtocolsGrpcs          RequestTransformerAdvancedPluginProtocols = "grpcs"
-	RequestTransformerAdvancedPluginProtocolsHTTP           RequestTransformerAdvancedPluginProtocols = "http"
-	RequestTransformerAdvancedPluginProtocolsHTTPS          RequestTransformerAdvancedPluginProtocols = "https"
-	RequestTransformerAdvancedPluginProtocolsTCP            RequestTransformerAdvancedPluginProtocols = "tcp"
-	RequestTransformerAdvancedPluginProtocolsTLS            RequestTransformerAdvancedPluginProtocols = "tls"
-	RequestTransformerAdvancedPluginProtocolsTLSPassthrough RequestTransformerAdvancedPluginProtocols = "tls_passthrough"
-	RequestTransformerAdvancedPluginProtocolsUDP            RequestTransformerAdvancedPluginProtocols = "udp"
-	RequestTransformerAdvancedPluginProtocolsWs             RequestTransformerAdvancedPluginProtocols = "ws"
-	RequestTransformerAdvancedPluginProtocolsWss            RequestTransformerAdvancedPluginProtocols = "wss"
+	RequestTransformerAdvancedPluginProtocolsGrpc  RequestTransformerAdvancedPluginProtocols = "grpc"
+	RequestTransformerAdvancedPluginProtocolsGrpcs RequestTransformerAdvancedPluginProtocols = "grpcs"
+	RequestTransformerAdvancedPluginProtocolsHTTP  RequestTransformerAdvancedPluginProtocols = "http"
+	RequestTransformerAdvancedPluginProtocolsHTTPS RequestTransformerAdvancedPluginProtocols = "https"
 )
 
 func (e RequestTransformerAdvancedPluginProtocols) ToPointer() *RequestTransformerAdvancedPluginProtocols {
@@ -437,18 +432,6 @@ func (e *RequestTransformerAdvancedPluginProtocols) UnmarshalJSON(data []byte) e
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = RequestTransformerAdvancedPluginProtocols(v)
 		return nil
 	default:
@@ -456,7 +439,7 @@ func (e *RequestTransformerAdvancedPluginProtocols) UnmarshalJSON(data []byte) e
 	}
 }
 
-// RequestTransformerAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// RequestTransformerAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type RequestTransformerAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -482,10 +465,6 @@ func (o *RequestTransformerAdvancedPluginService) GetID() *string {
 
 // RequestTransformerAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestTransformerAdvancedPlugin struct {
-	Config RequestTransformerAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestTransformerAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -494,16 +473,21 @@ type RequestTransformerAdvancedPlugin struct {
 	InstanceName *string                                   `json:"instance_name,omitempty"`
 	name         string                                    `const:"request-transformer-advanced" json:"name"`
 	Ordering     *RequestTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestTransformerAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestTransformerAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                                 `json:"updated_at,omitempty"`
+	Config    RequestTransformerAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RequestTransformerAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RequestTransformerAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RequestTransformerAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (r RequestTransformerAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -515,27 +499,6 @@ func (r *RequestTransformerAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *RequestTransformerAdvancedPlugin) GetConfig() RequestTransformerAdvancedPluginConfig {
-	if o == nil {
-		return RequestTransformerAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RequestTransformerAdvancedPlugin) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RequestTransformerAdvancedPlugin) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RequestTransformerAdvancedPlugin) GetCreatedAt() *int64 {
@@ -577,6 +540,41 @@ func (o *RequestTransformerAdvancedPlugin) GetOrdering() *RequestTransformerAdva
 	return o.Ordering
 }
 
+func (o *RequestTransformerAdvancedPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RequestTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *RequestTransformerAdvancedPlugin) GetConfig() RequestTransformerAdvancedPluginConfig {
+	if o == nil {
+		return RequestTransformerAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RequestTransformerAdvancedPlugin) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *RequestTransformerAdvancedPlugin) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *RequestTransformerAdvancedPlugin) GetProtocols() []RequestTransformerAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -598,40 +596,27 @@ func (o *RequestTransformerAdvancedPlugin) GetService() *RequestTransformerAdvan
 	return o.Service
 }
 
-func (o *RequestTransformerAdvancedPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *RequestTransformerAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // RequestTransformerAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestTransformerAdvancedPluginInput struct {
-	Config RequestTransformerAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestTransformerAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                                     `json:"enabled,omitempty"`
 	ID           *string                                   `json:"id,omitempty"`
 	InstanceName *string                                   `json:"instance_name,omitempty"`
 	name         string                                    `const:"request-transformer-advanced" json:"name"`
 	Ordering     *RequestTransformerAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestTransformerAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestTransformerAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                               `json:"tags,omitempty"`
+	Config RequestTransformerAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RequestTransformerAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *RequestTransformerAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RequestTransformerAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RequestTransformerAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RequestTransformerAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (r RequestTransformerAdvancedPluginInput) MarshalJSON() ([]byte, error) {
@@ -643,27 +628,6 @@ func (r *RequestTransformerAdvancedPluginInput) UnmarshalJSON(data []byte) error
 		return err
 	}
 	return nil
-}
-
-func (o *RequestTransformerAdvancedPluginInput) GetConfig() RequestTransformerAdvancedPluginConfig {
-	if o == nil {
-		return RequestTransformerAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RequestTransformerAdvancedPluginInput) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RequestTransformerAdvancedPluginInput) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RequestTransformerAdvancedPluginInput) GetEnabled() *bool {
@@ -698,6 +662,34 @@ func (o *RequestTransformerAdvancedPluginInput) GetOrdering() *RequestTransforme
 	return o.Ordering
 }
 
+func (o *RequestTransformerAdvancedPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RequestTransformerAdvancedPluginInput) GetConfig() RequestTransformerAdvancedPluginConfig {
+	if o == nil {
+		return RequestTransformerAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RequestTransformerAdvancedPluginInput) GetConsumer() *RequestTransformerAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *RequestTransformerAdvancedPluginInput) GetConsumerGroup() *RequestTransformerAdvancedPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *RequestTransformerAdvancedPluginInput) GetProtocols() []RequestTransformerAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -717,11 +709,4 @@ func (o *RequestTransformerAdvancedPluginInput) GetService() *RequestTransformer
 		return nil
 	}
 	return o.Service
-}
-
-func (o *RequestTransformerAdvancedPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

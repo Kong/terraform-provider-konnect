@@ -14,14 +14,12 @@ MeshRetry Resource
 
 ```terraform
 resource "konnect_mesh_retry" "my_meshretry" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     target_ref = {
       kind = "MeshServiceSubset"
@@ -146,12 +144,12 @@ resource "konnect_mesh_retry" "my_meshretry" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -229,6 +227,7 @@ Optional:
 
 - `base_interval` (String) BaseInterval is an amount of time which should be taken between retries.
 Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.
+Default: "25ms"
 - `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries.
 Default is 10 times the "BaseInterval".
 
@@ -238,7 +237,7 @@ Default is 10 times the "BaseInterval".
 
 Optional:
 
-- `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries.
+- `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries. Default: "300s"
 - `reset_headers` (Attributes List) ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)
 to match against the response. Headers are tried in order, and matched
 case-insensitive. The first header to be parsed successfully is used.
@@ -295,6 +294,7 @@ Optional:
 
 - `base_interval` (String) BaseInterval is an amount of time which should be taken between retries.
 Must be greater than zero. Values less than 1 ms are rounded up to 1 ms.
+Default: "25ms"
 - `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries.
 Default is 10 times the "BaseInterval".
 
@@ -309,6 +309,7 @@ Optional:
 OmitHostsWithTags
 - `update_frequency` (Number) UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.
 Used for OmitPreviousPriorities.
+Default: 2
 
 
 <a id="nestedatt--spec--to--default--http--rate_limited_back_off"></a>
@@ -316,7 +317,7 @@ Used for OmitPreviousPriorities.
 
 Optional:
 
-- `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries.
+- `max_interval` (String) MaxInterval is a maximal amount of time which will be taken between retries. Default: "300s"
 - `reset_headers` (Attributes List) ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)
 to match against the response. Headers are tried in order, and matched
 case-insensitive. The first header to be parsed successfully is used.
@@ -340,7 +341,7 @@ Optional:
 - `name` (String) Name is the name of the HTTP Header to be matched. Name MUST be lower case
 as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 Not Null
-- `type` (String) Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
+- `type` (String) Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
 - `value` (String) Value is the value of HTTP Header to be matched.
 
 
@@ -352,7 +353,7 @@ Optional:
 - `name` (String) Name is the name of the HTTP Header to be matched. Name MUST be lower case
 as they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).
 Not Null
-- `type` (String) Type specifies how to match against the value of the header. must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
+- `type` (String) Type specifies how to match against the value of the header. Default: "Exact"; must be one of ["Exact", "Present", "RegularExpression", "Absent", "Prefix"]
 - `value` (String) Value is the value of HTTP Header to be matched.
 
 

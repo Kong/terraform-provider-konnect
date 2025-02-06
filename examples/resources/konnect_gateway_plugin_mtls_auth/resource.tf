@@ -9,7 +9,7 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     cache_ttl      = 5.53
     cert_cache_ttl = 4.84
     consumer_by = [
-      "custom_id"
+      "username"
     ]
     default_consumer      = "...my_default_consumer..."
     http_proxy_host       = "...my_http_proxy_host..."
@@ -20,12 +20,6 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     revocation_check_mode = "STRICT"
     send_ca_dn            = true
     skip_consumer_lookup  = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
@@ -44,7 +38,7 @@ resource "konnect_gateway_plugin_mtls_auth" "my_gatewaypluginmtlsauth" {
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

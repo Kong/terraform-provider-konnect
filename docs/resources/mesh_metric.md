@@ -14,14 +14,12 @@ MeshMetric Resource
 
 ```terraform
 resource "konnect_mesh_metric" "my_meshmetric" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  mesh              = "...my_mesh..."
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  mesh = "...my_mesh..."
+  name = "...my_name..."
   spec = {
     default = {
       applications = [
@@ -106,12 +104,12 @@ resource "konnect_mesh_metric" "my_meshmetric" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 
@@ -141,7 +139,7 @@ Optional:
 
 - `address` (String) Address on which an application listens.
 - `name` (String) Name of the application to scrape
-- `path` (String) Path on which an application expose HTTP endpoint with metrics.
+- `path` (String) Path on which an application expose HTTP endpoint with metrics. Default: "/metrics/prometheus"
 - `port` (Number) Port on which an application expose HTTP endpoint with metrics. Not Null
 
 
@@ -169,8 +167,8 @@ Optional:
 Optional:
 
 - `client_id` (String) ClientId of the Prometheus backend. Needed when using MADS for DP discovery.
-- `path` (String) Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null
-- `port` (Number) Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null
+- `path` (String) Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: "/metrics"
+- `port` (Number) Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: 5670
 - `tls` (Attributes) Configuration of TLS for prometheus listener. (see [below for nested schema](#nestedatt--spec--default--backends--prometheus--tls))
 
 <a id="nestedatt--spec--default--backends--prometheus--tls"></a>
@@ -178,7 +176,7 @@ Optional:
 
 Optional:
 
-- `mode` (String) Configuration of TLS for Prometheus listener. Not Null; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]
+- `mode` (String) Configuration of TLS for Prometheus listener. Default: "Disabled"; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]
 
 
 
@@ -191,6 +189,7 @@ Optional:
 - `include_unused` (Boolean) IncludeUnused if false will scrape only metrics that has been by sidecar (counters incremented
 at least once, gauges changed at least once, and histograms added to at
 least once). If true will scrape all metrics (even the ones with zeros).
+Default: false
 - `profiles` (Attributes) Profiles allows to customize which metrics are published. (see [below for nested schema](#nestedatt--spec--default--sidecar--profiles))
 
 <a id="nestedatt--spec--default--sidecar--profiles"></a>

@@ -203,8 +203,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type StandardDeviationFactor struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type StandardDeviationFactorType
 }
@@ -1049,8 +1049,8 @@ const (
 // success_rate_standard_deviation_factor).
 // Either int or decimal represented as string.
 type MeshCircuitBreakerItemStandardDeviationFactor struct {
-	Integer *int64
-	Str     *string
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
 
 	Type MeshCircuitBreakerItemStandardDeviationFactorType
 }
@@ -1606,7 +1606,7 @@ type MeshCircuitBreakerItem struct {
 	// the type of the resource
 	Type MeshCircuitBreakerItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -1677,4 +1677,63 @@ func (o *MeshCircuitBreakerItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshCircuitBreakerItemInput struct {
+	// the type of the resource
+	Type MeshCircuitBreakerItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshCircuitBreaker resource.
+	Spec MeshCircuitBreakerItemSpec `json:"spec"`
+}
+
+func (m MeshCircuitBreakerItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshCircuitBreakerItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshCircuitBreakerItemInput) GetType() MeshCircuitBreakerItemType {
+	if o == nil {
+		return MeshCircuitBreakerItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshCircuitBreakerItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshCircuitBreakerItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshCircuitBreakerItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshCircuitBreakerItemInput) GetSpec() MeshCircuitBreakerItemSpec {
+	if o == nil {
+		return MeshCircuitBreakerItemSpec{}
+	}
+	return o.Spec
 }

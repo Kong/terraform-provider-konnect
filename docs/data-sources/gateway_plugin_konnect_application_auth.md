@@ -28,15 +28,13 @@ data "konnect_gateway_plugin_konnect_application_auth" "my_gatewaypluginkonnecta
 ### Read-Only
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) The ID of this resource.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
@@ -107,7 +105,7 @@ Read-Only:
 - `authorization_query_args_values` (List of String) Extra query argument values passed to the authorization endpoint.
 - `authorization_rolling_timeout` (Number) Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 - `bearer_token_cookie_name` (String) The name of the cookie in which the bearer token is passed.
-- `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+- `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests.
 - `cache_token_exchange` (Boolean) Cache the token exchange endpoint requests.
@@ -180,6 +178,7 @@ Read-Only:
 - `introspection_headers_values` (List of String) Extra header values passed to the introspection endpoint.
 - `introspection_hint` (String) Introspection hint parameter value passed to the introspection endpoint.
 - `introspection_post_args_client` (List of String) Extra post arguments passed from the client to the introspection endpoint.
+- `introspection_post_args_client_headers` (List of String) Extra post arguments passed from the client headers to the introspection endpoint.
 - `introspection_post_args_names` (List of String) Extra post argument names passed to the introspection endpoint.
 - `introspection_post_args_values` (List of String) Extra post argument values passed to the introspection endpoint.
 - `introspection_token_param_name` (String) Designate token's parameter name for introspection.
@@ -288,7 +287,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `unexpected_redirect_uri` (List of String) Where to redirect the client when unexpected errors happen with the requests.
 - `upstream_access_token_header` (String) The upstream access token header.
 - `upstream_access_token_jwk_header` (String) The upstream access token JWK header.
-- `upstream_headers_claims` (List of String) The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `upstream_headers_claims` (List of String) The upstream header claims. Only top level claims are supported.
 - `upstream_headers_names` (List of String) The upstream header names for the claim values.
 - `upstream_id_token_header` (String) The upstream id token header.
 - `upstream_id_token_jwk_header` (String) The upstream id token JWK header.
@@ -440,22 +439,6 @@ Read-Only:
 
 
 
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Read-Only:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Read-Only:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

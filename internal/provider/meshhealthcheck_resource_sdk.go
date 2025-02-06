@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItem() *shared.MeshHealthCheckItem {
+func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *shared.MeshHealthCheckItemInput {
 	typeVar := shared.MeshHealthCheckItemType(r.Type.ValueString())
 	mesh := new(string)
 	if !r.Mesh.IsUnknown() && !r.Mesh.IsNull() {
@@ -383,33 +383,19 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItem() *shared.Mes
 		TargetRef: targetRef,
 		To:        to,
 	}
-	creationTime := new(time.Time)
-	if !r.CreationTime.IsUnknown() && !r.CreationTime.IsNull() {
-		*creationTime, _ = time.Parse(time.RFC3339Nano, r.CreationTime.ValueString())
-	} else {
-		creationTime = nil
-	}
-	modificationTime := new(time.Time)
-	if !r.ModificationTime.IsUnknown() && !r.ModificationTime.IsNull() {
-		*modificationTime, _ = time.Parse(time.RFC3339Nano, r.ModificationTime.ValueString())
-	} else {
-		modificationTime = nil
-	}
-	out := shared.MeshHealthCheckItem{
-		Type:             typeVar,
-		Mesh:             mesh,
-		Name:             name,
-		Labels:           labels,
-		Spec:             spec,
-		CreationTime:     creationTime,
-		ModificationTime: modificationTime,
+	out := shared.MeshHealthCheckItemInput{
+		Type:   typeVar,
+		Mesh:   mesh,
+		Name:   name,
+		Labels: labels,
+		Spec:   spec,
 	}
 	return &out
 }
 
 func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckCreateOrUpdateSuccessResponse(resp *shared.MeshHealthCheckCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = []types.String{}
+		r.Warnings = make([]types.String, 0, len(resp.Warnings))
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -454,7 +440,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -508,7 +494,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 				} else {
 					to1.Default.HTTP = &tfTypes.MeshHealthCheckItemHTTP{}
 					to1.Default.HTTP.Disabled = types.BoolPointerValue(toItem.Default.HTTP.Disabled)
-					to1.Default.HTTP.ExpectedStatuses = []types.Int64{}
+					to1.Default.HTTP.ExpectedStatuses = make([]types.Int64, 0, len(toItem.Default.HTTP.ExpectedStatuses))
 					for _, v := range toItem.Default.HTTP.ExpectedStatuses {
 						to1.Default.HTTP.ExpectedStatuses = append(to1.Default.HTTP.ExpectedStatuses, types.Int64Value(v))
 					}
@@ -517,9 +503,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 						to1.Default.HTTP.RequestHeadersToAdd = nil
 					} else {
 						to1.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.StaticTags{}
+						to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
-							var add1 tfTypes.StaticTags
+							var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add1.Name = types.StringValue(addItem.Name)
 							add1.Value = types.StringValue(addItem.Value)
 							if addCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Add) {
@@ -529,9 +515,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 								to1.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add1.Value
 							}
 						}
-						to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.StaticTags{}
+						to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
-							var set1 tfTypes.StaticTags
+							var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set1.Name = types.StringValue(setItem.Name)
 							set1.Value = types.StringValue(setItem.Value)
 							if setCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Set) {
@@ -558,7 +544,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 				} else {
 					to1.Default.TCP = &tfTypes.TCP{}
 					to1.Default.TCP.Disabled = types.BoolPointerValue(toItem.Default.TCP.Disabled)
-					to1.Default.TCP.Receive = []types.String{}
+					to1.Default.TCP.Receive = make([]types.String, 0, len(toItem.Default.TCP.Receive))
 					for _, v := range toItem.Default.TCP.Receive {
 						to1.Default.TCP.Receive = append(to1.Default.TCP.Receive, types.StringValue(v))
 					}
@@ -585,7 +571,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

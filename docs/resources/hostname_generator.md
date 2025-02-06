@@ -14,13 +14,11 @@ HostnameGenerator Resource
 
 ```terraform
 resource "konnect_hostname_generator" "my_hostnamegenerator" {
-  cp_id         = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  creation_time = "0001-01-01T00:00:00Z"
+  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
   labels = {
     key = "value",
   }
-  modification_time = "0001-01-01T00:00:00Z"
-  name              = "...my_name..."
+  name = "...my_name..."
   spec = {
     selector = {
       mesh_external_service = {
@@ -57,12 +55,12 @@ resource "konnect_hostname_generator" "my_hostnamegenerator" {
 
 ### Optional
 
-- `creation_time` (String) Time at which the resource was created
 - `labels` (Map of String) The labels to help identity resources
-- `modification_time` (String) Time at which the resource was updated
 
 ### Read-Only
 
+- `creation_time` (String) Time at which the resource was created
+- `modification_time` (String) Time at which the resource was updated
 - `warnings` (List of String) warnings is a list of warning messages to return to the requesting Kuma API clients.
 Warning messages describe a problem the client making the API request should correct or be aware of.
 

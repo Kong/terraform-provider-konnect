@@ -28,16 +28,12 @@ data "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 ### Read-Only
 
 - `config` (Attributes) (see [below for nested schema](#nestedatt--config))
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `id` (String) The ID of this resource.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
-- `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 - `updated_at` (Number) Unix epoch when the resource was last updated.
 
@@ -50,7 +46,7 @@ Read-Only:
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
 - `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
 - `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-- `cert_type` (String) The certificate type to create. The possible values are `'rsa'` for RSA certificate or `'ecc'` for EC certificate.
+- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate.
 - `domains` (List of String) An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 - `eab_hmac_key` (String) External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
 - `eab_kid` (String) External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
@@ -60,7 +56,7 @@ new certificate and a renewal certificate.
 - `preferred_chain` (String) A string value that specifies the preferred certificate chain to use when generating certificates.
 - `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires.
 - `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096.
-- `storage` (String) The backend storage type to use. The possible values are `'kong'`, `'shm'`, `'redis'`, `'consul'`, or `'vault'`. In DB-less mode, `'kong'` storage is unavailable. Note that `'shm'` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `'kong'`, `'redis'`, `'consul'`, or `'vault'` in production. Please refer to the Hybrid Mode sections below as well.
+- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production.
 - `storage_config` (Attributes) (see [below for nested schema](#nestedatt--config--storage_config))
 - `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service.
 
@@ -152,22 +148,6 @@ Read-Only:
 
 
 
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Read-Only:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Read-Only:
-
-- `id` (String)
-
-
 <a id="nestedatt--ordering"></a>
 ### Nested Schema for `ordering`
 
@@ -190,20 +170,3 @@ Read-Only:
 Read-Only:
 
 - `access` (List of String)
-
-
-
-<a id="nestedatt--route"></a>
-### Nested Schema for `route`
-
-Read-Only:
-
-- `id` (String)
-
-
-<a id="nestedatt--service"></a>
-### Nested Schema for `service`
-
-Read-Only:
-
-- `id` (String)

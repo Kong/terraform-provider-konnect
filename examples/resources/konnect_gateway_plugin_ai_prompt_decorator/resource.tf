@@ -11,7 +11,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
       prepend = [
         {
           content = "...my_content..."
-          role    = "system"
+          role    = "assistant"
         }
       ]
     }
@@ -39,7 +39,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
     }
   }
   protocols = [
-    "tls"
+    "http"
   ]
   route = {
     id = "...my_id..."

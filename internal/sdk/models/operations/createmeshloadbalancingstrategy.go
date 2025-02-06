@@ -15,7 +15,7 @@ type CreateMeshLoadBalancingStrategyRequest struct {
 	// name of the MeshLoadBalancingStrategy
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshLoadBalancingStrategyItem shared.MeshLoadBalancingStrategyItem `request:"mediaType=application/json"`
+	MeshLoadBalancingStrategyItem shared.MeshLoadBalancingStrategyItemInput `request:"mediaType=application/json"`
 }
 
 func (o *CreateMeshLoadBalancingStrategyRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *CreateMeshLoadBalancingStrategyRequest) GetName() string {
 	return o.Name
 }
 
-func (o *CreateMeshLoadBalancingStrategyRequest) GetMeshLoadBalancingStrategyItem() shared.MeshLoadBalancingStrategyItem {
+func (o *CreateMeshLoadBalancingStrategyRequest) GetMeshLoadBalancingStrategyItem() shared.MeshLoadBalancingStrategyItemInput {
 	if o == nil {
-		return shared.MeshLoadBalancingStrategyItem{}
+		return shared.MeshLoadBalancingStrategyItemInput{}
 	}
 	return o.MeshLoadBalancingStrategyItem
 }

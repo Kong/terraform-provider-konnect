@@ -13,7 +13,7 @@ type UpdateHostnameGeneratorRequest struct {
 	// name of the HostnameGenerator
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	HostnameGeneratorItem shared.HostnameGeneratorItem `request:"mediaType=application/json"`
+	HostnameGeneratorItem shared.HostnameGeneratorItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateHostnameGeneratorRequest) GetCpID() string {
@@ -30,9 +30,9 @@ func (o *UpdateHostnameGeneratorRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateHostnameGeneratorRequest) GetHostnameGeneratorItem() shared.HostnameGeneratorItem {
+func (o *UpdateHostnameGeneratorRequest) GetHostnameGeneratorItem() shared.HostnameGeneratorItemInput {
 	if o == nil {
-		return shared.HostnameGeneratorItem{}
+		return shared.HostnameGeneratorItemInput{}
 	}
 	return o.HostnameGeneratorItem
 }

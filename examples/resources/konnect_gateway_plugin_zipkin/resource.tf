@@ -1,9 +1,9 @@
 resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
   config = {
     connect_timeout                  = 1674102719
-    default_header_type              = "w3c"
+    default_header_type              = "b3-single"
     default_service_name             = "...my_default_service_name..."
-    header_type                      = "jaeger"
+    header_type                      = "ignore"
     http_endpoint                    = "...my_http_endpoint..."
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     http_span_name                   = "method_path"
@@ -14,12 +14,12 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
       clear = [
         "..."
       ]
-      default_format = "b3-single"
+      default_format = "gcp"
       extract = [
-        "b3"
+        "datadog"
       ]
       inject = [
-        "w3c"
+        "b3"
       ]
     }
     queue = {
@@ -45,9 +45,6 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
     traceid_byte_count = 8
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

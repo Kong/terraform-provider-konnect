@@ -9,9 +9,9 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
     metrics = [
       {
         consumer_identifier  = "custom_id"
-        name                 = "status_count_per_user"
+        name                 = "response_size"
         sample_rate          = 2.11
-        service_identifier   = "service_id"
+        service_identifier   = "service_host"
         stat_type            = "timer"
         workspace_identifier = "workspace_name"
       }
@@ -28,15 +28,12 @@ resource "konnect_gateway_plugin_statsd_advanced" "my_gatewaypluginstatsdadvance
       max_retry_delay      = 686342.11
       max_retry_time       = 8.95
     }
-    service_identifier_default   = "service_host"
+    service_identifier_default   = "service_name"
     udp_packet_size              = 19205.04
     use_tcp                      = false
     workspace_identifier_default = "workspace_id"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

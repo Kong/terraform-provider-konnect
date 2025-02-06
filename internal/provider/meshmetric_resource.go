@@ -12,9 +12,16 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/booldefault"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64default"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -63,7 +70,10 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -79,7 +89,10 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -96,7 +109,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"applications": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -111,8 +128,10 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 											Description: `Name of the application to scrape`,
 										},
 										"path": schema.StringAttribute{
+											Computed:    true,
 											Optional:    true,
-											Description: `Path on which an application expose HTTP endpoint with metrics.`,
+											Default:     stringdefault.StaticString("/metrics/prometheus"),
+											Description: `Path on which an application expose HTTP endpoint with metrics. Default: "/metrics/prometheus"`,
 										},
 										"port": schema.Int64Attribute{
 											Optional:    true,
@@ -126,7 +145,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								Description: `Applications is a list of application that Dataplane Proxy will scrape`,
 							},
 							"backends": schema.ListNestedAttribute{
+								Computed: true,
 								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -157,27 +180,26 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													Description: `ClientId of the Prometheus backend. Needed when using MADS for DP discovery.`,
 												},
 												"path": schema.StringAttribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null`,
-													Validators: []validator.String{
-														speakeasy_stringvalidators.NotNull(),
-													},
+													Default:     stringdefault.StaticString("/metrics"),
+													Description: `Path on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: "/metrics"`,
 												},
 												"port": schema.Int64Attribute{
+													Computed:    true,
 													Optional:    true,
-													Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Not Null`,
-													Validators: []validator.Int64{
-														speakeasy_int64validators.NotNull(),
-													},
+													Default:     int64default.StaticInt64(5670),
+													Description: `Port on which a dataplane should expose HTTP endpoint with Prometheus metrics. Default: 5670`,
 												},
 												"tls": schema.SingleNestedAttribute{
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.StringAttribute{
+															Computed:    true,
 															Optional:    true,
-															Description: `Configuration of TLS for Prometheus listener. Not Null; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]`,
+															Default:     stringdefault.StaticString("Disabled"),
+															Description: `Configuration of TLS for Prometheus listener. Default: "Disabled"; must be one of ["Disabled", "ProvidedTLS", "ActiveMTLSBackend"]`,
 															Validators: []validator.String{
-																speakeasy_stringvalidators.NotNull(),
 																stringvalidator.OneOf(
 																	"Disabled",
 																	"ProvidedTLS",
@@ -210,16 +232,23 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"include_unused": schema.BoolAttribute{
+										Computed: true,
 										Optional: true,
+										Default:  booldefault.StaticBool(false),
 										MarkdownDescription: `IncludeUnused if false will scrape only metrics that has been by sidecar (counters incremented` + "\n" +
 											`at least once, gauges changed at least once, and histograms added to at` + "\n" +
-											`least once). If true will scrape all metrics (even the ones with zeros).`,
+											`least once). If true will scrape all metrics (even the ones with zeros).` + "\n" +
+											`Default: false`,
 									},
 									"profiles": schema.SingleNestedAttribute{
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
 											"append_profiles": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
+												PlanModifiers: []planmodifier.List{
+													custom_listplanmodifier.SupressZeroNullModifier(),
+												},
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
 														speakeasy_objectvalidators.NotNull(),
@@ -242,7 +271,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 												Description: `AppendProfiles allows to combine the metrics from multiple predefined profiles.`,
 											},
 											"exclude": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
+												PlanModifiers: []planmodifier.List{
+													custom_listplanmodifier.SupressZeroNullModifier(),
+												},
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
 														speakeasy_objectvalidators.NotNull(),
@@ -274,7 +307,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 													`Exclude is subordinate to Include.`,
 											},
 											"include": schema.ListNestedAttribute{
+												Computed: true,
 												Optional: true,
+												PlanModifiers: []planmodifier.List{
+													custom_listplanmodifier.SupressZeroNullModifier(),
+												},
 												NestedObject: schema.NestedAttributeObject{
 													Validators: []validator.Object{
 														speakeasy_objectvalidators.NotNull(),
@@ -355,7 +392,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -392,7 +433,11 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -448,7 +493,7 @@ func (r *MeshMetricResource) Create(ctx context.Context, req resource.CreateRequ
 	var name string
 	name = data.Name.ValueString()
 
-	meshMetricItem := *data.ToSharedMeshMetricItem()
+	meshMetricItem := *data.ToSharedMeshMetricItemInput()
 	request := operations.CreateMeshMetricRequest{
 		CpID:           cpID,
 		Mesh:           mesh,
@@ -603,7 +648,7 @@ func (r *MeshMetricResource) Update(ctx context.Context, req resource.UpdateRequ
 	var name string
 	name = data.Name.ValueString()
 
-	meshMetricItem := *data.ToSharedMeshMetricItem()
+	meshMetricItem := *data.ToSharedMeshMetricItemInput()
 	request := operations.UpdateMeshMetricRequest{
 		CpID:           cpID,
 		Mesh:           mesh,

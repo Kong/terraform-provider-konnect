@@ -8,7 +8,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     limits = {
       key = jsonencode("value"),
     }
-    policy = "local"
+    policy = "cluster"
     redis = {
       database    = 9
       host        = "...my_host..."
@@ -22,9 +22,6 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     }
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -44,7 +41,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."

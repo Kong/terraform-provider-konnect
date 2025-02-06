@@ -8,7 +8,7 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
         consumer_identifier = "username"
         name                = "request_size"
         sample_rate         = 0.12
-        stat_type           = "timer"
+        stat_type           = "set"
         tags = [
           "..."
         ]
@@ -32,9 +32,6 @@ resource "konnect_gateway_plugin_datadog" "my_gatewayplugindatadog" {
     status_tag       = "...my_status_tag..."
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"

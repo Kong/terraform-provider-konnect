@@ -30,8 +30,8 @@ type GatewayPluginAiResponseTransformerDataSource struct {
 // GatewayPluginAiResponseTransformerDataSourceModel describes the data model.
 type GatewayPluginAiResponseTransformerDataSourceModel struct {
 	Config         tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                               `tfsdk:"created_at"`
 	Enabled        types.Bool                                `tfsdk:"enabled"`
@@ -39,8 +39,8 @@ type GatewayPluginAiResponseTransformerDataSourceModel struct {
 	InstanceName   types.String                              `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
 	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"service"`
 	Tags           []types.String                            `tfsdk:"tags"`
 	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
 }
@@ -212,6 +212,19 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 													},
 												},
 											},
+											"huggingface": schema.SingleNestedAttribute{
+												Computed: true,
+												Attributes: map[string]schema.Attribute{
+													"use_cache": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Use the cache layer on the inference API`,
+													},
+													"wait_for_model": schema.BoolAttribute{
+														Computed:    true,
+														Description: `Wait for the model if it is not ready`,
+													},
+												},
+											},
 											"input_cost": schema.NumberAttribute{
 												Computed:    true,
 												Description: `Defines the cost per 1M tokens in your prompt.`,
@@ -301,6 +314,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 						Computed: true,
 					},
 				},
+				Description: `If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
@@ -346,7 +360,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
@@ -355,7 +369,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 						Computed: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,

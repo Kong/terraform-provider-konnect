@@ -36,9 +36,9 @@ func (r *MeshServiceListDataSourceModel) RefreshFromSharedMeshServiceList(resp *
 				items1.ModificationTime = types.StringNull()
 			}
 			items1.Name = types.StringValue(itemsItem.Name)
-			items1.Spec.Identities = []tfTypes.Identities{}
+			items1.Spec.Identities = []tfTypes.Path{}
 			for identitiesCount, identitiesItem := range itemsItem.Spec.Identities {
-				var identities1 tfTypes.Identities
+				var identities1 tfTypes.Path
 				identities1.Type = types.StringValue(string(identitiesItem.Type))
 				identities1.Value = types.StringValue(identitiesItem.Value)
 				if identitiesCount+1 > len(items1.Spec.Identities) {

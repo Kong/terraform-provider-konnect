@@ -12,9 +12,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -62,7 +66,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was created`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -78,7 +85,10 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
-				Optional:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `Time at which the resource was updated`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -96,6 +106,9 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 						Attributes: map[string]schema.Attribute{
 							"append_modifications": schema.ListNestedAttribute{
 								Required: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								NestedObject: schema.NestedAttributeObject{
 									Validators: []validator.Object{
 										speakeasy_objectvalidators.NotNull(),
@@ -105,7 +118,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -198,7 +215,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -304,7 +325,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -402,7 +427,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -507,7 +536,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"json_patches": schema.ListNestedAttribute{
+													Computed: true,
 													Optional: true,
+													PlanModifiers: []planmodifier.List{
+														custom_listplanmodifier.SupressZeroNullModifier(),
+													},
 													NestedObject: schema.NestedAttributeObject{
 														Validators: []validator.Object{
 															speakeasy_objectvalidators.NotNull(),
@@ -653,7 +686,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 									`will be targeted.`,
 							},
 							"proxy_types": schema.ListAttribute{
-								Optional:    true,
+								Computed: true,
+								Optional: true,
+								PlanModifiers: []planmodifier.List{
+									custom_listplanmodifier.SupressZeroNullModifier(),
+								},
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
@@ -690,7 +727,11 @@ func (r *MeshProxyPatchResource) Schema(ctx context.Context, req resource.Schema
 				},
 			},
 			"warnings": schema.ListAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.List{
+					custom_listplanmodifier.SupressZeroNullModifier(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
 				ElementType: types.StringType,
 				MarkdownDescription: `warnings is a list of warning messages to return to the requesting Kuma API clients.` + "\n" +
 					`Warning messages describe a problem the client making the API request should correct or be aware of.`,
@@ -746,7 +787,7 @@ func (r *MeshProxyPatchResource) Create(ctx context.Context, req resource.Create
 	var name string
 	name = data.Name.ValueString()
 
-	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItem()
+	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItemInput()
 	request := operations.CreateMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,
@@ -901,7 +942,7 @@ func (r *MeshProxyPatchResource) Update(ctx context.Context, req resource.Update
 	var name string
 	name = data.Name.ValueString()
 
-	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItem()
+	meshProxyPatchItem := *data.ToSharedMeshProxyPatchItemInput()
 	request := operations.UpdateMeshProxyPatchRequest{
 		CpID:               cpID,
 		Mesh:               mesh,

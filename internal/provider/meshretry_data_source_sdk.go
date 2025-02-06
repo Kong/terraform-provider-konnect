@@ -47,7 +47,7 @@ func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(resp *shared.M
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = []types.String{}
+			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -104,7 +104,7 @@ func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(resp *shared.M
 							}
 						}
 					}
-					to1.Default.Grpc.RetryOn = []types.String{}
+					to1.Default.Grpc.RetryOn = make([]types.String, 0, len(toItem.Default.Grpc.RetryOn))
 					for _, v := range toItem.Default.Grpc.RetryOn {
 						to1.Default.Grpc.RetryOn = append(to1.Default.Grpc.RetryOn, types.StringValue(string(v)))
 					}
@@ -204,7 +204,7 @@ func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(resp *shared.M
 							to1.Default.HTTP.RetriableResponseHeaders[retriableResponseHeadersCount].Value = retriableResponseHeaders1.Value
 						}
 					}
-					to1.Default.HTTP.RetryOn = []types.String{}
+					to1.Default.HTTP.RetryOn = make([]types.String, 0, len(toItem.Default.HTTP.RetryOn))
 					for _, v := range toItem.Default.HTTP.RetryOn {
 						to1.Default.HTTP.RetryOn = append(to1.Default.HTTP.RetryOn, types.StringValue(v))
 					}
@@ -234,7 +234,7 @@ func (r *MeshRetryDataSourceModel) RefreshFromSharedMeshRetryItem(resp *shared.M
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = []types.String{}
+			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

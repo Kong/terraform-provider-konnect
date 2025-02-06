@@ -291,7 +291,18 @@ type MeshTCPRouteItemBackendRefs struct {
 	// Tags used to select a subset of proxies by tags. Can only be used with kinds
 	// `MeshSubset` and `MeshServiceSubset`
 	Tags   map[string]string `json:"tags,omitempty"`
-	Weight *int64            `json:"weight,omitempty"`
+	Weight *int64            `default:"1" json:"weight"`
+}
+
+func (m MeshTCPRouteItemBackendRefs) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshTCPRouteItemBackendRefs) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *MeshTCPRouteItemBackendRefs) GetKind() *MeshTCPRouteItemSpecToKind {
@@ -599,7 +610,7 @@ type MeshTCPRouteItem struct {
 	// the type of the resource
 	Type MeshTCPRouteItemType `json:"type"`
 	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
-	Mesh *string `json:"mesh,omitempty"`
+	Mesh *string `default:"default" json:"mesh"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -670,4 +681,63 @@ func (o *MeshTCPRouteItem) GetModificationTime() *time.Time {
 		return nil
 	}
 	return o.ModificationTime
+}
+
+type MeshTCPRouteItemInput struct {
+	// the type of the resource
+	Type MeshTCPRouteItemType `json:"type"`
+	// Mesh is the name of the Kuma mesh this resource belongs to. It may be omitted for cluster-scoped resources.
+	Mesh *string `default:"default" json:"mesh"`
+	// Name of the Kuma resource
+	Name string `json:"name"`
+	// The labels to help identity resources
+	Labels map[string]string `json:"labels,omitempty"`
+	// Spec is the specification of the Kuma MeshTCPRoute resource.
+	Spec MeshTCPRouteItemSpec `json:"spec"`
+}
+
+func (m MeshTCPRouteItemInput) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
+}
+
+func (m *MeshTCPRouteItemInput) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *MeshTCPRouteItemInput) GetType() MeshTCPRouteItemType {
+	if o == nil {
+		return MeshTCPRouteItemType("")
+	}
+	return o.Type
+}
+
+func (o *MeshTCPRouteItemInput) GetMesh() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Mesh
+}
+
+func (o *MeshTCPRouteItemInput) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *MeshTCPRouteItemInput) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *MeshTCPRouteItemInput) GetSpec() MeshTCPRouteItemSpec {
+	if o == nil {
+		return MeshTCPRouteItemSpec{}
+	}
+	return o.Spec
 }

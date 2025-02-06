@@ -15,7 +15,7 @@ type UpdateMeshGlobalRateLimitRequest struct {
 	// name of the MeshGlobalRateLimit
 	Name string `pathParam:"style=simple,explode=false,name=name"`
 	// Put request
-	MeshGlobalRateLimitItem shared.MeshGlobalRateLimitItem `request:"mediaType=application/json"`
+	MeshGlobalRateLimitItem shared.MeshGlobalRateLimitItemInput `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMeshGlobalRateLimitRequest) GetCpID() string {
@@ -39,9 +39,9 @@ func (o *UpdateMeshGlobalRateLimitRequest) GetName() string {
 	return o.Name
 }
 
-func (o *UpdateMeshGlobalRateLimitRequest) GetMeshGlobalRateLimitItem() shared.MeshGlobalRateLimitItem {
+func (o *UpdateMeshGlobalRateLimitRequest) GetMeshGlobalRateLimitItem() shared.MeshGlobalRateLimitItemInput {
 	if o == nil {
-		return shared.MeshGlobalRateLimitItem{}
+		return shared.MeshGlobalRateLimitItemInput{}
 	}
 	return o.MeshGlobalRateLimitItem
 }
