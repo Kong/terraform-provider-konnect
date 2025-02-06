@@ -7,18 +7,18 @@ import (
 	"fmt"
 )
 
-// LogFormat - The output format of each log message.
-type LogFormat string
+// UpdateAuditLogWebhookLogFormat - The output format of each log message.
+type UpdateAuditLogWebhookLogFormat string
 
 const (
-	LogFormatCef  LogFormat = "cef"
-	LogFormatJSON LogFormat = "json"
+	UpdateAuditLogWebhookLogFormatCef  UpdateAuditLogWebhookLogFormat = "cef"
+	UpdateAuditLogWebhookLogFormatJSON UpdateAuditLogWebhookLogFormat = "json"
 )
 
-func (e LogFormat) ToPointer() *LogFormat {
+func (e UpdateAuditLogWebhookLogFormat) ToPointer() *UpdateAuditLogWebhookLogFormat {
 	return &e
 }
-func (e *LogFormat) UnmarshalJSON(data []byte) error {
+func (e *UpdateAuditLogWebhookLogFormat) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -27,10 +27,10 @@ func (e *LogFormat) UnmarshalJSON(data []byte) error {
 	case "cef":
 		fallthrough
 	case "json":
-		*e = LogFormat(v)
+		*e = UpdateAuditLogWebhookLogFormat(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for LogFormat: %v", v)
+		return fmt.Errorf("invalid value for UpdateAuditLogWebhookLogFormat: %v", v)
 	}
 }
 
@@ -43,7 +43,7 @@ type UpdateAuditLogWebhook struct {
 	// Indicates if the data should be sent to the webhook.
 	Enabled *bool `json:"enabled,omitempty"`
 	// The output format of each log message.
-	LogFormat *LogFormat `json:"log_format,omitempty"`
+	LogFormat *UpdateAuditLogWebhookLogFormat `json:"log_format,omitempty"`
 	// Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
 	// We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
 	// This option should be considered only for self-signed SSL certificates used in a non-production environment.
@@ -71,7 +71,7 @@ func (o *UpdateAuditLogWebhook) GetEnabled() *bool {
 	return o.Enabled
 }
 
-func (o *UpdateAuditLogWebhook) GetLogFormat() *LogFormat {
+func (o *UpdateAuditLogWebhook) GetLogFormat() *UpdateAuditLogWebhookLogFormat {
 	if o == nil {
 		return nil
 	}

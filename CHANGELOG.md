@@ -3,6 +3,7 @@
 ## 2.3.0
 * Add support for `konnect_portal_team` resource
 * Add support for `konnect_audit_log` resource
+* Add support for `konnect_audit_log_destination` resource
 
 ### Bug fixes
 
