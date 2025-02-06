@@ -5,17 +5,17 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type GraphqlRateLimitingAdvancedPluginConfig struct {
-	CostStrategy      types.String   `tfsdk:"cost_strategy"`
-	DictionaryName    types.String   `tfsdk:"dictionary_name"`
-	HideClientHeaders types.Bool     `tfsdk:"hide_client_headers"`
-	Identifier        types.String   `tfsdk:"identifier"`
-	Limit             []types.Number `tfsdk:"limit"`
-	MaxCost           types.Number   `tfsdk:"max_cost"`
-	Namespace         types.String   `tfsdk:"namespace"`
-	Redis             *Redis         `tfsdk:"redis"`
-	ScoreFactor       types.Number   `tfsdk:"score_factor"`
-	Strategy          types.String   `tfsdk:"strategy"`
-	SyncRate          types.Number   `tfsdk:"sync_rate"`
-	WindowSize        []types.Number `tfsdk:"window_size"`
-	WindowType        types.String   `tfsdk:"window_type"`
+	CostStrategy      types.String                `tfsdk:"cost_strategy"`
+	DictionaryName    types.String                `tfsdk:"dictionary_name"`
+	HideClientHeaders types.Bool                  `tfsdk:"hide_client_headers"`
+	Identifier        types.String                `tfsdk:"identifier"`
+	Limit             []types.Number              `tfsdk:"limit"`
+	MaxCost           types.Number                `tfsdk:"max_cost"`
+	Namespace         types.String                `tfsdk:"namespace"`
+	Redis             *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
+	ScoreFactor       types.Number                `tfsdk:"score_factor"`
+	Strategy          types.String                `tfsdk:"strategy"`
+	SyncRate          types.Number                `tfsdk:"sync_rate"`
+	WindowSize        []types.Number              `tfsdk:"window_size"`
+	WindowType        types.String                `tfsdk:"window_type"`
 }

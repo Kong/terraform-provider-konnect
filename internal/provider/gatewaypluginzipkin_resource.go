@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -42,8 +40,7 @@ type GatewayPluginZipkinResource struct {
 // GatewayPluginZipkinResourceModel describes the resource data model.
 type GatewayPluginZipkinResourceModel struct {
 	Config         tfTypes.ZipkinPluginConfig         `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -51,8 +48,8 @@ type GatewayPluginZipkinResourceModel struct {
 	InstanceName   types.String                       `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
@@ -79,17 +76,17 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"default_header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. must be one of ["b3", "b3-single", "w3c", "jaeger", "ot", "aws", "datadog", "gcp"]`,
+						Description: `Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when ` + "`" + `config.header_type` + "`" + ` is set to ` + "`" + `"preserve"` + "`" + `. When ` + "`" + `header_type` + "`" + ` is set to any other value, ` + "`" + `default_header_type` + "`" + ` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
+								"aws",
 								"b3",
 								"b3-single",
-								"w3c",
-								"jaeger",
-								"ot",
-								"aws",
 								"datadog",
 								"gcp",
+								"jaeger",
+								"ot",
+								"w3c",
 							),
 						},
 					},
@@ -101,19 +98,19 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["preserve", "ignore", "b3", "b3-single", "w3c", "jaeger", "ot", "aws", "datadog", "gcp"]`,
+						Description: `All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "jaeger", "ot", "preserve", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"preserve",
-								"ignore",
+								"aws",
 								"b3",
 								"b3-single",
-								"w3c",
-								"jaeger",
-								"ot",
-								"aws",
 								"datadog",
 								"gcp",
+								"ignore",
+								"jaeger",
+								"ot",
+								"preserve",
+								"w3c",
 							),
 						},
 					},
@@ -171,18 +168,18 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							"default_format": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["w3c", "datadog", "b3", "gcp", "b3-single", "jaeger", "aws", "ot"]`,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
-										"w3c",
-										"datadog",
-										"b3",
-										"gcp",
-										"b3-single",
-										"jaeger",
 										"aws",
+										"b3",
+										"b3-single",
+										"datadog",
+										"gcp",
+										"jaeger",
 										"ot",
+										"w3c",
 									),
 								},
 							},
@@ -322,9 +319,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -332,19 +326,6 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 					},
 				},
 				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -402,28 +383,22 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

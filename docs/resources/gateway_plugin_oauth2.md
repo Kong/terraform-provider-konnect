@@ -36,12 +36,6 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
     ]
     token_expiration = 5.01
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   id               = "...my_id..."
@@ -83,13 +77,11 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -115,29 +107,13 @@ Optional:
 - `hide_credentials` (Boolean) An optional boolean value telling the plugin to show or hide the credential from the upstream service.
 - `mandatory_scope` (Boolean) An optional boolean value telling the plugin to require at least one `scope` to be authorized by the end user.
 - `persistent_refresh_token` (Boolean)
-- `pkce` (String) Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["none", "lax", "strict"]
+- `pkce` (String) Specifies a mode of how the Proof Key for Code Exchange (PKCE) should be handled by the plugin. must be one of ["lax", "none", "strict"]
 - `provision_key` (String) The unique key the plugin has generated when it has been added to the Service.
 - `realm` (String) When authentication fails the plugin sends `WWW-Authenticate` header with `realm` attribute value.
 - `refresh_token_ttl` (Number) Time-to-live value for data
 - `reuse_refresh_token` (Boolean) An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.
 - `scopes` (List of String) Describes an array of scope names that will be available to the end user. If `mandatory_scope` is set to `true`, then `scopes` are required.
 - `token_expiration` (Number) An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to `0` to disable the expiration.
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

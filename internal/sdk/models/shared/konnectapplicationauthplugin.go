@@ -8,12 +8,53 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type KonnectApplicationAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *KonnectApplicationAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type KonnectApplicationAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *KonnectApplicationAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type KonnectApplicationAuthPluginOrdering struct {
+	After  *KonnectApplicationAuthPluginAfter  `json:"after,omitempty"`
+	Before *KonnectApplicationAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *KonnectApplicationAuthPluginOrdering) GetAfter() *KonnectApplicationAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *KonnectApplicationAuthPluginOrdering) GetBefore() *KonnectApplicationAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // KonnectApplicationAuthPluginAuthType - The type of authentication to be performed. Possible values are: 'openid-connect', 'key-auth', 'v2-strategies'.
 type KonnectApplicationAuthPluginAuthType string
 
 const (
-	KonnectApplicationAuthPluginAuthTypeOpenidConnect KonnectApplicationAuthPluginAuthType = "openid-connect"
 	KonnectApplicationAuthPluginAuthTypeKeyAuth       KonnectApplicationAuthPluginAuthType = "key-auth"
+	KonnectApplicationAuthPluginAuthTypeOpenidConnect KonnectApplicationAuthPluginAuthType = "openid-connect"
 	KonnectApplicationAuthPluginAuthTypeV2Strategies  KonnectApplicationAuthPluginAuthType = "v2-strategies"
 )
 
@@ -26,9 +67,9 @@ func (e *KonnectApplicationAuthPluginAuthType) UnmarshalJSON(data []byte) error 
 		return err
 	}
 	switch v {
-	case "openid-connect":
-		fallthrough
 	case "key-auth":
+		fallthrough
+	case "openid-connect":
 		fallthrough
 	case "v2-strategies":
 		*e = KonnectApplicationAuthPluginAuthType(v)
@@ -73,15 +114,15 @@ func (o *KonnectApplicationAuthPluginKeyAuth) GetStrategyID() string {
 type KonnectApplicationAuthPluginAuthMethods string
 
 const (
-	KonnectApplicationAuthPluginAuthMethodsPassword          KonnectApplicationAuthPluginAuthMethods = "password"
-	KonnectApplicationAuthPluginAuthMethodsClientCredentials KonnectApplicationAuthPluginAuthMethods = "client_credentials"
 	KonnectApplicationAuthPluginAuthMethodsAuthorizationCode KonnectApplicationAuthPluginAuthMethods = "authorization_code"
 	KonnectApplicationAuthPluginAuthMethodsBearer            KonnectApplicationAuthPluginAuthMethods = "bearer"
+	KonnectApplicationAuthPluginAuthMethodsClientCredentials KonnectApplicationAuthPluginAuthMethods = "client_credentials"
 	KonnectApplicationAuthPluginAuthMethodsIntrospection     KonnectApplicationAuthPluginAuthMethods = "introspection"
-	KonnectApplicationAuthPluginAuthMethodsUserinfo          KonnectApplicationAuthPluginAuthMethods = "userinfo"
 	KonnectApplicationAuthPluginAuthMethodsKongOauth2        KonnectApplicationAuthPluginAuthMethods = "kong_oauth2"
+	KonnectApplicationAuthPluginAuthMethodsPassword          KonnectApplicationAuthPluginAuthMethods = "password"
 	KonnectApplicationAuthPluginAuthMethodsRefreshToken      KonnectApplicationAuthPluginAuthMethods = "refresh_token"
 	KonnectApplicationAuthPluginAuthMethodsSession           KonnectApplicationAuthPluginAuthMethods = "session"
+	KonnectApplicationAuthPluginAuthMethodsUserinfo          KonnectApplicationAuthPluginAuthMethods = "userinfo"
 )
 
 func (e KonnectApplicationAuthPluginAuthMethods) ToPointer() *KonnectApplicationAuthPluginAuthMethods {
@@ -93,23 +134,23 @@ func (e *KonnectApplicationAuthPluginAuthMethods) UnmarshalJSON(data []byte) err
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = KonnectApplicationAuthPluginAuthMethods(v)
 		return nil
 	default:
@@ -121,10 +162,10 @@ func (e *KonnectApplicationAuthPluginAuthMethods) UnmarshalJSON(data []byte) err
 type KonnectApplicationAuthPluginAuthorizationCookieSameSite string
 
 const (
-	KonnectApplicationAuthPluginAuthorizationCookieSameSiteStrict  KonnectApplicationAuthPluginAuthorizationCookieSameSite = "Strict"
+	KonnectApplicationAuthPluginAuthorizationCookieSameSiteDefault KonnectApplicationAuthPluginAuthorizationCookieSameSite = "Default"
 	KonnectApplicationAuthPluginAuthorizationCookieSameSiteLax     KonnectApplicationAuthPluginAuthorizationCookieSameSite = "Lax"
 	KonnectApplicationAuthPluginAuthorizationCookieSameSiteNone    KonnectApplicationAuthPluginAuthorizationCookieSameSite = "None"
-	KonnectApplicationAuthPluginAuthorizationCookieSameSiteDefault KonnectApplicationAuthPluginAuthorizationCookieSameSite = "Default"
+	KonnectApplicationAuthPluginAuthorizationCookieSameSiteStrict  KonnectApplicationAuthPluginAuthorizationCookieSameSite = "Strict"
 )
 
 func (e KonnectApplicationAuthPluginAuthorizationCookieSameSite) ToPointer() *KonnectApplicationAuthPluginAuthorizationCookieSameSite {
@@ -136,13 +177,13 @@ func (e *KonnectApplicationAuthPluginAuthorizationCookieSameSite) UnmarshalJSON(
 		return err
 	}
 	switch v {
-	case "Strict":
+	case "Default":
 		fallthrough
 	case "Lax":
 		fallthrough
 	case "None":
 		fallthrough
-	case "Default":
+	case "Strict":
 		*e = KonnectApplicationAuthPluginAuthorizationCookieSameSite(v)
 		return nil
 	default:
@@ -153,10 +194,10 @@ func (e *KonnectApplicationAuthPluginAuthorizationCookieSameSite) UnmarshalJSON(
 type KonnectApplicationAuthPluginBearerTokenParamType string
 
 const (
-	KonnectApplicationAuthPluginBearerTokenParamTypeHeader KonnectApplicationAuthPluginBearerTokenParamType = "header"
-	KonnectApplicationAuthPluginBearerTokenParamTypeCookie KonnectApplicationAuthPluginBearerTokenParamType = "cookie"
-	KonnectApplicationAuthPluginBearerTokenParamTypeQuery  KonnectApplicationAuthPluginBearerTokenParamType = "query"
 	KonnectApplicationAuthPluginBearerTokenParamTypeBody   KonnectApplicationAuthPluginBearerTokenParamType = "body"
+	KonnectApplicationAuthPluginBearerTokenParamTypeCookie KonnectApplicationAuthPluginBearerTokenParamType = "cookie"
+	KonnectApplicationAuthPluginBearerTokenParamTypeHeader KonnectApplicationAuthPluginBearerTokenParamType = "header"
+	KonnectApplicationAuthPluginBearerTokenParamTypeQuery  KonnectApplicationAuthPluginBearerTokenParamType = "query"
 )
 
 func (e KonnectApplicationAuthPluginBearerTokenParamType) ToPointer() *KonnectApplicationAuthPluginBearerTokenParamType {
@@ -168,13 +209,13 @@ func (e *KonnectApplicationAuthPluginBearerTokenParamType) UnmarshalJSON(data []
 		return err
 	}
 	switch v {
-	case "header":
+	case "body":
 		fallthrough
 	case "cookie":
 		fallthrough
-	case "query":
+	case "header":
 		fallthrough
-	case "body":
+	case "query":
 		*e = KonnectApplicationAuthPluginBearerTokenParamType(v)
 		return nil
 	default:
@@ -185,19 +226,19 @@ func (e *KonnectApplicationAuthPluginBearerTokenParamType) UnmarshalJSON(data []
 type KonnectApplicationAuthPluginClientAlg string
 
 const (
-	KonnectApplicationAuthPluginClientAlgHs256 KonnectApplicationAuthPluginClientAlg = "HS256"
-	KonnectApplicationAuthPluginClientAlgHs384 KonnectApplicationAuthPluginClientAlg = "HS384"
-	KonnectApplicationAuthPluginClientAlgHs512 KonnectApplicationAuthPluginClientAlg = "HS512"
-	KonnectApplicationAuthPluginClientAlgRs256 KonnectApplicationAuthPluginClientAlg = "RS256"
-	KonnectApplicationAuthPluginClientAlgRs384 KonnectApplicationAuthPluginClientAlg = "RS384"
-	KonnectApplicationAuthPluginClientAlgRs512 KonnectApplicationAuthPluginClientAlg = "RS512"
 	KonnectApplicationAuthPluginClientAlgEs256 KonnectApplicationAuthPluginClientAlg = "ES256"
 	KonnectApplicationAuthPluginClientAlgEs384 KonnectApplicationAuthPluginClientAlg = "ES384"
 	KonnectApplicationAuthPluginClientAlgEs512 KonnectApplicationAuthPluginClientAlg = "ES512"
+	KonnectApplicationAuthPluginClientAlgEdDsa KonnectApplicationAuthPluginClientAlg = "EdDSA"
+	KonnectApplicationAuthPluginClientAlgHs256 KonnectApplicationAuthPluginClientAlg = "HS256"
+	KonnectApplicationAuthPluginClientAlgHs384 KonnectApplicationAuthPluginClientAlg = "HS384"
+	KonnectApplicationAuthPluginClientAlgHs512 KonnectApplicationAuthPluginClientAlg = "HS512"
 	KonnectApplicationAuthPluginClientAlgPs256 KonnectApplicationAuthPluginClientAlg = "PS256"
 	KonnectApplicationAuthPluginClientAlgPs384 KonnectApplicationAuthPluginClientAlg = "PS384"
 	KonnectApplicationAuthPluginClientAlgPs512 KonnectApplicationAuthPluginClientAlg = "PS512"
-	KonnectApplicationAuthPluginClientAlgEdDsa KonnectApplicationAuthPluginClientAlg = "EdDSA"
+	KonnectApplicationAuthPluginClientAlgRs256 KonnectApplicationAuthPluginClientAlg = "RS256"
+	KonnectApplicationAuthPluginClientAlgRs384 KonnectApplicationAuthPluginClientAlg = "RS384"
+	KonnectApplicationAuthPluginClientAlgRs512 KonnectApplicationAuthPluginClientAlg = "RS512"
 )
 
 func (e KonnectApplicationAuthPluginClientAlg) ToPointer() *KonnectApplicationAuthPluginClientAlg {
@@ -209,23 +250,19 @@ func (e *KonnectApplicationAuthPluginClientAlg) UnmarshalJSON(data []byte) error
 		return err
 	}
 	switch v {
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		fallthrough
 	case "ES256":
 		fallthrough
 	case "ES384":
 		fallthrough
 	case "ES512":
+		fallthrough
+	case "EdDSA":
+		fallthrough
+	case "HS256":
+		fallthrough
+	case "HS384":
+		fallthrough
+	case "HS512":
 		fallthrough
 	case "PS256":
 		fallthrough
@@ -233,7 +270,11 @@ func (e *KonnectApplicationAuthPluginClientAlg) UnmarshalJSON(data []byte) error
 		fallthrough
 	case "PS512":
 		fallthrough
-	case "EdDSA":
+	case "RS256":
+		fallthrough
+	case "RS384":
+		fallthrough
+	case "RS512":
 		*e = KonnectApplicationAuthPluginClientAlg(v)
 		return nil
 	default:
@@ -245,12 +286,12 @@ type KonnectApplicationAuthPluginClientAuth string
 
 const (
 	KonnectApplicationAuthPluginClientAuthClientSecretBasic       KonnectApplicationAuthPluginClientAuth = "client_secret_basic"
-	KonnectApplicationAuthPluginClientAuthClientSecretPost        KonnectApplicationAuthPluginClientAuth = "client_secret_post"
 	KonnectApplicationAuthPluginClientAuthClientSecretJwt         KonnectApplicationAuthPluginClientAuth = "client_secret_jwt"
-	KonnectApplicationAuthPluginClientAuthPrivateKeyJwt           KonnectApplicationAuthPluginClientAuth = "private_key_jwt"
-	KonnectApplicationAuthPluginClientAuthTLSClientAuth           KonnectApplicationAuthPluginClientAuth = "tls_client_auth"
-	KonnectApplicationAuthPluginClientAuthSelfSignedTLSClientAuth KonnectApplicationAuthPluginClientAuth = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginClientAuthClientSecretPost        KonnectApplicationAuthPluginClientAuth = "client_secret_post"
 	KonnectApplicationAuthPluginClientAuthNone                    KonnectApplicationAuthPluginClientAuth = "none"
+	KonnectApplicationAuthPluginClientAuthPrivateKeyJwt           KonnectApplicationAuthPluginClientAuth = "private_key_jwt"
+	KonnectApplicationAuthPluginClientAuthSelfSignedTLSClientAuth KonnectApplicationAuthPluginClientAuth = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginClientAuthTLSClientAuth           KonnectApplicationAuthPluginClientAuth = "tls_client_auth"
 )
 
 func (e KonnectApplicationAuthPluginClientAuth) ToPointer() *KonnectApplicationAuthPluginClientAuth {
@@ -264,17 +305,17 @@ func (e *KonnectApplicationAuthPluginClientAuth) UnmarshalJSON(data []byte) erro
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = KonnectApplicationAuthPluginClientAuth(v)
 		return nil
 	default:
@@ -285,9 +326,9 @@ func (e *KonnectApplicationAuthPluginClientAuth) UnmarshalJSON(data []byte) erro
 type KonnectApplicationAuthPluginClientCredentialsParamType string
 
 const (
+	KonnectApplicationAuthPluginClientCredentialsParamTypeBody   KonnectApplicationAuthPluginClientCredentialsParamType = "body"
 	KonnectApplicationAuthPluginClientCredentialsParamTypeHeader KonnectApplicationAuthPluginClientCredentialsParamType = "header"
 	KonnectApplicationAuthPluginClientCredentialsParamTypeQuery  KonnectApplicationAuthPluginClientCredentialsParamType = "query"
-	KonnectApplicationAuthPluginClientCredentialsParamTypeBody   KonnectApplicationAuthPluginClientCredentialsParamType = "body"
 )
 
 func (e KonnectApplicationAuthPluginClientCredentialsParamType) ToPointer() *KonnectApplicationAuthPluginClientCredentialsParamType {
@@ -299,11 +340,11 @@ func (e *KonnectApplicationAuthPluginClientCredentialsParamType) UnmarshalJSON(d
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = KonnectApplicationAuthPluginClientCredentialsParamType(v)
 		return nil
 	default:
@@ -560,9 +601,9 @@ func (o *KonnectApplicationAuthPluginSentinelNodes) GetPort() *int64 {
 type KonnectApplicationAuthPluginSentinelRole string
 
 const (
+	KonnectApplicationAuthPluginSentinelRoleAny    KonnectApplicationAuthPluginSentinelRole = "any"
 	KonnectApplicationAuthPluginSentinelRoleMaster KonnectApplicationAuthPluginSentinelRole = "master"
 	KonnectApplicationAuthPluginSentinelRoleSlave  KonnectApplicationAuthPluginSentinelRole = "slave"
-	KonnectApplicationAuthPluginSentinelRoleAny    KonnectApplicationAuthPluginSentinelRole = "any"
 )
 
 func (e KonnectApplicationAuthPluginSentinelRole) ToPointer() *KonnectApplicationAuthPluginSentinelRole {
@@ -574,11 +615,11 @@ func (e *KonnectApplicationAuthPluginSentinelRole) UnmarshalJSON(data []byte) er
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = KonnectApplicationAuthPluginSentinelRole(v)
 		return nil
 	default:
@@ -808,9 +849,9 @@ func (e *KonnectApplicationAuthPluginClusterCacheStrategy) UnmarshalJSON(data []
 type KonnectApplicationAuthPluginConsumerBy string
 
 const (
+	KonnectApplicationAuthPluginConsumerByCustomID KonnectApplicationAuthPluginConsumerBy = "custom_id"
 	KonnectApplicationAuthPluginConsumerByID       KonnectApplicationAuthPluginConsumerBy = "id"
 	KonnectApplicationAuthPluginConsumerByUsername KonnectApplicationAuthPluginConsumerBy = "username"
-	KonnectApplicationAuthPluginConsumerByCustomID KonnectApplicationAuthPluginConsumerBy = "custom_id"
 )
 
 func (e KonnectApplicationAuthPluginConsumerBy) ToPointer() *KonnectApplicationAuthPluginConsumerBy {
@@ -822,11 +863,11 @@ func (e *KonnectApplicationAuthPluginConsumerBy) UnmarshalJSON(data []byte) erro
 		return err
 	}
 	switch v {
+	case "custom_id":
+		fallthrough
 	case "id":
 		fallthrough
 	case "username":
-		fallthrough
-	case "custom_id":
 		*e = KonnectApplicationAuthPluginConsumerBy(v)
 		return nil
 	default:
@@ -837,15 +878,15 @@ func (e *KonnectApplicationAuthPluginConsumerBy) UnmarshalJSON(data []byte) erro
 type KonnectApplicationAuthPluginDisableSession string
 
 const (
-	KonnectApplicationAuthPluginDisableSessionPassword          KonnectApplicationAuthPluginDisableSession = "password"
-	KonnectApplicationAuthPluginDisableSessionClientCredentials KonnectApplicationAuthPluginDisableSession = "client_credentials"
 	KonnectApplicationAuthPluginDisableSessionAuthorizationCode KonnectApplicationAuthPluginDisableSession = "authorization_code"
 	KonnectApplicationAuthPluginDisableSessionBearer            KonnectApplicationAuthPluginDisableSession = "bearer"
+	KonnectApplicationAuthPluginDisableSessionClientCredentials KonnectApplicationAuthPluginDisableSession = "client_credentials"
 	KonnectApplicationAuthPluginDisableSessionIntrospection     KonnectApplicationAuthPluginDisableSession = "introspection"
-	KonnectApplicationAuthPluginDisableSessionUserinfo          KonnectApplicationAuthPluginDisableSession = "userinfo"
 	KonnectApplicationAuthPluginDisableSessionKongOauth2        KonnectApplicationAuthPluginDisableSession = "kong_oauth2"
+	KonnectApplicationAuthPluginDisableSessionPassword          KonnectApplicationAuthPluginDisableSession = "password"
 	KonnectApplicationAuthPluginDisableSessionRefreshToken      KonnectApplicationAuthPluginDisableSession = "refresh_token"
 	KonnectApplicationAuthPluginDisableSessionSession           KonnectApplicationAuthPluginDisableSession = "session"
+	KonnectApplicationAuthPluginDisableSessionUserinfo          KonnectApplicationAuthPluginDisableSession = "userinfo"
 )
 
 func (e KonnectApplicationAuthPluginDisableSession) ToPointer() *KonnectApplicationAuthPluginDisableSession {
@@ -857,23 +898,23 @@ func (e *KonnectApplicationAuthPluginDisableSession) UnmarshalJSON(data []byte) 
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = KonnectApplicationAuthPluginDisableSession(v)
 		return nil
 	default:
@@ -884,9 +925,9 @@ func (e *KonnectApplicationAuthPluginDisableSession) UnmarshalJSON(data []byte) 
 type KonnectApplicationAuthPluginIDTokenParamType string
 
 const (
+	KonnectApplicationAuthPluginIDTokenParamTypeBody   KonnectApplicationAuthPluginIDTokenParamType = "body"
 	KonnectApplicationAuthPluginIDTokenParamTypeHeader KonnectApplicationAuthPluginIDTokenParamType = "header"
 	KonnectApplicationAuthPluginIDTokenParamTypeQuery  KonnectApplicationAuthPluginIDTokenParamType = "query"
-	KonnectApplicationAuthPluginIDTokenParamTypeBody   KonnectApplicationAuthPluginIDTokenParamType = "body"
 )
 
 func (e KonnectApplicationAuthPluginIDTokenParamType) ToPointer() *KonnectApplicationAuthPluginIDTokenParamType {
@@ -898,11 +939,11 @@ func (e *KonnectApplicationAuthPluginIDTokenParamType) UnmarshalJSON(data []byte
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = KonnectApplicationAuthPluginIDTokenParamType(v)
 		return nil
 	default:
@@ -913,12 +954,12 @@ func (e *KonnectApplicationAuthPluginIDTokenParamType) UnmarshalJSON(data []byte
 type KonnectApplicationAuthPluginIgnoreSignature string
 
 const (
-	KonnectApplicationAuthPluginIgnoreSignaturePassword          KonnectApplicationAuthPluginIgnoreSignature = "password"
-	KonnectApplicationAuthPluginIgnoreSignatureClientCredentials KonnectApplicationAuthPluginIgnoreSignature = "client_credentials"
 	KonnectApplicationAuthPluginIgnoreSignatureAuthorizationCode KonnectApplicationAuthPluginIgnoreSignature = "authorization_code"
+	KonnectApplicationAuthPluginIgnoreSignatureClientCredentials KonnectApplicationAuthPluginIgnoreSignature = "client_credentials"
+	KonnectApplicationAuthPluginIgnoreSignatureIntrospection     KonnectApplicationAuthPluginIgnoreSignature = "introspection"
+	KonnectApplicationAuthPluginIgnoreSignaturePassword          KonnectApplicationAuthPluginIgnoreSignature = "password"
 	KonnectApplicationAuthPluginIgnoreSignatureRefreshToken      KonnectApplicationAuthPluginIgnoreSignature = "refresh_token"
 	KonnectApplicationAuthPluginIgnoreSignatureSession           KonnectApplicationAuthPluginIgnoreSignature = "session"
-	KonnectApplicationAuthPluginIgnoreSignatureIntrospection     KonnectApplicationAuthPluginIgnoreSignature = "introspection"
 	KonnectApplicationAuthPluginIgnoreSignatureUserinfo          KonnectApplicationAuthPluginIgnoreSignature = "userinfo"
 )
 
@@ -931,17 +972,17 @@ func (e *KonnectApplicationAuthPluginIgnoreSignature) UnmarshalJSON(data []byte)
 		return err
 	}
 	switch v {
-	case "password":
+	case "authorization_code":
 		fallthrough
 	case "client_credentials":
 		fallthrough
-	case "authorization_code":
+	case "introspection":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
-		fallthrough
-	case "introspection":
 		fallthrough
 	case "userinfo":
 		*e = KonnectApplicationAuthPluginIgnoreSignature(v)
@@ -956,8 +997,8 @@ type KonnectApplicationAuthPluginIntrospectionAccept string
 
 const (
 	KonnectApplicationAuthPluginIntrospectionAcceptApplicationJSON                      KonnectApplicationAuthPluginIntrospectionAccept = "application/json"
-	KonnectApplicationAuthPluginIntrospectionAcceptApplicationTokenIntrospectionPlusJwt KonnectApplicationAuthPluginIntrospectionAccept = "application/token-introspection+jwt"
 	KonnectApplicationAuthPluginIntrospectionAcceptApplicationJwt                       KonnectApplicationAuthPluginIntrospectionAccept = "application/jwt"
+	KonnectApplicationAuthPluginIntrospectionAcceptApplicationTokenIntrospectionPlusJwt KonnectApplicationAuthPluginIntrospectionAccept = "application/token-introspection+jwt"
 )
 
 func (e KonnectApplicationAuthPluginIntrospectionAccept) ToPointer() *KonnectApplicationAuthPluginIntrospectionAccept {
@@ -971,9 +1012,9 @@ func (e *KonnectApplicationAuthPluginIntrospectionAccept) UnmarshalJSON(data []b
 	switch v {
 	case "application/json":
 		fallthrough
-	case "application/token-introspection+jwt":
-		fallthrough
 	case "application/jwt":
+		fallthrough
+	case "application/token-introspection+jwt":
 		*e = KonnectApplicationAuthPluginIntrospectionAccept(v)
 		return nil
 	default:
@@ -986,12 +1027,12 @@ type KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod string
 
 const (
 	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodClientSecretBasic       KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "client_secret_basic"
-	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodClientSecretJwt         KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "client_secret_jwt"
-	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "private_key_jwt"
-	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "tls_client_auth"
-	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodNone                    KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "none"
+	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "private_key_jwt"
+	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginIntrospectionEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod) ToPointer() *KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod {
@@ -1005,17 +1046,17 @@ func (e *KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod) UnmarshalJ
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1027,9 +1068,9 @@ func (e *KonnectApplicationAuthPluginIntrospectionEndpointAuthMethod) UnmarshalJ
 type KonnectApplicationAuthPluginLoginAction string
 
 const (
-	KonnectApplicationAuthPluginLoginActionUpstream KonnectApplicationAuthPluginLoginAction = "upstream"
-	KonnectApplicationAuthPluginLoginActionResponse KonnectApplicationAuthPluginLoginAction = "response"
 	KonnectApplicationAuthPluginLoginActionRedirect KonnectApplicationAuthPluginLoginAction = "redirect"
+	KonnectApplicationAuthPluginLoginActionResponse KonnectApplicationAuthPluginLoginAction = "response"
+	KonnectApplicationAuthPluginLoginActionUpstream KonnectApplicationAuthPluginLoginAction = "upstream"
 )
 
 func (e KonnectApplicationAuthPluginLoginAction) ToPointer() *KonnectApplicationAuthPluginLoginAction {
@@ -1041,11 +1082,11 @@ func (e *KonnectApplicationAuthPluginLoginAction) UnmarshalJSON(data []byte) err
 		return err
 	}
 	switch v {
-	case "upstream":
+	case "redirect":
 		fallthrough
 	case "response":
 		fallthrough
-	case "redirect":
+	case "upstream":
 		*e = KonnectApplicationAuthPluginLoginAction(v)
 		return nil
 	default:
@@ -1056,15 +1097,15 @@ func (e *KonnectApplicationAuthPluginLoginAction) UnmarshalJSON(data []byte) err
 type KonnectApplicationAuthPluginLoginMethods string
 
 const (
-	KonnectApplicationAuthPluginLoginMethodsPassword          KonnectApplicationAuthPluginLoginMethods = "password"
-	KonnectApplicationAuthPluginLoginMethodsClientCredentials KonnectApplicationAuthPluginLoginMethods = "client_credentials"
 	KonnectApplicationAuthPluginLoginMethodsAuthorizationCode KonnectApplicationAuthPluginLoginMethods = "authorization_code"
 	KonnectApplicationAuthPluginLoginMethodsBearer            KonnectApplicationAuthPluginLoginMethods = "bearer"
+	KonnectApplicationAuthPluginLoginMethodsClientCredentials KonnectApplicationAuthPluginLoginMethods = "client_credentials"
 	KonnectApplicationAuthPluginLoginMethodsIntrospection     KonnectApplicationAuthPluginLoginMethods = "introspection"
-	KonnectApplicationAuthPluginLoginMethodsUserinfo          KonnectApplicationAuthPluginLoginMethods = "userinfo"
 	KonnectApplicationAuthPluginLoginMethodsKongOauth2        KonnectApplicationAuthPluginLoginMethods = "kong_oauth2"
+	KonnectApplicationAuthPluginLoginMethodsPassword          KonnectApplicationAuthPluginLoginMethods = "password"
 	KonnectApplicationAuthPluginLoginMethodsRefreshToken      KonnectApplicationAuthPluginLoginMethods = "refresh_token"
 	KonnectApplicationAuthPluginLoginMethodsSession           KonnectApplicationAuthPluginLoginMethods = "session"
+	KonnectApplicationAuthPluginLoginMethodsUserinfo          KonnectApplicationAuthPluginLoginMethods = "userinfo"
 )
 
 func (e KonnectApplicationAuthPluginLoginMethods) ToPointer() *KonnectApplicationAuthPluginLoginMethods {
@@ -1076,23 +1117,23 @@ func (e *KonnectApplicationAuthPluginLoginMethods) UnmarshalJSON(data []byte) er
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = KonnectApplicationAuthPluginLoginMethods(v)
 		return nil
 	default:
@@ -1104,8 +1145,8 @@ func (e *KonnectApplicationAuthPluginLoginMethods) UnmarshalJSON(data []byte) er
 type KonnectApplicationAuthPluginLoginRedirectMode string
 
 const (
-	KonnectApplicationAuthPluginLoginRedirectModeQuery    KonnectApplicationAuthPluginLoginRedirectMode = "query"
 	KonnectApplicationAuthPluginLoginRedirectModeFragment KonnectApplicationAuthPluginLoginRedirectMode = "fragment"
+	KonnectApplicationAuthPluginLoginRedirectModeQuery    KonnectApplicationAuthPluginLoginRedirectMode = "query"
 )
 
 func (e KonnectApplicationAuthPluginLoginRedirectMode) ToPointer() *KonnectApplicationAuthPluginLoginRedirectMode {
@@ -1117,9 +1158,9 @@ func (e *KonnectApplicationAuthPluginLoginRedirectMode) UnmarshalJSON(data []byt
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "fragment":
+		fallthrough
+	case "query":
 		*e = KonnectApplicationAuthPluginLoginRedirectMode(v)
 		return nil
 	default:
@@ -1130,11 +1171,11 @@ func (e *KonnectApplicationAuthPluginLoginRedirectMode) UnmarshalJSON(data []byt
 type KonnectApplicationAuthPluginLoginTokens string
 
 const (
-	KonnectApplicationAuthPluginLoginTokensIDToken       KonnectApplicationAuthPluginLoginTokens = "id_token"
 	KonnectApplicationAuthPluginLoginTokensAccessToken   KonnectApplicationAuthPluginLoginTokens = "access_token"
+	KonnectApplicationAuthPluginLoginTokensIDToken       KonnectApplicationAuthPluginLoginTokens = "id_token"
+	KonnectApplicationAuthPluginLoginTokensIntrospection KonnectApplicationAuthPluginLoginTokens = "introspection"
 	KonnectApplicationAuthPluginLoginTokensRefreshToken  KonnectApplicationAuthPluginLoginTokens = "refresh_token"
 	KonnectApplicationAuthPluginLoginTokensTokens        KonnectApplicationAuthPluginLoginTokens = "tokens"
-	KonnectApplicationAuthPluginLoginTokensIntrospection KonnectApplicationAuthPluginLoginTokens = "introspection"
 )
 
 func (e KonnectApplicationAuthPluginLoginTokens) ToPointer() *KonnectApplicationAuthPluginLoginTokens {
@@ -1146,15 +1187,15 @@ func (e *KonnectApplicationAuthPluginLoginTokens) UnmarshalJSON(data []byte) err
 		return err
 	}
 	switch v {
+	case "access_token":
+		fallthrough
 	case "id_token":
 		fallthrough
-	case "access_token":
+	case "introspection":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "tokens":
-		fallthrough
-	case "introspection":
 		*e = KonnectApplicationAuthPluginLoginTokens(v)
 		return nil
 	default:
@@ -1165,9 +1206,9 @@ func (e *KonnectApplicationAuthPluginLoginTokens) UnmarshalJSON(data []byte) err
 type KonnectApplicationAuthPluginLogoutMethods string
 
 const (
-	KonnectApplicationAuthPluginLogoutMethodsPost   KonnectApplicationAuthPluginLogoutMethods = "POST"
-	KonnectApplicationAuthPluginLogoutMethodsGet    KonnectApplicationAuthPluginLogoutMethods = "GET"
 	KonnectApplicationAuthPluginLogoutMethodsDelete KonnectApplicationAuthPluginLogoutMethods = "DELETE"
+	KonnectApplicationAuthPluginLogoutMethodsGet    KonnectApplicationAuthPluginLogoutMethods = "GET"
+	KonnectApplicationAuthPluginLogoutMethodsPost   KonnectApplicationAuthPluginLogoutMethods = "POST"
 )
 
 func (e KonnectApplicationAuthPluginLogoutMethods) ToPointer() *KonnectApplicationAuthPluginLogoutMethods {
@@ -1179,11 +1220,11 @@ func (e *KonnectApplicationAuthPluginLogoutMethods) UnmarshalJSON(data []byte) e
 		return err
 	}
 	switch v {
-	case "POST":
+	case "DELETE":
 		fallthrough
 	case "GET":
 		fallthrough
-	case "DELETE":
+	case "POST":
 		*e = KonnectApplicationAuthPluginLogoutMethods(v)
 		return nil
 	default:
@@ -1194,9 +1235,9 @@ func (e *KonnectApplicationAuthPluginLogoutMethods) UnmarshalJSON(data []byte) e
 type KonnectApplicationAuthPluginPasswordParamType string
 
 const (
+	KonnectApplicationAuthPluginPasswordParamTypeBody   KonnectApplicationAuthPluginPasswordParamType = "body"
 	KonnectApplicationAuthPluginPasswordParamTypeHeader KonnectApplicationAuthPluginPasswordParamType = "header"
 	KonnectApplicationAuthPluginPasswordParamTypeQuery  KonnectApplicationAuthPluginPasswordParamType = "query"
-	KonnectApplicationAuthPluginPasswordParamTypeBody   KonnectApplicationAuthPluginPasswordParamType = "body"
 )
 
 func (e KonnectApplicationAuthPluginPasswordParamType) ToPointer() *KonnectApplicationAuthPluginPasswordParamType {
@@ -1208,11 +1249,11 @@ func (e *KonnectApplicationAuthPluginPasswordParamType) UnmarshalJSON(data []byt
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = KonnectApplicationAuthPluginPasswordParamType(v)
 		return nil
 	default:
@@ -1225,8 +1266,8 @@ type KonnectApplicationAuthPluginProofOfPossessionDpop string
 
 const (
 	KonnectApplicationAuthPluginProofOfPossessionDpopOff      KonnectApplicationAuthPluginProofOfPossessionDpop = "off"
-	KonnectApplicationAuthPluginProofOfPossessionDpopStrict   KonnectApplicationAuthPluginProofOfPossessionDpop = "strict"
 	KonnectApplicationAuthPluginProofOfPossessionDpopOptional KonnectApplicationAuthPluginProofOfPossessionDpop = "optional"
+	KonnectApplicationAuthPluginProofOfPossessionDpopStrict   KonnectApplicationAuthPluginProofOfPossessionDpop = "strict"
 )
 
 func (e KonnectApplicationAuthPluginProofOfPossessionDpop) ToPointer() *KonnectApplicationAuthPluginProofOfPossessionDpop {
@@ -1240,9 +1281,9 @@ func (e *KonnectApplicationAuthPluginProofOfPossessionDpop) UnmarshalJSON(data [
 	switch v {
 	case "off":
 		fallthrough
-	case "strict":
-		fallthrough
 	case "optional":
+		fallthrough
+	case "strict":
 		*e = KonnectApplicationAuthPluginProofOfPossessionDpop(v)
 		return nil
 	default:
@@ -1255,8 +1296,8 @@ type KonnectApplicationAuthPluginProofOfPossessionMtls string
 
 const (
 	KonnectApplicationAuthPluginProofOfPossessionMtlsOff      KonnectApplicationAuthPluginProofOfPossessionMtls = "off"
-	KonnectApplicationAuthPluginProofOfPossessionMtlsStrict   KonnectApplicationAuthPluginProofOfPossessionMtls = "strict"
 	KonnectApplicationAuthPluginProofOfPossessionMtlsOptional KonnectApplicationAuthPluginProofOfPossessionMtls = "optional"
+	KonnectApplicationAuthPluginProofOfPossessionMtlsStrict   KonnectApplicationAuthPluginProofOfPossessionMtls = "strict"
 )
 
 func (e KonnectApplicationAuthPluginProofOfPossessionMtls) ToPointer() *KonnectApplicationAuthPluginProofOfPossessionMtls {
@@ -1270,9 +1311,9 @@ func (e *KonnectApplicationAuthPluginProofOfPossessionMtls) UnmarshalJSON(data [
 	switch v {
 	case "off":
 		fallthrough
-	case "strict":
-		fallthrough
 	case "optional":
+		fallthrough
+	case "strict":
 		*e = KonnectApplicationAuthPluginProofOfPossessionMtls(v)
 		return nil
 	default:
@@ -1285,12 +1326,12 @@ type KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod st
 
 const (
 	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
-	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
-	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
-	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
-	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodNone                    KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "none"
+	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
+	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod) ToPointer() *KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod {
@@ -1304,17 +1345,17 @@ func (e *KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMetho
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = KonnectApplicationAuthPluginPushedAuthorizationRequestEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1368,9 +1409,9 @@ func (o *KonnectApplicationAuthPluginConfigSentinelNodes) GetPort() *int64 {
 type KonnectApplicationAuthPluginConfigSentinelRole string
 
 const (
+	KonnectApplicationAuthPluginConfigSentinelRoleAny    KonnectApplicationAuthPluginConfigSentinelRole = "any"
 	KonnectApplicationAuthPluginConfigSentinelRoleMaster KonnectApplicationAuthPluginConfigSentinelRole = "master"
 	KonnectApplicationAuthPluginConfigSentinelRoleSlave  KonnectApplicationAuthPluginConfigSentinelRole = "slave"
-	KonnectApplicationAuthPluginConfigSentinelRoleAny    KonnectApplicationAuthPluginConfigSentinelRole = "any"
 )
 
 func (e KonnectApplicationAuthPluginConfigSentinelRole) ToPointer() *KonnectApplicationAuthPluginConfigSentinelRole {
@@ -1382,11 +1423,11 @@ func (e *KonnectApplicationAuthPluginConfigSentinelRole) UnmarshalJSON(data []by
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = KonnectApplicationAuthPluginConfigSentinelRole(v)
 		return nil
 	default:
@@ -1607,9 +1648,9 @@ func (o *KonnectApplicationAuthPluginRedis) GetUsername() *string {
 type KonnectApplicationAuthPluginRefreshTokenParamType string
 
 const (
+	KonnectApplicationAuthPluginRefreshTokenParamTypeBody   KonnectApplicationAuthPluginRefreshTokenParamType = "body"
 	KonnectApplicationAuthPluginRefreshTokenParamTypeHeader KonnectApplicationAuthPluginRefreshTokenParamType = "header"
 	KonnectApplicationAuthPluginRefreshTokenParamTypeQuery  KonnectApplicationAuthPluginRefreshTokenParamType = "query"
-	KonnectApplicationAuthPluginRefreshTokenParamTypeBody   KonnectApplicationAuthPluginRefreshTokenParamType = "body"
 )
 
 func (e KonnectApplicationAuthPluginRefreshTokenParamType) ToPointer() *KonnectApplicationAuthPluginRefreshTokenParamType {
@@ -1621,11 +1662,11 @@ func (e *KonnectApplicationAuthPluginRefreshTokenParamType) UnmarshalJSON(data [
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = KonnectApplicationAuthPluginRefreshTokenParamType(v)
 		return nil
 	default:
@@ -1637,13 +1678,13 @@ func (e *KonnectApplicationAuthPluginRefreshTokenParamType) UnmarshalJSON(data [
 type KonnectApplicationAuthPluginResponseMode string
 
 const (
-	KonnectApplicationAuthPluginResponseModeQuery       KonnectApplicationAuthPluginResponseMode = "query"
 	KonnectApplicationAuthPluginResponseModeFormPost    KonnectApplicationAuthPluginResponseMode = "form_post"
-	KonnectApplicationAuthPluginResponseModeFragment    KonnectApplicationAuthPluginResponseMode = "fragment"
-	KonnectApplicationAuthPluginResponseModeQueryJwt    KonnectApplicationAuthPluginResponseMode = "query.jwt"
 	KonnectApplicationAuthPluginResponseModeFormPostJwt KonnectApplicationAuthPluginResponseMode = "form_post.jwt"
+	KonnectApplicationAuthPluginResponseModeFragment    KonnectApplicationAuthPluginResponseMode = "fragment"
 	KonnectApplicationAuthPluginResponseModeFragmentJwt KonnectApplicationAuthPluginResponseMode = "fragment.jwt"
 	KonnectApplicationAuthPluginResponseModeJwt         KonnectApplicationAuthPluginResponseMode = "jwt"
+	KonnectApplicationAuthPluginResponseModeQuery       KonnectApplicationAuthPluginResponseMode = "query"
+	KonnectApplicationAuthPluginResponseModeQueryJwt    KonnectApplicationAuthPluginResponseMode = "query.jwt"
 )
 
 func (e KonnectApplicationAuthPluginResponseMode) ToPointer() *KonnectApplicationAuthPluginResponseMode {
@@ -1655,19 +1696,19 @@ func (e *KonnectApplicationAuthPluginResponseMode) UnmarshalJSON(data []byte) er
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "form_post":
 		fallthrough
-	case "fragment":
-		fallthrough
-	case "query.jwt":
-		fallthrough
 	case "form_post.jwt":
+		fallthrough
+	case "fragment":
 		fallthrough
 	case "fragment.jwt":
 		fallthrough
 	case "jwt":
+		fallthrough
+	case "query":
+		fallthrough
+	case "query.jwt":
 		*e = KonnectApplicationAuthPluginResponseMode(v)
 		return nil
 	default:
@@ -1680,12 +1721,12 @@ type KonnectApplicationAuthPluginRevocationEndpointAuthMethod string
 
 const (
 	KonnectApplicationAuthPluginRevocationEndpointAuthMethodClientSecretBasic       KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "client_secret_basic"
-	KonnectApplicationAuthPluginRevocationEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginRevocationEndpointAuthMethodClientSecretJwt         KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "client_secret_jwt"
-	KonnectApplicationAuthPluginRevocationEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "private_key_jwt"
-	KonnectApplicationAuthPluginRevocationEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "tls_client_auth"
-	KonnectApplicationAuthPluginRevocationEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginRevocationEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginRevocationEndpointAuthMethodNone                    KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "none"
+	KonnectApplicationAuthPluginRevocationEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "private_key_jwt"
+	KonnectApplicationAuthPluginRevocationEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginRevocationEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginRevocationEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e KonnectApplicationAuthPluginRevocationEndpointAuthMethod) ToPointer() *KonnectApplicationAuthPluginRevocationEndpointAuthMethod {
@@ -1699,17 +1740,17 @@ func (e *KonnectApplicationAuthPluginRevocationEndpointAuthMethod) UnmarshalJSON
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = KonnectApplicationAuthPluginRevocationEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1721,10 +1762,10 @@ func (e *KonnectApplicationAuthPluginRevocationEndpointAuthMethod) UnmarshalJSON
 type KonnectApplicationAuthPluginSessionCookieSameSite string
 
 const (
-	KonnectApplicationAuthPluginSessionCookieSameSiteStrict  KonnectApplicationAuthPluginSessionCookieSameSite = "Strict"
+	KonnectApplicationAuthPluginSessionCookieSameSiteDefault KonnectApplicationAuthPluginSessionCookieSameSite = "Default"
 	KonnectApplicationAuthPluginSessionCookieSameSiteLax     KonnectApplicationAuthPluginSessionCookieSameSite = "Lax"
 	KonnectApplicationAuthPluginSessionCookieSameSiteNone    KonnectApplicationAuthPluginSessionCookieSameSite = "None"
-	KonnectApplicationAuthPluginSessionCookieSameSiteDefault KonnectApplicationAuthPluginSessionCookieSameSite = "Default"
+	KonnectApplicationAuthPluginSessionCookieSameSiteStrict  KonnectApplicationAuthPluginSessionCookieSameSite = "Strict"
 )
 
 func (e KonnectApplicationAuthPluginSessionCookieSameSite) ToPointer() *KonnectApplicationAuthPluginSessionCookieSameSite {
@@ -1736,13 +1777,13 @@ func (e *KonnectApplicationAuthPluginSessionCookieSameSite) UnmarshalJSON(data [
 		return err
 	}
 	switch v {
-	case "Strict":
+	case "Default":
 		fallthrough
 	case "Lax":
 		fallthrough
 	case "None":
 		fallthrough
-	case "Default":
+	case "Strict":
 		*e = KonnectApplicationAuthPluginSessionCookieSameSite(v)
 		return nil
 	default:
@@ -1753,13 +1794,13 @@ func (e *KonnectApplicationAuthPluginSessionCookieSameSite) UnmarshalJSON(data [
 type KonnectApplicationAuthPluginSessionRequestHeaders string
 
 const (
-	KonnectApplicationAuthPluginSessionRequestHeadersID              KonnectApplicationAuthPluginSessionRequestHeaders = "id"
+	KonnectApplicationAuthPluginSessionRequestHeadersAbsoluteTimeout KonnectApplicationAuthPluginSessionRequestHeaders = "absolute-timeout"
 	KonnectApplicationAuthPluginSessionRequestHeadersAudience        KonnectApplicationAuthPluginSessionRequestHeaders = "audience"
-	KonnectApplicationAuthPluginSessionRequestHeadersSubject         KonnectApplicationAuthPluginSessionRequestHeaders = "subject"
-	KonnectApplicationAuthPluginSessionRequestHeadersTimeout         KonnectApplicationAuthPluginSessionRequestHeaders = "timeout"
+	KonnectApplicationAuthPluginSessionRequestHeadersID              KonnectApplicationAuthPluginSessionRequestHeaders = "id"
 	KonnectApplicationAuthPluginSessionRequestHeadersIdlingTimeout   KonnectApplicationAuthPluginSessionRequestHeaders = "idling-timeout"
 	KonnectApplicationAuthPluginSessionRequestHeadersRollingTimeout  KonnectApplicationAuthPluginSessionRequestHeaders = "rolling-timeout"
-	KonnectApplicationAuthPluginSessionRequestHeadersAbsoluteTimeout KonnectApplicationAuthPluginSessionRequestHeaders = "absolute-timeout"
+	KonnectApplicationAuthPluginSessionRequestHeadersSubject         KonnectApplicationAuthPluginSessionRequestHeaders = "subject"
+	KonnectApplicationAuthPluginSessionRequestHeadersTimeout         KonnectApplicationAuthPluginSessionRequestHeaders = "timeout"
 )
 
 func (e KonnectApplicationAuthPluginSessionRequestHeaders) ToPointer() *KonnectApplicationAuthPluginSessionRequestHeaders {
@@ -1771,19 +1812,19 @@ func (e *KonnectApplicationAuthPluginSessionRequestHeaders) UnmarshalJSON(data [
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = KonnectApplicationAuthPluginSessionRequestHeaders(v)
 		return nil
 	default:
@@ -1794,13 +1835,13 @@ func (e *KonnectApplicationAuthPluginSessionRequestHeaders) UnmarshalJSON(data [
 type KonnectApplicationAuthPluginSessionResponseHeaders string
 
 const (
-	KonnectApplicationAuthPluginSessionResponseHeadersID              KonnectApplicationAuthPluginSessionResponseHeaders = "id"
+	KonnectApplicationAuthPluginSessionResponseHeadersAbsoluteTimeout KonnectApplicationAuthPluginSessionResponseHeaders = "absolute-timeout"
 	KonnectApplicationAuthPluginSessionResponseHeadersAudience        KonnectApplicationAuthPluginSessionResponseHeaders = "audience"
-	KonnectApplicationAuthPluginSessionResponseHeadersSubject         KonnectApplicationAuthPluginSessionResponseHeaders = "subject"
-	KonnectApplicationAuthPluginSessionResponseHeadersTimeout         KonnectApplicationAuthPluginSessionResponseHeaders = "timeout"
+	KonnectApplicationAuthPluginSessionResponseHeadersID              KonnectApplicationAuthPluginSessionResponseHeaders = "id"
 	KonnectApplicationAuthPluginSessionResponseHeadersIdlingTimeout   KonnectApplicationAuthPluginSessionResponseHeaders = "idling-timeout"
 	KonnectApplicationAuthPluginSessionResponseHeadersRollingTimeout  KonnectApplicationAuthPluginSessionResponseHeaders = "rolling-timeout"
-	KonnectApplicationAuthPluginSessionResponseHeadersAbsoluteTimeout KonnectApplicationAuthPluginSessionResponseHeaders = "absolute-timeout"
+	KonnectApplicationAuthPluginSessionResponseHeadersSubject         KonnectApplicationAuthPluginSessionResponseHeaders = "subject"
+	KonnectApplicationAuthPluginSessionResponseHeadersTimeout         KonnectApplicationAuthPluginSessionResponseHeaders = "timeout"
 )
 
 func (e KonnectApplicationAuthPluginSessionResponseHeaders) ToPointer() *KonnectApplicationAuthPluginSessionResponseHeaders {
@@ -1812,19 +1853,19 @@ func (e *KonnectApplicationAuthPluginSessionResponseHeaders) UnmarshalJSON(data 
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = KonnectApplicationAuthPluginSessionResponseHeaders(v)
 		return nil
 	default:
@@ -1870,12 +1911,12 @@ type KonnectApplicationAuthPluginTokenEndpointAuthMethod string
 
 const (
 	KonnectApplicationAuthPluginTokenEndpointAuthMethodClientSecretBasic       KonnectApplicationAuthPluginTokenEndpointAuthMethod = "client_secret_basic"
-	KonnectApplicationAuthPluginTokenEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginTokenEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginTokenEndpointAuthMethodClientSecretJwt         KonnectApplicationAuthPluginTokenEndpointAuthMethod = "client_secret_jwt"
-	KonnectApplicationAuthPluginTokenEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginTokenEndpointAuthMethod = "private_key_jwt"
-	KonnectApplicationAuthPluginTokenEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginTokenEndpointAuthMethod = "tls_client_auth"
-	KonnectApplicationAuthPluginTokenEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginTokenEndpointAuthMethodClientSecretPost        KonnectApplicationAuthPluginTokenEndpointAuthMethod = "client_secret_post"
 	KonnectApplicationAuthPluginTokenEndpointAuthMethodNone                    KonnectApplicationAuthPluginTokenEndpointAuthMethod = "none"
+	KonnectApplicationAuthPluginTokenEndpointAuthMethodPrivateKeyJwt           KonnectApplicationAuthPluginTokenEndpointAuthMethod = "private_key_jwt"
+	KonnectApplicationAuthPluginTokenEndpointAuthMethodSelfSignedTLSClientAuth KonnectApplicationAuthPluginTokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	KonnectApplicationAuthPluginTokenEndpointAuthMethodTLSClientAuth           KonnectApplicationAuthPluginTokenEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e KonnectApplicationAuthPluginTokenEndpointAuthMethod) ToPointer() *KonnectApplicationAuthPluginTokenEndpointAuthMethod {
@@ -1889,17 +1930,17 @@ func (e *KonnectApplicationAuthPluginTokenEndpointAuthMethod) UnmarshalJSON(data
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = KonnectApplicationAuthPluginTokenEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1910,9 +1951,9 @@ func (e *KonnectApplicationAuthPluginTokenEndpointAuthMethod) UnmarshalJSON(data
 type KonnectApplicationAuthPluginTokenHeadersGrants string
 
 const (
-	KonnectApplicationAuthPluginTokenHeadersGrantsPassword          KonnectApplicationAuthPluginTokenHeadersGrants = "password"
-	KonnectApplicationAuthPluginTokenHeadersGrantsClientCredentials KonnectApplicationAuthPluginTokenHeadersGrants = "client_credentials"
 	KonnectApplicationAuthPluginTokenHeadersGrantsAuthorizationCode KonnectApplicationAuthPluginTokenHeadersGrants = "authorization_code"
+	KonnectApplicationAuthPluginTokenHeadersGrantsClientCredentials KonnectApplicationAuthPluginTokenHeadersGrants = "client_credentials"
+	KonnectApplicationAuthPluginTokenHeadersGrantsPassword          KonnectApplicationAuthPluginTokenHeadersGrants = "password"
 	KonnectApplicationAuthPluginTokenHeadersGrantsRefreshToken      KonnectApplicationAuthPluginTokenHeadersGrants = "refresh_token"
 )
 
@@ -1925,11 +1966,11 @@ func (e *KonnectApplicationAuthPluginTokenHeadersGrants) UnmarshalJSON(data []by
 		return err
 	}
 	switch v {
-	case "password":
+	case "authorization_code":
 		fallthrough
 	case "client_credentials":
 		fallthrough
-	case "authorization_code":
+	case "password":
 		fallthrough
 	case "refresh_token":
 		*e = KonnectApplicationAuthPluginTokenHeadersGrants(v)
@@ -2004,7 +2045,7 @@ type KonnectApplicationAuthPluginConfigConfig struct {
 	AuthorizationRollingTimeout *float64 `json:"authorization_rolling_timeout,omitempty"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
-	// Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []KonnectApplicationAuthPluginBearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
 	ByUsernameIgnoreCase *bool `json:"by_username_ignore_case,omitempty"`
@@ -2149,6 +2190,8 @@ type KonnectApplicationAuthPluginConfigConfig struct {
 	IntrospectionHint *string `json:"introspection_hint,omitempty"`
 	// Extra post arguments passed from the client to the introspection endpoint.
 	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
+	// Extra post arguments passed from the client headers to the introspection endpoint.
+	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers,omitempty"`
 	// Extra post argument names passed to the introspection endpoint.
 	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
 	// Extra post argument values passed to the introspection endpoint.
@@ -2362,7 +2405,7 @@ type KonnectApplicationAuthPluginConfigConfig struct {
 	UpstreamAccessTokenHeader *string `json:"upstream_access_token_header,omitempty"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
-	// The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	// The upstream header claims. Only top level claims are supported.
 	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
 	// The upstream header names for the claim values.
 	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
@@ -3045,6 +3088,13 @@ func (o *KonnectApplicationAuthPluginConfigConfig) GetIntrospectionPostArgsClien
 		return nil
 	}
 	return o.IntrospectionPostArgsClient
+}
+
+func (o *KonnectApplicationAuthPluginConfigConfig) GetIntrospectionPostArgsClientHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionPostArgsClientHeaders
 }
 
 func (o *KonnectApplicationAuthPluginConfigConfig) GetIntrospectionPostArgsNames() []string {
@@ -4032,83 +4082,13 @@ func (o *KonnectApplicationAuthPluginConfig) GetV2Strategies() *V2Strategies {
 	return o.V2Strategies
 }
 
-// KonnectApplicationAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type KonnectApplicationAuthPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KonnectApplicationAuthPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type KonnectApplicationAuthPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *KonnectApplicationAuthPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type KonnectApplicationAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *KonnectApplicationAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type KonnectApplicationAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *KonnectApplicationAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type KonnectApplicationAuthPluginOrdering struct {
-	After  *KonnectApplicationAuthPluginAfter  `json:"after,omitempty"`
-	Before *KonnectApplicationAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *KonnectApplicationAuthPluginOrdering) GetAfter() *KonnectApplicationAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *KonnectApplicationAuthPluginOrdering) GetBefore() *KonnectApplicationAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type KonnectApplicationAuthPluginProtocols string
 
 const (
-	KonnectApplicationAuthPluginProtocolsGrpc           KonnectApplicationAuthPluginProtocols = "grpc"
-	KonnectApplicationAuthPluginProtocolsGrpcs          KonnectApplicationAuthPluginProtocols = "grpcs"
-	KonnectApplicationAuthPluginProtocolsHTTP           KonnectApplicationAuthPluginProtocols = "http"
-	KonnectApplicationAuthPluginProtocolsHTTPS          KonnectApplicationAuthPluginProtocols = "https"
-	KonnectApplicationAuthPluginProtocolsTCP            KonnectApplicationAuthPluginProtocols = "tcp"
-	KonnectApplicationAuthPluginProtocolsTLS            KonnectApplicationAuthPluginProtocols = "tls"
-	KonnectApplicationAuthPluginProtocolsTLSPassthrough KonnectApplicationAuthPluginProtocols = "tls_passthrough"
-	KonnectApplicationAuthPluginProtocolsUDP            KonnectApplicationAuthPluginProtocols = "udp"
-	KonnectApplicationAuthPluginProtocolsWs             KonnectApplicationAuthPluginProtocols = "ws"
-	KonnectApplicationAuthPluginProtocolsWss            KonnectApplicationAuthPluginProtocols = "wss"
+	KonnectApplicationAuthPluginProtocolsGrpc  KonnectApplicationAuthPluginProtocols = "grpc"
+	KonnectApplicationAuthPluginProtocolsGrpcs KonnectApplicationAuthPluginProtocols = "grpcs"
+	KonnectApplicationAuthPluginProtocolsHTTP  KonnectApplicationAuthPluginProtocols = "http"
+	KonnectApplicationAuthPluginProtocolsHTTPS KonnectApplicationAuthPluginProtocols = "https"
 )
 
 func (e KonnectApplicationAuthPluginProtocols) ToPointer() *KonnectApplicationAuthPluginProtocols {
@@ -4127,18 +4107,6 @@ func (e *KonnectApplicationAuthPluginProtocols) UnmarshalJSON(data []byte) error
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = KonnectApplicationAuthPluginProtocols(v)
 		return nil
 	default:
@@ -4146,7 +4114,7 @@ func (e *KonnectApplicationAuthPluginProtocols) UnmarshalJSON(data []byte) error
 	}
 }
 
-// KonnectApplicationAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// KonnectApplicationAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type KonnectApplicationAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -4172,10 +4140,6 @@ func (o *KonnectApplicationAuthPluginService) GetID() *string {
 
 // KonnectApplicationAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KonnectApplicationAuthPlugin struct {
-	Config KonnectApplicationAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KonnectApplicationAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *KonnectApplicationAuthPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -4184,16 +4148,17 @@ type KonnectApplicationAuthPlugin struct {
 	InstanceName *string                               `json:"instance_name,omitempty"`
 	name         string                                `const:"konnect-application-auth" json:"name"`
 	Ordering     *KonnectApplicationAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KonnectApplicationAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KonnectApplicationAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                             `json:"updated_at,omitempty"`
+	Config    KonnectApplicationAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *KonnectApplicationAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *KonnectApplicationAuthPluginService `json:"service,omitempty"`
 }
 
 func (k KonnectApplicationAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -4205,27 +4170,6 @@ func (k *KonnectApplicationAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *KonnectApplicationAuthPlugin) GetConfig() KonnectApplicationAuthPluginConfig {
-	if o == nil {
-		return KonnectApplicationAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *KonnectApplicationAuthPlugin) GetConsumer() *KonnectApplicationAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *KonnectApplicationAuthPlugin) GetConsumerGroup() *KonnectApplicationAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *KonnectApplicationAuthPlugin) GetCreatedAt() *int64 {
@@ -4267,6 +4211,27 @@ func (o *KonnectApplicationAuthPlugin) GetOrdering() *KonnectApplicationAuthPlug
 	return o.Ordering
 }
 
+func (o *KonnectApplicationAuthPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *KonnectApplicationAuthPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *KonnectApplicationAuthPlugin) GetConfig() KonnectApplicationAuthPluginConfig {
+	if o == nil {
+		return KonnectApplicationAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *KonnectApplicationAuthPlugin) GetProtocols() []KonnectApplicationAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -4288,40 +4253,23 @@ func (o *KonnectApplicationAuthPlugin) GetService() *KonnectApplicationAuthPlugi
 	return o.Service
 }
 
-func (o *KonnectApplicationAuthPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *KonnectApplicationAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // KonnectApplicationAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type KonnectApplicationAuthPluginInput struct {
-	Config KonnectApplicationAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *KonnectApplicationAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *KonnectApplicationAuthPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                                 `json:"enabled,omitempty"`
 	ID           *string                               `json:"id,omitempty"`
 	InstanceName *string                               `json:"instance_name,omitempty"`
 	name         string                                `const:"konnect-application-auth" json:"name"`
 	Ordering     *KonnectApplicationAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *KonnectApplicationAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KonnectApplicationAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                           `json:"tags,omitempty"`
+	Config KonnectApplicationAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *KonnectApplicationAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *KonnectApplicationAuthPluginService `json:"service,omitempty"`
 }
 
 func (k KonnectApplicationAuthPluginInput) MarshalJSON() ([]byte, error) {
@@ -4333,27 +4281,6 @@ func (k *KonnectApplicationAuthPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *KonnectApplicationAuthPluginInput) GetConfig() KonnectApplicationAuthPluginConfig {
-	if o == nil {
-		return KonnectApplicationAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *KonnectApplicationAuthPluginInput) GetConsumer() *KonnectApplicationAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *KonnectApplicationAuthPluginInput) GetConsumerGroup() *KonnectApplicationAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *KonnectApplicationAuthPluginInput) GetEnabled() *bool {
@@ -4388,6 +4315,20 @@ func (o *KonnectApplicationAuthPluginInput) GetOrdering() *KonnectApplicationAut
 	return o.Ordering
 }
 
+func (o *KonnectApplicationAuthPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *KonnectApplicationAuthPluginInput) GetConfig() KonnectApplicationAuthPluginConfig {
+	if o == nil {
+		return KonnectApplicationAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *KonnectApplicationAuthPluginInput) GetProtocols() []KonnectApplicationAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -4407,11 +4348,4 @@ func (o *KonnectApplicationAuthPluginInput) GetService() *KonnectApplicationAuth
 		return nil
 	}
 	return o.Service
-}
-
-func (o *KonnectApplicationAuthPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

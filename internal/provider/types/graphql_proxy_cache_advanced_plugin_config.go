@@ -5,10 +5,10 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type GraphqlProxyCacheAdvancedPluginConfig struct {
-	BypassOnErr types.Bool     `tfsdk:"bypass_on_err"`
-	CacheTTL    types.Int64    `tfsdk:"cache_ttl"`
-	Memory      *Memory        `tfsdk:"memory"`
-	Redis       *Redis         `tfsdk:"redis"`
-	Strategy    types.String   `tfsdk:"strategy"`
-	VaryHeaders []types.String `tfsdk:"vary_headers"`
+	BypassOnErr types.Bool                  `tfsdk:"bypass_on_err"`
+	CacheTTL    types.Int64                 `tfsdk:"cache_ttl"`
+	Memory      *Memory                     `tfsdk:"memory"`
+	Redis       *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
+	Strategy    types.String                `tfsdk:"strategy"`
+	VaryHeaders []types.String              `tfsdk:"vary_headers"`
 }

@@ -8,18 +8,59 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type OpenidConnectPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OpenidConnectPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OpenidConnectPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *OpenidConnectPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type OpenidConnectPluginOrdering struct {
+	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
+	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
+}
+
+func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type AuthMethods string
 
 const (
-	AuthMethodsPassword          AuthMethods = "password"
-	AuthMethodsClientCredentials AuthMethods = "client_credentials"
 	AuthMethodsAuthorizationCode AuthMethods = "authorization_code"
 	AuthMethodsBearer            AuthMethods = "bearer"
+	AuthMethodsClientCredentials AuthMethods = "client_credentials"
 	AuthMethodsIntrospection     AuthMethods = "introspection"
-	AuthMethodsUserinfo          AuthMethods = "userinfo"
 	AuthMethodsKongOauth2        AuthMethods = "kong_oauth2"
+	AuthMethodsPassword          AuthMethods = "password"
 	AuthMethodsRefreshToken      AuthMethods = "refresh_token"
 	AuthMethodsSession           AuthMethods = "session"
+	AuthMethodsUserinfo          AuthMethods = "userinfo"
 )
 
 func (e AuthMethods) ToPointer() *AuthMethods {
@@ -31,23 +72,23 @@ func (e *AuthMethods) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = AuthMethods(v)
 		return nil
 	default:
@@ -59,10 +100,10 @@ func (e *AuthMethods) UnmarshalJSON(data []byte) error {
 type AuthorizationCookieSameSite string
 
 const (
-	AuthorizationCookieSameSiteStrict  AuthorizationCookieSameSite = "Strict"
+	AuthorizationCookieSameSiteDefault AuthorizationCookieSameSite = "Default"
 	AuthorizationCookieSameSiteLax     AuthorizationCookieSameSite = "Lax"
 	AuthorizationCookieSameSiteNone    AuthorizationCookieSameSite = "None"
-	AuthorizationCookieSameSiteDefault AuthorizationCookieSameSite = "Default"
+	AuthorizationCookieSameSiteStrict  AuthorizationCookieSameSite = "Strict"
 )
 
 func (e AuthorizationCookieSameSite) ToPointer() *AuthorizationCookieSameSite {
@@ -74,13 +115,13 @@ func (e *AuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "Strict":
+	case "Default":
 		fallthrough
 	case "Lax":
 		fallthrough
 	case "None":
 		fallthrough
-	case "Default":
+	case "Strict":
 		*e = AuthorizationCookieSameSite(v)
 		return nil
 	default:
@@ -91,10 +132,10 @@ func (e *AuthorizationCookieSameSite) UnmarshalJSON(data []byte) error {
 type BearerTokenParamType string
 
 const (
-	BearerTokenParamTypeHeader BearerTokenParamType = "header"
-	BearerTokenParamTypeCookie BearerTokenParamType = "cookie"
-	BearerTokenParamTypeQuery  BearerTokenParamType = "query"
 	BearerTokenParamTypeBody   BearerTokenParamType = "body"
+	BearerTokenParamTypeCookie BearerTokenParamType = "cookie"
+	BearerTokenParamTypeHeader BearerTokenParamType = "header"
+	BearerTokenParamTypeQuery  BearerTokenParamType = "query"
 )
 
 func (e BearerTokenParamType) ToPointer() *BearerTokenParamType {
@@ -106,13 +147,13 @@ func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "header":
+	case "body":
 		fallthrough
 	case "cookie":
 		fallthrough
-	case "query":
+	case "header":
 		fallthrough
-	case "body":
+	case "query":
 		*e = BearerTokenParamType(v)
 		return nil
 	default:
@@ -123,19 +164,19 @@ func (e *BearerTokenParamType) UnmarshalJSON(data []byte) error {
 type ClientAlg string
 
 const (
-	ClientAlgHs256 ClientAlg = "HS256"
-	ClientAlgHs384 ClientAlg = "HS384"
-	ClientAlgHs512 ClientAlg = "HS512"
-	ClientAlgRs256 ClientAlg = "RS256"
-	ClientAlgRs384 ClientAlg = "RS384"
-	ClientAlgRs512 ClientAlg = "RS512"
 	ClientAlgEs256 ClientAlg = "ES256"
 	ClientAlgEs384 ClientAlg = "ES384"
 	ClientAlgEs512 ClientAlg = "ES512"
+	ClientAlgEdDsa ClientAlg = "EdDSA"
+	ClientAlgHs256 ClientAlg = "HS256"
+	ClientAlgHs384 ClientAlg = "HS384"
+	ClientAlgHs512 ClientAlg = "HS512"
 	ClientAlgPs256 ClientAlg = "PS256"
 	ClientAlgPs384 ClientAlg = "PS384"
 	ClientAlgPs512 ClientAlg = "PS512"
-	ClientAlgEdDsa ClientAlg = "EdDSA"
+	ClientAlgRs256 ClientAlg = "RS256"
+	ClientAlgRs384 ClientAlg = "RS384"
+	ClientAlgRs512 ClientAlg = "RS512"
 )
 
 func (e ClientAlg) ToPointer() *ClientAlg {
@@ -147,23 +188,19 @@ func (e *ClientAlg) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "HS256":
-		fallthrough
-	case "HS384":
-		fallthrough
-	case "HS512":
-		fallthrough
-	case "RS256":
-		fallthrough
-	case "RS384":
-		fallthrough
-	case "RS512":
-		fallthrough
 	case "ES256":
 		fallthrough
 	case "ES384":
 		fallthrough
 	case "ES512":
+		fallthrough
+	case "EdDSA":
+		fallthrough
+	case "HS256":
+		fallthrough
+	case "HS384":
+		fallthrough
+	case "HS512":
 		fallthrough
 	case "PS256":
 		fallthrough
@@ -171,7 +208,11 @@ func (e *ClientAlg) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "PS512":
 		fallthrough
-	case "EdDSA":
+	case "RS256":
+		fallthrough
+	case "RS384":
+		fallthrough
+	case "RS512":
 		*e = ClientAlg(v)
 		return nil
 	default:
@@ -183,12 +224,12 @@ type ClientAuth string
 
 const (
 	ClientAuthClientSecretBasic       ClientAuth = "client_secret_basic"
-	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
 	ClientAuthClientSecretJwt         ClientAuth = "client_secret_jwt"
-	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
-	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
-	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
+	ClientAuthClientSecretPost        ClientAuth = "client_secret_post"
 	ClientAuthNone                    ClientAuth = "none"
+	ClientAuthPrivateKeyJwt           ClientAuth = "private_key_jwt"
+	ClientAuthSelfSignedTLSClientAuth ClientAuth = "self_signed_tls_client_auth"
+	ClientAuthTLSClientAuth           ClientAuth = "tls_client_auth"
 )
 
 func (e ClientAuth) ToPointer() *ClientAuth {
@@ -202,17 +243,17 @@ func (e *ClientAuth) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = ClientAuth(v)
 		return nil
 	default:
@@ -223,9 +264,9 @@ func (e *ClientAuth) UnmarshalJSON(data []byte) error {
 type ClientCredentialsParamType string
 
 const (
+	ClientCredentialsParamTypeBody   ClientCredentialsParamType = "body"
 	ClientCredentialsParamTypeHeader ClientCredentialsParamType = "header"
 	ClientCredentialsParamTypeQuery  ClientCredentialsParamType = "query"
-	ClientCredentialsParamTypeBody   ClientCredentialsParamType = "body"
 )
 
 func (e ClientCredentialsParamType) ToPointer() *ClientCredentialsParamType {
@@ -237,11 +278,11 @@ func (e *ClientCredentialsParamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = ClientCredentialsParamType(v)
 		return nil
 	default:
@@ -498,9 +539,9 @@ func (o *OpenidConnectPluginSentinelNodes) GetPort() *int64 {
 type OpenidConnectPluginSentinelRole string
 
 const (
+	OpenidConnectPluginSentinelRoleAny    OpenidConnectPluginSentinelRole = "any"
 	OpenidConnectPluginSentinelRoleMaster OpenidConnectPluginSentinelRole = "master"
 	OpenidConnectPluginSentinelRoleSlave  OpenidConnectPluginSentinelRole = "slave"
-	OpenidConnectPluginSentinelRoleAny    OpenidConnectPluginSentinelRole = "any"
 )
 
 func (e OpenidConnectPluginSentinelRole) ToPointer() *OpenidConnectPluginSentinelRole {
@@ -512,11 +553,11 @@ func (e *OpenidConnectPluginSentinelRole) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = OpenidConnectPluginSentinelRole(v)
 		return nil
 	default:
@@ -746,9 +787,9 @@ func (e *ClusterCacheStrategy) UnmarshalJSON(data []byte) error {
 type OpenidConnectPluginConsumerBy string
 
 const (
+	OpenidConnectPluginConsumerByCustomID OpenidConnectPluginConsumerBy = "custom_id"
 	OpenidConnectPluginConsumerByID       OpenidConnectPluginConsumerBy = "id"
 	OpenidConnectPluginConsumerByUsername OpenidConnectPluginConsumerBy = "username"
-	OpenidConnectPluginConsumerByCustomID OpenidConnectPluginConsumerBy = "custom_id"
 )
 
 func (e OpenidConnectPluginConsumerBy) ToPointer() *OpenidConnectPluginConsumerBy {
@@ -760,11 +801,11 @@ func (e *OpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "custom_id":
+		fallthrough
 	case "id":
 		fallthrough
 	case "username":
-		fallthrough
-	case "custom_id":
 		*e = OpenidConnectPluginConsumerBy(v)
 		return nil
 	default:
@@ -775,15 +816,15 @@ func (e *OpenidConnectPluginConsumerBy) UnmarshalJSON(data []byte) error {
 type DisableSession string
 
 const (
-	DisableSessionPassword          DisableSession = "password"
-	DisableSessionClientCredentials DisableSession = "client_credentials"
 	DisableSessionAuthorizationCode DisableSession = "authorization_code"
 	DisableSessionBearer            DisableSession = "bearer"
+	DisableSessionClientCredentials DisableSession = "client_credentials"
 	DisableSessionIntrospection     DisableSession = "introspection"
-	DisableSessionUserinfo          DisableSession = "userinfo"
 	DisableSessionKongOauth2        DisableSession = "kong_oauth2"
+	DisableSessionPassword          DisableSession = "password"
 	DisableSessionRefreshToken      DisableSession = "refresh_token"
 	DisableSessionSession           DisableSession = "session"
+	DisableSessionUserinfo          DisableSession = "userinfo"
 )
 
 func (e DisableSession) ToPointer() *DisableSession {
@@ -795,23 +836,23 @@ func (e *DisableSession) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = DisableSession(v)
 		return nil
 	default:
@@ -822,9 +863,9 @@ func (e *DisableSession) UnmarshalJSON(data []byte) error {
 type IDTokenParamType string
 
 const (
+	IDTokenParamTypeBody   IDTokenParamType = "body"
 	IDTokenParamTypeHeader IDTokenParamType = "header"
 	IDTokenParamTypeQuery  IDTokenParamType = "query"
-	IDTokenParamTypeBody   IDTokenParamType = "body"
 )
 
 func (e IDTokenParamType) ToPointer() *IDTokenParamType {
@@ -836,11 +877,11 @@ func (e *IDTokenParamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = IDTokenParamType(v)
 		return nil
 	default:
@@ -851,12 +892,12 @@ func (e *IDTokenParamType) UnmarshalJSON(data []byte) error {
 type IgnoreSignature string
 
 const (
-	IgnoreSignaturePassword          IgnoreSignature = "password"
-	IgnoreSignatureClientCredentials IgnoreSignature = "client_credentials"
 	IgnoreSignatureAuthorizationCode IgnoreSignature = "authorization_code"
+	IgnoreSignatureClientCredentials IgnoreSignature = "client_credentials"
+	IgnoreSignatureIntrospection     IgnoreSignature = "introspection"
+	IgnoreSignaturePassword          IgnoreSignature = "password"
 	IgnoreSignatureRefreshToken      IgnoreSignature = "refresh_token"
 	IgnoreSignatureSession           IgnoreSignature = "session"
-	IgnoreSignatureIntrospection     IgnoreSignature = "introspection"
 	IgnoreSignatureUserinfo          IgnoreSignature = "userinfo"
 )
 
@@ -869,17 +910,17 @@ func (e *IgnoreSignature) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "password":
+	case "authorization_code":
 		fallthrough
 	case "client_credentials":
 		fallthrough
-	case "authorization_code":
+	case "introspection":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
-		fallthrough
-	case "introspection":
 		fallthrough
 	case "userinfo":
 		*e = IgnoreSignature(v)
@@ -894,8 +935,8 @@ type IntrospectionAccept string
 
 const (
 	IntrospectionAcceptApplicationJSON                      IntrospectionAccept = "application/json"
-	IntrospectionAcceptApplicationTokenIntrospectionPlusJwt IntrospectionAccept = "application/token-introspection+jwt"
 	IntrospectionAcceptApplicationJwt                       IntrospectionAccept = "application/jwt"
+	IntrospectionAcceptApplicationTokenIntrospectionPlusJwt IntrospectionAccept = "application/token-introspection+jwt"
 )
 
 func (e IntrospectionAccept) ToPointer() *IntrospectionAccept {
@@ -909,9 +950,9 @@ func (e *IntrospectionAccept) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "application/json":
 		fallthrough
-	case "application/token-introspection+jwt":
-		fallthrough
 	case "application/jwt":
+		fallthrough
+	case "application/token-introspection+jwt":
 		*e = IntrospectionAccept(v)
 		return nil
 	default:
@@ -924,12 +965,12 @@ type IntrospectionEndpointAuthMethod string
 
 const (
 	IntrospectionEndpointAuthMethodClientSecretBasic       IntrospectionEndpointAuthMethod = "client_secret_basic"
-	IntrospectionEndpointAuthMethodClientSecretPost        IntrospectionEndpointAuthMethod = "client_secret_post"
 	IntrospectionEndpointAuthMethodClientSecretJwt         IntrospectionEndpointAuthMethod = "client_secret_jwt"
-	IntrospectionEndpointAuthMethodPrivateKeyJwt           IntrospectionEndpointAuthMethod = "private_key_jwt"
-	IntrospectionEndpointAuthMethodTLSClientAuth           IntrospectionEndpointAuthMethod = "tls_client_auth"
-	IntrospectionEndpointAuthMethodSelfSignedTLSClientAuth IntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	IntrospectionEndpointAuthMethodClientSecretPost        IntrospectionEndpointAuthMethod = "client_secret_post"
 	IntrospectionEndpointAuthMethodNone                    IntrospectionEndpointAuthMethod = "none"
+	IntrospectionEndpointAuthMethodPrivateKeyJwt           IntrospectionEndpointAuthMethod = "private_key_jwt"
+	IntrospectionEndpointAuthMethodSelfSignedTLSClientAuth IntrospectionEndpointAuthMethod = "self_signed_tls_client_auth"
+	IntrospectionEndpointAuthMethodTLSClientAuth           IntrospectionEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e IntrospectionEndpointAuthMethod) ToPointer() *IntrospectionEndpointAuthMethod {
@@ -943,17 +984,17 @@ func (e *IntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = IntrospectionEndpointAuthMethod(v)
 		return nil
 	default:
@@ -965,9 +1006,9 @@ func (e *IntrospectionEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 type LoginAction string
 
 const (
-	LoginActionUpstream LoginAction = "upstream"
-	LoginActionResponse LoginAction = "response"
 	LoginActionRedirect LoginAction = "redirect"
+	LoginActionResponse LoginAction = "response"
+	LoginActionUpstream LoginAction = "upstream"
 )
 
 func (e LoginAction) ToPointer() *LoginAction {
@@ -979,11 +1020,11 @@ func (e *LoginAction) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "upstream":
+	case "redirect":
 		fallthrough
 	case "response":
 		fallthrough
-	case "redirect":
+	case "upstream":
 		*e = LoginAction(v)
 		return nil
 	default:
@@ -994,15 +1035,15 @@ func (e *LoginAction) UnmarshalJSON(data []byte) error {
 type LoginMethods string
 
 const (
-	LoginMethodsPassword          LoginMethods = "password"
-	LoginMethodsClientCredentials LoginMethods = "client_credentials"
 	LoginMethodsAuthorizationCode LoginMethods = "authorization_code"
 	LoginMethodsBearer            LoginMethods = "bearer"
+	LoginMethodsClientCredentials LoginMethods = "client_credentials"
 	LoginMethodsIntrospection     LoginMethods = "introspection"
-	LoginMethodsUserinfo          LoginMethods = "userinfo"
 	LoginMethodsKongOauth2        LoginMethods = "kong_oauth2"
+	LoginMethodsPassword          LoginMethods = "password"
 	LoginMethodsRefreshToken      LoginMethods = "refresh_token"
 	LoginMethodsSession           LoginMethods = "session"
+	LoginMethodsUserinfo          LoginMethods = "userinfo"
 )
 
 func (e LoginMethods) ToPointer() *LoginMethods {
@@ -1014,23 +1055,23 @@ func (e *LoginMethods) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "password":
-		fallthrough
-	case "client_credentials":
-		fallthrough
 	case "authorization_code":
 		fallthrough
 	case "bearer":
 		fallthrough
+	case "client_credentials":
+		fallthrough
 	case "introspection":
 		fallthrough
-	case "userinfo":
-		fallthrough
 	case "kong_oauth2":
+		fallthrough
+	case "password":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "session":
+		fallthrough
+	case "userinfo":
 		*e = LoginMethods(v)
 		return nil
 	default:
@@ -1042,8 +1083,8 @@ func (e *LoginMethods) UnmarshalJSON(data []byte) error {
 type LoginRedirectMode string
 
 const (
-	LoginRedirectModeQuery    LoginRedirectMode = "query"
 	LoginRedirectModeFragment LoginRedirectMode = "fragment"
+	LoginRedirectModeQuery    LoginRedirectMode = "query"
 )
 
 func (e LoginRedirectMode) ToPointer() *LoginRedirectMode {
@@ -1055,9 +1096,9 @@ func (e *LoginRedirectMode) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "fragment":
+		fallthrough
+	case "query":
 		*e = LoginRedirectMode(v)
 		return nil
 	default:
@@ -1068,11 +1109,11 @@ func (e *LoginRedirectMode) UnmarshalJSON(data []byte) error {
 type LoginTokens string
 
 const (
-	LoginTokensIDToken       LoginTokens = "id_token"
 	LoginTokensAccessToken   LoginTokens = "access_token"
+	LoginTokensIDToken       LoginTokens = "id_token"
+	LoginTokensIntrospection LoginTokens = "introspection"
 	LoginTokensRefreshToken  LoginTokens = "refresh_token"
 	LoginTokensTokens        LoginTokens = "tokens"
-	LoginTokensIntrospection LoginTokens = "introspection"
 )
 
 func (e LoginTokens) ToPointer() *LoginTokens {
@@ -1084,15 +1125,15 @@ func (e *LoginTokens) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "access_token":
+		fallthrough
 	case "id_token":
 		fallthrough
-	case "access_token":
+	case "introspection":
 		fallthrough
 	case "refresh_token":
 		fallthrough
 	case "tokens":
-		fallthrough
-	case "introspection":
 		*e = LoginTokens(v)
 		return nil
 	default:
@@ -1103,9 +1144,9 @@ func (e *LoginTokens) UnmarshalJSON(data []byte) error {
 type LogoutMethods string
 
 const (
-	LogoutMethodsPost   LogoutMethods = "POST"
-	LogoutMethodsGet    LogoutMethods = "GET"
 	LogoutMethodsDelete LogoutMethods = "DELETE"
+	LogoutMethodsGet    LogoutMethods = "GET"
+	LogoutMethodsPost   LogoutMethods = "POST"
 )
 
 func (e LogoutMethods) ToPointer() *LogoutMethods {
@@ -1117,11 +1158,11 @@ func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "POST":
+	case "DELETE":
 		fallthrough
 	case "GET":
 		fallthrough
-	case "DELETE":
+	case "POST":
 		*e = LogoutMethods(v)
 		return nil
 	default:
@@ -1132,9 +1173,9 @@ func (e *LogoutMethods) UnmarshalJSON(data []byte) error {
 type PasswordParamType string
 
 const (
+	PasswordParamTypeBody   PasswordParamType = "body"
 	PasswordParamTypeHeader PasswordParamType = "header"
 	PasswordParamTypeQuery  PasswordParamType = "query"
-	PasswordParamTypeBody   PasswordParamType = "body"
 )
 
 func (e PasswordParamType) ToPointer() *PasswordParamType {
@@ -1146,11 +1187,11 @@ func (e *PasswordParamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = PasswordParamType(v)
 		return nil
 	default:
@@ -1163,8 +1204,8 @@ type ProofOfPossessionDpop string
 
 const (
 	ProofOfPossessionDpopOff      ProofOfPossessionDpop = "off"
-	ProofOfPossessionDpopStrict   ProofOfPossessionDpop = "strict"
 	ProofOfPossessionDpopOptional ProofOfPossessionDpop = "optional"
+	ProofOfPossessionDpopStrict   ProofOfPossessionDpop = "strict"
 )
 
 func (e ProofOfPossessionDpop) ToPointer() *ProofOfPossessionDpop {
@@ -1178,9 +1219,9 @@ func (e *ProofOfPossessionDpop) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "off":
 		fallthrough
-	case "strict":
-		fallthrough
 	case "optional":
+		fallthrough
+	case "strict":
 		*e = ProofOfPossessionDpop(v)
 		return nil
 	default:
@@ -1193,8 +1234,8 @@ type ProofOfPossessionMtls string
 
 const (
 	ProofOfPossessionMtlsOff      ProofOfPossessionMtls = "off"
-	ProofOfPossessionMtlsStrict   ProofOfPossessionMtls = "strict"
 	ProofOfPossessionMtlsOptional ProofOfPossessionMtls = "optional"
+	ProofOfPossessionMtlsStrict   ProofOfPossessionMtls = "strict"
 )
 
 func (e ProofOfPossessionMtls) ToPointer() *ProofOfPossessionMtls {
@@ -1208,9 +1249,9 @@ func (e *ProofOfPossessionMtls) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "off":
 		fallthrough
-	case "strict":
-		fallthrough
 	case "optional":
+		fallthrough
+	case "strict":
 		*e = ProofOfPossessionMtls(v)
 		return nil
 	default:
@@ -1223,12 +1264,12 @@ type PushedAuthorizationRequestEndpointAuthMethod string
 
 const (
 	PushedAuthorizationRequestEndpointAuthMethodClientSecretBasic       PushedAuthorizationRequestEndpointAuthMethod = "client_secret_basic"
-	PushedAuthorizationRequestEndpointAuthMethodClientSecretPost        PushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
 	PushedAuthorizationRequestEndpointAuthMethodClientSecretJwt         PushedAuthorizationRequestEndpointAuthMethod = "client_secret_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           PushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
-	PushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           PushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
-	PushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth PushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	PushedAuthorizationRequestEndpointAuthMethodClientSecretPost        PushedAuthorizationRequestEndpointAuthMethod = "client_secret_post"
 	PushedAuthorizationRequestEndpointAuthMethodNone                    PushedAuthorizationRequestEndpointAuthMethod = "none"
+	PushedAuthorizationRequestEndpointAuthMethodPrivateKeyJwt           PushedAuthorizationRequestEndpointAuthMethod = "private_key_jwt"
+	PushedAuthorizationRequestEndpointAuthMethodSelfSignedTLSClientAuth PushedAuthorizationRequestEndpointAuthMethod = "self_signed_tls_client_auth"
+	PushedAuthorizationRequestEndpointAuthMethodTLSClientAuth           PushedAuthorizationRequestEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e PushedAuthorizationRequestEndpointAuthMethod) ToPointer() *PushedAuthorizationRequestEndpointAuthMethod {
@@ -1242,17 +1283,17 @@ func (e *PushedAuthorizationRequestEndpointAuthMethod) UnmarshalJSON(data []byte
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = PushedAuthorizationRequestEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1306,9 +1347,9 @@ func (o *OpenidConnectPluginConfigSentinelNodes) GetPort() *int64 {
 type OpenidConnectPluginConfigSentinelRole string
 
 const (
+	OpenidConnectPluginConfigSentinelRoleAny    OpenidConnectPluginConfigSentinelRole = "any"
 	OpenidConnectPluginConfigSentinelRoleMaster OpenidConnectPluginConfigSentinelRole = "master"
 	OpenidConnectPluginConfigSentinelRoleSlave  OpenidConnectPluginConfigSentinelRole = "slave"
-	OpenidConnectPluginConfigSentinelRoleAny    OpenidConnectPluginConfigSentinelRole = "any"
 )
 
 func (e OpenidConnectPluginConfigSentinelRole) ToPointer() *OpenidConnectPluginConfigSentinelRole {
@@ -1320,11 +1361,11 @@ func (e *OpenidConnectPluginConfigSentinelRole) UnmarshalJSON(data []byte) error
 		return err
 	}
 	switch v {
+	case "any":
+		fallthrough
 	case "master":
 		fallthrough
 	case "slave":
-		fallthrough
-	case "any":
 		*e = OpenidConnectPluginConfigSentinelRole(v)
 		return nil
 	default:
@@ -1545,9 +1586,9 @@ func (o *OpenidConnectPluginRedis) GetUsername() *string {
 type RefreshTokenParamType string
 
 const (
+	RefreshTokenParamTypeBody   RefreshTokenParamType = "body"
 	RefreshTokenParamTypeHeader RefreshTokenParamType = "header"
 	RefreshTokenParamTypeQuery  RefreshTokenParamType = "query"
-	RefreshTokenParamTypeBody   RefreshTokenParamType = "body"
 )
 
 func (e RefreshTokenParamType) ToPointer() *RefreshTokenParamType {
@@ -1559,11 +1600,11 @@ func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "body":
+		fallthrough
 	case "header":
 		fallthrough
 	case "query":
-		fallthrough
-	case "body":
 		*e = RefreshTokenParamType(v)
 		return nil
 	default:
@@ -1575,13 +1616,13 @@ func (e *RefreshTokenParamType) UnmarshalJSON(data []byte) error {
 type ResponseMode string
 
 const (
-	ResponseModeQuery       ResponseMode = "query"
 	ResponseModeFormPost    ResponseMode = "form_post"
-	ResponseModeFragment    ResponseMode = "fragment"
-	ResponseModeQueryJwt    ResponseMode = "query.jwt"
 	ResponseModeFormPostJwt ResponseMode = "form_post.jwt"
+	ResponseModeFragment    ResponseMode = "fragment"
 	ResponseModeFragmentJwt ResponseMode = "fragment.jwt"
 	ResponseModeJwt         ResponseMode = "jwt"
+	ResponseModeQuery       ResponseMode = "query"
+	ResponseModeQueryJwt    ResponseMode = "query.jwt"
 )
 
 func (e ResponseMode) ToPointer() *ResponseMode {
@@ -1593,19 +1634,19 @@ func (e *ResponseMode) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "form_post":
 		fallthrough
-	case "fragment":
-		fallthrough
-	case "query.jwt":
-		fallthrough
 	case "form_post.jwt":
+		fallthrough
+	case "fragment":
 		fallthrough
 	case "fragment.jwt":
 		fallthrough
 	case "jwt":
+		fallthrough
+	case "query":
+		fallthrough
+	case "query.jwt":
 		*e = ResponseMode(v)
 		return nil
 	default:
@@ -1618,12 +1659,12 @@ type RevocationEndpointAuthMethod string
 
 const (
 	RevocationEndpointAuthMethodClientSecretBasic       RevocationEndpointAuthMethod = "client_secret_basic"
-	RevocationEndpointAuthMethodClientSecretPost        RevocationEndpointAuthMethod = "client_secret_post"
 	RevocationEndpointAuthMethodClientSecretJwt         RevocationEndpointAuthMethod = "client_secret_jwt"
-	RevocationEndpointAuthMethodPrivateKeyJwt           RevocationEndpointAuthMethod = "private_key_jwt"
-	RevocationEndpointAuthMethodTLSClientAuth           RevocationEndpointAuthMethod = "tls_client_auth"
-	RevocationEndpointAuthMethodSelfSignedTLSClientAuth RevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	RevocationEndpointAuthMethodClientSecretPost        RevocationEndpointAuthMethod = "client_secret_post"
 	RevocationEndpointAuthMethodNone                    RevocationEndpointAuthMethod = "none"
+	RevocationEndpointAuthMethodPrivateKeyJwt           RevocationEndpointAuthMethod = "private_key_jwt"
+	RevocationEndpointAuthMethodSelfSignedTLSClientAuth RevocationEndpointAuthMethod = "self_signed_tls_client_auth"
+	RevocationEndpointAuthMethodTLSClientAuth           RevocationEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e RevocationEndpointAuthMethod) ToPointer() *RevocationEndpointAuthMethod {
@@ -1637,17 +1678,17 @@ func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = RevocationEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1659,10 +1700,10 @@ func (e *RevocationEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 type SessionCookieSameSite string
 
 const (
-	SessionCookieSameSiteStrict  SessionCookieSameSite = "Strict"
+	SessionCookieSameSiteDefault SessionCookieSameSite = "Default"
 	SessionCookieSameSiteLax     SessionCookieSameSite = "Lax"
 	SessionCookieSameSiteNone    SessionCookieSameSite = "None"
-	SessionCookieSameSiteDefault SessionCookieSameSite = "Default"
+	SessionCookieSameSiteStrict  SessionCookieSameSite = "Strict"
 )
 
 func (e SessionCookieSameSite) ToPointer() *SessionCookieSameSite {
@@ -1674,13 +1715,13 @@ func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "Strict":
+	case "Default":
 		fallthrough
 	case "Lax":
 		fallthrough
 	case "None":
 		fallthrough
-	case "Default":
+	case "Strict":
 		*e = SessionCookieSameSite(v)
 		return nil
 	default:
@@ -1691,13 +1732,13 @@ func (e *SessionCookieSameSite) UnmarshalJSON(data []byte) error {
 type SessionRequestHeaders string
 
 const (
-	SessionRequestHeadersID              SessionRequestHeaders = "id"
+	SessionRequestHeadersAbsoluteTimeout SessionRequestHeaders = "absolute-timeout"
 	SessionRequestHeadersAudience        SessionRequestHeaders = "audience"
-	SessionRequestHeadersSubject         SessionRequestHeaders = "subject"
-	SessionRequestHeadersTimeout         SessionRequestHeaders = "timeout"
+	SessionRequestHeadersID              SessionRequestHeaders = "id"
 	SessionRequestHeadersIdlingTimeout   SessionRequestHeaders = "idling-timeout"
 	SessionRequestHeadersRollingTimeout  SessionRequestHeaders = "rolling-timeout"
-	SessionRequestHeadersAbsoluteTimeout SessionRequestHeaders = "absolute-timeout"
+	SessionRequestHeadersSubject         SessionRequestHeaders = "subject"
+	SessionRequestHeadersTimeout         SessionRequestHeaders = "timeout"
 )
 
 func (e SessionRequestHeaders) ToPointer() *SessionRequestHeaders {
@@ -1709,19 +1750,19 @@ func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = SessionRequestHeaders(v)
 		return nil
 	default:
@@ -1732,13 +1773,13 @@ func (e *SessionRequestHeaders) UnmarshalJSON(data []byte) error {
 type SessionResponseHeaders string
 
 const (
-	SessionResponseHeadersID              SessionResponseHeaders = "id"
+	SessionResponseHeadersAbsoluteTimeout SessionResponseHeaders = "absolute-timeout"
 	SessionResponseHeadersAudience        SessionResponseHeaders = "audience"
-	SessionResponseHeadersSubject         SessionResponseHeaders = "subject"
-	SessionResponseHeadersTimeout         SessionResponseHeaders = "timeout"
+	SessionResponseHeadersID              SessionResponseHeaders = "id"
 	SessionResponseHeadersIdlingTimeout   SessionResponseHeaders = "idling-timeout"
 	SessionResponseHeadersRollingTimeout  SessionResponseHeaders = "rolling-timeout"
-	SessionResponseHeadersAbsoluteTimeout SessionResponseHeaders = "absolute-timeout"
+	SessionResponseHeadersSubject         SessionResponseHeaders = "subject"
+	SessionResponseHeadersTimeout         SessionResponseHeaders = "timeout"
 )
 
 func (e SessionResponseHeaders) ToPointer() *SessionResponseHeaders {
@@ -1750,19 +1791,19 @@ func (e *SessionResponseHeaders) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "id":
+	case "absolute-timeout":
 		fallthrough
 	case "audience":
 		fallthrough
-	case "subject":
-		fallthrough
-	case "timeout":
+	case "id":
 		fallthrough
 	case "idling-timeout":
 		fallthrough
 	case "rolling-timeout":
 		fallthrough
-	case "absolute-timeout":
+	case "subject":
+		fallthrough
+	case "timeout":
 		*e = SessionResponseHeaders(v)
 		return nil
 	default:
@@ -1808,12 +1849,12 @@ type TokenEndpointAuthMethod string
 
 const (
 	TokenEndpointAuthMethodClientSecretBasic       TokenEndpointAuthMethod = "client_secret_basic"
-	TokenEndpointAuthMethodClientSecretPost        TokenEndpointAuthMethod = "client_secret_post"
 	TokenEndpointAuthMethodClientSecretJwt         TokenEndpointAuthMethod = "client_secret_jwt"
-	TokenEndpointAuthMethodPrivateKeyJwt           TokenEndpointAuthMethod = "private_key_jwt"
-	TokenEndpointAuthMethodTLSClientAuth           TokenEndpointAuthMethod = "tls_client_auth"
-	TokenEndpointAuthMethodSelfSignedTLSClientAuth TokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	TokenEndpointAuthMethodClientSecretPost        TokenEndpointAuthMethod = "client_secret_post"
 	TokenEndpointAuthMethodNone                    TokenEndpointAuthMethod = "none"
+	TokenEndpointAuthMethodPrivateKeyJwt           TokenEndpointAuthMethod = "private_key_jwt"
+	TokenEndpointAuthMethodSelfSignedTLSClientAuth TokenEndpointAuthMethod = "self_signed_tls_client_auth"
+	TokenEndpointAuthMethodTLSClientAuth           TokenEndpointAuthMethod = "tls_client_auth"
 )
 
 func (e TokenEndpointAuthMethod) ToPointer() *TokenEndpointAuthMethod {
@@ -1827,17 +1868,17 @@ func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "client_secret_basic":
 		fallthrough
+	case "client_secret_jwt":
+		fallthrough
 	case "client_secret_post":
 		fallthrough
-	case "client_secret_jwt":
+	case "none":
 		fallthrough
 	case "private_key_jwt":
 		fallthrough
-	case "tls_client_auth":
-		fallthrough
 	case "self_signed_tls_client_auth":
 		fallthrough
-	case "none":
+	case "tls_client_auth":
 		*e = TokenEndpointAuthMethod(v)
 		return nil
 	default:
@@ -1848,9 +1889,9 @@ func (e *TokenEndpointAuthMethod) UnmarshalJSON(data []byte) error {
 type TokenHeadersGrants string
 
 const (
-	TokenHeadersGrantsPassword          TokenHeadersGrants = "password"
-	TokenHeadersGrantsClientCredentials TokenHeadersGrants = "client_credentials"
 	TokenHeadersGrantsAuthorizationCode TokenHeadersGrants = "authorization_code"
+	TokenHeadersGrantsClientCredentials TokenHeadersGrants = "client_credentials"
+	TokenHeadersGrantsPassword          TokenHeadersGrants = "password"
 	TokenHeadersGrantsRefreshToken      TokenHeadersGrants = "refresh_token"
 )
 
@@ -1863,11 +1904,11 @@ func (e *TokenHeadersGrants) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "password":
+	case "authorization_code":
 		fallthrough
 	case "client_credentials":
 		fallthrough
-	case "authorization_code":
+	case "password":
 		fallthrough
 	case "refresh_token":
 		*e = TokenHeadersGrants(v)
@@ -1941,7 +1982,7 @@ type OpenidConnectPluginConfig struct {
 	AuthorizationRollingTimeout *float64 `json:"authorization_rolling_timeout,omitempty"`
 	// The name of the cookie in which the bearer token is passed.
 	BearerTokenCookieName *string `json:"bearer_token_cookie_name,omitempty"`
-	// Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+	// Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 	BearerTokenParamType []BearerTokenParamType `json:"bearer_token_param_type,omitempty"`
 	// If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
 	ByUsernameIgnoreCase *bool `json:"by_username_ignore_case,omitempty"`
@@ -2086,6 +2127,8 @@ type OpenidConnectPluginConfig struct {
 	IntrospectionHint *string `json:"introspection_hint,omitempty"`
 	// Extra post arguments passed from the client to the introspection endpoint.
 	IntrospectionPostArgsClient []string `json:"introspection_post_args_client,omitempty"`
+	// Extra post arguments passed from the client headers to the introspection endpoint.
+	IntrospectionPostArgsClientHeaders []string `json:"introspection_post_args_client_headers,omitempty"`
 	// Extra post argument names passed to the introspection endpoint.
 	IntrospectionPostArgsNames []string `json:"introspection_post_args_names,omitempty"`
 	// Extra post argument values passed to the introspection endpoint.
@@ -2299,7 +2342,7 @@ type OpenidConnectPluginConfig struct {
 	UpstreamAccessTokenHeader *string `json:"upstream_access_token_header,omitempty"`
 	// The upstream access token JWK header.
 	UpstreamAccessTokenJwkHeader *string `json:"upstream_access_token_jwk_header,omitempty"`
-	// The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+	// The upstream header claims. Only top level claims are supported.
 	UpstreamHeadersClaims []string `json:"upstream_headers_claims,omitempty"`
 	// The upstream header names for the claim values.
 	UpstreamHeadersNames []string `json:"upstream_headers_names,omitempty"`
@@ -2982,6 +3025,13 @@ func (o *OpenidConnectPluginConfig) GetIntrospectionPostArgsClient() []string {
 		return nil
 	}
 	return o.IntrospectionPostArgsClient
+}
+
+func (o *OpenidConnectPluginConfig) GetIntrospectionPostArgsClientHeaders() []string {
+	if o == nil {
+		return nil
+	}
+	return o.IntrospectionPostArgsClientHeaders
 }
 
 func (o *OpenidConnectPluginConfig) GetIntrospectionPostArgsNames() []string {
@@ -3887,83 +3937,13 @@ func (o *OpenidConnectPluginConfig) GetVerifySignature() *bool {
 	return o.VerifySignature
 }
 
-// OpenidConnectPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type OpenidConnectPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OpenidConnectPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type OpenidConnectPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *OpenidConnectPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type OpenidConnectPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *OpenidConnectPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type OpenidConnectPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *OpenidConnectPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type OpenidConnectPluginOrdering struct {
-	After  *OpenidConnectPluginAfter  `json:"after,omitempty"`
-	Before *OpenidConnectPluginBefore `json:"before,omitempty"`
-}
-
-func (o *OpenidConnectPluginOrdering) GetAfter() *OpenidConnectPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *OpenidConnectPluginOrdering) GetBefore() *OpenidConnectPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type OpenidConnectPluginProtocols string
 
 const (
-	OpenidConnectPluginProtocolsGrpc           OpenidConnectPluginProtocols = "grpc"
-	OpenidConnectPluginProtocolsGrpcs          OpenidConnectPluginProtocols = "grpcs"
-	OpenidConnectPluginProtocolsHTTP           OpenidConnectPluginProtocols = "http"
-	OpenidConnectPluginProtocolsHTTPS          OpenidConnectPluginProtocols = "https"
-	OpenidConnectPluginProtocolsTCP            OpenidConnectPluginProtocols = "tcp"
-	OpenidConnectPluginProtocolsTLS            OpenidConnectPluginProtocols = "tls"
-	OpenidConnectPluginProtocolsTLSPassthrough OpenidConnectPluginProtocols = "tls_passthrough"
-	OpenidConnectPluginProtocolsUDP            OpenidConnectPluginProtocols = "udp"
-	OpenidConnectPluginProtocolsWs             OpenidConnectPluginProtocols = "ws"
-	OpenidConnectPluginProtocolsWss            OpenidConnectPluginProtocols = "wss"
+	OpenidConnectPluginProtocolsGrpc  OpenidConnectPluginProtocols = "grpc"
+	OpenidConnectPluginProtocolsGrpcs OpenidConnectPluginProtocols = "grpcs"
+	OpenidConnectPluginProtocolsHTTP  OpenidConnectPluginProtocols = "http"
+	OpenidConnectPluginProtocolsHTTPS OpenidConnectPluginProtocols = "https"
 )
 
 func (e OpenidConnectPluginProtocols) ToPointer() *OpenidConnectPluginProtocols {
@@ -3982,18 +3962,6 @@ func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = OpenidConnectPluginProtocols(v)
 		return nil
 	default:
@@ -4001,7 +3969,7 @@ func (e *OpenidConnectPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// OpenidConnectPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// OpenidConnectPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type OpenidConnectPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -4027,10 +3995,6 @@ func (o *OpenidConnectPluginService) GetID() *string {
 
 // OpenidConnectPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OpenidConnectPlugin struct {
-	Config OpenidConnectPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *OpenidConnectPluginConsumer      `json:"consumer"`
-	ConsumerGroup *OpenidConnectPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -4039,16 +4003,17 @@ type OpenidConnectPlugin struct {
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"openid-connect" json:"name"`
 	Ordering     *OpenidConnectPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *OpenidConnectPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpenidConnectPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    OpenidConnectPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *OpenidConnectPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *OpenidConnectPluginService `json:"service,omitempty"`
 }
 
 func (o OpenidConnectPlugin) MarshalJSON() ([]byte, error) {
@@ -4060,27 +4025,6 @@ func (o *OpenidConnectPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
-	if o == nil {
-		return OpenidConnectPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *OpenidConnectPlugin) GetConsumer() *OpenidConnectPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *OpenidConnectPlugin) GetConsumerGroup() *OpenidConnectPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *OpenidConnectPlugin) GetCreatedAt() *int64 {
@@ -4122,6 +4066,27 @@ func (o *OpenidConnectPlugin) GetOrdering() *OpenidConnectPluginOrdering {
 	return o.Ordering
 }
 
+func (o *OpenidConnectPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
+	if o == nil {
+		return OpenidConnectPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *OpenidConnectPlugin) GetProtocols() []OpenidConnectPluginProtocols {
 	if o == nil {
 		return nil
@@ -4143,40 +4108,23 @@ func (o *OpenidConnectPlugin) GetService() *OpenidConnectPluginService {
 	return o.Service
 }
 
-func (o *OpenidConnectPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // OpenidConnectPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type OpenidConnectPluginInput struct {
-	Config OpenidConnectPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *OpenidConnectPluginConsumer      `json:"consumer"`
-	ConsumerGroup *OpenidConnectPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                        `json:"enabled,omitempty"`
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"openid-connect" json:"name"`
 	Ordering     *OpenidConnectPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *OpenidConnectPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpenidConnectPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                  `json:"tags,omitempty"`
+	Config OpenidConnectPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *OpenidConnectPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *OpenidConnectPluginService `json:"service,omitempty"`
 }
 
 func (o OpenidConnectPluginInput) MarshalJSON() ([]byte, error) {
@@ -4188,27 +4136,6 @@ func (o *OpenidConnectPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *OpenidConnectPluginInput) GetConfig() OpenidConnectPluginConfig {
-	if o == nil {
-		return OpenidConnectPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *OpenidConnectPluginInput) GetConsumer() *OpenidConnectPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *OpenidConnectPluginInput) GetConsumerGroup() *OpenidConnectPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *OpenidConnectPluginInput) GetEnabled() *bool {
@@ -4243,6 +4170,20 @@ func (o *OpenidConnectPluginInput) GetOrdering() *OpenidConnectPluginOrdering {
 	return o.Ordering
 }
 
+func (o *OpenidConnectPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *OpenidConnectPluginInput) GetConfig() OpenidConnectPluginConfig {
+	if o == nil {
+		return OpenidConnectPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *OpenidConnectPluginInput) GetProtocols() []OpenidConnectPluginProtocols {
 	if o == nil {
 		return nil
@@ -4262,11 +4203,4 @@ func (o *OpenidConnectPluginInput) GetService() *OpenidConnectPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *OpenidConnectPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

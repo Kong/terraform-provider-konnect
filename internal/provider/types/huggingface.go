@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type ClusterNodes struct {
-	IP   types.String `tfsdk:"ip"`
-	Port types.Int64  `tfsdk:"port"`
+type Huggingface struct {
+	UseCache     types.Bool `tfsdk:"use_cache"`
+	WaitForModel types.Bool `tfsdk:"wait_for_model"`
 }

@@ -8,12 +8,53 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type AiProxyPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AiProxyPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AiProxyPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AiProxyPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AiProxyPluginOrdering struct {
+	After  *AiProxyPluginAfter  `json:"after,omitempty"`
+	Before *AiProxyPluginBefore `json:"before,omitempty"`
+}
+
+func (o *AiProxyPluginOrdering) GetAfter() *AiProxyPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *AiProxyPluginOrdering) GetBefore() *AiProxyPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // ParamLocation - Specify whether the 'param_name' and 'param_value' options go in a query string, or the POST form/JSON body.
 type ParamLocation string
 
 const (
-	ParamLocationQuery ParamLocation = "query"
 	ParamLocationBody  ParamLocation = "body"
+	ParamLocationQuery ParamLocation = "query"
 )
 
 func (e ParamLocation) ToPointer() *ParamLocation {
@@ -25,9 +66,9 @@ func (e *ParamLocation) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "body":
+		fallthrough
+	case "query":
 		*e = ParamLocation(v)
 		return nil
 	default:
@@ -227,13 +268,34 @@ func (o *Gemini) GetProjectID() *string {
 	return o.ProjectID
 }
 
+type Huggingface struct {
+	// Use the cache layer on the inference API
+	UseCache *bool `json:"use_cache,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *Huggingface) GetUseCache() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseCache
+}
+
+func (o *Huggingface) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
+}
+
 // Llama2Format - If using llama2 provider, select the upstream message format.
 type Llama2Format string
 
 const (
-	Llama2FormatRaw    Llama2Format = "raw"
-	Llama2FormatOpenai Llama2Format = "openai"
 	Llama2FormatOllama Llama2Format = "ollama"
+	Llama2FormatOpenai Llama2Format = "openai"
+	Llama2FormatRaw    Llama2Format = "raw"
 )
 
 func (e Llama2Format) ToPointer() *Llama2Format {
@@ -245,11 +307,11 @@ func (e *Llama2Format) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "raw":
+	case "ollama":
 		fallthrough
 	case "openai":
 		fallthrough
-	case "ollama":
+	case "raw":
 		*e = Llama2Format(v)
 		return nil
 	default:
@@ -261,8 +323,8 @@ func (e *Llama2Format) UnmarshalJSON(data []byte) error {
 type MistralFormat string
 
 const (
-	MistralFormatOpenai MistralFormat = "openai"
 	MistralFormatOllama MistralFormat = "ollama"
+	MistralFormatOpenai MistralFormat = "openai"
 )
 
 func (e MistralFormat) ToPointer() *MistralFormat {
@@ -274,9 +336,9 @@ func (e *MistralFormat) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "openai":
-		fallthrough
 	case "ollama":
+		fallthrough
+	case "openai":
 		*e = MistralFormat(v)
 		return nil
 	default:
@@ -293,9 +355,10 @@ type OptionsObj struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string  `json:"azure_instance,omitempty"`
-	Bedrock       *Bedrock `json:"bedrock,omitempty"`
-	Gemini        *Gemini  `json:"gemini,omitempty"`
+	AzureInstance *string      `json:"azure_instance,omitempty"`
+	Bedrock       *Bedrock     `json:"bedrock,omitempty"`
+	Gemini        *Gemini      `json:"gemini,omitempty"`
+	Huggingface   *Huggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
@@ -358,6 +421,13 @@ func (o *OptionsObj) GetGemini() *Gemini {
 		return nil
 	}
 	return o.Gemini
+}
+
+func (o *OptionsObj) GetHuggingface() *Huggingface {
+	if o == nil {
+		return nil
+	}
+	return o.Huggingface
 }
 
 func (o *OptionsObj) GetInputCost() *float64 {
@@ -434,14 +504,15 @@ func (o *OptionsObj) GetUpstreamURL() *string {
 type Provider string
 
 const (
-	ProviderOpenai    Provider = "openai"
-	ProviderAzure     Provider = "azure"
-	ProviderAnthropic Provider = "anthropic"
-	ProviderCohere    Provider = "cohere"
-	ProviderMistral   Provider = "mistral"
-	ProviderLlama2    Provider = "llama2"
-	ProviderGemini    Provider = "gemini"
-	ProviderBedrock   Provider = "bedrock"
+	ProviderAnthropic   Provider = "anthropic"
+	ProviderAzure       Provider = "azure"
+	ProviderBedrock     Provider = "bedrock"
+	ProviderCohere      Provider = "cohere"
+	ProviderGemini      Provider = "gemini"
+	ProviderHuggingface Provider = "huggingface"
+	ProviderLlama2      Provider = "llama2"
+	ProviderMistral     Provider = "mistral"
+	ProviderOpenai      Provider = "openai"
 )
 
 func (e Provider) ToPointer() *Provider {
@@ -453,21 +524,23 @@ func (e *Provider) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "openai":
+	case "anthropic":
 		fallthrough
 	case "azure":
 		fallthrough
-	case "anthropic":
+	case "bedrock":
 		fallthrough
 	case "cohere":
 		fallthrough
-	case "mistral":
+	case "gemini":
+		fallthrough
+	case "huggingface":
 		fallthrough
 	case "llama2":
 		fallthrough
-	case "gemini":
+	case "mistral":
 		fallthrough
-	case "bedrock":
+	case "openai":
 		*e = Provider(v)
 		return nil
 	default:
@@ -510,8 +583,8 @@ type ResponseStreaming string
 
 const (
 	ResponseStreamingAllow  ResponseStreaming = "allow"
-	ResponseStreamingDeny   ResponseStreaming = "deny"
 	ResponseStreamingAlways ResponseStreaming = "always"
+	ResponseStreamingDeny   ResponseStreaming = "deny"
 )
 
 func (e ResponseStreaming) ToPointer() *ResponseStreaming {
@@ -525,9 +598,9 @@ func (e *ResponseStreaming) UnmarshalJSON(data []byte) error {
 	switch v {
 	case "allow":
 		fallthrough
-	case "deny":
-		fallthrough
 	case "always":
+		fallthrough
+	case "deny":
 		*e = ResponseStreaming(v)
 		return nil
 	default:
@@ -640,6 +713,7 @@ func (o *AiProxyPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+// AiProxyPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiProxyPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -651,60 +725,13 @@ func (o *AiProxyPluginConsumerGroup) GetID() *string {
 	return o.ID
 }
 
-type AiProxyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiProxyPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiProxyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiProxyPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiProxyPluginOrdering struct {
-	After  *AiProxyPluginAfter  `json:"after,omitempty"`
-	Before *AiProxyPluginBefore `json:"before,omitempty"`
-}
-
-func (o *AiProxyPluginOrdering) GetAfter() *AiProxyPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *AiProxyPluginOrdering) GetBefore() *AiProxyPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type AiProxyPluginProtocols string
 
 const (
-	AiProxyPluginProtocolsGrpc           AiProxyPluginProtocols = "grpc"
-	AiProxyPluginProtocolsGrpcs          AiProxyPluginProtocols = "grpcs"
-	AiProxyPluginProtocolsHTTP           AiProxyPluginProtocols = "http"
-	AiProxyPluginProtocolsHTTPS          AiProxyPluginProtocols = "https"
-	AiProxyPluginProtocolsTCP            AiProxyPluginProtocols = "tcp"
-	AiProxyPluginProtocolsTLS            AiProxyPluginProtocols = "tls"
-	AiProxyPluginProtocolsTLSPassthrough AiProxyPluginProtocols = "tls_passthrough"
-	AiProxyPluginProtocolsUDP            AiProxyPluginProtocols = "udp"
-	AiProxyPluginProtocolsWs             AiProxyPluginProtocols = "ws"
-	AiProxyPluginProtocolsWss            AiProxyPluginProtocols = "wss"
+	AiProxyPluginProtocolsGrpc  AiProxyPluginProtocols = "grpc"
+	AiProxyPluginProtocolsGrpcs AiProxyPluginProtocols = "grpcs"
+	AiProxyPluginProtocolsHTTP  AiProxyPluginProtocols = "http"
+	AiProxyPluginProtocolsHTTPS AiProxyPluginProtocols = "https"
 )
 
 func (e AiProxyPluginProtocols) ToPointer() *AiProxyPluginProtocols {
@@ -723,18 +750,6 @@ func (e *AiProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = AiProxyPluginProtocols(v)
 		return nil
 	default:
@@ -742,7 +757,7 @@ func (e *AiProxyPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AiProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// AiProxyPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type AiProxyPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -768,10 +783,6 @@ func (o *AiProxyPluginService) GetID() *string {
 
 // AiProxyPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiProxyPlugin struct {
-	Config AiProxyPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiProxyPluginConsumer      `json:"consumer"`
-	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -780,16 +791,21 @@ type AiProxyPlugin struct {
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"ai-proxy" json:"name"`
 	Ordering     *AiProxyPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *AiProxyPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiProxyPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    AiProxyPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *AiProxyPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *AiProxyPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiProxyPluginService `json:"service,omitempty"`
 }
 
 func (a AiProxyPlugin) MarshalJSON() ([]byte, error) {
@@ -801,27 +817,6 @@ func (a *AiProxyPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AiProxyPlugin) GetConfig() AiProxyPluginConfig {
-	if o == nil {
-		return AiProxyPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *AiProxyPlugin) GetConsumer() *AiProxyPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *AiProxyPlugin) GetConsumerGroup() *AiProxyPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *AiProxyPlugin) GetCreatedAt() *int64 {
@@ -863,6 +858,41 @@ func (o *AiProxyPlugin) GetOrdering() *AiProxyPluginOrdering {
 	return o.Ordering
 }
 
+func (o *AiProxyPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *AiProxyPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *AiProxyPlugin) GetConfig() AiProxyPluginConfig {
+	if o == nil {
+		return AiProxyPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiProxyPlugin) GetConsumer() *AiProxyPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *AiProxyPlugin) GetConsumerGroup() *AiProxyPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *AiProxyPlugin) GetProtocols() []AiProxyPluginProtocols {
 	if o == nil {
 		return nil
@@ -884,40 +914,27 @@ func (o *AiProxyPlugin) GetService() *AiProxyPluginService {
 	return o.Service
 }
 
-func (o *AiProxyPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *AiProxyPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // AiProxyPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiProxyPluginInput struct {
-	Config AiProxyPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiProxyPluginConsumer      `json:"consumer"`
-	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                  `json:"enabled,omitempty"`
 	ID           *string                `json:"id,omitempty"`
 	InstanceName *string                `json:"instance_name,omitempty"`
 	name         string                 `const:"ai-proxy" json:"name"`
 	Ordering     *AiProxyPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *AiProxyPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiProxyPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string            `json:"tags,omitempty"`
+	Config AiProxyPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *AiProxyPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *AiProxyPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []AiProxyPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *AiProxyPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiProxyPluginService `json:"service,omitempty"`
 }
 
 func (a AiProxyPluginInput) MarshalJSON() ([]byte, error) {
@@ -929,27 +946,6 @@ func (a *AiProxyPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AiProxyPluginInput) GetConfig() AiProxyPluginConfig {
-	if o == nil {
-		return AiProxyPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *AiProxyPluginInput) GetConsumer() *AiProxyPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *AiProxyPluginInput) GetConsumerGroup() *AiProxyPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *AiProxyPluginInput) GetEnabled() *bool {
@@ -984,6 +980,34 @@ func (o *AiProxyPluginInput) GetOrdering() *AiProxyPluginOrdering {
 	return o.Ordering
 }
 
+func (o *AiProxyPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *AiProxyPluginInput) GetConfig() AiProxyPluginConfig {
+	if o == nil {
+		return AiProxyPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiProxyPluginInput) GetConsumer() *AiProxyPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *AiProxyPluginInput) GetConsumerGroup() *AiProxyPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *AiProxyPluginInput) GetProtocols() []AiProxyPluginProtocols {
 	if o == nil {
 		return nil
@@ -1003,11 +1027,4 @@ func (o *AiProxyPluginInput) GetService() *AiProxyPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *AiProxyPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

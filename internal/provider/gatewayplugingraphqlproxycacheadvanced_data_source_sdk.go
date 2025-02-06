@@ -21,14 +21,14 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedDataSourceModel) RefreshFromShare
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.ClusterNodes
+				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -49,12 +49,12 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedDataSourceModel) RefreshFromShare
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.SentinelNodes
+				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
@@ -90,12 +90,6 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedDataSourceModel) RefreshFromShare
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

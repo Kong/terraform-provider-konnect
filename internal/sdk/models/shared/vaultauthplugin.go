@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type VaultAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *VaultAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type VaultAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *VaultAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type VaultAuthPluginOrdering struct {
+	After  *VaultAuthPluginAfter  `json:"after,omitempty"`
+	Before *VaultAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type VaultAuthPluginConfig struct {
 	// Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].
 	AccessTokenName *string `json:"access_token_name,omitempty"`
@@ -74,83 +115,13 @@ func (o *VaultAuthPluginConfig) GetVault() *string {
 	return o.Vault
 }
 
-// VaultAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type VaultAuthPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *VaultAuthPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type VaultAuthPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *VaultAuthPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type VaultAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *VaultAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type VaultAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *VaultAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type VaultAuthPluginOrdering struct {
-	After  *VaultAuthPluginAfter  `json:"after,omitempty"`
-	Before *VaultAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type VaultAuthPluginProtocols string
 
 const (
-	VaultAuthPluginProtocolsGrpc           VaultAuthPluginProtocols = "grpc"
-	VaultAuthPluginProtocolsGrpcs          VaultAuthPluginProtocols = "grpcs"
-	VaultAuthPluginProtocolsHTTP           VaultAuthPluginProtocols = "http"
-	VaultAuthPluginProtocolsHTTPS          VaultAuthPluginProtocols = "https"
-	VaultAuthPluginProtocolsTCP            VaultAuthPluginProtocols = "tcp"
-	VaultAuthPluginProtocolsTLS            VaultAuthPluginProtocols = "tls"
-	VaultAuthPluginProtocolsTLSPassthrough VaultAuthPluginProtocols = "tls_passthrough"
-	VaultAuthPluginProtocolsUDP            VaultAuthPluginProtocols = "udp"
-	VaultAuthPluginProtocolsWs             VaultAuthPluginProtocols = "ws"
-	VaultAuthPluginProtocolsWss            VaultAuthPluginProtocols = "wss"
+	VaultAuthPluginProtocolsGrpc  VaultAuthPluginProtocols = "grpc"
+	VaultAuthPluginProtocolsGrpcs VaultAuthPluginProtocols = "grpcs"
+	VaultAuthPluginProtocolsHTTP  VaultAuthPluginProtocols = "http"
+	VaultAuthPluginProtocolsHTTPS VaultAuthPluginProtocols = "https"
 )
 
 func (e VaultAuthPluginProtocols) ToPointer() *VaultAuthPluginProtocols {
@@ -169,18 +140,6 @@ func (e *VaultAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = VaultAuthPluginProtocols(v)
 		return nil
 	default:
@@ -188,7 +147,7 @@ func (e *VaultAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// VaultAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// VaultAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type VaultAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -214,10 +173,6 @@ func (o *VaultAuthPluginService) GetID() *string {
 
 // VaultAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type VaultAuthPlugin struct {
-	Config VaultAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *VaultAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *VaultAuthPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -226,16 +181,17 @@ type VaultAuthPlugin struct {
 	InstanceName *string                  `json:"instance_name,omitempty"`
 	name         string                   `const:"vault-auth" json:"name"`
 	Ordering     *VaultAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *VaultAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *VaultAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                `json:"updated_at,omitempty"`
+	Config    VaultAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *VaultAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *VaultAuthPluginService `json:"service,omitempty"`
 }
 
 func (v VaultAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -247,27 +203,6 @@ func (v *VaultAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
-	if o == nil {
-		return VaultAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *VaultAuthPlugin) GetConsumer() *VaultAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *VaultAuthPlugin) GetConsumerGroup() *VaultAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *VaultAuthPlugin) GetCreatedAt() *int64 {
@@ -309,6 +244,27 @@ func (o *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *VaultAuthPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *VaultAuthPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *VaultAuthPlugin) GetConfig() VaultAuthPluginConfig {
+	if o == nil {
+		return VaultAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *VaultAuthPlugin) GetProtocols() []VaultAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -330,40 +286,23 @@ func (o *VaultAuthPlugin) GetService() *VaultAuthPluginService {
 	return o.Service
 }
 
-func (o *VaultAuthPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *VaultAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // VaultAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type VaultAuthPluginInput struct {
-	Config VaultAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *VaultAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *VaultAuthPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                    `json:"enabled,omitempty"`
 	ID           *string                  `json:"id,omitempty"`
 	InstanceName *string                  `json:"instance_name,omitempty"`
 	name         string                   `const:"vault-auth" json:"name"`
 	Ordering     *VaultAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *VaultAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *VaultAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string              `json:"tags,omitempty"`
+	Config VaultAuthPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *VaultAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *VaultAuthPluginService `json:"service,omitempty"`
 }
 
 func (v VaultAuthPluginInput) MarshalJSON() ([]byte, error) {
@@ -375,27 +314,6 @@ func (v *VaultAuthPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *VaultAuthPluginInput) GetConfig() VaultAuthPluginConfig {
-	if o == nil {
-		return VaultAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *VaultAuthPluginInput) GetConsumer() *VaultAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *VaultAuthPluginInput) GetConsumerGroup() *VaultAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *VaultAuthPluginInput) GetEnabled() *bool {
@@ -430,6 +348,20 @@ func (o *VaultAuthPluginInput) GetOrdering() *VaultAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *VaultAuthPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *VaultAuthPluginInput) GetConfig() VaultAuthPluginConfig {
+	if o == nil {
+		return VaultAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *VaultAuthPluginInput) GetProtocols() []VaultAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -449,11 +381,4 @@ func (o *VaultAuthPluginInput) GetService() *VaultAuthPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *VaultAuthPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

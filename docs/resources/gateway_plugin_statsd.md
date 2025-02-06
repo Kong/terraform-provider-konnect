@@ -25,9 +25,9 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
     metrics = [
       {
         consumer_identifier  = "username"
-        name                 = "shdict_usage"
+        name                 = "status_count_per_workspace"
         sample_rate          = 3.92
-        service_identifier   = "service_name"
+        service_identifier   = "service_id"
         stat_type            = "set"
         workspace_identifier = "workspace_name"
       }
@@ -46,16 +46,13 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
     }
     queue_size                   = 10
     retry_count                  = 8
-    service_identifier_default   = "service_host"
+    service_identifier_default   = "service_name"
     tag_style                    = "librato"
     udp_packet_size              = 61921
     use_tcp                      = false
     workspace_identifier_default = "workspace_name"
   }
   consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
@@ -100,12 +97,11 @@ resource "konnect_gateway_plugin_statsd" "my_gatewaypluginstatsd" {
 ### Optional
 
 - `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -131,7 +127,7 @@ Optional:
 - `queue` (Attributes) (see [below for nested schema](#nestedatt--config--queue))
 - `queue_size` (Number)
 - `retry_count` (Number)
-- `service_identifier_default` (String) must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]
+- `service_identifier_default` (String) must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
 - `tag_style` (String) must be one of ["dogstatsd", "influxdb", "librato", "signalfx"]
 - `udp_packet_size` (Number)
 - `use_tcp` (Boolean)
@@ -143,9 +139,9 @@ Optional:
 Optional:
 
 - `consumer_identifier` (String) Authenticated user detail. must be one of ["consumer_id", "custom_id", "username"]
-- `name` (String) StatsD metric’s name. Not Null; must be one of ["kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "status_count", "status_count_per_user", "unique_users", "upstream_latency", "status_count_per_workspace", "status_count_per_user_per_route", "shdict_usage", "cache_datastore_hits_total", "cache_datastore_misses_total"]
+- `name` (String) StatsD metric’s name. Not Null; must be one of ["cache_datastore_hits_total", "cache_datastore_misses_total", "kong_latency", "latency", "request_count", "request_per_user", "request_size", "response_size", "shdict_usage", "status_count", "status_count_per_user", "status_count_per_user_per_route", "status_count_per_workspace", "unique_users", "upstream_latency"]
 - `sample_rate` (Number) Sampling rate
-- `service_identifier` (String) Service detail. must be one of ["service_id", "service_name", "service_host", "service_name_or_host"]
+- `service_identifier` (String) Service detail. must be one of ["service_host", "service_id", "service_name", "service_name_or_host"]
 - `stat_type` (String) Determines what sort of event a metric represents. Not Null; must be one of ["counter", "gauge", "histogram", "meter", "set", "timer"]
 - `workspace_identifier` (String) Workspace detail. must be one of ["workspace_id", "workspace_name"]
 
@@ -168,14 +164,6 @@ Optional:
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
 
 Optional:
 

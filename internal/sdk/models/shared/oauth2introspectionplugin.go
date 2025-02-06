@@ -8,12 +8,53 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type Oauth2IntrospectionPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type Oauth2IntrospectionPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type Oauth2IntrospectionPluginOrdering struct {
+	After  *Oauth2IntrospectionPluginAfter  `json:"after,omitempty"`
+	Before *Oauth2IntrospectionPluginBefore `json:"before,omitempty"`
+}
+
+func (o *Oauth2IntrospectionPluginOrdering) GetAfter() *Oauth2IntrospectionPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *Oauth2IntrospectionPluginOrdering) GetBefore() *Oauth2IntrospectionPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // Oauth2IntrospectionPluginConsumerBy - A string indicating whether to associate OAuth2 `username` or `client_id` with the consumer's username. OAuth2 `username` is mapped to a consumer's `username` field, while an OAuth2 `client_id` maps to a consumer's `custom_id`.
 type Oauth2IntrospectionPluginConsumerBy string
 
 const (
-	Oauth2IntrospectionPluginConsumerByUsername Oauth2IntrospectionPluginConsumerBy = "username"
 	Oauth2IntrospectionPluginConsumerByClientID Oauth2IntrospectionPluginConsumerBy = "client_id"
+	Oauth2IntrospectionPluginConsumerByUsername Oauth2IntrospectionPluginConsumerBy = "username"
 )
 
 func (e Oauth2IntrospectionPluginConsumerBy) ToPointer() *Oauth2IntrospectionPluginConsumerBy {
@@ -25,9 +66,9 @@ func (e *Oauth2IntrospectionPluginConsumerBy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "username":
-		fallthrough
 	case "client_id":
+		fallthrough
+	case "username":
 		*e = Oauth2IntrospectionPluginConsumerBy(v)
 		return nil
 	default:
@@ -155,83 +196,13 @@ func (o *Oauth2IntrospectionPluginConfig) GetTTL() *float64 {
 	return o.TTL
 }
 
-// Oauth2IntrospectionPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type Oauth2IntrospectionPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *Oauth2IntrospectionPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type Oauth2IntrospectionPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *Oauth2IntrospectionPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type Oauth2IntrospectionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *Oauth2IntrospectionPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type Oauth2IntrospectionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *Oauth2IntrospectionPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type Oauth2IntrospectionPluginOrdering struct {
-	After  *Oauth2IntrospectionPluginAfter  `json:"after,omitempty"`
-	Before *Oauth2IntrospectionPluginBefore `json:"before,omitempty"`
-}
-
-func (o *Oauth2IntrospectionPluginOrdering) GetAfter() *Oauth2IntrospectionPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *Oauth2IntrospectionPluginOrdering) GetBefore() *Oauth2IntrospectionPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type Oauth2IntrospectionPluginProtocols string
 
 const (
-	Oauth2IntrospectionPluginProtocolsGrpc           Oauth2IntrospectionPluginProtocols = "grpc"
-	Oauth2IntrospectionPluginProtocolsGrpcs          Oauth2IntrospectionPluginProtocols = "grpcs"
-	Oauth2IntrospectionPluginProtocolsHTTP           Oauth2IntrospectionPluginProtocols = "http"
-	Oauth2IntrospectionPluginProtocolsHTTPS          Oauth2IntrospectionPluginProtocols = "https"
-	Oauth2IntrospectionPluginProtocolsTCP            Oauth2IntrospectionPluginProtocols = "tcp"
-	Oauth2IntrospectionPluginProtocolsTLS            Oauth2IntrospectionPluginProtocols = "tls"
-	Oauth2IntrospectionPluginProtocolsTLSPassthrough Oauth2IntrospectionPluginProtocols = "tls_passthrough"
-	Oauth2IntrospectionPluginProtocolsUDP            Oauth2IntrospectionPluginProtocols = "udp"
-	Oauth2IntrospectionPluginProtocolsWs             Oauth2IntrospectionPluginProtocols = "ws"
-	Oauth2IntrospectionPluginProtocolsWss            Oauth2IntrospectionPluginProtocols = "wss"
+	Oauth2IntrospectionPluginProtocolsGrpc  Oauth2IntrospectionPluginProtocols = "grpc"
+	Oauth2IntrospectionPluginProtocolsGrpcs Oauth2IntrospectionPluginProtocols = "grpcs"
+	Oauth2IntrospectionPluginProtocolsHTTP  Oauth2IntrospectionPluginProtocols = "http"
+	Oauth2IntrospectionPluginProtocolsHTTPS Oauth2IntrospectionPluginProtocols = "https"
 )
 
 func (e Oauth2IntrospectionPluginProtocols) ToPointer() *Oauth2IntrospectionPluginProtocols {
@@ -250,18 +221,6 @@ func (e *Oauth2IntrospectionPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = Oauth2IntrospectionPluginProtocols(v)
 		return nil
 	default:
@@ -269,7 +228,7 @@ func (e *Oauth2IntrospectionPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Oauth2IntrospectionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// Oauth2IntrospectionPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type Oauth2IntrospectionPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -295,10 +254,6 @@ func (o *Oauth2IntrospectionPluginService) GetID() *string {
 
 // Oauth2IntrospectionPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type Oauth2IntrospectionPlugin struct {
-	Config Oauth2IntrospectionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *Oauth2IntrospectionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *Oauth2IntrospectionPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -307,16 +262,17 @@ type Oauth2IntrospectionPlugin struct {
 	InstanceName *string                            `json:"instance_name,omitempty"`
 	name         string                             `const:"oauth-2-introspection" json:"name"`
 	Ordering     *Oauth2IntrospectionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *Oauth2IntrospectionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *Oauth2IntrospectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                          `json:"updated_at,omitempty"`
+	Config    Oauth2IntrospectionPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *Oauth2IntrospectionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *Oauth2IntrospectionPluginService `json:"service,omitempty"`
 }
 
 func (o Oauth2IntrospectionPlugin) MarshalJSON() ([]byte, error) {
@@ -328,27 +284,6 @@ func (o *Oauth2IntrospectionPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *Oauth2IntrospectionPlugin) GetConfig() Oauth2IntrospectionPluginConfig {
-	if o == nil {
-		return Oauth2IntrospectionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *Oauth2IntrospectionPlugin) GetConsumer() *Oauth2IntrospectionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *Oauth2IntrospectionPlugin) GetConsumerGroup() *Oauth2IntrospectionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *Oauth2IntrospectionPlugin) GetCreatedAt() *int64 {
@@ -390,6 +325,27 @@ func (o *Oauth2IntrospectionPlugin) GetOrdering() *Oauth2IntrospectionPluginOrde
 	return o.Ordering
 }
 
+func (o *Oauth2IntrospectionPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *Oauth2IntrospectionPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *Oauth2IntrospectionPlugin) GetConfig() Oauth2IntrospectionPluginConfig {
+	if o == nil {
+		return Oauth2IntrospectionPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *Oauth2IntrospectionPlugin) GetProtocols() []Oauth2IntrospectionPluginProtocols {
 	if o == nil {
 		return nil
@@ -411,40 +367,23 @@ func (o *Oauth2IntrospectionPlugin) GetService() *Oauth2IntrospectionPluginServi
 	return o.Service
 }
 
-func (o *Oauth2IntrospectionPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *Oauth2IntrospectionPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // Oauth2IntrospectionPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type Oauth2IntrospectionPluginInput struct {
-	Config Oauth2IntrospectionPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *Oauth2IntrospectionPluginConsumer      `json:"consumer"`
-	ConsumerGroup *Oauth2IntrospectionPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                              `json:"enabled,omitempty"`
 	ID           *string                            `json:"id,omitempty"`
 	InstanceName *string                            `json:"instance_name,omitempty"`
 	name         string                             `const:"oauth-2-introspection" json:"name"`
 	Ordering     *Oauth2IntrospectionPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *Oauth2IntrospectionPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *Oauth2IntrospectionPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                        `json:"tags,omitempty"`
+	Config Oauth2IntrospectionPluginConfig `json:"config"`
+	// A set of strings representing HTTP protocols.
+	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *Oauth2IntrospectionPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *Oauth2IntrospectionPluginService `json:"service,omitempty"`
 }
 
 func (o Oauth2IntrospectionPluginInput) MarshalJSON() ([]byte, error) {
@@ -456,27 +395,6 @@ func (o *Oauth2IntrospectionPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *Oauth2IntrospectionPluginInput) GetConfig() Oauth2IntrospectionPluginConfig {
-	if o == nil {
-		return Oauth2IntrospectionPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *Oauth2IntrospectionPluginInput) GetConsumer() *Oauth2IntrospectionPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *Oauth2IntrospectionPluginInput) GetConsumerGroup() *Oauth2IntrospectionPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *Oauth2IntrospectionPluginInput) GetEnabled() *bool {
@@ -511,6 +429,20 @@ func (o *Oauth2IntrospectionPluginInput) GetOrdering() *Oauth2IntrospectionPlugi
 	return o.Ordering
 }
 
+func (o *Oauth2IntrospectionPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *Oauth2IntrospectionPluginInput) GetConfig() Oauth2IntrospectionPluginConfig {
+	if o == nil {
+		return Oauth2IntrospectionPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *Oauth2IntrospectionPluginInput) GetProtocols() []Oauth2IntrospectionPluginProtocols {
 	if o == nil {
 		return nil
@@ -530,11 +462,4 @@ func (o *Oauth2IntrospectionPluginInput) GetService() *Oauth2IntrospectionPlugin
 		return nil
 	}
 	return o.Service
-}
-
-func (o *Oauth2IntrospectionPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

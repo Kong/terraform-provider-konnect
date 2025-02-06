@@ -9,6 +9,55 @@ import (
 )
 
 func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPluginInput() *shared.KeyAuthEncPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.KeyAuthEncPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.KeyAuthEncPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.KeyAuthEncPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.KeyAuthEncPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.KeyAuthEncPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.KeyAuthEncPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	anonymous := new(string)
 	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
 		*anonymous = r.Config.Anonymous.ValueString()
@@ -65,119 +114,44 @@ func (r *GatewayPluginKeyAuthEncResourceModel) ToSharedKeyAuthEncPluginInput() *
 		Realm:           realm,
 		RunOnPreflight:  runOnPreflight,
 	}
-	var consumer *shared.KeyAuthEncPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.KeyAuthEncPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.KeyAuthEncPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.KeyAuthEncPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.KeyAuthEncPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.KeyAuthEncPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.KeyAuthEncPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.KeyAuthEncPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.KeyAuthEncPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.KeyAuthEncPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.KeyAuthEncPluginProtocols = []shared.KeyAuthEncPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KeyAuthEncPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.KeyAuthEncPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.KeyAuthEncPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.KeyAuthEncPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.KeyAuthEncPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.KeyAuthEncPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -195,18 +169,6 @@ func (r *GatewayPluginKeyAuthEncResourceModel) RefreshFromSharedKeyAuthEncPlugin
 		}
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPluginInput() *shared.StatsdAdvancedPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.StatsdAdvancedPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.StatsdAdvancedPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.StatsdAdvancedPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.StatsdAdvancedPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.StatsdAdvancedPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.StatsdAdvancedPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	var allowStatusCodes []string = []string{}
 	for _, allowStatusCodesItem := range r.Config.AllowStatusCodes {
 		allowStatusCodes = append(allowStatusCodes, allowStatusCodesItem.ValueString())
@@ -182,71 +231,14 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPluginI
 	}
 	var consumer *shared.StatsdAdvancedPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.StatsdAdvancedPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.StatsdAdvancedPluginConsumerGroup
-	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.StatsdAdvancedPluginConsumerGroup{
+		consumer = &shared.StatsdAdvancedPluginConsumer{
 			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.StatsdAdvancedPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.StatsdAdvancedPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.StatsdAdvancedPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.StatsdAdvancedPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.StatsdAdvancedPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.StatsdAdvancedPluginOrdering{
-			After:  after,
-			Before: before,
 		}
 	}
 	var protocols []shared.StatsdAdvancedPluginProtocols = []shared.StatsdAdvancedPluginProtocols{}
@@ -255,44 +247,39 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) ToSharedStatsdAdvancedPluginI
 	}
 	var route *shared.StatsdAdvancedPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.StatsdAdvancedPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.StatsdAdvancedPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.StatsdAdvancedPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.StatsdAdvancedPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Consumer:     consumer,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -405,12 +392,6 @@ func (r *GatewayPluginStatsdAdvancedResourceModel) RefreshFromSharedStatsdAdvanc
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

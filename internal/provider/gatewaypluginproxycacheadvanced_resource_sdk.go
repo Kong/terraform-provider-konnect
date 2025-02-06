@@ -9,6 +9,55 @@ import (
 )
 
 func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvancedPluginInput() *shared.ProxyCacheAdvancedPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.ProxyCacheAdvancedPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.ProxyCacheAdvancedPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.ProxyCacheAdvancedPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.ProxyCacheAdvancedPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.ProxyCacheAdvancedPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.ProxyCacheAdvancedPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	bypassOnErr := new(bool)
 	if !r.Config.BypassOnErr.IsUnknown() && !r.Config.BypassOnErr.IsNull() {
 		*bypassOnErr = r.Config.BypassOnErr.ValueBool()
@@ -299,71 +348,26 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 	}
 	var consumer *shared.ProxyCacheAdvancedPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
+		id1 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
-			id = nil
+			id1 = nil
 		}
 		consumer = &shared.ProxyCacheAdvancedPluginConsumer{
-			ID: id,
+			ID: id1,
 		}
 	}
 	var consumerGroup *shared.ProxyCacheAdvancedPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+			*id2 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumerGroup = &shared.ProxyCacheAdvancedPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.ProxyCacheAdvancedPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.ProxyCacheAdvancedPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.ProxyCacheAdvancedPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.ProxyCacheAdvancedPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.ProxyCacheAdvancedPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.ProxyCacheAdvancedPluginOrdering{
-			After:  after,
-			Before: before,
+			ID: id2,
 		}
 	}
 	var protocols []shared.ProxyCacheAdvancedPluginProtocols = []shared.ProxyCacheAdvancedPluginProtocols{}
@@ -394,22 +398,18 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 			ID: id4,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.ProxyCacheAdvancedPluginInput{
+		Enabled:       enabled,
+		ID:            id,
+		InstanceName:  instanceName,
+		Ordering:      ordering,
+		Tags:          tags,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
 		Protocols:     protocols,
 		Route:         route,
 		Service:       service,
-		Tags:          tags,
 	}
 	return &out
 }
@@ -433,14 +433,14 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.ClusterNodes
+				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -461,12 +461,12 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCac
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.SentinelNodes
+				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {

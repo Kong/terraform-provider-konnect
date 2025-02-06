@@ -8,13 +8,54 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type CorrelationIDPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorrelationIDPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorrelationIDPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *CorrelationIDPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type CorrelationIDPluginOrdering struct {
+	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
+	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
+}
+
+func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // Generator - The generator to use for the correlation ID. Accepted values are `uuid`, `uuid#counter`, and `tracker`. See [Generators](#generators).
 type Generator string
 
 const (
+	GeneratorTracker           Generator = "tracker"
 	GeneratorUUID              Generator = "uuid"
 	GeneratorUUIDNumberCounter Generator = "uuid#counter"
-	GeneratorTracker           Generator = "tracker"
 )
 
 func (e Generator) ToPointer() *Generator {
@@ -26,11 +67,11 @@ func (e *Generator) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "tracker":
+		fallthrough
 	case "uuid":
 		fallthrough
 	case "uuid#counter":
-		fallthrough
-	case "tracker":
 		*e = Generator(v)
 		return nil
 	default:
@@ -80,71 +121,13 @@ func (o *CorrelationIDPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type CorrelationIDPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *CorrelationIDPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type CorrelationIDPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *CorrelationIDPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type CorrelationIDPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *CorrelationIDPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type CorrelationIDPluginOrdering struct {
-	After  *CorrelationIDPluginAfter  `json:"after,omitempty"`
-	Before *CorrelationIDPluginBefore `json:"before,omitempty"`
-}
-
-func (o *CorrelationIDPluginOrdering) GetAfter() *CorrelationIDPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *CorrelationIDPluginOrdering) GetBefore() *CorrelationIDPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type CorrelationIDPluginProtocols string
 
 const (
-	CorrelationIDPluginProtocolsGrpc           CorrelationIDPluginProtocols = "grpc"
-	CorrelationIDPluginProtocolsGrpcs          CorrelationIDPluginProtocols = "grpcs"
-	CorrelationIDPluginProtocolsHTTP           CorrelationIDPluginProtocols = "http"
-	CorrelationIDPluginProtocolsHTTPS          CorrelationIDPluginProtocols = "https"
-	CorrelationIDPluginProtocolsTCP            CorrelationIDPluginProtocols = "tcp"
-	CorrelationIDPluginProtocolsTLS            CorrelationIDPluginProtocols = "tls"
-	CorrelationIDPluginProtocolsTLSPassthrough CorrelationIDPluginProtocols = "tls_passthrough"
-	CorrelationIDPluginProtocolsUDP            CorrelationIDPluginProtocols = "udp"
-	CorrelationIDPluginProtocolsWs             CorrelationIDPluginProtocols = "ws"
-	CorrelationIDPluginProtocolsWss            CorrelationIDPluginProtocols = "wss"
+	CorrelationIDPluginProtocolsGrpc  CorrelationIDPluginProtocols = "grpc"
+	CorrelationIDPluginProtocolsGrpcs CorrelationIDPluginProtocols = "grpcs"
+	CorrelationIDPluginProtocolsHTTP  CorrelationIDPluginProtocols = "http"
+	CorrelationIDPluginProtocolsHTTPS CorrelationIDPluginProtocols = "https"
 )
 
 func (e CorrelationIDPluginProtocols) ToPointer() *CorrelationIDPluginProtocols {
@@ -163,18 +146,6 @@ func (e *CorrelationIDPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = CorrelationIDPluginProtocols(v)
 		return nil
 	default:
@@ -182,7 +153,7 @@ func (e *CorrelationIDPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// CorrelationIDPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// CorrelationIDPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type CorrelationIDPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -208,10 +179,6 @@ func (o *CorrelationIDPluginService) GetID() *string {
 
 // CorrelationIDPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CorrelationIDPlugin struct {
-	Config CorrelationIDPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CorrelationIDPluginConsumer      `json:"consumer"`
-	ConsumerGroup *CorrelationIDPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -220,16 +187,19 @@ type CorrelationIDPlugin struct {
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"correlation-id" json:"name"`
 	Ordering     *CorrelationIDPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *CorrelationIDPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *CorrelationIDPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                    `json:"updated_at,omitempty"`
+	Config    CorrelationIDPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *CorrelationIDPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *CorrelationIDPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *CorrelationIDPluginService `json:"service,omitempty"`
 }
 
 func (c CorrelationIDPlugin) MarshalJSON() ([]byte, error) {
@@ -241,27 +211,6 @@ func (c *CorrelationIDPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *CorrelationIDPlugin) GetConfig() CorrelationIDPluginConfig {
-	if o == nil {
-		return CorrelationIDPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *CorrelationIDPlugin) GetConsumer() *CorrelationIDPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *CorrelationIDPlugin) GetConsumerGroup() *CorrelationIDPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *CorrelationIDPlugin) GetCreatedAt() *int64 {
@@ -303,6 +252,34 @@ func (o *CorrelationIDPlugin) GetOrdering() *CorrelationIDPluginOrdering {
 	return o.Ordering
 }
 
+func (o *CorrelationIDPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *CorrelationIDPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *CorrelationIDPlugin) GetConfig() CorrelationIDPluginConfig {
+	if o == nil {
+		return CorrelationIDPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *CorrelationIDPlugin) GetConsumer() *CorrelationIDPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *CorrelationIDPlugin) GetProtocols() []CorrelationIDPluginProtocols {
 	if o == nil {
 		return nil
@@ -324,40 +301,25 @@ func (o *CorrelationIDPlugin) GetService() *CorrelationIDPluginService {
 	return o.Service
 }
 
-func (o *CorrelationIDPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *CorrelationIDPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // CorrelationIDPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type CorrelationIDPluginInput struct {
-	Config CorrelationIDPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *CorrelationIDPluginConsumer      `json:"consumer"`
-	ConsumerGroup *CorrelationIDPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                        `json:"enabled,omitempty"`
 	ID           *string                      `json:"id,omitempty"`
 	InstanceName *string                      `json:"instance_name,omitempty"`
 	name         string                       `const:"correlation-id" json:"name"`
 	Ordering     *CorrelationIDPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *CorrelationIDPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *CorrelationIDPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                  `json:"tags,omitempty"`
+	Config CorrelationIDPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *CorrelationIDPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []CorrelationIDPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *CorrelationIDPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *CorrelationIDPluginService `json:"service,omitempty"`
 }
 
 func (c CorrelationIDPluginInput) MarshalJSON() ([]byte, error) {
@@ -369,27 +331,6 @@ func (c *CorrelationIDPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *CorrelationIDPluginInput) GetConfig() CorrelationIDPluginConfig {
-	if o == nil {
-		return CorrelationIDPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *CorrelationIDPluginInput) GetConsumer() *CorrelationIDPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *CorrelationIDPluginInput) GetConsumerGroup() *CorrelationIDPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *CorrelationIDPluginInput) GetEnabled() *bool {
@@ -424,6 +365,27 @@ func (o *CorrelationIDPluginInput) GetOrdering() *CorrelationIDPluginOrdering {
 	return o.Ordering
 }
 
+func (o *CorrelationIDPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *CorrelationIDPluginInput) GetConfig() CorrelationIDPluginConfig {
+	if o == nil {
+		return CorrelationIDPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *CorrelationIDPluginInput) GetConsumer() *CorrelationIDPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *CorrelationIDPluginInput) GetProtocols() []CorrelationIDPluginProtocols {
 	if o == nil {
 		return nil
@@ -443,11 +405,4 @@ func (o *CorrelationIDPluginInput) GetService() *CorrelationIDPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *CorrelationIDPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

@@ -9,71 +9,17 @@ import (
 )
 
 func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransformerAdvancedPluginInput() *shared.RouteTransformerAdvancedPluginInput {
-	escapePath := new(bool)
-	if !r.Config.EscapePath.IsUnknown() && !r.Config.EscapePath.IsNull() {
-		*escapePath = r.Config.EscapePath.ValueBool()
-	} else {
-		escapePath = nil
-	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
-	} else {
-		host = nil
-	}
-	path := new(string)
-	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-		*path = r.Config.Path.ValueString()
-	} else {
-		path = nil
-	}
-	port := new(string)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueString()
-	} else {
-		port = nil
-	}
-	config := shared.RouteTransformerAdvancedPluginConfig{
-		EscapePath: escapePath,
-		Host:       host,
-		Path:       path,
-		Port:       port,
-	}
-	var consumer *shared.RouteTransformerAdvancedPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.RouteTransformerAdvancedPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.RouteTransformerAdvancedPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.RouteTransformerAdvancedPluginConsumerGroup{
-			ID: id1,
-		}
-	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
 	} else {
 		enabled = nil
 	}
-	id2 := new(string)
+	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
+		*id = r.ID.ValueString()
 	} else {
-		id2 = nil
+		id = nil
 	}
 	instanceName := new(string)
 	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
@@ -108,50 +54,91 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 			Before: before,
 		}
 	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
+	escapePath := new(bool)
+	if !r.Config.EscapePath.IsUnknown() && !r.Config.EscapePath.IsNull() {
+		*escapePath = r.Config.EscapePath.ValueBool()
+	} else {
+		escapePath = nil
+	}
+	host := new(string)
+	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+		*host = r.Config.Host.ValueString()
+	} else {
+		host = nil
+	}
+	path := new(string)
+	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+		*path = r.Config.Path.ValueString()
+	} else {
+		path = nil
+	}
+	port := new(string)
+	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+		*port = r.Config.Port.ValueString()
+	} else {
+		port = nil
+	}
+	config := shared.RouteTransformerAdvancedPluginConfig{
+		EscapePath: escapePath,
+		Host:       host,
+		Path:       path,
+		Port:       port,
+	}
+	var consumer *shared.RouteTransformerAdvancedPluginConsumer
+	if r.Consumer != nil {
+		id1 := new(string)
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		consumer = &shared.RouteTransformerAdvancedPluginConsumer{
+			ID: id1,
+		}
+	}
 	var protocols []shared.RouteTransformerAdvancedPluginProtocols = []shared.RouteTransformerAdvancedPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RouteTransformerAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.RouteTransformerAdvancedPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.RouteTransformerAdvancedPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.RouteTransformerAdvancedPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.RouteTransformerAdvancedPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.RouteTransformerAdvancedPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Consumer:     consumer,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -167,12 +154,6 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) RefreshFromSharedRo
 		} else {
 			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

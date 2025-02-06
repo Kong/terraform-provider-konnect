@@ -30,8 +30,8 @@ type GatewayPluginRateLimitingAdvancedDataSource struct {
 // GatewayPluginRateLimitingAdvancedDataSourceModel describes the data model.
 type GatewayPluginRateLimitingAdvancedDataSourceModel struct {
 	Config         tfTypes.RateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer_group" tfPlanOnly:"true"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                              `tfsdk:"created_at"`
 	Enabled        types.Bool                               `tfsdk:"enabled"`
@@ -39,8 +39,8 @@ type GatewayPluginRateLimitingAdvancedDataSourceModel struct {
 	InstanceName   types.String                             `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
 	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
 	Tags           []types.String                           `tfsdk:"tags"`
 	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
@@ -59,6 +59,11 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"compound_identifier": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Similar to ` + "`" + `identifer` + "`" + `, but supports combining multiple items. The priority of ` + "`" + `compound_identifier` + "`" + ` is higher than ` + "`" + `identifier` + "`" + `, which means if ` + "`" + `compound_identifer` + "`" + ` is set, it will be used, otherwise ` + "`" + `identifier` + "`" + ` will be used.`,
+					},
 					"consumer_groups": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
@@ -101,9 +106,13 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 						ElementType: types.NumberType,
 						Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.`,
 					},
+					"lock_dictionary_name": schema.StringAttribute{
+						Computed:    true,
+						Description: `The shared dictionary where concurrency control locks are stored. The default shared dictionary is ` + "`" + `kong_locks` + "`" + `. The shared dictionary should be declare in nginx-kong.conf.`,
+					},
 					"namespace": schema.StringAttribute{
 						Computed:    true,
-						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `window_size` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
+						Description: `The rate limiting library namespace to use for this plugin instance. Counter data and sync configuration is isolated in each namespace. NOTE: For the plugin instances sharing the same namespace, all the configurations that are required for synchronizing counters, e.g. ` + "`" + `strategy` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `sync_rate` + "`" + `, ` + "`" + `dictionary_name` + "`" + `, need to be the same.`,
 					},
 					"path": schema.StringAttribute{
 						Computed:    true,
@@ -167,6 +176,10 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 							"read_timeout": schema.Int64Attribute{
 								Computed:    true,
 								Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
+							},
+							"redis_proxy_type": schema.StringAttribute{
+								Computed:    true,
+								Description: `If the ` + "`" + `connection_is_proxied` + "`" + ` is enabled, this field indicates the proxy type and version you are using. For example, you can enable this optioin when you want authentication between Kong and Envoy proxy.`,
 							},
 							"send_timeout": schema.Int64Attribute{
 								Computed:    true,
@@ -261,6 +274,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 						Computed: true,
 					},
 				},
+				Description: `If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
@@ -306,7 +320,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
@@ -315,7 +329,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 						Computed: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,

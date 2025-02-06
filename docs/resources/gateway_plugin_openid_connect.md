@@ -26,7 +26,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     auth_methods = [
-      "session"
+      "userinfo"
     ]
     authenticated_groups_claim = [
       "..."
@@ -35,7 +35,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     authorization_cookie_http_only = false
     authorization_cookie_name      = "...my_authorization_cookie_name..."
     authorization_cookie_path      = "...my_authorization_cookie_path..."
-    authorization_cookie_same_site = "Default"
+    authorization_cookie_same_site = "Strict"
     authorization_cookie_secure    = false
     authorization_endpoint         = "...my_authorization_endpoint..."
     authorization_query_args_client = [
@@ -50,7 +50,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     authorization_rolling_timeout = 1.26
     bearer_token_cookie_name      = "...my_bearer_token_cookie_name..."
     bearer_token_param_type = [
-      "header"
+      "body"
     ]
     by_username_ignore_case = false
     cache_introspection     = true
@@ -67,14 +67,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     client_alg = [
-      "RS512"
+      "HS384"
     ]
     client_arg = "...my_client_arg..."
     client_auth = [
-      "client_secret_jwt"
+      "client_secret_post"
     ]
     client_credentials_param_type = [
-      "body"
+      "query"
     ]
     client_id = [
       "..."
@@ -141,7 +141,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "master"
+      sentinel_role     = "any"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       ssl               = true
@@ -150,7 +150,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
     cluster_cache_strategy = "off"
     consumer_by = [
-      "username"
+      "id"
     ]
     consumer_claim = [
       "..."
@@ -160,7 +160,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "..."
     ]
     disable_session = [
-      "client_credentials"
+      "bearer"
     ]
     discovery_headers_names = [
       "..."
@@ -215,10 +215,10 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     https_proxy_authorization = "...my_https_proxy_authorization..."
     id_token_param_name       = "...my_id_token_param_name..."
     id_token_param_type = [
-      "body"
+      "query"
     ]
     ignore_signature = [
-      "session"
+      "refresh_token"
     ]
     introspect_jwt_tokens              = true
     introspection_accept               = "application/json"
@@ -238,6 +238,9 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     introspection_post_args_client = [
       "..."
     ]
+    introspection_post_args_client_headers = [
+      "..."
+    ]
     introspection_post_args_names = [
       "..."
     ]
@@ -253,16 +256,16 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     jwt_session_cookie = "...my_jwt_session_cookie..."
     keepalive          = true
     leeway             = 4.43
-    login_action       = "upstream"
+    login_action       = "redirect"
     login_methods = [
-      "password"
+      "authorization_code"
     ]
-    login_redirect_mode = "fragment"
+    login_redirect_mode = "query"
     login_redirect_uri = [
       "..."
     ]
     login_tokens = [
-      "tokens"
+      "refresh_token"
     ]
     logout_methods = [
       "GET"
@@ -282,14 +285,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     mtls_token_endpoint         = "...my_mtls_token_endpoint..."
     no_proxy                    = "...my_no_proxy..."
     password_param_type = [
-      "header"
+      "body"
     ]
     preserve_query_args                               = true
     proof_of_possession_auth_methods_validation       = true
-    proof_of_possession_dpop                          = "strict"
+    proof_of_possession_dpop                          = "optional"
     proof_of_possession_mtls                          = "off"
     pushed_authorization_request_endpoint             = "...my_pushed_authorization_request_endpoint..."
-    pushed_authorization_request_endpoint_auth_method = "none"
+    pushed_authorization_request_endpoint_auth_method = "tls_client_auth"
     redirect_uri = [
       "..."
     ]
@@ -320,7 +323,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
         }
       ]
       sentinel_password = "...my_sentinel_password..."
-      sentinel_role     = "any"
+      sentinel_role     = "slave"
       sentinel_username = "...my_sentinel_username..."
       server_name       = "...my_server_name..."
       socket            = "...my_socket..."
@@ -331,20 +334,20 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     rediscovery_lifetime     = 0.82
     refresh_token_param_name = "...my_refresh_token_param_name..."
     refresh_token_param_type = [
-      "query"
+      "header"
     ]
     refresh_tokens                        = true
     require_proof_key_for_code_exchange   = true
     require_pushed_authorization_requests = true
     require_signed_request_object         = false
     resolve_distributed_claims            = true
-    response_mode                         = "query.jwt"
+    response_mode                         = "fragment.jwt"
     response_type = [
       "..."
     ]
     reverify                        = false
     revocation_endpoint             = "...my_revocation_endpoint..."
-    revocation_endpoint_auth_method = "none"
+    revocation_endpoint_auth_method = "tls_client_auth"
     revocation_token_param_name     = "...my_revocation_token_param_name..."
     roles_claim = [
       "..."
@@ -369,7 +372,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     session_cookie_http_only          = false
     session_cookie_name               = "...my_session_cookie_name..."
     session_cookie_path               = "...my_session_cookie_path..."
-    session_cookie_same_site          = "Strict"
+    session_cookie_same_site          = "Default"
     session_cookie_secure             = true
     session_enforce_same_subject      = false
     session_hash_storage_key          = false
@@ -387,7 +390,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
       "audience"
     ]
     session_response_headers = [
-      "id"
+      "absolute-timeout"
     ]
     session_rolling_timeout       = 5.68
     session_secret                = "...my_session_secret..."
@@ -399,7 +402,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     tls_client_auth_ssl_verify    = false
     token_cache_key_include_scope = true
     token_endpoint                = "...my_token_endpoint..."
-    token_endpoint_auth_method    = "client_secret_jwt"
+    token_endpoint_auth_method    = "client_secret_post"
     token_exchange_endpoint       = "...my_token_exchange_endpoint..."
     token_headers_client = [
       "..."
@@ -476,12 +479,6 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     verify_parameters   = true
     verify_signature    = false
   }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
-  }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
   id               = "...my_id..."
@@ -499,7 +496,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     }
   }
   protocols = [
-    "tls_passthrough"
+    "http"
   ]
   route = {
     id = "...my_id..."
@@ -523,13 +520,11 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -558,7 +553,7 @@ Optional:
 - `authorization_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
 - `authorization_cookie_name` (String) The authorization cookie name.
 - `authorization_cookie_path` (String) The authorization cookie Path flag.
-- `authorization_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]
+- `authorization_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Default", "Lax", "None", "Strict"]
 - `authorization_cookie_secure` (Boolean) Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `authorization_endpoint` (String) The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
 - `authorization_query_args_client` (List of String) Extra query arguments passed from the client to the authorization endpoint.
@@ -566,7 +561,7 @@ Optional:
 - `authorization_query_args_values` (List of String) Extra query argument values passed to the authorization endpoint.
 - `authorization_rolling_timeout` (Number) Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
 - `bearer_token_cookie_name` (String) The name of the cookie in which the bearer token is passed.
-- `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
+- `bearer_token_param_type` (List of String) Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.
 - `by_username_ignore_case` (Boolean) If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.
 - `cache_introspection` (Boolean) Cache the introspection endpoint requests.
 - `cache_token_exchange` (Boolean) Cache the token exchange endpoint requests.
@@ -630,15 +625,16 @@ Optional:
 - `id_token_param_type` (List of String) Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 - `ignore_signature` (List of String) Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.
 - `introspect_jwt_tokens` (Boolean) Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
-- `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/token-introspection+jwt", "application/jwt"]
+- `introspection_accept` (String) The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/jwt", "application/token-introspection+jwt"]
 - `introspection_check_active` (Boolean) Check that the introspection response has an `active` claim with a value of `true`.
 - `introspection_endpoint` (String) The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
-- `introspection_endpoint_auth_method` (String) The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]
+- `introspection_endpoint_auth_method` (String) The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `introspection_headers_client` (List of String) Extra headers passed from the client to the introspection endpoint.
 - `introspection_headers_names` (List of String) Extra header names passed to the introspection endpoint.
 - `introspection_headers_values` (List of String) Extra header values passed to the introspection endpoint.
 - `introspection_hint` (String) Introspection hint parameter value passed to the introspection endpoint.
 - `introspection_post_args_client` (List of String) Extra post arguments passed from the client to the introspection endpoint.
+- `introspection_post_args_client_headers` (List of String) Extra post arguments passed from the client headers to the introspection endpoint.
 - `introspection_post_args_names` (List of String) Extra post argument names passed to the introspection endpoint.
 - `introspection_post_args_values` (List of String) Extra post argument values passed to the introspection endpoint.
 - `introspection_token_param_name` (String) Designate token's parameter name for introspection.
@@ -648,9 +644,9 @@ Optional:
 - `jwt_session_cookie` (String) The name of the JWT session cookie.
 - `keepalive` (Boolean) Use keepalive with the HTTP client.
 - `leeway` (Number) Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims
-- `login_action` (String) What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location. must be one of ["upstream", "response", "redirect"]
+- `login_action` (String) What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location. must be one of ["redirect", "response", "upstream"]
 - `login_methods` (List of String) Enable login functionality with specified grants.
-- `login_redirect_mode` (String) Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers). must be one of ["query", "fragment"]
+- `login_redirect_mode` (String) Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers). must be one of ["fragment", "query"]
 - `login_redirect_uri` (List of String) Where to redirect the client when `login_action` is set to `redirect`.
 - `login_tokens` (List of String) What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.
 - `logout_methods` (List of String) The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.
@@ -671,10 +667,10 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `password_param_type` (List of String) Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL's query string - `body`: search the HTTP request body.
 - `preserve_query_args` (Boolean) With this parameter, you can preserve request query arguments even when doing authorization code flow.
 - `proof_of_possession_auth_methods_validation` (Boolean) If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.
-- `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "strict", "optional"]
-- `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "strict", "optional"]
+- `proof_of_possession_dpop` (String) Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "optional", "strict"]
+- `proof_of_possession_mtls` (String) Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "optional", "strict"]
 - `pushed_authorization_request_endpoint` (String) The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
-- `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]
+- `pushed_authorization_request_endpoint_auth_method` (String) The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `redirect_uri` (List of String) The redirect URI passed to the authorization and token endpoints.
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
 - `rediscovery_lifetime` (Number) Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
@@ -685,11 +681,11 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `require_pushed_authorization_requests` (Boolean) Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
 - `require_signed_request_object` (Boolean) Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).
 - `resolve_distributed_claims` (Boolean) Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.
-- `response_mode` (String) Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type. must be one of ["query", "form_post", "fragment", "query.jwt", "form_post.jwt", "fragment.jwt", "jwt"]
+- `response_mode` (String) Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type. must be one of ["form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt"]
 - `response_type` (List of String) The response type passed to the authorization endpoint.
 - `reverify` (Boolean) Specifies whether to always verify tokens stored in the session.
 - `revocation_endpoint` (String) The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
-- `revocation_endpoint_auth_method` (String) The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]
+- `revocation_endpoint_auth_method` (String) The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `revocation_token_param_name` (String) Designate token's parameter name for revocation.
 - `roles_claim` (List of String) The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `roles_required` (List of String) The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
@@ -703,7 +699,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `session_cookie_http_only` (Boolean) Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.
 - `session_cookie_name` (String) The session cookie name.
 - `session_cookie_path` (String) The session cookie Path flag.
-- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]
+- `session_cookie_same_site` (String) Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Default", "Lax", "None", "Strict"]
 - `session_cookie_secure` (Boolean) Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.
 - `session_enforce_same_subject` (Boolean) When set to `true`, audiences are forced to share the same subject.
 - `session_hash_storage_key` (Boolean) When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.
@@ -729,7 +725,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `tls_client_auth_ssl_verify` (Boolean) Verify identity provider server certificate during mTLS client authentication.
 - `token_cache_key_include_scope` (Boolean) Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.
 - `token_endpoint` (String) The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
-- `token_endpoint_auth_method` (String) The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]
+- `token_endpoint_auth_method` (String) The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]
 - `token_exchange_endpoint` (String) The token exchange endpoint.
 - `token_headers_client` (List of String) Extra headers passed from the client to the token endpoint.
 - `token_headers_grants` (List of String) Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.
@@ -746,7 +742,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `unexpected_redirect_uri` (List of String) Where to redirect the client when unexpected errors happen with the requests.
 - `upstream_access_token_header` (String) The upstream access token header.
 - `upstream_access_token_jwk_header` (String) The upstream access token JWK header.
-- `upstream_headers_claims` (List of String) The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.
+- `upstream_headers_claims` (List of String) The upstream header claims. Only top level claims are supported.
 - `upstream_headers_names` (List of String) The upstream header names for the claim values.
 - `upstream_id_token_header` (String) The upstream id token header.
 - `upstream_id_token_jwk_header` (String) The upstream id token JWK header.
@@ -822,7 +818,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--cluster_cache_redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `ssl` (Boolean) If set to true, uses SSL to connect to Redis.
@@ -869,7 +865,7 @@ Optional:
 - `sentinel_master` (String) Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
 - `sentinel_nodes` (Attributes List) Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element. (see [below for nested schema](#nestedatt--config--redis--sentinel_nodes))
 - `sentinel_password` (String) Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.
-- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]
+- `sentinel_role` (String) Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]
 - `sentinel_username` (String) Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won't be performed. This requires Redis v6.2.0+.
 - `server_name` (String) A string representing an SNI (server name indication) value for TLS.
 - `socket` (String) The Redis unix socket path.
@@ -895,22 +891,6 @@ Optional:
 - `port` (Number) An integer representing a port number between 0 and 65535, inclusive.
 
 
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

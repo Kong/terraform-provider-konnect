@@ -22,7 +22,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     }
     allow_any_domain = false
     api_uri          = "...my_api_uri..."
-    cert_type        = "rsa"
+    cert_type        = "ecc"
     domains = [
       "..."
     ]
@@ -33,7 +33,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     preferred_chain         = "...my_preferred_chain..."
     renew_threshold_days    = 1.5
     rsa_key_size            = 3072
-    storage                 = "shm"
+    storage                 = "kong"
     storage_config = {
       consul = {
         host    = "...my_host..."
@@ -65,7 +65,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
         shm_name = "...my_shm_name..."
       }
       vault = {
-        auth_method     = "kubernetes"
+        auth_method     = "token"
         auth_path       = "...my_auth_path..."
         auth_role       = "...my_auth_role..."
         host            = "...my_host..."
@@ -80,12 +80,6 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
       }
     }
     tos_accepted = true
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = true
@@ -104,14 +98,8 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     }
   }
   protocols = [
-    "grpcs"
+    "grpc"
   ]
-  route = {
-    id = "...my_id..."
-  }
-  service = {
-    id = "...my_id..."
-  }
   tags = [
     "..."
   ]
@@ -128,14 +116,10 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
-- `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
+- `protocols` (List of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
 ### Read-Only
@@ -153,7 +137,7 @@ Optional:
 - `account_key` (Attributes) The private key associated with the account. (see [below for nested schema](#nestedatt--config--account_key))
 - `allow_any_domain` (Boolean) If set to `true`, the plugin allows all domains and ignores any values in the `domains` list.
 - `api_uri` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
-- `cert_type` (String) The certificate type to create. The possible values are `'rsa'` for RSA certificate or `'ecc'` for EC certificate. must be one of ["rsa", "ecc"]
+- `cert_type` (String) The certificate type to create. The possible values are `rsa` for RSA certificate or `ecc` for EC certificate. must be one of ["ecc", "rsa"]
 - `domains` (List of String) An array of strings representing hosts. A valid host is a string containing one or more labels separated by periods, with at most one wildcard label ('*')
 - `eab_hmac_key` (String) External account binding (EAB) base64-encoded URL string of the HMAC key. You usually don't need to set this unless it is explicitly required by the CA.
 - `eab_kid` (String) External account binding (EAB) key id. You usually don't need to set this unless it is explicitly required by the CA.
@@ -163,7 +147,7 @@ new certificate and a renewal certificate.
 - `preferred_chain` (String) A string value that specifies the preferred certificate chain to use when generating certificates.
 - `renew_threshold_days` (Number) Days remaining to renew the certificate before it expires.
 - `rsa_key_size` (Number) RSA private key size for the certificate. The possible values are 2048, 3072, or 4096. must be one of ["2048", "3072", "4096"]
-- `storage` (String) The backend storage type to use. The possible values are `'kong'`, `'shm'`, `'redis'`, `'consul'`, or `'vault'`. In DB-less mode, `'kong'` storage is unavailable. Note that `'shm'` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `'kong'`, `'redis'`, `'consul'`, or `'vault'` in production. Please refer to the Hybrid Mode sections below as well. must be one of ["kong", "shm", "redis", "consul", "vault"]
+- `storage` (String) The backend storage type to use. In DB-less mode and Konnect, `kong` storage is unavailable. In hybrid mode and Konnect, `shm` storage is unavailable. `shm` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of `kong`, `redis`, `consul`, or `vault` in production. must be one of ["consul", "kong", "redis", "shm", "vault"]
 - `storage_config` (Attributes) (see [below for nested schema](#nestedatt--config--storage_config))
 - `tos_accepted` (Boolean) If you are using Let's Encrypt, you must set this to `true` to agree the terms of service.
 
@@ -239,7 +223,7 @@ Optional:
 
 Optional:
 
-- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. must be one of ["token", "kubernetes"]
+- `auth_method` (String) Auth Method, default to token, can be 'token' or 'kubernetes'. must be one of ["kubernetes", "token"]
 - `auth_path` (String) Vault's authentication path to use.
 - `auth_role` (String) The role to try and assign.
 - `host` (String) A string representing a host name, such as example.com.
@@ -253,22 +237,6 @@ Optional:
 - `token` (String) Consul ACL token.
 
 
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>
@@ -293,23 +261,6 @@ Optional:
 Optional:
 
 - `access` (List of String)
-
-
-
-<a id="nestedatt--route"></a>
-### Nested Schema for `route`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--service"></a>
-### Nested Schema for `service`
-
-Optional:
-
-- `id` (String)
 
 ## Import
 
