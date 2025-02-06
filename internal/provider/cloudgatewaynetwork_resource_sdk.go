@@ -25,19 +25,12 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 	var cidrBlock string
 	cidrBlock = r.CidrBlock.ValueString()
 
-	state := new(shared.NetworkCreateState)
-	if !r.State.IsUnknown() && !r.State.IsNull() {
-		*state = shared.NetworkCreateState(r.State.ValueString())
-	} else {
-		state = nil
-	}
 	out := shared.CreateNetworkRequest{
 		Name:                          name,
 		CloudGatewayProviderAccountID: cloudGatewayProviderAccountID,
 		Region:                        region,
 		AvailabilityZones:             availabilityZones,
 		CidrBlock:                     cidrBlock,
-		State:                         state,
 	}
 	return &out
 }
@@ -62,7 +55,6 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(resp *shared
 		}
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)
-		r.State = types.StringValue(string(resp.State))
 		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	}

@@ -87,7 +87,6 @@ type Konnect struct {
 	AppAuthStrategies *AppAuthStrategies
 	AuditLogs         *AuditLogs
 	CloudGateways     *CloudGateways
-	Networks          *Networks
 	ControlPlanes     *ControlPlanes
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
@@ -144,6 +143,7 @@ type Konnect struct {
 	// - `grpcs`: At least one of `hosts`, `headers`, `paths`, or `snis`
 	// - `ws`: At least one of `hosts`, `headers`, or `paths`
 	// - `wss`: At least one of `hosts`, `headers`, `paths`, or `snis`
+	//
 	//
 	//
 	//
@@ -330,8 +330,6 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.AuditLogs = newAuditLogs(sdk.sdkConfiguration)
 
 	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
-
-	sdk.Networks = newNetworks(sdk.sdkConfiguration)
 
 	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
 

@@ -5,18 +5,19 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -50,7 +51,6 @@ type CloudGatewayNetworkResourceModel struct {
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
 	Region                        types.String                    `tfsdk:"region"`
-	State                         types.String                    `tfsdk:"state"`
 	TransitGatewayCount           types.Int64                     `tfsdk:"transit_gateway_count"`
 	UpdatedAt                     types.String                    `tfsdk:"updated_at"`
 }
@@ -89,11 +89,17 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				Description: `Requires replacement if changed.`,
 			},
 			"configuration_reference_count": schema.Int64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				Description: `The number of configurations that reference this network.`,
 			},
 			"created_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of network creation date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -101,15 +107,24 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 			},
 			"default": schema.BoolAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Bool{
+					speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+				},
 				MarkdownDescription: `Whether the network is a default network or not. Default networks are Networks that are created` + "\n" +
 					`automatically by Konnect when an organization is linked to a provider account.`,
 			},
 			"entity_version": schema.Int64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				Description: `Monotonically-increasing version count of the network, to indicate the order of updates to the network.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 			},
 			"name": schema.StringAttribute{
 				Required:    true,
@@ -117,13 +132,22 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 			},
 			"provider_metadata": schema.SingleNestedAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.Object{
+					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+				},
 				Attributes: map[string]schema.Attribute{
 					"subnet_ids": schema.ListAttribute{
-						Computed:    true,
+						Computed: true,
+						PlanModifiers: []planmodifier.List{
+							speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+						},
 						ElementType: types.StringType,
 					},
 					"vpc_id": schema.StringAttribute{
 						Computed: true,
+						PlanModifiers: []planmodifier.String{
+							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+						},
 					},
 				},
 				Description: `Metadata describing attributes returned by cloud-provider for the network.`,
@@ -136,28 +160,18 @@ func (r *CloudGatewayNetworkResource) Schema(ctx context.Context, req resource.S
 				},
 				Description: `Region ID for cloud provider region. Requires replacement if changed.`,
 			},
-			"state": schema.StringAttribute{
-				Computed: true,
-				Optional: true,
-				Default:  stringdefault.StaticString("initializing"),
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
-				Description: `Initial state for creating a network. Default: "initializing"; must be one of ["initializing", "offline"]; Requires replacement if changed.`,
-				Validators: []validator.String{
-					stringvalidator.OneOf(
-						"initializing",
-						"offline",
-					),
-				},
-			},
 			"transit_gateway_count": schema.Int64Attribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.Int64{
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
 				Description: `The number of transit gateways attached to this network.`,
 			},
 			"updated_at": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `An RFC-3339 timestamp representation of network update date.`,
 				Validators: []validator.String{
 					validators.IsRFC3339(),
@@ -309,7 +323,7 @@ func (r *CloudGatewayNetworkResource) Update(ctx context.Context, req resource.U
 		NetworkID:           networkID,
 		PatchNetworkRequest: patchNetworkRequest,
 	}
-	res, err := r.client.Networks.UpdateNetwork(ctx, request)
+	res, err := r.client.CloudGateways.UpdateNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
