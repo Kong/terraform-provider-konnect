@@ -369,7 +369,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 		}
 		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
 		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-		r.Config.Limit = []types.Number{}
+		r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
 		for _, v := range resp.Config.Limit {
 			r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
 		}
@@ -448,7 +448,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 		} else {
 			r.Config.SyncRate = types.NumberNull()
 		}
-		r.Config.WindowSize = []types.Number{}
+		r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
 		for _, v := range resp.Config.WindowSize {
 			r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
 		}
@@ -469,7 +469,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -478,13 +478,13 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -494,7 +494,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServicePr
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

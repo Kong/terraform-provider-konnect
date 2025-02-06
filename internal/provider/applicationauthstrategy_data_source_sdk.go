@@ -16,7 +16,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Active)
 			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs.KeyAuth.KeyNames = []types.String{}
+			r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
 			for _, v := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
 			}
@@ -55,11 +55,11 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 				additionalPropertiesResult, _ := json.Marshal(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties)
 				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
 			}
-			r.OpenidConnect.Configs.OpenidConnect.AuthMethods = []types.String{}
+			r.OpenidConnect.Configs.OpenidConnect.AuthMethods = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods))
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods {
 				r.OpenidConnect.Configs.OpenidConnect.AuthMethods = append(r.OpenidConnect.Configs.OpenidConnect.AuthMethods, types.StringValue(v))
 			}
-			r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = []types.String{}
+			r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim))
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim {
 				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
 			}
@@ -70,7 +70,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
 				}
 			}
-			r.OpenidConnect.Configs.OpenidConnect.Scopes = []types.String{}
+			r.OpenidConnect.Configs.OpenidConnect.Scopes = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes))
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
 			}

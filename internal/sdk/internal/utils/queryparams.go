@@ -65,6 +65,12 @@ func populateQueryParams(queryParams interface{}, globals interface{}, values ur
 			continue
 		}
 
+		constValue := parseConstTag(fieldType)
+		if constValue != nil {
+			values.Add(qpTag.ParamName, *constValue)
+			continue
+		}
+
 		if globals != nil {
 			var globalFound bool
 			fieldType, valType, globalFound = populateFromGlobals(fieldType, valType, queryParamTagKey, globals)
@@ -214,7 +220,11 @@ func populateDeepObjectParamsStruct(qsValues url.Values, priorScope string, stru
 			continue
 		}
 
-		scope := priorScope + "[" + qpTag.ParamName + "]"
+		scope := priorScope
+
+		if !qpTag.Inline {
+			scope = priorScope + "[" + qpTag.ParamName + "]"
+		}
 
 		switch fieldValue.Kind() {
 		case reflect.Array, reflect.Slice:
@@ -252,6 +262,13 @@ type paramTag struct {
 	Explode       bool
 	ParamName     string
 	Serialization string
+
+	// Inline is a special case for union/oneOf. When a wrapper struct type is
+	// used, each union/oneOf value field should be inlined (e.g. not appended
+	// in deepObject style with the name) as if the value was directly on the
+	// parent struct field. Without this annotation, the value would not be
+	// encoded by downstream logic that requires the struct field tag.
+	Inline bool
 }
 
 func parseQueryParamTag(field reflect.StructField) *paramTag {

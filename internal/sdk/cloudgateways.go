@@ -43,7 +43,6 @@ func (s *CloudGateways) CreateConfiguration(ctx context.Context, request shared.
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -91,10 +90,16 @@ func (s *CloudGateways) CreateConfiguration(ctx context.Context, request shared.
 	}
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	req.Header.Set("Content-Type", reqContentType)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -283,7 +288,6 @@ func (s *CloudGateways) GetConfiguration(ctx context.Context, request operations
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -329,6 +333,10 @@ func (s *CloudGateways) GetConfiguration(ctx context.Context, request operations
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -476,7 +484,6 @@ func (s *CloudGateways) CreateCustomDomains(ctx context.Context, request shared.
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -524,10 +531,16 @@ func (s *CloudGateways) CreateCustomDomains(ctx context.Context, request shared.
 	}
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	req.Header.Set("Content-Type", reqContentType)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -716,7 +729,6 @@ func (s *CloudGateways) GetCustomDomain(ctx context.Context, request operations.
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -762,6 +774,10 @@ func (s *CloudGateways) GetCustomDomain(ctx context.Context, request operations.
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -908,7 +924,6 @@ func (s *CloudGateways) DeleteCustomDomain(ctx context.Context, request operatio
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
 	}
@@ -949,6 +964,10 @@ func (s *CloudGateways) DeleteCustomDomain(ctx context.Context, request operatio
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	globalRetryConfig := s.sdkConfiguration.RetryConfig
@@ -1162,7 +1181,6 @@ func (s *CloudGateways) CreateNetwork(ctx context.Context, request shared.Create
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -1210,10 +1228,16 @@ func (s *CloudGateways) CreateNetwork(ctx context.Context, request shared.Create
 	}
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	req.Header.Set("Content-Type", reqContentType)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -1381,7 +1405,6 @@ func (s *CloudGateways) GetNetwork(ctx context.Context, request operations.GetNe
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -1427,6 +1450,10 @@ func (s *CloudGateways) GetNetwork(ctx context.Context, request operations.GetNe
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -1573,7 +1600,6 @@ func (s *CloudGateways) UpdateNetwork(ctx context.Context, request operations.Up
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -1621,10 +1647,16 @@ func (s *CloudGateways) UpdateNetwork(ctx context.Context, request operations.Up
 	}
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	req.Header.Set("Content-Type", reqContentType)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -1813,7 +1845,6 @@ func (s *CloudGateways) DeleteNetwork(ctx context.Context, request operations.De
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
 	}
@@ -1854,6 +1885,10 @@ func (s *CloudGateways) DeleteNetwork(ctx context.Context, request operations.De
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	globalRetryConfig := s.sdkConfiguration.RetryConfig
@@ -2067,7 +2102,6 @@ func (s *CloudGateways) CreateTransitGateway(ctx context.Context, request operat
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
@@ -2116,10 +2150,16 @@ func (s *CloudGateways) CreateTransitGateway(ctx context.Context, request operat
 	}
 
 	req.Header.Set("User-Agent", s.sdkConfiguration.UserAgent)
-	req.Header.Set("Content-Type", reqContentType)
+	if reqContentType != "" {
+		req.Header.Set("Content-Type", reqContentType)
+	}
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	globalRetryConfig := s.sdkConfiguration.RetryConfig
@@ -2374,7 +2414,6 @@ func (s *CloudGateways) GetTransitGateway(ctx context.Context, request operation
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -2420,6 +2459,10 @@ func (s *CloudGateways) GetTransitGateway(ctx context.Context, request operation
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)
@@ -2566,7 +2609,6 @@ func (s *CloudGateways) DeleteTransitGateway(ctx context.Context, request operat
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionRetries,
 		operations.SupportedOptionTimeout,
 	}
@@ -2607,6 +2649,10 @@ func (s *CloudGateways) DeleteTransitGateway(ctx context.Context, request operat
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	globalRetryConfig := s.sdkConfiguration.RetryConfig
@@ -2820,7 +2866,6 @@ func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operat
 
 	o := operations.Options{}
 	supportedOptions := []string{
-		operations.SupportedOptionServerURL,
 		operations.SupportedOptionTimeout,
 		operations.SupportedOptionAcceptHeaderOverride,
 	}
@@ -2870,6 +2915,10 @@ func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operat
 
 	if err := utils.PopulateSecurity(ctx, req, s.sdkConfiguration.Security); err != nil {
 		return nil, err
+	}
+
+	for k, v := range o.SetHeaders {
+		req.Header.Set(k, v)
 	}
 
 	req, err = s.sdkConfiguration.Hooks.BeforeRequest(hooks.BeforeRequestContext{HookContext: hookCtx}, req)

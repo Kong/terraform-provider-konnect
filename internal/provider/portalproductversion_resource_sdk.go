@@ -52,11 +52,11 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersio
 			var authStrategies1 tfTypes.AuthStrategy
 			if authStrategiesItem.AuthStrategyClientCredentials != nil {
 				authStrategies1.ClientCredentials = &tfTypes.AuthStrategyClientCredentials{}
-				authStrategies1.ClientCredentials.AuthMethods = []types.String{}
+				authStrategies1.ClientCredentials.AuthMethods = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AuthMethods))
 				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AuthMethods {
 					authStrategies1.ClientCredentials.AuthMethods = append(authStrategies1.ClientCredentials.AuthMethods, types.StringValue(v))
 				}
-				authStrategies1.ClientCredentials.AvailableScopes = []types.String{}
+				authStrategies1.ClientCredentials.AvailableScopes = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes))
 				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes {
 					authStrategies1.ClientCredentials.AvailableScopes = append(authStrategies1.ClientCredentials.AvailableScopes, types.StringValue(v))
 				}
@@ -68,7 +68,7 @@ func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersio
 				authStrategies1.KeyAuth = &tfTypes.AuthStrategyKeyAuth{}
 				authStrategies1.KeyAuth.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyKeyAuth.CredentialType))
 				authStrategies1.KeyAuth.ID = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.ID)
-				authStrategies1.KeyAuth.KeyNames = []types.String{}
+				authStrategies1.KeyAuth.KeyNames = make([]types.String, 0, len(authStrategiesItem.AuthStrategyKeyAuth.KeyNames))
 				for _, v := range authStrategiesItem.AuthStrategyKeyAuth.KeyNames {
 					authStrategies1.KeyAuth.KeyNames = append(authStrategies1.KeyAuth.KeyNames, types.StringValue(v))
 				}

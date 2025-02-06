@@ -10,7 +10,7 @@ import (
 
 func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shared.Network) {
 	if resp != nil {
-		r.AvailabilityZones = []types.String{}
+		r.AvailabilityZones = make([]types.String, 0, len(resp.AvailabilityZones))
 		for _, v := range resp.AvailabilityZones {
 			r.AvailabilityZones = append(r.AvailabilityZones, types.StringValue(v))
 		}
@@ -22,7 +22,7 @@ func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shar
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.ProviderMetadata.SubnetIds = []types.String{}
+		r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
 		for _, v := range resp.ProviderMetadata.SubnetIds {
 			r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
 		}

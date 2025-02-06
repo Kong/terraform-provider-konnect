@@ -27,7 +27,7 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 		} else {
 			r.Config.CertType = types.StringNull()
 		}
-		r.Config.Domains = []types.String{}
+		r.Config.Domains = make([]types.String, 0, len(resp.Config.Domains))
 		for _, v := range resp.Config.Domains {
 			r.Config.Domains = append(r.Config.Domains, types.StringValue(v))
 		}
@@ -151,7 +151,7 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -160,17 +160,17 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

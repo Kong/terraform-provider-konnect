@@ -83,7 +83,7 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 			}
 			dataplaneGroups1.CloudGatewayNetworkID = types.StringValue(dataplaneGroupsItem.CloudGatewayNetworkID)
 			dataplaneGroups1.CreatedAt = types.StringValue(dataplaneGroupsItem.CreatedAt.Format(time.RFC3339Nano))
-			dataplaneGroups1.EgressIPAddresses = []types.String{}
+			dataplaneGroups1.EgressIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.EgressIPAddresses))
 			for _, v := range dataplaneGroupsItem.EgressIPAddresses {
 				dataplaneGroups1.EgressIPAddresses = append(dataplaneGroups1.EgressIPAddresses, types.StringValue(v))
 			}
@@ -100,7 +100,7 @@ func (r *CloudGatewayConfigurationDataSourceModel) RefreshFromSharedConfiguratio
 				}
 			}
 			dataplaneGroups1.ID = types.StringValue(dataplaneGroupsItem.ID)
-			dataplaneGroups1.PrivateIPAddresses = []types.String{}
+			dataplaneGroups1.PrivateIPAddresses = make([]types.String, 0, len(dataplaneGroupsItem.PrivateIPAddresses))
 			for _, v := range dataplaneGroupsItem.PrivateIPAddresses {
 				dataplaneGroups1.PrivateIPAddresses = append(dataplaneGroups1.PrivateIPAddresses, types.StringValue(v))
 			}

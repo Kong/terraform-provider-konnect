@@ -90,8 +90,8 @@ const (
 
 // CreateTransitGatewayRequest - Request schema for creating a transit gateway.
 type CreateTransitGatewayRequest struct {
-	AWSTransitGateway   *AWSTransitGateway
-	AzureTransitGateway *AzureTransitGateway
+	AWSTransitGateway   *AWSTransitGateway   `queryParam:"inline"`
+	AzureTransitGateway *AzureTransitGateway `queryParam:"inline"`
 
 	Type CreateTransitGatewayRequestType
 }

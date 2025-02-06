@@ -60,11 +60,13 @@ func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(resp *sha
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Key = types.StringValue(resp.Key)
 		r.KeyAlt = types.StringPointerValue(resp.KeyAlt)
-		r.Snis = []types.String{}
-		for _, v := range resp.Snis {
-			r.Snis = append(r.Snis, types.StringValue(v))
+		if resp.Snis != nil {
+			r.Snis = make([]types.String, 0, len(resp.Snis))
+			for _, v := range resp.Snis {
+				r.Snis = append(r.Snis, types.StringValue(v))
+			}
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -12,15 +12,15 @@ import (
 func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
 	if resp != nil {
 		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.ClaimsToVerify = []types.String{}
+		r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
 		for _, v := range resp.Config.ClaimsToVerify {
 			r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
 		}
-		r.Config.CookieNames = []types.String{}
+		r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
 		for _, v := range resp.Config.CookieNames {
 			r.Config.CookieNames = append(r.Config.CookieNames, types.StringValue(v))
 		}
-		r.Config.HeaderNames = []types.String{}
+		r.Config.HeaderNames = make([]types.String, 0, len(resp.Config.HeaderNames))
 		for _, v := range resp.Config.HeaderNames {
 			r.Config.HeaderNames = append(r.Config.HeaderNames, types.StringValue(v))
 		}
@@ -33,7 +33,7 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
-		r.Config.URIParamNames = []types.String{}
+		r.Config.URIParamNames = make([]types.String, 0, len(resp.Config.URIParamNames))
 		for _, v := range resp.Config.URIParamNames {
 			r.Config.URIParamNames = append(r.Config.URIParamNames, types.StringValue(v))
 		}
@@ -49,7 +49,7 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -58,13 +58,13 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -80,7 +80,7 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

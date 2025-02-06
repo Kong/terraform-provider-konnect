@@ -15,7 +15,7 @@ func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAz
 		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
 		r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
 		r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-		r.Config.BlocklistNames = []types.String{}
+		r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
 		for _, v := range resp.Config.BlocklistNames {
 			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
 		}
@@ -60,7 +60,7 @@ func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAz
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -69,13 +69,13 @@ func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAz
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -91,7 +91,7 @@ func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAz
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -14,7 +14,7 @@ type GatewayService struct {
 	ID *string `json:"id"`
 	// This field is deprecated, please use `control_plane_id` instead. The identifier of the control plane that the gateway service resides in
 	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	RuntimeGroupID *string `json:"runtime_group_id,omitempty"`
 	// The identifier of the control plane that the gateway service resides in
 	ControlPlaneID string `json:"control_plane_id"`
@@ -43,7 +43,7 @@ func (o *GatewayService) GetControlPlaneID() string {
 
 // APIProductVersionPublishStatus1 - This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 //
-// Deprecated type: This will be removed in a future release, please migrate away from it as soon as possible.
+// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 type APIProductVersionPublishStatus1 string
 
 const (
@@ -79,11 +79,11 @@ type APIProductVersion struct {
 	GatewayService *GatewayService `json:"gateway_service"`
 	// This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
 	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	PublishStatus APIProductVersionPublishStatus1 `json:"publish_status"`
 	// Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead
 	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	Deprecated bool `json:"deprecated"`
 	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
 	//
