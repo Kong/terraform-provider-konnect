@@ -560,7 +560,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			r.Config.Behavior.IdpErrorResponseContentType = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseContentType)
 			r.Config.Behavior.IdpErrorResponseMessage = types.StringPointerValue(resp.Config.Behavior.IdpErrorResponseMessage)
 			r.Config.Behavior.IdpErrorResponseStatusCode = types.Int64PointerValue(resp.Config.Behavior.IdpErrorResponseStatusCode)
-			r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = []types.Int64{}
+			r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = make([]types.Int64, 0, len(resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes))
 			for _, v := range resp.Config.Behavior.PurgeTokenOnUpstreamStatusCodes {
 				r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes = append(r.Config.Behavior.PurgeTokenOnUpstreamStatusCodes, types.Int64Value(v))
 			}
@@ -678,7 +678,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			r.Config.Oauth = nil
 		} else {
 			r.Config.Oauth = &tfTypes.Oauth{}
-			r.Config.Oauth.Audience = []types.String{}
+			r.Config.Oauth.Audience = make([]types.String, 0, len(resp.Config.Oauth.Audience))
 			for _, v := range resp.Config.Oauth.Audience {
 				r.Config.Oauth.Audience = append(r.Config.Oauth.Audience, types.StringValue(v))
 			}
@@ -690,7 +690,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Config.Oauth.GrantType = types.StringNull()
 			}
 			r.Config.Oauth.Password = types.StringPointerValue(resp.Config.Oauth.Password)
-			r.Config.Oauth.Scopes = []types.String{}
+			r.Config.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Oauth.Scopes))
 			for _, v := range resp.Config.Oauth.Scopes {
 				r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
 			}
@@ -735,7 +735,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -744,13 +744,13 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -766,7 +766,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -60,7 +60,7 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.PortalIds = []types.String{}
+		r.PortalIds = make([]types.String, 0, len(resp.PortalIds))
 		for _, v := range resp.PortalIds {
 			r.PortalIds = append(r.PortalIds, types.StringValue(v))
 		}

@@ -19,7 +19,7 @@ type APIProduct struct {
 	// This property is deprecated and will be removed in a future version. Use the `portals` property instead.
 	//
 	//
-	// Deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
+	// Deprecated: This will be removed in a future release, please migrate away from it as soon as possible.
 	PortalIds []string `json:"portal_ids"`
 	// The list of portals which this API product is published to
 	Portals []APIProductPortal `json:"portals"`

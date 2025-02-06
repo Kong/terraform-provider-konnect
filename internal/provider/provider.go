@@ -27,10 +27,10 @@ type KonnectProvider struct {
 
 // KonnectProviderModel describes the provider data model.
 type KonnectProviderModel struct {
-	ServerURL                types.String `tfsdk:"server_url"`
-	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
-	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
+	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
+	ServerURL                types.String `tfsdk:"server_url"`
+	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
 func (p *KonnectProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -40,26 +40,25 @@ func (p *KonnectProvider) Metadata(ctx context.Context, req provider.MetadataReq
 
 func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Konnect API: The Konnect platform API`,
 		Attributes: map[string]schema.Attribute{
-			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://global.api.konghq.com)",
-				Optional:            true,
-				Required:            false,
+			"konnect_access_token": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
 			"personal_access_token": schema.StringAttribute{
-				Sensitive: true,
 				Optional:  true,
+				Sensitive: true,
+			},
+			"server_url": schema.StringAttribute{
+				Description: `Server URL (defaults to https://global.api.konghq.com)`,
+				Optional:    true,
 			},
 			"system_account_access_token": schema.StringAttribute{
-				Sensitive: true,
 				Optional:  true,
-			},
-			"konnect_access_token": schema.StringAttribute{
 				Sensitive: true,
-				Optional:  true,
 			},
 		},
+		MarkdownDescription: `Konnect API: The Konnect platform API`,
 	}
 }
 
@@ -113,8 +112,13 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		KonnectAccessToken:       konnectAccessToken,
 	}
 
+	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
+		SetHeaders: make(map[string]string),
+		Transport:  http.DefaultTransport,
+	}
+
 	httpClient := http.DefaultClient
-	httpClient.Transport = NewLoggingHTTPTransport(http.DefaultTransport)
+	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
 
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(ServerURL),

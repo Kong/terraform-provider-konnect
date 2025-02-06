@@ -707,11 +707,11 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 		} else {
 			r.Config.SessionRememberRollingTimeout = types.NumberNull()
 		}
-		r.Config.SessionRequestHeaders = []types.String{}
+		r.Config.SessionRequestHeaders = make([]types.String, 0, len(resp.Config.SessionRequestHeaders))
 		for _, v := range resp.Config.SessionRequestHeaders {
 			r.Config.SessionRequestHeaders = append(r.Config.SessionRequestHeaders, types.StringValue(string(v)))
 		}
-		r.Config.SessionResponseHeaders = []types.String{}
+		r.Config.SessionResponseHeaders = make([]types.String, 0, len(resp.Config.SessionResponseHeaders))
 		for _, v := range resp.Config.SessionResponseHeaders {
 			r.Config.SessionResponseHeaders = append(r.Config.SessionResponseHeaders, types.StringValue(string(v)))
 		}
@@ -740,7 +740,7 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -749,13 +749,13 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -771,7 +771,7 @@ func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(resp *share
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

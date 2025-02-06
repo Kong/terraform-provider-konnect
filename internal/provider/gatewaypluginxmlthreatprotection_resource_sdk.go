@@ -276,7 +276,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) ToSharedXMLThreatProtect
 func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThreatProtectionPlugin(resp *shared.XMLThreatProtectionPlugin) {
 	if resp != nil {
 		r.Config.AllowDtd = types.BoolPointerValue(resp.Config.AllowDtd)
-		r.Config.AllowedContentTypes = []types.String{}
+		r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
 		for _, v := range resp.Config.AllowedContentTypes {
 			r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
 		}
@@ -288,7 +288,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 		}
 		r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
 		r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
-		r.Config.CheckedContentTypes = []types.String{}
+		r.Config.CheckedContentTypes = make([]types.String, 0, len(resp.Config.CheckedContentTypes))
 		for _, v := range resp.Config.CheckedContentTypes {
 			r.Config.CheckedContentTypes = append(r.Config.CheckedContentTypes, types.StringValue(v))
 		}
@@ -326,7 +326,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -335,13 +335,13 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -357,7 +357,7 @@ func (r *GatewayPluginXMLThreatProtectionResourceModel) RefreshFromSharedXMLThre
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

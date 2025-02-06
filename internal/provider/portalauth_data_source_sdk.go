@@ -28,7 +28,7 @@ func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSetting
 			}
 			r.OidcConfig.ClientID = types.StringValue(resp.OidcConfig.ClientID)
 			r.OidcConfig.Issuer = types.StringValue(resp.OidcConfig.Issuer)
-			r.OidcConfig.Scopes = []types.String{}
+			r.OidcConfig.Scopes = make([]types.String, 0, len(resp.OidcConfig.Scopes))
 			for _, v := range resp.OidcConfig.Scopes {
 				r.OidcConfig.Scopes = append(r.OidcConfig.Scopes, types.StringValue(v))
 			}

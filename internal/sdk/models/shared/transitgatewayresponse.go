@@ -17,8 +17,8 @@ const (
 
 // TransitGatewayResponse - Response format for creating a transit gateway.
 type TransitGatewayResponse struct {
-	AwsTransitGatewayResponse   *AwsTransitGatewayResponse
-	AzureTransitGatewayResponse *AzureTransitGatewayResponse
+	AwsTransitGatewayResponse   *AwsTransitGatewayResponse   `queryParam:"inline"`
+	AzureTransitGatewayResponse *AzureTransitGatewayResponse `queryParam:"inline"`
 
 	Type TransitGatewayResponseType
 }

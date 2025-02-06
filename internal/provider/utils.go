@@ -100,9 +100,21 @@ func refreshPlan(ctx context.Context, plan types.Object, target interface{}, dia
 	}, path.Empty())...)
 }
 
+// Configurable options for the provider HTTP transport.
+type ProviderHTTPTransportOpts struct {
+	// HTTP headers to set on all requests.
+	SetHeaders map[string]string
+
+	// Underlying HTTP transport.
+	Transport http.RoundTripper
+}
+
 // Note: this is taken as a more minimal/specific version of https://github.com/hashicorp/terraform-plugin-sdk/blob/main/helper/logging/logging_http_transport.go
-func NewLoggingHTTPTransport(t http.RoundTripper) *loggingHttpTransport {
-	return &loggingHttpTransport{t}
+func NewProviderHTTPTransport(opts ProviderHTTPTransportOpts) *providerHttpTransport {
+	return &providerHttpTransport{
+		setHeaders: opts.SetHeaders,
+		transport:  opts.Transport,
+	}
 }
 
 const (
@@ -120,13 +132,17 @@ const (
 	FieldHttpTransactionId        = "tf_http_trans_id"
 )
 
-type loggingHttpTransport struct {
-	transport http.RoundTripper
+type providerHttpTransport struct {
+	setHeaders map[string]string
+	transport  http.RoundTripper
 }
 
-func (t *loggingHttpTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+func (t *providerHttpTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	ctx := req.Context()
 	ctx = t.addTransactionIdField(ctx)
+
+	// Set globally defined HTTP headers in the request
+	t.setRequestHeaders(req)
 
 	// Decompose the request bytes in a message (HTTP body) and fields (HTTP headers), then log it
 	fields, err := decomposeRequestForLogging(req)
@@ -157,7 +173,8 @@ func (t *loggingHttpTransport) RoundTrip(req *http.Request) (*http.Response, err
 	return res, nil
 }
 
-func (t *loggingHttpTransport) addTransactionIdField(ctx context.Context) context.Context {
+// Generates UUID and sets it into the tf_http_trans_id logging field.
+func (t *providerHttpTransport) addTransactionIdField(ctx context.Context) context.Context {
 	tId, err := uuid.GenerateUUID()
 
 	if err != nil {
@@ -165,6 +182,13 @@ func (t *loggingHttpTransport) addTransactionIdField(ctx context.Context) contex
 	}
 
 	return tflog.SetField(ctx, FieldHttpTransactionId, tId)
+}
+
+// Sets globally defined HTTP headers in the request.
+func (t *providerHttpTransport) setRequestHeaders(req *http.Request) {
+	for name, value := range t.setHeaders {
+		req.Header.Set(name, value)
+	}
 }
 
 func decomposeRequestForLogging(req *http.Request) (map[string]interface{}, error) {

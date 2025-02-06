@@ -281,7 +281,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 		} else {
 			r.Config.IdlingTimeout = types.NumberNull()
 		}
-		r.Config.LogoutMethods = []types.String{}
+		r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
 		for _, v := range resp.Config.LogoutMethods {
 			r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
 		}
@@ -300,11 +300,11 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 		} else {
 			r.Config.RememberRollingTimeout = types.NumberNull()
 		}
-		r.Config.RequestHeaders = []types.String{}
+		r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
 		for _, v := range resp.Config.RequestHeaders {
 			r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
 		}
-		r.Config.ResponseHeaders = []types.String{}
+		r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
 		for _, v := range resp.Config.ResponseHeaders {
 			r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
 		}
@@ -336,7 +336,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -345,13 +345,13 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -367,7 +367,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -266,7 +266,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 				},
-				Description: `Request for creating a Key Auth Application Auth Strategy. Requires replacement if changed.`,
+				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy. Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("openid_connect"),
@@ -545,7 +545,7 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						},
 					},
 				},
-				Description: `Payload for creating an OIDC Application Auth Strategy. Requires replacement if changed.`,
+				Description: `Response payload from creating an OIDC Application Auth Strategy. Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("key_auth"),

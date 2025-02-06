@@ -171,11 +171,11 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 		}
 		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
 		r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-		r.Config.InjectionTypes = []types.String{}
+		r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
 		for _, v := range resp.Config.InjectionTypes {
 			r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
 		}
-		r.Config.Locations = []types.String{}
+		r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
 		for _, v := range resp.Config.Locations {
 			r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
 		}
@@ -191,7 +191,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -200,13 +200,13 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -222,7 +222,7 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

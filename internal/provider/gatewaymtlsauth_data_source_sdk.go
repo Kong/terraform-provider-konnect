@@ -25,7 +25,7 @@ func (r *GatewayMTLSAuthDataSourceModel) RefreshFromSharedMTLSAuth(resp *shared.
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.SubjectName = types.StringValue(resp.SubjectName)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

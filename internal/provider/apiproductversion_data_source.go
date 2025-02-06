@@ -60,8 +60,9 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"deprecated": schema.BoolAttribute{
-				Computed:    true,
-				Description: `Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead`,
+				Computed:           true,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+				Description:        `Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,
@@ -75,8 +76,9 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 						Description: `The identifier of a gateway service associated with the version of the API product.`,
 					},
 					"runtime_group_id": schema.StringAttribute{
-						Computed:    true,
-						Description: `This field is deprecated, please use ` + "`" + `control_plane_id` + "`" + ` instead. The identifier of the control plane that the gateway service resides in`,
+						Computed:           true,
+						DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
+						Description:        `This field is deprecated, please use ` + "`" + `control_plane_id` + "`" + ` instead. The identifier of the control plane that the gateway service resides in`,
 					},
 				},
 			},
