@@ -4,6 +4,10 @@
 * Add support for `konnect_portal_team` resource
 * Add support for `konnect_audit_log` resource
 
+### Bug fixes
+
+* Make `konnect_cloud_gateway_network` plan output deterministic
+
 ## 2.2.0
 > Released on 2024/12/06
 
