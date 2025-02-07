@@ -3,7 +3,6 @@ package boolplanmodifier
 import (
     "context"
     "github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-    "github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ planmodifier.Bool = BoolSupressZeroNullModifierPlanModifier{}
@@ -22,11 +21,6 @@ func (v BoolSupressZeroNullModifierPlanModifier) MarkdownDescription(ctx context
 
 // Validate performs the plan modification.
 func (v BoolSupressZeroNullModifierPlanModifier) PlanModifyBool(ctx context.Context, req planmodifier.BoolRequest, resp *planmodifier.BoolResponse) {
-    if resp.PlanValue.ValueBool() == req.StateValue.ValueBool() {
-        if req.StateValue.IsNull() {
-            resp.PlanValue = types.BoolValue(false)
-        }
-    }
     // req.State.Raw is null on the first request
     //println("{" + req.Path.String() +
     //    " - state: " + req.StateValue.String() +
