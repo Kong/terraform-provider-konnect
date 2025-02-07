@@ -166,7 +166,7 @@ func encodeMultipartFormData(w io.Writer, data interface{}) (string, error) {
 
 		tag := parseMultipartFormTag(field)
 		if tag.File {
-			if err := encodeMultipartFormDataFile(writer, tag.Name, fieldType, valType); err != nil {
+			if err := encodeMultipartFormDataFile(writer, fieldType, valType); err != nil {
 				writer.Close()
 				return "", err
 			}
@@ -211,11 +211,12 @@ func encodeMultipartFormData(w io.Writer, data interface{}) (string, error) {
 	return writer.FormDataContentType(), nil
 }
 
-func encodeMultipartFormDataFile(w *multipart.Writer, fieldName string, fieldType reflect.Type, valType reflect.Value) error {
+func encodeMultipartFormDataFile(w *multipart.Writer, fieldType reflect.Type, valType reflect.Value) error {
 	if fieldType.Kind() != reflect.Struct {
 		return fmt.Errorf("invalid type %s for multipart/form-data file", valType.Type())
 	}
 
+	var fieldName string
 	var fileName string
 	var reader io.Reader
 
@@ -235,11 +236,12 @@ func encodeMultipartFormDataFile(w *multipart.Writer, fieldName string, fieldTyp
 				reader = val.Interface().(io.Reader)
 			}
 		} else {
+			fieldName = tag.Name
 			fileName = val.String()
 		}
 	}
 
-	if fileName == "" || reader == nil {
+	if fieldName == "" || fileName == "" || reader == nil {
 		return fmt.Errorf("invalid multipart/form-data file")
 	}
 

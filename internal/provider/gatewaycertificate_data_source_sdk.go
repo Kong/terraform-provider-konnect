@@ -15,13 +15,11 @@ func (r *GatewayCertificateDataSourceModel) RefreshFromSharedCertificate(resp *s
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Key = types.StringValue(resp.Key)
 		r.KeyAlt = types.StringPointerValue(resp.KeyAlt)
-		if resp.Snis != nil {
-			r.Snis = make([]types.String, 0, len(resp.Snis))
-			for _, v := range resp.Snis {
-				r.Snis = append(r.Snis, types.StringValue(v))
-			}
+		r.Snis = []types.String{}
+		for _, v := range resp.Snis {
+			r.Snis = append(r.Snis, types.StringValue(v))
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -10,43 +10,43 @@ import (
 
 func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunctionPlugin(resp *shared.PostFunctionPlugin) {
 	if resp != nil {
-		r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
+		r.Config.Access = []types.String{}
 		for _, v := range resp.Config.Access {
 			r.Config.Access = append(r.Config.Access, types.StringValue(v))
 		}
-		r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
+		r.Config.BodyFilter = []types.String{}
 		for _, v := range resp.Config.BodyFilter {
 			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
 		}
-		r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
+		r.Config.Certificate = []types.String{}
 		for _, v := range resp.Config.Certificate {
 			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
 		}
-		r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
+		r.Config.HeaderFilter = []types.String{}
 		for _, v := range resp.Config.HeaderFilter {
 			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
 		}
-		r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
+		r.Config.Log = []types.String{}
 		for _, v := range resp.Config.Log {
 			r.Config.Log = append(r.Config.Log, types.StringValue(v))
 		}
-		r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
+		r.Config.Rewrite = []types.String{}
 		for _, v := range resp.Config.Rewrite {
 			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
 		}
-		r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
+		r.Config.WsClientFrame = []types.String{}
 		for _, v := range resp.Config.WsClientFrame {
 			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
 		}
-		r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
+		r.Config.WsClose = []types.String{}
 		for _, v := range resp.Config.WsClose {
 			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
 		}
-		r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
+		r.Config.WsHandshake = []types.String{}
 		for _, v := range resp.Config.WsHandshake {
 			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
 		}
-		r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
+		r.Config.WsUpstreamFrame = []types.String{}
 		for _, v := range resp.Config.WsUpstreamFrame {
 			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
 		}
@@ -62,7 +62,7 @@ func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunction
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -71,13 +71,13 @@ func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunction
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -93,7 +93,7 @@ func (r *GatewayPluginPostFunctionDataSourceModel) RefreshFromSharedPostFunction
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

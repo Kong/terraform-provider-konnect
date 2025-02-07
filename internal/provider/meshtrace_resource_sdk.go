@@ -293,7 +293,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput() *shared.MeshTraceI
 
 func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceCreateOrUpdateSuccessResponse(resp *shared.MeshTraceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		r.Warnings = []types.String{}
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -446,7 +446,7 @@ func (r *MeshTraceResourceModel) RefreshFromSharedMeshTraceItem(resp *shared.Mes
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
+			r.Spec.TargetRef.ProxyTypes = []types.String{}
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

@@ -44,8 +44,8 @@ const (
 // Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type Percentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type PercentageType
 }
@@ -134,8 +134,8 @@ const (
 // MeshFaultInjectionItemPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshFaultInjectionItemPercentageType
 }
@@ -222,8 +222,8 @@ const (
 // MeshFaultInjectionItemSpecPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshFaultInjectionItemSpecPercentageType
 }
@@ -698,8 +698,8 @@ const (
 // MeshFaultInjectionItemSpecToPercentage - Percentage of requests on which abort will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshFaultInjectionItemSpecToPercentageType
 }
@@ -788,8 +788,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultPercentage - Percentage of requests on which delay will be injected, has to be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshFaultInjectionItemSpecToDefaultPercentageType
 }
@@ -876,8 +876,8 @@ const (
 // MeshFaultInjectionItemSpecToDefaultHTTPPercentage - Percentage of requests on which response bandwidth limit will be
 // either int or decimal represented as string.
 type MeshFaultInjectionItemSpecToDefaultHTTPPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshFaultInjectionItemSpecToDefaultHTTPPercentageType
 }

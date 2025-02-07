@@ -345,15 +345,18 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`` + "`" + `service` + "`" + ` tag is mandatory.`,
 												},
 												"tls": schema.SingleNestedAttribute{
+													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Object{
 														custom_objectplanmodifier.SupressZeroNullModifier(),
 													},
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.SingleNestedAttribute{
+															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"integer": schema.Int64Attribute{
+																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.Int64{
 																		int64validator.ConflictsWith(path.Expressions{
@@ -362,6 +365,7 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 																"str": schema.StringAttribute{
+																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.String{
 																		stringvalidator.ConflictsWith(path.Expressions{
@@ -990,10 +994,7 @@ func (r *MeshResource) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 201:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
@@ -1136,10 +1137,7 @@ func (r *MeshResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
 		return
 	}
-	switch res.StatusCode {
-	case 200, 201:
-		break
-	default:
+	if res.StatusCode != 200 {
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}

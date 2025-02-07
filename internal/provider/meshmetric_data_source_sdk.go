@@ -105,12 +105,12 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(resp *shared
 					r.Spec.Default.Sidecar.Profiles = nil
 				} else {
 					r.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+					r.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.AppendProfiles{}
 					if len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) > len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 						r.Spec.Default.Sidecar.Profiles.AppendProfiles = r.Spec.Default.Sidecar.Profiles.AppendProfiles[:len(resp.Spec.Default.Sidecar.Profiles.AppendProfiles)]
 					}
 					for appendProfilesCount, appendProfilesItem := range resp.Spec.Default.Sidecar.Profiles.AppendProfiles {
-						var appendProfiles1 tfTypes.MeshLoadBalancingStrategyItemSpecHeader
+						var appendProfiles1 tfTypes.AppendProfiles
 						appendProfiles1.Name = types.StringValue(string(appendProfilesItem.Name))
 						if appendProfilesCount+1 > len(r.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 							r.Spec.Default.Sidecar.Profiles.AppendProfiles = append(r.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles1)
@@ -169,7 +169,7 @@ func (r *MeshMetricDataSourceModel) RefreshFromSharedMeshMetricItem(resp *shared
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
+			r.Spec.TargetRef.ProxyTypes = []types.String{}
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

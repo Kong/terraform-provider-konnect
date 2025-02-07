@@ -19,7 +19,7 @@ func (r *GatewayHMACAuthDataSourceModel) RefreshFromSharedHMACAuth(resp *shared.
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Secret = types.StringPointerValue(resp.Secret)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

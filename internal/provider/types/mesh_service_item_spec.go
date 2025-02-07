@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshServiceItemSpec struct {
-	Identities []Path                   `tfsdk:"identities"`
+	Identities []Identities             `tfsdk:"identities"`
 	Ports      []MeshServiceItemPorts   `tfsdk:"ports"`
 	Selector   *MeshServiceItemSelector `tfsdk:"selector"`
 	State      types.String             `tfsdk:"state"`

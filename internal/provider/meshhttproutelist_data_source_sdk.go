@@ -54,7 +54,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
+				items1.Spec.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -69,7 +69,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 			items1.Spec.To = []tfTypes.MeshHTTPRouteItemTo{}
 			for toCount, toItem := range itemsItem.Spec.To {
 				var to1 tfTypes.MeshHTTPRouteItemTo
-				to1.Hostnames = make([]types.String, 0, len(toItem.Hostnames))
+				to1.Hostnames = []types.String{}
 				for _, v := range toItem.Hostnames {
 					to1.Hostnames = append(to1.Hostnames, types.StringValue(v))
 				}
@@ -98,7 +98,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 						} else {
 							backendRefs1.Port = types.Int64Null()
 						}
-						backendRefs1.ProxyTypes = make([]types.String, 0, len(backendRefsItem.ProxyTypes))
+						backendRefs1.ProxyTypes = []types.String{}
 						for _, v := range backendRefsItem.ProxyTypes {
 							backendRefs1.ProxyTypes = append(backendRefs1.ProxyTypes, types.StringValue(string(v)))
 						}
@@ -144,7 +144,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 									filters1.RequestHeaderModifier.Add[addCount].Value = add1.Value
 								}
 							}
-							filters1.RequestHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.RequestHeaderModifier.Remove))
+							filters1.RequestHeaderModifier.Remove = []types.String{}
 							for _, v := range filtersItem.RequestHeaderModifier.Remove {
 								filters1.RequestHeaderModifier.Remove = append(filters1.RequestHeaderModifier.Remove, types.StringValue(v))
 							}
@@ -184,7 +184,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							} else {
 								filters1.RequestMirror.BackendRef.Port = types.Int64Null()
 							}
-							filters1.RequestMirror.BackendRef.ProxyTypes = make([]types.String, 0, len(filtersItem.RequestMirror.BackendRef.ProxyTypes))
+							filters1.RequestMirror.BackendRef.ProxyTypes = []types.String{}
 							for _, v := range filtersItem.RequestMirror.BackendRef.ProxyTypes {
 								filters1.RequestMirror.BackendRef.ProxyTypes = append(filters1.RequestMirror.BackendRef.ProxyTypes, types.StringValue(string(v)))
 							}
@@ -253,7 +253,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 									filters1.ResponseHeaderModifier.Add[addCount1].Value = add3.Value
 								}
 							}
-							filters1.ResponseHeaderModifier.Remove = make([]types.String, 0, len(filtersItem.ResponseHeaderModifier.Remove))
+							filters1.ResponseHeaderModifier.Remove = []types.String{}
 							for _, v := range filtersItem.ResponseHeaderModifier.Remove {
 								filters1.ResponseHeaderModifier.Remove = append(filters1.ResponseHeaderModifier.Remove, types.StringValue(v))
 							}
@@ -378,7 +378,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 					to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 					to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 					to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-					to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
+					to1.TargetRef.ProxyTypes = []types.String{}
 					for _, v := range toItem.TargetRef.ProxyTypes {
 						to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 					}

@@ -106,9 +106,9 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 						items1.Spec.Default.Sidecar.Profiles = nil
 					} else {
 						items1.Spec.Default.Sidecar.Profiles = &tfTypes.Profiles{}
-						items1.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.MeshLoadBalancingStrategyItemSpecHeader{}
+						items1.Spec.Default.Sidecar.Profiles.AppendProfiles = []tfTypes.AppendProfiles{}
 						for appendProfilesCount, appendProfilesItem := range itemsItem.Spec.Default.Sidecar.Profiles.AppendProfiles {
-							var appendProfiles1 tfTypes.MeshLoadBalancingStrategyItemSpecHeader
+							var appendProfiles1 tfTypes.AppendProfiles
 							appendProfiles1.Name = types.StringValue(string(appendProfilesItem.Name))
 							if appendProfilesCount+1 > len(items1.Spec.Default.Sidecar.Profiles.AppendProfiles) {
 								items1.Spec.Default.Sidecar.Profiles.AppendProfiles = append(items1.Spec.Default.Sidecar.Profiles.AppendProfiles, appendProfiles1)
@@ -161,7 +161,7 @@ func (r *MeshMetricListDataSourceModel) RefreshFromSharedMeshMetricList(resp *sh
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
+				items1.Spec.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

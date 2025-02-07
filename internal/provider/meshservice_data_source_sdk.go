@@ -29,12 +29,12 @@ func (r *MeshServiceDataSourceModel) RefreshFromSharedMeshServiceItem(resp *shar
 			r.ModificationTime = types.StringNull()
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.Spec.Identities = []tfTypes.Path{}
+		r.Spec.Identities = []tfTypes.Identities{}
 		if len(r.Spec.Identities) > len(resp.Spec.Identities) {
 			r.Spec.Identities = r.Spec.Identities[:len(resp.Spec.Identities)]
 		}
 		for identitiesCount, identitiesItem := range resp.Spec.Identities {
-			var identities1 tfTypes.Path
+			var identities1 tfTypes.Identities
 			identities1.Type = types.StringValue(string(identitiesItem.Type))
 			identities1.Value = types.StringValue(identitiesItem.Value)
 			if identitiesCount+1 > len(r.Spec.Identities) {

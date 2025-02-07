@@ -17,8 +17,8 @@ const (
 
 // MeshGatewayItemProtocol - Protocol specifies the network protocol this listener expects to receive.
 type MeshGatewayItemProtocol struct {
-	Str     *string `queryParam:"inline"`
-	Integer *int64  `queryParam:"inline"`
+	Str     *string
+	Integer *int64
 
 	Type MeshGatewayItemProtocolType
 }
@@ -112,8 +112,8 @@ const (
 // MeshGatewayItemMode - Mode defines the TLS behavior for the TLS session initiated
 // by the client.
 type MeshGatewayItemMode struct {
-	Str     *string `queryParam:"inline"`
-	Integer *int64  `queryParam:"inline"`
+	Str     *string
+	Integer *int64
 
 	Type MeshGatewayItemModeType
 }

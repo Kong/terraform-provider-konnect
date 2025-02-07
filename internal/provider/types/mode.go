@@ -5,6 +5,6 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Mode struct {
-	Integer types.Int64  `tfsdk:"integer" tfPlanOnly:"true"`
 	Str     types.String `tfsdk:"str" tfPlanOnly:"true"`
+	Integer types.Int64  `tfsdk:"integer" tfPlanOnly:"true"`
 }

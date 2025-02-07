@@ -10,11 +10,9 @@ import (
 
 func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Service) {
 	if resp != nil {
-		if resp.CaCertificates != nil {
-			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
-			for _, v := range resp.CaCertificates {
-				r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
-			}
+		r.CaCertificates = []types.String{}
+		for _, v := range resp.CaCertificates {
+			r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
 		}
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
@@ -33,7 +31,7 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.Protocol = types.StringValue(string(resp.Protocol))
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

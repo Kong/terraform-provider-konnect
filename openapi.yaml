@@ -24576,7 +24576,6 @@ components:
             type: string
           x-speakeasy-param-computed: false
         tls:
-          x-speakeasy-plan-modifiers: SupressZeroNullModifier
           description: Configuration of TLS for prometheus listener.
           type: object
           properties:
@@ -24588,8 +24587,7 @@ components:
               oneOf:
                 - type: string
                 - type: integer
-              x-speakeasy-param-computed: false
-          x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: SupressZeroNullModifier
     ProvidedCertificateAuthorityConfig:
       type: object
       properties:

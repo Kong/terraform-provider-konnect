@@ -111,8 +111,8 @@ const (
 )
 
 type MeshItemLoggingConf struct {
-	FileLoggingBackendConfig *FileLoggingBackendConfig `queryParam:"inline"`
-	TCPLoggingBackendConfig  *TCPLoggingBackendConfig  `queryParam:"inline"`
+	FileLoggingBackendConfig *FileLoggingBackendConfig
+	TCPLoggingBackendConfig  *TCPLoggingBackendConfig
 
 	Type MeshItemLoggingConfType
 }
@@ -238,8 +238,8 @@ const (
 )
 
 type Mode struct {
-	Str     *string `queryParam:"inline"`
-	Integer *int64  `queryParam:"inline"`
+	Str     *string
+	Integer *int64
 
 	Type ModeType
 }
@@ -390,8 +390,8 @@ const (
 // Supported values, delegated, disabled, activeMTLSBackend. Default to
 // `activeMTLSBackend`.
 type ConfMode struct {
-	Str     *string `queryParam:"inline"`
-	Integer *int64  `queryParam:"inline"`
+	Str     *string
+	Integer *int64
 
 	Type ConfModeType
 }
@@ -539,7 +539,7 @@ const (
 )
 
 type MeshItemConf struct {
-	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig `queryParam:"inline"`
+	PrometheusMetricsBackendConfig *PrometheusMetricsBackendConfig
 
 	Type MeshItemConfType
 }
@@ -894,11 +894,11 @@ const (
 )
 
 type MeshItemMtlsConf struct {
-	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig    `queryParam:"inline"`
-	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig     `queryParam:"inline"`
-	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig       `queryParam:"inline"`
-	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig         `queryParam:"inline"`
-	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig `queryParam:"inline"`
+	ProvidedCertificateAuthorityConfig    *ProvidedCertificateAuthorityConfig
+	BuiltinCertificateAuthorityConfig     *BuiltinCertificateAuthorityConfig
+	VaultCertificateAuthorityConfig       *VaultCertificateAuthorityConfig
+	ACMCertificateAuthorityConfig         *ACMCertificateAuthorityConfig
+	CertManagerCertificateAuthorityConfig *CertManagerCertificateAuthorityConfig
 
 	Type MeshItemMtlsConfType
 }
@@ -1077,8 +1077,8 @@ const (
 // MeshItemMode - Mode defines the behaviour of inbound listeners with regard to traffic
 // encryption
 type MeshItemMode struct {
-	Str     *string `queryParam:"inline"`
-	Integer *int64  `queryParam:"inline"`
+	Str     *string
+	Integer *int64
 
 	Type MeshItemModeType
 }
@@ -1400,8 +1400,8 @@ const (
 )
 
 type MeshItemTracingConf struct {
-	DatadogTracingBackendConfig *DatadogTracingBackendConfig `queryParam:"inline"`
-	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig  `queryParam:"inline"`
+	DatadogTracingBackendConfig *DatadogTracingBackendConfig
+	ZipkinTracingBackendConfig  *ZipkinTracingBackendConfig
 
 	Type MeshItemTracingConfType
 }

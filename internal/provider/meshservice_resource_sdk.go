@@ -137,7 +137,7 @@ func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput() *shared.MeshSe
 
 func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceCreateOrUpdateSuccessResponse(resp *shared.MeshServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		r.Warnings = []types.String{}
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}
@@ -164,12 +164,12 @@ func (r *MeshServiceResourceModel) RefreshFromSharedMeshServiceItem(resp *shared
 			r.ModificationTime = types.StringNull()
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.Spec.Identities = []tfTypes.Path{}
+		r.Spec.Identities = []tfTypes.Identities{}
 		if len(r.Spec.Identities) > len(resp.Spec.Identities) {
 			r.Spec.Identities = r.Spec.Identities[:len(resp.Spec.Identities)]
 		}
 		for identitiesCount, identitiesItem := range resp.Spec.Identities {
-			var identities1 tfTypes.Path
+			var identities1 tfTypes.Identities
 			identities1.Type = types.StringValue(string(identitiesItem.Type))
 			identities1.Value = types.StringValue(identitiesItem.Value)
 			if identitiesCount+1 > len(r.Spec.Identities) {

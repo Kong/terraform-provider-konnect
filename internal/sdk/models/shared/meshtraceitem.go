@@ -247,8 +247,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133
 // Either int or decimal represented as string.
 type MeshTraceItemClient struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshTraceItemClientType
 }
@@ -319,8 +319,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L142-L150
 // Either int or decimal represented as string.
 type Overall struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type OverallType
 }
@@ -387,8 +387,8 @@ const (
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L135-L140
 // Either int or decimal represented as string.
 type Random struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type RandomType
 }

@@ -89,7 +89,7 @@ func (r *HostnameGeneratorResourceModel) ToSharedHostnameGeneratorItemInput() *s
 
 func (r *HostnameGeneratorResourceModel) RefreshFromSharedHostnameGeneratorCreateOrUpdateSuccessResponse(resp *shared.HostnameGeneratorCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		r.Warnings = []types.String{}
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

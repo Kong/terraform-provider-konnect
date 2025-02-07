@@ -48,7 +48,7 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(resp *shared.M
 					} else {
 						from1.Default.Mode = types.StringNull()
 					}
-					from1.Default.TLSCiphers = make([]types.String, 0, len(fromItem.Default.TLSCiphers))
+					from1.Default.TLSCiphers = []types.String{}
 					for _, v := range fromItem.Default.TLSCiphers {
 						from1.Default.TLSCiphers = append(from1.Default.TLSCiphers, types.StringValue(string(v)))
 					}
@@ -82,7 +82,7 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(resp *shared.M
 				from1.TargetRef.Mesh = types.StringPointerValue(fromItem.TargetRef.Mesh)
 				from1.TargetRef.Name = types.StringPointerValue(fromItem.TargetRef.Name)
 				from1.TargetRef.Namespace = types.StringPointerValue(fromItem.TargetRef.Namespace)
-				from1.TargetRef.ProxyTypes = make([]types.String, 0, len(fromItem.TargetRef.ProxyTypes))
+				from1.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range fromItem.TargetRef.ProxyTypes {
 					from1.TargetRef.ProxyTypes = append(from1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -118,7 +118,7 @@ func (r *MeshTLSListDataSourceModel) RefreshFromSharedMeshTLSList(resp *shared.M
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
+				items1.Spec.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

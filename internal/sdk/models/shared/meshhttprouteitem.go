@@ -638,8 +638,8 @@ const (
 // MeshHTTPRouteItemPercentage - Percentage of requests to mirror. If not specified, all requests
 // to the target cluster will be mirrored.
 type MeshHTTPRouteItemPercentage struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type MeshHTTPRouteItemPercentageType
 }

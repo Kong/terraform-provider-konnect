@@ -54,7 +54,7 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 				items1.Spec.TargetRef.Mesh = types.StringPointerValue(itemsItem.Spec.TargetRef.Mesh)
 				items1.Spec.TargetRef.Name = types.StringPointerValue(itemsItem.Spec.TargetRef.Name)
 				items1.Spec.TargetRef.Namespace = types.StringPointerValue(itemsItem.Spec.TargetRef.Namespace)
-				items1.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(itemsItem.Spec.TargetRef.ProxyTypes))
+				items1.Spec.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range itemsItem.Spec.TargetRef.ProxyTypes {
 					items1.Spec.TargetRef.ProxyTypes = append(items1.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}
@@ -253,13 +253,13 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 									failover1.From = nil
 								} else {
 									failover1.From = &tfTypes.MeshLoadBalancingStrategyItemFrom{}
-									failover1.From.Zones = make([]types.String, 0, len(failoverItem.From.Zones))
+									failover1.From.Zones = []types.String{}
 									for _, v := range failoverItem.From.Zones {
 										failover1.From.Zones = append(failover1.From.Zones, types.StringValue(v))
 									}
 								}
 								failover1.To.Type = types.StringValue(string(failoverItem.To.Type))
-								failover1.To.Zones = make([]types.String, 0, len(failoverItem.To.Zones))
+								failover1.To.Zones = []types.String{}
 								for _, v := range failoverItem.To.Zones {
 									failover1.To.Zones = append(failover1.To.Zones, types.StringValue(v))
 								}
@@ -320,7 +320,7 @@ func (r *MeshLoadBalancingStrategyListDataSourceModel) RefreshFromSharedMeshLoad
 				to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 				to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 				to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-				to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
+				to1.TargetRef.ProxyTypes = []types.String{}
 				for _, v := range toItem.TargetRef.ProxyTypes {
 					to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 				}

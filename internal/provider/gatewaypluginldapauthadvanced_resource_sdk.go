@@ -271,7 +271,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 		} else {
 			r.Config.CacheTTL = types.NumberNull()
 		}
-		r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
+		r.Config.ConsumerBy = []types.String{}
 		for _, v := range resp.Config.ConsumerBy {
 			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
 		}
@@ -279,7 +279,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 		r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
 		r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
 		r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
-		r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
+		r.Config.GroupsRequired = []types.String{}
 		for _, v := range resp.Config.GroupsRequired {
 			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
 		}
@@ -319,7 +319,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
+				r.Ordering.After.Access = []types.String{}
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -328,13 +328,13 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
+				r.Ordering.Before.Access = []types.String{}
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = make([]types.String, 0, len(resp.Protocols))
+		r.Protocols = []types.String{}
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
@@ -350,7 +350,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

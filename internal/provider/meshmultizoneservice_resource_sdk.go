@@ -79,7 +79,7 @@ func (r *MeshMultiZoneServiceResourceModel) ToSharedMeshMultiZoneServiceItemInpu
 
 func (r *MeshMultiZoneServiceResourceModel) RefreshFromSharedMeshMultiZoneServiceCreateOrUpdateSuccessResponse(resp *shared.MeshMultiZoneServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		r.Warnings = []types.String{}
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

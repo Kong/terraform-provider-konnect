@@ -236,8 +236,8 @@ const (
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
 type HealthyPanicThreshold struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type HealthyPanicThresholdType
 }

@@ -47,7 +47,7 @@ func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(re
 			r.Spec.TargetRef.Mesh = types.StringPointerValue(resp.Spec.TargetRef.Mesh)
 			r.Spec.TargetRef.Name = types.StringPointerValue(resp.Spec.TargetRef.Name)
 			r.Spec.TargetRef.Namespace = types.StringPointerValue(resp.Spec.TargetRef.Namespace)
-			r.Spec.TargetRef.ProxyTypes = make([]types.String, 0, len(resp.Spec.TargetRef.ProxyTypes))
+			r.Spec.TargetRef.ProxyTypes = []types.String{}
 			for _, v := range resp.Spec.TargetRef.ProxyTypes {
 				r.Spec.TargetRef.ProxyTypes = append(r.Spec.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}
@@ -101,7 +101,7 @@ func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(re
 				} else {
 					to1.Default.HTTP = &tfTypes.MeshHealthCheckItemHTTP{}
 					to1.Default.HTTP.Disabled = types.BoolPointerValue(toItem.Default.HTTP.Disabled)
-					to1.Default.HTTP.ExpectedStatuses = make([]types.Int64, 0, len(toItem.Default.HTTP.ExpectedStatuses))
+					to1.Default.HTTP.ExpectedStatuses = []types.Int64{}
 					for _, v := range toItem.Default.HTTP.ExpectedStatuses {
 						to1.Default.HTTP.ExpectedStatuses = append(to1.Default.HTTP.ExpectedStatuses, types.Int64Value(v))
 					}
@@ -151,7 +151,7 @@ func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(re
 				} else {
 					to1.Default.TCP = &tfTypes.TCP{}
 					to1.Default.TCP.Disabled = types.BoolPointerValue(toItem.Default.TCP.Disabled)
-					to1.Default.TCP.Receive = make([]types.String, 0, len(toItem.Default.TCP.Receive))
+					to1.Default.TCP.Receive = []types.String{}
 					for _, v := range toItem.Default.TCP.Receive {
 						to1.Default.TCP.Receive = append(to1.Default.TCP.Receive, types.StringValue(v))
 					}
@@ -178,7 +178,7 @@ func (r *MeshHealthCheckDataSourceModel) RefreshFromSharedMeshHealthCheckItem(re
 			to1.TargetRef.Mesh = types.StringPointerValue(toItem.TargetRef.Mesh)
 			to1.TargetRef.Name = types.StringPointerValue(toItem.TargetRef.Name)
 			to1.TargetRef.Namespace = types.StringPointerValue(toItem.TargetRef.Namespace)
-			to1.TargetRef.ProxyTypes = make([]types.String, 0, len(toItem.TargetRef.ProxyTypes))
+			to1.TargetRef.ProxyTypes = []types.String{}
 			for _, v := range toItem.TargetRef.ProxyTypes {
 				to1.TargetRef.ProxyTypes = append(to1.TargetRef.ProxyTypes, types.StringValue(string(v)))
 			}

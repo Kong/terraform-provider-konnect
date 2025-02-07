@@ -84,8 +84,8 @@ const (
 )
 
 type TargetPort struct {
-	Integer *int64  `queryParam:"inline"`
-	Str     *string `queryParam:"inline"`
+	Integer *int64
+	Str     *string
 
 	Type TargetPortType
 }

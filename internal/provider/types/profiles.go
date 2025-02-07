@@ -3,7 +3,7 @@
 package types
 
 type Profiles struct {
-	AppendProfiles []MeshLoadBalancingStrategyItemSpecHeader `tfsdk:"append_profiles"`
-	Exclude        []Exclude                                 `tfsdk:"exclude"`
-	Include        []Exclude                                 `tfsdk:"include"`
+	AppendProfiles []AppendProfiles `tfsdk:"append_profiles"`
+	Exclude        []Exclude        `tfsdk:"exclude"`
+	Include        []Exclude        `tfsdk:"include"`
 }

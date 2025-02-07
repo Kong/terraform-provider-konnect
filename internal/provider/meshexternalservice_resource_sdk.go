@@ -248,7 +248,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 
 func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceCreateOrUpdateSuccessResponse(resp *shared.MeshExternalServiceCreateOrUpdateSuccessResponse) {
 	if resp != nil {
-		r.Warnings = make([]types.String, 0, len(resp.Warnings))
+		r.Warnings = []types.String{}
 		for _, v := range resp.Warnings {
 			r.Warnings = append(r.Warnings, types.StringValue(v))
 		}

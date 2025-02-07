@@ -97,7 +97,7 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
 			r.Set = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Set.ID = types.StringPointerValue(resp.Set.ID)
 		}
-		r.Tags = make([]types.String, 0, len(resp.Tags))
+		r.Tags = []types.String{}
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
