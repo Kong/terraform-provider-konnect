@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6482e5d4e550b26bd4a5cab39ea4b5ce
+  docChecksum: e0f244f00a8855da543ba307232d566f
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -47,6 +47,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_basic_auth/data-source.tf
   - examples/data-sources/konnect_gateway_ca_certificate/data-source.tf
   - examples/data-sources/konnect_gateway_certificate/data-source.tf
+  - examples/data-sources/konnect_gateway_config_store/data-source.tf
   - examples/data-sources/konnect_gateway_consumer/data-source.tf
   - examples/data-sources/konnect_gateway_consumer_group/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
@@ -197,6 +198,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_ca_certificate/resource.tf
   - examples/resources/konnect_gateway_certificate/import.sh
   - examples/resources/konnect_gateway_certificate/resource.tf
+  - examples/resources/konnect_gateway_config_store/import.sh
+  - examples/resources/konnect_gateway_config_store/resource.tf
   - examples/resources/konnect_gateway_consumer/import.sh
   - examples/resources/konnect_gateway_consumer/resource.tf
   - examples/resources/konnect_gateway_consumer_group/import.sh
@@ -516,6 +519,10 @@ generatedFiles:
   - internal/provider/gatewaycertificate_data_source_sdk.go
   - internal/provider/gatewaycertificate_resource.go
   - internal/provider/gatewaycertificate_resource_sdk.go
+  - internal/provider/gatewayconfigstore_data_source.go
+  - internal/provider/gatewayconfigstore_data_source_sdk.go
+  - internal/provider/gatewayconfigstore_resource.go
+  - internal/provider/gatewayconfigstore_resource_sdk.go
   - internal/provider/gatewayconsumer_data_source.go
   - internal/provider/gatewayconsumer_data_source_sdk.go
   - internal/provider/gatewayconsumer_resource.go
@@ -1268,6 +1275,7 @@ generatedFiles:
   - internal/sdk/cacertificates.go
   - internal/sdk/certificates.go
   - internal/sdk/cloudgateways.go
+  - internal/sdk/configstores.go
   - internal/sdk/consumergroups.go
   - internal/sdk/consumers.go
   - internal/sdk/controlplanegroups.go
@@ -1323,6 +1331,7 @@ generatedFiles:
   - internal/sdk/models/operations/createcacertificate.go
   - internal/sdk/models/operations/createcanaryplugin.go
   - internal/sdk/models/operations/createcertificate.go
+  - internal/sdk/models/operations/createconfigstore.go
   - internal/sdk/models/operations/createconfiguration.go
   - internal/sdk/models/operations/createconfluentplugin.go
   - internal/sdk/models/operations/createconsumer.go
@@ -1454,6 +1463,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletecacertificate.go
   - internal/sdk/models/operations/deletecanaryplugin.go
   - internal/sdk/models/operations/deletecertificate.go
+  - internal/sdk/models/operations/deleteconfigstore.go
   - internal/sdk/models/operations/deleteconfluentplugin.go
   - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/deleteconsumergroup.go
@@ -1590,6 +1600,7 @@ generatedFiles:
   - internal/sdk/models/operations/getcacertificate.go
   - internal/sdk/models/operations/getcanaryplugin.go
   - internal/sdk/models/operations/getcertificate.go
+  - internal/sdk/models/operations/getconfigstore.go
   - internal/sdk/models/operations/getconfiguration.go
   - internal/sdk/models/operations/getconfluentplugin.go
   - internal/sdk/models/operations/getconsumer.go
@@ -1737,6 +1748,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatebasicauthplugin.go
   - internal/sdk/models/operations/updatebotdetectionplugin.go
   - internal/sdk/models/operations/updatecanaryplugin.go
+  - internal/sdk/models/operations/updateconfigstore.go
   - internal/sdk/models/operations/updateconfluentplugin.go
   - internal/sdk/models/operations/updatecontrolplane.go
   - internal/sdk/models/operations/updatecorrelationidplugin.go
@@ -1890,6 +1902,7 @@ generatedFiles:
   - internal/sdk/models/shared/canaryplugin.go
   - internal/sdk/models/shared/certificate.go
   - internal/sdk/models/shared/certificateinput.go
+  - internal/sdk/models/shared/configstore.go
   - internal/sdk/models/shared/configurationdataplanegroup.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
   - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
@@ -1916,6 +1929,7 @@ generatedFiles:
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/createauditlogdestination.go
+  - internal/sdk/models/shared/createconfigstore.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
@@ -2087,6 +2101,7 @@ generatedFiles:
   - internal/sdk/models/shared/updateappauthstrategyresponse.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
+  - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/updateportalappearancerequest.go
@@ -8513,5 +8528,71 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "409":
           application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  create-config-store:
+    speakeasy-default-create-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "Config Store"}
+      responses:
+        "201":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 264934, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  get-config-store:
+    speakeasy-default-get-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  update-config-store:
+    speakeasy-default-update-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "Config Store"}
+      responses:
+        "200":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 188203, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-config-store:
+    speakeasy-default-delete-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+        query: {}
+      responses:
+        "400":
+          application/problem+json: {"status": 632538, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
 examplesVersion: 1.0.0
 generatedTests: {}
