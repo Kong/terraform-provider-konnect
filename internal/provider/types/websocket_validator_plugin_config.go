@@ -3,6 +3,6 @@
 package types
 
 type WebsocketValidatorPluginConfig struct {
-	Client   *Client `tfsdk:"client"`
-	Upstream *Client `tfsdk:"upstream"`
+	Client   *WebsocketValidatorPluginClient `tfsdk:"client"`
+	Upstream *WebsocketValidatorPluginClient `tfsdk:"upstream"`
 }

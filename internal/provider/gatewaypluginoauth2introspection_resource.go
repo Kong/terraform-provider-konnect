@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/mapvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -41,8 +39,6 @@ type GatewayPluginOauth2IntrospectionResource struct {
 // GatewayPluginOauth2IntrospectionResourceModel describes the resource data model.
 type GatewayPluginOauth2IntrospectionResourceModel struct {
 	Config         tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer                    `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer                    `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                             `tfsdk:"created_at"`
 	Enabled        types.Bool                              `tfsdk:"enabled"`
@@ -50,8 +46,8 @@ type GatewayPluginOauth2IntrospectionResourceModel struct {
 	InstanceName   types.String                            `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
 	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer                    `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer                    `tfsdk:"service" tfPlanOnly:"true"`
+	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
 	Tags           []types.String                          `tfsdk:"tags"`
 	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
@@ -80,11 +76,11 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					"consumer_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. must be one of ["username", "client_id"]`,
+						Description: `A string indicating whether to associate OAuth2 ` + "`" + `username` + "`" + ` or ` + "`" + `client_id` + "`" + ` with the consumer's username. OAuth2 ` + "`" + `username` + "`" + ` is mapped to a consumer's ` + "`" + `username` + "`" + ` field, while an OAuth2 ` + "`" + `client_id` + "`" + ` maps to a consumer's ` + "`" + `custom_id` + "`" + `. must be one of ["client_id", "username"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"username",
 								"client_id",
+								"username",
 							),
 						},
 					},
@@ -145,33 +141,6 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 					},
 				},
 			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
@@ -228,28 +197,22 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

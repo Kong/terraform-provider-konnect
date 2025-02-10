@@ -18,7 +18,7 @@ func (r *GatewayJWTDataSourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -26,7 +26,7 @@ func (r *GatewayJWTDataSourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
 		r.Key = types.StringPointerValue(resp.Key)
 		r.RsaPublicKey = types.StringPointerValue(resp.RsaPublicKey)
 		r.Secret = types.StringPointerValue(resp.Secret)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -48,8 +48,8 @@ const (
 
 // Configs - JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
 type Configs struct {
-	One *One
-	Two *Two
+	One *One `queryParam:"inline"`
+	Two *Two `queryParam:"inline"`
 
 	Type ConfigsType
 }

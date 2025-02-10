@@ -156,7 +156,7 @@ func (r *CloudGatewayCustomDomainDataSource) Read(ctx context.Context, req datas
 	request := operations.GetCustomDomainRequest{
 		CustomDomainID: customDomainID,
 	}
-	res, err := r.client.CustomDomains.GetCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.GetCustomDomain(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -9,6 +9,55 @@ import (
 )
 
 func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponseTransformerAdvancedPluginInput() *shared.ResponseTransformerAdvancedPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.ResponseTransformerAdvancedPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.ResponseTransformerAdvancedPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.ResponseTransformerAdvancedPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.ResponseTransformerAdvancedPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.ResponseTransformerAdvancedPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.ResponseTransformerAdvancedPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	var add *shared.ResponseTransformerAdvancedPluginAdd
 	if r.Config.Add != nil {
 		var headers []string = []string{}
@@ -174,71 +223,26 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 	}
 	var consumer *shared.ResponseTransformerAdvancedPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
+		id1 := new(string)
 		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
-			id = nil
+			id1 = nil
 		}
 		consumer = &shared.ResponseTransformerAdvancedPluginConsumer{
-			ID: id,
+			ID: id1,
 		}
 	}
 	var consumerGroup *shared.ResponseTransformerAdvancedPluginConsumerGroup
 	if r.ConsumerGroup != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+			*id2 = r.ConsumerGroup.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		consumerGroup = &shared.ResponseTransformerAdvancedPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.ResponseTransformerAdvancedPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.ResponseTransformerAdvancedPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.ResponseTransformerAdvancedPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.ResponseTransformerAdvancedPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.ResponseTransformerAdvancedPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.ResponseTransformerAdvancedPluginOrdering{
-			After:  after,
-			Before: before,
+			ID: id2,
 		}
 	}
 	var protocols []shared.ResponseTransformerAdvancedPluginProtocols = []shared.ResponseTransformerAdvancedPluginProtocols{}
@@ -269,22 +273,18 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			ID: id4,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.ResponseTransformerAdvancedPluginInput{
+		Enabled:       enabled,
+		ID:            id,
+		InstanceName:  instanceName,
+		Ordering:      ordering,
+		Tags:          tags,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
 		Protocols:     protocols,
 		Route:         route,
 		Service:       service,
-		Tags:          tags,
 	}
 	return &out
 }
@@ -295,19 +295,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Add = nil
 		} else {
 			r.Config.Add = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
-			r.Config.Add.Headers = []types.String{}
+			r.Config.Add.Headers = make([]types.String, 0, len(resp.Config.Add.Headers))
 			for _, v := range resp.Config.Add.Headers {
 				r.Config.Add.Headers = append(r.Config.Add.Headers, types.StringValue(v))
 			}
-			r.Config.Add.IfStatus = []types.String{}
+			r.Config.Add.IfStatus = make([]types.String, 0, len(resp.Config.Add.IfStatus))
 			for _, v := range resp.Config.Add.IfStatus {
 				r.Config.Add.IfStatus = append(r.Config.Add.IfStatus, types.StringValue(v))
 			}
-			r.Config.Add.JSON = []types.String{}
+			r.Config.Add.JSON = make([]types.String, 0, len(resp.Config.Add.JSON))
 			for _, v := range resp.Config.Add.JSON {
 				r.Config.Add.JSON = append(r.Config.Add.JSON, types.StringValue(v))
 			}
-			r.Config.Add.JSONTypes = []types.String{}
+			r.Config.Add.JSONTypes = make([]types.String, 0, len(resp.Config.Add.JSONTypes))
 			for _, v := range resp.Config.Add.JSONTypes {
 				r.Config.Add.JSONTypes = append(r.Config.Add.JSONTypes, types.StringValue(string(v)))
 			}
@@ -316,7 +316,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Allow = nil
 		} else {
 			r.Config.Allow = &tfTypes.ResponseTransformerAdvancedPluginAllow{}
-			r.Config.Allow.JSON = []types.String{}
+			r.Config.Allow.JSON = make([]types.String, 0, len(resp.Config.Allow.JSON))
 			for _, v := range resp.Config.Allow.JSON {
 				r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
 			}
@@ -325,19 +325,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Append = nil
 		} else {
 			r.Config.Append = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
-			r.Config.Append.Headers = []types.String{}
+			r.Config.Append.Headers = make([]types.String, 0, len(resp.Config.Append.Headers))
 			for _, v := range resp.Config.Append.Headers {
 				r.Config.Append.Headers = append(r.Config.Append.Headers, types.StringValue(v))
 			}
-			r.Config.Append.IfStatus = []types.String{}
+			r.Config.Append.IfStatus = make([]types.String, 0, len(resp.Config.Append.IfStatus))
 			for _, v := range resp.Config.Append.IfStatus {
 				r.Config.Append.IfStatus = append(r.Config.Append.IfStatus, types.StringValue(v))
 			}
-			r.Config.Append.JSON = []types.String{}
+			r.Config.Append.JSON = make([]types.String, 0, len(resp.Config.Append.JSON))
 			for _, v := range resp.Config.Append.JSON {
 				r.Config.Append.JSON = append(r.Config.Append.JSON, types.StringValue(v))
 			}
-			r.Config.Append.JSONTypes = []types.String{}
+			r.Config.Append.JSONTypes = make([]types.String, 0, len(resp.Config.Append.JSONTypes))
 			for _, v := range resp.Config.Append.JSONTypes {
 				r.Config.Append.JSONTypes = append(r.Config.Append.JSONTypes, types.StringValue(string(v)))
 			}
@@ -347,15 +347,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Remove = nil
 		} else {
 			r.Config.Remove = &tfTypes.ResponseTransformerAdvancedPluginRemove{}
-			r.Config.Remove.Headers = []types.String{}
+			r.Config.Remove.Headers = make([]types.String, 0, len(resp.Config.Remove.Headers))
 			for _, v := range resp.Config.Remove.Headers {
 				r.Config.Remove.Headers = append(r.Config.Remove.Headers, types.StringValue(v))
 			}
-			r.Config.Remove.IfStatus = []types.String{}
+			r.Config.Remove.IfStatus = make([]types.String, 0, len(resp.Config.Remove.IfStatus))
 			for _, v := range resp.Config.Remove.IfStatus {
 				r.Config.Remove.IfStatus = append(r.Config.Remove.IfStatus, types.StringValue(v))
 			}
-			r.Config.Remove.JSON = []types.String{}
+			r.Config.Remove.JSON = make([]types.String, 0, len(resp.Config.Remove.JSON))
 			for _, v := range resp.Config.Remove.JSON {
 				r.Config.Remove.JSON = append(r.Config.Remove.JSON, types.StringValue(v))
 			}
@@ -364,11 +364,11 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Rename = nil
 		} else {
 			r.Config.Rename = &tfTypes.ResponseTransformerAdvancedPluginRename{}
-			r.Config.Rename.Headers = []types.String{}
+			r.Config.Rename.Headers = make([]types.String, 0, len(resp.Config.Rename.Headers))
 			for _, v := range resp.Config.Rename.Headers {
 				r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
 			}
-			r.Config.Rename.IfStatus = []types.String{}
+			r.Config.Rename.IfStatus = make([]types.String, 0, len(resp.Config.Rename.IfStatus))
 			for _, v := range resp.Config.Rename.IfStatus {
 				r.Config.Rename.IfStatus = append(r.Config.Rename.IfStatus, types.StringValue(v))
 			}
@@ -378,19 +378,19 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 		} else {
 			r.Config.Replace = &tfTypes.ResponseTransformerAdvancedPluginReplace{}
 			r.Config.Replace.Body = types.StringPointerValue(resp.Config.Replace.Body)
-			r.Config.Replace.Headers = []types.String{}
+			r.Config.Replace.Headers = make([]types.String, 0, len(resp.Config.Replace.Headers))
 			for _, v := range resp.Config.Replace.Headers {
 				r.Config.Replace.Headers = append(r.Config.Replace.Headers, types.StringValue(v))
 			}
-			r.Config.Replace.IfStatus = []types.String{}
+			r.Config.Replace.IfStatus = make([]types.String, 0, len(resp.Config.Replace.IfStatus))
 			for _, v := range resp.Config.Replace.IfStatus {
 				r.Config.Replace.IfStatus = append(r.Config.Replace.IfStatus, types.StringValue(v))
 			}
-			r.Config.Replace.JSON = []types.String{}
+			r.Config.Replace.JSON = make([]types.String, 0, len(resp.Config.Replace.JSON))
 			for _, v := range resp.Config.Replace.JSON {
 				r.Config.Replace.JSON = append(r.Config.Replace.JSON, types.StringValue(v))
 			}
-			r.Config.Replace.JSONTypes = []types.String{}
+			r.Config.Replace.JSONTypes = make([]types.String, 0, len(resp.Config.Replace.JSONTypes))
 			for _, v := range resp.Config.Replace.JSONTypes {
 				r.Config.Replace.JSONTypes = append(r.Config.Replace.JSONTypes, types.StringValue(string(v)))
 			}
@@ -399,15 +399,15 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 			r.Config.Transform = nil
 		} else {
 			r.Config.Transform = &tfTypes.Transform{}
-			r.Config.Transform.Functions = []types.String{}
+			r.Config.Transform.Functions = make([]types.String, 0, len(resp.Config.Transform.Functions))
 			for _, v := range resp.Config.Transform.Functions {
 				r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))
 			}
-			r.Config.Transform.IfStatus = []types.String{}
+			r.Config.Transform.IfStatus = make([]types.String, 0, len(resp.Config.Transform.IfStatus))
 			for _, v := range resp.Config.Transform.IfStatus {
 				r.Config.Transform.IfStatus = append(r.Config.Transform.IfStatus, types.StringValue(v))
 			}
-			r.Config.Transform.JSON = []types.String{}
+			r.Config.Transform.JSON = make([]types.String, 0, len(resp.Config.Transform.JSON))
 			for _, v := range resp.Config.Transform.JSON {
 				r.Config.Transform.JSON = append(r.Config.Transform.JSON, types.StringValue(v))
 			}
@@ -415,13 +415,13 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -436,7 +436,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -445,29 +445,29 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

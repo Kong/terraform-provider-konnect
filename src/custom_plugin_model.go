@@ -10,21 +10,21 @@ import (
 )
 
 type CustomPluginResourceModel struct {
-	ID             types.String               `tfsdk:"id"`
-	Name           types.String               `tfsdk:"name"`
-	Config         types.Dynamic              `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group"`
-	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                `tfsdk:"created_at"`
-	Enabled        types.Bool                 `tfsdk:"enabled"`
-	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String             `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer       `tfsdk:"route"`
-	Service        *tfTypes.ACLConsumer       `tfsdk:"service"`
-	Tags           []types.String             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Name           types.String                       `tfsdk:"name"`
+	Config         types.Dynamic                      `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, error) {

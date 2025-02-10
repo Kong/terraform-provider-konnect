@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,20 +37,18 @@ type GatewayPluginMtlsAuthResource struct {
 
 // GatewayPluginMtlsAuthResourceModel describes the resource data model.
 type GatewayPluginMtlsAuthResourceModel struct {
-	Config         tfTypes.MtlsAuthPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer         `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer         `tfsdk:"consumer_group" tfPlanOnly:"true"`
-	ControlPlaneID types.String                 `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                  `tfsdk:"created_at"`
-	Enabled        types.Bool                   `tfsdk:"enabled"`
-	ID             types.String                 `tfsdk:"id"`
-	InstanceName   types.String                 `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering   `tfsdk:"ordering"`
-	Protocols      []types.String               `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer         `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer         `tfsdk:"service" tfPlanOnly:"true"`
-	Tags           []types.String               `tfsdk:"tags"`
-	UpdatedAt      types.Int64                  `tfsdk:"updated_at"`
+	Config         tfTypes.MtlsAuthPluginConfig       `tfsdk:"config"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginMtlsAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -98,7 +94,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"cert_cache_ttl": schema.NumberAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The length of time in milliseconds between refreshes of the revocation check status cache.`,
+						Description: `The length of time in seconds between refreshes of the revocation check status cache.`,
 					},
 					"consumer_by": schema.ListAttribute{
 						Computed:    true,
@@ -145,11 +141,11 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 					"revocation_check_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. must be one of ["SKIP", "IGNORE_CA_ERROR", "STRICT"]`,
+						Description: `Controls client certificate revocation check behavior. If set to ` + "`" + `SKIP` + "`" + `, no revocation check is performed. If set to ` + "`" + `IGNORE_CA_ERROR` + "`" + `, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to ` + "`" + `STRICT` + "`" + `, the plugin only treats the certificate as valid when it's able to verify the revocation status. must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"SKIP",
 								"IGNORE_CA_ERROR",
+								"SKIP",
 								"STRICT",
 							),
 						},
@@ -163,33 +159,6 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 						Computed:    true,
 						Optional:    true,
 						Description: `Skip consumer lookup once certificate is trusted against the configured CA list.`,
-					},
-				},
-			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
 					},
 				},
 			},
@@ -249,28 +218,22 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

@@ -25,26 +25,19 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 	var cidrBlock string
 	cidrBlock = r.CidrBlock.ValueString()
 
-	state := new(shared.NetworkCreateState)
-	if !r.State.IsUnknown() && !r.State.IsNull() {
-		*state = shared.NetworkCreateState(r.State.ValueString())
-	} else {
-		state = nil
-	}
 	out := shared.CreateNetworkRequest{
 		Name:                          name,
 		CloudGatewayProviderAccountID: cloudGatewayProviderAccountID,
 		Region:                        region,
 		AvailabilityZones:             availabilityZones,
 		CidrBlock:                     cidrBlock,
-		State:                         state,
 	}
 	return &out
 }
 
 func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(resp *shared.Network) {
 	if resp != nil {
-		r.AvailabilityZones = []types.String{}
+		r.AvailabilityZones = make([]types.String, 0, len(resp.AvailabilityZones))
 		for _, v := range resp.AvailabilityZones {
 			r.AvailabilityZones = append(r.AvailabilityZones, types.StringValue(v))
 		}
@@ -56,13 +49,12 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(resp *shared
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.ProviderMetadata.SubnetIds = []types.String{}
+		r.ProviderMetadata.SubnetIds = make([]types.String, 0, len(resp.ProviderMetadata.SubnetIds))
 		for _, v := range resp.ProviderMetadata.SubnetIds {
 			r.ProviderMetadata.SubnetIds = append(r.ProviderMetadata.SubnetIds, types.StringValue(v))
 		}
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)
-		r.State = types.StringValue(string(resp.State))
 		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
 		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
 	}

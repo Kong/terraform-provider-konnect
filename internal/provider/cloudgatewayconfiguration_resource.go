@@ -10,10 +10,12 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringdefault"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -167,6 +169,9 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
 							Computed: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 						},
 						"environment": schema.ListNestedAttribute{
 							Computed: true,
@@ -304,8 +309,11 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 							},
 						},
 						"cloud_gateway_network_id": schema.StringAttribute{
-							Computed:    true,
-							Optional:    true,
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
 							Description: `Not Null`,
 							Validators: []validator.String{
 								speakeasy_stringvalidators.NotNull(),
@@ -470,7 +478,7 @@ func (r *CloudGatewayConfigurationResource) Create(ctx context.Context, req reso
 	}
 
 	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.DataPlaneGroupConfigurations.CreateConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -521,7 +529,7 @@ func (r *CloudGatewayConfigurationResource) Read(ctx context.Context, req resour
 	request := operations.GetConfigurationRequest{
 		ConfigurationID: configurationID,
 	}
-	res, err := r.client.DataPlaneGroupConfigurations.GetConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.GetConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -566,7 +574,7 @@ func (r *CloudGatewayConfigurationResource) Update(ctx context.Context, req reso
 	}
 
 	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.DataPlaneGroupConfigurations.CreateConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -8,11 +8,52 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type AiPromptDecoratorPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AiPromptDecoratorPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type AiPromptDecoratorPluginOrdering struct {
+	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
+	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
+}
+
+func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *AiPromptDecoratorPluginOrdering) GetBefore() *AiPromptDecoratorPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type Role string
 
 const (
-	RoleSystem    Role = "system"
 	RoleAssistant Role = "assistant"
+	RoleSystem    Role = "system"
 	RoleUser      Role = "user"
 )
 
@@ -25,9 +66,9 @@ func (e *Role) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "system":
-		fallthrough
 	case "assistant":
+		fallthrough
+	case "system":
 		fallthrough
 	case "user":
 		*e = Role(v)
@@ -59,8 +100,8 @@ func (o *AiPromptDecoratorPluginAppend) GetRole() *Role {
 type AiPromptDecoratorPluginRole string
 
 const (
-	AiPromptDecoratorPluginRoleSystem    AiPromptDecoratorPluginRole = "system"
 	AiPromptDecoratorPluginRoleAssistant AiPromptDecoratorPluginRole = "assistant"
+	AiPromptDecoratorPluginRoleSystem    AiPromptDecoratorPluginRole = "system"
 	AiPromptDecoratorPluginRoleUser      AiPromptDecoratorPluginRole = "user"
 )
 
@@ -73,9 +114,9 @@ func (e *AiPromptDecoratorPluginRole) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "system":
-		fallthrough
 	case "assistant":
+		fallthrough
+	case "system":
 		fallthrough
 	case "user":
 		*e = AiPromptDecoratorPluginRole(v)
@@ -157,6 +198,7 @@ func (o *AiPromptDecoratorPluginConsumer) GetID() *string {
 	return o.ID
 }
 
+// AiPromptDecoratorPluginConsumerGroup - If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
 type AiPromptDecoratorPluginConsumerGroup struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -168,60 +210,13 @@ func (o *AiPromptDecoratorPluginConsumerGroup) GetID() *string {
 	return o.ID
 }
 
-type AiPromptDecoratorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiPromptDecoratorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiPromptDecoratorPluginOrdering struct {
-	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *AiPromptDecoratorPluginOrdering) GetBefore() *AiPromptDecoratorPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type AiPromptDecoratorPluginProtocols string
 
 const (
-	AiPromptDecoratorPluginProtocolsGrpc           AiPromptDecoratorPluginProtocols = "grpc"
-	AiPromptDecoratorPluginProtocolsGrpcs          AiPromptDecoratorPluginProtocols = "grpcs"
-	AiPromptDecoratorPluginProtocolsHTTP           AiPromptDecoratorPluginProtocols = "http"
-	AiPromptDecoratorPluginProtocolsHTTPS          AiPromptDecoratorPluginProtocols = "https"
-	AiPromptDecoratorPluginProtocolsTCP            AiPromptDecoratorPluginProtocols = "tcp"
-	AiPromptDecoratorPluginProtocolsTLS            AiPromptDecoratorPluginProtocols = "tls"
-	AiPromptDecoratorPluginProtocolsTLSPassthrough AiPromptDecoratorPluginProtocols = "tls_passthrough"
-	AiPromptDecoratorPluginProtocolsUDP            AiPromptDecoratorPluginProtocols = "udp"
-	AiPromptDecoratorPluginProtocolsWs             AiPromptDecoratorPluginProtocols = "ws"
-	AiPromptDecoratorPluginProtocolsWss            AiPromptDecoratorPluginProtocols = "wss"
+	AiPromptDecoratorPluginProtocolsGrpc  AiPromptDecoratorPluginProtocols = "grpc"
+	AiPromptDecoratorPluginProtocolsGrpcs AiPromptDecoratorPluginProtocols = "grpcs"
+	AiPromptDecoratorPluginProtocolsHTTP  AiPromptDecoratorPluginProtocols = "http"
+	AiPromptDecoratorPluginProtocolsHTTPS AiPromptDecoratorPluginProtocols = "https"
 )
 
 func (e AiPromptDecoratorPluginProtocols) ToPointer() *AiPromptDecoratorPluginProtocols {
@@ -240,18 +235,6 @@ func (e *AiPromptDecoratorPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = AiPromptDecoratorPluginProtocols(v)
 		return nil
 	default:
@@ -259,7 +242,7 @@ func (e *AiPromptDecoratorPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AiPromptDecoratorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// AiPromptDecoratorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type AiPromptDecoratorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -285,10 +268,6 @@ func (o *AiPromptDecoratorPluginService) GetID() *string {
 
 // AiPromptDecoratorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiPromptDecoratorPlugin struct {
-	Config AiPromptDecoratorPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiPromptDecoratorPluginConsumer      `json:"consumer"`
-	ConsumerGroup *AiPromptDecoratorPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -297,16 +276,21 @@ type AiPromptDecoratorPlugin struct {
 	InstanceName *string                          `json:"instance_name,omitempty"`
 	name         string                           `const:"ai-prompt-decorator" json:"name"`
 	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *AiPromptDecoratorPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiPromptDecoratorPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                        `json:"updated_at,omitempty"`
+	Config    AiPromptDecoratorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *AiPromptDecoratorPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *AiPromptDecoratorPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *AiPromptDecoratorPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiPromptDecoratorPluginService `json:"service,omitempty"`
 }
 
 func (a AiPromptDecoratorPlugin) MarshalJSON() ([]byte, error) {
@@ -318,27 +302,6 @@ func (a *AiPromptDecoratorPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AiPromptDecoratorPlugin) GetConfig() AiPromptDecoratorPluginConfig {
-	if o == nil {
-		return AiPromptDecoratorPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *AiPromptDecoratorPlugin) GetConsumer() *AiPromptDecoratorPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *AiPromptDecoratorPlugin) GetConsumerGroup() *AiPromptDecoratorPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *AiPromptDecoratorPlugin) GetCreatedAt() *int64 {
@@ -380,6 +343,41 @@ func (o *AiPromptDecoratorPlugin) GetOrdering() *AiPromptDecoratorPluginOrdering
 	return o.Ordering
 }
 
+func (o *AiPromptDecoratorPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *AiPromptDecoratorPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *AiPromptDecoratorPlugin) GetConfig() AiPromptDecoratorPluginConfig {
+	if o == nil {
+		return AiPromptDecoratorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiPromptDecoratorPlugin) GetConsumer() *AiPromptDecoratorPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *AiPromptDecoratorPlugin) GetConsumerGroup() *AiPromptDecoratorPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *AiPromptDecoratorPlugin) GetProtocols() []AiPromptDecoratorPluginProtocols {
 	if o == nil {
 		return nil
@@ -401,40 +399,27 @@ func (o *AiPromptDecoratorPlugin) GetService() *AiPromptDecoratorPluginService {
 	return o.Service
 }
 
-func (o *AiPromptDecoratorPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *AiPromptDecoratorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // AiPromptDecoratorPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiPromptDecoratorPluginInput struct {
-	Config AiPromptDecoratorPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *AiPromptDecoratorPluginConsumer      `json:"consumer"`
-	ConsumerGroup *AiPromptDecoratorPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                            `json:"enabled,omitempty"`
 	ID           *string                          `json:"id,omitempty"`
 	InstanceName *string                          `json:"instance_name,omitempty"`
 	name         string                           `const:"ai-prompt-decorator" json:"name"`
 	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *AiPromptDecoratorPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiPromptDecoratorPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                      `json:"tags,omitempty"`
+	Config AiPromptDecoratorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *AiPromptDecoratorPluginConsumer `json:"consumer,omitempty"`
+	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
+	ConsumerGroup *AiPromptDecoratorPluginConsumerGroup `json:"consumer_group,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []AiPromptDecoratorPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *AiPromptDecoratorPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *AiPromptDecoratorPluginService `json:"service,omitempty"`
 }
 
 func (a AiPromptDecoratorPluginInput) MarshalJSON() ([]byte, error) {
@@ -446,27 +431,6 @@ func (a *AiPromptDecoratorPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *AiPromptDecoratorPluginInput) GetConfig() AiPromptDecoratorPluginConfig {
-	if o == nil {
-		return AiPromptDecoratorPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *AiPromptDecoratorPluginInput) GetConsumer() *AiPromptDecoratorPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *AiPromptDecoratorPluginInput) GetConsumerGroup() *AiPromptDecoratorPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *AiPromptDecoratorPluginInput) GetEnabled() *bool {
@@ -501,6 +465,34 @@ func (o *AiPromptDecoratorPluginInput) GetOrdering() *AiPromptDecoratorPluginOrd
 	return o.Ordering
 }
 
+func (o *AiPromptDecoratorPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *AiPromptDecoratorPluginInput) GetConfig() AiPromptDecoratorPluginConfig {
+	if o == nil {
+		return AiPromptDecoratorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *AiPromptDecoratorPluginInput) GetConsumer() *AiPromptDecoratorPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
+func (o *AiPromptDecoratorPluginInput) GetConsumerGroup() *AiPromptDecoratorPluginConsumerGroup {
+	if o == nil {
+		return nil
+	}
+	return o.ConsumerGroup
+}
+
 func (o *AiPromptDecoratorPluginInput) GetProtocols() []AiPromptDecoratorPluginProtocols {
 	if o == nil {
 		return nil
@@ -520,11 +512,4 @@ func (o *AiPromptDecoratorPluginInput) GetService() *AiPromptDecoratorPluginServ
 		return nil
 	}
 	return o.Service
-}
-
-func (o *AiPromptDecoratorPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

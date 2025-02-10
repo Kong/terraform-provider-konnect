@@ -76,8 +76,9 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 				Description: `The name of the API product`,
 			},
 			"portal_ids": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
+				Computed:           true,
+				ElementType:        types.StringType,
+				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
 				MarkdownDescription: `The list of portal identifiers which this API product is published to.` + "\n" +
 					`This property is deprecated and will be removed in a future version. Use the ` + "`" + `portals` + "`" + ` property instead.`,
 			},

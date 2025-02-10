@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -40,20 +38,18 @@ type GatewayPluginOpenidConnectResource struct {
 
 // GatewayPluginOpenidConnectResourceModel describes the resource data model.
 type GatewayPluginOpenidConnectResourceModel struct {
-	Config         tfTypes.OpenidConnectPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group" tfPlanOnly:"true"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service" tfPlanOnly:"true"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.OpenidConnectPluginConfig  `tfsdk:"config"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOpenidConnectResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -125,13 +121,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"authorization_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Default", "Lax", "None", "Strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"Strict",
+								"Default",
 								"Lax",
 								"None",
-								"Default",
+								"Strict",
 							),
 						},
 					},
@@ -177,7 +173,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `.`,
+						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the ` + "`" + `Authorization` + "`" + `, ` + "`" + `access-token` + "`" + `, and ` + "`" + `x-access-token` + "`" + ` HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `.`,
 					},
 					"by_username_ignore_case": schema.BoolAttribute{
 						Computed:    true,
@@ -529,12 +525,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
+										"any",
 										"master",
 										"slave",
-										"any",
 									),
 								},
 							},
@@ -804,12 +800,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspection_accept": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The value of ` + "`" + `Accept` + "`" + ` header for introspection requests: - ` + "`" + `application/json` + "`" + `: introspection response as JSON - ` + "`" + `application/token-introspection+jwt` + "`" + `: introspection response as JWT (from the current IETF draft document) - ` + "`" + `application/jwt` + "`" + `: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/token-introspection+jwt", "application/jwt"]`,
+						Description: `The value of ` + "`" + `Accept` + "`" + ` header for introspection requests: - ` + "`" + `application/json` + "`" + `: introspection response as JSON - ` + "`" + `application/token-introspection+jwt` + "`" + `: introspection response as JWT (from the current IETF draft document) - ` + "`" + `application/jwt` + "`" + `: introspection response as JWT (from the obsolete IETF draft document). must be one of ["application/json", "application/jwt", "application/token-introspection+jwt"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"application/json",
-								"application/token-introspection+jwt",
 								"application/jwt",
+								"application/token-introspection+jwt",
 							),
 						},
 					},
@@ -826,16 +822,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"introspection_endpoint_auth_method": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The introspection endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]`,
+						Description: `The introspection endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"client_secret_basic",
-								"client_secret_post",
 								"client_secret_jwt",
-								"private_key_jwt",
-								"tls_client_auth",
-								"self_signed_tls_client_auth",
+								"client_secret_post",
 								"none",
+								"private_key_jwt",
+								"self_signed_tls_client_auth",
+								"tls_client_auth",
 							),
 						},
 					},
@@ -867,6 +863,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Extra post arguments passed from the client to the introspection endpoint.`,
+					},
+					"introspection_post_args_client_headers": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `Extra post arguments passed from the client headers to the introspection endpoint.`,
 					},
 					"introspection_post_args_names": schema.ListAttribute{
 						Computed:    true,
@@ -919,12 +921,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"login_action": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `What to do after successful login: - ` + "`" + `upstream` + "`" + `: proxy request to upstream service - ` + "`" + `response` + "`" + `: terminate request with a response - ` + "`" + `redirect` + "`" + `: redirect to a different location. must be one of ["upstream", "response", "redirect"]`,
+						Description: `What to do after successful login: - ` + "`" + `upstream` + "`" + `: proxy request to upstream service - ` + "`" + `response` + "`" + `: terminate request with a response - ` + "`" + `redirect` + "`" + `: redirect to a different location. must be one of ["redirect", "response", "upstream"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"upstream",
-								"response",
 								"redirect",
+								"response",
+								"upstream",
 							),
 						},
 					},
@@ -937,11 +939,11 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"login_redirect_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Where to place ` + "`" + `login_tokens` + "`" + ` when using ` + "`" + `redirect` + "`" + ` ` + "`" + `login_action` + "`" + `: - ` + "`" + `query` + "`" + `: place tokens in query string - ` + "`" + `fragment` + "`" + `: place tokens in url fragment (not readable by servers). must be one of ["query", "fragment"]`,
+						Description: `Where to place ` + "`" + `login_tokens` + "`" + ` when using ` + "`" + `redirect` + "`" + ` ` + "`" + `login_action` + "`" + `: - ` + "`" + `query` + "`" + `: place tokens in query string - ` + "`" + `fragment` + "`" + `: place tokens in url fragment (not readable by servers). must be one of ["fragment", "query"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"query",
 								"fragment",
+								"query",
 							),
 						},
 					},
@@ -1045,24 +1047,24 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"proof_of_possession_dpop": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "strict", "optional"]`,
+						Description: `Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP's key are verified with the proof. must be one of ["off", "optional", "strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"off",
-								"strict",
 								"optional",
+								"strict",
 							),
 						},
 					},
 					"proof_of_possession_mtls": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "strict", "optional"]`,
+						Description: `Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401. must be one of ["off", "optional", "strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"off",
-								"strict",
 								"optional",
+								"strict",
 							),
 						},
 					},
@@ -1074,16 +1076,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"pushed_authorization_request_endpoint_auth_method": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The pushed authorization request endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]`,
+						Description: `The pushed authorization request endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"client_secret_basic",
-								"client_secret_post",
 								"client_secret_jwt",
-								"private_key_jwt",
-								"tls_client_auth",
-								"self_signed_tls_client_auth",
+								"client_secret_post",
 								"none",
+								"private_key_jwt",
+								"self_signed_tls_client_auth",
+								"tls_client_auth",
 							),
 						},
 					},
@@ -1238,12 +1240,12 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 							"sentinel_role": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["master", "slave", "any"]`,
+								Description: `Sentinel role to use for Redis connections when the ` + "`" + `redis` + "`" + ` strategy is defined. Defining this value implies using Redis Sentinel. must be one of ["any", "master", "slave"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
+										"any",
 										"master",
 										"slave",
-										"any",
 									),
 								},
 							},
@@ -1323,16 +1325,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"response_mode": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: for parameters in query string - ` + "`" + `form_post` + "`" + `: for parameters in request body - ` + "`" + `fragment` + "`" + `: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - ` + "`" + `query.jwt` + "`" + `, ` + "`" + `form_post.jwt` + "`" + `, ` + "`" + `fragment.jwt` + "`" + `: similar to ` + "`" + `query` + "`" + `, ` + "`" + `form_post` + "`" + ` and ` + "`" + `fragment` + "`" + ` but the parameters are encoded in a JWT - ` + "`" + `jwt` + "`" + `: shortcut that indicates the default encoding for the requested response type. must be one of ["query", "form_post", "fragment", "query.jwt", "form_post.jwt", "fragment.jwt", "jwt"]`,
+						Description: `Response mode passed to the authorization endpoint: - ` + "`" + `query` + "`" + `: for parameters in query string - ` + "`" + `form_post` + "`" + `: for parameters in request body - ` + "`" + `fragment` + "`" + `: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - ` + "`" + `query.jwt` + "`" + `, ` + "`" + `form_post.jwt` + "`" + `, ` + "`" + `fragment.jwt` + "`" + `: similar to ` + "`" + `query` + "`" + `, ` + "`" + `form_post` + "`" + ` and ` + "`" + `fragment` + "`" + ` but the parameters are encoded in a JWT - ` + "`" + `jwt` + "`" + `: shortcut that indicates the default encoding for the requested response type. must be one of ["form_post", "form_post.jwt", "fragment", "fragment.jwt", "jwt", "query", "query.jwt"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"query",
 								"form_post",
-								"fragment",
-								"query.jwt",
 								"form_post.jwt",
+								"fragment",
 								"fragment.jwt",
 								"jwt",
+								"query",
+								"query.jwt",
 							),
 						},
 					},
@@ -1355,16 +1357,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"revocation_endpoint_auth_method": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The revocation endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]`,
+						Description: `The revocation endpoint authentication method: : ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"client_secret_basic",
-								"client_secret_post",
 								"client_secret_jwt",
-								"private_key_jwt",
-								"tls_client_auth",
-								"self_signed_tls_client_auth",
+								"client_secret_post",
 								"none",
+								"private_key_jwt",
+								"self_signed_tls_client_auth",
+								"tls_client_auth",
 							),
 						},
 					},
@@ -1445,13 +1447,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"session_cookie_same_site": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Strict", "Lax", "None", "Default"]`,
+						Description: `Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. must be one of ["Default", "Lax", "None", "Strict"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"Strict",
+								"Default",
 								"Lax",
 								"None",
-								"Default",
+								"Strict",
 							),
 						},
 					},
@@ -1596,16 +1598,16 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					"token_endpoint_auth_method": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The token endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_post", "client_secret_jwt", "private_key_jwt", "tls_client_auth", "self_signed_tls_client_auth", "none"]`,
+						Description: `The token endpoint authentication method: ` + "`" + `client_secret_basic` + "`" + `, ` + "`" + `client_secret_post` + "`" + `, ` + "`" + `client_secret_jwt` + "`" + `, ` + "`" + `private_key_jwt` + "`" + `, ` + "`" + `tls_client_auth` + "`" + `, ` + "`" + `self_signed_tls_client_auth` + "`" + `, or ` + "`" + `none` + "`" + `: do not authenticate. must be one of ["client_secret_basic", "client_secret_jwt", "client_secret_post", "none", "private_key_jwt", "self_signed_tls_client_auth", "tls_client_auth"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"client_secret_basic",
-								"client_secret_post",
 								"client_secret_jwt",
-								"private_key_jwt",
-								"tls_client_auth",
-								"self_signed_tls_client_auth",
+								"client_secret_post",
 								"none",
+								"private_key_jwt",
+								"self_signed_tls_client_auth",
+								"tls_client_auth",
 							),
 						},
 					},
@@ -1703,7 +1705,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Computed:    true,
 						Optional:    true,
 						ElementType: types.StringType,
-						Description: `The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The upstream header claims. Only top level claims are supported.`,
 					},
 					"upstream_headers_names": schema.ListAttribute{
 						Computed:    true,
@@ -1830,33 +1832,6 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 					},
 				},
 			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-						Optional: true,
-					},
-				},
-			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
 				PlanModifiers: []planmodifier.String{
@@ -1913,28 +1888,22 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

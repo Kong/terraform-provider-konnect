@@ -10,14 +10,16 @@ import (
 
 func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Service) {
 	if resp != nil {
-		r.CaCertificates = []types.String{}
-		for _, v := range resp.CaCertificates {
-			r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
+		if resp.CaCertificates != nil {
+			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
+			for _, v := range resp.CaCertificates {
+				r.CaCertificates = append(r.CaCertificates, types.StringValue(v))
+			}
 		}
 		if resp.ClientCertificate == nil {
 			r.ClientCertificate = nil
 		} else {
-			r.ClientCertificate = &tfTypes.ACLConsumer{}
+			r.ClientCertificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ClientCertificate.ID = types.StringPointerValue(resp.ClientCertificate.ID)
 		}
 		r.ConnectTimeout = types.Int64PointerValue(resp.ConnectTimeout)
@@ -31,7 +33,7 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.Protocol = types.StringValue(string(resp.Protocol))
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

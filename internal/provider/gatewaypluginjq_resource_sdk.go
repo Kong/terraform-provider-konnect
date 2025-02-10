@@ -9,6 +9,55 @@ import (
 )
 
 func (r *GatewayPluginJqResourceModel) ToSharedJqPluginInput() *shared.JqPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.JqPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.JqPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.JqPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.JqPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.JqPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.JqPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	var requestIfMediaType []string = []string{}
 	for _, requestIfMediaTypeItem := range r.Config.RequestIfMediaType {
 		requestIfMediaType = append(requestIfMediaType, requestIfMediaTypeItem.ValueString())
@@ -124,71 +173,14 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPluginInput() *shared.JqPluginI
 	}
 	var consumer *shared.JqPluginConsumer
 	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.JqPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.JqPluginConsumerGroup
-	if r.ConsumerGroup != nil {
 		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
+		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
+			*id1 = r.Consumer.ID.ValueString()
 		} else {
 			id1 = nil
 		}
-		consumerGroup = &shared.JqPluginConsumerGroup{
+		consumer = &shared.JqPluginConsumer{
 			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.JqPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.JqPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.JqPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.JqPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.JqPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.JqPluginOrdering{
-			After:  after,
-			Before: before,
 		}
 	}
 	var protocols []shared.JqPluginProtocols = []shared.JqPluginProtocols{}
@@ -197,51 +189,46 @@ func (r *GatewayPluginJqResourceModel) ToSharedJqPluginInput() *shared.JqPluginI
 	}
 	var route *shared.JqPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.JqPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.JqPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.JqPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.JqPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Consumer:     consumer,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
 
 func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.JqPlugin) {
 	if resp != nil {
-		r.Config.RequestIfMediaType = []types.String{}
+		r.Config.RequestIfMediaType = make([]types.String, 0, len(resp.Config.RequestIfMediaType))
 		for _, v := range resp.Config.RequestIfMediaType {
 			r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
 		}
@@ -256,11 +243,11 @@ func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.Jq
 			r.Config.RequestJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.RawOutput)
 			r.Config.RequestJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.SortKeys)
 		}
-		r.Config.ResponseIfMediaType = []types.String{}
+		r.Config.ResponseIfMediaType = make([]types.String, 0, len(resp.Config.ResponseIfMediaType))
 		for _, v := range resp.Config.ResponseIfMediaType {
 			r.Config.ResponseIfMediaType = append(r.Config.ResponseIfMediaType, types.StringValue(v))
 		}
-		r.Config.ResponseIfStatusCode = []types.Int64{}
+		r.Config.ResponseIfStatusCode = make([]types.Int64, 0, len(resp.Config.ResponseIfStatusCode))
 		for _, v := range resp.Config.ResponseIfStatusCode {
 			r.Config.ResponseIfStatusCode = append(r.Config.ResponseIfStatusCode, types.Int64Value(v))
 		}
@@ -278,14 +265,8 @@ func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.Jq
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -299,7 +280,7 @@ func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.Jq
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -308,29 +289,29 @@ func (r *GatewayPluginJqResourceModel) RefreshFromSharedJqPlugin(resp *shared.Jq
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

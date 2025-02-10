@@ -26,6 +26,18 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 	} else {
 		target = nil
 	}
+	var upstream *shared.TargetWithoutParentsUpstream
+	if r.Upstream != nil {
+		id1 := new(string)
+		if !r.Upstream.ID.IsUnknown() && !r.Upstream.ID.IsNull() {
+			*id1 = r.Upstream.ID.ValueString()
+		} else {
+			id1 = nil
+		}
+		upstream = &shared.TargetWithoutParentsUpstream{
+			ID: id1,
+		}
+	}
 	weight := new(int64)
 	if !r.Weight.IsUnknown() && !r.Weight.IsNull() {
 		*weight = r.Weight.ValueInt64()
@@ -33,10 +45,11 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 		weight = nil
 	}
 	out := shared.TargetWithoutParents{
-		ID:     id,
-		Tags:   tags,
-		Target: target,
-		Weight: weight,
+		ID:       id,
+		Tags:     tags,
+		Target:   target,
+		Upstream: upstream,
+		Weight:   weight,
 	}
 	return &out
 }
@@ -49,7 +62,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(resp *shared.Target
 			r.CreatedAt = types.NumberNull()
 		}
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
@@ -62,7 +75,7 @@ func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(resp *shared.Target
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {
-			r.Upstream = &tfTypes.ACLConsumer{}
+			r.Upstream = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
 		}
 		r.Weight = types.Int64PointerValue(resp.Weight)

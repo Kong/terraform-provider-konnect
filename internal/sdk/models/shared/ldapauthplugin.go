@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type LdapAuthPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *LdapAuthPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type LdapAuthPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *LdapAuthPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type LdapAuthPluginOrdering struct {
+	After  *LdapAuthPluginAfter  `json:"after,omitempty"`
+	Before *LdapAuthPluginBefore `json:"before,omitempty"`
+}
+
+func (o *LdapAuthPluginOrdering) GetAfter() *LdapAuthPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *LdapAuthPluginOrdering) GetBefore() *LdapAuthPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type LdapAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request fails with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -137,83 +178,15 @@ func (o *LdapAuthPluginConfig) GetVerifyLdapHost() *bool {
 	return o.VerifyLdapHost
 }
 
-// LdapAuthPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type LdapAuthPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *LdapAuthPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type LdapAuthPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *LdapAuthPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type LdapAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LdapAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LdapAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LdapAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LdapAuthPluginOrdering struct {
-	After  *LdapAuthPluginAfter  `json:"after,omitempty"`
-	Before *LdapAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *LdapAuthPluginOrdering) GetAfter() *LdapAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *LdapAuthPluginOrdering) GetBefore() *LdapAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type LdapAuthPluginProtocols string
 
 const (
-	LdapAuthPluginProtocolsGrpc           LdapAuthPluginProtocols = "grpc"
-	LdapAuthPluginProtocolsGrpcs          LdapAuthPluginProtocols = "grpcs"
-	LdapAuthPluginProtocolsHTTP           LdapAuthPluginProtocols = "http"
-	LdapAuthPluginProtocolsHTTPS          LdapAuthPluginProtocols = "https"
-	LdapAuthPluginProtocolsTCP            LdapAuthPluginProtocols = "tcp"
-	LdapAuthPluginProtocolsTLS            LdapAuthPluginProtocols = "tls"
-	LdapAuthPluginProtocolsTLSPassthrough LdapAuthPluginProtocols = "tls_passthrough"
-	LdapAuthPluginProtocolsUDP            LdapAuthPluginProtocols = "udp"
-	LdapAuthPluginProtocolsWs             LdapAuthPluginProtocols = "ws"
-	LdapAuthPluginProtocolsWss            LdapAuthPluginProtocols = "wss"
+	LdapAuthPluginProtocolsGrpc  LdapAuthPluginProtocols = "grpc"
+	LdapAuthPluginProtocolsGrpcs LdapAuthPluginProtocols = "grpcs"
+	LdapAuthPluginProtocolsHTTP  LdapAuthPluginProtocols = "http"
+	LdapAuthPluginProtocolsHTTPS LdapAuthPluginProtocols = "https"
+	LdapAuthPluginProtocolsWs    LdapAuthPluginProtocols = "ws"
+	LdapAuthPluginProtocolsWss   LdapAuthPluginProtocols = "wss"
 )
 
 func (e LdapAuthPluginProtocols) ToPointer() *LdapAuthPluginProtocols {
@@ -233,14 +206,6 @@ func (e *LdapAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "https":
 		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
 	case "ws":
 		fallthrough
 	case "wss":
@@ -251,7 +216,7 @@ func (e *LdapAuthPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// LdapAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// LdapAuthPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type LdapAuthPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -277,10 +242,6 @@ func (o *LdapAuthPluginService) GetID() *string {
 
 // LdapAuthPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LdapAuthPlugin struct {
-	Config LdapAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LdapAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *LdapAuthPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -289,16 +250,17 @@ type LdapAuthPlugin struct {
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"ldap-auth" json:"name"`
 	Ordering     *LdapAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LdapAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LdapAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    LdapAuthPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *LdapAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *LdapAuthPluginService `json:"service,omitempty"`
 }
 
 func (l LdapAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -310,27 +272,6 @@ func (l *LdapAuthPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *LdapAuthPlugin) GetConfig() LdapAuthPluginConfig {
-	if o == nil {
-		return LdapAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *LdapAuthPlugin) GetConsumer() *LdapAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *LdapAuthPlugin) GetConsumerGroup() *LdapAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *LdapAuthPlugin) GetCreatedAt() *int64 {
@@ -372,6 +313,27 @@ func (o *LdapAuthPlugin) GetOrdering() *LdapAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *LdapAuthPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *LdapAuthPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *LdapAuthPlugin) GetConfig() LdapAuthPluginConfig {
+	if o == nil {
+		return LdapAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *LdapAuthPlugin) GetProtocols() []LdapAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -393,40 +355,23 @@ func (o *LdapAuthPlugin) GetService() *LdapAuthPluginService {
 	return o.Service
 }
 
-func (o *LdapAuthPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *LdapAuthPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // LdapAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LdapAuthPluginInput struct {
-	Config LdapAuthPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *LdapAuthPluginConsumer      `json:"consumer"`
-	ConsumerGroup *LdapAuthPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                   `json:"enabled,omitempty"`
 	ID           *string                 `json:"id,omitempty"`
 	InstanceName *string                 `json:"instance_name,omitempty"`
 	name         string                  `const:"ldap-auth" json:"name"`
 	Ordering     *LdapAuthPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *LdapAuthPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LdapAuthPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string             `json:"tags,omitempty"`
+	Config LdapAuthPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []LdapAuthPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *LdapAuthPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *LdapAuthPluginService `json:"service,omitempty"`
 }
 
 func (l LdapAuthPluginInput) MarshalJSON() ([]byte, error) {
@@ -438,27 +383,6 @@ func (l *LdapAuthPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *LdapAuthPluginInput) GetConfig() LdapAuthPluginConfig {
-	if o == nil {
-		return LdapAuthPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *LdapAuthPluginInput) GetConsumer() *LdapAuthPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *LdapAuthPluginInput) GetConsumerGroup() *LdapAuthPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *LdapAuthPluginInput) GetEnabled() *bool {
@@ -493,6 +417,20 @@ func (o *LdapAuthPluginInput) GetOrdering() *LdapAuthPluginOrdering {
 	return o.Ordering
 }
 
+func (o *LdapAuthPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *LdapAuthPluginInput) GetConfig() LdapAuthPluginConfig {
+	if o == nil {
+		return LdapAuthPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *LdapAuthPluginInput) GetProtocols() []LdapAuthPluginProtocols {
 	if o == nil {
 		return nil
@@ -512,11 +450,4 @@ func (o *LdapAuthPluginInput) GetService() *LdapAuthPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *LdapAuthPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

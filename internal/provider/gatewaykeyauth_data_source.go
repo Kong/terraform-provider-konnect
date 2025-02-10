@@ -29,13 +29,13 @@ type GatewayKeyAuthDataSource struct {
 
 // GatewayKeyAuthDataSourceModel describes the data model.
 type GatewayKeyAuthDataSourceModel struct {
-	Consumer       *tfTypes.ACLConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerID     types.String         `tfsdk:"consumer_id"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Key            types.String         `tfsdk:"key"`
-	Tags           []types.String       `tfsdk:"tags"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	ConsumerID     types.String                       `tfsdk:"consumer_id"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Key            types.String                       `tfsdk:"key"`
+	Tags           []types.String                     `tfsdk:"tags"`
 }
 
 // Metadata returns the data source type name.

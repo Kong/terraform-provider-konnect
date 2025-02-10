@@ -48,13 +48,13 @@ func (r *GatewaySNIResourceModel) RefreshFromSharedSni(resp *shared.Sni) {
 		if resp.Certificate == nil {
 			r.Certificate = nil
 		} else {
-			r.Certificate = &tfTypes.ACLConsumer{}
+			r.Certificate = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Certificate.ID = types.StringPointerValue(resp.Certificate.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

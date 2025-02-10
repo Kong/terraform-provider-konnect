@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.3.0
+> Released on 2025/02/10
+
+### Features
+
+* Add support for `konnect_portal_team` resource
+* Add support for `konnect_audit_log` resource
+* Add support for `konnect_audit_log_destination` resource
+* Add support for `konnect_gateway_config_store` resource
+* Add support for new Gateway 3.9 plugins:
+  * `ai-azure-content-safety`
+  * `confluent`
+  * `service-protection`
+  * `standard-webhooks`
+  * `ai-semantic-cache`
+  * `upstream-oauth`
+  * `injection-protection`
+  * `redirect`
+  * `datadog-tracing`
+  * `ai-proxy-advanced`
+  * `ai-semantic-prompt-guard`
+  * `json-threat-protection`
+  * `header-cert-auth`
+  * `ai-rate-limiting-advanced`
+
+### Bug fixes
+
+* Make `konnect_cloud_gateway_network` plan output deterministic
+* Move `protocols` and foreign key (e.g. `service`, `route`) validation for plugins to be at plan time rather than runtime.
+
 ## 2.2.0
 > Released on 2024/12/06
 

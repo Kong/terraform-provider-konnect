@@ -8,13 +8,54 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type RequestValidatorPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestValidatorPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestValidatorPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *RequestValidatorPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type RequestValidatorPluginOrdering struct {
+	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
+	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
+}
+
+func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // In - The location of the parameter.
 type In string
 
 const (
-	InQuery  In = "query"
 	InHeader In = "header"
 	InPath   In = "path"
+	InQuery  In = "query"
 )
 
 func (e In) ToPointer() *In {
@@ -26,11 +67,11 @@ func (e *In) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "query":
-		fallthrough
 	case "header":
 		fallthrough
 	case "path":
+		fallthrough
+	case "query":
 		*e = In(v)
 		return nil
 	default:
@@ -42,13 +83,13 @@ func (e *In) UnmarshalJSON(data []byte) error {
 type Style string
 
 const (
-	StyleLabel          Style = "label"
+	StyleDeepObject     Style = "deepObject"
 	StyleForm           Style = "form"
+	StyleLabel          Style = "label"
 	StyleMatrix         Style = "matrix"
+	StylePipeDelimited  Style = "pipeDelimited"
 	StyleSimple         Style = "simple"
 	StyleSpaceDelimited Style = "spaceDelimited"
-	StylePipeDelimited  Style = "pipeDelimited"
-	StyleDeepObject     Style = "deepObject"
 )
 
 func (e Style) ToPointer() *Style {
@@ -60,19 +101,19 @@ func (e *Style) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "label":
+	case "deepObject":
 		fallthrough
 	case "form":
 		fallthrough
+	case "label":
+		fallthrough
 	case "matrix":
+		fallthrough
+	case "pipeDelimited":
 		fallthrough
 	case "simple":
 		fallthrough
 	case "spaceDelimited":
-		fallthrough
-	case "pipeDelimited":
-		fallthrough
-	case "deepObject":
 		*e = Style(v)
 		return nil
 	default:
@@ -141,8 +182,8 @@ func (o *ParameterSchema) GetStyle() *Style {
 type Version string
 
 const (
-	VersionKong   Version = "kong"
 	VersionDraft4 Version = "draft4"
+	VersionKong   Version = "kong"
 )
 
 func (e Version) ToPointer() *Version {
@@ -154,9 +195,9 @@ func (e *Version) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "kong":
-		fallthrough
 	case "draft4":
+		fallthrough
+	case "kong":
 		*e = Version(v)
 		return nil
 	default:
@@ -233,71 +274,13 @@ func (o *RequestValidatorPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type RequestValidatorPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *RequestValidatorPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type RequestValidatorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestValidatorPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestValidatorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestValidatorPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestValidatorPluginOrdering struct {
-	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
-	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type RequestValidatorPluginProtocols string
 
 const (
-	RequestValidatorPluginProtocolsGrpc           RequestValidatorPluginProtocols = "grpc"
-	RequestValidatorPluginProtocolsGrpcs          RequestValidatorPluginProtocols = "grpcs"
-	RequestValidatorPluginProtocolsHTTP           RequestValidatorPluginProtocols = "http"
-	RequestValidatorPluginProtocolsHTTPS          RequestValidatorPluginProtocols = "https"
-	RequestValidatorPluginProtocolsTCP            RequestValidatorPluginProtocols = "tcp"
-	RequestValidatorPluginProtocolsTLS            RequestValidatorPluginProtocols = "tls"
-	RequestValidatorPluginProtocolsTLSPassthrough RequestValidatorPluginProtocols = "tls_passthrough"
-	RequestValidatorPluginProtocolsUDP            RequestValidatorPluginProtocols = "udp"
-	RequestValidatorPluginProtocolsWs             RequestValidatorPluginProtocols = "ws"
-	RequestValidatorPluginProtocolsWss            RequestValidatorPluginProtocols = "wss"
+	RequestValidatorPluginProtocolsGrpc  RequestValidatorPluginProtocols = "grpc"
+	RequestValidatorPluginProtocolsGrpcs RequestValidatorPluginProtocols = "grpcs"
+	RequestValidatorPluginProtocolsHTTP  RequestValidatorPluginProtocols = "http"
+	RequestValidatorPluginProtocolsHTTPS RequestValidatorPluginProtocols = "https"
 )
 
 func (e RequestValidatorPluginProtocols) ToPointer() *RequestValidatorPluginProtocols {
@@ -316,18 +299,6 @@ func (e *RequestValidatorPluginProtocols) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "https":
-		fallthrough
-	case "tcp":
-		fallthrough
-	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = RequestValidatorPluginProtocols(v)
 		return nil
 	default:
@@ -335,7 +306,7 @@ func (e *RequestValidatorPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RequestValidatorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// RequestValidatorPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type RequestValidatorPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -361,10 +332,6 @@ func (o *RequestValidatorPluginService) GetID() *string {
 
 // RequestValidatorPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestValidatorPlugin struct {
-	Config RequestValidatorPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestValidatorPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RequestValidatorPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -373,16 +340,19 @@ type RequestValidatorPlugin struct {
 	InstanceName *string                         `json:"instance_name,omitempty"`
 	name         string                          `const:"request-validator" json:"name"`
 	Ordering     *RequestValidatorPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RequestValidatorPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestValidatorPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestValidatorPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                       `json:"updated_at,omitempty"`
+	Config    RequestValidatorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RequestValidatorPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RequestValidatorPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RequestValidatorPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RequestValidatorPluginService `json:"service,omitempty"`
 }
 
 func (r RequestValidatorPlugin) MarshalJSON() ([]byte, error) {
@@ -394,27 +364,6 @@ func (r *RequestValidatorPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *RequestValidatorPlugin) GetConfig() RequestValidatorPluginConfig {
-	if o == nil {
-		return RequestValidatorPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RequestValidatorPlugin) GetConsumer() *RequestValidatorPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RequestValidatorPlugin) GetConsumerGroup() *RequestValidatorPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RequestValidatorPlugin) GetCreatedAt() *int64 {
@@ -456,6 +405,34 @@ func (o *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {
 	return o.Ordering
 }
 
+func (o *RequestValidatorPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RequestValidatorPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *RequestValidatorPlugin) GetConfig() RequestValidatorPluginConfig {
+	if o == nil {
+		return RequestValidatorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RequestValidatorPlugin) GetConsumer() *RequestValidatorPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *RequestValidatorPlugin) GetProtocols() []RequestValidatorPluginProtocols {
 	if o == nil {
 		return nil
@@ -477,40 +454,25 @@ func (o *RequestValidatorPlugin) GetService() *RequestValidatorPluginService {
 	return o.Service
 }
 
-func (o *RequestValidatorPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *RequestValidatorPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // RequestValidatorPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestValidatorPluginInput struct {
-	Config RequestValidatorPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *RequestValidatorPluginConsumer      `json:"consumer"`
-	ConsumerGroup *RequestValidatorPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                           `json:"enabled,omitempty"`
 	ID           *string                         `json:"id,omitempty"`
 	InstanceName *string                         `json:"instance_name,omitempty"`
 	name         string                          `const:"request-validator" json:"name"`
 	Ordering     *RequestValidatorPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []RequestValidatorPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *RequestValidatorPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestValidatorPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                     `json:"tags,omitempty"`
+	Config RequestValidatorPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *RequestValidatorPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing HTTP protocols.
+	Protocols []RequestValidatorPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *RequestValidatorPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *RequestValidatorPluginService `json:"service,omitempty"`
 }
 
 func (r RequestValidatorPluginInput) MarshalJSON() ([]byte, error) {
@@ -522,27 +484,6 @@ func (r *RequestValidatorPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *RequestValidatorPluginInput) GetConfig() RequestValidatorPluginConfig {
-	if o == nil {
-		return RequestValidatorPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RequestValidatorPluginInput) GetConsumer() *RequestValidatorPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RequestValidatorPluginInput) GetConsumerGroup() *RequestValidatorPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *RequestValidatorPluginInput) GetEnabled() *bool {
@@ -577,6 +518,27 @@ func (o *RequestValidatorPluginInput) GetOrdering() *RequestValidatorPluginOrder
 	return o.Ordering
 }
 
+func (o *RequestValidatorPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *RequestValidatorPluginInput) GetConfig() RequestValidatorPluginConfig {
+	if o == nil {
+		return RequestValidatorPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *RequestValidatorPluginInput) GetConsumer() *RequestValidatorPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *RequestValidatorPluginInput) GetProtocols() []RequestValidatorPluginProtocols {
 	if o == nil {
 		return nil
@@ -596,11 +558,4 @@ func (o *RequestValidatorPluginInput) GetService() *RequestValidatorPluginServic
 		return nil
 	}
 	return o.Service
-}
-
-func (o *RequestValidatorPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

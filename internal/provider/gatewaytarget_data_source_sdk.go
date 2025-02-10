@@ -17,7 +17,7 @@ func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Targ
 			r.CreatedAt = types.NumberNull()
 		}
 		r.ID = types.StringPointerValue(resp.ID)
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
@@ -30,7 +30,7 @@ func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Targ
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {
-			r.Upstream = &tfTypes.ACLConsumer{}
+			r.Upstream = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Upstream.ID = types.StringPointerValue(resp.Upstream.ID)
 		}
 		r.Weight = types.Int64PointerValue(resp.Weight)

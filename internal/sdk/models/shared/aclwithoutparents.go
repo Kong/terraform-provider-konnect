@@ -2,10 +2,29 @@
 
 package shared
 
+type ACLWithoutParentsConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *ACLWithoutParentsConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type ACLWithoutParents struct {
-	Group string   `json:"group"`
-	ID    *string  `json:"id,omitempty"`
-	Tags  []string `json:"tags,omitempty"`
+	Consumer *ACLWithoutParentsConsumer `json:"consumer"`
+	Group    string                     `json:"group"`
+	ID       *string                    `json:"id,omitempty"`
+	Tags     []string                   `json:"tags,omitempty"`
+}
+
+func (o *ACLWithoutParents) GetConsumer() *ACLWithoutParentsConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *ACLWithoutParents) GetGroup() string {

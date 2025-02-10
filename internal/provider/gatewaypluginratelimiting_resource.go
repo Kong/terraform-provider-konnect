@@ -9,11 +9,9 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -39,20 +37,20 @@ type GatewayPluginRateLimitingResource struct {
 
 // GatewayPluginRateLimitingResourceModel describes the resource data model.
 type GatewayPluginRateLimitingResourceModel struct {
-	Config         tfTypes.RateLimitingPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer             `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer             `tfsdk:"consumer_group" tfPlanOnly:"true"`
-	ControlPlaneID types.String                     `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                      `tfsdk:"created_at"`
-	Enabled        types.Bool                       `tfsdk:"enabled"`
-	ID             types.String                     `tfsdk:"id"`
-	InstanceName   types.String                     `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering       `tfsdk:"ordering"`
-	Protocols      []types.String                   `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer             `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer             `tfsdk:"service" tfPlanOnly:"true"`
-	Tags           []types.String                   `tfsdk:"tags"`
-	UpdatedAt      types.Int64                      `tfsdk:"updated_at"`
+	Config         tfTypes.RateLimitingPluginConfig   `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRateLimitingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -104,16 +102,16 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"limit_by": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The entity that is used when aggregating the limits. must be one of ["consumer", "credential", "ip", "service", "header", "path", "consumer-group"]`,
+						Description: `The entity that is used when aggregating the limits. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
-								"credential",
-								"ip",
-								"service",
-								"header",
-								"path",
 								"consumer-group",
+								"credential",
+								"header",
+								"ip",
+								"path",
+								"service",
 							),
 						},
 					},
@@ -135,11 +133,11 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 					"policy": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["local", "cluster", "redis"]`,
+						Description: `The rate-limiting policies to use for retrieving and incrementing the limits. must be one of ["cluster", "local", "redis"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
-								"local",
 								"cluster",
+								"local",
 								"redis",
 							),
 						},
@@ -222,9 +220,6 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			"consumer": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
@@ -236,15 +231,13 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			"consumer_group": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
+				Description: `If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups`,
 			},
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -302,28 +295,22 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,
 						Optional: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,
 				Optional: true,
-				Default: objectdefault.StaticValue(types.ObjectNull(map[string]attr.Type{
-					"id": types.StringType,
-				})),
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						Computed: true,

@@ -193,7 +193,7 @@ func (r *CloudGatewayCustomDomainResource) Create(ctx context.Context, req resou
 	}
 
 	request := *data.ToSharedCreateCustomDomainRequest()
-	res, err := r.client.CustomDomains.CreateCustomDomains(ctx, request)
+	res, err := r.client.CloudGateways.CreateCustomDomains(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -244,7 +244,7 @@ func (r *CloudGatewayCustomDomainResource) Read(ctx context.Context, req resourc
 	request := operations.GetCustomDomainRequest{
 		CustomDomainID: customDomainID,
 	}
-	res, err := r.client.CustomDomains.GetCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.GetCustomDomain(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -318,7 +318,7 @@ func (r *CloudGatewayCustomDomainResource) Delete(ctx context.Context, req resou
 	request := operations.DeleteCustomDomainRequest{
 		CustomDomainID: customDomainID,
 	}
-	res, err := r.client.CustomDomains.DeleteCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.DeleteCustomDomain(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -535,7 +535,7 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 		NetworkID:                   networkID,
 		CreateTransitGatewayRequest: createTransitGatewayRequest,
 	}
-	res, err := r.client.TransitGateways.CreateTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.CreateTransitGateway(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -590,7 +590,7 @@ func (r *CloudGatewayTransitGatewayResource) Read(ctx context.Context, req resou
 		NetworkID:        networkID,
 		TransitGatewayID: transitGatewayID,
 	}
-	res, err := r.client.TransitGateways.GetTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.GetTransitGateway(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -668,7 +668,7 @@ func (r *CloudGatewayTransitGatewayResource) Delete(ctx context.Context, req res
 		NetworkID:        networkID,
 		TransitGatewayID: transitGatewayID,
 	}
-	res, err := r.client.TransitGateways.DeleteTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.DeleteTransitGateway(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

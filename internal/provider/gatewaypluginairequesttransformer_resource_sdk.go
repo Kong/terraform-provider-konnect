@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransformerPluginInput() *shared.AiRequestTransformerPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.AiRequestTransformerPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.AiRequestTransformerPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.AiRequestTransformerPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.AiRequestTransformerPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.AiRequestTransformerPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.AiRequestTransformerPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	httpProxyHost := new(string)
 	if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
 		*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
@@ -242,6 +291,25 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 						ProjectID:   projectID,
 					}
 				}
+				var huggingface *shared.AiRequestTransformerPluginHuggingface
+				if r.Config.Llm.Model.Options.Huggingface != nil {
+					useCache := new(bool)
+					if !r.Config.Llm.Model.Options.Huggingface.UseCache.IsUnknown() && !r.Config.Llm.Model.Options.Huggingface.UseCache.IsNull() {
+						*useCache = r.Config.Llm.Model.Options.Huggingface.UseCache.ValueBool()
+					} else {
+						useCache = nil
+					}
+					waitForModel := new(bool)
+					if !r.Config.Llm.Model.Options.Huggingface.WaitForModel.IsUnknown() && !r.Config.Llm.Model.Options.Huggingface.WaitForModel.IsNull() {
+						*waitForModel = r.Config.Llm.Model.Options.Huggingface.WaitForModel.ValueBool()
+					} else {
+						waitForModel = nil
+					}
+					huggingface = &shared.AiRequestTransformerPluginHuggingface{
+						UseCache:     useCache,
+						WaitForModel: waitForModel,
+					}
+				}
 				inputCost := new(float64)
 				if !r.Config.Llm.Model.Options.InputCost.IsUnknown() && !r.Config.Llm.Model.Options.InputCost.IsNull() {
 					*inputCost, _ = r.Config.Llm.Model.Options.InputCost.ValueBigFloat().Float64()
@@ -309,6 +377,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 					AzureInstance:     azureInstance,
 					Bedrock:           bedrock,
 					Gemini:            gemini,
+					Huggingface:       huggingface,
 					InputCost:         inputCost,
 					Llama2Format:      llama2Format,
 					MaxTokens:         maxTokens,
@@ -376,18 +445,6 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		Prompt:                       prompt,
 		TransformationExtractPattern: transformationExtractPattern,
 	}
-	var consumer *shared.AiRequestTransformerPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.AiRequestTransformerPluginConsumer{
-			ID: id,
-		}
-	}
 	var consumerGroup *shared.AiRequestTransformerPluginConsumerGroup
 	if r.ConsumerGroup != nil {
 		id1 := new(string)
@@ -400,95 +457,45 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			ID: id1,
 		}
 	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.AiRequestTransformerPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.AiRequestTransformerPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.AiRequestTransformerPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.AiRequestTransformerPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.AiRequestTransformerPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.AiRequestTransformerPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.AiRequestTransformerPluginProtocols = []shared.AiRequestTransformerPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiRequestTransformerPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.AiRequestTransformerPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id2 = nil
 		}
 		route = &shared.AiRequestTransformerPluginRoute{
-			ID: id3,
+			ID: id2,
 		}
 	}
 	var service *shared.AiRequestTransformerPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id3 = nil
 		}
 		service = &shared.AiRequestTransformerPluginService{
-			ID: id4,
+			ID: id3,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.AiRequestTransformerPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
 		Enabled:       enabled,
-		ID:            id2,
+		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
+		Tags:          tags,
+		Config:        config,
+		ConsumerGroup: consumerGroup,
 		Protocols:     protocols,
 		Route:         route,
 		Service:       service,
-		Tags:          tags,
 	}
 	return &out
 }
@@ -562,6 +569,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 						r.Config.Llm.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.LocationID)
 						r.Config.Llm.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Llm.Model.Options.Gemini.ProjectID)
 					}
+					if resp.Config.Llm.Model.Options.Huggingface == nil {
+						r.Config.Llm.Model.Options.Huggingface = nil
+					} else {
+						r.Config.Llm.Model.Options.Huggingface = &tfTypes.Huggingface{}
+						r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
+						r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
+					}
 					if resp.Config.Llm.Model.Options.InputCost != nil {
 						r.Config.Llm.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.InputCost)))
 					} else {
@@ -612,16 +626,10 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		r.Config.Prompt = types.StringPointerValue(resp.Config.Prompt)
 		r.Config.TransformationExtractPattern = types.StringPointerValue(resp.Config.TransformationExtractPattern)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -636,7 +644,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -645,29 +653,29 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

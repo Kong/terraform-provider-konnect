@@ -11,7 +11,7 @@ import (
 
 func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(resp *shared.HmacAuthPlugin) {
 	if resp != nil {
-		r.Config.Algorithms = []types.String{}
+		r.Config.Algorithms = make([]types.String, 0, len(resp.Config.Algorithms))
 		for _, v := range resp.Config.Algorithms {
 			r.Config.Algorithms = append(r.Config.Algorithms, types.StringValue(string(v)))
 		}
@@ -21,25 +21,13 @@ func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(r
 		} else {
 			r.Config.ClockSkew = types.NumberNull()
 		}
-		r.Config.EnforceHeaders = []types.String{}
+		r.Config.EnforceHeaders = make([]types.String, 0, len(resp.Config.EnforceHeaders))
 		for _, v := range resp.Config.EnforceHeaders {
 			r.Config.EnforceHeaders = append(r.Config.EnforceHeaders, types.StringValue(v))
 		}
 		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 		r.Config.ValidateRequestBody = types.BoolPointerValue(resp.Config.ValidateRequestBody)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -52,7 +40,7 @@ func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(r
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -61,29 +49,29 @@ func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(r
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

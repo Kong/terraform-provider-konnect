@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type TLSMetadataHeadersPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type TLSMetadataHeadersPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type TLSMetadataHeadersPluginOrdering struct {
+	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
+	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
+}
+
+func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 type TLSMetadataHeadersPluginConfig struct {
 	// Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
 	ClientCertFingerprintHeaderName *string `json:"client_cert_fingerprint_header_name,omitempty"`
@@ -65,83 +106,12 @@ func (o *TLSMetadataHeadersPluginConfig) GetInjectClientCertDetails() *bool {
 	return o.InjectClientCertDetails
 }
 
-// TLSMetadataHeadersPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-type TLSMetadataHeadersPluginConsumer struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginConsumer) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type TLSMetadataHeadersPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type TLSMetadataHeadersPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type TLSMetadataHeadersPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type TLSMetadataHeadersPluginOrdering struct {
-	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
-	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type TLSMetadataHeadersPluginProtocols string
 
 const (
-	TLSMetadataHeadersPluginProtocolsGrpc           TLSMetadataHeadersPluginProtocols = "grpc"
-	TLSMetadataHeadersPluginProtocolsGrpcs          TLSMetadataHeadersPluginProtocols = "grpcs"
-	TLSMetadataHeadersPluginProtocolsHTTP           TLSMetadataHeadersPluginProtocols = "http"
-	TLSMetadataHeadersPluginProtocolsHTTPS          TLSMetadataHeadersPluginProtocols = "https"
-	TLSMetadataHeadersPluginProtocolsTCP            TLSMetadataHeadersPluginProtocols = "tcp"
-	TLSMetadataHeadersPluginProtocolsTLS            TLSMetadataHeadersPluginProtocols = "tls"
-	TLSMetadataHeadersPluginProtocolsTLSPassthrough TLSMetadataHeadersPluginProtocols = "tls_passthrough"
-	TLSMetadataHeadersPluginProtocolsUDP            TLSMetadataHeadersPluginProtocols = "udp"
-	TLSMetadataHeadersPluginProtocolsWs             TLSMetadataHeadersPluginProtocols = "ws"
-	TLSMetadataHeadersPluginProtocolsWss            TLSMetadataHeadersPluginProtocols = "wss"
+	TLSMetadataHeadersPluginProtocolsGrpcs TLSMetadataHeadersPluginProtocols = "grpcs"
+	TLSMetadataHeadersPluginProtocolsHTTPS TLSMetadataHeadersPluginProtocols = "https"
+	TLSMetadataHeadersPluginProtocolsTLS   TLSMetadataHeadersPluginProtocols = "tls"
 )
 
 func (e TLSMetadataHeadersPluginProtocols) ToPointer() *TLSMetadataHeadersPluginProtocols {
@@ -153,25 +123,11 @@ func (e *TLSMetadataHeadersPluginProtocols) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
-	case "grpc":
-		fallthrough
 	case "grpcs":
-		fallthrough
-	case "http":
 		fallthrough
 	case "https":
 		fallthrough
-	case "tcp":
-		fallthrough
 	case "tls":
-		fallthrough
-	case "tls_passthrough":
-		fallthrough
-	case "udp":
-		fallthrough
-	case "ws":
-		fallthrough
-	case "wss":
 		*e = TLSMetadataHeadersPluginProtocols(v)
 		return nil
 	default:
@@ -179,7 +135,7 @@ func (e *TLSMetadataHeadersPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// TLSMetadataHeadersPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// TLSMetadataHeadersPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type TLSMetadataHeadersPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -205,10 +161,6 @@ func (o *TLSMetadataHeadersPluginService) GetID() *string {
 
 // TLSMetadataHeadersPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type TLSMetadataHeadersPlugin struct {
-	Config TLSMetadataHeadersPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *TLSMetadataHeadersPluginConsumer      `json:"consumer"`
-	ConsumerGroup *TLSMetadataHeadersPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -217,16 +169,17 @@ type TLSMetadataHeadersPlugin struct {
 	InstanceName *string                           `json:"instance_name,omitempty"`
 	name         string                            `const:"tls-metadata-headers" json:"name"`
 	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *TLSMetadataHeadersPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *TLSMetadataHeadersPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                         `json:"updated_at,omitempty"`
+	Config    TLSMetadataHeadersPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *TLSMetadataHeadersPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *TLSMetadataHeadersPluginService `json:"service,omitempty"`
 }
 
 func (t TLSMetadataHeadersPlugin) MarshalJSON() ([]byte, error) {
@@ -238,27 +191,6 @@ func (t *TLSMetadataHeadersPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *TLSMetadataHeadersPlugin) GetConfig() TLSMetadataHeadersPluginConfig {
-	if o == nil {
-		return TLSMetadataHeadersPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *TLSMetadataHeadersPlugin) GetConsumer() *TLSMetadataHeadersPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *TLSMetadataHeadersPlugin) GetConsumerGroup() *TLSMetadataHeadersPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *TLSMetadataHeadersPlugin) GetCreatedAt() *int64 {
@@ -300,6 +232,27 @@ func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrderi
 	return o.Ordering
 }
 
+func (o *TLSMetadataHeadersPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *TLSMetadataHeadersPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *TLSMetadataHeadersPlugin) GetConfig() TLSMetadataHeadersPluginConfig {
+	if o == nil {
+		return TLSMetadataHeadersPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *TLSMetadataHeadersPlugin) GetProtocols() []TLSMetadataHeadersPluginProtocols {
 	if o == nil {
 		return nil
@@ -321,40 +274,23 @@ func (o *TLSMetadataHeadersPlugin) GetService() *TLSMetadataHeadersPluginService
 	return o.Service
 }
 
-func (o *TLSMetadataHeadersPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *TLSMetadataHeadersPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // TLSMetadataHeadersPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type TLSMetadataHeadersPluginInput struct {
-	Config TLSMetadataHeadersPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *TLSMetadataHeadersPluginConsumer      `json:"consumer"`
-	ConsumerGroup *TLSMetadataHeadersPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                             `json:"enabled,omitempty"`
 	ID           *string                           `json:"id,omitempty"`
 	InstanceName *string                           `json:"instance_name,omitempty"`
 	name         string                            `const:"tls-metadata-headers" json:"name"`
 	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *TLSMetadataHeadersPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *TLSMetadataHeadersPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                       `json:"tags,omitempty"`
+	Config TLSMetadataHeadersPluginConfig `json:"config"`
+	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
+	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *TLSMetadataHeadersPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *TLSMetadataHeadersPluginService `json:"service,omitempty"`
 }
 
 func (t TLSMetadataHeadersPluginInput) MarshalJSON() ([]byte, error) {
@@ -366,27 +302,6 @@ func (t *TLSMetadataHeadersPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *TLSMetadataHeadersPluginInput) GetConfig() TLSMetadataHeadersPluginConfig {
-	if o == nil {
-		return TLSMetadataHeadersPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *TLSMetadataHeadersPluginInput) GetConsumer() *TLSMetadataHeadersPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *TLSMetadataHeadersPluginInput) GetConsumerGroup() *TLSMetadataHeadersPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *TLSMetadataHeadersPluginInput) GetEnabled() *bool {
@@ -421,6 +336,20 @@ func (o *TLSMetadataHeadersPluginInput) GetOrdering() *TLSMetadataHeadersPluginO
 	return o.Ordering
 }
 
+func (o *TLSMetadataHeadersPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *TLSMetadataHeadersPluginInput) GetConfig() TLSMetadataHeadersPluginConfig {
+	if o == nil {
+		return TLSMetadataHeadersPluginConfig{}
+	}
+	return o.Config
+}
+
 func (o *TLSMetadataHeadersPluginInput) GetProtocols() []TLSMetadataHeadersPluginProtocols {
 	if o == nil {
 		return nil
@@ -440,11 +369,4 @@ func (o *TLSMetadataHeadersPluginInput) GetService() *TLSMetadataHeadersPluginSe
 		return nil
 	}
 	return o.Service
-}
-
-func (o *TLSMetadataHeadersPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }

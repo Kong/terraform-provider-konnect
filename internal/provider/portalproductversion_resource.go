@@ -74,6 +74,11 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 									Computed:    true,
 									ElementType: types.StringType,
 								},
+								"available_scopes": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.`,
+								},
 								"credential_type": schema.StringAttribute{
 									Computed:    true,
 									Description: `must be one of ["client_credentials", "self_managed_client_credentials"]`,
@@ -112,6 +117,10 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 								"id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The Application Auth Strategy ID.`,
+								},
+								"key_names": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
 								},
 								"name": schema.StringAttribute{
 									Computed: true,

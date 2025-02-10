@@ -22,7 +22,7 @@ func (r *APIProductDataSourceModel) RefreshFromSharedAPIProduct(resp *shared.API
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.PortalIds = []types.String{}
+		r.PortalIds = make([]types.String, 0, len(resp.PortalIds))
 		for _, v := range resp.PortalIds {
 			r.PortalIds = append(r.PortalIds, types.StringValue(v))
 		}

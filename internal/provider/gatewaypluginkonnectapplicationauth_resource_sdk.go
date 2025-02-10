@@ -10,6 +10,55 @@ import (
 )
 
 func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplicationAuthPluginInput() *shared.KonnectApplicationAuthPluginInput {
+	enabled := new(bool)
+	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
+		*enabled = r.Enabled.ValueBool()
+	} else {
+		enabled = nil
+	}
+	id := new(string)
+	if !r.ID.IsUnknown() && !r.ID.IsNull() {
+		*id = r.ID.ValueString()
+	} else {
+		id = nil
+	}
+	instanceName := new(string)
+	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
+		*instanceName = r.InstanceName.ValueString()
+	} else {
+		instanceName = nil
+	}
+	var ordering *shared.KonnectApplicationAuthPluginOrdering
+	if r.Ordering != nil {
+		var after *shared.KonnectApplicationAuthPluginAfter
+		if r.Ordering.After != nil {
+			var access []string = []string{}
+			for _, accessItem := range r.Ordering.After.Access {
+				access = append(access, accessItem.ValueString())
+			}
+			after = &shared.KonnectApplicationAuthPluginAfter{
+				Access: access,
+			}
+		}
+		var before *shared.KonnectApplicationAuthPluginBefore
+		if r.Ordering.Before != nil {
+			var access1 []string = []string{}
+			for _, accessItem1 := range r.Ordering.Before.Access {
+				access1 = append(access1, accessItem1.ValueString())
+			}
+			before = &shared.KonnectApplicationAuthPluginBefore{
+				Access: access1,
+			}
+		}
+		ordering = &shared.KonnectApplicationAuthPluginOrdering{
+			After:  after,
+			Before: before,
+		}
+	}
+	var tags []string = []string{}
+	for _, tagsItem := range r.Tags {
+		tags = append(tags, tagsItem.ValueString())
+	}
 	authType := new(shared.KonnectApplicationAuthPluginAuthType)
 	if !r.Config.AuthType.IsUnknown() && !r.Config.AuthType.IsNull() {
 		*authType = shared.KonnectApplicationAuthPluginAuthType(r.Config.AuthType.ValueString())
@@ -865,6 +914,10 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 				var introspectionPostArgsClient []string = []string{}
 				for _, introspectionPostArgsClientItem := range openidConnectItem.Config.IntrospectionPostArgsClient {
 					introspectionPostArgsClient = append(introspectionPostArgsClient, introspectionPostArgsClientItem.ValueString())
+				}
+				var introspectionPostArgsClientHeaders []string = []string{}
+				for _, introspectionPostArgsClientHeadersItem := range openidConnectItem.Config.IntrospectionPostArgsClientHeaders {
+					introspectionPostArgsClientHeaders = append(introspectionPostArgsClientHeaders, introspectionPostArgsClientHeadersItem.ValueString())
 				}
 				var introspectionPostArgsNames []string = []string{}
 				for _, introspectionPostArgsNamesItem := range openidConnectItem.Config.IntrospectionPostArgsNames {
@@ -1838,6 +1891,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 					IntrospectionHeadersValues:             introspectionHeadersValues,
 					IntrospectionHint:                      introspectionHint,
 					IntrospectionPostArgsClient:            introspectionPostArgsClient,
+					IntrospectionPostArgsClientHeaders:     introspectionPostArgsClientHeaders,
 					IntrospectionPostArgsNames:             introspectionPostArgsNames,
 					IntrospectionPostArgsValues:            introspectionPostArgsValues,
 					IntrospectionTokenParamName:            introspectionTokenParamName,
@@ -1988,119 +2042,44 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) ToSharedKonnectApplic
 		Scope:        scope,
 		V2Strategies: v2Strategies,
 	}
-	var consumer *shared.KonnectApplicationAuthPluginConsumer
-	if r.Consumer != nil {
-		id := new(string)
-		if !r.Consumer.ID.IsUnknown() && !r.Consumer.ID.IsNull() {
-			*id = r.Consumer.ID.ValueString()
-		} else {
-			id = nil
-		}
-		consumer = &shared.KonnectApplicationAuthPluginConsumer{
-			ID: id,
-		}
-	}
-	var consumerGroup *shared.KonnectApplicationAuthPluginConsumerGroup
-	if r.ConsumerGroup != nil {
-		id1 := new(string)
-		if !r.ConsumerGroup.ID.IsUnknown() && !r.ConsumerGroup.ID.IsNull() {
-			*id1 = r.ConsumerGroup.ID.ValueString()
-		} else {
-			id1 = nil
-		}
-		consumerGroup = &shared.KonnectApplicationAuthPluginConsumerGroup{
-			ID: id1,
-		}
-	}
-	enabled := new(bool)
-	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
-		*enabled = r.Enabled.ValueBool()
-	} else {
-		enabled = nil
-	}
-	id2 := new(string)
-	if !r.ID.IsUnknown() && !r.ID.IsNull() {
-		*id2 = r.ID.ValueString()
-	} else {
-		id2 = nil
-	}
-	instanceName := new(string)
-	if !r.InstanceName.IsUnknown() && !r.InstanceName.IsNull() {
-		*instanceName = r.InstanceName.ValueString()
-	} else {
-		instanceName = nil
-	}
-	var ordering *shared.KonnectApplicationAuthPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.KonnectApplicationAuthPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.KonnectApplicationAuthPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.KonnectApplicationAuthPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.KonnectApplicationAuthPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.KonnectApplicationAuthPluginOrdering{
-			After:  after,
-			Before: before,
-		}
-	}
 	var protocols []shared.KonnectApplicationAuthPluginProtocols = []shared.KonnectApplicationAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KonnectApplicationAuthPluginProtocols(protocolsItem.ValueString()))
 	}
 	var route *shared.KonnectApplicationAuthPluginRoute
 	if r.Route != nil {
-		id3 := new(string)
+		id1 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id3 = r.Route.ID.ValueString()
+			*id1 = r.Route.ID.ValueString()
 		} else {
-			id3 = nil
+			id1 = nil
 		}
 		route = &shared.KonnectApplicationAuthPluginRoute{
-			ID: id3,
+			ID: id1,
 		}
 	}
 	var service *shared.KonnectApplicationAuthPluginService
 	if r.Service != nil {
-		id4 := new(string)
+		id2 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id4 = r.Service.ID.ValueString()
+			*id2 = r.Service.ID.ValueString()
 		} else {
-			id4 = nil
+			id2 = nil
 		}
 		service = &shared.KonnectApplicationAuthPluginService{
-			ID: id4,
+			ID: id2,
 		}
 	}
-	var tags []string = []string{}
-	for _, tagsItem := range r.Tags {
-		tags = append(tags, tagsItem.ValueString())
-	}
 	out := shared.KonnectApplicationAuthPluginInput{
-		Config:        config,
-		Consumer:      consumer,
-		ConsumerGroup: consumerGroup,
-		Enabled:       enabled,
-		ID:            id2,
-		InstanceName:  instanceName,
-		Ordering:      ordering,
-		Protocols:     protocols,
-		Route:         route,
-		Service:       service,
-		Tags:          tags,
+		Enabled:      enabled,
+		ID:           id,
+		InstanceName: instanceName,
+		Ordering:     ordering,
+		Tags:         tags,
+		Config:       config,
+		Protocols:    protocols,
+		Route:        route,
+		Service:      service,
 	}
 	return &out
 }
@@ -2112,7 +2091,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 		} else {
 			r.Config.AuthType = types.StringNull()
 		}
-		r.Config.KeyNames = []types.String{}
+		r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
 		for _, v := range resp.Config.KeyNames {
 			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
 		}
@@ -2127,7 +2106,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 			}
 			for keyAuthCount, keyAuthItem := range resp.Config.V2Strategies.KeyAuth {
 				var keyAuth1 tfTypes.KonnectApplicationAuthPluginKeyAuth
-				keyAuth1.Config.KeyNames = []types.String{}
+				keyAuth1.Config.KeyNames = make([]types.String, 0, len(keyAuthItem.Config.KeyNames))
 				for _, v := range keyAuthItem.Config.KeyNames {
 					keyAuth1.Config.KeyNames = append(keyAuth1.Config.KeyNames, types.StringValue(v))
 				}
@@ -2150,23 +2129,23 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 				} else {
 					openidConnect1.Config = &tfTypes.KonnectApplicationAuthPluginConfigConfig{}
 					openidConnect1.Config.Anonymous = types.StringPointerValue(openidConnectItem.Config.Anonymous)
-					openidConnect1.Config.Audience = []types.String{}
+					openidConnect1.Config.Audience = make([]types.String, 0, len(openidConnectItem.Config.Audience))
 					for _, v := range openidConnectItem.Config.Audience {
 						openidConnect1.Config.Audience = append(openidConnect1.Config.Audience, types.StringValue(v))
 					}
-					openidConnect1.Config.AudienceClaim = []types.String{}
+					openidConnect1.Config.AudienceClaim = make([]types.String, 0, len(openidConnectItem.Config.AudienceClaim))
 					for _, v := range openidConnectItem.Config.AudienceClaim {
 						openidConnect1.Config.AudienceClaim = append(openidConnect1.Config.AudienceClaim, types.StringValue(v))
 					}
-					openidConnect1.Config.AudienceRequired = []types.String{}
+					openidConnect1.Config.AudienceRequired = make([]types.String, 0, len(openidConnectItem.Config.AudienceRequired))
 					for _, v := range openidConnectItem.Config.AudienceRequired {
 						openidConnect1.Config.AudienceRequired = append(openidConnect1.Config.AudienceRequired, types.StringValue(v))
 					}
-					openidConnect1.Config.AuthMethods = []types.String{}
+					openidConnect1.Config.AuthMethods = make([]types.String, 0, len(openidConnectItem.Config.AuthMethods))
 					for _, v := range openidConnectItem.Config.AuthMethods {
 						openidConnect1.Config.AuthMethods = append(openidConnect1.Config.AuthMethods, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.AuthenticatedGroupsClaim = []types.String{}
+					openidConnect1.Config.AuthenticatedGroupsClaim = make([]types.String, 0, len(openidConnectItem.Config.AuthenticatedGroupsClaim))
 					for _, v := range openidConnectItem.Config.AuthenticatedGroupsClaim {
 						openidConnect1.Config.AuthenticatedGroupsClaim = append(openidConnect1.Config.AuthenticatedGroupsClaim, types.StringValue(v))
 					}
@@ -2181,15 +2160,15 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					}
 					openidConnect1.Config.AuthorizationCookieSecure = types.BoolPointerValue(openidConnectItem.Config.AuthorizationCookieSecure)
 					openidConnect1.Config.AuthorizationEndpoint = types.StringPointerValue(openidConnectItem.Config.AuthorizationEndpoint)
-					openidConnect1.Config.AuthorizationQueryArgsClient = []types.String{}
+					openidConnect1.Config.AuthorizationQueryArgsClient = make([]types.String, 0, len(openidConnectItem.Config.AuthorizationQueryArgsClient))
 					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsClient {
 						openidConnect1.Config.AuthorizationQueryArgsClient = append(openidConnect1.Config.AuthorizationQueryArgsClient, types.StringValue(v))
 					}
-					openidConnect1.Config.AuthorizationQueryArgsNames = []types.String{}
+					openidConnect1.Config.AuthorizationQueryArgsNames = make([]types.String, 0, len(openidConnectItem.Config.AuthorizationQueryArgsNames))
 					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsNames {
 						openidConnect1.Config.AuthorizationQueryArgsNames = append(openidConnect1.Config.AuthorizationQueryArgsNames, types.StringValue(v))
 					}
-					openidConnect1.Config.AuthorizationQueryArgsValues = []types.String{}
+					openidConnect1.Config.AuthorizationQueryArgsValues = make([]types.String, 0, len(openidConnectItem.Config.AuthorizationQueryArgsValues))
 					for _, v := range openidConnectItem.Config.AuthorizationQueryArgsValues {
 						openidConnect1.Config.AuthorizationQueryArgsValues = append(openidConnect1.Config.AuthorizationQueryArgsValues, types.StringValue(v))
 					}
@@ -2199,7 +2178,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.AuthorizationRollingTimeout = types.NumberNull()
 					}
 					openidConnect1.Config.BearerTokenCookieName = types.StringPointerValue(openidConnectItem.Config.BearerTokenCookieName)
-					openidConnect1.Config.BearerTokenParamType = []types.String{}
+					openidConnect1.Config.BearerTokenParamType = make([]types.String, 0, len(openidConnectItem.Config.BearerTokenParamType))
 					for _, v := range openidConnectItem.Config.BearerTokenParamType {
 						openidConnect1.Config.BearerTokenParamType = append(openidConnect1.Config.BearerTokenParamType, types.StringValue(string(v)))
 					}
@@ -2234,24 +2213,24 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.CacheTTLResurrect = types.NumberNull()
 					}
 					openidConnect1.Config.CacheUserInfo = types.BoolPointerValue(openidConnectItem.Config.CacheUserInfo)
-					openidConnect1.Config.ClaimsForbidden = []types.String{}
+					openidConnect1.Config.ClaimsForbidden = make([]types.String, 0, len(openidConnectItem.Config.ClaimsForbidden))
 					for _, v := range openidConnectItem.Config.ClaimsForbidden {
 						openidConnect1.Config.ClaimsForbidden = append(openidConnect1.Config.ClaimsForbidden, types.StringValue(v))
 					}
-					openidConnect1.Config.ClientAlg = []types.String{}
+					openidConnect1.Config.ClientAlg = make([]types.String, 0, len(openidConnectItem.Config.ClientAlg))
 					for _, v := range openidConnectItem.Config.ClientAlg {
 						openidConnect1.Config.ClientAlg = append(openidConnect1.Config.ClientAlg, types.StringValue(string(v)))
 					}
 					openidConnect1.Config.ClientArg = types.StringPointerValue(openidConnectItem.Config.ClientArg)
-					openidConnect1.Config.ClientAuth = []types.String{}
+					openidConnect1.Config.ClientAuth = make([]types.String, 0, len(openidConnectItem.Config.ClientAuth))
 					for _, v := range openidConnectItem.Config.ClientAuth {
 						openidConnect1.Config.ClientAuth = append(openidConnect1.Config.ClientAuth, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.ClientCredentialsParamType = []types.String{}
+					openidConnect1.Config.ClientCredentialsParamType = make([]types.String, 0, len(openidConnectItem.Config.ClientCredentialsParamType))
 					for _, v := range openidConnectItem.Config.ClientCredentialsParamType {
 						openidConnect1.Config.ClientCredentialsParamType = append(openidConnect1.Config.ClientCredentialsParamType, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.ClientID = []types.String{}
+					openidConnect1.Config.ClientID = make([]types.String, 0, len(openidConnectItem.Config.ClientID))
 					for _, v := range openidConnectItem.Config.ClientID {
 						openidConnect1.Config.ClientID = append(openidConnect1.Config.ClientID, types.StringValue(v))
 					}
@@ -2266,7 +2245,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						clientJwk1.E = types.StringPointerValue(clientJwkItem.E)
 						clientJwk1.Issuer = types.StringPointerValue(clientJwkItem.Issuer)
 						clientJwk1.K = types.StringPointerValue(clientJwkItem.K)
-						clientJwk1.KeyOps = []types.String{}
+						clientJwk1.KeyOps = make([]types.String, 0, len(clientJwkItem.KeyOps))
 						for _, v := range clientJwkItem.KeyOps {
 							clientJwk1.KeyOps = append(clientJwk1.KeyOps, types.StringValue(v))
 						}
@@ -2281,7 +2260,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						clientJwk1.T = types.StringPointerValue(clientJwkItem.T)
 						clientJwk1.Use = types.StringPointerValue(clientJwkItem.Use)
 						clientJwk1.X = types.StringPointerValue(clientJwkItem.X)
-						clientJwk1.X5c = []types.String{}
+						clientJwk1.X5c = make([]types.String, 0, len(clientJwkItem.X5c))
 						for _, v := range clientJwkItem.X5c {
 							clientJwk1.X5c = append(clientJwk1.X5c, types.StringValue(v))
 						}
@@ -2319,14 +2298,14 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 							openidConnect1.Config.ClientJwk[clientJwkCount].Y = clientJwk1.Y
 						}
 					}
-					openidConnect1.Config.ClientSecret = []types.String{}
+					openidConnect1.Config.ClientSecret = make([]types.String, 0, len(openidConnectItem.Config.ClientSecret))
 					for _, v := range openidConnectItem.Config.ClientSecret {
 						openidConnect1.Config.ClientSecret = append(openidConnect1.Config.ClientSecret, types.StringValue(v))
 					}
 					openidConnect1.Config.ClusterCacheRedis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ClusterMaxRedirections)
-					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.ClusterCacheRedis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount, clusterNodesItem := range openidConnectItem.Config.ClusterCacheRedis.ClusterNodes {
-						var clusterNodes1 tfTypes.ClusterNodes
+						var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 						clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 						if clusterNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.ClusterNodes) {
@@ -2347,9 +2326,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.ClusterCacheRedis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.ReadTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.ClusterCacheRedis.SendTimeout)
 					openidConnect1.Config.ClusterCacheRedis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.ClusterCacheRedis.SentinelMaster)
-					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.ClusterCacheRedis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount, sentinelNodesItem := range openidConnectItem.Config.ClusterCacheRedis.SentinelNodes {
-						var sentinelNodes1 tfTypes.SentinelNodes
+						var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 						sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 						if sentinelNodesCount+1 > len(openidConnect1.Config.ClusterCacheRedis.SentinelNodes) {
@@ -2375,43 +2354,43 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.ClusterCacheStrategy = types.StringNull()
 					}
-					openidConnect1.Config.ConsumerBy = []types.String{}
+					openidConnect1.Config.ConsumerBy = make([]types.String, 0, len(openidConnectItem.Config.ConsumerBy))
 					for _, v := range openidConnectItem.Config.ConsumerBy {
 						openidConnect1.Config.ConsumerBy = append(openidConnect1.Config.ConsumerBy, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.ConsumerClaim = []types.String{}
+					openidConnect1.Config.ConsumerClaim = make([]types.String, 0, len(openidConnectItem.Config.ConsumerClaim))
 					for _, v := range openidConnectItem.Config.ConsumerClaim {
 						openidConnect1.Config.ConsumerClaim = append(openidConnect1.Config.ConsumerClaim, types.StringValue(v))
 					}
 					openidConnect1.Config.ConsumerOptional = types.BoolPointerValue(openidConnectItem.Config.ConsumerOptional)
-					openidConnect1.Config.CredentialClaim = []types.String{}
+					openidConnect1.Config.CredentialClaim = make([]types.String, 0, len(openidConnectItem.Config.CredentialClaim))
 					for _, v := range openidConnectItem.Config.CredentialClaim {
 						openidConnect1.Config.CredentialClaim = append(openidConnect1.Config.CredentialClaim, types.StringValue(v))
 					}
-					openidConnect1.Config.DisableSession = []types.String{}
+					openidConnect1.Config.DisableSession = make([]types.String, 0, len(openidConnectItem.Config.DisableSession))
 					for _, v := range openidConnectItem.Config.DisableSession {
 						openidConnect1.Config.DisableSession = append(openidConnect1.Config.DisableSession, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.DiscoveryHeadersNames = []types.String{}
+					openidConnect1.Config.DiscoveryHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.DiscoveryHeadersNames))
 					for _, v := range openidConnectItem.Config.DiscoveryHeadersNames {
 						openidConnect1.Config.DiscoveryHeadersNames = append(openidConnect1.Config.DiscoveryHeadersNames, types.StringValue(v))
 					}
-					openidConnect1.Config.DiscoveryHeadersValues = []types.String{}
+					openidConnect1.Config.DiscoveryHeadersValues = make([]types.String, 0, len(openidConnectItem.Config.DiscoveryHeadersValues))
 					for _, v := range openidConnectItem.Config.DiscoveryHeadersValues {
 						openidConnect1.Config.DiscoveryHeadersValues = append(openidConnect1.Config.DiscoveryHeadersValues, types.StringValue(v))
 					}
 					openidConnect1.Config.DisplayErrors = types.BoolPointerValue(openidConnectItem.Config.DisplayErrors)
-					openidConnect1.Config.Domains = []types.String{}
+					openidConnect1.Config.Domains = make([]types.String, 0, len(openidConnectItem.Config.Domains))
 					for _, v := range openidConnectItem.Config.Domains {
 						openidConnect1.Config.Domains = append(openidConnect1.Config.Domains, types.StringValue(v))
 					}
 					openidConnect1.Config.DownstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenHeader)
 					openidConnect1.Config.DownstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.DownstreamAccessTokenJwkHeader)
-					openidConnect1.Config.DownstreamHeadersClaims = []types.String{}
+					openidConnect1.Config.DownstreamHeadersClaims = make([]types.String, 0, len(openidConnectItem.Config.DownstreamHeadersClaims))
 					for _, v := range openidConnectItem.Config.DownstreamHeadersClaims {
 						openidConnect1.Config.DownstreamHeadersClaims = append(openidConnect1.Config.DownstreamHeadersClaims, types.StringValue(v))
 					}
-					openidConnect1.Config.DownstreamHeadersNames = []types.String{}
+					openidConnect1.Config.DownstreamHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.DownstreamHeadersNames))
 					for _, v := range openidConnectItem.Config.DownstreamHeadersNames {
 						openidConnect1.Config.DownstreamHeadersNames = append(openidConnect1.Config.DownstreamHeadersNames, types.StringValue(v))
 					}
@@ -2432,21 +2411,21 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.EnableHsSignatures = types.BoolPointerValue(openidConnectItem.Config.EnableHsSignatures)
 					openidConnect1.Config.EndSessionEndpoint = types.StringPointerValue(openidConnectItem.Config.EndSessionEndpoint)
 					openidConnect1.Config.ExposeErrorCode = types.BoolPointerValue(openidConnectItem.Config.ExposeErrorCode)
-					openidConnect1.Config.ExtraJwksUris = []types.String{}
+					openidConnect1.Config.ExtraJwksUris = make([]types.String, 0, len(openidConnectItem.Config.ExtraJwksUris))
 					for _, v := range openidConnectItem.Config.ExtraJwksUris {
 						openidConnect1.Config.ExtraJwksUris = append(openidConnect1.Config.ExtraJwksUris, types.StringValue(v))
 					}
 					openidConnect1.Config.ForbiddenDestroySession = types.BoolPointerValue(openidConnectItem.Config.ForbiddenDestroySession)
 					openidConnect1.Config.ForbiddenErrorMessage = types.StringPointerValue(openidConnectItem.Config.ForbiddenErrorMessage)
-					openidConnect1.Config.ForbiddenRedirectURI = []types.String{}
+					openidConnect1.Config.ForbiddenRedirectURI = make([]types.String, 0, len(openidConnectItem.Config.ForbiddenRedirectURI))
 					for _, v := range openidConnectItem.Config.ForbiddenRedirectURI {
 						openidConnect1.Config.ForbiddenRedirectURI = append(openidConnect1.Config.ForbiddenRedirectURI, types.StringValue(v))
 					}
-					openidConnect1.Config.GroupsClaim = []types.String{}
+					openidConnect1.Config.GroupsClaim = make([]types.String, 0, len(openidConnectItem.Config.GroupsClaim))
 					for _, v := range openidConnectItem.Config.GroupsClaim {
 						openidConnect1.Config.GroupsClaim = append(openidConnect1.Config.GroupsClaim, types.StringValue(v))
 					}
-					openidConnect1.Config.GroupsRequired = []types.String{}
+					openidConnect1.Config.GroupsRequired = make([]types.String, 0, len(openidConnectItem.Config.GroupsRequired))
 					for _, v := range openidConnectItem.Config.GroupsRequired {
 						openidConnect1.Config.GroupsRequired = append(openidConnect1.Config.GroupsRequired, types.StringValue(v))
 					}
@@ -2461,11 +2440,11 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.HTTPSProxy = types.StringPointerValue(openidConnectItem.Config.HTTPSProxy)
 					openidConnect1.Config.HTTPSProxyAuthorization = types.StringPointerValue(openidConnectItem.Config.HTTPSProxyAuthorization)
 					openidConnect1.Config.IDTokenParamName = types.StringPointerValue(openidConnectItem.Config.IDTokenParamName)
-					openidConnect1.Config.IDTokenParamType = []types.String{}
+					openidConnect1.Config.IDTokenParamType = make([]types.String, 0, len(openidConnectItem.Config.IDTokenParamType))
 					for _, v := range openidConnectItem.Config.IDTokenParamType {
 						openidConnect1.Config.IDTokenParamType = append(openidConnect1.Config.IDTokenParamType, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.IgnoreSignature = []types.String{}
+					openidConnect1.Config.IgnoreSignature = make([]types.String, 0, len(openidConnectItem.Config.IgnoreSignature))
 					for _, v := range openidConnectItem.Config.IgnoreSignature {
 						openidConnect1.Config.IgnoreSignature = append(openidConnect1.Config.IgnoreSignature, types.StringValue(string(v)))
 					}
@@ -2482,34 +2461,38 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.IntrospectionEndpointAuthMethod = types.StringNull()
 					}
-					openidConnect1.Config.IntrospectionHeadersClient = []types.String{}
+					openidConnect1.Config.IntrospectionHeadersClient = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionHeadersClient))
 					for _, v := range openidConnectItem.Config.IntrospectionHeadersClient {
 						openidConnect1.Config.IntrospectionHeadersClient = append(openidConnect1.Config.IntrospectionHeadersClient, types.StringValue(v))
 					}
-					openidConnect1.Config.IntrospectionHeadersNames = []types.String{}
+					openidConnect1.Config.IntrospectionHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionHeadersNames))
 					for _, v := range openidConnectItem.Config.IntrospectionHeadersNames {
 						openidConnect1.Config.IntrospectionHeadersNames = append(openidConnect1.Config.IntrospectionHeadersNames, types.StringValue(v))
 					}
-					openidConnect1.Config.IntrospectionHeadersValues = []types.String{}
+					openidConnect1.Config.IntrospectionHeadersValues = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionHeadersValues))
 					for _, v := range openidConnectItem.Config.IntrospectionHeadersValues {
 						openidConnect1.Config.IntrospectionHeadersValues = append(openidConnect1.Config.IntrospectionHeadersValues, types.StringValue(v))
 					}
 					openidConnect1.Config.IntrospectionHint = types.StringPointerValue(openidConnectItem.Config.IntrospectionHint)
-					openidConnect1.Config.IntrospectionPostArgsClient = []types.String{}
+					openidConnect1.Config.IntrospectionPostArgsClient = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionPostArgsClient))
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClient {
 						openidConnect1.Config.IntrospectionPostArgsClient = append(openidConnect1.Config.IntrospectionPostArgsClient, types.StringValue(v))
 					}
-					openidConnect1.Config.IntrospectionPostArgsNames = []types.String{}
+					openidConnect1.Config.IntrospectionPostArgsClientHeaders = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionPostArgsClientHeaders))
+					for _, v := range openidConnectItem.Config.IntrospectionPostArgsClientHeaders {
+						openidConnect1.Config.IntrospectionPostArgsClientHeaders = append(openidConnect1.Config.IntrospectionPostArgsClientHeaders, types.StringValue(v))
+					}
+					openidConnect1.Config.IntrospectionPostArgsNames = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionPostArgsNames))
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsNames {
 						openidConnect1.Config.IntrospectionPostArgsNames = append(openidConnect1.Config.IntrospectionPostArgsNames, types.StringValue(v))
 					}
-					openidConnect1.Config.IntrospectionPostArgsValues = []types.String{}
+					openidConnect1.Config.IntrospectionPostArgsValues = make([]types.String, 0, len(openidConnectItem.Config.IntrospectionPostArgsValues))
 					for _, v := range openidConnectItem.Config.IntrospectionPostArgsValues {
 						openidConnect1.Config.IntrospectionPostArgsValues = append(openidConnect1.Config.IntrospectionPostArgsValues, types.StringValue(v))
 					}
 					openidConnect1.Config.IntrospectionTokenParamName = types.StringPointerValue(openidConnectItem.Config.IntrospectionTokenParamName)
 					openidConnect1.Config.Issuer = types.StringValue(openidConnectItem.Config.Issuer)
-					openidConnect1.Config.IssuersAllowed = []types.String{}
+					openidConnect1.Config.IssuersAllowed = make([]types.String, 0, len(openidConnectItem.Config.IssuersAllowed))
 					for _, v := range openidConnectItem.Config.IssuersAllowed {
 						openidConnect1.Config.IssuersAllowed = append(openidConnect1.Config.IssuersAllowed, types.StringValue(v))
 					}
@@ -2526,7 +2509,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.LoginAction = types.StringNull()
 					}
-					openidConnect1.Config.LoginMethods = []types.String{}
+					openidConnect1.Config.LoginMethods = make([]types.String, 0, len(openidConnectItem.Config.LoginMethods))
 					for _, v := range openidConnectItem.Config.LoginMethods {
 						openidConnect1.Config.LoginMethods = append(openidConnect1.Config.LoginMethods, types.StringValue(string(v)))
 					}
@@ -2535,21 +2518,21 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.LoginRedirectMode = types.StringNull()
 					}
-					openidConnect1.Config.LoginRedirectURI = []types.String{}
+					openidConnect1.Config.LoginRedirectURI = make([]types.String, 0, len(openidConnectItem.Config.LoginRedirectURI))
 					for _, v := range openidConnectItem.Config.LoginRedirectURI {
 						openidConnect1.Config.LoginRedirectURI = append(openidConnect1.Config.LoginRedirectURI, types.StringValue(v))
 					}
-					openidConnect1.Config.LoginTokens = []types.String{}
+					openidConnect1.Config.LoginTokens = make([]types.String, 0, len(openidConnectItem.Config.LoginTokens))
 					for _, v := range openidConnectItem.Config.LoginTokens {
 						openidConnect1.Config.LoginTokens = append(openidConnect1.Config.LoginTokens, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.LogoutMethods = []types.String{}
+					openidConnect1.Config.LogoutMethods = make([]types.String, 0, len(openidConnectItem.Config.LogoutMethods))
 					for _, v := range openidConnectItem.Config.LogoutMethods {
 						openidConnect1.Config.LogoutMethods = append(openidConnect1.Config.LogoutMethods, types.StringValue(string(v)))
 					}
 					openidConnect1.Config.LogoutPostArg = types.StringPointerValue(openidConnectItem.Config.LogoutPostArg)
 					openidConnect1.Config.LogoutQueryArg = types.StringPointerValue(openidConnectItem.Config.LogoutQueryArg)
-					openidConnect1.Config.LogoutRedirectURI = []types.String{}
+					openidConnect1.Config.LogoutRedirectURI = make([]types.String, 0, len(openidConnectItem.Config.LogoutRedirectURI))
 					for _, v := range openidConnectItem.Config.LogoutRedirectURI {
 						openidConnect1.Config.LogoutRedirectURI = append(openidConnect1.Config.LogoutRedirectURI, types.StringValue(v))
 					}
@@ -2566,7 +2549,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.MtlsRevocationEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsRevocationEndpoint)
 					openidConnect1.Config.MtlsTokenEndpoint = types.StringPointerValue(openidConnectItem.Config.MtlsTokenEndpoint)
 					openidConnect1.Config.NoProxy = types.StringPointerValue(openidConnectItem.Config.NoProxy)
-					openidConnect1.Config.PasswordParamType = []types.String{}
+					openidConnect1.Config.PasswordParamType = make([]types.String, 0, len(openidConnectItem.Config.PasswordParamType))
 					for _, v := range openidConnectItem.Config.PasswordParamType {
 						openidConnect1.Config.PasswordParamType = append(openidConnect1.Config.PasswordParamType, types.StringValue(string(v)))
 					}
@@ -2588,14 +2571,14 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.PushedAuthorizationRequestEndpointAuthMethod = types.StringNull()
 					}
-					openidConnect1.Config.RedirectURI = []types.String{}
+					openidConnect1.Config.RedirectURI = make([]types.String, 0, len(openidConnectItem.Config.RedirectURI))
 					for _, v := range openidConnectItem.Config.RedirectURI {
 						openidConnect1.Config.RedirectURI = append(openidConnect1.Config.RedirectURI, types.StringValue(v))
 					}
 					openidConnect1.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(openidConnectItem.Config.Redis.ClusterMaxRedirections)
-					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+					openidConnect1.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 					for clusterNodesCount1, clusterNodesItem1 := range openidConnectItem.Config.Redis.ClusterNodes {
-						var clusterNodes3 tfTypes.ClusterNodes
+						var clusterNodes3 tfTypes.AiProxyAdvancedPluginClusterNodes
 						clusterNodes3.IP = types.StringPointerValue(clusterNodesItem1.IP)
 						clusterNodes3.Port = types.Int64PointerValue(clusterNodesItem1.Port)
 						if clusterNodesCount1+1 > len(openidConnect1.Config.Redis.ClusterNodes) {
@@ -2617,9 +2600,9 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					openidConnect1.Config.Redis.ReadTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.ReadTimeout)
 					openidConnect1.Config.Redis.SendTimeout = types.Int64PointerValue(openidConnectItem.Config.Redis.SendTimeout)
 					openidConnect1.Config.Redis.SentinelMaster = types.StringPointerValue(openidConnectItem.Config.Redis.SentinelMaster)
-					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+					openidConnect1.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 					for sentinelNodesCount1, sentinelNodesItem1 := range openidConnectItem.Config.Redis.SentinelNodes {
-						var sentinelNodes3 tfTypes.SentinelNodes
+						var sentinelNodes3 tfTypes.AiProxyAdvancedPluginSentinelNodes
 						sentinelNodes3.Host = types.StringPointerValue(sentinelNodesItem1.Host)
 						sentinelNodes3.Port = types.Int64PointerValue(sentinelNodesItem1.Port)
 						if sentinelNodesCount1+1 > len(openidConnect1.Config.Redis.SentinelNodes) {
@@ -2647,7 +2630,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.RediscoveryLifetime = types.NumberNull()
 					}
 					openidConnect1.Config.RefreshTokenParamName = types.StringPointerValue(openidConnectItem.Config.RefreshTokenParamName)
-					openidConnect1.Config.RefreshTokenParamType = []types.String{}
+					openidConnect1.Config.RefreshTokenParamType = make([]types.String, 0, len(openidConnectItem.Config.RefreshTokenParamType))
 					for _, v := range openidConnectItem.Config.RefreshTokenParamType {
 						openidConnect1.Config.RefreshTokenParamType = append(openidConnect1.Config.RefreshTokenParamType, types.StringValue(string(v)))
 					}
@@ -2661,7 +2644,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.ResponseMode = types.StringNull()
 					}
-					openidConnect1.Config.ResponseType = []types.String{}
+					openidConnect1.Config.ResponseType = make([]types.String, 0, len(openidConnectItem.Config.ResponseType))
 					for _, v := range openidConnectItem.Config.ResponseType {
 						openidConnect1.Config.ResponseType = append(openidConnect1.Config.ResponseType, types.StringValue(v))
 					}
@@ -2673,24 +2656,24 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.RevocationEndpointAuthMethod = types.StringNull()
 					}
 					openidConnect1.Config.RevocationTokenParamName = types.StringPointerValue(openidConnectItem.Config.RevocationTokenParamName)
-					openidConnect1.Config.RolesClaim = []types.String{}
+					openidConnect1.Config.RolesClaim = make([]types.String, 0, len(openidConnectItem.Config.RolesClaim))
 					for _, v := range openidConnectItem.Config.RolesClaim {
 						openidConnect1.Config.RolesClaim = append(openidConnect1.Config.RolesClaim, types.StringValue(v))
 					}
-					openidConnect1.Config.RolesRequired = []types.String{}
+					openidConnect1.Config.RolesRequired = make([]types.String, 0, len(openidConnectItem.Config.RolesRequired))
 					for _, v := range openidConnectItem.Config.RolesRequired {
 						openidConnect1.Config.RolesRequired = append(openidConnect1.Config.RolesRequired, types.StringValue(v))
 					}
 					openidConnect1.Config.RunOnPreflight = types.BoolPointerValue(openidConnectItem.Config.RunOnPreflight)
-					openidConnect1.Config.Scopes = []types.String{}
+					openidConnect1.Config.Scopes = make([]types.String, 0, len(openidConnectItem.Config.Scopes))
 					for _, v := range openidConnectItem.Config.Scopes {
 						openidConnect1.Config.Scopes = append(openidConnect1.Config.Scopes, types.StringValue(v))
 					}
-					openidConnect1.Config.ScopesClaim = []types.String{}
+					openidConnect1.Config.ScopesClaim = make([]types.String, 0, len(openidConnectItem.Config.ScopesClaim))
 					for _, v := range openidConnectItem.Config.ScopesClaim {
 						openidConnect1.Config.ScopesClaim = append(openidConnect1.Config.ScopesClaim, types.StringValue(v))
 					}
-					openidConnect1.Config.ScopesRequired = []types.String{}
+					openidConnect1.Config.ScopesRequired = make([]types.String, 0, len(openidConnectItem.Config.ScopesRequired))
 					for _, v := range openidConnectItem.Config.ScopesRequired {
 						openidConnect1.Config.ScopesRequired = append(openidConnect1.Config.ScopesRequired, types.StringValue(v))
 					}
@@ -2735,11 +2718,11 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 					} else {
 						openidConnect1.Config.SessionRememberRollingTimeout = types.NumberNull()
 					}
-					openidConnect1.Config.SessionRequestHeaders = []types.String{}
+					openidConnect1.Config.SessionRequestHeaders = make([]types.String, 0, len(openidConnectItem.Config.SessionRequestHeaders))
 					for _, v := range openidConnectItem.Config.SessionRequestHeaders {
 						openidConnect1.Config.SessionRequestHeaders = append(openidConnect1.Config.SessionRequestHeaders, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.SessionResponseHeaders = []types.String{}
+					openidConnect1.Config.SessionResponseHeaders = make([]types.String, 0, len(openidConnectItem.Config.SessionResponseHeaders))
 					for _, v := range openidConnectItem.Config.SessionResponseHeaders {
 						openidConnect1.Config.SessionResponseHeaders = append(openidConnect1.Config.SessionResponseHeaders, types.StringValue(string(v)))
 					}
@@ -2771,56 +2754,56 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.TokenEndpointAuthMethod = types.StringNull()
 					}
 					openidConnect1.Config.TokenExchangeEndpoint = types.StringPointerValue(openidConnectItem.Config.TokenExchangeEndpoint)
-					openidConnect1.Config.TokenHeadersClient = []types.String{}
+					openidConnect1.Config.TokenHeadersClient = make([]types.String, 0, len(openidConnectItem.Config.TokenHeadersClient))
 					for _, v := range openidConnectItem.Config.TokenHeadersClient {
 						openidConnect1.Config.TokenHeadersClient = append(openidConnect1.Config.TokenHeadersClient, types.StringValue(v))
 					}
-					openidConnect1.Config.TokenHeadersGrants = []types.String{}
+					openidConnect1.Config.TokenHeadersGrants = make([]types.String, 0, len(openidConnectItem.Config.TokenHeadersGrants))
 					for _, v := range openidConnectItem.Config.TokenHeadersGrants {
 						openidConnect1.Config.TokenHeadersGrants = append(openidConnect1.Config.TokenHeadersGrants, types.StringValue(string(v)))
 					}
-					openidConnect1.Config.TokenHeadersNames = []types.String{}
+					openidConnect1.Config.TokenHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.TokenHeadersNames))
 					for _, v := range openidConnectItem.Config.TokenHeadersNames {
 						openidConnect1.Config.TokenHeadersNames = append(openidConnect1.Config.TokenHeadersNames, types.StringValue(v))
 					}
 					openidConnect1.Config.TokenHeadersPrefix = types.StringPointerValue(openidConnectItem.Config.TokenHeadersPrefix)
-					openidConnect1.Config.TokenHeadersReplay = []types.String{}
+					openidConnect1.Config.TokenHeadersReplay = make([]types.String, 0, len(openidConnectItem.Config.TokenHeadersReplay))
 					for _, v := range openidConnectItem.Config.TokenHeadersReplay {
 						openidConnect1.Config.TokenHeadersReplay = append(openidConnect1.Config.TokenHeadersReplay, types.StringValue(v))
 					}
-					openidConnect1.Config.TokenHeadersValues = []types.String{}
+					openidConnect1.Config.TokenHeadersValues = make([]types.String, 0, len(openidConnectItem.Config.TokenHeadersValues))
 					for _, v := range openidConnectItem.Config.TokenHeadersValues {
 						openidConnect1.Config.TokenHeadersValues = append(openidConnect1.Config.TokenHeadersValues, types.StringValue(v))
 					}
-					openidConnect1.Config.TokenPostArgsClient = []types.String{}
+					openidConnect1.Config.TokenPostArgsClient = make([]types.String, 0, len(openidConnectItem.Config.TokenPostArgsClient))
 					for _, v := range openidConnectItem.Config.TokenPostArgsClient {
 						openidConnect1.Config.TokenPostArgsClient = append(openidConnect1.Config.TokenPostArgsClient, types.StringValue(v))
 					}
-					openidConnect1.Config.TokenPostArgsNames = []types.String{}
+					openidConnect1.Config.TokenPostArgsNames = make([]types.String, 0, len(openidConnectItem.Config.TokenPostArgsNames))
 					for _, v := range openidConnectItem.Config.TokenPostArgsNames {
 						openidConnect1.Config.TokenPostArgsNames = append(openidConnect1.Config.TokenPostArgsNames, types.StringValue(v))
 					}
-					openidConnect1.Config.TokenPostArgsValues = []types.String{}
+					openidConnect1.Config.TokenPostArgsValues = make([]types.String, 0, len(openidConnectItem.Config.TokenPostArgsValues))
 					for _, v := range openidConnectItem.Config.TokenPostArgsValues {
 						openidConnect1.Config.TokenPostArgsValues = append(openidConnect1.Config.TokenPostArgsValues, types.StringValue(v))
 					}
 					openidConnect1.Config.UnauthorizedDestroySession = types.BoolPointerValue(openidConnectItem.Config.UnauthorizedDestroySession)
 					openidConnect1.Config.UnauthorizedErrorMessage = types.StringPointerValue(openidConnectItem.Config.UnauthorizedErrorMessage)
-					openidConnect1.Config.UnauthorizedRedirectURI = []types.String{}
+					openidConnect1.Config.UnauthorizedRedirectURI = make([]types.String, 0, len(openidConnectItem.Config.UnauthorizedRedirectURI))
 					for _, v := range openidConnectItem.Config.UnauthorizedRedirectURI {
 						openidConnect1.Config.UnauthorizedRedirectURI = append(openidConnect1.Config.UnauthorizedRedirectURI, types.StringValue(v))
 					}
-					openidConnect1.Config.UnexpectedRedirectURI = []types.String{}
+					openidConnect1.Config.UnexpectedRedirectURI = make([]types.String, 0, len(openidConnectItem.Config.UnexpectedRedirectURI))
 					for _, v := range openidConnectItem.Config.UnexpectedRedirectURI {
 						openidConnect1.Config.UnexpectedRedirectURI = append(openidConnect1.Config.UnexpectedRedirectURI, types.StringValue(v))
 					}
 					openidConnect1.Config.UpstreamAccessTokenHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenHeader)
 					openidConnect1.Config.UpstreamAccessTokenJwkHeader = types.StringPointerValue(openidConnectItem.Config.UpstreamAccessTokenJwkHeader)
-					openidConnect1.Config.UpstreamHeadersClaims = []types.String{}
+					openidConnect1.Config.UpstreamHeadersClaims = make([]types.String, 0, len(openidConnectItem.Config.UpstreamHeadersClaims))
 					for _, v := range openidConnectItem.Config.UpstreamHeadersClaims {
 						openidConnect1.Config.UpstreamHeadersClaims = append(openidConnect1.Config.UpstreamHeadersClaims, types.StringValue(v))
 					}
-					openidConnect1.Config.UpstreamHeadersNames = []types.String{}
+					openidConnect1.Config.UpstreamHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.UpstreamHeadersNames))
 					for _, v := range openidConnectItem.Config.UpstreamHeadersNames {
 						openidConnect1.Config.UpstreamHeadersNames = append(openidConnect1.Config.UpstreamHeadersNames, types.StringValue(v))
 					}
@@ -2838,27 +2821,27 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 						openidConnect1.Config.UserinfoAccept = types.StringNull()
 					}
 					openidConnect1.Config.UserinfoEndpoint = types.StringPointerValue(openidConnectItem.Config.UserinfoEndpoint)
-					openidConnect1.Config.UserinfoHeadersClient = []types.String{}
+					openidConnect1.Config.UserinfoHeadersClient = make([]types.String, 0, len(openidConnectItem.Config.UserinfoHeadersClient))
 					for _, v := range openidConnectItem.Config.UserinfoHeadersClient {
 						openidConnect1.Config.UserinfoHeadersClient = append(openidConnect1.Config.UserinfoHeadersClient, types.StringValue(v))
 					}
-					openidConnect1.Config.UserinfoHeadersNames = []types.String{}
+					openidConnect1.Config.UserinfoHeadersNames = make([]types.String, 0, len(openidConnectItem.Config.UserinfoHeadersNames))
 					for _, v := range openidConnectItem.Config.UserinfoHeadersNames {
 						openidConnect1.Config.UserinfoHeadersNames = append(openidConnect1.Config.UserinfoHeadersNames, types.StringValue(v))
 					}
-					openidConnect1.Config.UserinfoHeadersValues = []types.String{}
+					openidConnect1.Config.UserinfoHeadersValues = make([]types.String, 0, len(openidConnectItem.Config.UserinfoHeadersValues))
 					for _, v := range openidConnectItem.Config.UserinfoHeadersValues {
 						openidConnect1.Config.UserinfoHeadersValues = append(openidConnect1.Config.UserinfoHeadersValues, types.StringValue(v))
 					}
-					openidConnect1.Config.UserinfoQueryArgsClient = []types.String{}
+					openidConnect1.Config.UserinfoQueryArgsClient = make([]types.String, 0, len(openidConnectItem.Config.UserinfoQueryArgsClient))
 					for _, v := range openidConnectItem.Config.UserinfoQueryArgsClient {
 						openidConnect1.Config.UserinfoQueryArgsClient = append(openidConnect1.Config.UserinfoQueryArgsClient, types.StringValue(v))
 					}
-					openidConnect1.Config.UserinfoQueryArgsNames = []types.String{}
+					openidConnect1.Config.UserinfoQueryArgsNames = make([]types.String, 0, len(openidConnectItem.Config.UserinfoQueryArgsNames))
 					for _, v := range openidConnectItem.Config.UserinfoQueryArgsNames {
 						openidConnect1.Config.UserinfoQueryArgsNames = append(openidConnect1.Config.UserinfoQueryArgsNames, types.StringValue(v))
 					}
-					openidConnect1.Config.UserinfoQueryArgsValues = []types.String{}
+					openidConnect1.Config.UserinfoQueryArgsValues = make([]types.String, 0, len(openidConnectItem.Config.UserinfoQueryArgsValues))
 					for _, v := range openidConnectItem.Config.UserinfoQueryArgsValues {
 						openidConnect1.Config.UserinfoQueryArgsValues = append(openidConnect1.Config.UserinfoQueryArgsValues, types.StringValue(v))
 					}
@@ -2877,18 +2860,6 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 				}
 			}
 		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -2901,7 +2872,7 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -2910,29 +2881,29 @@ func (r *GatewayPluginKonnectApplicationAuthResourceModel) RefreshFromSharedKonn
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

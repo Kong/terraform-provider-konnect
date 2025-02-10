@@ -36,13 +36,13 @@ type GatewaySNIResource struct {
 
 // GatewaySNIResourceModel describes the resource data model.
 type GatewaySNIResourceModel struct {
-	Certificate    *tfTypes.ACLConsumer `tfsdk:"certificate" tfPlanOnly:"true"`
-	ControlPlaneID types.String         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64          `tfsdk:"created_at"`
-	ID             types.String         `tfsdk:"id"`
-	Name           types.String         `tfsdk:"name"`
-	Tags           []types.String       `tfsdk:"tags"`
-	UpdatedAt      types.Int64          `tfsdk:"updated_at"`
+	Certificate    *tfTypes.ACLWithoutParentsConsumer `tfsdk:"certificate" tfPlanOnly:"true"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	ID             types.String                       `tfsdk:"id"`
+	Name           types.String                       `tfsdk:"name"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 func (r *GatewaySNIResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

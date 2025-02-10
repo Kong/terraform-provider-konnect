@@ -40,7 +40,6 @@ type CloudGatewayNetworkDataSourceModel struct {
 	Name                          types.String                    `tfsdk:"name"`
 	ProviderMetadata              tfTypes.NetworkProviderMetadata `tfsdk:"provider_metadata"`
 	Region                        types.String                    `tfsdk:"region"`
-	State                         types.String                    `tfsdk:"state"`
 	TransitGatewayCount           types.Int64                     `tfsdk:"transit_gateway_count"`
 	UpdatedAt                     types.String                    `tfsdk:"updated_at"`
 }
@@ -109,10 +108,6 @@ func (r *CloudGatewayNetworkDataSource) Schema(ctx context.Context, req datasour
 				Computed:    true,
 				Description: `Region ID for cloud provider region.`,
 			},
-			"state": schema.StringAttribute{
-				Computed:    true,
-				Description: `State of the network.`,
-			},
 			"transit_gateway_count": schema.Int64Attribute{
 				Computed:    true,
 				Description: `The number of transit gateways attached to this network.`,
@@ -169,7 +164,7 @@ func (r *CloudGatewayNetworkDataSource) Read(ctx context.Context, req datasource
 	request := operations.GetNetworkRequest{
 		NetworkID: networkID,
 	}
-	res, err := r.client.Networks.GetNetwork(ctx, request)
+	res, err := r.client.CloudGateways.GetNetwork(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

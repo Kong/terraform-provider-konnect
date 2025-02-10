@@ -211,8 +211,8 @@ const (
 
 // CreateAppAuthStrategyRequest - Request body for creating an Application Auth Strategy
 type CreateAppAuthStrategyRequest struct {
-	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest
-	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest
+	AppAuthStrategyKeyAuthRequest       *AppAuthStrategyKeyAuthRequest       `queryParam:"inline"`
+	AppAuthStrategyOpenIDConnectRequest *AppAuthStrategyOpenIDConnectRequest `queryParam:"inline"`
 
 	Type CreateAppAuthStrategyRequestType
 }

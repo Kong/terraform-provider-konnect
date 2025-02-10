@@ -84,13 +84,12 @@ type Konnect struct {
 	// Called “Auth Strategy” for short in the context of portals/applications.
 	// The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
 	//
-	AppAuthStrategies            *AppAuthStrategies
-	DataPlaneGroupConfigurations *DataPlaneGroupConfigurations
-	CustomDomains                *CustomDomains
-	Networks                     *Networks
-	TransitGateways              *TransitGateways
-	ProviderAccounts             *ProviderAccounts
-	ControlPlanes                *ControlPlanes
+	AppAuthStrategies *AppAuthStrategies
+	AuditLogs         *AuditLogs
+	CloudGateways     *CloudGateways
+	ControlPlanes     *ControlPlanes
+	// Config Stores
+	ConfigStores *ConfigStores
 	// A CA certificate object represents a trusted certificate authority.
 	// These objects are used by Kong Gateway to verify the validity of a client or server certificate.
 	CACertificates *CACertificates
@@ -153,6 +152,8 @@ type Konnect struct {
 	//
 	//
 	//
+	//
+	//
 	//   <br>
 	//   A route can't have both `tls` and `tls_passthrough` protocols at same time.
 	//   <br><br>
@@ -205,7 +206,9 @@ type Konnect struct {
 	//   - Application registration settings like auto approve or whether application registration is enabled
 	//   - The authentication strategy that is enabled for Application Registration
 	//
-	PortalProductVersions        *PortalProductVersions
+	PortalProductVersions *PortalProductVersions
+	// APIs related to Konnect Developer Portal Developer Teams.
+	PortalTeams                  *PortalTeams
 	SystemAccounts               *SystemAccounts
 	SystemAccountsAccessTokens   *SystemAccountsAccessTokens
 	SystemAccountsRoles          *SystemAccountsRoles
@@ -290,9 +293,9 @@ func New(opts ...SDKOption) *Konnect {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "0.0.1",
-			GenVersion:        "2.477.0",
-			UserAgent:         "speakeasy-sdk/go 0.0.1 2.477.0 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			SDKVersion:        "2.3.0",
+			GenVersion:        "2.505.0",
+			UserAgent:         "speakeasy-sdk/terraform 2.3.0 2.505.0 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
@@ -326,17 +329,13 @@ func New(opts ...SDKOption) *Konnect {
 
 	sdk.AppAuthStrategies = newAppAuthStrategies(sdk.sdkConfiguration)
 
-	sdk.DataPlaneGroupConfigurations = newDataPlaneGroupConfigurations(sdk.sdkConfiguration)
+	sdk.AuditLogs = newAuditLogs(sdk.sdkConfiguration)
 
-	sdk.CustomDomains = newCustomDomains(sdk.sdkConfiguration)
-
-	sdk.Networks = newNetworks(sdk.sdkConfiguration)
-
-	sdk.TransitGateways = newTransitGateways(sdk.sdkConfiguration)
-
-	sdk.ProviderAccounts = newProviderAccounts(sdk.sdkConfiguration)
+	sdk.CloudGateways = newCloudGateways(sdk.sdkConfiguration)
 
 	sdk.ControlPlanes = newControlPlanes(sdk.sdkConfiguration)
+
+	sdk.ConfigStores = newConfigStores(sdk.sdkConfiguration)
 
 	sdk.CACertificates = newCACertificates(sdk.sdkConfiguration)
 
@@ -389,6 +388,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.PortalAuthSettings = newPortalAuthSettings(sdk.sdkConfiguration)
 
 	sdk.PortalProductVersions = newPortalProductVersions(sdk.sdkConfiguration)
+
+	sdk.PortalTeams = newPortalTeams(sdk.sdkConfiguration)
 
 	sdk.SystemAccounts = newSystemAccounts(sdk.sdkConfiguration)
 

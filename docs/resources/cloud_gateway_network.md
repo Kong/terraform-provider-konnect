@@ -21,7 +21,6 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
   cloud_gateway_provider_account_id = "929b2449-c69f-44c4-b6ad-9ecec6f811ae"
   name                              = "us-east-2 network"
   region                            = "us-east-2"
-  state                             = "initializing"
 }
 ```
 
@@ -35,10 +34,6 @@ resource "konnect_cloud_gateway_network" "my_cloudgatewaynetwork" {
 - `cloud_gateway_provider_account_id` (String) Requires replacement if changed.
 - `name` (String) Human-readable name of the network.
 - `region` (String) Region ID for cloud provider region. Requires replacement if changed.
-
-### Optional
-
-- `state` (String) Initial state for creating a network. Default: "initializing"; must be one of ["initializing", "offline"]; Requires replacement if changed.
 
 ### Read-Only
 

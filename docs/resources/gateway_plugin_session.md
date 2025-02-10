@@ -21,11 +21,11 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     cookie_http_only = true
     cookie_name      = "...my_cookie_name..."
     cookie_path      = "...my_cookie_path..."
-    cookie_same_site = "Default"
+    cookie_same_site = "Strict"
     cookie_secure    = true
     idling_timeout   = 6.27
     logout_methods = [
-      "POST"
+      "GET"
     ]
     logout_post_arg           = "...my_logout_post_arg..."
     logout_query_arg          = "...my_logout_query_arg..."
@@ -35,7 +35,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     remember_cookie_name      = "...my_remember_cookie_name..."
     remember_rolling_timeout  = 6.77
     request_headers = [
-      "timeout"
+      "idling-timeout"
     ]
     response_headers = [
       "audience"
@@ -44,12 +44,6 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     secret          = "...my_secret..."
     stale_ttl       = 3.88
     storage         = "cookie"
-  }
-  consumer = {
-    id = "...my_id..."
-  }
-  consumer_group = {
-    id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   enabled          = false
@@ -92,13 +86,11 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
 
 ### Optional
 
-- `consumer` (Attributes) If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer. (see [below for nested schema](#nestedatt--consumer))
-- `consumer_group` (Attributes) (see [below for nested schema](#nestedatt--consumer_group))
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
-- `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used. (see [below for nested schema](#nestedatt--route))
+- `protocols` (List of String) A set of strings representing protocols.
+- `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -119,7 +111,7 @@ Optional:
 - `cookie_http_only` (Boolean) Applies the `HttpOnly` tag so that the cookie is sent only to a server.
 - `cookie_name` (String) The name of the cookie.
 - `cookie_path` (String) The resource in the host where the cookie is available.
-- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. must be one of ["Strict", "Lax", "None", "Default"]
+- `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. must be one of ["Default", "Lax", "None", "Strict"]
 - `cookie_secure` (Boolean) Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
 - `idling_timeout` (Number) The session cookie idle time, in seconds.
 - `logout_methods` (List of String) A set of HTTP methods that the plugin will respond to.
@@ -136,22 +128,6 @@ Optional:
 - `secret` (String) The secret that is used in keyed HMAC generation.
 - `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 - `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]
-
-
-<a id="nestedatt--consumer"></a>
-### Nested Schema for `consumer`
-
-Optional:
-
-- `id` (String)
-
-
-<a id="nestedatt--consumer_group"></a>
-### Nested Schema for `consumer_group`
-
-Optional:
-
-- `id` (String)
 
 
 <a id="nestedatt--ordering"></a>

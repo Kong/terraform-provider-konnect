@@ -2,11 +2,30 @@
 
 package shared
 
+type BasicAuthWithoutParentsConsumer struct {
+	ID *string `json:"id,omitempty"`
+}
+
+func (o *BasicAuthWithoutParentsConsumer) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
 type BasicAuthWithoutParents struct {
-	ID       *string  `json:"id,omitempty"`
-	Password string   `json:"password"`
-	Tags     []string `json:"tags,omitempty"`
-	Username string   `json:"username"`
+	Consumer *BasicAuthWithoutParentsConsumer `json:"consumer"`
+	ID       *string                          `json:"id,omitempty"`
+	Password string                           `json:"password"`
+	Tags     []string                         `json:"tags,omitempty"`
+	Username string                           `json:"username"`
+}
+
+func (o *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
 }
 
 func (o *BasicAuthWithoutParents) GetID() *string {

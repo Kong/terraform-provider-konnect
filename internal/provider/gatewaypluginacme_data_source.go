@@ -30,8 +30,6 @@ type GatewayPluginAcmeDataSource struct {
 // GatewayPluginAcmeDataSourceModel describes the data model.
 type GatewayPluginAcmeDataSourceModel struct {
 	Config         tfTypes.AcmePluginConfig   `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer       `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer       `tfsdk:"consumer_group" tfPlanOnly:"true"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -39,8 +37,6 @@ type GatewayPluginAcmeDataSourceModel struct {
 	InstanceName   types.String               `tfsdk:"instance_name"`
 	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
 	Protocols      []types.String             `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer       `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer       `tfsdk:"service" tfPlanOnly:"true"`
 	Tags           []types.String             `tfsdk:"tags"`
 	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
 }
@@ -87,7 +83,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 					},
 					"cert_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `The certificate type to create. The possible values are ` + "`" + `'rsa'` + "`" + ` for RSA certificate or ` + "`" + `'ecc'` + "`" + ` for EC certificate.`,
+						Description: `The certificate type to create. The possible values are ` + "`" + `rsa` + "`" + ` for RSA certificate or ` + "`" + `ecc` + "`" + ` for EC certificate.`,
 					},
 					"domains": schema.ListAttribute{
 						Computed:    true,
@@ -125,7 +121,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 					},
 					"storage": schema.StringAttribute{
 						Computed:    true,
-						Description: `The backend storage type to use. The possible values are ` + "`" + `'kong'` + "`" + `, ` + "`" + `'shm'` + "`" + `, ` + "`" + `'redis'` + "`" + `, ` + "`" + `'consul'` + "`" + `, or ` + "`" + `'vault'` + "`" + `. In DB-less mode, ` + "`" + `'kong'` + "`" + ` storage is unavailable. Note that ` + "`" + `'shm'` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `'kong'` + "`" + `, ` + "`" + `'redis'` + "`" + `, ` + "`" + `'consul'` + "`" + `, or ` + "`" + `'vault'` + "`" + ` in production. Please refer to the Hybrid Mode sections below as well.`,
+						Description: `The backend storage type to use. In DB-less mode and Konnect, ` + "`" + `kong` + "`" + ` storage is unavailable. In hybrid mode and Konnect, ` + "`" + `shm` + "`" + ` storage is unavailable. ` + "`" + `shm` + "`" + ` storage does not persist during Kong restarts and does not work for Kong running on different machines, so consider using one of ` + "`" + `kong` + "`" + `, ` + "`" + `redis` + "`" + `, ` + "`" + `consul` + "`" + `, or ` + "`" + `vault` + "`" + ` in production.`,
 					},
 					"storage_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -288,23 +284,6 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -349,25 +328,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
-			},
-			"route": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
-			},
-			"service": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-				Description: `If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"tags": schema.ListAttribute{
 				Computed:    true,

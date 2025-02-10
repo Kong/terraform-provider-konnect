@@ -64,8 +64,8 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
 
 ### Optional
 
-- `key_auth` (Attributes) Request for creating a Key Auth Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth))
-- `openid_connect` (Attributes) Payload for creating an OIDC Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect))
+- `key_auth` (Attributes) Response payload from creating or updating a Key Auth Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--key_auth))
+- `openid_connect` (Attributes) Response payload from creating an OIDC Application Auth Strategy. Requires replacement if changed. (see [below for nested schema](#nestedatt--openid_connect))
 
 ### Read-Only
 

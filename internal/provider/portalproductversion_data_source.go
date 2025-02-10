@@ -67,6 +67,11 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 									Computed:    true,
 									ElementType: types.StringType,
 								},
+								"available_scopes": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.`,
+								},
 								"credential_type": schema.StringAttribute{
 									Computed: true,
 								},
@@ -89,6 +94,10 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 								"id": schema.StringAttribute{
 									Computed:    true,
 									Description: `The Application Auth Strategy ID.`,
+								},
+								"key_names": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
 								},
 								"name": schema.StringAttribute{
 									Computed: true,

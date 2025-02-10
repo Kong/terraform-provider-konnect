@@ -10,57 +10,45 @@ import (
 
 func (r *GatewayPluginPreFunctionDataSourceModel) RefreshFromSharedPreFunctionPlugin(resp *shared.PreFunctionPlugin) {
 	if resp != nil {
-		r.Config.Access = []types.String{}
+		r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
 		for _, v := range resp.Config.Access {
 			r.Config.Access = append(r.Config.Access, types.StringValue(v))
 		}
-		r.Config.BodyFilter = []types.String{}
+		r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
 		for _, v := range resp.Config.BodyFilter {
 			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
 		}
-		r.Config.Certificate = []types.String{}
+		r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
 		for _, v := range resp.Config.Certificate {
 			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
 		}
-		r.Config.HeaderFilter = []types.String{}
+		r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
 		for _, v := range resp.Config.HeaderFilter {
 			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
 		}
-		r.Config.Log = []types.String{}
+		r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
 		for _, v := range resp.Config.Log {
 			r.Config.Log = append(r.Config.Log, types.StringValue(v))
 		}
-		r.Config.Rewrite = []types.String{}
+		r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
 		for _, v := range resp.Config.Rewrite {
 			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
 		}
-		r.Config.WsClientFrame = []types.String{}
+		r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
 		for _, v := range resp.Config.WsClientFrame {
 			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
 		}
-		r.Config.WsClose = []types.String{}
+		r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
 		for _, v := range resp.Config.WsClose {
 			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
 		}
-		r.Config.WsHandshake = []types.String{}
+		r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
 		for _, v := range resp.Config.WsHandshake {
 			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
 		}
-		r.Config.WsUpstreamFrame = []types.String{}
+		r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
 		for _, v := range resp.Config.WsUpstreamFrame {
 			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
-		}
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -74,7 +62,7 @@ func (r *GatewayPluginPreFunctionDataSourceModel) RefreshFromSharedPreFunctionPl
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -83,29 +71,29 @@ func (r *GatewayPluginPreFunctionDataSourceModel) RefreshFromSharedPreFunctionPl
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

@@ -40,6 +40,8 @@ type AuthStrategyClientCredentials struct {
 	Name           string                                      `json:"name"`
 	CredentialType AuthStrategyClientCredentialsCredentialType `json:"credential_type"`
 	AuthMethods    []string                                    `json:"auth_methods"`
+	// Possible developer selectable scopes for an application. Only present when using DCR Provider that supports it.
+	AvailableScopes []string `json:"available_scopes,omitempty"`
 }
 
 func (o *AuthStrategyClientCredentials) GetID() string {
@@ -68,4 +70,11 @@ func (o *AuthStrategyClientCredentials) GetAuthMethods() []string {
 		return []string{}
 	}
 	return o.AuthMethods
+}
+
+func (o *AuthStrategyClientCredentials) GetAvailableScopes() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AvailableScopes
 }

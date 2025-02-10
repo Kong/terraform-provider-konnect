@@ -29,20 +29,18 @@ type GatewayPluginOpenidConnectDataSource struct {
 
 // GatewayPluginOpenidConnectDataSourceModel describes the data model.
 type GatewayPluginOpenidConnectDataSourceModel struct {
-	Config         tfTypes.OpenidConnectPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLConsumer              `tfsdk:"consumer" tfPlanOnly:"true"`
-	ConsumerGroup  *tfTypes.ACLConsumer              `tfsdk:"consumer_group" tfPlanOnly:"true"`
-	ControlPlaneID types.String                      `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                       `tfsdk:"created_at"`
-	Enabled        types.Bool                        `tfsdk:"enabled"`
-	ID             types.String                      `tfsdk:"id"`
-	InstanceName   types.String                      `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering        `tfsdk:"ordering"`
-	Protocols      []types.String                    `tfsdk:"protocols"`
-	Route          *tfTypes.ACLConsumer              `tfsdk:"route" tfPlanOnly:"true"`
-	Service        *tfTypes.ACLConsumer              `tfsdk:"service" tfPlanOnly:"true"`
-	Tags           []types.String                    `tfsdk:"tags"`
-	UpdatedAt      types.Int64                       `tfsdk:"updated_at"`
+	Config         tfTypes.OpenidConnectPluginConfig  `tfsdk:"config"`
+	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                        `tfsdk:"created_at"`
+	Enabled        types.Bool                         `tfsdk:"enabled"`
+	ID             types.String                       `tfsdk:"id"`
+	InstanceName   types.String                       `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Protocols      []types.String                     `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
+	Tags           []types.String                     `tfsdk:"tags"`
+	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -142,7 +140,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					"bearer_token_param_type": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `.`,
+						Description: `Where to look for the bearer token: - ` + "`" + `header` + "`" + `: search the ` + "`" + `Authorization` + "`" + `, ` + "`" + `access-token` + "`" + `, and ` + "`" + `x-access-token` + "`" + ` HTTP headers - ` + "`" + `query` + "`" + `: search the URL's query string - ` + "`" + `body` + "`" + `: search the HTTP request body - ` + "`" + `cookie` + "`" + `: search the HTTP request cookies specified with ` + "`" + `config.bearer_token_cookie_name` + "`" + `.`,
 					},
 					"by_username_ignore_case": schema.BoolAttribute{
 						Computed:    true,
@@ -646,6 +644,11 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						ElementType: types.StringType,
 						Description: `Extra post arguments passed from the client to the introspection endpoint.`,
+					},
+					"introspection_post_args_client_headers": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						Description: `Extra post arguments passed from the client headers to the introspection endpoint.`,
 					},
 					"introspection_post_args_names": schema.ListAttribute{
 						Computed:    true,
@@ -1222,7 +1225,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					"upstream_headers_claims": schema.ListAttribute{
 						Computed:    true,
 						ElementType: types.StringType,
-						Description: `The upstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.`,
+						Description: `The upstream header claims. Only top level claims are supported.`,
 					},
 					"upstream_headers_names": schema.ListAttribute{
 						Computed:    true,
@@ -1321,23 +1324,6 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 					},
 				},
 			},
-			"consumer": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-				Description: `If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.`,
-			},
-			"consumer_group": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"id": schema.StringAttribute{
-						Computed: true,
-					},
-				},
-			},
 			"control_plane_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
@@ -1382,7 +1368,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
-				Description: `A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support ` + "`" + `"tcp"` + "`" + ` and ` + "`" + `"tls"` + "`" + `.`,
+				Description: `A set of strings representing HTTP protocols.`,
 			},
 			"route": schema.SingleNestedAttribute{
 				Computed: true,
@@ -1391,7 +1377,7 @@ func (r *GatewayPluginOpenidConnectDataSource) Schema(ctx context.Context, req d
 						Computed: true,
 					},
 				},
-				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.`,
+				Description: `If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.`,
 			},
 			"service": schema.SingleNestedAttribute{
 				Computed: true,

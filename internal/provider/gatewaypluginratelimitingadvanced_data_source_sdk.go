@@ -11,7 +11,11 @@ import (
 
 func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRateLimitingAdvancedPlugin(resp *shared.RateLimitingAdvancedPlugin) {
 	if resp != nil {
-		r.Config.ConsumerGroups = []types.String{}
+		r.Config.CompoundIdentifier = make([]types.String, 0, len(resp.Config.CompoundIdentifier))
+		for _, v := range resp.Config.CompoundIdentifier {
+			r.Config.CompoundIdentifier = append(r.Config.CompoundIdentifier, types.StringValue(string(v)))
+		}
+		r.Config.ConsumerGroups = make([]types.String, 0, len(resp.Config.ConsumerGroups))
 		for _, v := range resp.Config.ConsumerGroups {
 			r.Config.ConsumerGroups = append(r.Config.ConsumerGroups, types.StringValue(v))
 		}
@@ -31,23 +35,24 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 		} else {
 			r.Config.Identifier = types.StringNull()
 		}
-		r.Config.Limit = []types.Number{}
+		r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
 		for _, v := range resp.Config.Limit {
 			r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
 		}
+		r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
 		r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
 		r.Config.Path = types.StringPointerValue(resp.Config.Path)
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.Redis{}
+			r.Config.Redis = &tfTypes.RateLimitingAdvancedPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.ClusterNodes{}
+			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
 				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 			}
 			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.ClusterNodes
+				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
 				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
 				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
 				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
@@ -66,14 +71,19 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
 			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
 			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+			if resp.Config.Redis.RedisProxyType != nil {
+				r.Config.Redis.RedisProxyType = types.StringValue(string(*resp.Config.Redis.RedisProxyType))
+			} else {
+				r.Config.Redis.RedisProxyType = types.StringNull()
+			}
 			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
 			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.SentinelNodes{}
+			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
 			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
 				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 			}
 			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.SentinelNodes
+				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
 				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
 				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
@@ -110,7 +120,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 		} else {
 			r.Config.SyncRate = types.NumberNull()
 		}
-		r.Config.WindowSize = []types.Number{}
+		r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
 		for _, v := range resp.Config.WindowSize {
 			r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
 		}
@@ -122,13 +132,13 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
+			r.Consumer = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
 		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
+			r.ConsumerGroup = &tfTypes.ACLWithoutParentsConsumer{}
 			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -143,7 +153,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -152,29 +162,29 @@ func (r *GatewayPluginRateLimitingAdvancedDataSourceModel) RefreshFromSharedRate
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

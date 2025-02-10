@@ -117,7 +117,7 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 	if resp != nil {
 		if resp.AwsTransitGatewayResponse != nil {
 			r.AwsTransitGatewayResponse = &tfTypes.AwsTransitGatewayResponse{}
-			r.AwsTransitGatewayResponse.CidrBlocks = []types.String{}
+			r.AwsTransitGatewayResponse.CidrBlocks = make([]types.String, 0, len(resp.AwsTransitGatewayResponse.CidrBlocks))
 			for _, v := range resp.AwsTransitGatewayResponse.CidrBlocks {
 				r.AwsTransitGatewayResponse.CidrBlocks = append(r.AwsTransitGatewayResponse.CidrBlocks, types.StringValue(v))
 			}
@@ -128,11 +128,11 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			}
 			for dnsConfigCount, dnsConfigItem := range resp.AwsTransitGatewayResponse.DNSConfig {
 				var dnsConfig1 tfTypes.TransitGatewayDNSConfig
-				dnsConfig1.DomainProxyList = []types.String{}
+				dnsConfig1.DomainProxyList = make([]types.String, 0, len(dnsConfigItem.DomainProxyList))
 				for _, v := range dnsConfigItem.DomainProxyList {
 					dnsConfig1.DomainProxyList = append(dnsConfig1.DomainProxyList, types.StringValue(v))
 				}
-				dnsConfig1.RemoteDNSServerIPAddresses = []types.String{}
+				dnsConfig1.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem.RemoteDNSServerIPAddresses))
 				for _, v := range dnsConfigItem.RemoteDNSServerIPAddresses {
 					dnsConfig1.RemoteDNSServerIPAddresses = append(dnsConfig1.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}
@@ -164,11 +164,11 @@ func (r *CloudGatewayTransitGatewayResourceModel) RefreshFromSharedTransitGatewa
 			}
 			for dnsConfigCount1, dnsConfigItem1 := range resp.AzureTransitGatewayResponse.DNSConfig {
 				var dnsConfig3 tfTypes.TransitGatewayDNSConfig
-				dnsConfig3.DomainProxyList = []types.String{}
+				dnsConfig3.DomainProxyList = make([]types.String, 0, len(dnsConfigItem1.DomainProxyList))
 				for _, v := range dnsConfigItem1.DomainProxyList {
 					dnsConfig3.DomainProxyList = append(dnsConfig3.DomainProxyList, types.StringValue(v))
 				}
-				dnsConfig3.RemoteDNSServerIPAddresses = []types.String{}
+				dnsConfig3.RemoteDNSServerIPAddresses = make([]types.String, 0, len(dnsConfigItem1.RemoteDNSServerIPAddresses))
 				for _, v := range dnsConfigItem1.RemoteDNSServerIPAddresses {
 					dnsConfig3.RemoteDNSServerIPAddresses = append(dnsConfig3.RemoteDNSServerIPAddresses, types.StringValue(v))
 				}

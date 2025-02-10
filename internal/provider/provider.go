@@ -27,10 +27,10 @@ type KonnectProvider struct {
 
 // KonnectProviderModel describes the provider data model.
 type KonnectProviderModel struct {
-	ServerURL                types.String `tfsdk:"server_url"`
-	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
-	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 	KonnectAccessToken       types.String `tfsdk:"konnect_access_token"`
+	PersonalAccessToken      types.String `tfsdk:"personal_access_token"`
+	ServerURL                types.String `tfsdk:"server_url"`
+	SystemAccountAccessToken types.String `tfsdk:"system_account_access_token"`
 }
 
 func (p *KonnectProvider) Metadata(ctx context.Context, req provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -40,26 +40,25 @@ func (p *KonnectProvider) Metadata(ctx context.Context, req provider.MetadataReq
 
 func (p *KonnectProvider) Schema(ctx context.Context, req provider.SchemaRequest, resp *provider.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Description: `Konnect API: The Konnect platform API`,
 		Attributes: map[string]schema.Attribute{
-			"server_url": schema.StringAttribute{
-				MarkdownDescription: "Server URL (defaults to https://global.api.konghq.com)",
-				Optional:            true,
-				Required:            false,
+			"konnect_access_token": schema.StringAttribute{
+				Optional:  true,
+				Sensitive: true,
 			},
 			"personal_access_token": schema.StringAttribute{
-				Sensitive: true,
 				Optional:  true,
+				Sensitive: true,
+			},
+			"server_url": schema.StringAttribute{
+				Description: `Server URL (defaults to https://global.api.konghq.com)`,
+				Optional:    true,
 			},
 			"system_account_access_token": schema.StringAttribute{
-				Sensitive: true,
 				Optional:  true,
-			},
-			"konnect_access_token": schema.StringAttribute{
 				Sensitive: true,
-				Optional:  true,
 			},
 		},
+		MarkdownDescription: `Konnect API: The Konnect platform API`,
 	}
 }
 
@@ -113,8 +112,13 @@ func (p *KonnectProvider) Configure(ctx context.Context, req provider.ConfigureR
 		KonnectAccessToken:       konnectAccessToken,
 	}
 
+	providerHTTPTransportOpts := ProviderHTTPTransportOpts{
+		SetHeaders: make(map[string]string),
+		Transport:  http.DefaultTransport,
+	}
+
 	httpClient := http.DefaultClient
-	httpClient.Transport = NewLoggingHTTPTransport(http.DefaultTransport)
+	httpClient.Transport = NewProviderHTTPTransport(providerHTTPTransportOpts)
 
 	opts := []sdk.SDKOption{
 		sdk.WithServerURL(ServerURL),
@@ -134,6 +138,8 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewAPIProductSpecificationResource,
 		NewAPIProductVersionResource,
 		NewApplicationAuthStrategyResource,
+		NewAuditLogResource,
+		NewAuditLogDestinationResource,
 		NewCloudGatewayConfigurationResource,
 		NewCloudGatewayCustomDomainResource,
 		NewCloudGatewayNetworkResource,
@@ -142,6 +148,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayBasicAuthResource,
 		NewGatewayCACertificateResource,
 		NewGatewayCertificateResource,
+		NewGatewayConfigStoreResource,
 		NewGatewayConsumerResource,
 		NewGatewayConsumerGroupResource,
 		NewGatewayConsumerGroupMemberResource,
@@ -157,20 +164,27 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayMTLSAuthResource,
 		NewGatewayPluginACLResource,
 		NewGatewayPluginAcmeResource,
+		NewGatewayPluginAiAzureContentSafetyResource,
 		NewGatewayPluginAiPromptDecoratorResource,
 		NewGatewayPluginAiPromptGuardResource,
 		NewGatewayPluginAiPromptTemplateResource,
 		NewGatewayPluginAiProxyResource,
+		NewGatewayPluginAiProxyAdvancedResource,
+		NewGatewayPluginAiRateLimitingAdvancedResource,
 		NewGatewayPluginAiRequestTransformerResource,
 		NewGatewayPluginAiResponseTransformerResource,
+		NewGatewayPluginAiSemanticCacheResource,
+		NewGatewayPluginAiSemanticPromptGuardResource,
 		NewGatewayPluginAwsLambdaResource,
 		NewGatewayPluginAzureFunctionsResource,
 		NewGatewayPluginBasicAuthResource,
 		NewGatewayPluginBotDetectionResource,
 		NewGatewayPluginCanaryResource,
+		NewGatewayPluginConfluentResource,
 		NewGatewayPluginCorrelationIDResource,
 		NewGatewayPluginCorsResource,
 		NewGatewayPluginDatadogResource,
+		NewGatewayPluginDatadogTracingResource,
 		NewGatewayPluginDegraphqlResource,
 		NewGatewayPluginExitTransformerResource,
 		NewGatewayPluginFileLogResource,
@@ -179,10 +193,13 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginGraphqlRateLimitingAdvancedResource,
 		NewGatewayPluginGrpcGatewayResource,
 		NewGatewayPluginGrpcWebResource,
+		NewGatewayPluginHeaderCertAuthResource,
 		NewGatewayPluginHmacAuthResource,
 		NewGatewayPluginHTTPLogResource,
+		NewGatewayPluginInjectionProtectionResource,
 		NewGatewayPluginIPRestrictionResource,
 		NewGatewayPluginJqResource,
+		NewGatewayPluginJSONThreatProtectionResource,
 		NewGatewayPluginJweDecryptResource,
 		NewGatewayPluginJwtResource,
 		NewGatewayPluginJwtSignerResource,
@@ -209,6 +226,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginProxyCacheAdvancedResource,
 		NewGatewayPluginRateLimitingResource,
 		NewGatewayPluginRateLimitingAdvancedResource,
+		NewGatewayPluginRedirectResource,
 		NewGatewayPluginRequestSizeLimitingResource,
 		NewGatewayPluginRequestTerminationResource,
 		NewGatewayPluginRequestTransformerResource,
@@ -220,7 +238,9 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginRouteByHeaderResource,
 		NewGatewayPluginRouteTransformerAdvancedResource,
 		NewGatewayPluginSamlResource,
+		NewGatewayPluginServiceProtectionResource,
 		NewGatewayPluginSessionResource,
+		NewGatewayPluginStandardWebhooksResource,
 		NewGatewayPluginStatsdResource,
 		NewGatewayPluginStatsdAdvancedResource,
 		NewGatewayPluginSyslogResource,
@@ -228,6 +248,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewGatewayPluginTLSHandshakeModifierResource,
 		NewGatewayPluginTLSMetadataHeadersResource,
 		NewGatewayPluginUDPLogResource,
+		NewGatewayPluginUpstreamOauthResource,
 		NewGatewayPluginUpstreamTimeoutResource,
 		NewGatewayPluginVaultAuthResource,
 		NewGatewayPluginWebsocketSizeLimitResource,
@@ -245,6 +266,7 @@ func (p *KonnectProvider) Resources(ctx context.Context) []func() resource.Resou
 		NewPortalAppearanceResource,
 		NewPortalAuthResource,
 		NewPortalProductVersionResource,
+		NewPortalTeamResource,
 		NewServerlessCloudGatewayResource,
 		NewSystemAccountResource,
 		NewSystemAccountAccessTokenResource,
@@ -264,6 +286,8 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewAPIProductSpecificationDataSource,
 		NewAPIProductVersionDataSource,
 		NewApplicationAuthStrategyDataSource,
+		NewAuditLogDataSource,
+		NewAuditLogDestinationDataSource,
 		NewCloudGatewayConfigurationDataSource,
 		NewCloudGatewayCustomDomainDataSource,
 		NewCloudGatewayNetworkDataSource,
@@ -273,6 +297,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayBasicAuthDataSource,
 		NewGatewayCACertificateDataSource,
 		NewGatewayCertificateDataSource,
+		NewGatewayConfigStoreDataSource,
 		NewGatewayConsumerDataSource,
 		NewGatewayConsumerGroupDataSource,
 		NewGatewayControlPlaneDataSource,
@@ -286,20 +311,27 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayMTLSAuthDataSource,
 		NewGatewayPluginACLDataSource,
 		NewGatewayPluginAcmeDataSource,
+		NewGatewayPluginAiAzureContentSafetyDataSource,
 		NewGatewayPluginAiPromptDecoratorDataSource,
 		NewGatewayPluginAiPromptGuardDataSource,
 		NewGatewayPluginAiPromptTemplateDataSource,
 		NewGatewayPluginAiProxyDataSource,
+		NewGatewayPluginAiProxyAdvancedDataSource,
+		NewGatewayPluginAiRateLimitingAdvancedDataSource,
 		NewGatewayPluginAiRequestTransformerDataSource,
 		NewGatewayPluginAiResponseTransformerDataSource,
+		NewGatewayPluginAiSemanticCacheDataSource,
+		NewGatewayPluginAiSemanticPromptGuardDataSource,
 		NewGatewayPluginAwsLambdaDataSource,
 		NewGatewayPluginAzureFunctionsDataSource,
 		NewGatewayPluginBasicAuthDataSource,
 		NewGatewayPluginBotDetectionDataSource,
 		NewGatewayPluginCanaryDataSource,
+		NewGatewayPluginConfluentDataSource,
 		NewGatewayPluginCorrelationIDDataSource,
 		NewGatewayPluginCorsDataSource,
 		NewGatewayPluginDatadogDataSource,
+		NewGatewayPluginDatadogTracingDataSource,
 		NewGatewayPluginDegraphqlDataSource,
 		NewGatewayPluginExitTransformerDataSource,
 		NewGatewayPluginFileLogDataSource,
@@ -308,10 +340,13 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginGraphqlRateLimitingAdvancedDataSource,
 		NewGatewayPluginGrpcGatewayDataSource,
 		NewGatewayPluginGrpcWebDataSource,
+		NewGatewayPluginHeaderCertAuthDataSource,
 		NewGatewayPluginHmacAuthDataSource,
 		NewGatewayPluginHTTPLogDataSource,
+		NewGatewayPluginInjectionProtectionDataSource,
 		NewGatewayPluginIPRestrictionDataSource,
 		NewGatewayPluginJqDataSource,
+		NewGatewayPluginJSONThreatProtectionDataSource,
 		NewGatewayPluginJweDecryptDataSource,
 		NewGatewayPluginJwtDataSource,
 		NewGatewayPluginJwtSignerDataSource,
@@ -338,6 +373,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginProxyCacheAdvancedDataSource,
 		NewGatewayPluginRateLimitingDataSource,
 		NewGatewayPluginRateLimitingAdvancedDataSource,
+		NewGatewayPluginRedirectDataSource,
 		NewGatewayPluginRequestSizeLimitingDataSource,
 		NewGatewayPluginRequestTerminationDataSource,
 		NewGatewayPluginRequestTransformerDataSource,
@@ -349,7 +385,9 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginRouteByHeaderDataSource,
 		NewGatewayPluginRouteTransformerAdvancedDataSource,
 		NewGatewayPluginSamlDataSource,
+		NewGatewayPluginServiceProtectionDataSource,
 		NewGatewayPluginSessionDataSource,
+		NewGatewayPluginStandardWebhooksDataSource,
 		NewGatewayPluginStatsdDataSource,
 		NewGatewayPluginStatsdAdvancedDataSource,
 		NewGatewayPluginSyslogDataSource,
@@ -357,6 +395,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayPluginTLSHandshakeModifierDataSource,
 		NewGatewayPluginTLSMetadataHeadersDataSource,
 		NewGatewayPluginUDPLogDataSource,
+		NewGatewayPluginUpstreamOauthDataSource,
 		NewGatewayPluginUpstreamTimeoutDataSource,
 		NewGatewayPluginVaultAuthDataSource,
 		NewGatewayPluginWebsocketSizeLimitDataSource,
@@ -374,6 +413,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewPortalAuthDataSource,
 		NewPortalListDataSource,
 		NewPortalProductVersionDataSource,
+		NewPortalTeamDataSource,
 		NewServerlessCloudGatewayDataSource,
 		NewSystemAccountDataSource,
 		NewSystemAccountAccessTokenDataSource,

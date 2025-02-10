@@ -12,27 +12,27 @@ import (
 
 func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin(resp *shared.JwtSignerPlugin) {
 	if resp != nil {
-		r.Config.AccessTokenConsumerBy = []types.String{}
+		r.Config.AccessTokenConsumerBy = make([]types.String, 0, len(resp.Config.AccessTokenConsumerBy))
 		for _, v := range resp.Config.AccessTokenConsumerBy {
 			r.Config.AccessTokenConsumerBy = append(r.Config.AccessTokenConsumerBy, types.StringValue(string(v)))
 		}
-		r.Config.AccessTokenConsumerClaim = []types.String{}
+		r.Config.AccessTokenConsumerClaim = make([]types.String, 0, len(resp.Config.AccessTokenConsumerClaim))
 		for _, v := range resp.Config.AccessTokenConsumerClaim {
 			r.Config.AccessTokenConsumerClaim = append(r.Config.AccessTokenConsumerClaim, types.StringValue(v))
 		}
 		r.Config.AccessTokenIntrospectionAuthorization = types.StringPointerValue(resp.Config.AccessTokenIntrospectionAuthorization)
 		r.Config.AccessTokenIntrospectionBodyArgs = types.StringPointerValue(resp.Config.AccessTokenIntrospectionBodyArgs)
-		r.Config.AccessTokenIntrospectionConsumerBy = []types.String{}
+		r.Config.AccessTokenIntrospectionConsumerBy = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionConsumerBy))
 		for _, v := range resp.Config.AccessTokenIntrospectionConsumerBy {
 			r.Config.AccessTokenIntrospectionConsumerBy = append(r.Config.AccessTokenIntrospectionConsumerBy, types.StringValue(string(v)))
 		}
-		r.Config.AccessTokenIntrospectionConsumerClaim = []types.String{}
+		r.Config.AccessTokenIntrospectionConsumerClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionConsumerClaim))
 		for _, v := range resp.Config.AccessTokenIntrospectionConsumerClaim {
 			r.Config.AccessTokenIntrospectionConsumerClaim = append(r.Config.AccessTokenIntrospectionConsumerClaim, types.StringValue(v))
 		}
 		r.Config.AccessTokenIntrospectionEndpoint = types.StringPointerValue(resp.Config.AccessTokenIntrospectionEndpoint)
 		r.Config.AccessTokenIntrospectionHint = types.StringPointerValue(resp.Config.AccessTokenIntrospectionHint)
-		r.Config.AccessTokenIntrospectionJwtClaim = []types.String{}
+		r.Config.AccessTokenIntrospectionJwtClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionJwtClaim))
 		for _, v := range resp.Config.AccessTokenIntrospectionJwtClaim {
 			r.Config.AccessTokenIntrospectionJwtClaim = append(r.Config.AccessTokenIntrospectionJwtClaim, types.StringValue(v))
 		}
@@ -41,11 +41,11 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		} else {
 			r.Config.AccessTokenIntrospectionLeeway = types.NumberNull()
 		}
-		r.Config.AccessTokenIntrospectionScopesClaim = []types.String{}
+		r.Config.AccessTokenIntrospectionScopesClaim = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionScopesClaim))
 		for _, v := range resp.Config.AccessTokenIntrospectionScopesClaim {
 			r.Config.AccessTokenIntrospectionScopesClaim = append(r.Config.AccessTokenIntrospectionScopesClaim, types.StringValue(v))
 		}
-		r.Config.AccessTokenIntrospectionScopesRequired = []types.String{}
+		r.Config.AccessTokenIntrospectionScopesRequired = make([]types.String, 0, len(resp.Config.AccessTokenIntrospectionScopesRequired))
 		for _, v := range resp.Config.AccessTokenIntrospectionScopesRequired {
 			r.Config.AccessTokenIntrospectionScopesRequired = append(r.Config.AccessTokenIntrospectionScopesRequired, types.StringValue(v))
 		}
@@ -80,11 +80,11 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		}
 		r.Config.AccessTokenOptional = types.BoolPointerValue(resp.Config.AccessTokenOptional)
 		r.Config.AccessTokenRequestHeader = types.StringPointerValue(resp.Config.AccessTokenRequestHeader)
-		r.Config.AccessTokenScopesClaim = []types.String{}
+		r.Config.AccessTokenScopesClaim = make([]types.String, 0, len(resp.Config.AccessTokenScopesClaim))
 		for _, v := range resp.Config.AccessTokenScopesClaim {
 			r.Config.AccessTokenScopesClaim = append(r.Config.AccessTokenScopesClaim, types.StringValue(v))
 		}
-		r.Config.AccessTokenScopesRequired = []types.String{}
+		r.Config.AccessTokenScopesRequired = make([]types.String, 0, len(resp.Config.AccessTokenScopesRequired))
 		for _, v := range resp.Config.AccessTokenScopesRequired {
 			r.Config.AccessTokenScopesRequired = append(r.Config.AccessTokenScopesRequired, types.StringValue(v))
 		}
@@ -122,27 +122,27 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		}
 		r.Config.CacheAccessTokenIntrospection = types.BoolPointerValue(resp.Config.CacheAccessTokenIntrospection)
 		r.Config.CacheChannelTokenIntrospection = types.BoolPointerValue(resp.Config.CacheChannelTokenIntrospection)
-		r.Config.ChannelTokenConsumerBy = []types.String{}
+		r.Config.ChannelTokenConsumerBy = make([]types.String, 0, len(resp.Config.ChannelTokenConsumerBy))
 		for _, v := range resp.Config.ChannelTokenConsumerBy {
 			r.Config.ChannelTokenConsumerBy = append(r.Config.ChannelTokenConsumerBy, types.StringValue(string(v)))
 		}
-		r.Config.ChannelTokenConsumerClaim = []types.String{}
+		r.Config.ChannelTokenConsumerClaim = make([]types.String, 0, len(resp.Config.ChannelTokenConsumerClaim))
 		for _, v := range resp.Config.ChannelTokenConsumerClaim {
 			r.Config.ChannelTokenConsumerClaim = append(r.Config.ChannelTokenConsumerClaim, types.StringValue(v))
 		}
 		r.Config.ChannelTokenIntrospectionAuthorization = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionAuthorization)
 		r.Config.ChannelTokenIntrospectionBodyArgs = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionBodyArgs)
-		r.Config.ChannelTokenIntrospectionConsumerBy = []types.String{}
+		r.Config.ChannelTokenIntrospectionConsumerBy = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionConsumerBy))
 		for _, v := range resp.Config.ChannelTokenIntrospectionConsumerBy {
 			r.Config.ChannelTokenIntrospectionConsumerBy = append(r.Config.ChannelTokenIntrospectionConsumerBy, types.StringValue(string(v)))
 		}
-		r.Config.ChannelTokenIntrospectionConsumerClaim = []types.String{}
+		r.Config.ChannelTokenIntrospectionConsumerClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionConsumerClaim))
 		for _, v := range resp.Config.ChannelTokenIntrospectionConsumerClaim {
 			r.Config.ChannelTokenIntrospectionConsumerClaim = append(r.Config.ChannelTokenIntrospectionConsumerClaim, types.StringValue(v))
 		}
 		r.Config.ChannelTokenIntrospectionEndpoint = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionEndpoint)
 		r.Config.ChannelTokenIntrospectionHint = types.StringPointerValue(resp.Config.ChannelTokenIntrospectionHint)
-		r.Config.ChannelTokenIntrospectionJwtClaim = []types.String{}
+		r.Config.ChannelTokenIntrospectionJwtClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionJwtClaim))
 		for _, v := range resp.Config.ChannelTokenIntrospectionJwtClaim {
 			r.Config.ChannelTokenIntrospectionJwtClaim = append(r.Config.ChannelTokenIntrospectionJwtClaim, types.StringValue(v))
 		}
@@ -151,11 +151,11 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		} else {
 			r.Config.ChannelTokenIntrospectionLeeway = types.NumberNull()
 		}
-		r.Config.ChannelTokenIntrospectionScopesClaim = []types.String{}
+		r.Config.ChannelTokenIntrospectionScopesClaim = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionScopesClaim))
 		for _, v := range resp.Config.ChannelTokenIntrospectionScopesClaim {
 			r.Config.ChannelTokenIntrospectionScopesClaim = append(r.Config.ChannelTokenIntrospectionScopesClaim, types.StringValue(v))
 		}
-		r.Config.ChannelTokenIntrospectionScopesRequired = []types.String{}
+		r.Config.ChannelTokenIntrospectionScopesRequired = make([]types.String, 0, len(resp.Config.ChannelTokenIntrospectionScopesRequired))
 		for _, v := range resp.Config.ChannelTokenIntrospectionScopesRequired {
 			r.Config.ChannelTokenIntrospectionScopesRequired = append(r.Config.ChannelTokenIntrospectionScopesRequired, types.StringValue(v))
 		}
@@ -190,11 +190,11 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		}
 		r.Config.ChannelTokenOptional = types.BoolPointerValue(resp.Config.ChannelTokenOptional)
 		r.Config.ChannelTokenRequestHeader = types.StringPointerValue(resp.Config.ChannelTokenRequestHeader)
-		r.Config.ChannelTokenScopesClaim = []types.String{}
+		r.Config.ChannelTokenScopesClaim = make([]types.String, 0, len(resp.Config.ChannelTokenScopesClaim))
 		for _, v := range resp.Config.ChannelTokenScopesClaim {
 			r.Config.ChannelTokenScopesClaim = append(r.Config.ChannelTokenScopesClaim, types.StringValue(v))
 		}
-		r.Config.ChannelTokenScopesRequired = []types.String{}
+		r.Config.ChannelTokenScopesRequired = make([]types.String, 0, len(resp.Config.ChannelTokenScopesRequired))
 		for _, v := range resp.Config.ChannelTokenScopesRequired {
 			r.Config.ChannelTokenScopesRequired = append(r.Config.ChannelTokenScopesRequired, types.StringValue(v))
 		}
@@ -216,11 +216,11 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		r.Config.OriginalAccessTokenUpstreamHeader = types.StringPointerValue(resp.Config.OriginalAccessTokenUpstreamHeader)
 		r.Config.OriginalChannelTokenUpstreamHeader = types.StringPointerValue(resp.Config.OriginalChannelTokenUpstreamHeader)
 		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.RemoveAccessTokenClaims = []types.String{}
+		r.Config.RemoveAccessTokenClaims = make([]types.String, 0, len(resp.Config.RemoveAccessTokenClaims))
 		for _, v := range resp.Config.RemoveAccessTokenClaims {
 			r.Config.RemoveAccessTokenClaims = append(r.Config.RemoveAccessTokenClaims, types.StringValue(v))
 		}
-		r.Config.RemoveChannelTokenClaims = []types.String{}
+		r.Config.RemoveChannelTokenClaims = make([]types.String, 0, len(resp.Config.RemoveChannelTokenClaims))
 		for _, v := range resp.Config.RemoveChannelTokenClaims {
 			r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 		}
@@ -257,18 +257,6 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 		r.Config.VerifyChannelTokenIntrospectionScopes = types.BoolPointerValue(resp.Config.VerifyChannelTokenIntrospectionScopes)
 		r.Config.VerifyChannelTokenScopes = types.BoolPointerValue(resp.Config.VerifyChannelTokenScopes)
 		r.Config.VerifyChannelTokenSignature = types.BoolPointerValue(resp.Config.VerifyChannelTokenSignature)
-		if resp.Consumer == nil {
-			r.Consumer = nil
-		} else {
-			r.Consumer = &tfTypes.ACLConsumer{}
-			r.Consumer.ID = types.StringPointerValue(resp.Consumer.ID)
-		}
-		if resp.ConsumerGroup == nil {
-			r.ConsumerGroup = nil
-		} else {
-			r.ConsumerGroup = &tfTypes.ACLConsumer{}
-			r.ConsumerGroup.ID = types.StringPointerValue(resp.ConsumerGroup.ID)
-		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -281,7 +269,7 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 				r.Ordering.After = nil
 			} else {
 				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = []types.String{}
+				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
 				for _, v := range resp.Ordering.After.Access {
 					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
 				}
@@ -290,29 +278,29 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 				r.Ordering.Before = nil
 			} else {
 				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = []types.String{}
+				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
 				for _, v := range resp.Ordering.Before.Access {
 					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
 				}
 			}
 		}
-		r.Protocols = []types.String{}
+		r.Protocols = make([]types.String, 0, len(resp.Protocols))
 		for _, v := range resp.Protocols {
 			r.Protocols = append(r.Protocols, types.StringValue(string(v)))
 		}
 		if resp.Route == nil {
 			r.Route = nil
 		} else {
-			r.Route = &tfTypes.ACLConsumer{}
+			r.Route = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Route.ID = types.StringPointerValue(resp.Route.ID)
 		}
 		if resp.Service == nil {
 			r.Service = nil
 		} else {
-			r.Service = &tfTypes.ACLConsumer{}
+			r.Service = &tfTypes.ACLWithoutParentsConsumer{}
 			r.Service.ID = types.StringPointerValue(resp.Service.ID)
 		}
-		r.Tags = []types.String{}
+		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}

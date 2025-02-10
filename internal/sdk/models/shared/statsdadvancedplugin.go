@@ -8,6 +8,47 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
+type StatsdAdvancedPluginAfter struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *StatsdAdvancedPluginAfter) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type StatsdAdvancedPluginBefore struct {
+	Access []string `json:"access,omitempty"`
+}
+
+func (o *StatsdAdvancedPluginBefore) GetAccess() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Access
+}
+
+type StatsdAdvancedPluginOrdering struct {
+	After  *StatsdAdvancedPluginAfter  `json:"after,omitempty"`
+	Before *StatsdAdvancedPluginBefore `json:"before,omitempty"`
+}
+
+func (o *StatsdAdvancedPluginOrdering) GetAfter() *StatsdAdvancedPluginAfter {
+	if o == nil {
+		return nil
+	}
+	return o.After
+}
+
+func (o *StatsdAdvancedPluginOrdering) GetBefore() *StatsdAdvancedPluginBefore {
+	if o == nil {
+		return nil
+	}
+	return o.Before
+}
+
 // StatsdAdvancedPluginConsumerIdentifierDefault - The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`.
 type StatsdAdvancedPluginConsumerIdentifierDefault string
 
@@ -70,21 +111,21 @@ func (e *StatsdAdvancedPluginConsumerIdentifier) UnmarshalJSON(data []byte) erro
 type StatsdAdvancedPluginName string
 
 const (
+	StatsdAdvancedPluginNameCacheDatastoreHitsTotal    StatsdAdvancedPluginName = "cache_datastore_hits_total"
+	StatsdAdvancedPluginNameCacheDatastoreMissesTotal  StatsdAdvancedPluginName = "cache_datastore_misses_total"
 	StatsdAdvancedPluginNameKongLatency                StatsdAdvancedPluginName = "kong_latency"
 	StatsdAdvancedPluginNameLatency                    StatsdAdvancedPluginName = "latency"
 	StatsdAdvancedPluginNameRequestCount               StatsdAdvancedPluginName = "request_count"
 	StatsdAdvancedPluginNameRequestPerUser             StatsdAdvancedPluginName = "request_per_user"
 	StatsdAdvancedPluginNameRequestSize                StatsdAdvancedPluginName = "request_size"
 	StatsdAdvancedPluginNameResponseSize               StatsdAdvancedPluginName = "response_size"
+	StatsdAdvancedPluginNameShdictUsage                StatsdAdvancedPluginName = "shdict_usage"
 	StatsdAdvancedPluginNameStatusCount                StatsdAdvancedPluginName = "status_count"
 	StatsdAdvancedPluginNameStatusCountPerUser         StatsdAdvancedPluginName = "status_count_per_user"
+	StatsdAdvancedPluginNameStatusCountPerUserPerRoute StatsdAdvancedPluginName = "status_count_per_user_per_route"
+	StatsdAdvancedPluginNameStatusCountPerWorkspace    StatsdAdvancedPluginName = "status_count_per_workspace"
 	StatsdAdvancedPluginNameUniqueUsers                StatsdAdvancedPluginName = "unique_users"
 	StatsdAdvancedPluginNameUpstreamLatency            StatsdAdvancedPluginName = "upstream_latency"
-	StatsdAdvancedPluginNameStatusCountPerWorkspace    StatsdAdvancedPluginName = "status_count_per_workspace"
-	StatsdAdvancedPluginNameStatusCountPerUserPerRoute StatsdAdvancedPluginName = "status_count_per_user_per_route"
-	StatsdAdvancedPluginNameShdictUsage                StatsdAdvancedPluginName = "shdict_usage"
-	StatsdAdvancedPluginNameCacheDatastoreHitsTotal    StatsdAdvancedPluginName = "cache_datastore_hits_total"
-	StatsdAdvancedPluginNameCacheDatastoreMissesTotal  StatsdAdvancedPluginName = "cache_datastore_misses_total"
 )
 
 func (e StatsdAdvancedPluginName) ToPointer() *StatsdAdvancedPluginName {
@@ -96,6 +137,10 @@ func (e *StatsdAdvancedPluginName) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "cache_datastore_hits_total":
+		fallthrough
+	case "cache_datastore_misses_total":
+		fallthrough
 	case "kong_latency":
 		fallthrough
 	case "latency":
@@ -108,23 +153,19 @@ func (e *StatsdAdvancedPluginName) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "response_size":
 		fallthrough
+	case "shdict_usage":
+		fallthrough
 	case "status_count":
 		fallthrough
 	case "status_count_per_user":
 		fallthrough
-	case "unique_users":
-		fallthrough
-	case "upstream_latency":
+	case "status_count_per_user_per_route":
 		fallthrough
 	case "status_count_per_workspace":
 		fallthrough
-	case "status_count_per_user_per_route":
+	case "unique_users":
 		fallthrough
-	case "shdict_usage":
-		fallthrough
-	case "cache_datastore_hits_total":
-		fallthrough
-	case "cache_datastore_misses_total":
+	case "upstream_latency":
 		*e = StatsdAdvancedPluginName(v)
 		return nil
 	default:
@@ -135,9 +176,9 @@ func (e *StatsdAdvancedPluginName) UnmarshalJSON(data []byte) error {
 type StatsdAdvancedPluginServiceIdentifier string
 
 const (
+	StatsdAdvancedPluginServiceIdentifierServiceHost       StatsdAdvancedPluginServiceIdentifier = "service_host"
 	StatsdAdvancedPluginServiceIdentifierServiceID         StatsdAdvancedPluginServiceIdentifier = "service_id"
 	StatsdAdvancedPluginServiceIdentifierServiceName       StatsdAdvancedPluginServiceIdentifier = "service_name"
-	StatsdAdvancedPluginServiceIdentifierServiceHost       StatsdAdvancedPluginServiceIdentifier = "service_host"
 	StatsdAdvancedPluginServiceIdentifierServiceNameOrHost StatsdAdvancedPluginServiceIdentifier = "service_name_or_host"
 )
 
@@ -150,11 +191,11 @@ func (e *StatsdAdvancedPluginServiceIdentifier) UnmarshalJSON(data []byte) error
 		return err
 	}
 	switch v {
+	case "service_host":
+		fallthrough
 	case "service_id":
 		fallthrough
 	case "service_name":
-		fallthrough
-	case "service_host":
 		fallthrough
 	case "service_name_or_host":
 		*e = StatsdAdvancedPluginServiceIdentifier(v)
@@ -385,9 +426,9 @@ func (o *StatsdAdvancedPluginQueue) GetMaxRetryTime() *float64 {
 type StatsdAdvancedPluginServiceIdentifierDefault string
 
 const (
+	StatsdAdvancedPluginServiceIdentifierDefaultServiceHost       StatsdAdvancedPluginServiceIdentifierDefault = "service_host"
 	StatsdAdvancedPluginServiceIdentifierDefaultServiceID         StatsdAdvancedPluginServiceIdentifierDefault = "service_id"
 	StatsdAdvancedPluginServiceIdentifierDefaultServiceName       StatsdAdvancedPluginServiceIdentifierDefault = "service_name"
-	StatsdAdvancedPluginServiceIdentifierDefaultServiceHost       StatsdAdvancedPluginServiceIdentifierDefault = "service_host"
 	StatsdAdvancedPluginServiceIdentifierDefaultServiceNameOrHost StatsdAdvancedPluginServiceIdentifierDefault = "service_name_or_host"
 )
 
@@ -400,11 +441,11 @@ func (e *StatsdAdvancedPluginServiceIdentifierDefault) UnmarshalJSON(data []byte
 		return err
 	}
 	switch v {
+	case "service_host":
+		fallthrough
 	case "service_id":
 		fallthrough
 	case "service_name":
-		fallthrough
-	case "service_host":
 		fallthrough
 	case "service_name_or_host":
 		*e = StatsdAdvancedPluginServiceIdentifierDefault(v)
@@ -563,58 +604,7 @@ func (o *StatsdAdvancedPluginConsumer) GetID() *string {
 	return o.ID
 }
 
-type StatsdAdvancedPluginConsumerGroup struct {
-	ID *string `json:"id,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginConsumerGroup) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-type StatsdAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type StatsdAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type StatsdAdvancedPluginOrdering struct {
-	After  *StatsdAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *StatsdAdvancedPluginBefore `json:"before,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginOrdering) GetAfter() *StatsdAdvancedPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *StatsdAdvancedPluginOrdering) GetBefore() *StatsdAdvancedPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
+// StatsdAdvancedPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.
 type StatsdAdvancedPluginProtocols string
 
 const (
@@ -665,7 +655,7 @@ func (e *StatsdAdvancedPluginProtocols) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// StatsdAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
+// StatsdAdvancedPluginRoute - If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
 type StatsdAdvancedPluginRoute struct {
 	ID *string `json:"id,omitempty"`
 }
@@ -691,10 +681,6 @@ func (o *StatsdAdvancedPluginService) GetID() *string {
 
 // StatsdAdvancedPlugin - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type StatsdAdvancedPlugin struct {
-	Config StatsdAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *StatsdAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *StatsdAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
@@ -703,16 +689,19 @@ type StatsdAdvancedPlugin struct {
 	InstanceName *string                       `json:"instance_name,omitempty"`
 	name         string                        `const:"statsd-advanced" json:"name"`
 	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []StatsdAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *StatsdAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *StatsdAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64                     `json:"updated_at,omitempty"`
+	Config    StatsdAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *StatsdAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing protocols.
+	Protocols []StatsdAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *StatsdAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *StatsdAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (s StatsdAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -724,27 +713,6 @@ func (s *StatsdAdvancedPlugin) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *StatsdAdvancedPlugin) GetConfig() StatsdAdvancedPluginConfig {
-	if o == nil {
-		return StatsdAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *StatsdAdvancedPlugin) GetConsumer() *StatsdAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *StatsdAdvancedPlugin) GetConsumerGroup() *StatsdAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *StatsdAdvancedPlugin) GetCreatedAt() *int64 {
@@ -786,6 +754,34 @@ func (o *StatsdAdvancedPlugin) GetOrdering() *StatsdAdvancedPluginOrdering {
 	return o.Ordering
 }
 
+func (o *StatsdAdvancedPlugin) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *StatsdAdvancedPlugin) GetUpdatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.UpdatedAt
+}
+
+func (o *StatsdAdvancedPlugin) GetConfig() StatsdAdvancedPluginConfig {
+	if o == nil {
+		return StatsdAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *StatsdAdvancedPlugin) GetConsumer() *StatsdAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *StatsdAdvancedPlugin) GetProtocols() []StatsdAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -807,40 +803,25 @@ func (o *StatsdAdvancedPlugin) GetService() *StatsdAdvancedPluginService {
 	return o.Service
 }
 
-func (o *StatsdAdvancedPlugin) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *StatsdAdvancedPlugin) GetUpdatedAt() *int64 {
-	if o == nil {
-		return nil
-	}
-	return o.UpdatedAt
-}
-
 // StatsdAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type StatsdAdvancedPluginInput struct {
-	Config StatsdAdvancedPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer      *StatsdAdvancedPluginConsumer      `json:"consumer"`
-	ConsumerGroup *StatsdAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// Whether the plugin is applied.
 	Enabled      *bool                         `json:"enabled,omitempty"`
 	ID           *string                       `json:"id,omitempty"`
 	InstanceName *string                       `json:"instance_name,omitempty"`
 	name         string                        `const:"statsd-advanced" json:"name"`
 	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
-	Protocols []StatsdAdvancedPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
-	Route *StatsdAdvancedPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *StatsdAdvancedPluginService `json:"service"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
+	Tags   []string                   `json:"tags,omitempty"`
+	Config StatsdAdvancedPluginConfig `json:"config"`
+	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
+	Consumer *StatsdAdvancedPluginConsumer `json:"consumer,omitempty"`
+	// A set of strings representing protocols.
+	Protocols []StatsdAdvancedPluginProtocols `json:"protocols,omitempty"`
+	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
+	Route *StatsdAdvancedPluginRoute `json:"route,omitempty"`
+	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
+	Service *StatsdAdvancedPluginService `json:"service,omitempty"`
 }
 
 func (s StatsdAdvancedPluginInput) MarshalJSON() ([]byte, error) {
@@ -852,27 +833,6 @@ func (s *StatsdAdvancedPluginInput) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	return nil
-}
-
-func (o *StatsdAdvancedPluginInput) GetConfig() StatsdAdvancedPluginConfig {
-	if o == nil {
-		return StatsdAdvancedPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *StatsdAdvancedPluginInput) GetConsumer() *StatsdAdvancedPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *StatsdAdvancedPluginInput) GetConsumerGroup() *StatsdAdvancedPluginConsumerGroup {
-	if o == nil {
-		return nil
-	}
-	return o.ConsumerGroup
 }
 
 func (o *StatsdAdvancedPluginInput) GetEnabled() *bool {
@@ -907,6 +867,27 @@ func (o *StatsdAdvancedPluginInput) GetOrdering() *StatsdAdvancedPluginOrdering 
 	return o.Ordering
 }
 
+func (o *StatsdAdvancedPluginInput) GetTags() []string {
+	if o == nil {
+		return nil
+	}
+	return o.Tags
+}
+
+func (o *StatsdAdvancedPluginInput) GetConfig() StatsdAdvancedPluginConfig {
+	if o == nil {
+		return StatsdAdvancedPluginConfig{}
+	}
+	return o.Config
+}
+
+func (o *StatsdAdvancedPluginInput) GetConsumer() *StatsdAdvancedPluginConsumer {
+	if o == nil {
+		return nil
+	}
+	return o.Consumer
+}
+
 func (o *StatsdAdvancedPluginInput) GetProtocols() []StatsdAdvancedPluginProtocols {
 	if o == nil {
 		return nil
@@ -926,11 +907,4 @@ func (o *StatsdAdvancedPluginInput) GetService() *StatsdAdvancedPluginService {
 		return nil
 	}
 	return o.Service
-}
-
-func (o *StatsdAdvancedPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
 }
