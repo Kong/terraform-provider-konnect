@@ -716,6 +716,82 @@ paths:
           $ref: '#/components/responses/Conflict'
       tags:
         - App Auth Strategies
+  /v2/audit-log-destinations:
+    post:
+      x-speakeasy-entity-operation: AuditLogDestination#create
+      operationId: create-audit-log-destination
+      summary: Create Audit Log Destination
+      description: Creates a configuration for the audit log destination.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateAuditLogDestination'
+      responses:
+        '201':
+          $ref: '#/components/responses/AuditLogDestinationSingle'
+        '400':
+          $ref: '#/components/responses/AuditLogDestinationBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - Audit Logs
+  '/v2/audit-log-destinations/{auditLogDestinationId}':
+    parameters:
+      - $ref: '#/components/parameters/AuditLogDestinationId'
+    get:
+      x-speakeasy-entity-operation: AuditLogDestination#read
+      operationId: get-audit-log-destination
+      summary: Get Audit Log Destination
+      description: Returns configuration for the audit log destination.
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogDestinationSingle'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Audit Logs
+    patch:
+      x-speakeasy-entity-operation: AuditLogDestination#update
+      operationId: update-audit-log-destination
+      summary: Update Audit Log Destination
+      description: Updates configuration for the audit log destination.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateAuditLogDestination'
+      responses:
+        '200':
+          $ref: '#/components/responses/AuditLogDestinationSingle'
+        '400':
+          $ref: '#/components/responses/AuditLogDestinationBadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - Audit Logs
+    delete:
+      x-speakeasy-entity-operation: AuditLogDestination#delete
+      operationId: delete-audit-log-destination
+      summary: Delete Audit Log Destination
+      description: Deletes configuration for the audit log destination.
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+      tags:
+        - Audit Logs
   /v2/audit-log-webhook:
     patch:
       x-speakeasy-entity-operation:
@@ -11400,6 +11476,15 @@ components:
       schema:
         type: string
       x-speakeasy-match: id
+    AuditLogDestinationId:
+      schema:
+        type: string
+        format: uuid
+      name: auditLogDestinationId
+      in: path
+      required: true
+      description: ID of the Audit Log Destination.
+      x-speakeasy-match: id
     AuthStrategyId:
       name: authStrategyId
       description: Application auth strategy identifier
@@ -15885,6 +15970,43 @@ components:
         - region
       title: Control plane
       x-go-name: ControlPlane
+    AuditLogDestination:
+      description: Audit Log Destination Schema
+      type: object
+      properties:
+        id:
+          description: The unique ID of the audit log destination.
+          type: string
+          format: uuid
+        name:
+          description: The name of the audit log destination.
+          type: string
+        endpoint:
+          description: The endpoint that will receive audit log messages.
+          type: string
+          example: 'https://example.com/audit-logs'
+        log_format:
+          description: The output format of each log messages.
+          type: string
+          example: cef
+          enum:
+            - cef
+            - json
+        skip_ssl_verification:
+          description: Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+          type: boolean
+          example: false
+        created_at:
+          description: Timestamp when this webhook was created.
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          description: 'Timestamp when this webhook was last updated. Initial value is 0001-01-01T00:00:0Z.'
+          type: string
+          format: date-time
+          readOnly: true
+      title: AuditLogDestination
     DataPlaneClientCertificate:
       type: object
       properties:
@@ -32618,6 +32740,79 @@ components:
                   This option should be considered only for self-signed SSL certificates used in a non-production environment.
                 type: boolean
                 example: false
+    CreateAuditLogDestination:
+      description: The request schema to create an audit log destination.
+      content:
+        application/json:
+          schema:
+            x-speakeasy-entity: AuditLogDestination
+            type: object
+            properties:
+              name:
+                description: The name of the audit log destination.
+                type: string
+                example: My Destination
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              authorization:
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
+                type: string
+                example: Bearer sometoken
+                writeOnly: true
+              log_format:
+                description: The output format of each log message.
+                type: string
+                example: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                type: boolean
+                example: false
+            required:
+              - name
+              - endpoint
+              - log_format
+    UpdateAuditLogDestination:
+      description: The request schema to modify an audit log destination.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                description: The name of the audit log destination.
+                type: string
+                example: My Destination
+              endpoint:
+                description: The endpoint that will receive audit log messages.
+                type: string
+                example: 'https://example.com/audit-logs'
+              authorization:
+                description: The value to include in the `Authorization` header when sending audit logs to the webhook.
+                type: string
+                example: Bearer sometoken
+                writeOnly: true
+              log_format:
+                description: The output format of each log message.
+                type: string
+                example: cef
+                enum:
+                  - cef
+                  - json
+              skip_ssl_verification:
+                description: |-
+                  Indicates if the SSL certificate verification of the host endpoint should be skipped when delivering payloads.
+                  We strongly recommend not setting this to 'true' as you are subject to man-in-the-middle and other attacks.
+                  This option should be considered only for self-signed SSL certificates used in a non-production environment.
+                type: boolean
+                example: false
     DataPlaneClientCertificateRequest:
       content:
         application/json:
@@ -33233,7 +33428,19 @@ components:
                 type: string
                 format: date-time
                 readOnly: true
+    AuditLogDestinationSingle:
+      description: Audit log destination response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuditLogDestination'
     WebhookBadRequest:
+      description: Bad Request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestError'
+    AuditLogDestinationBadRequest:
       description: Bad Request
       content:
         application/problem+json:
