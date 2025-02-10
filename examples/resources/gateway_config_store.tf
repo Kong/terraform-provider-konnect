@@ -1,6 +1,5 @@
 resource "konnect_gateway_config_store" "my_configstore" {
   name  = "tf-config-store"
-  force = "true"
 
   control_plane_id = konnect_gateway_control_plane.tfdemo.id
 }
