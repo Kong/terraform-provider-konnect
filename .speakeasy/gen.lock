@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e0f244f00a8855da543ba307232d566f
+  docChecksum: 0dc8b0a833ab50d057f6cd93942e7d54
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -153,6 +153,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_xml_threat_protection/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_zipkin/data-source.tf
   - examples/data-sources/konnect_gateway_route/data-source.tf
+  - examples/data-sources/konnect_gateway_route_expression/data-source.tf
   - examples/data-sources/konnect_gateway_service/data-source.tf
   - examples/data-sources/konnect_gateway_sni/data-source.tf
   - examples/data-sources/konnect_gateway_target/data-source.tf
@@ -412,6 +413,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_zipkin/resource.tf
   - examples/resources/konnect_gateway_route/import.sh
   - examples/resources/konnect_gateway_route/resource.tf
+  - examples/resources/konnect_gateway_route_expression/import.sh
+  - examples/resources/konnect_gateway_route_expression/resource.tf
   - examples/resources/konnect_gateway_service/import.sh
   - examples/resources/konnect_gateway_service/resource.tf
   - examples/resources/konnect_gateway_sni/import.sh
@@ -947,6 +950,10 @@ generatedFiles:
   - internal/provider/gatewayroute_data_source_sdk.go
   - internal/provider/gatewayroute_resource.go
   - internal/provider/gatewayroute_resource_sdk.go
+  - internal/provider/gatewayrouteexpression_data_source.go
+  - internal/provider/gatewayrouteexpression_data_source_sdk.go
+  - internal/provider/gatewayrouteexpression_resource.go
+  - internal/provider/gatewayrouteexpression_resource_sdk.go
   - internal/provider/gatewayservice_data_source.go
   - internal/provider/gatewayservice_data_source_sdk.go
   - internal/provider/gatewayservice_resource.go
@@ -1407,6 +1414,7 @@ generatedFiles:
   - internal/sdk/models/operations/createresponsetransformerplugin.go
   - internal/sdk/models/operations/createroute.go
   - internal/sdk/models/operations/createroutebyheaderplugin.go
+  - internal/sdk/models/operations/createrouterouteexpression.go
   - internal/sdk/models/operations/createroutetransformeradvancedplugin.go
   - internal/sdk/models/operations/createsamlplugin.go
   - internal/sdk/models/operations/createserverlesscloudgateway.go
@@ -1539,6 +1547,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteresponsetransformerplugin.go
   - internal/sdk/models/operations/deleteroute.go
   - internal/sdk/models/operations/deleteroutebyheaderplugin.go
+  - internal/sdk/models/operations/deleterouterouteexpression.go
   - internal/sdk/models/operations/deleteroutetransformeradvancedplugin.go
   - internal/sdk/models/operations/deletesamlplugin.go
   - internal/sdk/models/operations/deleteserverlesscloudgateway.go
@@ -1678,6 +1687,7 @@ generatedFiles:
   - internal/sdk/models/operations/getresponsetransformerplugin.go
   - internal/sdk/models/operations/getroute.go
   - internal/sdk/models/operations/getroutebyheaderplugin.go
+  - internal/sdk/models/operations/getrouterouteexpression.go
   - internal/sdk/models/operations/getroutetransformeradvancedplugin.go
   - internal/sdk/models/operations/getsamlplugin.go
   - internal/sdk/models/operations/getserverlesscloudgateway.go
@@ -1841,6 +1851,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertkeyset.go
   - internal/sdk/models/operations/upsertplugin.go
   - internal/sdk/models/operations/upsertroute.go
+  - internal/sdk/models/operations/upsertrouterouteexpression.go
   - internal/sdk/models/operations/upsertservice.go
   - internal/sdk/models/operations/upsertsni.go
   - internal/sdk/models/operations/upsertupstream.go
@@ -1893,6 +1904,7 @@ generatedFiles:
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/baseerror.go
   - internal/sdk/models/shared/basicauth.go
   - internal/sdk/models/shared/basicauthplugin.go
   - internal/sdk/models/shared/basicauthwithoutparents.go
@@ -2061,8 +2073,9 @@ generatedFiles:
   - internal/sdk/models/shared/responseratelimitingplugin.go
   - internal/sdk/models/shared/responsetransformeradvancedplugin.go
   - internal/sdk/models/shared/responsetransformerplugin.go
-  - internal/sdk/models/shared/route.go
   - internal/sdk/models/shared/routebyheaderplugin.go
+  - internal/sdk/models/shared/routeexpression.go
+  - internal/sdk/models/shared/routejson.go
   - internal/sdk/models/shared/routetransformeradvancedplugin.go
   - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/security.go
@@ -2878,6 +2891,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+        "500":
+          application/problem+json: {"status": 95128, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   update-control-plane:
     speakeasy-default-update-control-plane:
       parameters:
@@ -7964,6 +7979,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+        "500":
+          application/problem+json: {"status": 436362, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   post-control-planes-id-group-memberships-remove:
     speakeasy-default-post-control-planes-id-group-memberships-remove:
       parameters:
@@ -7980,6 +7997,8 @@ examples:
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+        "500":
+          application/problem+json: {"status": 753975, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   list-portals:
     speakeasy-default-list-portals:
       parameters:
@@ -8594,5 +8613,50 @@ examples:
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  delete-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 654994}
+  get-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 419229}
+  upsert-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"service": null}
+      responses:
+        "200":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 578176}
+  create-route-RouteExpression:
+    speakeasy-default-create-route-route-expression:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"service": null}
+      responses:
+        "201":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 468015}
 examplesVersion: 1.0.0
 generatedTests: {}

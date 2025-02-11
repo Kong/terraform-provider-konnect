@@ -15,53 +15,47 @@ import (
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &GatewayRouteDataSource{}
-var _ datasource.DataSourceWithConfigure = &GatewayRouteDataSource{}
+var _ datasource.DataSource = &GatewayRouteExpressionDataSource{}
+var _ datasource.DataSourceWithConfigure = &GatewayRouteExpressionDataSource{}
 
-func NewGatewayRouteDataSource() datasource.DataSource {
-	return &GatewayRouteDataSource{}
+func NewGatewayRouteExpressionDataSource() datasource.DataSource {
+	return &GatewayRouteExpressionDataSource{}
 }
 
-// GatewayRouteDataSource is the data source implementation.
-type GatewayRouteDataSource struct {
+// GatewayRouteExpressionDataSource is the data source implementation.
+type GatewayRouteExpressionDataSource struct {
 	client *sdk.Konnect
 }
 
-// GatewayRouteDataSourceModel describes the data model.
-type GatewayRouteDataSourceModel struct {
-	ControlPlaneID          types.String                                `tfsdk:"control_plane_id"`
-	CreatedAt               types.Int64                                 `tfsdk:"created_at"`
-	Destinations            []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"destinations"`
-	Headers                 map[string]types.String                     `tfsdk:"headers"`
-	Hosts                   []types.String                              `tfsdk:"hosts"`
-	HTTPSRedirectStatusCode types.Int64                                 `tfsdk:"https_redirect_status_code"`
-	ID                      types.String                                `tfsdk:"id"`
-	Methods                 []types.String                              `tfsdk:"methods"`
-	Name                    types.String                                `tfsdk:"name"`
-	PathHandling            types.String                                `tfsdk:"path_handling"`
-	Paths                   []types.String                              `tfsdk:"paths"`
-	PreserveHost            types.Bool                                  `tfsdk:"preserve_host"`
-	Protocols               []types.String                              `tfsdk:"protocols"`
-	RegexPriority           types.Int64                                 `tfsdk:"regex_priority"`
-	RequestBuffering        types.Bool                                  `tfsdk:"request_buffering"`
-	ResponseBuffering       types.Bool                                  `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service" tfPlanOnly:"true"`
-	Snis                    []types.String                              `tfsdk:"snis"`
-	Sources                 []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"sources"`
-	StripPath               types.Bool                                  `tfsdk:"strip_path"`
-	Tags                    []types.String                              `tfsdk:"tags"`
-	UpdatedAt               types.Int64                                 `tfsdk:"updated_at"`
+// GatewayRouteExpressionDataSourceModel describes the data model.
+type GatewayRouteExpressionDataSourceModel struct {
+	ControlPlaneID          types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt               types.Int64                        `tfsdk:"created_at"`
+	Expression              types.String                       `tfsdk:"expression"`
+	HTTPSRedirectStatusCode types.Int64                        `tfsdk:"https_redirect_status_code"`
+	ID                      types.String                       `tfsdk:"id"`
+	Name                    types.String                       `tfsdk:"name"`
+	PathHandling            types.String                       `tfsdk:"path_handling"`
+	PreserveHost            types.Bool                         `tfsdk:"preserve_host"`
+	Priority                types.Int64                        `tfsdk:"priority"`
+	Protocols               []types.String                     `tfsdk:"protocols"`
+	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
+	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	StripPath               types.Bool                         `tfsdk:"strip_path"`
+	Tags                    []types.String                     `tfsdk:"tags"`
+	UpdatedAt               types.Int64                        `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
-func (r *GatewayRouteDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_gateway_route"
+func (r *GatewayRouteExpressionDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_route_expression"
 }
 
 // Schema defines the schema for the data source.
-func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (r *GatewayRouteExpressionDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayRoute DataSource",
+		MarkdownDescription: "GatewayRouteExpression DataSource",
 
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
@@ -72,29 +66,9 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
-			"destinations": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							Computed: true,
-						},
-						"port": schema.Int64Attribute{
-							Computed: true,
-						},
-					},
-				},
-				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
-			},
-			"headers": schema.MapAttribute{
+			"expression": schema.StringAttribute{
 				Computed:    true,
-				ElementType: types.StringType,
-				Description: `One or more lists of values indexed by header name that will cause this Route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
-			},
-			"hosts": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `A list of domain names that match this Route. Note that the hosts value is case sensitive.`,
+				Description: `Use Router Expression to perform route match. This option is only available when ` + "`" + `router_flavor` + "`" + ` is set to ` + "`" + `expressions` + "`" + `.`,
 			},
 			"https_redirect_status_code": schema.Int64Attribute{
 				Computed:    true,
@@ -102,11 +76,6 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
-			},
-			"methods": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `A list of HTTP methods that match this Route.`,
 			},
 			"name": schema.StringAttribute{
 				Computed:    true,
@@ -116,23 +85,17 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 				Computed:    true,
 				Description: `Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.`,
 			},
-			"paths": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `A list of paths that match this Route.`,
-			},
 			"preserve_host": schema.BoolAttribute{
 				Computed:    true,
 				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `.`,
+			},
+			"priority": schema.Int64Attribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
 				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error.`,
-			},
-			"regex_priority": schema.Int64Attribute{
-				Computed:    true,
-				Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).`,
 			},
 			"request_buffering": schema.BoolAttribute{
 				Computed:    true,
@@ -151,25 +114,6 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 				},
 				Description: `The Service this Route is associated to. This is where the Route proxies traffic to.`,
 			},
-			"snis": schema.ListAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
-				Description: `A list of SNIs that match this Route when using stream routing.`,
-			},
-			"sources": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							Computed: true,
-						},
-						"port": schema.Int64Attribute{
-							Computed: true,
-						},
-					},
-				},
-				Description: `A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
-			},
 			"strip_path": schema.BoolAttribute{
 				Computed:    true,
 				Description: `When matching a Route via one of the ` + "`" + `paths` + "`" + `, strip the matching prefix from the upstream request URL.`,
@@ -187,7 +131,7 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 	}
 }
 
-func (r *GatewayRouteDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (r *GatewayRouteExpressionDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -207,8 +151,8 @@ func (r *GatewayRouteDataSource) Configure(ctx context.Context, req datasource.C
 	r.client = client
 }
 
-func (r *GatewayRouteDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
-	var data *GatewayRouteDataSourceModel
+func (r *GatewayRouteExpressionDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+	var data *GatewayRouteExpressionDataSourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &item)...)
@@ -231,11 +175,11 @@ func (r *GatewayRouteDataSource) Read(ctx context.Context, req datasource.ReadRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	request := operations.GetRouteRequest{
+	request := operations.GetRouteRouteExpressionRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
 	}
-	res, err := r.client.Routes.GetRoute(ctx, request)
+	res, err := r.client.Routes.GetRouteRouteExpression(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -255,11 +199,11 @@ func (r *GatewayRouteDataSource) Read(ctx context.Context, req datasource.ReadRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RouteJSON != nil) {
+	if !(res.RouteExpression != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
+	data.RefreshFromSharedRouteExpression(res.RouteExpression)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

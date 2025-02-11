@@ -22,55 +22,48 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ resource.Resource = &GatewayRouteResource{}
-var _ resource.ResourceWithImportState = &GatewayRouteResource{}
+var _ resource.Resource = &GatewayRouteExpressionResource{}
+var _ resource.ResourceWithImportState = &GatewayRouteExpressionResource{}
 
-func NewGatewayRouteResource() resource.Resource {
-	return &GatewayRouteResource{}
+func NewGatewayRouteExpressionResource() resource.Resource {
+	return &GatewayRouteExpressionResource{}
 }
 
-// GatewayRouteResource defines the resource implementation.
-type GatewayRouteResource struct {
+// GatewayRouteExpressionResource defines the resource implementation.
+type GatewayRouteExpressionResource struct {
 	client *sdk.Konnect
 }
 
-// GatewayRouteResourceModel describes the resource data model.
-type GatewayRouteResourceModel struct {
-	ControlPlaneID          types.String                                `tfsdk:"control_plane_id"`
-	CreatedAt               types.Int64                                 `tfsdk:"created_at"`
-	Destinations            []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"destinations"`
-	Headers                 map[string]types.String                     `tfsdk:"headers"`
-	Hosts                   []types.String                              `tfsdk:"hosts"`
-	HTTPSRedirectStatusCode types.Int64                                 `tfsdk:"https_redirect_status_code"`
-	ID                      types.String                                `tfsdk:"id"`
-	Methods                 []types.String                              `tfsdk:"methods"`
-	Name                    types.String                                `tfsdk:"name"`
-	PathHandling            types.String                                `tfsdk:"path_handling"`
-	Paths                   []types.String                              `tfsdk:"paths"`
-	PreserveHost            types.Bool                                  `tfsdk:"preserve_host"`
-	Protocols               []types.String                              `tfsdk:"protocols"`
-	RegexPriority           types.Int64                                 `tfsdk:"regex_priority"`
-	RequestBuffering        types.Bool                                  `tfsdk:"request_buffering"`
-	ResponseBuffering       types.Bool                                  `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service" tfPlanOnly:"true"`
-	Snis                    []types.String                              `tfsdk:"snis"`
-	Sources                 []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"sources"`
-	StripPath               types.Bool                                  `tfsdk:"strip_path"`
-	Tags                    []types.String                              `tfsdk:"tags"`
-	UpdatedAt               types.Int64                                 `tfsdk:"updated_at"`
+// GatewayRouteExpressionResourceModel describes the resource data model.
+type GatewayRouteExpressionResourceModel struct {
+	ControlPlaneID          types.String                       `tfsdk:"control_plane_id"`
+	CreatedAt               types.Int64                        `tfsdk:"created_at"`
+	Expression              types.String                       `tfsdk:"expression"`
+	HTTPSRedirectStatusCode types.Int64                        `tfsdk:"https_redirect_status_code"`
+	ID                      types.String                       `tfsdk:"id"`
+	Name                    types.String                       `tfsdk:"name"`
+	PathHandling            types.String                       `tfsdk:"path_handling"`
+	PreserveHost            types.Bool                         `tfsdk:"preserve_host"`
+	Priority                types.Int64                        `tfsdk:"priority"`
+	Protocols               []types.String                     `tfsdk:"protocols"`
+	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
+	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	StripPath               types.Bool                         `tfsdk:"strip_path"`
+	Tags                    []types.String                     `tfsdk:"tags"`
+	UpdatedAt               types.Int64                        `tfsdk:"updated_at"`
 }
 
-func (r *GatewayRouteResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_gateway_route"
+func (r *GatewayRouteExpressionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_gateway_route_expression"
 }
 
-func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "GatewayRoute Resource",
+		MarkdownDescription: "GatewayRouteExpression Resource",
 		Attributes: map[string]schema.Attribute{
 			"control_plane_id": schema.StringAttribute{
 				Required: true,
@@ -83,37 +76,10 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
-			"destinations": schema.ListNestedAttribute{
-				Computed: true,
-				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Validators: []validator.Object{
-						speakeasy_objectvalidators.NotNull(),
-					},
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
-						},
-						"port": schema.Int64Attribute{
-							Computed: true,
-							Optional: true,
-						},
-					},
-				},
-				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
-			},
-			"headers": schema.MapAttribute{
+			"expression": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				ElementType: types.StringType,
-				Description: `One or more lists of values indexed by header name that will cause this Route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
-			},
-			"hosts": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `A list of domain names that match this Route. Note that the hosts value is case sensitive.`,
+				Description: `Use Router Expression to perform route match. This option is only available when ` + "`" + `router_flavor` + "`" + ` is set to ` + "`" + `expressions` + "`" + `.`,
 			},
 			"https_redirect_status_code": schema.Int64Attribute{
 				Computed:    true,
@@ -133,12 +99,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				Computed: true,
 				Optional: true,
 			},
-			"methods": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `A list of HTTP methods that match this Route.`,
-			},
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -152,27 +112,20 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 					stringvalidator.OneOf("v0", "v1"),
 				},
 			},
-			"paths": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `A list of paths that match this Route.`,
-			},
 			"preserve_host": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
 				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `.`,
+			},
+			"priority": schema.Int64Attribute{
+				Computed: true,
+				Optional: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only ` + "`" + `"https"` + "`" + `, HTTP requests are answered with an upgrade error. When set to only ` + "`" + `"http"` + "`" + `, HTTPS requests are answered with an error.`,
-			},
-			"regex_priority": schema.Int64Attribute{
-				Computed:    true,
-				Optional:    true,
-				Description: `A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same ` + "`" + `regex_priority` + "`" + `, the older one (lowest ` + "`" + `created_at` + "`" + `) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).`,
 			},
 			"request_buffering": schema.BoolAttribute{
 				Computed:    true,
@@ -198,32 +151,6 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 				},
 				Description: `The Service this Route is associated to. This is where the Route proxies traffic to.`,
 			},
-			"snis": schema.ListAttribute{
-				Computed:    true,
-				Optional:    true,
-				ElementType: types.StringType,
-				Description: `A list of SNIs that match this Route when using stream routing.`,
-			},
-			"sources": schema.ListNestedAttribute{
-				Computed: true,
-				Optional: true,
-				NestedObject: schema.NestedAttributeObject{
-					Validators: []validator.Object{
-						speakeasy_objectvalidators.NotNull(),
-					},
-					Attributes: map[string]schema.Attribute{
-						"ip": schema.StringAttribute{
-							Computed: true,
-							Optional: true,
-						},
-						"port": schema.Int64Attribute{
-							Computed: true,
-							Optional: true,
-						},
-					},
-				},
-				Description: `A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
-			},
 			"strip_path": schema.BoolAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -243,7 +170,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 	}
 }
 
-func (r *GatewayRouteResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *GatewayRouteExpressionResource) Configure(ctx context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -263,8 +190,8 @@ func (r *GatewayRouteResource) Configure(ctx context.Context, req resource.Confi
 	r.client = client
 }
 
-func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data *GatewayRouteResourceModel
+func (r *GatewayRouteExpressionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data *GatewayRouteExpressionResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -284,12 +211,12 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
-	request := operations.CreateRouteRequest{
-		ControlPlaneID: controlPlaneID,
-		RouteJSON:      routeJSON,
+	routeExpression := *data.ToSharedRouteExpressionInput()
+	request := operations.CreateRouteRouteExpressionRequest{
+		ControlPlaneID:  controlPlaneID,
+		RouteExpression: routeExpression,
 	}
-	res, err := r.client.Routes.CreateRoute(ctx, request)
+	res, err := r.client.Routes.CreateRouteRouteExpression(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,19 +232,19 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RouteJSON != nil) {
+	if !(res.RouteExpression != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
+	data.RefreshFromSharedRouteExpression(res.RouteExpression)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data *GatewayRouteResourceModel
+func (r *GatewayRouteExpressionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data *GatewayRouteExpressionResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -340,11 +267,11 @@ func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadReques
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	request := operations.GetRouteRequest{
+	request := operations.GetRouteRouteExpressionRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
 	}
-	res, err := r.client.Routes.GetRoute(ctx, request)
+	res, err := r.client.Routes.GetRouteRouteExpression(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -364,18 +291,18 @@ func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RouteJSON != nil) {
+	if !(res.RouteExpression != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
+	data.RefreshFromSharedRouteExpression(res.RouteExpression)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data *GatewayRouteResourceModel
+func (r *GatewayRouteExpressionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data *GatewayRouteExpressionResourceModel
 	var plan types.Object
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
@@ -394,13 +321,13 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
-	request := operations.UpsertRouteRequest{
-		RouteID:        routeID,
-		ControlPlaneID: controlPlaneID,
-		RouteJSON:      routeJSON,
+	routeExpression := *data.ToSharedRouteExpressionInput()
+	request := operations.UpsertRouteRouteExpressionRequest{
+		RouteID:         routeID,
+		ControlPlaneID:  controlPlaneID,
+		RouteExpression: routeExpression,
 	}
-	res, err := r.client.Routes.UpsertRoute(ctx, request)
+	res, err := r.client.Routes.UpsertRouteRouteExpression(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -416,19 +343,19 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.RouteJSON != nil) {
+	if !(res.RouteExpression != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
+	data.RefreshFromSharedRouteExpression(res.RouteExpression)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *GatewayRouteResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
-	var data *GatewayRouteResourceModel
+func (r *GatewayRouteExpressionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var data *GatewayRouteExpressionResourceModel
 	var item types.Object
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &item)...)
@@ -451,11 +378,11 @@ func (r *GatewayRouteResource) Delete(ctx context.Context, req resource.DeleteRe
 	var routeID string
 	routeID = data.ID.ValueString()
 
-	request := operations.DeleteRouteRequest{
+	request := operations.DeleteRouteRouteExpressionRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteID:        routeID,
 	}
-	res, err := r.client.Routes.DeleteRoute(ctx, request)
+	res, err := r.client.Routes.DeleteRouteRouteExpression(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -474,7 +401,7 @@ func (r *GatewayRouteResource) Delete(ctx context.Context, req resource.DeleteRe
 
 }
 
-func (r *GatewayRouteResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *GatewayRouteExpressionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	dec := json.NewDecoder(bytes.NewReader([]byte(req.ID)))
 	dec.DisallowUnknownFields()
 	var data struct {

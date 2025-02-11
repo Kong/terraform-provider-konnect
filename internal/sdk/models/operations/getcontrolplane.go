@@ -36,6 +36,8 @@ type GetControlPlaneResponse struct {
 	ForbiddenError *shared.ForbiddenError
 	// Not Found
 	NotFoundError *shared.NotFoundError
+	// Internal
+	BaseError *shared.BaseError
 	// Service Unavailable
 	ServiceUnavailable *shared.ServiceUnavailable
 }
@@ -94,6 +96,13 @@ func (o *GetControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
 		return nil
 	}
 	return o.NotFoundError
+}
+
+func (o *GetControlPlaneResponse) GetBaseError() *shared.BaseError {
+	if o == nil {
+		return nil
+	}
+	return o.BaseError
 }
 
 func (o *GetControlPlaneResponse) GetServiceUnavailable() *shared.ServiceUnavailable {

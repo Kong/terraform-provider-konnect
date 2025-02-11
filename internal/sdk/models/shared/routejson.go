@@ -89,25 +89,25 @@ func (e *PathHandling) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type RouteProtocols string
+type RouteJSONProtocols string
 
 const (
-	RouteProtocolsGrpc           RouteProtocols = "grpc"
-	RouteProtocolsGrpcs          RouteProtocols = "grpcs"
-	RouteProtocolsHTTP           RouteProtocols = "http"
-	RouteProtocolsHTTPS          RouteProtocols = "https"
-	RouteProtocolsTCP            RouteProtocols = "tcp"
-	RouteProtocolsTLS            RouteProtocols = "tls"
-	RouteProtocolsTLSPassthrough RouteProtocols = "tls_passthrough"
-	RouteProtocolsUDP            RouteProtocols = "udp"
-	RouteProtocolsWs             RouteProtocols = "ws"
-	RouteProtocolsWss            RouteProtocols = "wss"
+	RouteJSONProtocolsGrpc           RouteJSONProtocols = "grpc"
+	RouteJSONProtocolsGrpcs          RouteJSONProtocols = "grpcs"
+	RouteJSONProtocolsHTTP           RouteJSONProtocols = "http"
+	RouteJSONProtocolsHTTPS          RouteJSONProtocols = "https"
+	RouteJSONProtocolsTCP            RouteJSONProtocols = "tcp"
+	RouteJSONProtocolsTLS            RouteJSONProtocols = "tls"
+	RouteJSONProtocolsTLSPassthrough RouteJSONProtocols = "tls_passthrough"
+	RouteJSONProtocolsUDP            RouteJSONProtocols = "udp"
+	RouteJSONProtocolsWs             RouteJSONProtocols = "ws"
+	RouteJSONProtocolsWss            RouteJSONProtocols = "wss"
 )
 
-func (e RouteProtocols) ToPointer() *RouteProtocols {
+func (e RouteJSONProtocols) ToPointer() *RouteJSONProtocols {
 	return &e
 }
-func (e *RouteProtocols) UnmarshalJSON(data []byte) error {
+func (e *RouteJSONProtocols) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -132,19 +132,19 @@ func (e *RouteProtocols) UnmarshalJSON(data []byte) error {
 	case "ws":
 		fallthrough
 	case "wss":
-		*e = RouteProtocols(v)
+		*e = RouteJSONProtocols(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for RouteProtocols: %v", v)
+		return fmt.Errorf("invalid value for RouteJSONProtocols: %v", v)
 	}
 }
 
-// RouteService - The Service this Route is associated to. This is where the Route proxies traffic to.
-type RouteService struct {
+// RouteJSONService - The Service this Route is associated to. This is where the Route proxies traffic to.
+type RouteJSONService struct {
 	ID *string `json:"id,omitempty"`
 }
 
-func (o *RouteService) GetID() *string {
+func (o *RouteJSONService) GetID() *string {
 	if o == nil {
 		return nil
 	}
@@ -170,8 +170,8 @@ func (o *Sources) GetPort() *int64 {
 	return o.Port
 }
 
-// Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
-type Route struct {
+// RouteJSON - Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
+type RouteJSON struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -194,7 +194,7 @@ type Route struct {
 	// When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
 	PreserveHost *bool `json:"preserve_host,omitempty"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
-	Protocols []RouteProtocols `json:"protocols,omitempty"`
+	Protocols []RouteJSONProtocols `json:"protocols,omitempty"`
 	// A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).
 	RegexPriority *int64 `json:"regex_priority,omitempty"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
@@ -202,7 +202,7 @@ type Route struct {
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
 	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service"`
+	Service *RouteJSONService `json:"service"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -215,155 +215,155 @@ type Route struct {
 	UpdatedAt *int64 `json:"updated_at,omitempty"`
 }
 
-func (o *Route) GetCreatedAt() *int64 {
+func (o *RouteJSON) GetCreatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.CreatedAt
 }
 
-func (o *Route) GetDestinations() []Destinations {
+func (o *RouteJSON) GetDestinations() []Destinations {
 	if o == nil {
 		return nil
 	}
 	return o.Destinations
 }
 
-func (o *Route) GetHeaders() map[string]string {
+func (o *RouteJSON) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *Route) GetHosts() []string {
+func (o *RouteJSON) GetHosts() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Hosts
 }
 
-func (o *Route) GetHTTPSRedirectStatusCode() *HTTPSRedirectStatusCode {
+func (o *RouteJSON) GetHTTPSRedirectStatusCode() *HTTPSRedirectStatusCode {
 	if o == nil {
 		return nil
 	}
 	return o.HTTPSRedirectStatusCode
 }
 
-func (o *Route) GetID() *string {
+func (o *RouteJSON) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *Route) GetMethods() []string {
+func (o *RouteJSON) GetMethods() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Methods
 }
 
-func (o *Route) GetName() *string {
+func (o *RouteJSON) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *Route) GetPathHandling() *PathHandling {
+func (o *RouteJSON) GetPathHandling() *PathHandling {
 	if o == nil {
 		return nil
 	}
 	return o.PathHandling
 }
 
-func (o *Route) GetPaths() []string {
+func (o *RouteJSON) GetPaths() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Paths
 }
 
-func (o *Route) GetPreserveHost() *bool {
+func (o *RouteJSON) GetPreserveHost() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PreserveHost
 }
 
-func (o *Route) GetProtocols() []RouteProtocols {
+func (o *RouteJSON) GetProtocols() []RouteJSONProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *Route) GetRegexPriority() *int64 {
+func (o *RouteJSON) GetRegexPriority() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.RegexPriority
 }
 
-func (o *Route) GetRequestBuffering() *bool {
+func (o *RouteJSON) GetRequestBuffering() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.RequestBuffering
 }
 
-func (o *Route) GetResponseBuffering() *bool {
+func (o *RouteJSON) GetResponseBuffering() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseBuffering
 }
 
-func (o *Route) GetService() *RouteService {
+func (o *RouteJSON) GetService() *RouteJSONService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
 }
 
-func (o *Route) GetSnis() []string {
+func (o *RouteJSON) GetSnis() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Snis
 }
 
-func (o *Route) GetSources() []Sources {
+func (o *RouteJSON) GetSources() []Sources {
 	if o == nil {
 		return nil
 	}
 	return o.Sources
 }
 
-func (o *Route) GetStripPath() *bool {
+func (o *RouteJSON) GetStripPath() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.StripPath
 }
 
-func (o *Route) GetTags() []string {
+func (o *RouteJSON) GetTags() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Tags
 }
 
-func (o *Route) GetUpdatedAt() *int64 {
+func (o *RouteJSON) GetUpdatedAt() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.UpdatedAt
 }
 
-// RouteInput - Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
-type RouteInput struct {
+// RouteJSONInput - Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.
+type RouteJSONInput struct {
 	// A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
 	Destinations []Destinations `json:"destinations,omitempty"`
 	// One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
@@ -384,7 +384,7 @@ type RouteInput struct {
 	// When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
 	PreserveHost *bool `json:"preserve_host,omitempty"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
-	Protocols []RouteProtocols `json:"protocols,omitempty"`
+	Protocols []RouteJSONProtocols `json:"protocols,omitempty"`
 	// A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).
 	RegexPriority *int64 `json:"regex_priority,omitempty"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
@@ -392,7 +392,7 @@ type RouteInput struct {
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.
 	ResponseBuffering *bool `json:"response_buffering,omitempty"`
 	// The Service this Route is associated to. This is where the Route proxies traffic to.
-	Service *RouteService `json:"service"`
+	Service *RouteJSONService `json:"service"`
 	// A list of SNIs that match this Route when using stream routing.
 	Snis []string `json:"snis,omitempty"`
 	// A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
@@ -403,133 +403,133 @@ type RouteInput struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *RouteInput) GetDestinations() []Destinations {
+func (o *RouteJSONInput) GetDestinations() []Destinations {
 	if o == nil {
 		return nil
 	}
 	return o.Destinations
 }
 
-func (o *RouteInput) GetHeaders() map[string]string {
+func (o *RouteJSONInput) GetHeaders() map[string]string {
 	if o == nil {
 		return nil
 	}
 	return o.Headers
 }
 
-func (o *RouteInput) GetHosts() []string {
+func (o *RouteJSONInput) GetHosts() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Hosts
 }
 
-func (o *RouteInput) GetHTTPSRedirectStatusCode() *HTTPSRedirectStatusCode {
+func (o *RouteJSONInput) GetHTTPSRedirectStatusCode() *HTTPSRedirectStatusCode {
 	if o == nil {
 		return nil
 	}
 	return o.HTTPSRedirectStatusCode
 }
 
-func (o *RouteInput) GetID() *string {
+func (o *RouteJSONInput) GetID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ID
 }
 
-func (o *RouteInput) GetMethods() []string {
+func (o *RouteJSONInput) GetMethods() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Methods
 }
 
-func (o *RouteInput) GetName() *string {
+func (o *RouteJSONInput) GetName() *string {
 	if o == nil {
 		return nil
 	}
 	return o.Name
 }
 
-func (o *RouteInput) GetPathHandling() *PathHandling {
+func (o *RouteJSONInput) GetPathHandling() *PathHandling {
 	if o == nil {
 		return nil
 	}
 	return o.PathHandling
 }
 
-func (o *RouteInput) GetPaths() []string {
+func (o *RouteJSONInput) GetPaths() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Paths
 }
 
-func (o *RouteInput) GetPreserveHost() *bool {
+func (o *RouteJSONInput) GetPreserveHost() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.PreserveHost
 }
 
-func (o *RouteInput) GetProtocols() []RouteProtocols {
+func (o *RouteJSONInput) GetProtocols() []RouteJSONProtocols {
 	if o == nil {
 		return nil
 	}
 	return o.Protocols
 }
 
-func (o *RouteInput) GetRegexPriority() *int64 {
+func (o *RouteJSONInput) GetRegexPriority() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.RegexPriority
 }
 
-func (o *RouteInput) GetRequestBuffering() *bool {
+func (o *RouteJSONInput) GetRequestBuffering() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.RequestBuffering
 }
 
-func (o *RouteInput) GetResponseBuffering() *bool {
+func (o *RouteJSONInput) GetResponseBuffering() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.ResponseBuffering
 }
 
-func (o *RouteInput) GetService() *RouteService {
+func (o *RouteJSONInput) GetService() *RouteJSONService {
 	if o == nil {
 		return nil
 	}
 	return o.Service
 }
 
-func (o *RouteInput) GetSnis() []string {
+func (o *RouteJSONInput) GetSnis() []string {
 	if o == nil {
 		return nil
 	}
 	return o.Snis
 }
 
-func (o *RouteInput) GetSources() []Sources {
+func (o *RouteJSONInput) GetSources() []Sources {
 	if o == nil {
 		return nil
 	}
 	return o.Sources
 }
 
-func (o *RouteInput) GetStripPath() *bool {
+func (o *RouteJSONInput) GetStripPath() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.StripPath
 }
 
-func (o *RouteInput) GetTags() []string {
+func (o *RouteJSONInput) GetTags() []string {
 	if o == nil {
 		return nil
 	}

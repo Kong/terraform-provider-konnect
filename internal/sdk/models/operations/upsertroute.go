@@ -13,7 +13,7 @@ type UpsertRouteRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the Route
-	Route shared.RouteInput `request:"mediaType=application/json"`
+	RouteJSON shared.RouteJSONInput `request:"mediaType=application/json"`
 }
 
 func (o *UpsertRouteRequest) GetRouteID() string {
@@ -30,11 +30,11 @@ func (o *UpsertRouteRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertRouteRequest) GetRoute() shared.RouteInput {
+func (o *UpsertRouteRequest) GetRouteJSON() shared.RouteJSONInput {
 	if o == nil {
-		return shared.RouteInput{}
+		return shared.RouteJSONInput{}
 	}
-	return o.Route
+	return o.RouteJSON
 }
 
 type UpsertRouteResponse struct {
@@ -45,7 +45,7 @@ type UpsertRouteResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successfully upserted Route
-	Route *shared.Route
+	RouteJSON *shared.RouteJSON
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
@@ -71,11 +71,11 @@ func (o *UpsertRouteResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpsertRouteResponse) GetRoute() *shared.Route {
+func (o *UpsertRouteResponse) GetRouteJSON() *shared.RouteJSON {
 	if o == nil {
 		return nil
 	}
-	return o.Route
+	return o.RouteJSON
 }
 
 func (o *UpsertRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {

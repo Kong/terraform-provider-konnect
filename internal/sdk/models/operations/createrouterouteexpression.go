@@ -7,28 +7,28 @@ import (
 	"net/http"
 )
 
-type CreateRouteRequest struct {
+type CreateRouteRouteExpressionRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Route for creation
-	RouteJSON shared.RouteJSONInput `request:"mediaType=application/json"`
+	RouteExpression shared.RouteExpressionInput `request:"mediaType=application/json"`
 }
 
-func (o *CreateRouteRequest) GetControlPlaneID() string {
+func (o *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ControlPlaneID
 }
 
-func (o *CreateRouteRequest) GetRouteJSON() shared.RouteJSONInput {
+func (o *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpressionInput {
 	if o == nil {
-		return shared.RouteJSONInput{}
+		return shared.RouteExpressionInput{}
 	}
-	return o.RouteJSON
+	return o.RouteExpression
 }
 
-type CreateRouteResponse struct {
+type CreateRouteRouteExpressionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -36,40 +36,40 @@ type CreateRouteResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successfully created Route
-	RouteJSON *shared.RouteJSON
+	RouteExpression *shared.RouteExpression
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *CreateRouteResponse) GetContentType() string {
+func (o *CreateRouteRouteExpressionResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *CreateRouteResponse) GetStatusCode() int {
+func (o *CreateRouteRouteExpressionResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *CreateRouteResponse) GetRawResponse() *http.Response {
+func (o *CreateRouteRouteExpressionResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *CreateRouteResponse) GetRouteJSON() *shared.RouteJSON {
+func (o *CreateRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
 	if o == nil {
 		return nil
 	}
-	return o.RouteJSON
+	return o.RouteExpression
 }
 
-func (o *CreateRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (o *CreateRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
