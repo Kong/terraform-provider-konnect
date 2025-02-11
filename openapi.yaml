@@ -10547,6 +10547,8 @@ paths:
           $ref: '#/components/responses/ControlPlanePermissionDenied'
         '404':
           $ref: '#/components/responses/ControlPlaneNotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
@@ -10627,6 +10629,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
@@ -10657,6 +10661,8 @@ paths:
           $ref: '#/components/responses/Forbidden'
         '404':
           $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/Internal'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
@@ -12455,6 +12461,18 @@ components:
               example: 'kong:trace:1234567890'
             detail:
               example: Not found
+    CreatedAt:
+      description: An ISO-8601 timestamp representation of entity creation date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
+    UpdatedAt:
+      description: An ISO-8601 timestamp representation of entity update date.
+      type: string
+      format: date-time
+      example: '2022-11-04T20:10:06.927Z'
+      readOnly: true
     ControlPlaneId:
       type: string
       format: uuid
@@ -14064,18 +14082,6 @@ components:
       required:
         - id
         - control_plane_id
-    CreatedAt:
-      description: An ISO-8601 timestamp representation of entity creation date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
-    UpdatedAt:
-      description: An ISO-8601 timestamp representation of entity update date.
-      type: string
-      format: date-time
-      example: '2022-11-04T20:10:06.927Z'
-      readOnly: true
     PublicLabels:
       description: |
         Public labels store information about an entity that can be used for filtering a list of objects.
@@ -33059,9 +33065,11 @@ components:
               status:
                 description: The HTTP status code.
                 type: integer
+                format: int32
                 example: 500
                 enum:
                   - 500
+                x-go-type: int32
               title:
                 description: The error response code.
                 type: string
@@ -33090,9 +33098,11 @@ components:
               status:
                 description: The HTTP status code.
                 type: integer
+                format: int32
                 example: 503
                 enum:
                   - 503
+                x-go-type: int32
               title:
                 description: The error response code.
                 type: string
@@ -33110,6 +33120,12 @@ components:
               - title
               - instance
             title: ServiceUnavailableError
+    Internal:
+      description: Internal
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BaseError'
     BadRequest:
       description: Bad Request
       content:
