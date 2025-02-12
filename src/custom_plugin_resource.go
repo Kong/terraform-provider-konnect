@@ -374,7 +374,7 @@ func pointerToId[T any](obj *T) *tfTypes.ACLWithoutParentsConsumer {
 		x.ID = types.StringPointerValue(v.ID)
 	case *shared.PluginConsumerGroup:
 		x.ID = types.StringPointerValue(v.ID)
-	case *shared.PluginRoute:
+	case *shared.Route:
 		x.ID = types.StringPointerValue(v.ID)
 	case *shared.PluginService:
 		x.ID = types.StringPointerValue(v.ID)

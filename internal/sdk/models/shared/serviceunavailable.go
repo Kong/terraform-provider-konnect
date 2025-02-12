@@ -8,7 +8,7 @@ import (
 )
 
 // ServiceUnavailableStatus - The HTTP status code.
-type ServiceUnavailableStatus int64
+type ServiceUnavailableStatus int
 
 const (
 	ServiceUnavailableStatusFiveHundredAndThree ServiceUnavailableStatus = 503
@@ -18,7 +18,7 @@ func (e ServiceUnavailableStatus) ToPointer() *ServiceUnavailableStatus {
 	return &e
 }
 func (e *ServiceUnavailableStatus) UnmarshalJSON(data []byte) error {
-	var v int64
+	var v int
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}

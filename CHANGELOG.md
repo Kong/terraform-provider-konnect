@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.4.0
+> Released on 2025/??/??
+
+### Features
+
+* Add support for `konnect_gateway_route_expression` resource
+
 ## 2.3.0
 > Released on 2025/02/10
 

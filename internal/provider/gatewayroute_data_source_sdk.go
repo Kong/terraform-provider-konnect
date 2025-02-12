@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route) {
+func (r *GatewayRouteDataSourceModel) RefreshFromSharedRouteJSON(resp *shared.RouteJSON) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {

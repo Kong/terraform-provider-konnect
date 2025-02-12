@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
+func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONInput {
 	var destinations []shared.Destinations = []shared.Destinations{}
 	for _, destinationsItem := range r.Destinations {
 		ip := new(string)
@@ -77,9 +77,9 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	} else {
 		preserveHost = nil
 	}
-	var protocols []shared.RouteProtocols = []shared.RouteProtocols{}
+	var protocols []shared.RouteJSONProtocols = []shared.RouteJSONProtocols{}
 	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.RouteProtocols(protocolsItem.ValueString()))
+		protocols = append(protocols, shared.RouteJSONProtocols(protocolsItem.ValueString()))
 	}
 	regexPriority := new(int64)
 	if !r.RegexPriority.IsUnknown() && !r.RegexPriority.IsNull() {
@@ -99,7 +99,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	} else {
 		responseBuffering = nil
 	}
-	var service *shared.RouteService
+	var service *shared.RouteJSONService
 	if r.Service != nil {
 		id1 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
@@ -107,7 +107,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 		} else {
 			id1 = nil
 		}
-		service = &shared.RouteService{
+		service = &shared.RouteJSONService{
 			ID: id1,
 		}
 	}
@@ -144,7 +144,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.RouteInput{
+	out := shared.RouteJSONInput{
 		Destinations:            destinations,
 		Headers:                 headers,
 		Hosts:                   hosts,
@@ -168,7 +168,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteInput() *shared.RouteInput {
 	return &out
 }
 
-func (r *GatewayRouteResourceModel) RefreshFromSharedRoute(resp *shared.Route) {
+func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.RouteJSON) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {

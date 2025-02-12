@@ -7,69 +7,78 @@ import (
 	"net/http"
 )
 
-type GetRouteRequest struct {
+type UpsertRouteRouteExpressionRequest struct {
 	// ID of the Route to lookup
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	// Description of the Route
+	RouteExpression shared.RouteExpressionInput `request:"mediaType=application/json"`
 }
 
-func (o *GetRouteRequest) GetRouteID() string {
+func (o *UpsertRouteRouteExpressionRequest) GetRouteID() string {
 	if o == nil {
 		return ""
 	}
 	return o.RouteID
 }
 
-func (o *GetRouteRequest) GetControlPlaneID() string {
+func (o *UpsertRouteRouteExpressionRequest) GetControlPlaneID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ControlPlaneID
 }
 
-type GetRouteResponse struct {
+func (o *UpsertRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpressionInput {
+	if o == nil {
+		return shared.RouteExpressionInput{}
+	}
+	return o.RouteExpression
+}
+
+type UpsertRouteRouteExpressionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
 	StatusCode int
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
-	// Successfully fetched Route
-	RouteJSON *shared.RouteJSON
+	// Successfully upserted Route
+	RouteExpression *shared.RouteExpression
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRouteResponse) GetContentType() string {
+func (o *UpsertRouteRouteExpressionResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *GetRouteResponse) GetStatusCode() int {
+func (o *UpsertRouteRouteExpressionResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *GetRouteResponse) GetRawResponse() *http.Response {
+func (o *UpsertRouteRouteExpressionResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *GetRouteResponse) GetRouteJSON() *shared.RouteJSON {
+func (o *UpsertRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
 	if o == nil {
 		return nil
 	}
-	return o.RouteJSON
+	return o.RouteExpression
 }
 
-func (o *GetRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (o *UpsertRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}

@@ -7,28 +7,28 @@ import (
 	"net/http"
 )
 
-type GetRouteRequest struct {
+type GetRouteRouteExpressionRequest struct {
 	// ID of the Route to lookup
 	RouteID string `pathParam:"style=simple,explode=false,name=RouteId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 }
 
-func (o *GetRouteRequest) GetRouteID() string {
+func (o *GetRouteRouteExpressionRequest) GetRouteID() string {
 	if o == nil {
 		return ""
 	}
 	return o.RouteID
 }
 
-func (o *GetRouteRequest) GetControlPlaneID() string {
+func (o *GetRouteRouteExpressionRequest) GetControlPlaneID() string {
 	if o == nil {
 		return ""
 	}
 	return o.ControlPlaneID
 }
 
-type GetRouteResponse struct {
+type GetRouteRouteExpressionResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -36,40 +36,40 @@ type GetRouteResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Successfully fetched Route
-	RouteJSON *shared.RouteJSON
+	RouteExpression *shared.RouteExpression
 	// Unauthorized
 	GatewayUnauthorizedError *shared.GatewayUnauthorizedError
 }
 
-func (o *GetRouteResponse) GetContentType() string {
+func (o *GetRouteRouteExpressionResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *GetRouteResponse) GetStatusCode() int {
+func (o *GetRouteRouteExpressionResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *GetRouteResponse) GetRawResponse() *http.Response {
+func (o *GetRouteRouteExpressionResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *GetRouteResponse) GetRouteJSON() *shared.RouteJSON {
+func (o *GetRouteRouteExpressionResponse) GetRouteExpression() *shared.RouteExpression {
 	if o == nil {
 		return nil
 	}
-	return o.RouteJSON
+	return o.RouteExpression
 }
 
-func (o *GetRouteResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
+func (o *GetRouteRouteExpressionResponse) GetGatewayUnauthorizedError() *shared.GatewayUnauthorizedError {
 	if o == nil {
 		return nil
 	}
