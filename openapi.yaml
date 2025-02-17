@@ -33886,9 +33886,6 @@ tags:
   - name: Transit Gateways
   - name: Provider Accounts
   - name: Custom Domains
-  - name: Resource Quotas
-  - name: Resource Configurations
-  - name: Resource Availability
   - name: Mesh
   - name: API Products
   - name: API Product Documentation
@@ -33896,20 +33893,8 @@ tags:
   - name: API Product Version Specification
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
-  - name: Portal Developers
-    description: APIs related to Konnect Developer Portal Developers.
   - name: Portal Teams
     description: APIs related to Konnect Developer Portal Developer Teams.
-  - name: Portal Team Membership
-    description: APIs related to Developer Membership in Konnect Developer Portal Developer Teams.
-  - name: Portal Team Roles
-    description: APIs related to Team Roles in Konnect Developer Portal.
-  - name: Portal Applications
-    description: APIs related to Konnect Developer Portal Applications.
-  - name: Portal Application Registrations
-    description: APIs related to Konnect Developer Portal Application Registrations.
-  - name: Portal Products
-    description: APIs related to API Products Published to Konnect Developer Portals.
   - name: Portal Auth Settings
     description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Appearance
@@ -33922,41 +33907,26 @@ tags:
         - Lifecyle and deprecation statuses
         - Application registration settings like auto approve or whether application registration is enabled
         - The authentication strategy that is enabled for Application Registration
-  - name: DCR Providers
-    description: |
-      Dynamic Client Registration Providers are configurations representing an external Identity Provider whose clients (i.e. Applications) Konnect will be authorized to manage.
-      For instance, they will be able to perform dynamic client registration (DCR) with the provider. 
-      The DCR provider provides credentials to each DCR-enabled application in Konnect that can be used to access Product Versions that the app is registered for.
   - name: App Auth Strategies
     description: |
       Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. 
       Called “Auth Strategy” for short in the context of portals/applications. 
       The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-  - name: Auth Settings
-  - name: Invites
   - name: Roles
   - name: Team Membership
   - name: Teams
-  - name: Users
   - name: System Accounts
   - name: System Accounts - Access Tokens
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
-  - name: Me
-  - name: Authentication
-  - name: Impersonation Settings
   - name: Serverless Cloud Gateways
   - name: Audit Logs
-  - description: DP Nodes
-    name: DP Nodes
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
     name: Custom Plugin Schemas
   - description: Config Stores
     name: Config Stores
-  - description: Config Store Secrets
-    name: Config Store Secrets
   - description: |
       Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
       <br><br>
