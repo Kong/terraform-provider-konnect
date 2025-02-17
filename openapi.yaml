@@ -10752,6 +10752,80 @@ paths:
           $ref: '#/components/responses/ServiceUnavailable'
       tags:
         - Control Plane Groups
+  /v2/dcr-providers:
+    post:
+      x-speakeasy-entity-operation: DcrProvider#create
+      operationId: create-dcr-provider
+      summary: Create DCR provider
+      description: Creates a DCR provider.
+      requestBody:
+        $ref: '#/components/requestBodies/CreateDcrProvider'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateDcrProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      tags:
+        - DCR Providers
+  '/v2/dcr-providers/{dcrProviderId}':
+    parameters:
+      - $ref: '#/components/parameters/DcrProviderId'
+    get:
+      x-speakeasy-entity-operation: DcrProvider#read
+      operationId: get-dcr-provider
+      summary: Fetch DCR provider
+      description: Returns a DCR provider.
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDcrProvider'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
+    patch:
+      x-speakeasy-entity-operation: DcrProvider#update
+      operationId: update-dcr-provider
+      summary: Update DCR provider
+      description: Updates a DCR provider.
+      requestBody:
+        $ref: '#/components/requestBodies/UpdateDcrProvider'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetDcrProvider'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
+    delete:
+      x-speakeasy-entity-operation: DcrProvider#delete
+      operationId: delete-dcr-provider
+      summary: Delete DCR provider
+      description: Deletes a DCR provider.
+      responses:
+        '204':
+          description: No Content.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+      tags:
+        - DCR Providers
   /v2/portals:
     get:
       x-speakeasy-entity-operation: PortalList#read
@@ -11767,6 +11841,14 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    DcrProviderId:
+      name: dcrProviderId
+      description: DCR provider identifier
+      in: path
+      required: true
+      x-speakeasy-match: id
+      schema:
+        $ref: '#/components/schemas/UUID'
     HMACAuthId:
       description: ID of the HMAC-auth credential to lookup
       example: 70e7b00b-72f2-471b-a5ce-9c4171775360
@@ -15533,6 +15615,235 @@ components:
         - me
         - in
         - '*'
+    DcrConfigPropertyInitialClientId:
+      description: |
+        This ID should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientId
+    DcrConfigPropertyInitialClientSecret:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialClientSecret
+    DcrConfigPropertyDcrToken:
+      description: |
+        This secret should be copied from your identity provider's settings after you create a client
+        and assign it as the management client for DCR for this developer portal
+      type: string
+      maxLength: 256
+      title: DcrConfigPropertyInitialDcrToken
+    DcrConfigPropertyInitialClientAudience:
+      description: |
+        This is the audience value used for the initial client.
+        If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.
+        If left blank, the issuer will be used instead.
+      type: string
+      maxLength: 256
+      nullable: true
+      title: DcrConfigPropertyInitialClientAudience
+    DcrConfigPropertyApiKey:
+      description: |
+        This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
+        verified on the server to ensure that incoming requests are coming from Konnect.
+      type: string
+      maxLength: 256
+      minLength: 12
+      pattern: '^[a-zA-Z0-9_]+$'
+      title: DcrConfigPropertyApiKey
+    DcrConfigPropertyDisableEventHooks:
+      description: This flag disables all the event-hooks on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableEventHooks
+    DcrConfigPropertyDisableRefreshSecret:
+      description: This flag disable the refresh-secret endpoint on the application flow for the DCR provider.
+      type: boolean
+      title: DcrConfigPropertyDisableRefreshSecret
+    DcrConfigAuth0InResponse:
+      description: A DCR provider configuration for Auth0
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_audience
+        - use_developer_managed_scopes
+      title: DcrConfigAuth0InResponse
+    CreateDcrConfigAuth0InRequest:
+      description: Payload to create an Auth0 DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigAuth0InRequest
+    UpdateDcrConfigAuth0InRequest:
+      description: Payload to update an Auth0 DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+        initial_client_audience:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientAudience'
+        use_developer_managed_scopes:
+          type: boolean
+      additionalProperties: false
+      title: DcrConfigAuth0InRequest
+    DcrConfigAzureAdInResponse:
+      description: A DCR provider configuration for Azure AD
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+      additionalProperties: false
+      required:
+        - initial_client_id
+      title: DcrConfigAzureAdInResponse
+    CreateDcrConfigAzureAdInRequest:
+      description: Payload to create an Azure AD DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigAzureAdInRequest
+    UpdateDcrConfigAzureAdInRequest:
+      description: Payload to update an Azure AD DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigAzureAdInRequest
+    DcrConfigCurityInResponse:
+      description: A DCR provider configuration for Curity
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+      additionalProperties: false
+      required:
+        - initial_client_id
+      title: DcrConfigCurityInResponse
+    CreateDcrConfigCurityInRequest:
+      description: Payload to create a Curity DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      required:
+        - initial_client_id
+        - initial_client_secret
+      title: DcrConfigCurityInRequest
+    UpdateDcrConfigCurityInRequest:
+      description: Payload to update a Curity DCR provider.
+      type: object
+      properties:
+        initial_client_id:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientId'
+        initial_client_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyInitialClientSecret'
+      additionalProperties: false
+      title: DcrConfigCurityInRequest
+    DcrConfigOktaInResponse:
+      description: A DCR provider configuration for Okta
+      type: object
+      additionalProperties: false
+      title: DcrConfigOktaInResponse
+    CreateDcrConfigOktaInRequest:
+      description: Payload to create an Okta DCR provider.
+      type: object
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+      additionalProperties: false
+      required:
+        - dcr_token
+      title: DcrConfigOktaInRequest
+    UpdateDcrConfigOktaInRequest:
+      description: Payload to update an Okta DCR provider.
+      type: object
+      properties:
+        dcr_token:
+          $ref: '#/components/schemas/DcrConfigPropertyDcrToken'
+      additionalProperties: false
+      title: DcrConfigOktaInRequest
+    DcrConfigHttpInResponse:
+      description: A DCR provider configuration for HTTP
+      type: object
+      properties:
+        dcr_base_url:
+          type: string
+          format: url
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+      additionalProperties: false
+      required:
+        - dcr_base_url
+      title: DcrConfigHttpInResponse
+    CreateDcrConfigHttpInRequest:
+      description: Payload to create an HTTP DCR provider.
+      type: object
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+      additionalProperties: false
+      required:
+        - dcr_base_url
+        - api_key
+      title: CreateDcrConfigHttpInRequest
+    UpdateDcrConfigHttpInRequest:
+      description: Payload to update an HTTP DCR provider.
+      type: object
+      properties:
+        dcr_base_url:
+          $ref: '#/components/schemas/DcrBaseUrl'
+        api_key:
+          $ref: '#/components/schemas/DcrConfigPropertyApiKey'
+        disable_event_hooks:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableEventHooks'
+        disable_refresh_secret:
+          $ref: '#/components/schemas/DcrConfigPropertyDisableRefreshSecret'
+      additionalProperties: false
+      title: CreateDcrConfigHttpInRequest
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
       type: string
@@ -15543,6 +15854,317 @@ components:
         - okta
         - http
       title: DcrProviderType
+    DcrProviderBase:
+      description: Properties common to all DCR Providers.
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        provider_type:
+          description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
+          type: string
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
+        dcr_config:
+          description: The DCR configuration for this DCR provider.
+          type: object
+        labels:
+          $ref: '#/components/schemas/Labels'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+      additionalProperties: false
+      required:
+        - id
+        - name
+        - provider_type
+        - issuer
+        - active
+        - dcr_config
+        - created_at
+        - updated_at
+    DcrProviderAuth0:
+      description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - auth0
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigAuth0InResponse'
+      required:
+        - provider_type
+        - dcr_config
+      title: DCR provider - Auth0
+    DcrProviderAzureAd:
+      description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - azureAd
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigAzureAdInResponse'
+      required:
+        - provider_type
+        - dcr_config
+      title: DCR provider - Azure AD
+    DcrProviderCurity:
+      description: A DCR provider for Curity -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - curity
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigCurityInResponse'
+      required:
+        - provider_type
+        - dcr_config
+      title: DCR provider - Curity
+    DcrProviderOkta:
+      description: A DCR provider for Okta -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - okta
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigOktaInResponse'
+      required:
+        - provider_type
+        - dcr_config
+      title: DCR provider - OKTA
+    DcrProviderHttp:
+      description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - http
+        dcr_config:
+          $ref: '#/components/schemas/DcrConfigHttpInResponse'
+      required:
+        - provider_type
+        - dcr_config
+      title: DCR provider - HTTP
+    CreateDcrProviderResponse:
+      description: A response containing the newly created DCR provider object.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DcrProviderBase'
+        - discriminator:
+            propertyName: provider_type
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/DcrProviderAuth0'
+            - $ref: '#/components/schemas/DcrProviderAzureAd'
+            - $ref: '#/components/schemas/DcrProviderCurity'
+            - $ref: '#/components/schemas/DcrProviderOkta'
+            - $ref: '#/components/schemas/DcrProviderHttp'
+    DcrProviderResponse:
+      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/DcrProviderBase'
+        - discriminator:
+            propertyName: provider_type
+          type: object
+          oneOf:
+            - $ref: '#/components/schemas/DcrProviderAuth0'
+            - $ref: '#/components/schemas/DcrProviderAzureAd'
+            - $ref: '#/components/schemas/DcrProviderCurity'
+            - $ref: '#/components/schemas/DcrProviderOkta'
+            - $ref: '#/components/schemas/DcrProviderHttp'
+    CreateDcrProviderRequestAuth0:
+      description: Request body for creating an Auth0 DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - auth0
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigAuth0InRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestAuth0
+    CreateDcrProviderRequestAzureAd:
+      description: Request body for creating an Azure AD DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - azureAd
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigAzureAdInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestAzureAd
+    CreateDcrProviderRequestCurity:
+      description: Request body for creating a Curity DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - curity
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigCurityInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestCurity
+    CreateDcrProviderRequestOkta:
+      description: Request body for creating an Okta DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - okta
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigOktaInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestOkta
+    CreateDcrProviderRequestHttp:
+      description: Request body for creating an HTTP DCR provider.
+      type: object
+      properties:
+        provider_type:
+          type: string
+          enum:
+            - http
+        dcr_config:
+          $ref: '#/components/schemas/CreateDcrConfigHttpInRequest'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/Labels'
+      required:
+        - provider_type
+        - dcr_config
+        - name
+        - issuer
+      title: CreateDcrProviderRequestHttp
+    CreateDcrProviderRequest:
+      x-speakeasy-entity: DcrProvider
+      description: Request body for creating a DCR provider. The provider_type cannot be updated after creation.
+      type: object
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/CreateDcrProviderRequestAuth0'
+          azureAd: '#/components/schemas/CreateDcrProviderRequestAzureAd'
+          curity: '#/components/schemas/CreateDcrProviderRequestCurity'
+          okta: '#/components/schemas/CreateDcrProviderRequestOkta'
+          http: '#/components/schemas/CreateDcrProviderRequestHttp'
+      oneOf:
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAuth0'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestAzureAd'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestCurity'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestOkta'
+        - $ref: '#/components/schemas/CreateDcrProviderRequestHttp'
+      title: CreateDcrProviderRequest
+    UpdateDcrProviderRequest:
+      description: A set of updates to a DCR provider. The provider_type cannot be updated after creation.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          type: string
+          format: url
+          maxLength: 256
+        labels:
+          $ref: '#/components/schemas/LabelsUpdate'
+        dcr_config:
+          anyOf:
+            - $ref: '#/components/schemas/UpdateDcrConfigAuth0InRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigAzureAdInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigCurityInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigOktaInRequest'
+            - $ref: '#/components/schemas/UpdateDcrConfigHttpInRequest'
+      additionalProperties: false
+      title: UpdateDcrProviderRequest
     AppAuthStrategyConfigKeyAuth:
       description: |
         The most basic mode to configure an Application Auth Strategy for an API Product Version. 
@@ -15890,9 +16512,22 @@ components:
       $ref: '#/components/schemas/AppAuthStrategy'
     GetAppAuthStrategyResponse:
       $ref: '#/components/schemas/AppAuthStrategy'
+    DcrBaseUrl:
+      description: |
+        The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
+        This URL must be accessible from the Konnect service.
+      type: string
+      format: url
+      maxLength: 256
     DcrProviderDisplayName:
       description: |
         The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+      type: string
+      maxLength: 256
+      minLength: 1
+    DcrProviderName:
+      description: |
+        The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
       type: string
       maxLength: 256
       minLength: 1
@@ -32822,6 +33457,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalAppearanceRequest'
+    CreateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDcrProviderRequest'
+    UpdateDcrProvider:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateDcrProviderRequest'
     CreateAppAuthStrategy:
       required: true
       content:
@@ -33620,6 +34267,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePortalAppearanceResponse'
+    CreateDcrProvider:
+      description: A response containing the newly created DCR provider object.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDcrProviderResponse'
+    GetDcrProvider:
+      description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DcrProviderResponse'
     CreateAppAuthStrategy:
       description: A response containing the newly created application auth strategy object.
       content:
@@ -33886,9 +34545,6 @@ tags:
   - name: Transit Gateways
   - name: Provider Accounts
   - name: Custom Domains
-  - name: Resource Quotas
-  - name: Resource Configurations
-  - name: Resource Availability
   - name: Mesh
   - name: API Products
   - name: API Product Documentation
@@ -33896,20 +34552,8 @@ tags:
   - name: API Product Version Specification
   - name: Portals
     description: APIs related to Configuration of Konnect Developer Portals.
-  - name: Portal Developers
-    description: APIs related to Konnect Developer Portal Developers.
   - name: Portal Teams
     description: APIs related to Konnect Developer Portal Developer Teams.
-  - name: Portal Team Membership
-    description: APIs related to Developer Membership in Konnect Developer Portal Developer Teams.
-  - name: Portal Team Roles
-    description: APIs related to Team Roles in Konnect Developer Portal.
-  - name: Portal Applications
-    description: APIs related to Konnect Developer Portal Applications.
-  - name: Portal Application Registrations
-    description: APIs related to Konnect Developer Portal Application Registrations.
-  - name: Portal Products
-    description: APIs related to API Products Published to Konnect Developer Portals.
   - name: Portal Auth Settings
     description: APIs related to Konnect Developer Portal Authentication Settings.
   - name: Portal Appearance
@@ -33932,31 +34576,21 @@ tags:
       Application Auth Strategies are sets of plugin configurations that represent how the gateway will perform authentication and authorization for a Product Version. 
       Called “Auth Strategy” for short in the context of portals/applications. 
       The plugins are synced to any Gateway Service that is currently linked or becomes linked to the Product Version.
-  - name: Auth Settings
-  - name: Invites
   - name: Roles
   - name: Team Membership
   - name: Teams
-  - name: Users
   - name: System Accounts
   - name: System Accounts - Access Tokens
   - name: System Accounts - Roles
   - name: System Accounts - Team Membership
-  - name: Me
-  - name: Authentication
-  - name: Impersonation Settings
   - name: Serverless Cloud Gateways
   - name: Audit Logs
-  - description: DP Nodes
-    name: DP Nodes
   - description: DP Certificates
     name: DP Certificates
   - description: Custom Plugin Schemas
     name: Custom Plugin Schemas
   - description: Config Stores
     name: Config Stores
-  - description: Config Store Secrets
-    name: Config Store Secrets
   - description: |
       Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
       <br><br>
