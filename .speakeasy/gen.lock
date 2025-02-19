@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 0dc8b0a833ab50d057f6cd93942e7d54
+  docChecksum: 6dcffd728033e2df50d2ca5eba7baf2c
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -43,6 +43,7 @@ generatedFiles:
   - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
   - examples/data-sources/konnect_cloud_gateway_transit_gateway/data-source.tf
+  - examples/data-sources/konnect_dcr_provider/data-source.tf
   - examples/data-sources/konnect_gateway_acl/data-source.tf
   - examples/data-sources/konnect_gateway_basic_auth/data-source.tf
   - examples/data-sources/konnect_gateway_ca_certificate/data-source.tf
@@ -191,6 +192,8 @@ generatedFiles:
   - examples/resources/konnect_cloud_gateway_network/resource.tf
   - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
   - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
+  - examples/resources/konnect_dcr_provider/import.sh
+  - examples/resources/konnect_dcr_provider/resource.tf
   - examples/resources/konnect_gateway_acl/import.sh
   - examples/resources/konnect_gateway_acl/resource.tf
   - examples/resources/konnect_gateway_basic_auth/import.sh
@@ -506,6 +509,10 @@ generatedFiles:
   - internal/provider/cloudgatewaytransitgateway_data_source_sdk.go
   - internal/provider/cloudgatewaytransitgateway_resource.go
   - internal/provider/cloudgatewaytransitgateway_resource_sdk.go
+  - internal/provider/dcrprovider_data_source.go
+  - internal/provider/dcrprovider_data_source_sdk.go
+  - internal/provider/dcrprovider_resource.go
+  - internal/provider/dcrprovider_resource_sdk.go
   - internal/provider/gatewayacl_data_source.go
   - internal/provider/gatewayacl_data_source_sdk.go
   - internal/provider/gatewayacl_resource.go
@@ -1121,11 +1128,26 @@ generatedFiles:
   - internal/provider/types/consul.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/create_dcr_config_auth0_in_request.go
+  - internal/provider/types/create_dcr_config_azure_ad_in_request.go
+  - internal/provider/types/create_dcr_config_http_in_request.go
+  - internal/provider/types/create_dcr_config_okta_in_request.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/datadog_plugin_config.go
   - internal/provider/types/datadog_tracing_plugin_config.go
+  - internal/provider/types/dcr_config_auth0_in_response.go
+  - internal/provider/types/dcr_config_azure_ad_in_response.go
+  - internal/provider/types/dcr_config_http_in_response.go
   - internal/provider/types/dcr_provider.go
+  - internal/provider/types/dcr_provider_auth0.go
+  - internal/provider/types/dcr_provider_auth01.go
+  - internal/provider/types/dcr_provider_azure_ad.go
+  - internal/provider/types/dcr_provider_azure_ad1.go
+  - internal/provider/types/dcr_provider_http.go
+  - internal/provider/types/dcr_provider_http1.go
+  - internal/provider/types/dcr_provider_okta.go
+  - internal/provider/types/dcr_provider_okta1.go
   - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/embeddings.go
   - internal/provider/types/exit_transformer_plugin_config.go
@@ -1288,6 +1310,7 @@ generatedFiles:
   - internal/sdk/controlplanegroups.go
   - internal/sdk/controlplanes.go
   - internal/sdk/custompluginschemas.go
+  - internal/sdk/dcrproviders.go
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
   - internal/sdk/internal/hooks/hooks.go
@@ -1351,6 +1374,7 @@ generatedFiles:
   - internal/sdk/models/operations/createdatadogplugin.go
   - internal/sdk/models/operations/createdatadogtracingplugin.go
   - internal/sdk/models/operations/createdataplanecertificate.go
+  - internal/sdk/models/operations/createdcrprovider.go
   - internal/sdk/models/operations/createdegraphqlplugin.go
   - internal/sdk/models/operations/createexittransformerplugin.go
   - internal/sdk/models/operations/createfilelogplugin.go
@@ -1482,6 +1506,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletedatadogplugin.go
   - internal/sdk/models/operations/deletedatadogtracingplugin.go
   - internal/sdk/models/operations/deletedataplanecertificate.go
+  - internal/sdk/models/operations/deletedcrprovider.go
   - internal/sdk/models/operations/deletedegraphqlplugin.go
   - internal/sdk/models/operations/deleteexittransformerplugin.go
   - internal/sdk/models/operations/deletefilelogplugin.go
@@ -1621,6 +1646,7 @@ generatedFiles:
   - internal/sdk/models/operations/getdatadogplugin.go
   - internal/sdk/models/operations/getdatadogtracingplugin.go
   - internal/sdk/models/operations/getdataplanecertificate.go
+  - internal/sdk/models/operations/getdcrprovider.go
   - internal/sdk/models/operations/getdegraphqlplugin.go
   - internal/sdk/models/operations/getexittransformerplugin.go
   - internal/sdk/models/operations/getfilelogplugin.go
@@ -1765,6 +1791,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatecorsplugin.go
   - internal/sdk/models/operations/updatedatadogplugin.go
   - internal/sdk/models/operations/updatedatadogtracingplugin.go
+  - internal/sdk/models/operations/updatedcrprovider.go
   - internal/sdk/models/operations/updatedegraphqlplugin.go
   - internal/sdk/models/operations/updateexittransformerplugin.go
   - internal/sdk/models/operations/updatefilelogplugin.go
@@ -1946,6 +1973,13 @@ generatedFiles:
   - internal/sdk/models/shared/createconfigurationrequest.go
   - internal/sdk/models/shared/createcontrolplanerequest.go
   - internal/sdk/models/shared/createcustomdomainrequest.go
+  - internal/sdk/models/shared/createdcrconfigauth0inrequest.go
+  - internal/sdk/models/shared/createdcrconfigazureadinrequest.go
+  - internal/sdk/models/shared/createdcrconfigcurityinrequest.go
+  - internal/sdk/models/shared/createdcrconfighttpinrequest.go
+  - internal/sdk/models/shared/createdcrconfigoktainrequest.go
+  - internal/sdk/models/shared/createdcrproviderrequest.go
+  - internal/sdk/models/shared/createdcrproviderresponse.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
   - internal/sdk/models/shared/createnetworkrequest.go
   - internal/sdk/models/shared/createpluginschemas.go
@@ -1962,6 +1996,17 @@ generatedFiles:
   - internal/sdk/models/shared/datadogtracingplugin.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
+  - internal/sdk/models/shared/dcrconfigauth0inresponse.go
+  - internal/sdk/models/shared/dcrconfigazureadinresponse.go
+  - internal/sdk/models/shared/dcrconfigcurityinresponse.go
+  - internal/sdk/models/shared/dcrconfighttpinresponse.go
+  - internal/sdk/models/shared/dcrconfigoktainresponse.go
+  - internal/sdk/models/shared/dcrproviderauth0.go
+  - internal/sdk/models/shared/dcrproviderazuread.go
+  - internal/sdk/models/shared/dcrprovidercurity.go
+  - internal/sdk/models/shared/dcrproviderhttp.go
+  - internal/sdk/models/shared/dcrproviderokta.go
+  - internal/sdk/models/shared/dcrproviderresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/entityregion.go
@@ -2116,6 +2161,12 @@ generatedFiles:
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
+  - internal/sdk/models/shared/updatedcrconfigauth0inrequest.go
+  - internal/sdk/models/shared/updatedcrconfigazureadinrequest.go
+  - internal/sdk/models/shared/updatedcrconfigcurityinrequest.go
+  - internal/sdk/models/shared/updatedcrconfighttpinrequest.go
+  - internal/sdk/models/shared/updatedcrconfigoktainrequest.go
+  - internal/sdk/models/shared/updatedcrproviderrequest.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/updateportalappearancerequest.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
@@ -8658,5 +8709,62 @@ examples:
           application/json: {"service": null}
         "401":
           application/json: {"message": "<value>", "status": 468015}
+  create-dcr-provider:
+    speakeasy-default-create-dcr-provider:
+      requestBody:
+        application/json: {"provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>", "initial_client_secret": "<value>"}, "name": "<value>", "issuer": "https://accomplished-overload.net/", "labels": {"env": "test"}}
+      responses:
+        "201":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>"}}
+        "400":
+          application/problem+json: {"status": 476934, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-dcr-provider:
+    speakeasy-default-get-dcr-provider:
+      parameters:
+        path:
+          dcrProviderId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>"}}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-dcr-provider:
+    speakeasy-default-update-dcr-provider:
+      parameters:
+        path:
+          dcrProviderId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      requestBody:
+        application/json: {"labels": {"env": "test"}}
+      responses:
+        "200":
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "curity", "dcr_config": {"initial_client_id": "<id>"}}
+        "400":
+          application/problem+json: {"status": 640011, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-dcr-provider:
+    speakeasy-default-delete-dcr-provider:
+      parameters:
+        path:
+          dcrProviderId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
 examplesVersion: 1.0.0
 generatedTests: {}

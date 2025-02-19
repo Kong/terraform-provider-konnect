@@ -15899,6 +15899,21 @@ components:
       description: A DCR provider for Auth0 -- only properties not included in DcrProviderBase
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
         provider_type:
           type: string
           enum:
@@ -15913,6 +15928,21 @@ components:
       description: A DCR provider for Azure AD -- only properties not included in DcrProviderBase
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
         provider_type:
           type: string
           enum:
@@ -15927,6 +15957,21 @@ components:
       description: A DCR provider for Curity -- only properties not included in DcrProviderBase
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
         provider_type:
           type: string
           enum:
@@ -15941,6 +15986,21 @@ components:
       description: A DCR provider for Okta -- only properties not included in DcrProviderBase
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
         provider_type:
           type: string
           enum:
@@ -15955,6 +16015,21 @@ components:
       description: A DCR provider for HTTP -- only properties not included in DcrProviderBase
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/UUID'
+        name:
+          $ref: '#/components/schemas/DcrProviderName'
+        display_name:
+          $ref: '#/components/schemas/DcrProviderDisplayName'
+        issuer:
+          description: The issuer of the DCR provider.
+          type: string
+          format: url
+          maxLength: 256
+        active:
+          description: At least one active auth strategy is using this DCR provider.
+          type: boolean
+          readOnly: true
         provider_type:
           type: string
           enum:
@@ -15968,31 +16043,37 @@ components:
     CreateDcrProviderResponse:
       description: A response containing the newly created DCR provider object.
       type: object
-      allOf:
-        - $ref: '#/components/schemas/DcrProviderBase'
-        - discriminator:
-            propertyName: provider_type
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/DcrProviderAuth0'
-            - $ref: '#/components/schemas/DcrProviderAzureAd'
-            - $ref: '#/components/schemas/DcrProviderCurity'
-            - $ref: '#/components/schemas/DcrProviderOkta'
-            - $ref: '#/components/schemas/DcrProviderHttp'
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/DcrProviderAuth0'
+          azureAd: '#/components/schemas/DcrProviderAzureAd'
+          curity: '#/components/schemas/DcrProviderCurity'
+          okta: '#/components/schemas/DcrProviderOkta'
+          http: '#/components/schemas/DcrProviderHttp'
+      oneOf:
+        - $ref: '#/components/schemas/DcrProviderAuth0'
+        - $ref: '#/components/schemas/DcrProviderAzureAd'
+        - $ref: '#/components/schemas/DcrProviderCurity'
+        - $ref: '#/components/schemas/DcrProviderOkta'
+        - $ref: '#/components/schemas/DcrProviderHttp'
     DcrProviderResponse:
       description: A response containing a single DCR provider object. Sensitive fields will be removed from the response.
       type: object
-      allOf:
-        - $ref: '#/components/schemas/DcrProviderBase'
-        - discriminator:
-            propertyName: provider_type
-          type: object
-          oneOf:
-            - $ref: '#/components/schemas/DcrProviderAuth0'
-            - $ref: '#/components/schemas/DcrProviderAzureAd'
-            - $ref: '#/components/schemas/DcrProviderCurity'
-            - $ref: '#/components/schemas/DcrProviderOkta'
-            - $ref: '#/components/schemas/DcrProviderHttp'
+      discriminator:
+        propertyName: provider_type
+        mapping:
+          auth0: '#/components/schemas/DcrProviderAuth0'
+          azureAd: '#/components/schemas/DcrProviderAzureAd'
+          curity: '#/components/schemas/DcrProviderCurity'
+          okta: '#/components/schemas/DcrProviderOkta'
+          http: '#/components/schemas/DcrProviderHttp'
+      oneOf:
+        - $ref: '#/components/schemas/DcrProviderAuth0'
+        - $ref: '#/components/schemas/DcrProviderAzureAd'
+        - $ref: '#/components/schemas/DcrProviderCurity'
+        - $ref: '#/components/schemas/DcrProviderOkta'
+        - $ref: '#/components/schemas/DcrProviderHttp'
     CreateDcrProviderRequestAuth0:
       description: Request body for creating an Auth0 DCR provider.
       type: object

@@ -193,6 +193,11 @@ type Konnect struct {
 	// DP Certificates
 	DPCertificates     *DPCertificates
 	ControlPlaneGroups *ControlPlaneGroups
+	// Dynamic Client Registration Providers are configurations representing an external Identity Provider whose clients (i.e. Applications) Konnect will be authorized to manage.
+	// For instance, they will be able to perform dynamic client registration (DCR) with the provider.
+	// The DCR provider provides credentials to each DCR-enabled application in Konnect that can be used to access Product Versions that the app is registered for.
+	//
+	DCRProviders *DCRProviders
 	// APIs related to Configuration of Konnect Developer Portals.
 	Portals *Portals
 	// APIs related to Konnect Developer Portal Appearance Settings.
@@ -380,6 +385,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.DPCertificates = newDPCertificates(sdk.sdkConfiguration)
 
 	sdk.ControlPlaneGroups = newControlPlaneGroups(sdk.sdkConfiguration)
+
+	sdk.DCRProviders = newDCRProviders(sdk.sdkConfiguration)
 
 	sdk.Portals = newPortals(sdk.sdkConfiguration)
 
