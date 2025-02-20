@@ -7,7 +7,668 @@ import (
 	"errors"
 	"fmt"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
+	"time"
 )
+
+type DcrProviderHTTPProviderType string
+
+const (
+	DcrProviderHTTPProviderTypeHTTP DcrProviderHTTPProviderType = "http"
+)
+
+func (e DcrProviderHTTPProviderType) ToPointer() *DcrProviderHTTPProviderType {
+	return &e
+}
+func (e *DcrProviderHTTPProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "http":
+		*e = DcrProviderHTTPProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DcrProviderHTTPProviderType: %v", v)
+	}
+}
+
+// DCRProviderHTTP - A DCR provider for HTTP -- only properties not included in DcrProviderBase
+type DCRProviderHTTP struct {
+	// Contains a unique identifier used by the API for this resource.
+	ID string `json:"id"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name string `json:"name"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName  *string                     `json:"display_name,omitempty"`
+	ProviderType DcrProviderHTTPProviderType `json:"provider_type"`
+	// The issuer of the DCR provider.
+	Issuer string `json:"issuer"`
+	// At least one active auth strategy is using this DCR provider.
+	Active bool `json:"active"`
+	// A DCR provider configuration for HTTP
+	DcrConfig DcrConfigHTTPInResponse `json:"dcr_config"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (d DCRProviderHTTP) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DCRProviderHTTP) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DCRProviderHTTP) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *DCRProviderHTTP) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *DCRProviderHTTP) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *DCRProviderHTTP) GetProviderType() DcrProviderHTTPProviderType {
+	if o == nil {
+		return DcrProviderHTTPProviderType("")
+	}
+	return o.ProviderType
+}
+
+func (o *DCRProviderHTTP) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
+func (o *DCRProviderHTTP) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *DCRProviderHTTP) GetDcrConfig() DcrConfigHTTPInResponse {
+	if o == nil {
+		return DcrConfigHTTPInResponse{}
+	}
+	return o.DcrConfig
+}
+
+func (o *DCRProviderHTTP) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *DCRProviderHTTP) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *DCRProviderHTTP) GetUpdatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.UpdatedAt
+}
+
+type DcrProviderOktaProviderType string
+
+const (
+	DcrProviderOktaProviderTypeOkta DcrProviderOktaProviderType = "okta"
+)
+
+func (e DcrProviderOktaProviderType) ToPointer() *DcrProviderOktaProviderType {
+	return &e
+}
+func (e *DcrProviderOktaProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "okta":
+		*e = DcrProviderOktaProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DcrProviderOktaProviderType: %v", v)
+	}
+}
+
+// DCRProviderOKTA - A DCR provider for Okta -- only properties not included in DcrProviderBase
+type DCRProviderOKTA struct {
+	// Contains a unique identifier used by the API for this resource.
+	ID string `json:"id"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name string `json:"name"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName  *string                     `json:"display_name,omitempty"`
+	ProviderType DcrProviderOktaProviderType `json:"provider_type"`
+	// The issuer of the DCR provider.
+	Issuer string `json:"issuer"`
+	// At least one active auth strategy is using this DCR provider.
+	Active bool `json:"active"`
+	// A DCR provider configuration for Okta
+	DcrConfig DcrConfigOktaInResponse `json:"dcr_config"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (d DCRProviderOKTA) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DCRProviderOKTA) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DCRProviderOKTA) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *DCRProviderOKTA) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *DCRProviderOKTA) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *DCRProviderOKTA) GetProviderType() DcrProviderOktaProviderType {
+	if o == nil {
+		return DcrProviderOktaProviderType("")
+	}
+	return o.ProviderType
+}
+
+func (o *DCRProviderOKTA) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
+func (o *DCRProviderOKTA) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *DCRProviderOKTA) GetDcrConfig() DcrConfigOktaInResponse {
+	if o == nil {
+		return DcrConfigOktaInResponse{}
+	}
+	return o.DcrConfig
+}
+
+func (o *DCRProviderOKTA) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *DCRProviderOKTA) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *DCRProviderOKTA) GetUpdatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.UpdatedAt
+}
+
+type DcrProviderCurityProviderType string
+
+const (
+	DcrProviderCurityProviderTypeCurity DcrProviderCurityProviderType = "curity"
+)
+
+func (e DcrProviderCurityProviderType) ToPointer() *DcrProviderCurityProviderType {
+	return &e
+}
+func (e *DcrProviderCurityProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "curity":
+		*e = DcrProviderCurityProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DcrProviderCurityProviderType: %v", v)
+	}
+}
+
+// DCRProviderCurity - A DCR provider for Curity -- only properties not included in DcrProviderBase
+type DCRProviderCurity struct {
+	// Contains a unique identifier used by the API for this resource.
+	ID string `json:"id"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name string `json:"name"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName  *string                       `json:"display_name,omitempty"`
+	ProviderType DcrProviderCurityProviderType `json:"provider_type"`
+	// The issuer of the DCR provider.
+	Issuer string `json:"issuer"`
+	// At least one active auth strategy is using this DCR provider.
+	Active bool `json:"active"`
+	// A DCR provider configuration for Curity
+	DcrConfig DcrConfigCurityInResponse `json:"dcr_config"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (d DCRProviderCurity) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DCRProviderCurity) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DCRProviderCurity) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *DCRProviderCurity) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *DCRProviderCurity) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *DCRProviderCurity) GetProviderType() DcrProviderCurityProviderType {
+	if o == nil {
+		return DcrProviderCurityProviderType("")
+	}
+	return o.ProviderType
+}
+
+func (o *DCRProviderCurity) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
+func (o *DCRProviderCurity) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *DCRProviderCurity) GetDcrConfig() DcrConfigCurityInResponse {
+	if o == nil {
+		return DcrConfigCurityInResponse{}
+	}
+	return o.DcrConfig
+}
+
+func (o *DCRProviderCurity) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *DCRProviderCurity) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *DCRProviderCurity) GetUpdatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.UpdatedAt
+}
+
+type DcrProviderAzureAdProviderType string
+
+const (
+	DcrProviderAzureAdProviderTypeAzureAd DcrProviderAzureAdProviderType = "azureAd"
+)
+
+func (e DcrProviderAzureAdProviderType) ToPointer() *DcrProviderAzureAdProviderType {
+	return &e
+}
+func (e *DcrProviderAzureAdProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "azureAd":
+		*e = DcrProviderAzureAdProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DcrProviderAzureAdProviderType: %v", v)
+	}
+}
+
+// DCRProviderAzureAD - A DCR provider for Azure AD -- only properties not included in DcrProviderBase
+type DCRProviderAzureAD struct {
+	// Contains a unique identifier used by the API for this resource.
+	ID string `json:"id"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name string `json:"name"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName  *string                        `json:"display_name,omitempty"`
+	ProviderType DcrProviderAzureAdProviderType `json:"provider_type"`
+	// The issuer of the DCR provider.
+	Issuer string `json:"issuer"`
+	// At least one active auth strategy is using this DCR provider.
+	Active bool `json:"active"`
+	// A DCR provider configuration for Azure AD
+	DcrConfig DcrConfigAzureAdInResponse `json:"dcr_config"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (d DCRProviderAzureAD) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DCRProviderAzureAD) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DCRProviderAzureAD) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *DCRProviderAzureAD) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *DCRProviderAzureAD) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *DCRProviderAzureAD) GetProviderType() DcrProviderAzureAdProviderType {
+	if o == nil {
+		return DcrProviderAzureAdProviderType("")
+	}
+	return o.ProviderType
+}
+
+func (o *DCRProviderAzureAD) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
+func (o *DCRProviderAzureAD) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *DCRProviderAzureAD) GetDcrConfig() DcrConfigAzureAdInResponse {
+	if o == nil {
+		return DcrConfigAzureAdInResponse{}
+	}
+	return o.DcrConfig
+}
+
+func (o *DCRProviderAzureAD) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *DCRProviderAzureAD) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *DCRProviderAzureAD) GetUpdatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.UpdatedAt
+}
+
+type DcrProviderAuth0ProviderType string
+
+const (
+	DcrProviderAuth0ProviderTypeAuth0 DcrProviderAuth0ProviderType = "auth0"
+)
+
+func (e DcrProviderAuth0ProviderType) ToPointer() *DcrProviderAuth0ProviderType {
+	return &e
+}
+func (e *DcrProviderAuth0ProviderType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "auth0":
+		*e = DcrProviderAuth0ProviderType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for DcrProviderAuth0ProviderType: %v", v)
+	}
+}
+
+// DCRProviderAuth0 - A DCR provider for Auth0 -- only properties not included in DcrProviderBase
+type DCRProviderAuth0 struct {
+	// Contains a unique identifier used by the API for this resource.
+	ID string `json:"id"`
+	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
+	//
+	Name string `json:"name"`
+	// The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+	//
+	DisplayName  *string                      `json:"display_name,omitempty"`
+	ProviderType DcrProviderAuth0ProviderType `json:"provider_type"`
+	// The issuer of the DCR provider.
+	Issuer string `json:"issuer"`
+	// At least one active auth strategy is using this DCR provider.
+	Active bool `json:"active"`
+	// A DCR provider configuration for Auth0
+	DcrConfig DcrConfigAuth0InResponse `json:"dcr_config"`
+	// Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types.
+	//
+	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
+	//
+	Labels map[string]string `json:"labels,omitempty"`
+	// An ISO-8601 timestamp representation of entity creation date.
+	CreatedAt time.Time `json:"created_at"`
+	// An ISO-8601 timestamp representation of entity update date.
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (d DCRProviderAuth0) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(d, "", false)
+}
+
+func (d *DCRProviderAuth0) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *DCRProviderAuth0) GetID() string {
+	if o == nil {
+		return ""
+	}
+	return o.ID
+}
+
+func (o *DCRProviderAuth0) GetName() string {
+	if o == nil {
+		return ""
+	}
+	return o.Name
+}
+
+func (o *DCRProviderAuth0) GetDisplayName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DisplayName
+}
+
+func (o *DCRProviderAuth0) GetProviderType() DcrProviderAuth0ProviderType {
+	if o == nil {
+		return DcrProviderAuth0ProviderType("")
+	}
+	return o.ProviderType
+}
+
+func (o *DCRProviderAuth0) GetIssuer() string {
+	if o == nil {
+		return ""
+	}
+	return o.Issuer
+}
+
+func (o *DCRProviderAuth0) GetActive() bool {
+	if o == nil {
+		return false
+	}
+	return o.Active
+}
+
+func (o *DCRProviderAuth0) GetDcrConfig() DcrConfigAuth0InResponse {
+	if o == nil {
+		return DcrConfigAuth0InResponse{}
+	}
+	return o.DcrConfig
+}
+
+func (o *DCRProviderAuth0) GetLabels() map[string]string {
+	if o == nil {
+		return nil
+	}
+	return o.Labels
+}
+
+func (o *DCRProviderAuth0) GetCreatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.CreatedAt
+}
+
+func (o *DCRProviderAuth0) GetUpdatedAt() time.Time {
+	if o == nil {
+		return time.Time{}
+	}
+	return o.UpdatedAt
+}
 
 type CreateDcrProviderResponseType string
 
@@ -21,71 +682,71 @@ const (
 
 // CreateDcrProviderResponse - A response containing the newly created DCR provider object.
 type CreateDcrProviderResponse struct {
-	DcrProviderAuth0   *DcrProviderAuth0   `queryParam:"inline"`
-	DcrProviderAzureAd *DcrProviderAzureAd `queryParam:"inline"`
-	DcrProviderCurity  *DcrProviderCurity  `queryParam:"inline"`
-	DcrProviderOkta    *DcrProviderOkta    `queryParam:"inline"`
-	DcrProviderHTTP    *DcrProviderHTTP    `queryParam:"inline"`
+	DCRProviderAuth0   *DCRProviderAuth0   `queryParam:"inline"`
+	DCRProviderAzureAD *DCRProviderAzureAD `queryParam:"inline"`
+	DCRProviderCurity  *DCRProviderCurity  `queryParam:"inline"`
+	DCRProviderOKTA    *DCRProviderOKTA    `queryParam:"inline"`
+	DCRProviderHTTP    *DCRProviderHTTP    `queryParam:"inline"`
 
 	Type CreateDcrProviderResponseType
 }
 
-func CreateCreateDcrProviderResponseAuth0(auth0 DcrProviderAuth0) CreateDcrProviderResponse {
+func CreateCreateDcrProviderResponseAuth0(auth0 DCRProviderAuth0) CreateDcrProviderResponse {
 	typ := CreateDcrProviderResponseTypeAuth0
 
-	typStr := ProviderType(typ)
+	typStr := DcrProviderAuth0ProviderType(typ)
 	auth0.ProviderType = typStr
 
 	return CreateDcrProviderResponse{
-		DcrProviderAuth0: &auth0,
+		DCRProviderAuth0: &auth0,
 		Type:             typ,
 	}
 }
 
-func CreateCreateDcrProviderResponseAzureAd(azureAd DcrProviderAzureAd) CreateDcrProviderResponse {
+func CreateCreateDcrProviderResponseAzureAd(azureAd DCRProviderAzureAD) CreateDcrProviderResponse {
 	typ := CreateDcrProviderResponseTypeAzureAd
 
 	typStr := DcrProviderAzureAdProviderType(typ)
 	azureAd.ProviderType = typStr
 
 	return CreateDcrProviderResponse{
-		DcrProviderAzureAd: &azureAd,
+		DCRProviderAzureAD: &azureAd,
 		Type:               typ,
 	}
 }
 
-func CreateCreateDcrProviderResponseCurity(curity DcrProviderCurity) CreateDcrProviderResponse {
+func CreateCreateDcrProviderResponseCurity(curity DCRProviderCurity) CreateDcrProviderResponse {
 	typ := CreateDcrProviderResponseTypeCurity
 
 	typStr := DcrProviderCurityProviderType(typ)
 	curity.ProviderType = typStr
 
 	return CreateDcrProviderResponse{
-		DcrProviderCurity: &curity,
+		DCRProviderCurity: &curity,
 		Type:              typ,
 	}
 }
 
-func CreateCreateDcrProviderResponseOkta(okta DcrProviderOkta) CreateDcrProviderResponse {
+func CreateCreateDcrProviderResponseOkta(okta DCRProviderOKTA) CreateDcrProviderResponse {
 	typ := CreateDcrProviderResponseTypeOkta
 
 	typStr := DcrProviderOktaProviderType(typ)
 	okta.ProviderType = typStr
 
 	return CreateDcrProviderResponse{
-		DcrProviderOkta: &okta,
+		DCRProviderOKTA: &okta,
 		Type:            typ,
 	}
 }
 
-func CreateCreateDcrProviderResponseHTTP(http DcrProviderHTTP) CreateDcrProviderResponse {
+func CreateCreateDcrProviderResponseHTTP(http DCRProviderHTTP) CreateDcrProviderResponse {
 	typ := CreateDcrProviderResponseTypeHTTP
 
 	typStr := DcrProviderHTTPProviderType(typ)
 	http.ProviderType = typStr
 
 	return CreateDcrProviderResponse{
-		DcrProviderHTTP: &http,
+		DCRProviderHTTP: &http,
 		Type:            typ,
 	}
 }
@@ -103,48 +764,48 @@ func (u *CreateDcrProviderResponse) UnmarshalJSON(data []byte) error {
 
 	switch dis.ProviderType {
 	case "auth0":
-		dcrProviderAuth0 := new(DcrProviderAuth0)
+		dcrProviderAuth0 := new(DCRProviderAuth0)
 		if err := utils.UnmarshalJSON(data, &dcrProviderAuth0, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == auth0) type DcrProviderAuth0 within CreateDcrProviderResponse: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == auth0) type DCRProviderAuth0 within CreateDcrProviderResponse: %w", string(data), err)
 		}
 
-		u.DcrProviderAuth0 = dcrProviderAuth0
+		u.DCRProviderAuth0 = dcrProviderAuth0
 		u.Type = CreateDcrProviderResponseTypeAuth0
 		return nil
 	case "azureAd":
-		dcrProviderAzureAd := new(DcrProviderAzureAd)
-		if err := utils.UnmarshalJSON(data, &dcrProviderAzureAd, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == azureAd) type DcrProviderAzureAd within CreateDcrProviderResponse: %w", string(data), err)
+		dcrProviderAzureAD := new(DCRProviderAzureAD)
+		if err := utils.UnmarshalJSON(data, &dcrProviderAzureAD, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == azureAd) type DCRProviderAzureAD within CreateDcrProviderResponse: %w", string(data), err)
 		}
 
-		u.DcrProviderAzureAd = dcrProviderAzureAd
+		u.DCRProviderAzureAD = dcrProviderAzureAD
 		u.Type = CreateDcrProviderResponseTypeAzureAd
 		return nil
 	case "curity":
-		dcrProviderCurity := new(DcrProviderCurity)
+		dcrProviderCurity := new(DCRProviderCurity)
 		if err := utils.UnmarshalJSON(data, &dcrProviderCurity, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == curity) type DcrProviderCurity within CreateDcrProviderResponse: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == curity) type DCRProviderCurity within CreateDcrProviderResponse: %w", string(data), err)
 		}
 
-		u.DcrProviderCurity = dcrProviderCurity
+		u.DCRProviderCurity = dcrProviderCurity
 		u.Type = CreateDcrProviderResponseTypeCurity
 		return nil
 	case "okta":
-		dcrProviderOkta := new(DcrProviderOkta)
-		if err := utils.UnmarshalJSON(data, &dcrProviderOkta, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == okta) type DcrProviderOkta within CreateDcrProviderResponse: %w", string(data), err)
+		dcrProviderOKTA := new(DCRProviderOKTA)
+		if err := utils.UnmarshalJSON(data, &dcrProviderOKTA, "", true, false); err != nil {
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == okta) type DCRProviderOKTA within CreateDcrProviderResponse: %w", string(data), err)
 		}
 
-		u.DcrProviderOkta = dcrProviderOkta
+		u.DCRProviderOKTA = dcrProviderOKTA
 		u.Type = CreateDcrProviderResponseTypeOkta
 		return nil
 	case "http":
-		dcrProviderHTTP := new(DcrProviderHTTP)
+		dcrProviderHTTP := new(DCRProviderHTTP)
 		if err := utils.UnmarshalJSON(data, &dcrProviderHTTP, "", true, false); err != nil {
-			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == http) type DcrProviderHTTP within CreateDcrProviderResponse: %w", string(data), err)
+			return fmt.Errorf("could not unmarshal `%s` into expected (ProviderType == http) type DCRProviderHTTP within CreateDcrProviderResponse: %w", string(data), err)
 		}
 
-		u.DcrProviderHTTP = dcrProviderHTTP
+		u.DCRProviderHTTP = dcrProviderHTTP
 		u.Type = CreateDcrProviderResponseTypeHTTP
 		return nil
 	}
@@ -153,24 +814,24 @@ func (u *CreateDcrProviderResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (u CreateDcrProviderResponse) MarshalJSON() ([]byte, error) {
-	if u.DcrProviderAuth0 != nil {
-		return utils.MarshalJSON(u.DcrProviderAuth0, "", true)
+	if u.DCRProviderAuth0 != nil {
+		return utils.MarshalJSON(u.DCRProviderAuth0, "", true)
 	}
 
-	if u.DcrProviderAzureAd != nil {
-		return utils.MarshalJSON(u.DcrProviderAzureAd, "", true)
+	if u.DCRProviderAzureAD != nil {
+		return utils.MarshalJSON(u.DCRProviderAzureAD, "", true)
 	}
 
-	if u.DcrProviderCurity != nil {
-		return utils.MarshalJSON(u.DcrProviderCurity, "", true)
+	if u.DCRProviderCurity != nil {
+		return utils.MarshalJSON(u.DCRProviderCurity, "", true)
 	}
 
-	if u.DcrProviderOkta != nil {
-		return utils.MarshalJSON(u.DcrProviderOkta, "", true)
+	if u.DCRProviderOKTA != nil {
+		return utils.MarshalJSON(u.DCRProviderOKTA, "", true)
 	}
 
-	if u.DcrProviderHTTP != nil {
-		return utils.MarshalJSON(u.DcrProviderHTTP, "", true)
+	if u.DCRProviderHTTP != nil {
+		return utils.MarshalJSON(u.DCRProviderHTTP, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type CreateDcrProviderResponse: all fields are null")

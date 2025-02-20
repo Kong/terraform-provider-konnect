@@ -345,32 +345,32 @@ func (o *CreateDcrProviderRequestAzureAd) GetLabels() map[string]string {
 	return o.Labels
 }
 
-type CreateDcrProviderRequestAuth0ProviderType string
+type ProviderType string
 
 const (
-	CreateDcrProviderRequestAuth0ProviderTypeAuth0 CreateDcrProviderRequestAuth0ProviderType = "auth0"
+	ProviderTypeAuth0 ProviderType = "auth0"
 )
 
-func (e CreateDcrProviderRequestAuth0ProviderType) ToPointer() *CreateDcrProviderRequestAuth0ProviderType {
+func (e ProviderType) ToPointer() *ProviderType {
 	return &e
 }
-func (e *CreateDcrProviderRequestAuth0ProviderType) UnmarshalJSON(data []byte) error {
+func (e *ProviderType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "auth0":
-		*e = CreateDcrProviderRequestAuth0ProviderType(v)
+		*e = ProviderType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for CreateDcrProviderRequestAuth0ProviderType: %v", v)
+		return fmt.Errorf("invalid value for ProviderType: %v", v)
 	}
 }
 
 // CreateDcrProviderRequestAuth0 - Request body for creating an Auth0 DCR provider.
 type CreateDcrProviderRequestAuth0 struct {
-	ProviderType CreateDcrProviderRequestAuth0ProviderType `json:"provider_type"`
+	ProviderType ProviderType `json:"provider_type"`
 	// Payload to create an Auth0 DCR provider.
 	DcrConfig CreateDcrConfigAuth0InRequest `json:"dcr_config"`
 	// The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.
@@ -387,9 +387,9 @@ type CreateDcrProviderRequestAuth0 struct {
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
-func (o *CreateDcrProviderRequestAuth0) GetProviderType() CreateDcrProviderRequestAuth0ProviderType {
+func (o *CreateDcrProviderRequestAuth0) GetProviderType() ProviderType {
 	if o == nil {
-		return CreateDcrProviderRequestAuth0ProviderType("")
+		return ProviderType("")
 	}
 	return o.ProviderType
 }
@@ -453,7 +453,7 @@ type CreateDcrProviderRequest struct {
 func CreateCreateDcrProviderRequestAuth0(auth0 CreateDcrProviderRequestAuth0) CreateDcrProviderRequest {
 	typ := CreateDcrProviderRequestTypeAuth0
 
-	typStr := CreateDcrProviderRequestAuth0ProviderType(typ)
+	typStr := ProviderType(typ)
 	auth0.ProviderType = typStr
 
 	return CreateDcrProviderRequest{

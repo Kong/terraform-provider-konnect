@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 6dcffd728033e2df50d2ca5eba7baf2c
+  docChecksum: 7981713dbd6bef645f00c5ca92c7013b
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -1092,6 +1092,7 @@ generatedFiles:
   - internal/provider/types/appearance_images.go
   - internal/provider/types/appearance_theme_color_variables.go
   - internal/provider/types/auth.go
+  - internal/provider/types/auth0.go
   - internal/provider/types/auth_strategy.go
   - internal/provider/types/auth_strategy_client_credentials.go
   - internal/provider/types/auth_strategy_key_auth.go
@@ -1100,6 +1101,7 @@ generatedFiles:
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
+  - internal/provider/types/azure_ad.go
   - internal/provider/types/azure_functions_plugin_config.go
   - internal/provider/types/azure_transit_gateway.go
   - internal/provider/types/azure_transit_gateway_response.go
@@ -1140,14 +1142,10 @@ generatedFiles:
   - internal/provider/types/dcr_config_azure_ad_in_response.go
   - internal/provider/types/dcr_config_http_in_response.go
   - internal/provider/types/dcr_provider.go
-  - internal/provider/types/dcr_provider_auth0.go
-  - internal/provider/types/dcr_provider_auth01.go
-  - internal/provider/types/dcr_provider_azure_ad.go
-  - internal/provider/types/dcr_provider_azure_ad1.go
-  - internal/provider/types/dcr_provider_http.go
-  - internal/provider/types/dcr_provider_http1.go
-  - internal/provider/types/dcr_provider_okta.go
-  - internal/provider/types/dcr_provider_okta1.go
+  - internal/provider/types/dcr_provider_auth0_dcr_provider_auth0.go
+  - internal/provider/types/dcr_provider_azure_addcr_provider_azure_ad.go
+  - internal/provider/types/dcr_provider_httpdcr_provider_http.go
+  - internal/provider/types/dcr_provider_oktadcr_provider_okta.go
   - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/embeddings.go
   - internal/provider/types/exit_transformer_plugin_config.go
@@ -1165,6 +1163,7 @@ generatedFiles:
   - internal/provider/types/healthchecks.go
   - internal/provider/types/healthy.go
   - internal/provider/types/hmac_auth_plugin_config.go
+  - internal/provider/types/http.go
   - internal/provider/types/http_log_plugin_config.go
   - internal/provider/types/huggingface.go
   - internal/provider/types/injection_protection_plugin_config.go
@@ -1204,6 +1203,7 @@ generatedFiles:
   - internal/provider/types/oauth.go
   - internal/provider/types/oauth2_introspection_plugin_config.go
   - internal/provider/types/oauth2_plugin_config.go
+  - internal/provider/types/okta.go
   - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/openid_connect.go
   - internal/provider/types/openid_connect_plugin_config.go
@@ -1920,6 +1920,7 @@ generatedFiles:
   - internal/sdk/models/shared/assignrole.go
   - internal/sdk/models/shared/auditlogdestination.go
   - internal/sdk/models/shared/auditlogwebhook.go
+  - internal/sdk/models/shared/auth0.go
   - internal/sdk/models/shared/authstrategy.go
   - internal/sdk/models/shared/authstrategyclientcredentials.go
   - internal/sdk/models/shared/authstrategykeyauth.go
@@ -1927,6 +1928,7 @@ generatedFiles:
   - internal/sdk/models/shared/awslambdaplugin.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
+  - internal/sdk/models/shared/azuread.go
   - internal/sdk/models/shared/azurefunctionsplugin.go
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
@@ -1990,6 +1992,7 @@ generatedFiles:
   - internal/sdk/models/shared/createsystemaccountaccesstoken.go
   - internal/sdk/models/shared/createteam.go
   - internal/sdk/models/shared/createtransitgatewayrequest.go
+  - internal/sdk/models/shared/curity.go
   - internal/sdk/models/shared/customdomain.go
   - internal/sdk/models/shared/customdomainstate.go
   - internal/sdk/models/shared/datadogplugin.go
@@ -2001,11 +2004,6 @@ generatedFiles:
   - internal/sdk/models/shared/dcrconfigcurityinresponse.go
   - internal/sdk/models/shared/dcrconfighttpinresponse.go
   - internal/sdk/models/shared/dcrconfigoktainresponse.go
-  - internal/sdk/models/shared/dcrproviderauth0.go
-  - internal/sdk/models/shared/dcrproviderazuread.go
-  - internal/sdk/models/shared/dcrprovidercurity.go
-  - internal/sdk/models/shared/dcrproviderhttp.go
-  - internal/sdk/models/shared/dcrproviderokta.go
   - internal/sdk/models/shared/dcrproviderresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
@@ -2027,6 +2025,7 @@ generatedFiles:
   - internal/sdk/models/shared/hmacauth.go
   - internal/sdk/models/shared/hmacauthplugin.go
   - internal/sdk/models/shared/hmacauthwithoutparents.go
+  - internal/sdk/models/shared/http.go
   - internal/sdk/models/shared/httplogplugin.go
   - internal/sdk/models/shared/injectionprotectionplugin.go
   - internal/sdk/models/shared/instancetypename.go
@@ -2077,6 +2076,7 @@ generatedFiles:
   - internal/sdk/models/shared/oasvalidationplugin.go
   - internal/sdk/models/shared/oauth2introspectionplugin.go
   - internal/sdk/models/shared/oauth2plugin.go
+  - internal/sdk/models/shared/okta.go
   - internal/sdk/models/shared/opaplugin.go
   - internal/sdk/models/shared/openidconnectplugin.go
   - internal/sdk/models/shared/opentelemetryplugin.go
@@ -2161,11 +2161,6 @@ generatedFiles:
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
-  - internal/sdk/models/shared/updatedcrconfigauth0inrequest.go
-  - internal/sdk/models/shared/updatedcrconfigazureadinrequest.go
-  - internal/sdk/models/shared/updatedcrconfigcurityinrequest.go
-  - internal/sdk/models/shared/updatedcrconfighttpinrequest.go
-  - internal/sdk/models/shared/updatedcrconfigoktainrequest.go
   - internal/sdk/models/shared/updatedcrproviderrequest.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
   - internal/sdk/models/shared/updateportalappearancerequest.go
@@ -8715,7 +8710,7 @@ examples:
         application/json: {"provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>", "initial_client_secret": "<value>"}, "name": "<value>", "issuer": "https://accomplished-overload.net/", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd", "issuer": "https://graceful-accelerator.name/", "active": false, "dcr_config": {"initial_client_id": "<id>"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 476934, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}]}
         "401":
@@ -8729,7 +8724,7 @@ examples:
           dcrProviderId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "azureAd", "dcr_config": {"initial_client_id": "<id>"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd", "issuer": "https://rapid-stranger.com/", "active": true, "dcr_config": {"initial_client_id": "<id>"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -8745,7 +8740,7 @@ examples:
         application/json: {"labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "provider_type": "curity", "dcr_config": {"initial_client_id": "<id>"}}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "curity", "issuer": "https://marvelous-goat.info/", "active": false, "dcr_config": {"initial_client_id": "<id>"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 640011, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}]}
         "401":

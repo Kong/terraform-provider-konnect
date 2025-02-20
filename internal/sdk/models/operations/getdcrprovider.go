@@ -64,37 +64,37 @@ func (o *GetDcrProviderResponse) GetDcrProviderResponse() *shared.DcrProviderRes
 	return o.DcrProviderResponse
 }
 
-func (o *GetDcrProviderResponse) GetDcrProviderResponseAuth0() *shared.DcrProviderAuth0 {
+func (o *GetDcrProviderResponse) GetDcrProviderResponseAuth0() *shared.DCRProviderAuth0DCRProviderAuth0 {
 	if v := o.GetDcrProviderResponse(); v != nil {
-		return v.DcrProviderAuth0
+		return v.DCRProviderAuth0DCRProviderAuth0
 	}
 	return nil
 }
 
-func (o *GetDcrProviderResponse) GetDcrProviderResponseAzureAd() *shared.DcrProviderAzureAd {
+func (o *GetDcrProviderResponse) GetDcrProviderResponseAzureAd() *shared.DCRProviderAzureADDCRProviderAzureAD {
 	if v := o.GetDcrProviderResponse(); v != nil {
-		return v.DcrProviderAzureAd
+		return v.DCRProviderAzureADDCRProviderAzureAD
 	}
 	return nil
 }
 
-func (o *GetDcrProviderResponse) GetDcrProviderResponseCurity() *shared.DcrProviderCurity {
+func (o *GetDcrProviderResponse) GetDcrProviderResponseCurity() *shared.DCRProviderCurityDCRProviderCurity {
 	if v := o.GetDcrProviderResponse(); v != nil {
-		return v.DcrProviderCurity
+		return v.DCRProviderCurityDCRProviderCurity
 	}
 	return nil
 }
 
-func (o *GetDcrProviderResponse) GetDcrProviderResponseOkta() *shared.DcrProviderOkta {
+func (o *GetDcrProviderResponse) GetDcrProviderResponseOkta() *shared.DCRProviderOKTADCRProviderOKTA {
 	if v := o.GetDcrProviderResponse(); v != nil {
-		return v.DcrProviderOkta
+		return v.DCRProviderOKTADCRProviderOKTA
 	}
 	return nil
 }
 
-func (o *GetDcrProviderResponse) GetDcrProviderResponseHTTP() *shared.DcrProviderHTTP {
+func (o *GetDcrProviderResponse) GetDcrProviderResponseHTTP() *shared.DCRProviderHTTPDCRProviderHTTP {
 	if v := o.GetDcrProviderResponse(); v != nil {
-		return v.DcrProviderHTTP
+		return v.DCRProviderHTTPDCRProviderHTTP
 	}
 	return nil
 }

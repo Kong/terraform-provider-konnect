@@ -6,13 +6,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
+	"time"
 )
 
 func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest() *shared.CreateDcrProviderRequest {
 	var out shared.CreateDcrProviderRequest
 	var createDcrProviderRequestAuth0 *shared.CreateDcrProviderRequestAuth0
 	if r.Auth0 != nil {
-		providerType := shared.CreateDcrProviderRequestAuth0ProviderType(r.Auth0.ProviderType.ValueString())
+		providerType := shared.ProviderType(r.Auth0.ProviderType.ValueString())
 		var initialClientID string
 		initialClientID = r.Auth0.DcrConfig.InitialClientID.ValueString()
 
@@ -270,83 +271,123 @@ func (r *DcrProviderResourceModel) ToSharedCreateDcrProviderRequest() *shared.Cr
 func (r *DcrProviderResourceModel) RefreshFromSharedCreateDcrProviderResponse(resp *shared.CreateDcrProviderResponse) {
 	if resp == nil {
 	} else {
-		if resp.DcrProviderAuth0 != nil {
-			r.Auth0 = &tfTypes.DcrProviderAuth0{}
-			r.Auth0.Active = types.BoolPointerValue(resp.DcrProviderAuth0.Active)
+		if resp.DCRProviderAuth0 != nil {
+			r.Auth0 = &tfTypes.Auth0{}
+			r.Auth0.Active = types.BoolValue(resp.DCRProviderAuth0.Active)
 			r.Active = r.Auth0.Active
-			r.Auth0.DcrConfig.InitialClientAudience = types.StringPointerValue(resp.DcrProviderAuth0.DcrConfig.InitialClientAudience)
-			r.Auth0.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderAuth0.DcrConfig.InitialClientID)
-			r.Auth0.DcrConfig.UseDeveloperManagedScopes = types.BoolValue(resp.DcrProviderAuth0.DcrConfig.UseDeveloperManagedScopes)
-			r.Auth0.DisplayName = types.StringPointerValue(resp.DcrProviderAuth0.DisplayName)
+			r.Auth0.CreatedAt = types.StringValue(resp.DCRProviderAuth0.CreatedAt.Format(time.RFC3339Nano))
+			r.Auth0.DcrConfig.InitialClientAudience = types.StringPointerValue(resp.DCRProviderAuth0.DcrConfig.InitialClientAudience)
+			r.Auth0.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderAuth0.DcrConfig.InitialClientID)
+			r.Auth0.DcrConfig.UseDeveloperManagedScopes = types.BoolValue(resp.DCRProviderAuth0.DcrConfig.UseDeveloperManagedScopes)
+			r.Auth0.DisplayName = types.StringPointerValue(resp.DCRProviderAuth0.DisplayName)
 			r.DisplayName = r.Auth0.DisplayName
-			r.Auth0.ID = types.StringPointerValue(resp.DcrProviderAuth0.ID)
+			r.Auth0.ID = types.StringValue(resp.DCRProviderAuth0.ID)
 			r.ID = r.Auth0.ID
-			r.Auth0.Issuer = types.StringPointerValue(resp.DcrProviderAuth0.Issuer)
+			r.Auth0.Issuer = types.StringValue(resp.DCRProviderAuth0.Issuer)
 			r.Issuer = r.Auth0.Issuer
-			r.Auth0.Name = types.StringPointerValue(resp.DcrProviderAuth0.Name)
+			if len(resp.DCRProviderAuth0.Labels) > 0 {
+				r.Auth0.Labels = make(map[string]types.String)
+				for key, value := range resp.DCRProviderAuth0.Labels {
+					r.Auth0.Labels[key] = types.StringValue(value)
+				}
+			}
+			r.Auth0.Name = types.StringValue(resp.DCRProviderAuth0.Name)
 			r.Name = r.Auth0.Name
-			r.Auth0.ProviderType = types.StringValue(string(resp.DcrProviderAuth0.ProviderType))
+			r.Auth0.ProviderType = types.StringValue(string(resp.DCRProviderAuth0.ProviderType))
+			r.Auth0.UpdatedAt = types.StringValue(resp.DCRProviderAuth0.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderAzureAd != nil {
-			r.AzureAd = &tfTypes.DcrProviderAzureAd{}
-			r.AzureAd.Active = types.BoolPointerValue(resp.DcrProviderAzureAd.Active)
+		if resp.DCRProviderAzureAD != nil {
+			r.AzureAd = &tfTypes.AzureAd{}
+			r.AzureAd.Active = types.BoolValue(resp.DCRProviderAzureAD.Active)
 			r.Active = r.AzureAd.Active
-			r.AzureAd.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderAzureAd.DcrConfig.InitialClientID)
-			r.AzureAd.DisplayName = types.StringPointerValue(resp.DcrProviderAzureAd.DisplayName)
+			r.AzureAd.CreatedAt = types.StringValue(resp.DCRProviderAzureAD.CreatedAt.Format(time.RFC3339Nano))
+			r.AzureAd.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderAzureAD.DcrConfig.InitialClientID)
+			r.AzureAd.DisplayName = types.StringPointerValue(resp.DCRProviderAzureAD.DisplayName)
 			r.DisplayName = r.AzureAd.DisplayName
-			r.AzureAd.ID = types.StringPointerValue(resp.DcrProviderAzureAd.ID)
+			r.AzureAd.ID = types.StringValue(resp.DCRProviderAzureAD.ID)
 			r.ID = r.AzureAd.ID
-			r.AzureAd.Issuer = types.StringPointerValue(resp.DcrProviderAzureAd.Issuer)
+			r.AzureAd.Issuer = types.StringValue(resp.DCRProviderAzureAD.Issuer)
 			r.Issuer = r.AzureAd.Issuer
-			r.AzureAd.Name = types.StringPointerValue(resp.DcrProviderAzureAd.Name)
+			if len(resp.DCRProviderAzureAD.Labels) > 0 {
+				r.AzureAd.Labels = make(map[string]types.String)
+				for key1, value1 := range resp.DCRProviderAzureAD.Labels {
+					r.AzureAd.Labels[key1] = types.StringValue(value1)
+				}
+			}
+			r.AzureAd.Name = types.StringValue(resp.DCRProviderAzureAD.Name)
 			r.Name = r.AzureAd.Name
-			r.AzureAd.ProviderType = types.StringValue(string(resp.DcrProviderAzureAd.ProviderType))
+			r.AzureAd.ProviderType = types.StringValue(string(resp.DCRProviderAzureAD.ProviderType))
+			r.AzureAd.UpdatedAt = types.StringValue(resp.DCRProviderAzureAD.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderCurity != nil {
-			r.Curity = &tfTypes.DcrProviderAzureAd{}
-			r.Curity.Active = types.BoolPointerValue(resp.DcrProviderCurity.Active)
+		if resp.DCRProviderCurity != nil {
+			r.Curity = &tfTypes.AzureAd{}
+			r.Curity.Active = types.BoolValue(resp.DCRProviderCurity.Active)
 			r.Active = r.Curity.Active
-			r.Curity.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderCurity.DcrConfig.InitialClientID)
-			r.Curity.DisplayName = types.StringPointerValue(resp.DcrProviderCurity.DisplayName)
+			r.Curity.CreatedAt = types.StringValue(resp.DCRProviderCurity.CreatedAt.Format(time.RFC3339Nano))
+			r.Curity.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderCurity.DcrConfig.InitialClientID)
+			r.Curity.DisplayName = types.StringPointerValue(resp.DCRProviderCurity.DisplayName)
 			r.DisplayName = r.Curity.DisplayName
-			r.Curity.ID = types.StringPointerValue(resp.DcrProviderCurity.ID)
+			r.Curity.ID = types.StringValue(resp.DCRProviderCurity.ID)
 			r.ID = r.Curity.ID
-			r.Curity.Issuer = types.StringPointerValue(resp.DcrProviderCurity.Issuer)
+			r.Curity.Issuer = types.StringValue(resp.DCRProviderCurity.Issuer)
 			r.Issuer = r.Curity.Issuer
-			r.Curity.Name = types.StringPointerValue(resp.DcrProviderCurity.Name)
+			if len(resp.DCRProviderCurity.Labels) > 0 {
+				r.Curity.Labels = make(map[string]types.String)
+				for key2, value2 := range resp.DCRProviderCurity.Labels {
+					r.Curity.Labels[key2] = types.StringValue(value2)
+				}
+			}
+			r.Curity.Name = types.StringValue(resp.DCRProviderCurity.Name)
 			r.Name = r.Curity.Name
-			r.Curity.ProviderType = types.StringValue(string(resp.DcrProviderCurity.ProviderType))
+			r.Curity.ProviderType = types.StringValue(string(resp.DCRProviderCurity.ProviderType))
+			r.Curity.UpdatedAt = types.StringValue(resp.DCRProviderCurity.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderHTTP != nil {
-			r.HTTP = &tfTypes.DcrProviderHTTP{}
-			r.HTTP.Active = types.BoolPointerValue(resp.DcrProviderHTTP.Active)
+		if resp.DCRProviderHTTP != nil {
+			r.HTTP = &tfTypes.HTTP{}
+			r.HTTP.Active = types.BoolValue(resp.DCRProviderHTTP.Active)
 			r.Active = r.HTTP.Active
-			r.HTTP.DcrConfig.DcrBaseURL = types.StringValue(resp.DcrProviderHTTP.DcrConfig.DcrBaseURL)
-			r.HTTP.DcrConfig.DisableEventHooks = types.BoolPointerValue(resp.DcrProviderHTTP.DcrConfig.DisableEventHooks)
-			r.HTTP.DcrConfig.DisableRefreshSecret = types.BoolPointerValue(resp.DcrProviderHTTP.DcrConfig.DisableRefreshSecret)
-			r.HTTP.DisplayName = types.StringPointerValue(resp.DcrProviderHTTP.DisplayName)
+			r.HTTP.CreatedAt = types.StringValue(resp.DCRProviderHTTP.CreatedAt.Format(time.RFC3339Nano))
+			r.HTTP.DcrConfig.DcrBaseURL = types.StringValue(resp.DCRProviderHTTP.DcrConfig.DcrBaseURL)
+			r.HTTP.DcrConfig.DisableEventHooks = types.BoolPointerValue(resp.DCRProviderHTTP.DcrConfig.DisableEventHooks)
+			r.HTTP.DcrConfig.DisableRefreshSecret = types.BoolPointerValue(resp.DCRProviderHTTP.DcrConfig.DisableRefreshSecret)
+			r.HTTP.DisplayName = types.StringPointerValue(resp.DCRProviderHTTP.DisplayName)
 			r.DisplayName = r.HTTP.DisplayName
-			r.HTTP.ID = types.StringPointerValue(resp.DcrProviderHTTP.ID)
+			r.HTTP.ID = types.StringValue(resp.DCRProviderHTTP.ID)
 			r.ID = r.HTTP.ID
-			r.HTTP.Issuer = types.StringPointerValue(resp.DcrProviderHTTP.Issuer)
+			r.HTTP.Issuer = types.StringValue(resp.DCRProviderHTTP.Issuer)
 			r.Issuer = r.HTTP.Issuer
-			r.HTTP.Name = types.StringPointerValue(resp.DcrProviderHTTP.Name)
+			if len(resp.DCRProviderHTTP.Labels) > 0 {
+				r.HTTP.Labels = make(map[string]types.String)
+				for key3, value3 := range resp.DCRProviderHTTP.Labels {
+					r.HTTP.Labels[key3] = types.StringValue(value3)
+				}
+			}
+			r.HTTP.Name = types.StringValue(resp.DCRProviderHTTP.Name)
 			r.Name = r.HTTP.Name
-			r.HTTP.ProviderType = types.StringValue(string(resp.DcrProviderHTTP.ProviderType))
+			r.HTTP.ProviderType = types.StringValue(string(resp.DCRProviderHTTP.ProviderType))
+			r.HTTP.UpdatedAt = types.StringValue(resp.DCRProviderHTTP.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderOkta != nil {
-			r.Okta = &tfTypes.DcrProviderOkta{}
-			r.Okta.Active = types.BoolPointerValue(resp.DcrProviderOkta.Active)
+		if resp.DCRProviderOKTA != nil {
+			r.Okta = &tfTypes.Okta{}
+			r.Okta.Active = types.BoolValue(resp.DCRProviderOKTA.Active)
 			r.Active = r.Okta.Active
-			r.Okta.DisplayName = types.StringPointerValue(resp.DcrProviderOkta.DisplayName)
+			r.Okta.CreatedAt = types.StringValue(resp.DCRProviderOKTA.CreatedAt.Format(time.RFC3339Nano))
+			r.Okta.DisplayName = types.StringPointerValue(resp.DCRProviderOKTA.DisplayName)
 			r.DisplayName = r.Okta.DisplayName
-			r.Okta.ID = types.StringPointerValue(resp.DcrProviderOkta.ID)
+			r.Okta.ID = types.StringValue(resp.DCRProviderOKTA.ID)
 			r.ID = r.Okta.ID
-			r.Okta.Issuer = types.StringPointerValue(resp.DcrProviderOkta.Issuer)
+			r.Okta.Issuer = types.StringValue(resp.DCRProviderOKTA.Issuer)
 			r.Issuer = r.Okta.Issuer
-			r.Okta.Name = types.StringPointerValue(resp.DcrProviderOkta.Name)
+			if len(resp.DCRProviderOKTA.Labels) > 0 {
+				r.Okta.Labels = make(map[string]types.String)
+				for key4, value4 := range resp.DCRProviderOKTA.Labels {
+					r.Okta.Labels[key4] = types.StringValue(value4)
+				}
+			}
+			r.Okta.Name = types.StringValue(resp.DCRProviderOKTA.Name)
 			r.Name = r.Okta.Name
-			r.Okta.ProviderType = types.StringValue(string(resp.DcrProviderOkta.ProviderType))
+			r.Okta.ProviderType = types.StringValue(string(resp.DCRProviderOKTA.ProviderType))
+			r.Okta.UpdatedAt = types.StringValue(resp.DCRProviderOKTA.UpdatedAt.Format(time.RFC3339Nano))
 		}
 	}
 }
@@ -354,110 +395,434 @@ func (r *DcrProviderResourceModel) RefreshFromSharedCreateDcrProviderResponse(re
 func (r *DcrProviderResourceModel) RefreshFromSharedDcrProviderResponse(resp *shared.DcrProviderResponse) {
 	if resp == nil {
 	} else {
-		if resp.DcrProviderAuth0 != nil {
-			r.Auth0 = &tfTypes.DcrProviderAuth0{}
-			r.Auth0.Active = types.BoolPointerValue(resp.DcrProviderAuth0.Active)
+		if resp.DCRProviderAuth0DCRProviderAuth0 != nil {
+			r.Auth0 = &tfTypes.Auth0{}
+			r.Auth0.Active = types.BoolValue(resp.DCRProviderAuth0DCRProviderAuth0.Active)
 			r.Active = r.Auth0.Active
-			r.Auth0.DcrConfig.InitialClientAudience = types.StringPointerValue(resp.DcrProviderAuth0.DcrConfig.InitialClientAudience)
-			r.Auth0.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderAuth0.DcrConfig.InitialClientID)
-			r.Auth0.DcrConfig.UseDeveloperManagedScopes = types.BoolValue(resp.DcrProviderAuth0.DcrConfig.UseDeveloperManagedScopes)
-			r.Auth0.DisplayName = types.StringPointerValue(resp.DcrProviderAuth0.DisplayName)
+			r.Auth0.CreatedAt = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.CreatedAt.Format(time.RFC3339Nano))
+			r.Auth0.DcrConfig.InitialClientAudience = types.StringPointerValue(resp.DCRProviderAuth0DCRProviderAuth0.DcrConfig.InitialClientAudience)
+			r.Auth0.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.DcrConfig.InitialClientID)
+			r.Auth0.DcrConfig.UseDeveloperManagedScopes = types.BoolValue(resp.DCRProviderAuth0DCRProviderAuth0.DcrConfig.UseDeveloperManagedScopes)
+			r.Auth0.DisplayName = types.StringPointerValue(resp.DCRProviderAuth0DCRProviderAuth0.DisplayName)
 			r.DisplayName = r.Auth0.DisplayName
-			r.Auth0.ID = types.StringPointerValue(resp.DcrProviderAuth0.ID)
+			r.Auth0.ID = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.ID)
 			r.ID = r.Auth0.ID
-			r.Auth0.Issuer = types.StringPointerValue(resp.DcrProviderAuth0.Issuer)
+			r.Auth0.Issuer = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.Issuer)
 			r.Issuer = r.Auth0.Issuer
-			r.Auth0.Name = types.StringPointerValue(resp.DcrProviderAuth0.Name)
+			if len(resp.DCRProviderAuth0DCRProviderAuth0.Labels) > 0 {
+				r.Auth0.Labels = make(map[string]types.String)
+				for key, value := range resp.DCRProviderAuth0DCRProviderAuth0.Labels {
+					r.Auth0.Labels[key] = types.StringValue(value)
+				}
+			}
+			r.Auth0.Name = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.Name)
 			r.Name = r.Auth0.Name
-			r.Auth0.ProviderType = types.StringValue(string(resp.DcrProviderAuth0.ProviderType))
+			r.Auth0.ProviderType = types.StringValue(string(resp.DCRProviderAuth0DCRProviderAuth0.ProviderType))
+			r.Auth0.UpdatedAt = types.StringValue(resp.DCRProviderAuth0DCRProviderAuth0.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderAzureAd != nil {
-			r.AzureAd = &tfTypes.DcrProviderAzureAd{}
-			r.AzureAd.Active = types.BoolPointerValue(resp.DcrProviderAzureAd.Active)
+		if resp.DCRProviderAzureADDCRProviderAzureAD != nil {
+			r.AzureAd = &tfTypes.AzureAd{}
+			r.AzureAd.Active = types.BoolValue(resp.DCRProviderAzureADDCRProviderAzureAD.Active)
 			r.Active = r.AzureAd.Active
-			r.AzureAd.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderAzureAd.DcrConfig.InitialClientID)
-			r.AzureAd.DisplayName = types.StringPointerValue(resp.DcrProviderAzureAd.DisplayName)
+			r.AzureAd.CreatedAt = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.CreatedAt.Format(time.RFC3339Nano))
+			r.AzureAd.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.DcrConfig.InitialClientID)
+			r.AzureAd.DisplayName = types.StringPointerValue(resp.DCRProviderAzureADDCRProviderAzureAD.DisplayName)
 			r.DisplayName = r.AzureAd.DisplayName
-			r.AzureAd.ID = types.StringPointerValue(resp.DcrProviderAzureAd.ID)
+			r.AzureAd.ID = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.ID)
 			r.ID = r.AzureAd.ID
-			r.AzureAd.Issuer = types.StringPointerValue(resp.DcrProviderAzureAd.Issuer)
+			r.AzureAd.Issuer = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.Issuer)
 			r.Issuer = r.AzureAd.Issuer
-			r.AzureAd.Name = types.StringPointerValue(resp.DcrProviderAzureAd.Name)
+			if len(resp.DCRProviderAzureADDCRProviderAzureAD.Labels) > 0 {
+				r.AzureAd.Labels = make(map[string]types.String)
+				for key1, value1 := range resp.DCRProviderAzureADDCRProviderAzureAD.Labels {
+					r.AzureAd.Labels[key1] = types.StringValue(value1)
+				}
+			}
+			r.AzureAd.Name = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.Name)
 			r.Name = r.AzureAd.Name
-			r.AzureAd.ProviderType = types.StringValue(string(resp.DcrProviderAzureAd.ProviderType))
+			r.AzureAd.ProviderType = types.StringValue(string(resp.DCRProviderAzureADDCRProviderAzureAD.ProviderType))
+			r.AzureAd.UpdatedAt = types.StringValue(resp.DCRProviderAzureADDCRProviderAzureAD.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderCurity != nil {
-			r.Curity = &tfTypes.DcrProviderAzureAd{}
-			r.Curity.Active = types.BoolPointerValue(resp.DcrProviderCurity.Active)
+		if resp.DCRProviderCurityDCRProviderCurity != nil {
+			r.Curity = &tfTypes.AzureAd{}
+			r.Curity.Active = types.BoolValue(resp.DCRProviderCurityDCRProviderCurity.Active)
 			r.Active = r.Curity.Active
-			r.Curity.DcrConfig.InitialClientID = types.StringValue(resp.DcrProviderCurity.DcrConfig.InitialClientID)
-			r.Curity.DisplayName = types.StringPointerValue(resp.DcrProviderCurity.DisplayName)
+			r.Curity.CreatedAt = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.CreatedAt.Format(time.RFC3339Nano))
+			r.Curity.DcrConfig.InitialClientID = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.DcrConfig.InitialClientID)
+			r.Curity.DisplayName = types.StringPointerValue(resp.DCRProviderCurityDCRProviderCurity.DisplayName)
 			r.DisplayName = r.Curity.DisplayName
-			r.Curity.ID = types.StringPointerValue(resp.DcrProviderCurity.ID)
+			r.Curity.ID = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.ID)
 			r.ID = r.Curity.ID
-			r.Curity.Issuer = types.StringPointerValue(resp.DcrProviderCurity.Issuer)
+			r.Curity.Issuer = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.Issuer)
 			r.Issuer = r.Curity.Issuer
-			r.Curity.Name = types.StringPointerValue(resp.DcrProviderCurity.Name)
+			if len(resp.DCRProviderCurityDCRProviderCurity.Labels) > 0 {
+				r.Curity.Labels = make(map[string]types.String)
+				for key2, value2 := range resp.DCRProviderCurityDCRProviderCurity.Labels {
+					r.Curity.Labels[key2] = types.StringValue(value2)
+				}
+			}
+			r.Curity.Name = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.Name)
 			r.Name = r.Curity.Name
-			r.Curity.ProviderType = types.StringValue(string(resp.DcrProviderCurity.ProviderType))
+			r.Curity.ProviderType = types.StringValue(string(resp.DCRProviderCurityDCRProviderCurity.ProviderType))
+			r.Curity.UpdatedAt = types.StringValue(resp.DCRProviderCurityDCRProviderCurity.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderHTTP != nil {
-			r.HTTP = &tfTypes.DcrProviderHTTP{}
-			r.HTTP.Active = types.BoolPointerValue(resp.DcrProviderHTTP.Active)
+		if resp.DCRProviderHTTPDCRProviderHTTP != nil {
+			r.HTTP = &tfTypes.HTTP{}
+			r.HTTP.Active = types.BoolValue(resp.DCRProviderHTTPDCRProviderHTTP.Active)
 			r.Active = r.HTTP.Active
-			r.HTTP.DcrConfig.DcrBaseURL = types.StringValue(resp.DcrProviderHTTP.DcrConfig.DcrBaseURL)
-			r.HTTP.DcrConfig.DisableEventHooks = types.BoolPointerValue(resp.DcrProviderHTTP.DcrConfig.DisableEventHooks)
-			r.HTTP.DcrConfig.DisableRefreshSecret = types.BoolPointerValue(resp.DcrProviderHTTP.DcrConfig.DisableRefreshSecret)
-			r.HTTP.DisplayName = types.StringPointerValue(resp.DcrProviderHTTP.DisplayName)
+			r.HTTP.CreatedAt = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.CreatedAt.Format(time.RFC3339Nano))
+			r.HTTP.DcrConfig.DcrBaseURL = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.DcrConfig.DcrBaseURL)
+			r.HTTP.DcrConfig.DisableEventHooks = types.BoolPointerValue(resp.DCRProviderHTTPDCRProviderHTTP.DcrConfig.DisableEventHooks)
+			r.HTTP.DcrConfig.DisableRefreshSecret = types.BoolPointerValue(resp.DCRProviderHTTPDCRProviderHTTP.DcrConfig.DisableRefreshSecret)
+			r.HTTP.DisplayName = types.StringPointerValue(resp.DCRProviderHTTPDCRProviderHTTP.DisplayName)
 			r.DisplayName = r.HTTP.DisplayName
-			r.HTTP.ID = types.StringPointerValue(resp.DcrProviderHTTP.ID)
+			r.HTTP.ID = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.ID)
 			r.ID = r.HTTP.ID
-			r.HTTP.Issuer = types.StringPointerValue(resp.DcrProviderHTTP.Issuer)
+			r.HTTP.Issuer = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.Issuer)
 			r.Issuer = r.HTTP.Issuer
-			r.HTTP.Name = types.StringPointerValue(resp.DcrProviderHTTP.Name)
+			if len(resp.DCRProviderHTTPDCRProviderHTTP.Labels) > 0 {
+				r.HTTP.Labels = make(map[string]types.String)
+				for key3, value3 := range resp.DCRProviderHTTPDCRProviderHTTP.Labels {
+					r.HTTP.Labels[key3] = types.StringValue(value3)
+				}
+			}
+			r.HTTP.Name = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.Name)
 			r.Name = r.HTTP.Name
-			r.HTTP.ProviderType = types.StringValue(string(resp.DcrProviderHTTP.ProviderType))
+			r.HTTP.ProviderType = types.StringValue(string(resp.DCRProviderHTTPDCRProviderHTTP.ProviderType))
+			r.HTTP.UpdatedAt = types.StringValue(resp.DCRProviderHTTPDCRProviderHTTP.UpdatedAt.Format(time.RFC3339Nano))
 		}
-		if resp.DcrProviderOkta != nil {
-			r.Okta = &tfTypes.DcrProviderOkta{}
-			r.Okta.Active = types.BoolPointerValue(resp.DcrProviderOkta.Active)
+		if resp.DCRProviderOKTADCRProviderOKTA != nil {
+			r.Okta = &tfTypes.Okta{}
+			r.Okta.Active = types.BoolValue(resp.DCRProviderOKTADCRProviderOKTA.Active)
 			r.Active = r.Okta.Active
-			r.Okta.DisplayName = types.StringPointerValue(resp.DcrProviderOkta.DisplayName)
+			r.Okta.CreatedAt = types.StringValue(resp.DCRProviderOKTADCRProviderOKTA.CreatedAt.Format(time.RFC3339Nano))
+			r.Okta.DisplayName = types.StringPointerValue(resp.DCRProviderOKTADCRProviderOKTA.DisplayName)
 			r.DisplayName = r.Okta.DisplayName
-			r.Okta.ID = types.StringPointerValue(resp.DcrProviderOkta.ID)
+			r.Okta.ID = types.StringValue(resp.DCRProviderOKTADCRProviderOKTA.ID)
 			r.ID = r.Okta.ID
-			r.Okta.Issuer = types.StringPointerValue(resp.DcrProviderOkta.Issuer)
+			r.Okta.Issuer = types.StringValue(resp.DCRProviderOKTADCRProviderOKTA.Issuer)
 			r.Issuer = r.Okta.Issuer
-			r.Okta.Name = types.StringPointerValue(resp.DcrProviderOkta.Name)
+			if len(resp.DCRProviderOKTADCRProviderOKTA.Labels) > 0 {
+				r.Okta.Labels = make(map[string]types.String)
+				for key4, value4 := range resp.DCRProviderOKTADCRProviderOKTA.Labels {
+					r.Okta.Labels[key4] = types.StringValue(value4)
+				}
+			}
+			r.Okta.Name = types.StringValue(resp.DCRProviderOKTADCRProviderOKTA.Name)
 			r.Name = r.Okta.Name
-			r.Okta.ProviderType = types.StringValue(string(resp.DcrProviderOkta.ProviderType))
+			r.Okta.ProviderType = types.StringValue(string(resp.DCRProviderOKTADCRProviderOKTA.ProviderType))
+			r.Okta.UpdatedAt = types.StringValue(resp.DCRProviderOKTADCRProviderOKTA.UpdatedAt.Format(time.RFC3339Nano))
 		}
 	}
 }
 
 func (r *DcrProviderResourceModel) ToSharedUpdateDcrProviderRequest() *shared.UpdateDcrProviderRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
+	var out shared.UpdateDcrProviderRequest
+	var auth0 *shared.Auth0
+	if r.Auth0 != nil {
+		name := new(string)
+		if !r.Auth0.Name.IsUnknown() && !r.Auth0.Name.IsNull() {
+			*name = r.Auth0.Name.ValueString()
+		} else {
+			name = nil
+		}
+		displayName := new(string)
+		if !r.Auth0.DisplayName.IsUnknown() && !r.Auth0.DisplayName.IsNull() {
+			*displayName = r.Auth0.DisplayName.ValueString()
+		} else {
+			displayName = nil
+		}
+		issuer := new(string)
+		if !r.Auth0.Issuer.IsUnknown() && !r.Auth0.Issuer.IsNull() {
+			*issuer = r.Auth0.Issuer.ValueString()
+		} else {
+			issuer = nil
+		}
+		labels := make(map[string]string)
+		for labelsKey, labelsValue := range r.Auth0.Labels {
+			var labelsInst string
+			labelsInst = labelsValue.ValueString()
+
+			labels[labelsKey] = labelsInst
+		}
+		var dcrConfig *shared.DcrConfig
+		initialClientID := new(string)
+		if !r.Auth0.DcrConfig.InitialClientID.IsUnknown() && !r.Auth0.DcrConfig.InitialClientID.IsNull() {
+			*initialClientID = r.Auth0.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientID = nil
+		}
+		initialClientSecret := new(string)
+		if !r.Auth0.DcrConfig.InitialClientSecret.IsUnknown() && !r.Auth0.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret = r.Auth0.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret = nil
+		}
+		initialClientAudience := new(string)
+		if !r.Auth0.DcrConfig.InitialClientAudience.IsUnknown() && !r.Auth0.DcrConfig.InitialClientAudience.IsNull() {
+			*initialClientAudience = r.Auth0.DcrConfig.InitialClientAudience.ValueString()
+		} else {
+			initialClientAudience = nil
+		}
+		useDeveloperManagedScopes := new(bool)
+		if !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsUnknown() && !r.Auth0.DcrConfig.UseDeveloperManagedScopes.IsNull() {
+			*useDeveloperManagedScopes = r.Auth0.DcrConfig.UseDeveloperManagedScopes.ValueBool()
+		} else {
+			useDeveloperManagedScopes = nil
+		}
+		dcrConfig = &shared.DcrConfig{
+			InitialClientID:           initialClientID,
+			InitialClientSecret:       initialClientSecret,
+			InitialClientAudience:     initialClientAudience,
+			UseDeveloperManagedScopes: useDeveloperManagedScopes,
+		}
+		auth0 = &shared.Auth0{
+			Name:        name,
+			DisplayName: displayName,
+			Issuer:      issuer,
+			Labels:      labels,
+			DcrConfig:   dcrConfig,
+		}
 	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
+	if auth0 != nil {
+		out = shared.UpdateDcrProviderRequest{
+			Auth0: auth0,
+		}
 	}
-	issuer := new(string)
-	if !r.Issuer.IsUnknown() && !r.Issuer.IsNull() {
-		*issuer = r.Issuer.ValueString()
-	} else {
-		issuer = nil
+	var azureAd *shared.AzureAd
+	if r.AzureAd != nil {
+		name1 := new(string)
+		if !r.AzureAd.Name.IsUnknown() && !r.AzureAd.Name.IsNull() {
+			*name1 = r.AzureAd.Name.ValueString()
+		} else {
+			name1 = nil
+		}
+		displayName1 := new(string)
+		if !r.AzureAd.DisplayName.IsUnknown() && !r.AzureAd.DisplayName.IsNull() {
+			*displayName1 = r.AzureAd.DisplayName.ValueString()
+		} else {
+			displayName1 = nil
+		}
+		issuer1 := new(string)
+		if !r.AzureAd.Issuer.IsUnknown() && !r.AzureAd.Issuer.IsNull() {
+			*issuer1 = r.AzureAd.Issuer.ValueString()
+		} else {
+			issuer1 = nil
+		}
+		labels1 := make(map[string]string)
+		for labelsKey1, labelsValue1 := range r.AzureAd.Labels {
+			var labelsInst1 string
+			labelsInst1 = labelsValue1.ValueString()
+
+			labels1[labelsKey1] = labelsInst1
+		}
+		var dcrConfig1 *shared.AzureAdDcrConfig
+		initialClientId1 := new(string)
+		if !r.AzureAd.DcrConfig.InitialClientID.IsUnknown() && !r.AzureAd.DcrConfig.InitialClientID.IsNull() {
+			*initialClientId1 = r.AzureAd.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientId1 = nil
+		}
+		initialClientSecret1 := new(string)
+		if !r.AzureAd.DcrConfig.InitialClientSecret.IsUnknown() && !r.AzureAd.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret1 = r.AzureAd.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret1 = nil
+		}
+		dcrConfig1 = &shared.AzureAdDcrConfig{
+			InitialClientID:     initialClientId1,
+			InitialClientSecret: initialClientSecret1,
+		}
+		azureAd = &shared.AzureAd{
+			Name:        name1,
+			DisplayName: displayName1,
+			Issuer:      issuer1,
+			Labels:      labels1,
+			DcrConfig:   dcrConfig1,
+		}
 	}
-	out := shared.UpdateDcrProviderRequest{
-		Name:        name,
-		DisplayName: displayName,
-		Issuer:      issuer,
+	if azureAd != nil {
+		out = shared.UpdateDcrProviderRequest{
+			AzureAd: azureAd,
+		}
+	}
+	var curity *shared.Curity
+	if r.Curity != nil {
+		name2 := new(string)
+		if !r.Curity.Name.IsUnknown() && !r.Curity.Name.IsNull() {
+			*name2 = r.Curity.Name.ValueString()
+		} else {
+			name2 = nil
+		}
+		displayName2 := new(string)
+		if !r.Curity.DisplayName.IsUnknown() && !r.Curity.DisplayName.IsNull() {
+			*displayName2 = r.Curity.DisplayName.ValueString()
+		} else {
+			displayName2 = nil
+		}
+		issuer2 := new(string)
+		if !r.Curity.Issuer.IsUnknown() && !r.Curity.Issuer.IsNull() {
+			*issuer2 = r.Curity.Issuer.ValueString()
+		} else {
+			issuer2 = nil
+		}
+		labels2 := make(map[string]string)
+		for labelsKey2, labelsValue2 := range r.Curity.Labels {
+			var labelsInst2 string
+			labelsInst2 = labelsValue2.ValueString()
+
+			labels2[labelsKey2] = labelsInst2
+		}
+		var dcrConfig2 *shared.CurityDcrConfig
+		initialClientId2 := new(string)
+		if !r.Curity.DcrConfig.InitialClientID.IsUnknown() && !r.Curity.DcrConfig.InitialClientID.IsNull() {
+			*initialClientId2 = r.Curity.DcrConfig.InitialClientID.ValueString()
+		} else {
+			initialClientId2 = nil
+		}
+		initialClientSecret2 := new(string)
+		if !r.Curity.DcrConfig.InitialClientSecret.IsUnknown() && !r.Curity.DcrConfig.InitialClientSecret.IsNull() {
+			*initialClientSecret2 = r.Curity.DcrConfig.InitialClientSecret.ValueString()
+		} else {
+			initialClientSecret2 = nil
+		}
+		dcrConfig2 = &shared.CurityDcrConfig{
+			InitialClientID:     initialClientId2,
+			InitialClientSecret: initialClientSecret2,
+		}
+		curity = &shared.Curity{
+			Name:        name2,
+			DisplayName: displayName2,
+			Issuer:      issuer2,
+			Labels:      labels2,
+			DcrConfig:   dcrConfig2,
+		}
+	}
+	if curity != nil {
+		out = shared.UpdateDcrProviderRequest{
+			Curity: curity,
+		}
+	}
+	var okta *shared.Okta
+	if r.Okta != nil {
+		name3 := new(string)
+		if !r.Okta.Name.IsUnknown() && !r.Okta.Name.IsNull() {
+			*name3 = r.Okta.Name.ValueString()
+		} else {
+			name3 = nil
+		}
+		displayName3 := new(string)
+		if !r.Okta.DisplayName.IsUnknown() && !r.Okta.DisplayName.IsNull() {
+			*displayName3 = r.Okta.DisplayName.ValueString()
+		} else {
+			displayName3 = nil
+		}
+		issuer3 := new(string)
+		if !r.Okta.Issuer.IsUnknown() && !r.Okta.Issuer.IsNull() {
+			*issuer3 = r.Okta.Issuer.ValueString()
+		} else {
+			issuer3 = nil
+		}
+		labels3 := make(map[string]string)
+		for labelsKey3, labelsValue3 := range r.Okta.Labels {
+			var labelsInst3 string
+			labelsInst3 = labelsValue3.ValueString()
+
+			labels3[labelsKey3] = labelsInst3
+		}
+		var dcrConfig3 *shared.OktaDcrConfig
+		dcrToken := new(string)
+		if !r.Okta.DcrConfig.DcrToken.IsUnknown() && !r.Okta.DcrConfig.DcrToken.IsNull() {
+			*dcrToken = r.Okta.DcrConfig.DcrToken.ValueString()
+		} else {
+			dcrToken = nil
+		}
+		dcrConfig3 = &shared.OktaDcrConfig{
+			DcrToken: dcrToken,
+		}
+		okta = &shared.Okta{
+			Name:        name3,
+			DisplayName: displayName3,
+			Issuer:      issuer3,
+			Labels:      labels3,
+			DcrConfig:   dcrConfig3,
+		}
+	}
+	if okta != nil {
+		out = shared.UpdateDcrProviderRequest{
+			Okta: okta,
+		}
+	}
+	var http *shared.HTTP
+	if r.HTTP != nil {
+		name4 := new(string)
+		if !r.HTTP.Name.IsUnknown() && !r.HTTP.Name.IsNull() {
+			*name4 = r.HTTP.Name.ValueString()
+		} else {
+			name4 = nil
+		}
+		displayName4 := new(string)
+		if !r.HTTP.DisplayName.IsUnknown() && !r.HTTP.DisplayName.IsNull() {
+			*displayName4 = r.HTTP.DisplayName.ValueString()
+		} else {
+			displayName4 = nil
+		}
+		issuer4 := new(string)
+		if !r.HTTP.Issuer.IsUnknown() && !r.HTTP.Issuer.IsNull() {
+			*issuer4 = r.HTTP.Issuer.ValueString()
+		} else {
+			issuer4 = nil
+		}
+		labels4 := make(map[string]string)
+		for labelsKey4, labelsValue4 := range r.HTTP.Labels {
+			var labelsInst4 string
+			labelsInst4 = labelsValue4.ValueString()
+
+			labels4[labelsKey4] = labelsInst4
+		}
+		var dcrConfig4 *shared.HTTPDcrConfig
+		dcrBaseURL := new(string)
+		if !r.HTTP.DcrConfig.DcrBaseURL.IsUnknown() && !r.HTTP.DcrConfig.DcrBaseURL.IsNull() {
+			*dcrBaseURL = r.HTTP.DcrConfig.DcrBaseURL.ValueString()
+		} else {
+			dcrBaseURL = nil
+		}
+		apiKey := new(string)
+		if !r.HTTP.DcrConfig.APIKey.IsUnknown() && !r.HTTP.DcrConfig.APIKey.IsNull() {
+			*apiKey = r.HTTP.DcrConfig.APIKey.ValueString()
+		} else {
+			apiKey = nil
+		}
+		disableEventHooks := new(bool)
+		if !r.HTTP.DcrConfig.DisableEventHooks.IsUnknown() && !r.HTTP.DcrConfig.DisableEventHooks.IsNull() {
+			*disableEventHooks = r.HTTP.DcrConfig.DisableEventHooks.ValueBool()
+		} else {
+			disableEventHooks = nil
+		}
+		disableRefreshSecret := new(bool)
+		if !r.HTTP.DcrConfig.DisableRefreshSecret.IsUnknown() && !r.HTTP.DcrConfig.DisableRefreshSecret.IsNull() {
+			*disableRefreshSecret = r.HTTP.DcrConfig.DisableRefreshSecret.ValueBool()
+		} else {
+			disableRefreshSecret = nil
+		}
+		dcrConfig4 = &shared.HTTPDcrConfig{
+			DcrBaseURL:           dcrBaseURL,
+			APIKey:               apiKey,
+			DisableEventHooks:    disableEventHooks,
+			DisableRefreshSecret: disableRefreshSecret,
+		}
+		http = &shared.HTTP{
+			Name:        name4,
+			DisplayName: displayName4,
+			Issuer:      issuer4,
+			Labels:      labels4,
+			DcrConfig:   dcrConfig4,
+		}
+	}
+	if http != nil {
+		out = shared.UpdateDcrProviderRequest{
+			HTTP: http,
+		}
 	}
 	return &out
 }

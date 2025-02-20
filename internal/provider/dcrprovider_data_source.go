@@ -29,16 +29,16 @@ type DcrProviderDataSource struct {
 
 // DcrProviderDataSourceModel describes the data model.
 type DcrProviderDataSourceModel struct {
-	Active      types.Bool                   `tfsdk:"active"`
-	Auth0       *tfTypes.DcrProviderAuth01   `tfsdk:"auth0" tfPlanOnly:"true"`
-	AzureAd     *tfTypes.DcrProviderAzureAd1 `tfsdk:"azure_ad" tfPlanOnly:"true"`
-	Curity      *tfTypes.DcrProviderAzureAd1 `tfsdk:"curity" tfPlanOnly:"true"`
-	DisplayName types.String                 `tfsdk:"display_name"`
-	HTTP        *tfTypes.DcrProviderHTTP1    `tfsdk:"http" tfPlanOnly:"true"`
-	ID          types.String                 `tfsdk:"id"`
-	Issuer      types.String                 `tfsdk:"issuer"`
-	Name        types.String                 `tfsdk:"name"`
-	Okta        *tfTypes.DcrProviderOkta1    `tfsdk:"okta" tfPlanOnly:"true"`
+	Active      types.Bool                                    `tfsdk:"active"`
+	Auth0       *tfTypes.DCRProviderAuth0DCRProviderAuth0     `tfsdk:"auth0" tfPlanOnly:"true"`
+	AzureAd     *tfTypes.DCRProviderAzureADDCRProviderAzureAD `tfsdk:"azure_ad" tfPlanOnly:"true"`
+	Curity      *tfTypes.DCRProviderAzureADDCRProviderAzureAD `tfsdk:"curity" tfPlanOnly:"true"`
+	DisplayName types.String                                  `tfsdk:"display_name"`
+	HTTP        *tfTypes.DCRProviderHTTPDCRProviderHTTP       `tfsdk:"http" tfPlanOnly:"true"`
+	ID          types.String                                  `tfsdk:"id"`
+	Issuer      types.String                                  `tfsdk:"issuer"`
+	Name        types.String                                  `tfsdk:"name"`
+	Okta        *tfTypes.DCRProviderOKTADCRProviderOKTA       `tfsdk:"okta" tfPlanOnly:"true"`
 }
 
 // Metadata returns the data source type name.
@@ -62,6 +62,10 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 					"active": schema.BoolAttribute{
 						Computed:    true,
 						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -95,12 +99,23 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `The issuer of the DCR provider.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 					},
 					"provider_type": schema.StringAttribute{
 						Computed: true,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A DCR provider for Auth0 -- only properties not included in DcrProviderBase`,
@@ -111,6 +126,10 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 					"active": schema.BoolAttribute{
 						Computed:    true,
 						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -135,12 +154,23 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `The issuer of the DCR provider.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 					},
 					"provider_type": schema.StringAttribute{
 						Computed: true,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A DCR provider for Azure AD -- only properties not included in DcrProviderBase`,
@@ -151,6 +181,10 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 					"active": schema.BoolAttribute{
 						Computed:    true,
 						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -175,12 +209,23 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `The issuer of the DCR provider.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 					},
 					"provider_type": schema.StringAttribute{
 						Computed: true,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A DCR provider for Curity -- only properties not included in DcrProviderBase`,
@@ -195,6 +240,10 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 					"active": schema.BoolAttribute{
 						Computed:    true,
 						Description: `At least one active auth strategy is using this DCR provider.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
 					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -225,12 +274,23 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `The issuer of the DCR provider.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 					},
 					"provider_type": schema.StringAttribute{
 						Computed: true,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A DCR provider for HTTP -- only properties not included in DcrProviderBase`,
@@ -254,6 +314,10 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `At least one active auth strategy is using this DCR provider.`,
 					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity creation date.`,
+					},
 					"dcr_config": schema.SingleNestedAttribute{
 						Computed:    true,
 						Description: `A DCR provider configuration for Okta`,
@@ -270,12 +334,23 @@ func (r *DcrProviderDataSource) Schema(ctx context.Context, req datasource.Schem
 						Computed:    true,
 						Description: `The issuer of the DCR provider.`,
 					},
+					"labels": schema.MapAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. ` + "\n" +
+							`` + "\n" +
+							`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
+					},
 					"name": schema.StringAttribute{
 						Computed:    true,
 						Description: `The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI.`,
 					},
 					"provider_type": schema.StringAttribute{
 						Computed: true,
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `A DCR provider for Okta -- only properties not included in DcrProviderBase`,

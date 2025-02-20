@@ -90,11 +90,11 @@ resource "konnect_dcr_provider" "my_dcrprovider" {
 
 ### Optional
 
-- `auth0` (Attributes) A DCR provider for Auth0 -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--auth0))
-- `azure_ad` (Attributes) A DCR provider for Azure AD -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_ad))
-- `curity` (Attributes) A DCR provider for Curity -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--curity))
-- `http` (Attributes) A DCR provider for HTTP -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--http))
-- `okta` (Attributes) A DCR provider for Okta -- only properties not included in DcrProviderBase. Requires replacement if changed. (see [below for nested schema](#nestedatt--okta))
+- `auth0` (Attributes) Payload to update an Auth0 DCR provider. (see [below for nested schema](#nestedatt--auth0))
+- `azure_ad` (Attributes) Payload to update an Azure AD DCR provider. (see [below for nested schema](#nestedatt--azure_ad))
+- `curity` (Attributes) Payload to update a Curity DCR provider. (see [below for nested schema](#nestedatt--curity))
+- `http` (Attributes) Payload to update an HTTP DCR provider. (see [below for nested schema](#nestedatt--http))
+- `okta` (Attributes) Payload to update an Okta DCR provider. (see [below for nested schema](#nestedatt--okta))
 
 ### Read-Only
 
@@ -109,20 +109,21 @@ resource "konnect_dcr_provider" "my_dcrprovider" {
 
 Optional:
 
-- `dcr_config` (Attributes) Payload to create an Auth0 DCR provider. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--auth0--dcr_config))
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
+- `dcr_config` (Attributes) Payload to create an Auth0 DCR provider. Not Null (see [below for nested schema](#nestedatt--auth0--dcr_config))
+- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+- `issuer` (String) Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
 - `provider_type` (String) Not Null; must be "auth0"; Requires replacement if changed.
 
 Read-Only:
 
 - `active` (Boolean) At least one active auth strategy is using this DCR provider.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used by the API for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--auth0--dcr_config"></a>
 ### Nested Schema for `auth0.dcr_config`
@@ -132,14 +133,13 @@ Optional:
 - `initial_client_audience` (String) This is the audience value used for the initial client.
 If using a custom domain on Auth0, this must be set as to the Auth0 Management API audience value.
 If left blank, the issuer will be used instead.
-Requires replacement if changed.
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 - `initial_client_secret` (String) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
-- `use_developer_managed_scopes` (Boolean) Requires replacement if changed.
+Not Null
+- `use_developer_managed_scopes` (Boolean)
 
 
 
@@ -148,20 +148,21 @@ Not Null; Requires replacement if changed.
 
 Optional:
 
-- `dcr_config` (Attributes) Payload to create an Azure AD DCR provider. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_ad--dcr_config))
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
+- `dcr_config` (Attributes) Payload to create an Azure AD DCR provider. Not Null (see [below for nested schema](#nestedatt--azure_ad--dcr_config))
+- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+- `issuer` (String) Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
 - `provider_type` (String) Not Null; must be "azureAd"; Requires replacement if changed.
 
 Read-Only:
 
 - `active` (Boolean) At least one active auth strategy is using this DCR provider.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used by the API for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--azure_ad--dcr_config"></a>
 ### Nested Schema for `azure_ad.dcr_config`
@@ -170,10 +171,10 @@ Optional:
 
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 - `initial_client_secret` (String) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 
 
 
@@ -182,20 +183,21 @@ Not Null; Requires replacement if changed.
 
 Optional:
 
-- `dcr_config` (Attributes) Payload to create a Curity DCR provider. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--curity--dcr_config))
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
+- `dcr_config` (Attributes) Payload to create a Curity DCR provider. Not Null (see [below for nested schema](#nestedatt--curity--dcr_config))
+- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+- `issuer` (String) Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
 - `provider_type` (String) Not Null; must be "curity"; Requires replacement if changed.
 
 Read-Only:
 
 - `active` (Boolean) At least one active auth strategy is using this DCR provider.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used by the API for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--curity--dcr_config"></a>
 ### Nested Schema for `curity.dcr_config`
@@ -204,10 +206,10 @@ Optional:
 
 - `initial_client_id` (String) This ID should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 - `initial_client_secret` (String) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 
 
 
@@ -216,20 +218,21 @@ Not Null; Requires replacement if changed.
 
 Optional:
 
-- `dcr_config` (Attributes) Payload to create an HTTP DCR provider. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--http--dcr_config))
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
+- `dcr_config` (Attributes) Payload to create an HTTP DCR provider. Not Null (see [below for nested schema](#nestedatt--http--dcr_config))
+- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+- `issuer` (String) Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
 - `provider_type` (String) Not Null; must be "http"; Requires replacement if changed.
 
 Read-Only:
 
 - `active` (Boolean) At least one active auth strategy is using this DCR provider.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used by the API for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--http--dcr_config"></a>
 ### Nested Schema for `http.dcr_config`
@@ -238,12 +241,12 @@ Optional:
 
 - `api_key` (String) This is the API Key that will be sent with each HTTP request to the custom DCR server. It can be
 verified on the server to ensure that incoming requests are coming from Konnect.
-Not Null; Requires replacement if changed.
+Not Null
 - `dcr_base_url` (String) The base URL of the DCR server. This is the URL that will be used to make the HTTP requests from Konnect to the DCR provider.
 This URL must be accessible from the Konnect service.
-Not Null; Requires replacement if changed.
-- `disable_event_hooks` (Boolean) This flag disables all the event-hooks on the application flow for the DCR provider. Requires replacement if changed.
-- `disable_refresh_secret` (Boolean) This flag disable the refresh-secret endpoint on the application flow for the DCR provider. Requires replacement if changed.
+Not Null
+- `disable_event_hooks` (Boolean) This flag disables all the event-hooks on the application flow for the DCR provider.
+- `disable_refresh_secret` (Boolean) This flag disable the refresh-secret endpoint on the application flow for the DCR provider.
 
 
 
@@ -252,20 +255,21 @@ Not Null; Requires replacement if changed.
 
 Optional:
 
-- `dcr_config` (Attributes) Payload to create an Okta DCR provider. Not Null; Requires replacement if changed. (see [below for nested schema](#nestedatt--okta--dcr_config))
-- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI. Requires replacement if changed.
-- `issuer` (String) Not Null; Requires replacement if changed.
+- `dcr_config` (Attributes) Payload to create an Okta DCR provider. Not Null (see [below for nested schema](#nestedatt--okta--dcr_config))
+- `display_name` (String) The display name of the DCR provider. This is used to identify the DCR provider in the Portal UI.
+- `issuer` (String) Not Null
 - `labels` (Map of String) Labels store metadata of an entity that can be used for filtering an entity list or for searching across entity types. 
 
 Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
-Requires replacement if changed.
-- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null; Requires replacement if changed.
+- `name` (String) The name of the DCR provider. This is used to identify the DCR provider in the Konnect UI. Not Null
 - `provider_type` (String) Not Null; must be "okta"; Requires replacement if changed.
 
 Read-Only:
 
 - `active` (Boolean) At least one active auth strategy is using this DCR provider.
+- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) Contains a unique identifier used by the API for this resource.
+- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--okta--dcr_config"></a>
 ### Nested Schema for `okta.dcr_config`
@@ -274,7 +278,7 @@ Optional:
 
 - `dcr_token` (String) This secret should be copied from your identity provider's settings after you create a client
 and assign it as the management client for DCR for this developer portal
-Not Null; Requires replacement if changed.
+Not Null
 
 ## Import
 
