@@ -16272,7 +16272,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -16363,7 +16362,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -19317,7 +19315,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -19404,7 +19401,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -21024,7 +21020,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -21063,7 +21058,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -21594,7 +21588,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -21653,7 +21646,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -22728,7 +22720,6 @@ components:
           description: The id (an UUID) of the key-set with which to associate the key.
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -22764,7 +22755,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -22931,7 +22921,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -24713,7 +24702,6 @@ components:
         ca_certificate:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -24723,7 +24711,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -24760,7 +24747,6 @@ components:
         ca_certificate:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -24770,7 +24756,6 @@ components:
         consumer:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -26947,7 +26932,6 @@ components:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -26957,7 +26941,6 @@ components:
         consumer_group:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -27020,7 +27003,6 @@ components:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.'
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -27031,7 +27013,6 @@ components:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -29364,7 +29345,6 @@ components:
           description: The Service this Route is associated to. This is where the Route proxies traffic to.
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -29490,7 +29470,6 @@ components:
           description: The Service this Route is associated to. This is where the Route proxies traffic to.
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -29600,7 +29579,6 @@ components:
           description: The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object.
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -30052,7 +30030,6 @@ components:
           description: Certificate to be used as client certificate while TLS handshaking to the upstream server.
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -31118,7 +31095,6 @@ components:
         upstream:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -31164,7 +31140,6 @@ components:
         upstream:
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
@@ -31434,7 +31409,6 @@ components:
           description: 'If set, the certificate to be used as client certificate while TLS handshaking to the upstream server.'
           type: object
           default: null
-          additionalProperties: false
           nullable: true
           properties:
             id:
