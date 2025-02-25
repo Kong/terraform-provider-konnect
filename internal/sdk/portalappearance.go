@@ -28,13 +28,6 @@ func newPortalAppearance(sdkConfig sdkConfiguration) *PortalAppearance {
 // GetPortalAppearance - Get Appearance Configuration
 // Returns the current portal appearance configuration including any custom theme, colors, fonts, and image settings. Portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.
 func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request operations.GetPortalAppearanceRequest, opts ...operations.Option) (*operations.GetPortalAppearanceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-portal-appearance",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,14 @@ func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request oper
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/appearance", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-portal-appearance",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -224,13 +225,6 @@ func (s *PortalAppearance) GetPortalAppearance(ctx context.Context, request oper
 // UpdatePortalAppearance - Update Appearance Configuration
 // Updates the current appearance configuration for this portal including setting pre-defined or custom themes, fonts, colors, and images. Note that portals using the fully-customizable portal client may override or ignore these settings by disregarding them in the code.
 func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request operations.UpdatePortalAppearanceRequest, opts ...operations.Option) (*operations.UpdatePortalAppearanceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-portal-appearance",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -254,6 +248,13 @@ func (s *PortalAppearance) UpdatePortalAppearance(ctx context.Context, request o
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-portal-appearance",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdatePortalAppearanceRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

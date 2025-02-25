@@ -21,7 +21,7 @@ resource "konnect_gateway_plugin_response_ratelimiting" "my_gatewaypluginrespons
     hide_client_headers      = true
     limit_by                 = "ip"
     limits = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     policy = "cluster"
     redis = {

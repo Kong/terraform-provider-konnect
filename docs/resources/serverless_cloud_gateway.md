@@ -22,7 +22,7 @@ resource "konnect_serverless_cloud_gateway" "my_serverlesscloudgateway" {
     region = "us"
   }
   labels = {
-    key = "value",
+    key = "value"
   }
 }
 ```

@@ -27,13 +27,6 @@ func newHMACAuthCredentials(sdkConfig sdkConfiguration) *HMACAuthCredentials {
 // CreateHmacAuthWithConsumer - Create a new HMAC-auth credential associated with a Consumer
 // Create a new HMAC-auth credential associated with a Consumer
 func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, request operations.CreateHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.CreateHmacAuthWithConsumerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-hmac-auth-with-consumer",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,13 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, re
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-hmac-auth-with-consumer",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "HMACAuthWithoutParents", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -162,13 +162,6 @@ func (s *HMACAuthCredentials) CreateHmacAuthWithConsumer(ctx context.Context, re
 // DeleteHmacAuthWithConsumer - Delete a a HMAC-auth credential associated with a Consumer
 // Delete a a HMAC-auth credential associated with a Consumer using ID.
 func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, request operations.DeleteHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.DeleteHmacAuthWithConsumerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-hmac-auth-with-consumer",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -189,6 +182,14 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, re
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-hmac-auth-with-consumer",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -269,13 +270,6 @@ func (s *HMACAuthCredentials) DeleteHmacAuthWithConsumer(ctx context.Context, re
 // GetHmacAuthWithConsumer - Fetch a HMAC-auth credential associated with a Consumer
 // Get a HMAC-auth credential associated with a Consumer using ID.
 func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, request operations.GetHmacAuthWithConsumerRequest, opts ...operations.Option) (*operations.GetHmacAuthWithConsumerResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-hmac-auth-with-consumer",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -296,6 +290,14 @@ func (s *HMACAuthCredentials) GetHmacAuthWithConsumer(ctx context.Context, reque
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/consumers/{ConsumerIdForNestedEntities}/hmac-auth/{HMACAuthId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-hmac-auth-with-consumer",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

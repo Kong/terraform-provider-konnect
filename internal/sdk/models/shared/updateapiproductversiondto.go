@@ -63,7 +63,7 @@ type UpdateAPIProductVersionDTO struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *UpdateAPIProductVersionDTO) GetName() *string {
@@ -101,7 +101,7 @@ func (o *UpdateAPIProductVersionDTO) GetGatewayService() *GatewayServicePayload 
 	return o.GatewayService
 }
 
-func (o *UpdateAPIProductVersionDTO) GetLabels() map[string]string {
+func (o *UpdateAPIProductVersionDTO) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

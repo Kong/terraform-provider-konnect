@@ -34,13 +34,6 @@ func newVaults(sdkConfig sdkConfiguration) *Vaults {
 // CreateVault - Create a new Vault
 // Create a new Vault
 func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVaultRequest, opts ...operations.Option) (*operations.CreateVaultResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-vault",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -63,6 +56,13 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-vault",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Vault", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -190,13 +190,6 @@ func (s *Vaults) CreateVault(ctx context.Context, request operations.CreateVault
 // DeleteVault - Delete a Vault
 // Delete a Vault
 func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVaultRequest, opts ...operations.Option) (*operations.DeleteVaultResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-vault",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -217,6 +210,14 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-vault",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -318,13 +319,6 @@ func (s *Vaults) DeleteVault(ctx context.Context, request operations.DeleteVault
 // GetVault - Fetch a Vault
 // Get a Vault using ID or prefix.
 func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultRequest, opts ...operations.Option) (*operations.GetVaultResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-vault",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -345,6 +339,14 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/vaults/{VaultId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-vault",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -467,13 +469,6 @@ func (s *Vaults) GetVault(ctx context.Context, request operations.GetVaultReques
 // UpsertVault - Upsert a Vault
 // Create or Update Vault using ID or prefix.
 func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVaultRequest, opts ...operations.Option) (*operations.UpsertVaultResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "upsert-vault",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -496,6 +491,13 @@ func (s *Vaults) UpsertVault(ctx context.Context, request operations.UpsertVault
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "upsert-vault",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Vault", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

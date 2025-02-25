@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_kafka_log" "my_gatewaypluginkafkalog" {
     ]
     cluster_name = "...my_cluster_name..."
     custom_fields_by_lua = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     keepalive                                          = 2
     keepalive_enabled                                  = true

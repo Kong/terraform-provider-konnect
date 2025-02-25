@@ -16,7 +16,7 @@ GatewayPluginUDPLog Resource
 resource "konnect_gateway_plugin_udp_log" "my_gatewaypluginudplog" {
   config = {
     custom_fields_by_lua = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     host    = "...my_host..."
     port    = 32780

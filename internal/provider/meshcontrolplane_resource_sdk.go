@@ -18,11 +18,14 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() 
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.CreateMeshControlPlaneRequest{
@@ -38,10 +41,10 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(resp *
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+		if resp.Labels != nil {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
@@ -62,11 +65,14 @@ func (r *MeshControlPlaneResourceModel) ToSharedUpdateMeshControlPlaneRequest() 
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateMeshControlPlaneRequest{

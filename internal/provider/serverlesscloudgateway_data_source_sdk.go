@@ -16,7 +16,7 @@ func (r *ServerlessCloudGatewayDataSourceModel) RefreshFromSharedServerlessCloud
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		r.GatewayEndpoint = types.StringValue(resp.GatewayEndpoint)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}

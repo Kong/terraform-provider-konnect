@@ -21,7 +21,7 @@ func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemet
 			r.Config.HeaderType = types.StringNull()
 		}
 		if len(resp.Config.Headers) > 0 {
-			r.Config.Headers = make(map[string]types.String)
+			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 			for key, value := range resp.Config.Headers {
 				result, _ := json.Marshal(value)
 				r.Config.Headers[key] = types.StringValue(string(result))
@@ -82,7 +82,7 @@ func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemet
 		}
 		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 		if len(resp.Config.ResourceAttributes) > 0 {
-			r.Config.ResourceAttributes = make(map[string]types.String)
+			r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
 			for key1, value1 := range resp.Config.ResourceAttributes {
 				result1, _ := json.Marshal(value1)
 				r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))

@@ -44,7 +44,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
         token   = "...my_token..."
       }
       kong = {
-        key = jsonencode("value"),
+        key = jsonencode("value")
       }
       redis = {
         database = 6

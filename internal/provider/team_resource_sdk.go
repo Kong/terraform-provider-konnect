@@ -43,7 +43,7 @@ func (r *TeamResourceModel) RefreshFromSharedTeam(resp *shared.Team) {
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -71,11 +71,14 @@ func (r *TeamResourceModel) ToSharedUpdateTeam() *shared.UpdateTeam {
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdateTeam{

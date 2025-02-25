@@ -40,10 +40,10 @@ type CloudGatewayTransitGatewayResource struct {
 
 // CloudGatewayTransitGatewayResourceModel describes the resource data model.
 type CloudGatewayTransitGatewayResourceModel struct {
-	AWSTransitGateway           *tfTypes.AWSTransitGateway           `tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
-	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
-	AzureTransitGateway         *tfTypes.AzureTransitGateway         `tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
-	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	AWSTransitGateway           *tfTypes.AWSTransitGateway           `queryParam:"inline" tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
+	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `queryParam:"inline" tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGateway         *tfTypes.AzureTransitGateway         `queryParam:"inline" tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `queryParam:"inline" tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
 	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
 	ID                          types.String                         `tfsdk:"id"`
 	Name                        types.String                         `tfsdk:"name"`

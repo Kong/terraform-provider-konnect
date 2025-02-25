@@ -106,7 +106,7 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(resp *shared
 		r.ID = types.StringValue(resp.ID)
 		r.IsPublic = types.BoolValue(resp.IsPublic)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -179,11 +179,14 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 	} else {
 		defaultApplicationAuthStrategyID = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
 	out := shared.UpdatePortalRequest{
@@ -218,7 +221,7 @@ func (r *PortalResourceModel) RefreshFromSharedUpdatePortalResponse(resp *shared
 		r.ID = types.StringValue(resp.ID)
 		r.IsPublic = types.BoolValue(resp.IsPublic)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}

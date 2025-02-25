@@ -156,14 +156,14 @@ func (r *GatewayPluginUpstreamOauthDataSourceModel) RefreshFromSharedUpstreamOau
 			}
 			r.Config.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Oauth.TokenEndpoint)
 			if len(resp.Config.Oauth.TokenHeaders) > 0 {
-				r.Config.Oauth.TokenHeaders = make(map[string]types.String)
+				r.Config.Oauth.TokenHeaders = make(map[string]types.String, len(resp.Config.Oauth.TokenHeaders))
 				for key, value := range resp.Config.Oauth.TokenHeaders {
 					result, _ := json.Marshal(value)
 					r.Config.Oauth.TokenHeaders[key] = types.StringValue(string(result))
 				}
 			}
 			if len(resp.Config.Oauth.TokenPostArgs) > 0 {
-				r.Config.Oauth.TokenPostArgs = make(map[string]types.String)
+				r.Config.Oauth.TokenPostArgs = make(map[string]types.String, len(resp.Config.Oauth.TokenPostArgs))
 				for key1, value1 := range resp.Config.Oauth.TokenPostArgs {
 					result1, _ := json.Marshal(value1)
 					r.Config.Oauth.TokenPostArgs[key1] = types.StringValue(string(result1))

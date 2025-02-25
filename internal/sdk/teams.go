@@ -28,13 +28,6 @@ func newTeams(sdkConfig sdkConfiguration) *Teams {
 // CreateTeam - Create Team
 // Creates a team in the Konnect Organization.
 func (s *Teams) CreateTeam(ctx context.Context, request *shared.CreateTeam, opts ...operations.Option) (*operations.CreateTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *Teams) CreateTeam(ctx context.Context, request *shared.CreateTeam, opts
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -210,13 +210,6 @@ func (s *Teams) CreateTeam(ctx context.Context, request *shared.CreateTeam, opts
 // GetTeam - Fetch Team
 // Returns information about a team from a given team ID.
 func (s *Teams) GetTeam(ctx context.Context, request operations.GetTeamRequest, opts ...operations.Option) (*operations.GetTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -237,6 +230,14 @@ func (s *Teams) GetTeam(ctx context.Context, request operations.GetTeamRequest, 
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -384,13 +385,6 @@ func (s *Teams) GetTeam(ctx context.Context, request operations.GetTeamRequest, 
 // UpdateTeam - Update Team
 // Updates an individual team.
 func (s *Teams) UpdateTeam(ctx context.Context, request operations.UpdateTeamRequest, opts ...operations.Option) (*operations.UpdateTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -413,6 +407,13 @@ func (s *Teams) UpdateTeam(ctx context.Context, request operations.UpdateTeamReq
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateTeam", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -566,13 +567,6 @@ func (s *Teams) UpdateTeam(ctx context.Context, request operations.UpdateTeamReq
 // DeleteTeam - Delete Team
 // Deletes an individual team. Returns 404 if the team is not found.
 func (s *Teams) DeleteTeam(ctx context.Context, request operations.DeleteTeamRequest, opts ...operations.Option) (*operations.DeleteTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -592,6 +586,14 @@ func (s *Teams) DeleteTeam(ctx context.Context, request operations.DeleteTeamReq
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

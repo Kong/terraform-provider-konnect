@@ -169,7 +169,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPluginInput() *shared.T
 func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *shared.TCPLogPlugin) {
 	if resp != nil {
 		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String)
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
 				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))

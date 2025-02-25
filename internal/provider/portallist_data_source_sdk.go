@@ -32,7 +32,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 			data1.ID = types.StringValue(dataItem.ID)
 			data1.IsPublic = types.BoolValue(dataItem.IsPublic)
 			if len(dataItem.Labels) > 0 {
-				data1.Labels = make(map[string]types.String)
+				data1.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
 					data1.Labels[key] = types.StringValue(value)
 				}

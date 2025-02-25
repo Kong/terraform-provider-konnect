@@ -31,8 +31,8 @@ type CloudGatewayProviderAccountListDataSource struct {
 type CloudGatewayProviderAccountListDataSourceModel struct {
 	Data       []tfTypes.ProviderAccount `tfsdk:"data"`
 	Meta       tfTypes.PaginatedMeta     `tfsdk:"meta"`
-	PageNumber types.Int64               `tfsdk:"page_number"`
-	PageSize   types.Int64               `tfsdk:"page_size"`
+	PageNumber types.Int64               `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
+	PageSize   types.Int64               `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
 }
 
 // Metadata returns the data source type name.

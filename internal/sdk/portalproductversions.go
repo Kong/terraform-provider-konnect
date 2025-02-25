@@ -33,13 +33,6 @@ func newPortalProductVersions(sdkConfig sdkConfiguration) *PortalProductVersions
 // GetPortalProductVersion - Get a portal product version
 // Get a portal product version
 func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, request operations.GetPortalProductVersionRequest, opts ...operations.Option) (*operations.GetPortalProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-portal-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -61,6 +54,14 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/product-versions/{productVersionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-portal-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -250,13 +251,6 @@ func (s *PortalProductVersions) GetPortalProductVersion(ctx context.Context, req
 // ReplacePortalProductVersion - Replace a portal product version
 // Replace a portal product version
 func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context, request operations.ReplacePortalProductVersionRequest, opts ...operations.Option) (*operations.ReplacePortalProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "replace-portal-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -280,6 +274,13 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "replace-portal-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "ReplacePortalProductVersionPayload", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -475,13 +476,6 @@ func (s *PortalProductVersions) ReplacePortalProductVersion(ctx context.Context,
 // DeletePortalProductVersion - Delete a portal product version
 // Delete a portal product version
 func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, request operations.DeletePortalProductVersionRequest, opts ...operations.Option) (*operations.DeletePortalProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-portal-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -502,6 +496,14 @@ func (s *PortalProductVersions) DeletePortalProductVersion(ctx context.Context, 
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/product-versions/{productVersionId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-portal-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

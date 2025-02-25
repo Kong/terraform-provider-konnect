@@ -18,7 +18,7 @@ func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHead
 		for rulesCount, rulesItem := range resp.Config.Rules {
 			var rules1 tfTypes.RouteByHeaderPluginRules
 			if len(rulesItem.Condition) > 0 {
-				rules1.Condition = make(map[string]types.String)
+				rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
 				for key, value := range rulesItem.Condition {
 					result, _ := json.Marshal(value)
 					rules1.Condition[key] = types.StringValue(string(result))

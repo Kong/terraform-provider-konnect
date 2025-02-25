@@ -27,13 +27,6 @@ func newAPIProductVersions(sdkConfig sdkConfiguration) *APIProductVersions {
 // CreateAPIProductVersion - Create API Product Version
 // Creates a version of an API product.
 func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, request operations.CreateAPIProductVersionRequest, opts ...operations.Option) (*operations.CreateAPIProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-api-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-api-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIProductVersionDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -294,13 +294,6 @@ func (s *APIProductVersions) CreateAPIProductVersion(ctx context.Context, reques
 // GetAPIProductVersion - Fetch API Product Version
 // Returns a version of an API product.
 func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request operations.GetAPIProductVersionRequest, opts ...operations.Option) (*operations.GetAPIProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-api-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -322,6 +315,14 @@ func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request o
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-api-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -490,13 +491,6 @@ func (s *APIProductVersions) GetAPIProductVersion(ctx context.Context, request o
 // UpdateAPIProductVersion - Update an API Product Version
 // Updates an API product version.
 func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, request operations.UpdateAPIProductVersionRequest, opts ...operations.Option) (*operations.UpdateAPIProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-api-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -520,6 +514,13 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-api-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductVersionDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -757,13 +758,6 @@ func (s *APIProductVersions) UpdateAPIProductVersion(ctx context.Context, reques
 // DeleteAPIProductVersion - Delete API Product Version
 // Removes an API product version.
 func (s *APIProductVersions) DeleteAPIProductVersion(ctx context.Context, request operations.DeleteAPIProductVersionRequest, opts ...operations.Option) (*operations.DeleteAPIProductVersionResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-api-product-version",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -784,6 +778,14 @@ func (s *APIProductVersions) DeleteAPIProductVersion(ctx context.Context, reques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-api-product-version",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

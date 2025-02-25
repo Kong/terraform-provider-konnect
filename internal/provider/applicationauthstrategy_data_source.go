@@ -32,9 +32,9 @@ type ApplicationAuthStrategyDataSourceModel struct {
 	Active        types.Bool                                                                        `tfsdk:"active"`
 	DisplayName   types.String                                                                      `tfsdk:"display_name"`
 	ID            types.String                                                                      `tfsdk:"id"`
-	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse             `tfsdk:"key_auth" tfPlanOnly:"true"`
+	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse             `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
 	Name          types.String                                                                      `tfsdk:"name"`
-	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse `tfsdk:"openid_connect" tfPlanOnly:"true"`
+	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse `queryParam:"inline" tfsdk:"openid_connect" tfPlanOnly:"true"`
 }
 
 // Metadata returns the data source type name.

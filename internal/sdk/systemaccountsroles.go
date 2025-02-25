@@ -27,13 +27,6 @@ func newSystemAccountsRoles(sdkConfig sdkConfiguration) *SystemAccountsRoles {
 // PostSystemAccountsAccountIDAssignedRoles - Create Assigned Role for System Account
 // Assigns a role to a system account. Returns 409 if role is already assigned.
 func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx context.Context, request operations.PostSystemAccountsAccountIDAssignedRolesRequest, opts ...operations.Option) (*operations.PostSystemAccountsAccountIDAssignedRolesResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-system-accounts-accountId-assigned-roles",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,13 @@ func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx conte
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-system-accounts-accountId-assigned-roles",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AssignRole", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -232,13 +232,6 @@ func (s *SystemAccountsRoles) PostSystemAccountsAccountIDAssignedRoles(ctx conte
 // DeleteSystemAccountsAccountIDAssignedRolesRoleID - Delete Assigned Role from System Account
 // Removes an assigned role from a system account. Returns 404 if the system account or assigned role were not found.
 func (s *SystemAccountsRoles) DeleteSystemAccountsAccountIDAssignedRolesRoleID(ctx context.Context, request operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDRequest, opts ...operations.Option) (*operations.DeleteSystemAccountsAccountIDAssignedRolesRoleIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-system-accounts-accountId-assigned-roles-roleId",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -258,6 +251,14 @@ func (s *SystemAccountsRoles) DeleteSystemAccountsAccountIDAssignedRolesRoleID(c
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}/assigned-roles/{roleId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-system-accounts-accountId-assigned-roles-roleId",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

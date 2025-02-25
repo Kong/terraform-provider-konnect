@@ -27,13 +27,6 @@ func newTeamMembership(sdkConfig sdkConfiguration) *TeamMembership {
 // AddUserToTeam - Add User
 // Adds a user to a team.
 func (s *TeamMembership) AddUserToTeam(ctx context.Context, request operations.AddUserToTeamRequest, opts ...operations.Option) (*operations.AddUserToTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "add-user-to-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -55,6 +48,13 @@ func (s *TeamMembership) AddUserToTeam(ctx context.Context, request operations.A
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "add-user-to-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddUserToTeam", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -205,13 +205,6 @@ func (s *TeamMembership) AddUserToTeam(ctx context.Context, request operations.A
 // Removes a user from a team.
 // If the user was removed, returns a 204 empty response. Returns 404 if the user or team were not found.
 func (s *TeamMembership) RemoveUserFromTeam(ctx context.Context, request operations.RemoveUserFromTeamRequest, opts ...operations.Option) (*operations.RemoveUserFromTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "remove-user-from-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -231,6 +224,14 @@ func (s *TeamMembership) RemoveUserFromTeam(ctx context.Context, request operati
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}/users/{userId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "remove-user-from-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
