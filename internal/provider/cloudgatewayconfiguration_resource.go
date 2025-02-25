@@ -64,7 +64,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 			"api_access": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     stringdefault.StaticString("private+public"),
+				Default:     stringdefault.StaticString(`private+public`),
 				Description: `Type of API access data-plane groups will support for a configuration. Default: "private+public"; must be one of ["private", "public", "private+public"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(

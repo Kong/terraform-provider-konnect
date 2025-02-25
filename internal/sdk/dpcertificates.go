@@ -28,13 +28,6 @@ func newDPCertificates(sdkConfig sdkConfiguration) *DPCertificates {
 // CreateDataplaneCertificate - Pin New DP Client Certificate
 // Pin a new DP Client Certificate to this control plane. A pinned dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this control plane.
 func (s *DPCertificates) CreateDataplaneCertificate(ctx context.Context, request operations.CreateDataplaneCertificateRequest, opts ...operations.Option) (*operations.CreateDataplaneCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-dataplane-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *DPCertificates) CreateDataplaneCertificate(ctx context.Context, request
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-dataplane-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "DataPlaneClientCertificateRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -163,13 +163,6 @@ func (s *DPCertificates) CreateDataplaneCertificate(ctx context.Context, request
 // GetDataplaneCertificate - Fetch DP Client Certificate
 // Retrieve a pinned dataplane client certificate associated to this control plane. A pinned dataplane certificate allows dataplanes configured with the certificate and corresponding private key to establish connection with this control plane.
 func (s *DPCertificates) GetDataplaneCertificate(ctx context.Context, request operations.GetDataplaneCertificateRequest, opts ...operations.Option) (*operations.GetDataplaneCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-dataplane-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -190,6 +183,14 @@ func (s *DPCertificates) GetDataplaneCertificate(ctx context.Context, request op
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-dataplane-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -290,13 +291,6 @@ func (s *DPCertificates) GetDataplaneCertificate(ctx context.Context, request op
 // DeleteDataplaneCertificate - Delete DP Client Certificate
 // Remove a pinned dataplane client certificate associated to this control plane. Removing a pinned dataplane certificate would invalidate any dataplanes currently connected to this control plane using this certificate.
 func (s *DPCertificates) DeleteDataplaneCertificate(ctx context.Context, request operations.DeleteDataplaneCertificateRequest, opts ...operations.Option) (*operations.DeleteDataplaneCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-dataplane-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -317,6 +311,14 @@ func (s *DPCertificates) DeleteDataplaneCertificate(ctx context.Context, request
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/dp-client-certificates/{certificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-dataplane-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

@@ -51,7 +51,7 @@ func (r *GatewayUpstreamDataSourceModel) RefreshFromSharedUpstream(resp *shared.
 				r.Healthchecks.Active = &tfTypes.Active{}
 				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
 				if len(resp.Healthchecks.Active.Headers) > 0 {
-					r.Healthchecks.Active.Headers = make(map[string]types.String)
+					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
 					for key, value := range resp.Healthchecks.Active.Headers {
 						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
 					}

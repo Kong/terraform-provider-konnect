@@ -13,10 +13,10 @@ func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(resp
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+		if resp.Labels != nil {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringValue(resp.Name)

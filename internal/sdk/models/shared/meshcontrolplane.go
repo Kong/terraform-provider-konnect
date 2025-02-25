@@ -15,9 +15,9 @@ type MeshControlPlane struct {
 	Name        string  `json:"name"`
 	Description *string `json:"description,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
-	Labels    map[string]string `json:"labels,omitempty"`
-	CreatedAt time.Time         `json:"created_at"`
-	UpdatedAt time.Time         `json:"updated_at"`
+	Labels    map[string]*string `json:"labels,omitempty"`
+	CreatedAt time.Time          `json:"created_at"`
+	UpdatedAt time.Time          `json:"updated_at"`
 }
 
 func (m MeshControlPlane) MarshalJSON() ([]byte, error) {
@@ -52,7 +52,7 @@ func (o *MeshControlPlane) GetDescription() *string {
 	return o.Description
 }
 
-func (o *MeshControlPlane) GetLabels() map[string]string {
+func (o *MeshControlPlane) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

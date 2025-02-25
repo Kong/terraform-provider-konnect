@@ -14,7 +14,7 @@ type UpdateTeam struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *UpdateTeam) GetName() *string {
@@ -31,7 +31,7 @@ func (o *UpdateTeam) GetDescription() *string {
 	return o.Description
 }
 
-func (o *UpdateTeam) GetLabels() map[string]string {
+func (o *UpdateTeam) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

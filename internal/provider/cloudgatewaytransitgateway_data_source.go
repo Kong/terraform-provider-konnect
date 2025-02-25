@@ -29,8 +29,8 @@ type CloudGatewayTransitGatewayDataSource struct {
 
 // CloudGatewayTransitGatewayDataSourceModel describes the data model.
 type CloudGatewayTransitGatewayDataSourceModel struct {
-	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
-	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `queryParam:"inline" tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `queryParam:"inline" tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
 	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
 	ID                          types.String                         `tfsdk:"id"`
 	Name                        types.String                         `tfsdk:"name"`

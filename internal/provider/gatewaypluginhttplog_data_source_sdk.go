@@ -18,7 +18,7 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 			r.Config.ContentType = types.StringNull()
 		}
 		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String)
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
 				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
@@ -30,7 +30,7 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 			r.Config.FlushTimeout = types.NumberNull()
 		}
 		if len(resp.Config.Headers) > 0 {
-			r.Config.Headers = make(map[string]types.String)
+			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 			for key1, value1 := range resp.Config.Headers {
 				result1, _ := json.Marshal(value1)
 				r.Config.Headers[key1] = types.StringValue(string(result1))

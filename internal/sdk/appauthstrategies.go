@@ -31,13 +31,6 @@ func newAppAuthStrategies(sdkConfig sdkConfiguration) *AppAuthStrategies {
 // CreateAppAuthStrategy - Create App Auth Strategy
 // Creates an application auth strategy.
 func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request shared.CreateAppAuthStrategyRequest, opts ...operations.Option) (*operations.CreateAppAuthStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-app-auth-strategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -61,6 +54,13 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-app-auth-strategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -235,13 +235,6 @@ func (s *AppAuthStrategies) CreateAppAuthStrategy(ctx context.Context, request s
 // GetAppAuthStrategy - Get App Auth Strategy
 // Returns an application auth strategy.
 func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request operations.GetAppAuthStrategyRequest, opts ...operations.Option) (*operations.GetAppAuthStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-app-auth-strategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -263,6 +256,14 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-app-auth-strategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -431,13 +432,6 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 // UpdateAppAuthStrategy - Update App Auth Strategy
 // Updates an application auth strategy.
 func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request operations.UpdateAppAuthStrategyRequest, opts ...operations.Option) (*operations.UpdateAppAuthStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-app-auth-strategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -461,6 +455,13 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-app-auth-strategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAppAuthStrategyRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -656,13 +657,6 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 // DeleteAppAuthStrategy - Delete App Auth Strategy
 // Deletes an application auth strategy. An application auth strategy can be deleted ONLY if it's not used by any product version within any portal regardless of their publication statuses. If an application auth strategy is still in use the request will result in an HTTP 409 CONFLICT.
 func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request operations.DeleteAppAuthStrategyRequest, opts ...operations.Option) (*operations.DeleteAppAuthStrategyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-app-auth-strategy",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -683,6 +677,14 @@ func (s *AppAuthStrategies) DeleteAppAuthStrategy(ctx context.Context, request o
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/application-auth-strategies/{authStrategyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-app-auth-strategy",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

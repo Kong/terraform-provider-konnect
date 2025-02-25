@@ -31,9 +31,9 @@ type PortalListDataSource struct {
 type PortalListDataSourceModel struct {
 	Data       []tfTypes.Portal      `tfsdk:"data"`
 	Meta       tfTypes.PaginatedMeta `tfsdk:"meta"`
-	PageNumber types.Int64           `tfsdk:"page_number"`
-	PageSize   types.Int64           `tfsdk:"page_size"`
-	Sort       types.String          `tfsdk:"sort"`
+	PageNumber types.Int64           `queryParam:"style=form,explode=true,name=page[number]" tfsdk:"page_number"`
+	PageSize   types.Int64           `queryParam:"style=form,explode=true,name=page[size]" tfsdk:"page_size"`
+	Sort       types.String          `queryParam:"style=form,explode=true,name=sort" tfsdk:"sort"`
 }
 
 // Metadata returns the data source type name.

@@ -81,7 +81,7 @@ func (r *GatewayPluginAiPromptTemplateDataSource) Schema(ctx context.Context, re
 								},
 								"template": schema.StringAttribute{
 									Computed:    true,
-									Description: `Template string for this request, supports mustache-style ` + "`" + `{{"{{"}}placeholders{{"}}"}}` + "`" + ``,
+									Description: `Template string for this request, supports mustache-style ` + "`" + `{{placeholders}}` + "`" + ``,
 								},
 							},
 						},

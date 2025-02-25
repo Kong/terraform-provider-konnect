@@ -28,13 +28,6 @@ func newAuditLogs(sdkConfig sdkConfiguration) *AuditLogs {
 // CreateAuditLogDestination - Create Audit Log Destination
 // Creates a configuration for the audit log destination.
 func (s *AuditLogs) CreateAuditLogDestination(ctx context.Context, request *shared.CreateAuditLogDestination, opts ...operations.Option) (*operations.CreateAuditLogDestinationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-audit-log-destination",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -58,6 +51,13 @@ func (s *AuditLogs) CreateAuditLogDestination(ctx context.Context, request *shar
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-audit-log-destination",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -232,13 +232,6 @@ func (s *AuditLogs) CreateAuditLogDestination(ctx context.Context, request *shar
 // GetAuditLogDestination - Get Audit Log Destination
 // Returns configuration for the audit log destination.
 func (s *AuditLogs) GetAuditLogDestination(ctx context.Context, request operations.GetAuditLogDestinationRequest, opts ...operations.Option) (*operations.GetAuditLogDestinationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-audit-log-destination",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -260,6 +253,14 @@ func (s *AuditLogs) GetAuditLogDestination(ctx context.Context, request operatio
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/audit-log-destinations/{auditLogDestinationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-audit-log-destination",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -428,13 +429,6 @@ func (s *AuditLogs) GetAuditLogDestination(ctx context.Context, request operatio
 // UpdateAuditLogDestination - Update Audit Log Destination
 // Updates configuration for the audit log destination.
 func (s *AuditLogs) UpdateAuditLogDestination(ctx context.Context, request operations.UpdateAuditLogDestinationRequest, opts ...operations.Option) (*operations.UpdateAuditLogDestinationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-audit-log-destination",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -458,6 +452,13 @@ func (s *AuditLogs) UpdateAuditLogDestination(ctx context.Context, request opera
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-audit-log-destination",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateAuditLogDestination", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -653,13 +654,6 @@ func (s *AuditLogs) UpdateAuditLogDestination(ctx context.Context, request opera
 // DeleteAuditLogDestination - Delete Audit Log Destination
 // Deletes configuration for the audit log destination.
 func (s *AuditLogs) DeleteAuditLogDestination(ctx context.Context, request operations.DeleteAuditLogDestinationRequest, opts ...operations.Option) (*operations.DeleteAuditLogDestinationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-audit-log-destination",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -680,6 +674,14 @@ func (s *AuditLogs) DeleteAuditLogDestination(ctx context.Context, request opera
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/audit-log-destinations/{auditLogDestinationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-audit-log-destination",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -844,13 +846,6 @@ func (s *AuditLogs) DeleteAuditLogDestination(ctx context.Context, request opera
 // UpdateAuditLogWebhook - Update Audit Log Webhook
 // Updates the configuration for a webhook to receive audit logs.
 func (s *AuditLogs) UpdateAuditLogWebhook(ctx context.Context, request *shared.UpdateAuditLogWebhook, opts ...operations.Option) (*operations.UpdateAuditLogWebhookResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-audit-log-webhook",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -874,6 +869,13 @@ func (s *AuditLogs) UpdateAuditLogWebhook(ctx context.Context, request *shared.U
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-audit-log-webhook",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -1048,13 +1050,6 @@ func (s *AuditLogs) UpdateAuditLogWebhook(ctx context.Context, request *shared.U
 // GetAuditLogWebhook - Get Audit Log Webhook
 // Returns configuration for the audit log webhook.
 func (s *AuditLogs) GetAuditLogWebhook(ctx context.Context, opts ...operations.Option) (*operations.GetAuditLogWebhookResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-audit-log-webhook",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1076,6 +1071,14 @@ func (s *AuditLogs) GetAuditLogWebhook(ctx context.Context, opts ...operations.O
 	opURL, err := url.JoinPath(baseURL, "/v2/audit-log-webhook")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-audit-log-webhook",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -1223,13 +1226,6 @@ func (s *AuditLogs) GetAuditLogWebhook(ctx context.Context, opts ...operations.O
 // DeleteAuditLogWebhook - Delete the audit log webhook
 // Disables the audit log webhook.
 func (s *AuditLogs) DeleteAuditLogWebhook(ctx context.Context, request *operations.DeleteAuditLogWebhookRequestBody, opts ...operations.Option) (*operations.DeleteAuditLogWebhookResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-audit-log-webhook",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1253,6 +1249,13 @@ func (s *AuditLogs) DeleteAuditLogWebhook(ctx context.Context, request *operatio
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-audit-log-webhook",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

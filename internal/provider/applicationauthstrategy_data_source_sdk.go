@@ -35,7 +35,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.ID)
 			r.ID = r.KeyAuth.ID
 			if len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
-				r.KeyAuth.Labels = make(map[string]types.String)
+				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels))
 				for key, value := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels {
 					r.KeyAuth.Labels[key] = types.StringValue(value)
 				}
@@ -65,7 +65,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
 			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
-				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String)
+				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels))
 				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
 					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
 				}
@@ -89,7 +89,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.ID)
 			r.ID = r.OpenidConnect.ID
 			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
-				r.OpenidConnect.Labels = make(map[string]types.String)
+				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels))
 				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels {
 					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
 				}

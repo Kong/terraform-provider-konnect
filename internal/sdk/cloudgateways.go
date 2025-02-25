@@ -34,13 +34,6 @@ func newCloudGateways(sdkConfig sdkConfiguration) *CloudGateways {
 // resources found in both will be updated to the requested configuration. Networks referenced in this request that
 // are in an offline state will automatically initialize (i.e. move to an initializing state).
 func (s *CloudGateways) CreateConfiguration(ctx context.Context, request shared.CreateConfigurationRequest, opts ...operations.Option) (*operations.CreateConfigurationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-configuration",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -63,6 +56,13 @@ func (s *CloudGateways) CreateConfiguration(ctx context.Context, request shared.
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-configuration",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -279,13 +279,6 @@ func (s *CloudGateways) CreateConfiguration(ctx context.Context, request shared.
 // GetConfiguration - Get Configuration
 // Retrieves a configuration by ID (restricted by permitted control-plane read).
 func (s *CloudGateways) GetConfiguration(ctx context.Context, request operations.GetConfigurationRequest, opts ...operations.Option) (*operations.GetConfigurationResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-configuration",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -306,6 +299,14 @@ func (s *CloudGateways) GetConfiguration(ctx context.Context, request operations
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/configurations/{configurationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-configuration",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -475,13 +476,6 @@ func (s *CloudGateways) GetConfiguration(ctx context.Context, request operations
 // Creates a new custom domain for a control-plane (restricted by permitted control-plane associate-custom-domain
 // action).
 func (s *CloudGateways) CreateCustomDomains(ctx context.Context, request shared.CreateCustomDomainRequest, opts ...operations.Option) (*operations.CreateCustomDomainsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-custom-domains",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -504,6 +498,13 @@ func (s *CloudGateways) CreateCustomDomains(ctx context.Context, request shared.
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-custom-domains",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -720,13 +721,6 @@ func (s *CloudGateways) CreateCustomDomains(ctx context.Context, request shared.
 // GetCustomDomain - Get Custom Domain
 // Retrieves a custom domain by ID (restricted by permitted control-plane reads).
 func (s *CloudGateways) GetCustomDomain(ctx context.Context, request operations.GetCustomDomainRequest, opts ...operations.Option) (*operations.GetCustomDomainResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-custom-domain",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -747,6 +741,14 @@ func (s *CloudGateways) GetCustomDomain(ctx context.Context, request operations.
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/custom-domains/{customDomainId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-custom-domain",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -915,13 +917,6 @@ func (s *CloudGateways) GetCustomDomain(ctx context.Context, request operations.
 // DeleteCustomDomain - Delete Custom Domain
 // Deletes a custom domain by ID (restricted by permitted control-plane reads).
 func (s *CloudGateways) DeleteCustomDomain(ctx context.Context, request operations.DeleteCustomDomainRequest, opts ...operations.Option) (*operations.DeleteCustomDomainResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-custom-domain",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -942,6 +937,14 @@ func (s *CloudGateways) DeleteCustomDomain(ctx context.Context, request operatio
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/custom-domains/{customDomainId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-custom-domain",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -1172,13 +1175,6 @@ func (s *CloudGateways) DeleteCustomDomain(ctx context.Context, request operatio
 // CreateNetwork - Create Network
 // Creates a new network for a given provider account.
 func (s *CloudGateways) CreateNetwork(ctx context.Context, request shared.CreateNetworkRequest, opts ...operations.Option) (*operations.CreateNetworkResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-network",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1201,6 +1197,13 @@ func (s *CloudGateways) CreateNetwork(ctx context.Context, request shared.Create
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-network",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -1396,13 +1399,6 @@ func (s *CloudGateways) CreateNetwork(ctx context.Context, request shared.Create
 // GetNetwork - Get Network
 // Retrieves a network by ID.
 func (s *CloudGateways) GetNetwork(ctx context.Context, request operations.GetNetworkRequest, opts ...operations.Option) (*operations.GetNetworkResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-network",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1423,6 +1419,14 @@ func (s *CloudGateways) GetNetwork(ctx context.Context, request operations.GetNe
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-network",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -1591,13 +1595,6 @@ func (s *CloudGateways) GetNetwork(ctx context.Context, request operations.GetNe
 // UpdateNetwork - Update Network
 // Updates a network by ID.
 func (s *CloudGateways) UpdateNetwork(ctx context.Context, request operations.UpdateNetworkRequest, opts ...operations.Option) (*operations.UpdateNetworkResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-network",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -1620,6 +1617,13 @@ func (s *CloudGateways) UpdateNetwork(ctx context.Context, request operations.Up
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-network",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PatchNetworkRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -1836,13 +1840,6 @@ func (s *CloudGateways) UpdateNetwork(ctx context.Context, request operations.Up
 // DeleteNetwork - Delete Network
 // Deletes a network by ID.
 func (s *CloudGateways) DeleteNetwork(ctx context.Context, request operations.DeleteNetworkRequest, opts ...operations.Option) (*operations.DeleteNetworkResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-network",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -1863,6 +1860,14 @@ func (s *CloudGateways) DeleteNetwork(ctx context.Context, request operations.De
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-network",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -2093,13 +2098,6 @@ func (s *CloudGateways) DeleteNetwork(ctx context.Context, request operations.De
 // CreateTransitGateway - Create Transit Gateway
 // Creates a new transit gateway for a given network.
 func (s *CloudGateways) CreateTransitGateway(ctx context.Context, request operations.CreateTransitGatewayRequest, opts ...operations.Option) (*operations.CreateTransitGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-transit-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2123,6 +2121,13 @@ func (s *CloudGateways) CreateTransitGateway(ctx context.Context, request operat
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-transit-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateTransitGatewayRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -2405,13 +2410,6 @@ func (s *CloudGateways) CreateTransitGateway(ctx context.Context, request operat
 // GetTransitGateway - Get Transit Gateway
 // Retrieves a transit gateway by ID for a given network.
 func (s *CloudGateways) GetTransitGateway(ctx context.Context, request operations.GetTransitGatewayRequest, opts ...operations.Option) (*operations.GetTransitGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-transit-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -2432,6 +2430,14 @@ func (s *CloudGateways) GetTransitGateway(ctx context.Context, request operation
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-transit-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -2600,13 +2606,6 @@ func (s *CloudGateways) GetTransitGateway(ctx context.Context, request operation
 // DeleteTransitGateway - Delete Transit Gateway
 // Deletes a transit gateway by ID for a given network.
 func (s *CloudGateways) DeleteTransitGateway(ctx context.Context, request operations.DeleteTransitGatewayRequest, opts ...operations.Option) (*operations.DeleteTransitGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-transit-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionRetries,
@@ -2627,6 +2626,14 @@ func (s *CloudGateways) DeleteTransitGateway(ctx context.Context, request operat
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/cloud-gateways/networks/{networkId}/transit-gateways/{transitGatewayId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-transit-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -2857,13 +2864,6 @@ func (s *CloudGateways) DeleteTransitGateway(ctx context.Context, request operat
 // ListProviderAccounts - List Provider Accounts
 // Returns a a paginated collection of provider accounts for an organization.
 func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operations.ListProviderAccountsRequest, opts ...operations.Option) (*operations.ListProviderAccountsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "list-provider-accounts",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -2884,6 +2884,14 @@ func (s *CloudGateways) ListProviderAccounts(ctx context.Context, request operat
 	opURL, err := url.JoinPath(baseURL, "/v2/cloud-gateways/provider-accounts")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "list-provider-accounts",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

@@ -28,13 +28,6 @@ func newPortalTeams(sdkConfig sdkConfiguration) *PortalTeams {
 // CreatePortalTeam - Create Team
 // Creates a developer team in a portal. Developers can be added to teams to provide RBAC access to API products. Teams can be assigned roles that grant permissions to perform an action on a resource.
 func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.CreatePortalTeamRequest, opts ...operations.Option) (*operations.CreatePortalTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-portal-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -58,6 +51,13 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-portal-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalCreateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -253,13 +253,6 @@ func (s *PortalTeams) CreatePortalTeam(ctx context.Context, request operations.C
 // GetPortalTeam - Get Team
 // Get an individual team.
 func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetPortalTeamRequest, opts ...operations.Option) (*operations.GetPortalTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-portal-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -281,6 +274,14 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-portal-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -449,13 +450,6 @@ func (s *PortalTeams) GetPortalTeam(ctx context.Context, request operations.GetP
 // UpdatePortalTeam - Update Team
 // Updates an individual developer team for a portal.
 func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.UpdatePortalTeamRequest, opts ...operations.Option) (*operations.UpdatePortalTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-portal-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -479,6 +473,13 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-portal-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalUpdateTeamRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -653,13 +654,6 @@ func (s *PortalTeams) UpdatePortalTeam(ctx context.Context, request operations.U
 // DeletePortalTeam - Delete Team
 // Deletes a developer team from a portal. Deleting a team also deletes its assigned roles. Members of the team are not deleted, but they will lose any access provided through the team.
 func (s *PortalTeams) DeletePortalTeam(ctx context.Context, request operations.DeletePortalTeamRequest, opts ...operations.Option) (*operations.DeletePortalTeamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-portal-team",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -680,6 +674,14 @@ func (s *PortalTeams) DeletePortalTeam(ctx context.Context, request operations.D
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/teams/{teamId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-portal-team",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

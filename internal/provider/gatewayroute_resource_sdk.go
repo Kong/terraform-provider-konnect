@@ -188,8 +188,8 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.Rout
 				}
 			}
 		}
-		if len(resp.Headers) > 0 {
-			r.Headers = make(map[string]types.String)
+		if resp.Headers != nil {
+			r.Headers = make(map[string]types.String, len(resp.Headers))
 			for key, value := range resp.Headers {
 				r.Headers[key] = types.StringValue(value)
 			}

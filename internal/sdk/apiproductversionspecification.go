@@ -28,13 +28,6 @@ func newAPIProductVersionSpecification(sdkConfig sdkConfiguration) *APIProductVe
 // Creates a specification for a version of an API product.
 // **Note:** You can only have one specification for a product version.
 func (s *APIProductVersionSpecification) CreateAPIProductVersionSpec(ctx context.Context, request operations.CreateAPIProductVersionSpecRequest, opts ...operations.Option) (*operations.CreateAPIProductVersionSpecResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-api-product-version-spec",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -58,6 +51,13 @@ func (s *APIProductVersionSpecification) CreateAPIProductVersionSpec(ctx context
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-api-product-version-spec",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "CreateAPIProductVersionSpecDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -295,13 +295,6 @@ func (s *APIProductVersionSpecification) CreateAPIProductVersionSpec(ctx context
 // GetAPIProductVersionSpec - Fetch API Product Version Specification
 // Returns a specification for the version of an API product.
 func (s *APIProductVersionSpecification) GetAPIProductVersionSpec(ctx context.Context, request operations.GetAPIProductVersionSpecRequest, opts ...operations.Option) (*operations.GetAPIProductVersionSpecResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-api-product-version-spec",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -323,6 +316,14 @@ func (s *APIProductVersionSpecification) GetAPIProductVersionSpec(ctx context.Co
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-api-product-version-spec",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -491,13 +492,6 @@ func (s *APIProductVersionSpecification) GetAPIProductVersionSpec(ctx context.Co
 // UpdateAPIProductVersionSpec - Update an API Product Version Specification
 // Updates a specification from an API product version.
 func (s *APIProductVersionSpecification) UpdateAPIProductVersionSpec(ctx context.Context, request operations.UpdateAPIProductVersionSpecRequest, opts ...operations.Option) (*operations.UpdateAPIProductVersionSpecResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-api-product-version-spec",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -521,6 +515,13 @@ func (s *APIProductVersionSpecification) UpdateAPIProductVersionSpec(ctx context
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-api-product-version-spec",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductVersionSpecDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -758,13 +759,6 @@ func (s *APIProductVersionSpecification) UpdateAPIProductVersionSpec(ctx context
 // DeleteAPIProductVersionSpec - Delete API Product Version Specification
 // Removes a specification from a verion of an API product.
 func (s *APIProductVersionSpecification) DeleteAPIProductVersionSpec(ctx context.Context, request operations.DeleteAPIProductVersionSpecRequest, opts ...operations.Option) (*operations.DeleteAPIProductVersionSpecResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-api-product-version-spec",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -785,6 +779,14 @@ func (s *APIProductVersionSpecification) DeleteAPIProductVersionSpec(ctx context
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{apiProductId}/product-versions/{apiProductVersionId}/specifications/{specificationId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-api-product-version-spec",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

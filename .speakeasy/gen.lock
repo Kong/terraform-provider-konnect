@@ -3,19 +3,19 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: db564799c7a5b9566b8f533de3fdd416
   docVersion: 2.0.0
-  speakeasyVersion: 1.486.0
-  generationVersion: 2.505.0
+  speakeasyVersion: 1.503.0
+  generationVersion: 2.526.1
   releaseVersion: 2.3.0
-  configChecksum: 035ef683d13eb06b1a27aae9aec48cce
+  configChecksum: 6017762d9b9c3fb20c0f11cc1b22f2f1
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
-    constsAndDefaults: 0.2.0
-    core: 3.30.0
+    constsAndDefaults: 0.2.1
+    core: 3.33.0
     deprecations: 2.82.0
     envVarSecurityUsage: 0.1.0
-    globalSecurity: 2.81.9
+    globalSecurity: 2.81.10
     globalServerURLs: 2.82.1
     groups: 2.81.2
     ignores: 2.81.1
@@ -451,7 +451,9 @@ generatedFiles:
   - go.mod
   - go.sum
   - internal/planmodifiers/boolplanmodifier/suppress_diff.go
+  - internal/planmodifiers/float32planmodifier/suppress_diff.go
   - internal/planmodifiers/float64planmodifier/suppress_diff.go
+  - internal/planmodifiers/int32planmodifier/suppress_diff.go
   - internal/planmodifiers/int64planmodifier/suppress_diff.go
   - internal/planmodifiers/listplanmodifier/suppress_diff.go
   - internal/planmodifiers/mapplanmodifier/suppress_diff.go
@@ -2166,7 +2168,9 @@ generatedFiles:
   - internal/validators/JSONParseValidator.go
   - internal/validators/RFC3339Validator.go
   - internal/validators/boolvalidators/not_null.go
+  - internal/validators/float32validators/not_null.go
   - internal/validators/float64validators/not_null.go
+  - internal/validators/int32validators/not_null.go
   - internal/validators/int64validators/not_null.go
   - internal/validators/listvalidators/not_null.go
   - internal/validators/mapvalidators/not_null.go
@@ -8017,10 +8021,10 @@ examples:
   create-portal:
     speakeasy-default-create-portal:
       requestBody:
-        application/json: {"name": "DevPortal", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}
+        application/json: {"name": "DevPortal", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}, "application_count": 0, "developer_count": 0, "published_product_count": 0}
         "400":
           application/problem+json: {"status": 416190, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -8033,10 +8037,10 @@ examples:
         path:
           portalId: "0c6d5b9d-9ca5-4a29-aa61-c4661aadebad"
       requestBody:
-        application/json: {"name": "Aperture", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"}
+        application/json: {"name": "Aperture", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": false, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "application_count": 0, "developer_count": 0, "published_product_count": 0}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z", "name": "Portal A", "display_name": "Developer Portal A", "description": "The Portal A", "default_domain": "123455678abcd.us.portal.konghq.com", "is_public": false, "rbac_enabled": true, "auto_approve_applications": false, "auto_approve_developers": true, "custom_domain": "api.example.com", "custom_client_domain": "portal.example.com", "default_application_auth_strategy_id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "labels": {"env": "test"}, "application_count": 0, "developer_count": 0, "published_product_count": 0}
         "400":
           application/problem+json: {"status": 644506, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>", "<value>"], "source": "body"}, {"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -8102,7 +8106,7 @@ examples:
           portalId: "0532abcf-410a-4fe4-b65a-09f9435d6588"
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
   update-portal-authentication-settings:
@@ -8111,10 +8115,10 @@ examples:
         path:
           portalId: "52aeef19-b708-4263-b93f-feb3bcbd1baa"
       requestBody:
-        application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
+        application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "idp_mapping_enabled": true, "oidc_issuer": "https://identity.example.com/v2", "oidc_client_id": "x7id0o42lklas0blidl2", "oidc_scopes": ["email", "openid", "profile"], "oidc_claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}
       responses:
         "200":
-          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "oidc_team_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
+          application/json: {"basic_auth_enabled": true, "oidc_auth_enabled": false, "saml_auth_enabled": false, "oidc_team_mapping_enabled": true, "idp_mapping_enabled": true, "konnect_mapping_enabled": false, "oidc_config": {"issuer": "https://identity.example.com/v2", "client_id": "x7id0o42lklas0blidl2", "scopes": ["email", "openid", "profile"], "claim_mappings": {"name": "name", "email": "email", "groups": "custom-group-claim"}}}
         "400":
           application/problem+json: {"status": 391572, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": [], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "min_uppercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
         "401":

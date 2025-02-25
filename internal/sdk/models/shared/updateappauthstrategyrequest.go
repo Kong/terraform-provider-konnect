@@ -117,8 +117,8 @@ type UpdateAppAuthStrategyRequest struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels        map[string]string `json:"labels,omitempty"`
-	DcrProviderID *string           `json:"dcr_provider_id,omitempty"`
+	Labels        map[string]*string `json:"labels,omitempty"`
+	DcrProviderID *string            `json:"dcr_provider_id,omitempty"`
 	// JSON-B object containing the configuration for the OIDC strategy under the key 'openid-connect' or the configuration for the Key Auth strategy under the key 'key-auth'
 	Configs *Configs `json:"configs,omitempty"`
 }
@@ -137,7 +137,7 @@ func (o *UpdateAppAuthStrategyRequest) GetDisplayName() *string {
 	return o.DisplayName
 }
 
-func (o *UpdateAppAuthStrategyRequest) GetLabels() map[string]string {
+func (o *UpdateAppAuthStrategyRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

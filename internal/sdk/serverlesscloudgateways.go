@@ -28,13 +28,6 @@ func newServerlessCloudGateways(sdkConfig sdkConfiguration) *ServerlessCloudGate
 // CreateServerlessCloudGateway - Create a new serverless cloud gateway
 // Create a new serverless cloud gateway
 func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Context, request shared.CreateServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.CreateServerlessCloudGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-serverless-cloud-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-serverless-cloud-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -231,13 +231,6 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 // GetServerlessCloudGateway - Get the serverless cloud gateway
 // Get the serverless cloud gateway
 func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context, request operations.GetServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.GetServerlessCloudGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-serverless-cloud-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -258,6 +251,14 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v0/serverless-cloud-gateways/{controlPlaneId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-serverless-cloud-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -426,13 +427,6 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 // DeleteServerlessCloudGateway - Delete the serverless cloud gateway
 // Delete the serverless cloud gateway
 func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Context, request operations.DeleteServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.DeleteServerlessCloudGatewayResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-serverless-cloud-gateway",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -452,6 +446,14 @@ func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Conte
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v0/serverless-cloud-gateways/{controlPlaneId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-serverless-cloud-gateway",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

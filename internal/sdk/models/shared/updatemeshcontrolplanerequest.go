@@ -8,7 +8,7 @@ type UpdateMeshControlPlaneRequest struct {
 	Name        *string `json:"name,omitempty"`
 	Description *string `json:"description,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *UpdateMeshControlPlaneRequest) GetName() *string {
@@ -25,7 +25,7 @@ func (o *UpdateMeshControlPlaneRequest) GetDescription() *string {
 	return o.Description
 }
 
-func (o *UpdateMeshControlPlaneRequest) GetLabels() map[string]string {
+func (o *UpdateMeshControlPlaneRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

@@ -51,9 +51,9 @@ type ApplicationAuthStrategyResourceModel struct {
 	Active        types.Bool                                   `tfsdk:"active"`
 	DisplayName   types.String                                 `tfsdk:"display_name"`
 	ID            types.String                                 `tfsdk:"id"`
-	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `tfsdk:"key_auth" tfPlanOnly:"true"`
+	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthRequest       `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
 	Name          types.String                                 `tfsdk:"name"`
-	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `tfsdk:"openid_connect" tfPlanOnly:"true"`
+	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectRequest `queryParam:"inline" tfsdk:"openid_connect" tfPlanOnly:"true"`
 }
 
 func (r *ApplicationAuthStrategyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

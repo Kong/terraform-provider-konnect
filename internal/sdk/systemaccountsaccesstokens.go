@@ -27,13 +27,6 @@ func newSystemAccountsAccessTokens(sdkConfig sdkConfiguration) *SystemAccountsAc
 // PostSystemAccountsIDAccessTokens - Create System Account Access Token
 // Creates an access token for the specified system account (SA). The access token can be used for authenticating API and CLI requests. The token will only be displayed once on creation. Returns a 409 if the system account already has a token with the same name.
 func (s *SystemAccountsAccessTokens) PostSystemAccountsIDAccessTokens(ctx context.Context, request operations.PostSystemAccountsIDAccessTokensRequest, opts ...operations.Option) (*operations.PostSystemAccountsIDAccessTokensResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-system-accounts-id-access-tokens",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,13 @@ func (s *SystemAccountsAccessTokens) PostSystemAccountsIDAccessTokens(ctx contex
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-system-accounts-id-access-tokens",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "CreateSystemAccountAccessToken", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -232,13 +232,6 @@ func (s *SystemAccountsAccessTokens) PostSystemAccountsIDAccessTokens(ctx contex
 // GetSystemAccountsIDAccessTokensID - Fetch System Account Access Token
 // Returns the system account (SA) access token for the SA Access Token ID specified as a path parameter.
 func (s *SystemAccountsAccessTokens) GetSystemAccountsIDAccessTokensID(ctx context.Context, request operations.GetSystemAccountsIDAccessTokensIDRequest, opts ...operations.Option) (*operations.GetSystemAccountsIDAccessTokensIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-system-accounts-id-access-tokens-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -259,6 +252,14 @@ func (s *SystemAccountsAccessTokens) GetSystemAccountsIDAccessTokensID(ctx conte
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}/access-tokens/{tokenId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-system-accounts-id-access-tokens-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -408,13 +409,6 @@ func (s *SystemAccountsAccessTokens) GetSystemAccountsIDAccessTokensID(ctx conte
 // PatchSystemAccountsIDAccessTokensID - Update System Account Access Token
 // Updates the specified access token. Returns a 409 if the updated name is the same as another token belonging to the specified system user.
 func (s *SystemAccountsAccessTokens) PatchSystemAccountsIDAccessTokensID(ctx context.Context, request operations.PatchSystemAccountsIDAccessTokensIDRequest, opts ...operations.Option) (*operations.PatchSystemAccountsIDAccessTokensIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "patch-system-accounts-id-access-tokens-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -437,6 +431,13 @@ func (s *SystemAccountsAccessTokens) PatchSystemAccountsIDAccessTokensID(ctx con
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "patch-system-accounts-id-access-tokens-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateSystemAccountAccessToken", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -613,13 +614,6 @@ func (s *SystemAccountsAccessTokens) PatchSystemAccountsIDAccessTokensID(ctx con
 // DeleteSystemAccountsIDAccessTokensID - Delete System Account Access Token
 // Deletes the specified token. Returns 404 if the token was not found.
 func (s *SystemAccountsAccessTokens) DeleteSystemAccountsIDAccessTokensID(ctx context.Context, request operations.DeleteSystemAccountsIDAccessTokensIDRequest, opts ...operations.Option) (*operations.DeleteSystemAccountsIDAccessTokensIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-system-accounts-id-access-tokens-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -639,6 +633,14 @@ func (s *SystemAccountsAccessTokens) DeleteSystemAccountsIDAccessTokensID(ctx co
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}/access-tokens/{tokenId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-system-accounts-id-access-tokens-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

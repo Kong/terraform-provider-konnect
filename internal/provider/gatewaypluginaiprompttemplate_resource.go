@@ -98,7 +98,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 								"template": schema.StringAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `Template string for this request, supports mustache-style ` + "`" + `{{"{{"}}placeholders{{"}}"}}` + "`" + `. Not Null`,
+									Description: `Template string for this request, supports mustache-style ` + "`" + `{{placeholders}}` + "`" + `. Not Null`,
 									Validators: []validator.String{
 										speakeasy_stringvalidators.NotNull(),
 									},

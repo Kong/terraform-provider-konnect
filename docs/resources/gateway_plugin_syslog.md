@@ -17,7 +17,7 @@ resource "konnect_gateway_plugin_syslog" "my_gatewaypluginsyslog" {
   config = {
     client_errors_severity = "warning"
     custom_fields_by_lua = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     facility               = "uucp"
     log_level              = "crit"
