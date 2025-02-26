@@ -16277,7 +16277,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -16344,17 +16344,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ACLWithoutParents:
       x-speakeasy-entity: GatewayACL
       type: object
@@ -16367,7 +16373,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -16707,17 +16713,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiPromptDecoratorPlugin:
       x-speakeasy-entity: GatewayPluginAiPromptDecorator
       allOf:
@@ -16776,17 +16788,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-prompt-decorator
@@ -16803,17 +16821,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiPromptGuardPlugin:
       x-speakeasy-entity: GatewayPluginAiPromptGuard
       allOf:
@@ -16853,17 +16877,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-prompt-guard
@@ -16880,17 +16910,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiPromptTemplatePlugin:
       x-speakeasy-entity: GatewayPluginAiPromptTemplate
       allOf:
@@ -16929,17 +16965,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-prompt-template
@@ -16956,17 +16998,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiProxyAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginAiProxyAdvanced
       allOf:
@@ -17454,17 +17502,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-proxy-advanced
@@ -17481,17 +17535,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiProxyPlugin:
       x-speakeasy-entity: GatewayPluginAiProxy
       allOf:
@@ -17690,17 +17750,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-proxy
@@ -17717,17 +17783,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiRateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginAiRateLimitingAdvanced
       allOf:
@@ -17956,17 +18028,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-rate-limiting-advanced
@@ -17983,17 +18061,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiRequestTransformerPlugin:
       x-speakeasy-entity: GatewayPluginAiRequestTransformer
       allOf:
@@ -18213,10 +18297,13 @@ components:
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-request-transformer
@@ -18233,17 +18320,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiResponseTransformerPlugin:
       x-speakeasy-entity: GatewayPluginAiResponseTransformer
       allOf:
@@ -18466,17 +18559,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-response-transformer
@@ -18493,17 +18592,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiSemanticCachePlugin:
       x-speakeasy-entity: GatewayPluginAiSemanticCache
       allOf:
@@ -18753,17 +18858,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-semantic-cache
@@ -18780,17 +18891,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AiSemanticPromptGuardPlugin:
       x-speakeasy-entity: GatewayPluginAiSemanticPromptGuard
       allOf:
@@ -19048,17 +19165,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ai-semantic-prompt-guard
@@ -19075,17 +19198,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AwsLambdaPlugin:
       x-speakeasy-entity: GatewayPluginAwsLambda
       allOf:
@@ -19196,10 +19325,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: aws-lambda
@@ -19216,17 +19348,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     AzureFunctionsPlugin:
       x-speakeasy-entity: GatewayPluginAzureFunctions
       allOf:
@@ -19270,10 +19408,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: azure-functions
@@ -19297,17 +19438,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     BasicAuth:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
@@ -19320,7 +19467,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -19383,17 +19530,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     BasicAuthWithoutParents:
       x-speakeasy-entity: GatewayBasicAuth
       type: object
@@ -19406,7 +19559,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -19470,17 +19623,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     CACertificate:
       x-speakeasy-entity: GatewayCACertificate
       description: A CA certificate object represents a trusted CA. These objects are used by Kong to verify the validity of a client or server certificate.
@@ -19608,17 +19767,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Certificate:
       x-speakeasy-entity: GatewayCertificate
       description: 'A certificate object represents a public certificate, and can be optionally paired with the corresponding private key. These objects are used by Kong to handle SSL/TLS termination for encrypted requests, or for use as a trusted CA store when validating peer certificate of client/service. Certificates are optionally associated with SNI objects to tie a cert/key pair to one or more hostnames. If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string according to the following order: main certificate on the top, followed by any intermediates.'
@@ -19772,10 +19937,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: confluent
@@ -19792,17 +19960,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Consumer:
       x-speakeasy-entity: GatewayConsumer
       description: 'The Consumer object represents a consumer - or a user - of a Service. You can either rely on Kong as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong and your existing primary datastore.'
@@ -19894,10 +20068,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: correlation-id
@@ -19914,17 +20091,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     CorsPlugin:
       x-speakeasy-entity: GatewayPluginCors
       allOf:
@@ -19994,17 +20177,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     DatadogPlugin:
       x-speakeasy-entity: GatewayPluginDatadog
       allOf:
@@ -20135,10 +20324,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: datadog
@@ -20162,17 +20354,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     DatadogTracingPlugin:
       x-speakeasy-entity: GatewayPluginDatadogTracing
       allOf:
@@ -20208,10 +20406,13 @@ components:
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: datadog-tracing
@@ -20228,17 +20429,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     DegraphqlPlugin:
       x-speakeasy-entity: GatewayPluginDegraphql
       allOf:
@@ -20268,17 +20475,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ExitTransformerPlugin:
       x-speakeasy-entity: GatewayPluginExitTransformer
       allOf:
@@ -20302,10 +20515,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: exit-transformer
@@ -20322,17 +20538,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     FileLogPlugin:
       x-speakeasy-entity: GatewayPluginFileLog
       allOf:
@@ -20357,10 +20579,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: file-log
@@ -20384,17 +20609,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ForwardProxyPlugin:
       x-speakeasy-entity: GatewayPluginForwardProxy
       allOf:
@@ -20454,10 +20685,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: forward-proxy
@@ -20474,17 +20708,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     GatewayUnauthorizedError:
       type: object
       properties:
@@ -20651,10 +20891,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: graphql-proxy-cache-advanced
@@ -20671,17 +20914,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     GraphqlRateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginGraphqlRateLimitingAdvanced
       allOf:
@@ -20868,10 +21117,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: graphql-rate-limiting-advanced
@@ -20888,17 +21140,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     GrpcGatewayPlugin:
       x-speakeasy-entity: GatewayPluginGrpcGateway
       allOf:
@@ -20915,10 +21173,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: grpc-gateway
@@ -20942,17 +21203,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     GrpcWebPlugin:
       x-speakeasy-entity: GatewayPluginGrpcWeb
       allOf:
@@ -20975,10 +21242,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: grpc-web
@@ -21002,17 +21272,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     HMACAuth:
       x-speakeasy-entity: GatewayHMACAuth
       type: object
@@ -21025,7 +21301,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -21063,7 +21339,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -21189,17 +21465,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     HmacAuthPlugin:
       x-speakeasy-entity: GatewayPluginHmacAuth
       allOf:
@@ -21259,17 +21541,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     HttpLogPlugin:
       x-speakeasy-entity: GatewayPluginHttpLog
       allOf:
@@ -21362,10 +21650,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: http-log
@@ -21389,17 +21680,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     InjectionProtectionPlugin:
       x-speakeasy-entity: GatewayPluginInjectionProtection
       allOf:
@@ -21477,17 +21774,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     IpRestrictionPlugin:
       x-speakeasy-entity: GatewayPluginIpRestriction
       allOf:
@@ -21519,17 +21822,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: ip-restriction
@@ -21553,17 +21862,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     JWT:
       x-speakeasy-entity: GatewayJWT
       type: object
@@ -21593,7 +21908,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -21651,7 +21966,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -21735,10 +22050,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: jq
@@ -21755,17 +22073,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     JsonThreatProtectionPlugin:
       x-speakeasy-entity: GatewayPluginJsonThreatProtection
       allOf:
@@ -21836,17 +22160,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     JweDecryptPlugin:
       x-speakeasy-entity: GatewayPluginJweDecrypt
       allOf:
@@ -21887,17 +22217,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     JwtPlugin:
       x-speakeasy-entity: GatewayPluginJwt
       allOf:
@@ -21967,17 +22303,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     JwtSignerPlugin:
       x-speakeasy-entity: GatewayPluginJwtSigner
       allOf:
@@ -22376,17 +22718,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     KafkaLogPlugin:
       x-speakeasy-entity: GatewayPluginKafkaLog
       allOf:
@@ -22499,10 +22847,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: kafka-log
@@ -22521,17 +22872,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     KafkaUpstreamPlugin:
       x-speakeasy-entity: GatewayPluginKafkaUpstream
       allOf:
@@ -22653,10 +23010,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: kafka-upstream
@@ -22673,17 +23033,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Key:
       x-speakeasy-entity: GatewayKey
       description: 'A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.'
@@ -22725,7 +23091,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         tags:
           description: An optional set of strings associated with the Key for grouping and filtering.
           type: array
@@ -22760,7 +23126,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -22837,17 +23203,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     KeyAuthPlugin:
       x-speakeasy-entity: GatewayPluginKeyAuth
       allOf:
@@ -22903,17 +23275,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     KeyAuthWithoutParents:
       x-speakeasy-entity: GatewayKeyAuth
       type: object
@@ -22926,7 +23304,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24371,17 +24749,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     LdapAuthAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginLdapAuthAdvanced
       allOf:
@@ -24486,17 +24870,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     LdapAuthPlugin:
       x-speakeasy-entity: GatewayPluginLdapAuth
       allOf:
@@ -24569,17 +24959,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     LogglyPlugin:
       x-speakeasy-entity: GatewayPluginLoggly
       allOf:
@@ -24657,10 +25053,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: loggly
@@ -24684,17 +25083,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     MTLSAuth:
       x-speakeasy-entity: GatewayMTLSAuth
       type: object
@@ -24707,7 +25112,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         consumer:
           type: object
           default: null
@@ -24716,7 +25121,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24752,7 +25157,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         consumer:
           type: object
           default: null
@@ -24761,7 +25166,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -24828,10 +25233,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: mocking
@@ -24848,17 +25256,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     MtlsAuthPlugin:
       x-speakeasy-entity: GatewayPluginMtlsAuth
       allOf:
@@ -24952,17 +25366,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     OasValidationPlugin:
       x-speakeasy-entity: GatewayPluginOasValidation
       allOf:
@@ -25021,10 +25441,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: oas-validation
@@ -25041,17 +25464,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Oauth2IntrospectionPlugin:
       x-speakeasy-entity: GatewayPluginOauth2Introspection
       allOf:
@@ -25123,17 +25552,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Oauth2Plugin:
       x-speakeasy-entity: GatewayPluginOauth2
       allOf:
@@ -25223,17 +25658,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     OpaPlugin:
       x-speakeasy-entity: GatewayPluginOpa
       allOf:
@@ -25297,17 +25738,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     OpenidConnectPlugin:
       x-speakeasy-entity: GatewayPluginOpenidConnect
       allOf:
@@ -26717,17 +27164,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     OpentelemetryPlugin:
       x-speakeasy-entity: GatewayPluginOpentelemetry
       allOf:
@@ -26889,10 +27342,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: opentelemetry
@@ -26909,17 +27365,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Plugin:
       description: 'A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.'
       type: object
@@ -26937,7 +27399,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         consumer_group:
           type: object
           default: null
@@ -26946,7 +27408,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -27008,7 +27470,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
@@ -27018,7 +27480,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         tags:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
@@ -27193,17 +27655,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     PreFunctionPlugin:
       x-speakeasy-entity: GatewayPluginPreFunction
       allOf:
@@ -27277,17 +27745,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     PrometheusPlugin:
       x-speakeasy-entity: GatewayPluginPrometheus
       allOf:
@@ -27319,10 +27793,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: prometheus
@@ -27346,17 +27823,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ProxyCacheAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginProxyCacheAdvanced
       allOf:
@@ -27561,17 +28044,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: proxy-cache-advanced
@@ -27588,17 +28077,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ProxyCachePlugin:
       x-speakeasy-entity: GatewayPluginProxyCache
       allOf:
@@ -27679,17 +28174,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: proxy-cache
@@ -27713,17 +28214,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginRateLimitingAdvanced
       allOf:
@@ -27950,17 +28457,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: rate-limiting-advanced
@@ -27977,17 +28490,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RateLimitingPlugin:
       x-speakeasy-entity: GatewayPluginRateLimiting
       allOf:
@@ -28120,17 +28639,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: rate-limiting
@@ -28147,17 +28672,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RedirectPlugin:
       x-speakeasy-entity: GatewayPluginRedirect
       allOf:
@@ -28182,17 +28713,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: redirect
@@ -28209,17 +28746,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RequestSizeLimitingPlugin:
       x-speakeasy-entity: GatewayPluginRequestSizeLimiting
       allOf:
@@ -28246,10 +28789,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: request-size-limiting
@@ -28266,17 +28812,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RequestTerminationPlugin:
       x-speakeasy-entity: GatewayPluginRequestTermination
       allOf:
@@ -28310,17 +28862,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: request-termination
@@ -28337,17 +28895,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RequestTransformerAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginRequestTransformerAdvanced
       allOf:
@@ -28476,17 +29040,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: request-transformer-advanced
@@ -28503,17 +29073,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RequestTransformerPlugin:
       x-speakeasy-entity: GatewayPluginRequestTransformer
       allOf:
@@ -28612,17 +29188,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: request-transformer
@@ -28646,17 +29228,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RequestValidatorPlugin:
       x-speakeasy-entity: GatewayPluginRequestValidator
       allOf:
@@ -28730,10 +29318,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: request-validator
@@ -28750,17 +29341,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ResponseRatelimitingPlugin:
       x-speakeasy-entity: GatewayPluginResponseRatelimiting
       allOf:
@@ -28860,10 +29457,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: response-ratelimiting
@@ -28880,17 +29480,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ResponseTransformerAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginResponseTransformerAdvanced
       allOf:
@@ -29028,17 +29634,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: response-transformer-advanced
@@ -29055,17 +29667,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ResponseTransformerPlugin:
       x-speakeasy-entity: GatewayPluginResponseTransformer
       allOf:
@@ -29175,17 +29793,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: response-transformer
@@ -29202,17 +29826,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RouteByHeaderPlugin:
       x-speakeasy-entity: GatewayPluginRouteByHeader
       allOf:
@@ -29241,10 +29871,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: route-by-header
@@ -29261,17 +29894,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     RouteExpression:
       x-speakeasy-entity: GatewayRouteExpression
       description: 'Route entities define rules to match client requests. Each Route is associated with a Service, and a Service may have multiple Routes associated to it. Every request matching a given Route will be proxied to its associated Service. The combination of Routes and Services (and the separation of concerns between them) offers a powerful routing mechanism with which it is possible to define fine-grained entry-points in Kong leading to different upstream services of your infrastructure. You need at least one matching rule that applies to the protocol being matched by the Route.'
@@ -29350,7 +29989,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         strip_path:
           description: 'When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.'
           type: boolean
@@ -29475,7 +30114,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         snis:
           description: A list of SNIs that match this Route when using stream routing.
           type: array
@@ -29539,10 +30178,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: route-transformer-advanced
@@ -29559,17 +30201,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     SNI:
       x-speakeasy-entity: GatewaySNI
       description: 'An SNI object represents a many-to-one mapping of hostnames to a certificate. That is, a certificate object can have many hostnames associated with it; when Kong receives an SSL request, it uses the SNI field in the Client Hello to lookup the certificate object based on the SNI associated with the certificate.'
@@ -29584,7 +30232,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -30004,17 +30652,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Service:
       x-speakeasy-entity: GatewayService
       description: 'Service entities, as the name implies, are abstractions of each of your own upstream services. Examples of Services would be a data transformation microservice, a billing API, etc. The main attribute of a Service is its URL (where Kong should proxy traffic to), which can be set as a single string or by specifying its `protocol`, `host`, `port` and `path` individually. Services are associated to Routes (a Service can have many Routes associated with it). Routes are entry-points in Kong and define rules to match client requests. Once a Route is matched, Kong proxies the request to its associated Service. See the [Proxy Reference][proxy-reference] for a detailed explanation of how Kong proxies traffic.'
@@ -30035,7 +30689,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         connect_timeout:
           description: The timeout in milliseconds for establishing a connection to the upstream server.
           type: integer
@@ -30321,10 +30975,13 @@ components:
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     SessionPlugin:
       x-speakeasy-entity: GatewayPluginSession
       allOf:
@@ -30475,17 +31132,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     StandardWebhooksPlugin:
       x-speakeasy-entity: GatewayPluginStandardWebhooks
       allOf:
@@ -30506,10 +31169,13 @@ components:
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: standard-webhooks
@@ -30526,17 +31192,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     StatsdAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginStatsdAdvanced
       allOf:
@@ -30696,10 +31368,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: statsd-advanced
@@ -30723,17 +31398,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     StatsdPlugin:
       x-speakeasy-entity: GatewayPluginStatsd
       allOf:
@@ -30906,10 +31587,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: statsd
@@ -30933,17 +31617,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     SyslogPlugin:
       x-speakeasy-entity: GatewayPluginSyslog
       allOf:
@@ -31029,10 +31719,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: syslog
@@ -31056,17 +31749,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Target:
       x-speakeasy-entity: GatewayTarget
       description: 'A target is an ip address/hostname with a port that identifies an instance of a backend service. Every upstream can have many targets, and the targets can be dynamically added, modified, or deleted. Changes take effect on the fly. To disable a target, post a new one with `weight=0`; alternatively, use the `DELETE` convenience method to accomplish the same. The current target object definition is the one with the latest `created_at`.'
@@ -31100,7 +31799,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         weight:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
@@ -31145,7 +31844,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         weight:
           description: 'The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record.'
           type: integer
@@ -31192,10 +31891,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: tcp-log
@@ -31219,17 +31921,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     TlsHandshakeModifierPlugin:
       x-speakeasy-entity: GatewayPluginTlsHandshakeModifier
       allOf:
@@ -31260,17 +31968,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     TlsMetadataHeadersPlugin:
       x-speakeasy-entity: GatewayPluginTlsMetadataHeaders
       allOf:
@@ -31314,17 +32028,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     UdpLogPlugin:
       x-speakeasy-entity: GatewayPluginUdpLog
       allOf:
@@ -31353,10 +32073,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: udp-log
@@ -31380,17 +32103,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Upstream:
       x-speakeasy-entity: GatewayUpstream
       description: 'The upstream object represents a virtual hostname and can be used to loadbalance incoming requests over multiple services (targets). So for example an upstream named `service.v1.xyz` for a Service object whose `host` is `service.v1.xyz`. Requests for this Service would be proxied to the targets defined within the upstream. An upstream also includes a [health checker][healthchecks], which is able to enable and disable targets based on their ability or inability to serve requests. The configuration for the health checker is stored in the upstream object, and applies to all of its targets.'
@@ -31414,7 +32143,7 @@ components:
             id:
               type: string
           x-foreign: true
-          x-speakeasy-terraform-plan-only: true
+          x-speakeasy-param-computed: false
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
@@ -31935,17 +32664,23 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         consumer_group:
           description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: upstream-oauth
@@ -31962,17 +32697,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     UpstreamTimeoutPlugin:
       x-speakeasy-entity: GatewayPluginUpstreamTimeout
       allOf:
@@ -32001,10 +32742,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: upstream-timeout
@@ -32021,17 +32765,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     Vault:
       x-speakeasy-entity: GatewayVault
       description: 'Vault entities are used to configure different Vault connectors. Examples of Vaults are Environment Variables, Hashicorp Vault and AWS Secrets Manager. Configuring a Vault allows referencing the secrets with other entities. For example a certificate entity can store a reference to a certificate and key, stored in a vault, instead of storing the certificate and key within the entity. This allows a proper separation of secrets and configuration and prevents secret sprawl.'
@@ -32136,17 +32886,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     WebsocketSizeLimitPlugin:
       x-speakeasy-entity: GatewayPluginWebsocketSizeLimit
       allOf:
@@ -32168,10 +32924,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: websocket-size-limit
@@ -32186,17 +32945,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     WebsocketValidatorPlugin:
       x-speakeasy-entity: GatewayPluginWebsocketValidator
       allOf:
@@ -32272,10 +33037,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: websocket-validator
@@ -32290,17 +33058,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     XmlThreatProtectionPlugin:
       x-speakeasy-entity: GatewayPluginXmlThreatProtection
       allOf:
@@ -32408,10 +33182,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: xml-threat-protection
@@ -32428,17 +33205,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
     ZipkinPlugin:
       x-speakeasy-entity: GatewayPluginZipkin
       allOf:
@@ -32650,10 +33433,13 @@ components:
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         name:
           type: string
           const: zipkin
@@ -32677,17 +33463,23 @@ components:
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
         service:
           description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
           type: object
+          default: null
           additionalProperties: false
+          nullable: true
           properties:
             id:
               type: string
+          x-speakeasy-param-computed: false
   requestBodies:
     GroupMembershipAdd:
       content:
@@ -33012,6 +33804,9 @@ components:
                 type: string
                 format: uuid
                 x-speakeasy-name-override: account_id
+            default: null
+            nullable: true
+            x-speakeasy-param-computed: false
       description: The request schema for adding a system account to a team.
     UpdateAuditLogWebhook:
       description: The request schema to modify an audit log webhook.
