@@ -560,7 +560,7 @@ type ServiceProtectionPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []ServiceProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ServiceProtectionPluginService `json:"service,omitempty"`
+	Service *ServiceProtectionPluginService `json:"service"`
 }
 
 func (s ServiceProtectionPlugin) MarshalJSON() ([]byte, error) {
@@ -662,7 +662,7 @@ type ServiceProtectionPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []ServiceProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ServiceProtectionPluginService `json:"service,omitempty"`
+	Service *ServiceProtectionPluginService `json:"service"`
 }
 
 func (s ServiceProtectionPluginInput) MarshalJSON() ([]byte, error) {

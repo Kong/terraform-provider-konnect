@@ -204,9 +204,9 @@ type KeyAuthPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KeyAuthPluginRoute `json:"route,omitempty"`
+	Route *KeyAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthPluginService `json:"service,omitempty"`
+	Service *KeyAuthPluginService `json:"service"`
 }
 
 func (k KeyAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -315,9 +315,9 @@ type KeyAuthPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KeyAuthPluginRoute `json:"route,omitempty"`
+	Route *KeyAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthPluginService `json:"service,omitempty"`
+	Service *KeyAuthPluginService `json:"service"`
 }
 
 func (k KeyAuthPluginInput) MarshalJSON() ([]byte, error) {

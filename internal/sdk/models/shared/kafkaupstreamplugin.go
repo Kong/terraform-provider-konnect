@@ -496,13 +496,13 @@ type KafkaUpstreamPlugin struct {
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    KafkaUpstreamPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *KafkaUpstreamPluginConsumer `json:"consumer,omitempty"`
+	Consumer *KafkaUpstreamPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []KafkaUpstreamPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KafkaUpstreamPluginRoute `json:"route,omitempty"`
+	Route *KafkaUpstreamPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KafkaUpstreamPluginService `json:"service,omitempty"`
+	Service *KafkaUpstreamPluginService `json:"service"`
 }
 
 func (k KafkaUpstreamPlugin) MarshalJSON() ([]byte, error) {
@@ -616,13 +616,13 @@ type KafkaUpstreamPluginInput struct {
 	Tags   []string                  `json:"tags,omitempty"`
 	Config KafkaUpstreamPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *KafkaUpstreamPluginConsumer `json:"consumer,omitempty"`
+	Consumer *KafkaUpstreamPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []KafkaUpstreamPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KafkaUpstreamPluginRoute `json:"route,omitempty"`
+	Route *KafkaUpstreamPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KafkaUpstreamPluginService `json:"service,omitempty"`
+	Service *KafkaUpstreamPluginService `json:"service"`
 }
 
 func (k KafkaUpstreamPluginInput) MarshalJSON() ([]byte, error) {

@@ -35,7 +35,7 @@ type GatewayTargetDataSourceModel struct {
 	Tags           []types.String                     `tfsdk:"tags"`
 	Target         types.String                       `tfsdk:"target"`
 	UpdatedAt      types.Number                       `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream" tfPlanOnly:"true"`
+	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
 	UpstreamID     types.String                       `tfsdk:"upstream_id"`
 	Weight         types.Int64                        `tfsdk:"weight"`
 }

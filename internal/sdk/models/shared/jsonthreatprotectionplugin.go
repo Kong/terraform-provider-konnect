@@ -234,9 +234,9 @@ type JSONThreatProtectionPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JSONThreatProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JSONThreatProtectionPluginRoute `json:"route,omitempty"`
+	Route *JSONThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JSONThreatProtectionPluginService `json:"service,omitempty"`
+	Service *JSONThreatProtectionPluginService `json:"service"`
 }
 
 func (j JSONThreatProtectionPlugin) MarshalJSON() ([]byte, error) {
@@ -345,9 +345,9 @@ type JSONThreatProtectionPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JSONThreatProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JSONThreatProtectionPluginRoute `json:"route,omitempty"`
+	Route *JSONThreatProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JSONThreatProtectionPluginService `json:"service,omitempty"`
+	Service *JSONThreatProtectionPluginService `json:"service"`
 }
 
 func (j JSONThreatProtectionPluginInput) MarshalJSON() ([]byte, error) {

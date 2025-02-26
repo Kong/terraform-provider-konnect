@@ -200,13 +200,13 @@ type DatadogTracingPlugin struct {
 	UpdatedAt *int64                     `json:"updated_at,omitempty"`
 	Config    DatadogTracingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []DatadogTracingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *DatadogTracingPluginRoute `json:"route,omitempty"`
+	Route *DatadogTracingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *DatadogTracingPluginService `json:"service,omitempty"`
+	Service *DatadogTracingPluginService `json:"service"`
 }
 
 func (d DatadogTracingPlugin) MarshalJSON() ([]byte, error) {
@@ -320,13 +320,13 @@ type DatadogTracingPluginInput struct {
 	Tags   []string                   `json:"tags,omitempty"`
 	Config DatadogTracingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *DatadogTracingPluginConsumerGroup `json:"consumer_group"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []DatadogTracingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *DatadogTracingPluginRoute `json:"route,omitempty"`
+	Route *DatadogTracingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *DatadogTracingPluginService `json:"service,omitempty"`
+	Service *DatadogTracingPluginService `json:"service"`
 }
 
 func (d DatadogTracingPluginInput) MarshalJSON() ([]byte, error) {

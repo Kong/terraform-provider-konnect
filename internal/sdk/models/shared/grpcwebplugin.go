@@ -182,13 +182,13 @@ type GrpcWebPlugin struct {
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
 	Config    GrpcWebPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *GrpcWebPluginConsumer `json:"consumer,omitempty"`
+	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *GrpcWebPluginRoute `json:"route,omitempty"`
+	Route *GrpcWebPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *GrpcWebPluginService `json:"service,omitempty"`
+	Service *GrpcWebPluginService `json:"service"`
 }
 
 func (g GrpcWebPlugin) MarshalJSON() ([]byte, error) {
@@ -302,13 +302,13 @@ type GrpcWebPluginInput struct {
 	Tags   []string            `json:"tags,omitempty"`
 	Config GrpcWebPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *GrpcWebPluginConsumer `json:"consumer,omitempty"`
+	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *GrpcWebPluginRoute `json:"route,omitempty"`
+	Route *GrpcWebPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *GrpcWebPluginService `json:"service,omitempty"`
+	Service *GrpcWebPluginService `json:"service"`
 }
 
 func (g GrpcWebPluginInput) MarshalJSON() ([]byte, error) {

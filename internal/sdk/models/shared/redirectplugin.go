@@ -175,15 +175,15 @@ type RedirectPlugin struct {
 	UpdatedAt *int64               `json:"updated_at,omitempty"`
 	Config    RedirectPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RedirectPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RedirectPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *RedirectPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *RedirectPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RedirectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RedirectPluginRoute `json:"route,omitempty"`
+	Route *RedirectPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RedirectPluginService `json:"service,omitempty"`
+	Service *RedirectPluginService `json:"service"`
 }
 
 func (r RedirectPlugin) MarshalJSON() ([]byte, error) {
@@ -304,15 +304,15 @@ type RedirectPluginInput struct {
 	Tags   []string             `json:"tags,omitempty"`
 	Config RedirectPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RedirectPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RedirectPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *RedirectPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *RedirectPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RedirectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RedirectPluginRoute `json:"route,omitempty"`
+	Route *RedirectPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RedirectPluginService `json:"service,omitempty"`
+	Service *RedirectPluginService `json:"service"`
 }
 
 func (r RedirectPluginInput) MarshalJSON() ([]byte, error) {
