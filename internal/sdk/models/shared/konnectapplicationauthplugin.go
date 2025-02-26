@@ -4156,9 +4156,9 @@ type KonnectApplicationAuthPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KonnectApplicationAuthPluginRoute `json:"route,omitempty"`
+	Route *KonnectApplicationAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KonnectApplicationAuthPluginService `json:"service,omitempty"`
+	Service *KonnectApplicationAuthPluginService `json:"service"`
 }
 
 func (k KonnectApplicationAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -4267,9 +4267,9 @@ type KonnectApplicationAuthPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []KonnectApplicationAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KonnectApplicationAuthPluginRoute `json:"route,omitempty"`
+	Route *KonnectApplicationAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KonnectApplicationAuthPluginService `json:"service,omitempty"`
+	Service *KonnectApplicationAuthPluginService `json:"service"`
 }
 
 func (k KonnectApplicationAuthPluginInput) MarshalJSON() ([]byte, error) {

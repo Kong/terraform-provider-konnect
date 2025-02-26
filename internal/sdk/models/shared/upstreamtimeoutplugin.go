@@ -163,13 +163,13 @@ type UpstreamTimeoutPlugin struct {
 	UpdatedAt *int64                      `json:"updated_at,omitempty"`
 	Config    UpstreamTimeoutPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *UpstreamTimeoutPluginConsumer `json:"consumer,omitempty"`
+	Consumer *UpstreamTimeoutPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []UpstreamTimeoutPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *UpstreamTimeoutPluginRoute `json:"route,omitempty"`
+	Route *UpstreamTimeoutPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *UpstreamTimeoutPluginService `json:"service,omitempty"`
+	Service *UpstreamTimeoutPluginService `json:"service"`
 }
 
 func (u UpstreamTimeoutPlugin) MarshalJSON() ([]byte, error) {
@@ -283,13 +283,13 @@ type UpstreamTimeoutPluginInput struct {
 	Tags   []string                    `json:"tags,omitempty"`
 	Config UpstreamTimeoutPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *UpstreamTimeoutPluginConsumer `json:"consumer,omitempty"`
+	Consumer *UpstreamTimeoutPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []UpstreamTimeoutPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *UpstreamTimeoutPluginRoute `json:"route,omitempty"`
+	Route *UpstreamTimeoutPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *UpstreamTimeoutPluginService `json:"service,omitempty"`
+	Service *UpstreamTimeoutPluginService `json:"service"`
 }
 
 func (u UpstreamTimeoutPluginInput) MarshalJSON() ([]byte, error) {

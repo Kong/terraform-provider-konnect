@@ -203,15 +203,15 @@ type IPRestrictionPlugin struct {
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    IPRestrictionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *IPRestrictionPluginConsumer `json:"consumer,omitempty"`
+	Consumer *IPRestrictionPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *IPRestrictionPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *IPRestrictionPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
 	Protocols []IPRestrictionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *IPRestrictionPluginRoute `json:"route,omitempty"`
+	Route *IPRestrictionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *IPRestrictionPluginService `json:"service,omitempty"`
+	Service *IPRestrictionPluginService `json:"service"`
 }
 
 func (i IPRestrictionPlugin) MarshalJSON() ([]byte, error) {
@@ -332,15 +332,15 @@ type IPRestrictionPluginInput struct {
 	Tags   []string                  `json:"tags,omitempty"`
 	Config IPRestrictionPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *IPRestrictionPluginConsumer `json:"consumer,omitempty"`
+	Consumer *IPRestrictionPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *IPRestrictionPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *IPRestrictionPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing protocols.
 	Protocols []IPRestrictionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *IPRestrictionPluginRoute `json:"route,omitempty"`
+	Route *IPRestrictionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *IPRestrictionPluginService `json:"service,omitempty"`
+	Service *IPRestrictionPluginService `json:"service"`
 }
 
 func (i IPRestrictionPluginInput) MarshalJSON() ([]byte, error) {

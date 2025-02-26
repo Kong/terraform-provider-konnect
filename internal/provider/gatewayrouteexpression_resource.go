@@ -51,7 +51,7 @@ type GatewayRouteExpressionResourceModel struct {
 	Protocols               []types.String                     `tfsdk:"protocols"`
 	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service" tfPlanOnly:"true"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
 	StripPath               types.Bool                         `tfsdk:"strip_path"`
 	Tags                    []types.String                     `tfsdk:"tags"`
 	UpdatedAt               types.Int64                        `tfsdk:"updated_at"`

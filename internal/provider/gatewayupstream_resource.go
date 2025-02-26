@@ -39,7 +39,7 @@ type GatewayUpstreamResource struct {
 // GatewayUpstreamResourceModel describes the resource data model.
 type GatewayUpstreamResourceModel struct {
 	Algorithm              types.String                       `tfsdk:"algorithm"`
-	ClientCertificate      *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate" tfPlanOnly:"true"`
+	ClientCertificate      *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate"`
 	ControlPlaneID         types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt              types.Int64                        `tfsdk:"created_at"`
 	HashFallback           types.String                       `tfsdk:"hash_fallback"`

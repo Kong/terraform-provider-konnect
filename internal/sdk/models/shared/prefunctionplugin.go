@@ -225,9 +225,9 @@ type PreFunctionPlugin struct {
 	// A set of strings representing protocols.
 	Protocols []PreFunctionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *PreFunctionPluginRoute `json:"route,omitempty"`
+	Route *PreFunctionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *PreFunctionPluginService `json:"service,omitempty"`
+	Service *PreFunctionPluginService `json:"service"`
 }
 
 func (p PreFunctionPlugin) MarshalJSON() ([]byte, error) {
@@ -336,9 +336,9 @@ type PreFunctionPluginInput struct {
 	// A set of strings representing protocols.
 	Protocols []PreFunctionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *PreFunctionPluginRoute `json:"route,omitempty"`
+	Route *PreFunctionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *PreFunctionPluginService `json:"service,omitempty"`
+	Service *PreFunctionPluginService `json:"service"`
 }
 
 func (p PreFunctionPluginInput) MarshalJSON() ([]byte, error) {

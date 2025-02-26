@@ -522,9 +522,9 @@ type SessionPlugin struct {
 	// A set of strings representing protocols.
 	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *SessionPluginRoute `json:"route,omitempty"`
+	Route *SessionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SessionPluginService `json:"service,omitempty"`
+	Service *SessionPluginService `json:"service"`
 }
 
 func (s SessionPlugin) MarshalJSON() ([]byte, error) {
@@ -633,9 +633,9 @@ type SessionPluginInput struct {
 	// A set of strings representing protocols.
 	Protocols []SessionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *SessionPluginRoute `json:"route,omitempty"`
+	Route *SessionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SessionPluginService `json:"service,omitempty"`
+	Service *SessionPluginService `json:"service"`
 }
 
 func (s SessionPluginInput) MarshalJSON() ([]byte, error) {

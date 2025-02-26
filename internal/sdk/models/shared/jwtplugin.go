@@ -242,9 +242,9 @@ type JwtPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JwtPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JwtPluginRoute `json:"route,omitempty"`
+	Route *JwtPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JwtPluginService `json:"service,omitempty"`
+	Service *JwtPluginService `json:"service"`
 }
 
 func (j JwtPlugin) MarshalJSON() ([]byte, error) {
@@ -353,9 +353,9 @@ type JwtPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JwtPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JwtPluginRoute `json:"route,omitempty"`
+	Route *JwtPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JwtPluginService `json:"service,omitempty"`
+	Service *JwtPluginService `json:"service"`
 }
 
 func (j JwtPluginInput) MarshalJSON() ([]byte, error) {

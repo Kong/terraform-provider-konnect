@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -41,8 +40,8 @@ type GatewayMTLSAuthResource struct {
 
 // GatewayMTLSAuthResourceModel describes the resource data model.
 type GatewayMTLSAuthResourceModel struct {
-	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerID     types.String                       `tfsdk:"consumer_id"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -67,7 +66,6 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 				})),
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
@@ -90,7 +88,6 @@ func (r *GatewayMTLSAuthResource) Schema(ctx context.Context, req resource.Schem
 				})),
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{

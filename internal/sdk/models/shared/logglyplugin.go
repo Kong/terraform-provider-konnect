@@ -414,13 +414,13 @@ type LogglyPlugin struct {
 	UpdatedAt *int64             `json:"updated_at,omitempty"`
 	Config    LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *LogglyPluginConsumer `json:"consumer,omitempty"`
+	Consumer *LogglyPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []LogglyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *LogglyPluginRoute `json:"route,omitempty"`
+	Route *LogglyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LogglyPluginService `json:"service,omitempty"`
+	Service *LogglyPluginService `json:"service"`
 }
 
 func (l LogglyPlugin) MarshalJSON() ([]byte, error) {
@@ -534,13 +534,13 @@ type LogglyPluginInput struct {
 	Tags   []string           `json:"tags,omitempty"`
 	Config LogglyPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *LogglyPluginConsumer `json:"consumer,omitempty"`
+	Consumer *LogglyPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []LogglyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *LogglyPluginRoute `json:"route,omitempty"`
+	Route *LogglyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *LogglyPluginService `json:"service,omitempty"`
+	Service *LogglyPluginService `json:"service"`
 }
 
 func (l LogglyPluginInput) MarshalJSON() ([]byte, error) {

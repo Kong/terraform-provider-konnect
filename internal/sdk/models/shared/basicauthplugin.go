@@ -159,9 +159,9 @@ type BasicAuthPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []BasicAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *BasicAuthPluginRoute `json:"route,omitempty"`
+	Route *BasicAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *BasicAuthPluginService `json:"service,omitempty"`
+	Service *BasicAuthPluginService `json:"service"`
 }
 
 func (b BasicAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -270,9 +270,9 @@ type BasicAuthPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []BasicAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *BasicAuthPluginRoute `json:"route,omitempty"`
+	Route *BasicAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *BasicAuthPluginService `json:"service,omitempty"`
+	Service *BasicAuthPluginService `json:"service"`
 }
 
 func (b BasicAuthPluginInput) MarshalJSON() ([]byte, error) {

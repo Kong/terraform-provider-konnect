@@ -171,9 +171,9 @@ type ACLPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []ACLPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *ACLPluginRoute `json:"route,omitempty"`
+	Route *ACLPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ACLPluginService `json:"service,omitempty"`
+	Service *ACLPluginService `json:"service"`
 }
 
 func (a ACLPlugin) MarshalJSON() ([]byte, error) {
@@ -282,9 +282,9 @@ type ACLPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []ACLPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *ACLPluginRoute `json:"route,omitempty"`
+	Route *ACLPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ACLPluginService `json:"service,omitempty"`
+	Service *ACLPluginService `json:"service"`
 }
 
 func (a ACLPluginInput) MarshalJSON() ([]byte, error) {

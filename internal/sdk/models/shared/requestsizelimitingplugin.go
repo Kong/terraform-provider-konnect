@@ -193,13 +193,13 @@ type RequestSizeLimitingPlugin struct {
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
 	Config    RequestSizeLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RequestSizeLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RequestSizeLimitingPluginRoute `json:"route,omitempty"`
+	Route *RequestSizeLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestSizeLimitingPluginService `json:"service,omitempty"`
+	Service *RequestSizeLimitingPluginService `json:"service"`
 }
 
 func (r RequestSizeLimitingPlugin) MarshalJSON() ([]byte, error) {
@@ -313,13 +313,13 @@ type RequestSizeLimitingPluginInput struct {
 	Tags   []string                        `json:"tags,omitempty"`
 	Config RequestSizeLimitingPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RequestSizeLimitingPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RequestSizeLimitingPluginRoute `json:"route,omitempty"`
+	Route *RequestSizeLimitingPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestSizeLimitingPluginService `json:"service,omitempty"`
+	Service *RequestSizeLimitingPluginService `json:"service"`
 }
 
 func (r RequestSizeLimitingPluginInput) MarshalJSON() ([]byte, error) {

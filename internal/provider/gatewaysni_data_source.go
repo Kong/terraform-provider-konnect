@@ -29,7 +29,7 @@ type GatewaySNIDataSource struct {
 
 // GatewaySNIDataSourceModel describes the data model.
 type GatewaySNIDataSourceModel struct {
-	Certificate    *tfTypes.ACLWithoutParentsConsumer `tfsdk:"certificate" tfPlanOnly:"true"`
+	Certificate    *tfTypes.ACLWithoutParentsConsumer `tfsdk:"certificate"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	ID             types.String                       `tfsdk:"id"`

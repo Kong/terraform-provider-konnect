@@ -295,9 +295,9 @@ type InjectionProtectionPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []InjectionProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *InjectionProtectionPluginRoute `json:"route,omitempty"`
+	Route *InjectionProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *InjectionProtectionPluginService `json:"service,omitempty"`
+	Service *InjectionProtectionPluginService `json:"service"`
 }
 
 func (i InjectionProtectionPlugin) MarshalJSON() ([]byte, error) {
@@ -406,9 +406,9 @@ type InjectionProtectionPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []InjectionProtectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *InjectionProtectionPluginRoute `json:"route,omitempty"`
+	Route *InjectionProtectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *InjectionProtectionPluginService `json:"service,omitempty"`
+	Service *InjectionProtectionPluginService `json:"service"`
 }
 
 func (i InjectionProtectionPluginInput) MarshalJSON() ([]byte, error) {

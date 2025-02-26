@@ -353,9 +353,9 @@ type MtlsAuthPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *MtlsAuthPluginRoute `json:"route,omitempty"`
+	Route *MtlsAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *MtlsAuthPluginService `json:"service,omitempty"`
+	Service *MtlsAuthPluginService `json:"service"`
 }
 
 func (m MtlsAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -464,9 +464,9 @@ type MtlsAuthPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []MtlsAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *MtlsAuthPluginRoute `json:"route,omitempty"`
+	Route *MtlsAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *MtlsAuthPluginService `json:"service,omitempty"`
+	Service *MtlsAuthPluginService `json:"service"`
 }
 
 func (m MtlsAuthPluginInput) MarshalJSON() ([]byte, error) {

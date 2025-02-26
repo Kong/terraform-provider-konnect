@@ -489,13 +489,13 @@ type AwsLambdaPlugin struct {
 	UpdatedAt *int64                `json:"updated_at,omitempty"`
 	Config    AwsLambdaPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AwsLambdaPluginConsumer `json:"consumer,omitempty"`
+	Consumer *AwsLambdaPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AwsLambdaPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AwsLambdaPluginRoute `json:"route,omitempty"`
+	Route *AwsLambdaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AwsLambdaPluginService `json:"service,omitempty"`
+	Service *AwsLambdaPluginService `json:"service"`
 }
 
 func (a AwsLambdaPlugin) MarshalJSON() ([]byte, error) {
@@ -609,13 +609,13 @@ type AwsLambdaPluginInput struct {
 	Tags   []string              `json:"tags,omitempty"`
 	Config AwsLambdaPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AwsLambdaPluginConsumer `json:"consumer,omitempty"`
+	Consumer *AwsLambdaPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AwsLambdaPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AwsLambdaPluginRoute `json:"route,omitempty"`
+	Route *AwsLambdaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AwsLambdaPluginService `json:"service,omitempty"`
+	Service *AwsLambdaPluginService `json:"service"`
 }
 
 func (a AwsLambdaPluginInput) MarshalJSON() ([]byte, error) {

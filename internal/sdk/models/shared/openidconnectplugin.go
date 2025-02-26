@@ -4011,9 +4011,9 @@ type OpenidConnectPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OpenidConnectPluginRoute `json:"route,omitempty"`
+	Route *OpenidConnectPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpenidConnectPluginService `json:"service,omitempty"`
+	Service *OpenidConnectPluginService `json:"service"`
 }
 
 func (o OpenidConnectPlugin) MarshalJSON() ([]byte, error) {
@@ -4122,9 +4122,9 @@ type OpenidConnectPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OpenidConnectPluginRoute `json:"route,omitempty"`
+	Route *OpenidConnectPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpenidConnectPluginService `json:"service,omitempty"`
+	Service *OpenidConnectPluginService `json:"service"`
 }
 
 func (o OpenidConnectPluginInput) MarshalJSON() ([]byte, error) {

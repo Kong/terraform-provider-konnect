@@ -270,9 +270,9 @@ type Oauth2IntrospectionPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *Oauth2IntrospectionPluginRoute `json:"route,omitempty"`
+	Route *Oauth2IntrospectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *Oauth2IntrospectionPluginService `json:"service,omitempty"`
+	Service *Oauth2IntrospectionPluginService `json:"service"`
 }
 
 func (o Oauth2IntrospectionPlugin) MarshalJSON() ([]byte, error) {
@@ -381,9 +381,9 @@ type Oauth2IntrospectionPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []Oauth2IntrospectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *Oauth2IntrospectionPluginRoute `json:"route,omitempty"`
+	Route *Oauth2IntrospectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *Oauth2IntrospectionPluginService `json:"service,omitempty"`
+	Service *Oauth2IntrospectionPluginService `json:"service"`
 }
 
 func (o Oauth2IntrospectionPluginInput) MarshalJSON() ([]byte, error) {

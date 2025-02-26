@@ -1069,9 +1069,9 @@ type SamlPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *SamlPluginRoute `json:"route,omitempty"`
+	Route *SamlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SamlPluginService `json:"service,omitempty"`
+	Service *SamlPluginService `json:"service"`
 }
 
 func (s SamlPlugin) MarshalJSON() ([]byte, error) {
@@ -1180,9 +1180,9 @@ type SamlPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *SamlPluginRoute `json:"route,omitempty"`
+	Route *SamlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SamlPluginService `json:"service,omitempty"`
+	Service *SamlPluginService `json:"service"`
 }
 
 func (s SamlPluginInput) MarshalJSON() ([]byte, error) {

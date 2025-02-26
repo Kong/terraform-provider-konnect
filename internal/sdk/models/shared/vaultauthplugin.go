@@ -189,9 +189,9 @@ type VaultAuthPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *VaultAuthPluginRoute `json:"route,omitempty"`
+	Route *VaultAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *VaultAuthPluginService `json:"service,omitempty"`
+	Service *VaultAuthPluginService `json:"service"`
 }
 
 func (v VaultAuthPlugin) MarshalJSON() ([]byte, error) {
@@ -300,9 +300,9 @@ type VaultAuthPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []VaultAuthPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *VaultAuthPluginRoute `json:"route,omitempty"`
+	Route *VaultAuthPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *VaultAuthPluginService `json:"service,omitempty"`
+	Service *VaultAuthPluginService `json:"service"`
 }
 
 func (v VaultAuthPluginInput) MarshalJSON() ([]byte, error) {

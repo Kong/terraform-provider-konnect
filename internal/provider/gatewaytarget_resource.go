@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
-	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -49,7 +48,7 @@ type GatewayTargetResourceModel struct {
 	Tags           []types.String                     `tfsdk:"tags"`
 	Target         types.String                       `tfsdk:"target"`
 	UpdatedAt      types.Number                       `tfsdk:"updated_at"`
-	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream" tfPlanOnly:"true"`
+	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
 	UpstreamID     types.String                       `tfsdk:"upstream_id"`
 	Weight         types.Int64                        `tfsdk:"weight"`
 }
@@ -113,7 +112,6 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				})),
 				PlanModifiers: []planmodifier.Object{
 					objectplanmodifier.RequiresReplaceIfConfigured(),
-					speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 				},
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{

@@ -193,15 +193,15 @@ type AiPromptGuardPlugin struct {
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    AiPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AiPromptGuardPluginConsumer `json:"consumer,omitempty"`
+	Consumer *AiPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *AiPromptGuardPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *AiPromptGuardPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AiPromptGuardPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AiPromptGuardPluginRoute `json:"route,omitempty"`
+	Route *AiPromptGuardPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiPromptGuardPluginService `json:"service,omitempty"`
+	Service *AiPromptGuardPluginService `json:"service"`
 }
 
 func (a AiPromptGuardPlugin) MarshalJSON() ([]byte, error) {
@@ -322,15 +322,15 @@ type AiPromptGuardPluginInput struct {
 	Tags   []string                  `json:"tags,omitempty"`
 	Config AiPromptGuardPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *AiPromptGuardPluginConsumer `json:"consumer,omitempty"`
+	Consumer *AiPromptGuardPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *AiPromptGuardPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *AiPromptGuardPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []AiPromptGuardPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AiPromptGuardPluginRoute `json:"route,omitempty"`
+	Route *AiPromptGuardPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiPromptGuardPluginService `json:"service,omitempty"`
+	Service *AiPromptGuardPluginService `json:"service"`
 }
 
 func (a AiPromptGuardPluginInput) MarshalJSON() ([]byte, error) {

@@ -29,8 +29,8 @@ type GatewayMTLSAuthDataSource struct {
 
 // GatewayMTLSAuthDataSourceModel describes the data model.
 type GatewayMTLSAuthDataSourceModel struct {
-	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate" tfPlanOnly:"true"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer" tfPlanOnly:"true"`
+	CaCertificate  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"ca_certificate"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerID     types.String                       `tfsdk:"consumer_id"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

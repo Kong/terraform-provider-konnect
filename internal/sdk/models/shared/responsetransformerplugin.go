@@ -400,15 +400,15 @@ type ResponseTransformerPlugin struct {
 	UpdatedAt *int64                          `json:"updated_at,omitempty"`
 	Config    ResponseTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *ResponseTransformerPluginConsumer `json:"consumer,omitempty"`
+	Consumer *ResponseTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *ResponseTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *ResponseTransformerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []ResponseTransformerPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *ResponseTransformerPluginRoute `json:"route,omitempty"`
+	Route *ResponseTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ResponseTransformerPluginService `json:"service,omitempty"`
+	Service *ResponseTransformerPluginService `json:"service"`
 }
 
 func (r ResponseTransformerPlugin) MarshalJSON() ([]byte, error) {
@@ -529,15 +529,15 @@ type ResponseTransformerPluginInput struct {
 	Tags   []string                        `json:"tags,omitempty"`
 	Config ResponseTransformerPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *ResponseTransformerPluginConsumer `json:"consumer,omitempty"`
+	Consumer *ResponseTransformerPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *ResponseTransformerPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *ResponseTransformerPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []ResponseTransformerPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *ResponseTransformerPluginRoute `json:"route,omitempty"`
+	Route *ResponseTransformerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *ResponseTransformerPluginService `json:"service,omitempty"`
+	Service *ResponseTransformerPluginService `json:"service"`
 }
 
 func (r ResponseTransformerPluginInput) MarshalJSON() ([]byte, error) {
