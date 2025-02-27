@@ -153,9 +153,9 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 			} else {
 				timeout = nil
 			}
-			typeVar := new(shared.Type)
+			typeVar := new(shared.UpstreamType)
 			if !r.Healthchecks.Active.Type.IsUnknown() && !r.Healthchecks.Active.Type.IsNull() {
-				*typeVar = shared.Type(r.Healthchecks.Active.Type.ValueString())
+				*typeVar = shared.UpstreamType(r.Healthchecks.Active.Type.ValueString())
 			} else {
 				typeVar = nil
 			}
@@ -228,9 +228,9 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 					Successes:    successes1,
 				}
 			}
-			typeVar1 := new(shared.UpstreamType)
+			typeVar1 := new(shared.UpstreamHealthchecksType)
 			if !r.Healthchecks.Passive.Type.IsUnknown() && !r.Healthchecks.Passive.Type.IsNull() {
-				*typeVar1 = shared.UpstreamType(r.Healthchecks.Passive.Type.ValueString())
+				*typeVar1 = shared.UpstreamHealthchecksType(r.Healthchecks.Passive.Type.ValueString())
 			} else {
 				typeVar1 = nil
 			}

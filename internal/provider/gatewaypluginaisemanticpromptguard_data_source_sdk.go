@@ -59,7 +59,7 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSourceModel) RefreshFromSharedAiS
 		if resp.Config.Rules == nil {
 			r.Config.Rules = nil
 		} else {
-			r.Config.Rules = &tfTypes.Rules{}
+			r.Config.Rules = &tfTypes.AiSemanticPromptGuardPluginRules{}
 			r.Config.Rules.AllowPrompts = make([]types.String, 0, len(resp.Config.Rules.AllowPrompts))
 			for _, v := range resp.Config.Rules.AllowPrompts {
 				r.Config.Rules.AllowPrompts = append(r.Config.Rules.AllowPrompts, types.StringValue(v))

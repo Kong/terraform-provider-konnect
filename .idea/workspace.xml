@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="44e8603c-54a8-4d62-83b1-00a668fe7db5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/boolplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/listplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/objectplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/stringplanmodifier/arbitrary_json_modifier.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.speakeasy/gen.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.speakeasy/gen.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.speakeasy/workflow.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.speakeasy/workflow.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/examples/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginwebsocketvalidator_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginwebsocketvalidator_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayupstream_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayupstream_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/provider.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/ai_proxy_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/ai_proxy_plugin_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/ai_semantic_prompt_guard_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/ai_semantic_prompt_guard_plugin_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/datadog_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/datadog_plugin_config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/llm.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/llm.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/logging.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/logging.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/metrics.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/metrics.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/rules.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/rules.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/targets.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/targets.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/konnect.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/konnect.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/mesh.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/mesh.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/aiproxyplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/aiproxyplugin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/aisemanticpromptguardplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/aisemanticpromptguardplugin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/apiproductdocument.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/apiproductdocument.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/datadogplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/datadogplugin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/upstream.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/upstream.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/websocketvalidatorplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/websocketvalidatorplugin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/openapi.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.23.5.darwin-arm64" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2s4KPVouyAIw4Q6Ovzuf4CWZ1GP" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Go Build.go build github.com/kong/terraform-provider-konnect/v2.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;km-from-2.40&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/krzysztof.slonka@konghq.com&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration name="go build github.com/kong/terraform-provider-konnect/v2" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="terraform-provider-konnect" />
+      <working_directory value="$PROJECT_DIR$" />
+      <parameters value="-debug" />
+      <kind value="PACKAGE" />
+      <package value="github.com/kong/terraform-provider-konnect/v2" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/kong/terraform-provider-konnect/v2" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-5df93f7ad4aa-df9ad98b711f-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-242.23339.24" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-GO-242.23339.24" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <url>file://$USER_HOME$/go/pkg/mod/github.com/hashicorp/terraform-plugin-framework@v1.12.0/resource/schema/list_attribute.go</url>
+          <line>77</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint type="DlvLineBreakpoint">
+          <condition expression="name == &quot;skip_creating_initial_policies&quot;" language="go" />
+          <url>file://$USER_HOME$/go/pkg/mod/github.com/hashicorp/terraform-plugin-framework@v1.12.0/internal/toproto6/schema_attribute.go</url>
+          <line>18</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="GoApplicationRunConfiguration">
+        <watch expression="req.Path.String()" language="go" />
+      </configuration>
+    </watches-manager>
+  </component>
+</project>

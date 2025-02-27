@@ -2,12 +2,6 @@
 
 package types
 
-import "github.com/hashicorp/terraform-plugin-framework/types"
-
 type Rules struct {
-	AllowPrompts                []types.String `tfsdk:"allow_prompts"`
-	DenyPrompts                 []types.String `tfsdk:"deny_prompts"`
-	MatchAllConversationHistory types.Bool     `tfsdk:"match_all_conversation_history"`
-	MatchAllRoles               types.Bool     `tfsdk:"match_all_roles"`
-	MaxRequestBodySize          types.Int64    `tfsdk:"max_request_body_size"`
+	Default MeshAccessLogItemSpecFromDefault `tfsdk:"default"`
 }

@@ -2,10 +2,18 @@
 
 all: speakeasy
 
+dev: speakeasy
+	go run main.go -debug
+
 speakeasy: check-speakeasy
-	speakeasy run --skip-versioning --output console --minimal
+	speakeasy run --skip-versioning --output console
 	@go mod tidy
 	@go generate .
+
+speakeasy-clean: speakeasy
+	$(make) clean-docs
+
+clean-docs:
 	@git clean -fd examples docs > /dev/null
 	@git checkout -- README.md examples/README.md
 	@rm USAGE.md

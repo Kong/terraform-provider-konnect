@@ -162,7 +162,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPluginInput() *shared
 			ParamValue:              paramValue,
 		}
 	}
-	var logging *shared.Logging
+	var logging *shared.AiProxyPluginLogging
 	if r.Config.Logging != nil {
 		logPayloads := new(bool)
 		if !r.Config.Logging.LogPayloads.IsUnknown() && !r.Config.Logging.LogPayloads.IsNull() {
@@ -176,7 +176,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPluginInput() *shared
 		} else {
 			logStatistics = nil
 		}
-		logging = &shared.Logging{
+		logging = &shared.AiProxyPluginLogging{
 			LogPayloads:   logPayloads,
 			LogStatistics: logStatistics,
 		}
@@ -493,7 +493,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp 
 		if resp.Config.Logging == nil {
 			r.Config.Logging = nil
 		} else {
-			r.Config.Logging = &tfTypes.Logging{}
+			r.Config.Logging = &tfTypes.AiProxyPluginLogging{}
 			r.Config.Logging.LogPayloads = types.BoolPointerValue(resp.Config.Logging.LogPayloads)
 			r.Config.Logging.LogStatistics = types.BoolPointerValue(resp.Config.Logging.LogStatistics)
 		}
