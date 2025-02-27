@@ -162,9 +162,9 @@ type JweDecryptPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JweDecryptPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JweDecryptPluginRoute `json:"route,omitempty"`
+	Route *JweDecryptPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JweDecryptPluginService `json:"service,omitempty"`
+	Service *JweDecryptPluginService `json:"service"`
 }
 
 func (j JweDecryptPlugin) MarshalJSON() ([]byte, error) {
@@ -273,9 +273,9 @@ type JweDecryptPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JweDecryptPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JweDecryptPluginRoute `json:"route,omitempty"`
+	Route *JweDecryptPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JweDecryptPluginService `json:"service,omitempty"`
+	Service *JweDecryptPluginService `json:"service"`
 }
 
 func (j JweDecryptPluginInput) MarshalJSON() ([]byte, error) {

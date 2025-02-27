@@ -177,9 +177,9 @@ type TLSMetadataHeadersPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *TLSMetadataHeadersPluginRoute `json:"route,omitempty"`
+	Route *TLSMetadataHeadersPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *TLSMetadataHeadersPluginService `json:"service,omitempty"`
+	Service *TLSMetadataHeadersPluginService `json:"service"`
 }
 
 func (t TLSMetadataHeadersPlugin) MarshalJSON() ([]byte, error) {
@@ -288,9 +288,9 @@ type TLSMetadataHeadersPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []TLSMetadataHeadersPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *TLSMetadataHeadersPluginRoute `json:"route,omitempty"`
+	Route *TLSMetadataHeadersPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *TLSMetadataHeadersPluginService `json:"service,omitempty"`
+	Service *TLSMetadataHeadersPluginService `json:"service"`
 }
 
 func (t TLSMetadataHeadersPluginInput) MarshalJSON() ([]byte, error) {

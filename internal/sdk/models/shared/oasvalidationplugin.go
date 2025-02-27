@@ -271,13 +271,13 @@ type OasValidationPlugin struct {
 	UpdatedAt *int64                    `json:"updated_at,omitempty"`
 	Config    OasValidationPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *OasValidationPluginConsumer `json:"consumer,omitempty"`
+	Consumer *OasValidationPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OasValidationPluginRoute `json:"route,omitempty"`
+	Route *OasValidationPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OasValidationPluginService `json:"service,omitempty"`
+	Service *OasValidationPluginService `json:"service"`
 }
 
 func (o OasValidationPlugin) MarshalJSON() ([]byte, error) {
@@ -391,13 +391,13 @@ type OasValidationPluginInput struct {
 	Tags   []string                  `json:"tags,omitempty"`
 	Config OasValidationPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *OasValidationPluginConsumer `json:"consumer,omitempty"`
+	Consumer *OasValidationPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
 	Protocols []OasValidationPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OasValidationPluginRoute `json:"route,omitempty"`
+	Route *OasValidationPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OasValidationPluginService `json:"service,omitempty"`
+	Service *OasValidationPluginService `json:"service"`
 }
 
 func (o OasValidationPluginInput) MarshalJSON() ([]byte, error) {
