@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 8a404d65181765c27b22c3321b8956cc
+  docChecksum: 3e60e1d8f49bf0f0bc3d423870ee4203
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -2956,10 +2956,10 @@ examples:
   create-cp:
     speakeasy-default-create-cp:
       requestBody:
-        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
+        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "features": [{"type": "MeshCreation", "meshCreation": {"enabled": false}}, {"type": "HostnameGeneratorCreation", "hostnameGeneratorCreation": {"enabled": false}}], "labels": {"test": "true"}}
       responses:
         "201":
-          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "features": [{"type": "MeshCreation", "meshCreation": {"enabled": false}}, {"type": "HostnameGeneratorCreation", "hostnameGeneratorCreation": {"enabled": false}}], "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
         "400":
           application/problem+json: {"status": 498676, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}, {"field": "name", "rule": "max_length", "maximum": 8, "source": "body", "reason": "must not have more than 8 characters"}]}
         "401":
@@ -2973,7 +2973,7 @@ examples:
           cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
       responses:
         "200":
-          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "features": [{"type": "MeshCreation", "meshCreation": {"enabled": false}}, {"type": "HostnameGeneratorCreation", "hostnameGeneratorCreation": {"enabled": false}}], "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -3001,7 +3001,7 @@ examples:
         application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
       responses:
         "200":
-          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "features": [{"type": "MeshCreation", "meshCreation": {"enabled": false}}, {"type": "HostnameGeneratorCreation", "hostnameGeneratorCreation": {"enabled": false}}], "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
+          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
         "400":
           application/problem+json: {"status": 300219, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":

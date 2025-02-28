@@ -15,6 +15,17 @@ MeshControlPlane Resource
 ```terraform
 resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
   description = "A control plane to handle traffic on development environment."
+  features = [
+    {
+      hostname_generator_creation = {
+        enabled = false
+      }
+      mesh_creation = {
+        enabled = false
+      }
+      type = "MeshCreation"
+    }
+  ]
   labels = {
     key = "value",
   }
@@ -32,38 +43,38 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 ### Optional
 
 - `description` (String)
+- `features` (Attributes List) CP features. Requires replacement if changed. (see [below for nested schema](#nestedatt--features))
 - `labels` (Map of String) Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 
 ### Read-Only
 
 - `created_at` (String)
-- `features` (Attributes List) (see [below for nested schema](#nestedatt--features))
 - `id` (String) ID of the control plane.
 - `updated_at` (String)
 
 <a id="nestedatt--features"></a>
 ### Nested Schema for `features`
 
-Read-Only:
+Optional:
 
-- `hostname_generator_creation` (Attributes) (see [below for nested schema](#nestedatt--features--hostname_generator_creation))
-- `mesh_creation` (Attributes) (see [below for nested schema](#nestedatt--features--mesh_creation))
-- `type` (String) must be one of ["MeshCreation", "HostnameGeneratorCreation"]
+- `hostname_generator_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--hostname_generator_creation))
+- `mesh_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--mesh_creation))
+- `type` (String) must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.
 
 <a id="nestedatt--features--hostname_generator_creation"></a>
 ### Nested Schema for `features.hostname_generator_creation`
 
-Read-Only:
+Optional:
 
-- `enabled` (Boolean)
+- `enabled` (Boolean) Requires replacement if changed.
 
 
 <a id="nestedatt--features--mesh_creation"></a>
 ### Nested Schema for `features.mesh_creation`
 
-Read-Only:
+Optional:
 
-- `enabled` (Boolean)
+- `enabled` (Boolean) Requires replacement if changed.
 
 ## Import
 

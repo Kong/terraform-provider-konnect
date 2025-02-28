@@ -27558,6 +27558,8 @@ components:
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
     MeshControlPlaneFeatures:
+      description: CP features
+      title: Features
       type: array
       default:
         - type: MeshCreation
@@ -27569,10 +27571,12 @@ components:
       items:
         $ref: '#/components/schemas/MeshControlPlaneFeature'
     MeshControlPlaneFeatureHostnameGenerationCreation:
+      type: object
       properties:
         enabled:
           type: boolean
     MeshControlPlaneFeatureMeshCreation:
+      type: object
       properties:
         enabled:
           type: boolean
@@ -28514,8 +28518,6 @@ components:
           maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
-        features:
-          $ref: '#/components/schemas/MeshControlPlaneFeatures'
         created_at:
           type: string
           format: date-time
@@ -28545,6 +28547,8 @@ components:
           type: string
           example: A control plane to handle traffic on development environment.
           maxLength: 250
+        features:
+          $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
       additionalProperties: false

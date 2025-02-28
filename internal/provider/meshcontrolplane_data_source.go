@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
@@ -29,13 +28,12 @@ type MeshControlPlaneDataSource struct {
 
 // MeshControlPlaneDataSourceModel describes the data model.
 type MeshControlPlaneDataSourceModel struct {
-	CreatedAt   types.String                      `tfsdk:"created_at"`
-	Description types.String                      `tfsdk:"description"`
-	Features    []tfTypes.MeshControlPlaneFeature `tfsdk:"features"`
-	ID          types.String                      `tfsdk:"id"`
-	Labels      map[string]types.String           `tfsdk:"labels"`
-	Name        types.String                      `tfsdk:"name"`
-	UpdatedAt   types.String                      `tfsdk:"updated_at"`
+	CreatedAt   types.String            `tfsdk:"created_at"`
+	Description types.String            `tfsdk:"description"`
+	ID          types.String            `tfsdk:"id"`
+	Labels      map[string]types.String `tfsdk:"labels"`
+	Name        types.String            `tfsdk:"name"`
+	UpdatedAt   types.String            `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -54,32 +52,6 @@ func (r *MeshControlPlaneDataSource) Schema(ctx context.Context, req datasource.
 			},
 			"description": schema.StringAttribute{
 				Computed: true,
-			},
-			"features": schema.ListNestedAttribute{
-				Computed: true,
-				NestedObject: schema.NestedAttributeObject{
-					Attributes: map[string]schema.Attribute{
-						"hostname_generator_creation": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"enabled": schema.BoolAttribute{
-									Computed: true,
-								},
-							},
-						},
-						"mesh_creation": schema.SingleNestedAttribute{
-							Computed: true,
-							Attributes: map[string]schema.Attribute{
-								"enabled": schema.BoolAttribute{
-									Computed: true,
-								},
-							},
-						},
-						"type": schema.StringAttribute{
-							Computed: true,
-						},
-					},
-				},
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

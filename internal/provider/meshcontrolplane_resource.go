@@ -9,6 +9,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -65,28 +70,53 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"features": schema.ListNestedAttribute{
-				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+				},
 				NestedObject: schema.NestedAttributeObject{
+					PlanModifiers: []planmodifier.Object{
+						objectplanmodifier.RequiresReplaceIfConfigured(),
+					},
 					Attributes: map[string]schema.Attribute{
 						"hostname_generator_creation": schema.SingleNestedAttribute{
-							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"enabled": schema.BoolAttribute{
-									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.Bool{
+										boolplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									Description: `Requires replacement if changed.`,
 								},
 							},
+							Description: `Requires replacement if changed.`,
 						},
 						"mesh_creation": schema.SingleNestedAttribute{
-							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
 							Attributes: map[string]schema.Attribute{
 								"enabled": schema.BoolAttribute{
-									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.Bool{
+										boolplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									Description: `Requires replacement if changed.`,
 								},
 							},
+							Description: `Requires replacement if changed.`,
 						},
 						"type": schema.StringAttribute{
-							Computed:    true,
-							Description: `must be one of ["MeshCreation", "HostnameGeneratorCreation"]`,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								stringplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Description: `must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.`,
 							Validators: []validator.String{
 								stringvalidator.OneOf(
 									"MeshCreation",
@@ -96,6 +126,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
+				Description: `CP features. Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,
@@ -185,6 +216,34 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var cpID string
+	cpID = data.ID.ValueString()
+
+	request1 := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+	res1, err := r.client.Mesh.GetMeshControlPlane(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.MeshControlPlane != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedMeshControlPlane(res1.MeshControlPlane)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
