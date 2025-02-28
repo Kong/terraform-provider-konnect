@@ -197,9 +197,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -339,9 +339,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -381,9 +381,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -553,9 +553,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -725,9 +725,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -897,9 +897,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1069,9 +1069,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1241,9 +1241,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1413,9 +1413,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1585,9 +1585,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1757,9 +1757,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -1929,9 +1929,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2101,9 +2101,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2273,9 +2273,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2445,9 +2445,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2617,9 +2617,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2789,9 +2789,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -2961,9 +2961,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3133,9 +3133,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3305,9 +3305,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3477,9 +3477,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3649,9 +3649,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3821,9 +3821,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -3993,9 +3993,9 @@ paths:
           required: false
           schema:
             type: integer
+            default: 100
             maximum: 1000
             minimum: 1
-          default: 100
         - name: filter
           in: query
           description: 'filter by labels when multiple filters are present, they are ANDed'
@@ -22128,7 +22128,7 @@ components:
                         format: int32
                         x-speakeasy-param-computed: false
                       protocol:
-                        description: 'Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.'
+                        description: 'Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.'
                         type: string
                         default: tcp
                         enum:
@@ -22137,6 +22137,7 @@ components:
                           - grpc
                           - http
                           - http2
+                          - mysql
                         x-speakeasy-param-computed: false
                       type:
                         description: 'Type of the match, one of `Domain`, `IP` or `CIDR` is available.'
@@ -27556,6 +27557,39 @@ components:
               type: string
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
+    MeshControlPlaneFeatures:
+      type: array
+      default:
+        - type: MeshCreation
+          meshCreation:
+            enabled: false
+        - type: HostnameGeneratorCreation
+          hostnameGeneratorCreation:
+            enabled: false
+      items:
+        $ref: '#/components/schemas/MeshControlPlaneFeature'
+    MeshControlPlaneFeatureHostnameGenerationCreation:
+      properties:
+        enabled:
+          type: boolean
+    MeshControlPlaneFeatureMeshCreation:
+      properties:
+        enabled:
+          type: boolean
+    MeshControlPlaneFeature:
+      description: |
+        Features to be enabled in the control plane. Currently only defaults are supported.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MeshCreation
+            - HostnameGeneratorCreation
+        hostnameGeneratorCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureHostnameGenerationCreation'
+        meshCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureMeshCreation'
     MeshGlobalRateLimitItem:
       type: object
       properties:
@@ -28480,6 +28514,8 @@ components:
           maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+        features:
+          $ref: '#/components/schemas/MeshControlPlaneFeatures'
         created_at:
           type: string
           format: date-time

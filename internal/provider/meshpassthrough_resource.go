@@ -124,7 +124,7 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 											Computed:    true,
 											Optional:    true,
 											Default:     stringdefault.StaticString("tcp"),
-											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2"]`,
+											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `, ` + "`" + `mysql` + "`" + `. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]`,
 											Validators: []validator.String{
 												stringvalidator.OneOf(
 													"tcp",
@@ -132,6 +132,7 @@ func (r *MeshPassthroughResource) Schema(ctx context.Context, req resource.Schem
 													"grpc",
 													"http",
 													"http2",
+													"mysql",
 												),
 											},
 										},

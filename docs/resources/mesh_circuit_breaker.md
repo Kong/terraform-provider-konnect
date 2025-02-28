@@ -57,7 +57,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 7
               }
             }
-            disabled                        = false
+            disabled = false
+            healthy_panic_threshold = {
+              integer = 9
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 9
             split_external_and_local_errors = true
@@ -117,7 +121,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 9
               }
             }
-            disabled                        = false
+            disabled = false
+            healthy_panic_threshold = {
+              integer = 2
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 1
             split_external_and_local_errors = false
@@ -177,7 +185,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 2
               }
             }
-            disabled                        = true
+            disabled = true
+            healthy_panic_threshold = {
+              integer = 8
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 4
             split_external_and_local_errors = true
@@ -298,6 +310,9 @@ the base time multiplied by the number of times the host has been
 ejected.
 - `detectors` (Attributes) Contains configuration for supported outlier detectors (see [below for nested schema](#nestedatt--spec--from--default--outlier_detection--detectors))
 - `disabled` (Boolean) When set to true, outlierDetection configuration won't take any effect
+- `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
+the default is 50%. To disable panic mode, set to 0%.
+Either int or decimal represented as string. (see [below for nested schema](#nestedatt--spec--from--default--outlier_detection--healthy_panic_threshold))
 - `interval` (String) The time interval between ejection analysis sweeps. This can result in
 both new ejections and hosts being returned to service.
 - `max_ejection_percent` (Number) The maximum % of an upstream cluster that can be ejected due to outlier
@@ -450,6 +465,15 @@ occurs.
 
 
 
+<a id="nestedatt--spec--from--default--outlier_detection--healthy_panic_threshold"></a>
+### Nested Schema for `spec.from.default.outlier_detection.healthy_panic_threshold`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
 
 
 <a id="nestedatt--spec--from--target_ref"></a>
@@ -526,6 +550,9 @@ the base time multiplied by the number of times the host has been
 ejected.
 - `detectors` (Attributes) Contains configuration for supported outlier detectors (see [below for nested schema](#nestedatt--spec--rules--default--outlier_detection--detectors))
 - `disabled` (Boolean) When set to true, outlierDetection configuration won't take any effect
+- `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
+the default is 50%. To disable panic mode, set to 0%.
+Either int or decimal represented as string. (see [below for nested schema](#nestedatt--spec--rules--default--outlier_detection--healthy_panic_threshold))
 - `interval` (String) The time interval between ejection analysis sweeps. This can result in
 both new ejections and hosts being returned to service.
 - `max_ejection_percent` (Number) The maximum % of an upstream cluster that can be ejected due to outlier
@@ -678,6 +705,15 @@ occurs.
 
 
 
+<a id="nestedatt--spec--rules--default--outlier_detection--healthy_panic_threshold"></a>
+### Nested Schema for `spec.rules.default.outlier_detection.healthy_panic_threshold`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
+
+
 
 
 
@@ -758,6 +794,9 @@ the base time multiplied by the number of times the host has been
 ejected.
 - `detectors` (Attributes) Contains configuration for supported outlier detectors (see [below for nested schema](#nestedatt--spec--to--default--outlier_detection--detectors))
 - `disabled` (Boolean) When set to true, outlierDetection configuration won't take any effect
+- `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
+the default is 50%. To disable panic mode, set to 0%.
+Either int or decimal represented as string. (see [below for nested schema](#nestedatt--spec--to--default--outlier_detection--healthy_panic_threshold))
 - `interval` (String) The time interval between ejection analysis sweeps. This can result in
 both new ejections and hosts being returned to service.
 - `max_ejection_percent` (Number) The maximum % of an upstream cluster that can be ejected due to outlier
@@ -908,6 +947,15 @@ Optional:
 to respond PONG; etc.) before a consecutive total failure ejection
 occurs.
 
+
+
+<a id="nestedatt--spec--to--default--outlier_detection--healthy_panic_threshold"></a>
+### Nested Schema for `spec.to.default.outlier_detection.healthy_panic_threshold`
+
+Optional:
+
+- `integer` (Number)
+- `str` (String)
 
 
 

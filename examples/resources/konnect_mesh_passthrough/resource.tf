@@ -10,7 +10,7 @@ resource "konnect_mesh_passthrough" "my_meshpassthrough" {
       append_match = [
         {
           port     = 6
-          protocol = "http2"
+          protocol = "mysql"
           type     = "IP"
           value    = "...my_value..."
         }

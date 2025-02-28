@@ -14,10 +14,12 @@ MeshHealthCheckList DataSource
 
 ```terraform
 data "konnect_mesh_health_check_list" "my_meshhealthchecklist" {
-  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  key   = "...my_key..."
-  mesh  = "...my_mesh..."
-  value = "...my_value..."
+  cp_id  = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+  key    = "...my_key..."
+  mesh   = "...my_mesh..."
+  offset = 0
+  size   = 325
+  value  = "...my_value..."
 }
 ```
 
@@ -32,6 +34,8 @@ data "konnect_mesh_health_check_list" "my_meshhealthchecklist" {
 ### Optional
 
 - `key` (String)
+- `offset` (Number) offset in the list of entities
+- `size` (Number) the number of items per page
 - `value` (String)
 
 ### Read-Only
@@ -112,7 +116,9 @@ service.
 the health check will be made for is a gRPC service. (see [below for nested schema](#nestedatt--items--spec--to--default--grpc))
 - `healthy_panic_threshold` (Attributes) Allows to configure panic threshold for Envoy cluster. If not specified,
 the default is 50%. To disable panic mode, set to 0%.
-Either int or decimal represented as string. (see [below for nested schema](#nestedatt--items--spec--to--default--healthy_panic_threshold))
+Either int or decimal represented as string.
+Deprecated: the setting has been moved to MeshCircuitBreaker policy,
+please use MeshCircuitBreaker policy instead. (see [below for nested schema](#nestedatt--items--spec--to--default--healthy_panic_threshold))
 - `healthy_threshold` (Number) Number of consecutive healthy checks before considering a host healthy.
 If not specified then the default value is 1
 - `http` (Attributes) HttpHealthCheck defines HTTP configuration which will instruct the service

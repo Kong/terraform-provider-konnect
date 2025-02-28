@@ -37,8 +37,33 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 ### Read-Only
 
 - `created_at` (String)
+- `features` (Attributes List) (see [below for nested schema](#nestedatt--features))
 - `id` (String) ID of the control plane.
 - `updated_at` (String)
+
+<a id="nestedatt--features"></a>
+### Nested Schema for `features`
+
+Read-Only:
+
+- `hostname_generator_creation` (Attributes) (see [below for nested schema](#nestedatt--features--hostname_generator_creation))
+- `mesh_creation` (Attributes) (see [below for nested schema](#nestedatt--features--mesh_creation))
+- `type` (String) must be one of ["MeshCreation", "HostnameGeneratorCreation"]
+
+<a id="nestedatt--features--hostname_generator_creation"></a>
+### Nested Schema for `features.hostname_generator_creation`
+
+Read-Only:
+
+- `enabled` (Boolean)
+
+
+<a id="nestedatt--features--mesh_creation"></a>
+### Nested Schema for `features.mesh_creation`
+
+Read-Only:
+
+- `enabled` (Boolean)
 
 ## Import
 

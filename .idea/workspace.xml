@@ -5,44 +5,135 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44e8603c-54a8-4d62-83b1-00a668fe7db5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/boolplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/listplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/objectplanmodifier/supress_zero_null_modifier.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/internal/planmodifiers/stringplanmodifier/arbitrary_json_modifier.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.speakeasy/gen.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.speakeasy/gen.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.speakeasy/workflow.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.speakeasy/workflow.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/examples/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_data_source_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaiproxy_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_data_source_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairequesttransformer_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_data_source_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_data_source_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayplugindatadog_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewaypluginwebsocketvalidator_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewaypluginwebsocketvalidator_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/gatewayupstream_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/gatewayupstream_resource_sdk.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/provider.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/provider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/ai_proxy_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/ai_proxy_plugin_config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/ai_semantic_prompt_guard_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/ai_semantic_prompt_guard_plugin_config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/datadog_plugin_config.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/datadog_plugin_config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/llm.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/llm.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/logging.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/logging.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/metrics.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/metrics.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/rules.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/rules.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/provider/types/targets.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/targets.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/konnect.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/konnect.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/mesh.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/mesh.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/aiproxyplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/aiproxyplugin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/aisemanticpromptguardplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/aisemanticpromptguardplugin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/apiproductdocument.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/apiproductdocument.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/datadogplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/datadogplugin.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/upstream.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/upstream.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/websocketvalidatorplugin.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/websocketvalidatorplugin.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/hostname_generator_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/hostname_generator_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_access_log_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_access_log_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_circuit_breaker.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_circuit_breaker.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_circuit_breaker_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_circuit_breaker_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_external_service_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_external_service_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_fault_injection_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_fault_injection_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_gateway_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_gateway_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_global_rate_limit_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_global_rate_limit_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_health_check.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_health_check.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_health_check_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_health_check_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_http_route_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_http_route_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_load_balancing_strategy_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_load_balancing_strategy_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_metric_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_metric_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_multi_zone_service_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_multi_zone_service_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_opa_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_opa_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_passthrough.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_passthrough.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_passthrough_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_passthrough_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_proxy_patch_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_proxy_patch_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_rate_limit_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_rate_limit_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_retry_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_retry_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_service_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_service_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_tcp_route_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_tcp_route_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_timeout_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_timeout_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_tls_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_tls_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_trace_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_trace_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/data-sources/mesh_traffic_permission_list.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/data-sources/mesh_traffic_permission_list.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/resources/mesh_circuit_breaker.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/resources/mesh_circuit_breaker.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/resources/mesh_external_service.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/resources/mesh_external_service.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/resources/mesh_health_check.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/resources/mesh_health_check.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/resources/mesh_multi_zone_service.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/resources/mesh_multi_zone_service.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/resources/mesh_passthrough.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/resources/mesh_passthrough.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_hostname_generator_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_hostname_generator_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_access_log_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_access_log_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_circuit_breaker_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_circuit_breaker_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_external_service_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_external_service_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_fault_injection_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_fault_injection_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_gateway_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_gateway_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_global_rate_limit_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_global_rate_limit_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_health_check_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_health_check_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_http_route_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_http_route_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_load_balancing_strategy_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_load_balancing_strategy_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_metric_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_metric_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_multi_zone_service_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_multi_zone_service_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_opa_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_opa_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_passthrough_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_passthrough_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_proxy_patch_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_proxy_patch_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_rate_limit_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_rate_limit_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_retry_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_retry_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_service_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_service_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_tcp_route_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_tcp_route_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_timeout_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_timeout_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_tls_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_tls_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_trace_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_trace_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_traffic_permission_list/data-source.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/data-sources/konnect_mesh_traffic_permission_list/data-source.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/resources/konnect_mesh_circuit_breaker/resource.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/resources/konnect_mesh_circuit_breaker/resource.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/resources/konnect_mesh_passthrough/resource.tf" beforeDir="false" afterPath="$PROJECT_DIR$/examples/resources/konnect_mesh_passthrough/resource.tf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/hostnamegeneratorlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/hostnamegeneratorlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshaccessloglist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshaccessloglist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_resource.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_resource.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreaker_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreakerlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreakerlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshcircuitbreakerlist_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshcircuitbreakerlist_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshexternalservice_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshexternalservice_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshexternalservice_resource.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshexternalservice_resource.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshexternalservice_resource_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshexternalservice_resource_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshexternalservicelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshexternalservicelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshexternalservicelist_data_source_sdk.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshexternalservicelist_data_source_sdk.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshfaultinjectionlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshfaultinjectionlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshgatewaylist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshgatewaylist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshglobalratelimitlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshglobalratelimitlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshhealthcheck_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshhealthcheck_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshhealthcheck_resource.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshhealthcheck_resource.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshhealthchecklist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshhealthchecklist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshhttproutelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshhttproutelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshloadbalancingstrategylist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshloadbalancingstrategylist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshmetriclist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshmetriclist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshmultizoneservice_resource.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshmultizoneservice_resource.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshmultizoneservicelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshmultizoneservicelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshopalist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshopalist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshpassthrough_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshpassthrough_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshpassthrough_resource.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshpassthrough_resource.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshpassthroughlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshpassthroughlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshproxypatchlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshproxypatchlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshratelimitlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshratelimitlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshretrylist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshretrylist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshservicelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshservicelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshtcproutelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshtcproutelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshtimeoutlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshtimeoutlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshtlslist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshtlslist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshtracelist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshtracelist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/meshtrafficpermissionlist_data_source.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/meshtrafficpermissionlist_data_source.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/provider/types/outlier_detection.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/provider/types/outlier_detection.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/gethostnamegeneratorlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/gethostnamegeneratorlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshaccessloglist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshaccessloglist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshcircuitbreakerlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshcircuitbreakerlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshexternalservicelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshexternalservicelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshfaultinjectionlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshfaultinjectionlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshgatewaylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshgatewaylist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshglobalratelimitlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshglobalratelimitlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshhealthchecklist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshhealthchecklist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshhttproutelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshhttproutelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshloadbalancingstrategylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshloadbalancingstrategylist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshmetriclist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshmetriclist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshmultizoneservicelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshmultizoneservicelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshopalist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshopalist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshpassthroughlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshpassthroughlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshproxypatchlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshproxypatchlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshratelimitlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshratelimitlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshretrylist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshretrylist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshservicelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshservicelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtcproutelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtcproutelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtimeoutlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtimeoutlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtlslist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtlslist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtracelist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtracelist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtrafficpermissionlist.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/operations/getmeshtrafficpermissionlist.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/meshcircuitbreakeritem.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/meshcircuitbreakeritem.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/meshexternalserviceitem.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/meshexternalserviceitem.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/meshhealthcheckitem.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/meshhealthcheckitem.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/meshmultizoneserviceitem.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/meshmultizoneserviceitem.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/sdk/models/shared/meshpassthroughitem.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/sdk/models/shared/meshpassthroughitem.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/openapi.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/openapi.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,6 +230,11 @@
           <url>file://$USER_HOME$/go/pkg/mod/github.com/hashicorp/terraform-plugin-framework@v1.12.0/internal/toproto6/schema_attribute.go</url>
           <line>18</line>
           <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/internal/planmodifiers/listplanmodifier/default_features_modifier.go</url>
+          <line>23</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -137,8 +137,11 @@ Optional:
 
 Required:
 
-- `config` (String) Config freeform configuration for the extension. Parsed as JSON.
 - `type` (String) Type of the extension.
+
+Optional:
+
+- `config` (String) Config freeform configuration for the extension. Parsed as JSON.
 
 
 <a id="nestedatt--spec--tls"></a>

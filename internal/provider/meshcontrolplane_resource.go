@@ -12,6 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
@@ -33,12 +34,13 @@ type MeshControlPlaneResource struct {
 
 // MeshControlPlaneResourceModel describes the resource data model.
 type MeshControlPlaneResourceModel struct {
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	CreatedAt   types.String                      `tfsdk:"created_at"`
+	Description types.String                      `tfsdk:"description"`
+	Features    []tfTypes.MeshControlPlaneFeature `tfsdk:"features"`
+	ID          types.String                      `tfsdk:"id"`
+	Labels      map[string]types.String           `tfsdk:"labels"`
+	Name        types.String                      `tfsdk:"name"`
+	UpdatedAt   types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *MeshControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,6 +62,39 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Optional: true,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(250),
+				},
+			},
+			"features": schema.ListNestedAttribute{
+				Computed: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"hostname_generator_creation": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"enabled": schema.BoolAttribute{
+									Computed: true,
+								},
+							},
+						},
+						"mesh_creation": schema.SingleNestedAttribute{
+							Computed: true,
+							Attributes: map[string]schema.Attribute{
+								"enabled": schema.BoolAttribute{
+									Computed: true,
+								},
+							},
+						},
+						"type": schema.StringAttribute{
+							Computed:    true,
+							Description: `must be one of ["MeshCreation", "HostnameGeneratorCreation"]`,
+							Validators: []validator.String{
+								stringvalidator.OneOf(
+									"MeshCreation",
+									"HostnameGeneratorCreation",
+								),
+							},
+						},
+					},
 				},
 			},
 			"id": schema.StringAttribute{

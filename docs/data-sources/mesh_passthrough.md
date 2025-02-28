@@ -63,7 +63,7 @@ If not specified then the default value is "Matched".
 Read-Only:
 
 - `port` (Number) Port defines the port to which a user makes a request.
-- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.
+- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.
 - `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available.
 - `value` (String) Value for the specified Type.
 

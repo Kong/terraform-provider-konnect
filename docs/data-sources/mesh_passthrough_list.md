@@ -14,10 +14,12 @@ MeshPassthroughList DataSource
 
 ```terraform
 data "konnect_mesh_passthrough_list" "my_meshpassthroughlist" {
-  cp_id = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-  key   = "...my_key..."
-  mesh  = "...my_mesh..."
-  value = "...my_value..."
+  cp_id  = "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
+  key    = "...my_key..."
+  mesh   = "...my_mesh..."
+  offset = 0
+  size   = 661
+  value  = "...my_value..."
 }
 ```
 
@@ -32,6 +34,8 @@ data "konnect_mesh_passthrough_list" "my_meshpassthroughlist" {
 ### Optional
 
 - `key` (String)
+- `offset` (Number) offset in the list of entities
+- `size` (Number) the number of items per page
 - `value` (String)
 
 ### Read-Only
@@ -79,7 +83,7 @@ If not specified then the default value is "Matched".
 Read-Only:
 
 - `port` (Number) Port defines the port to which a user makes a request.
-- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.
+- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.
 - `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available.
 - `value` (String) Value for the specified Type.
 

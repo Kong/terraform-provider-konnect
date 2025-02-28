@@ -8,6 +8,7 @@ type OutlierDetection struct {
 	BaseEjectionTime            types.String `tfsdk:"base_ejection_time"`
 	Detectors                   *Detectors   `tfsdk:"detectors"`
 	Disabled                    types.Bool   `tfsdk:"disabled"`
+	HealthyPanicThreshold       *Mode        `tfsdk:"healthy_panic_threshold"`
 	Interval                    types.String `tfsdk:"interval"`
 	MaxEjectionPercent          types.Int64  `tfsdk:"max_ejection_percent"`
 	SplitExternalAndLocalErrors types.Bool   `tfsdk:"split_external_and_local_errors"`

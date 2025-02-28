@@ -57,7 +57,7 @@ func (o *Endpoints) GetPort() int64 {
 // Extension struct for a plugin configuration, in the presence of an extension `endpoints` and `tls` are not required anymore - it's up to the extension to validate them independently.
 type Extension struct {
 	// Config freeform configuration for the extension.
-	Config any `json:"config"`
+	Config any `json:"config,omitempty"`
 	// Type of the extension.
 	Type string `json:"type"`
 }

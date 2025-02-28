@@ -292,6 +292,20 @@ func (r *MeshCircuitBreakerDataSource) Schema(ctx context.Context, req datasourc
 													Computed:    true,
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
 												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Computed: true,
+														},
+														"str": schema.StringAttribute{
+															Computed: true,
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
+												},
 												"interval": schema.StringAttribute{
 													Computed: true,
 													MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
@@ -586,6 +600,20 @@ func (r *MeshCircuitBreakerDataSource) Schema(ctx context.Context, req datasourc
 												"disabled": schema.BoolAttribute{
 													Computed:    true,
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
+												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Computed: true,
+														},
+														"str": schema.StringAttribute{
+															Computed: true,
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
 												},
 												"interval": schema.StringAttribute{
 													Computed: true,
@@ -882,6 +910,20 @@ func (r *MeshCircuitBreakerDataSource) Schema(ctx context.Context, req datasourc
 												"disabled": schema.BoolAttribute{
 													Computed:    true,
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
+												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Computed: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Computed: true,
+														},
+														"str": schema.StringAttribute{
+															Computed: true,
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
 												},
 												"interval": schema.StringAttribute{
 													Computed: true,

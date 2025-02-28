@@ -91,7 +91,7 @@ func (r *MeshPassthroughDataSource) Schema(ctx context.Context, req datasource.S
 										},
 										"protocol": schema.StringAttribute{
 											Computed:    true,
-											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `.`,
+											Description: `Protocol defines the communication protocol. Possible values: ` + "`" + `tcp` + "`" + `, ` + "`" + `tls` + "`" + `, ` + "`" + `grpc` + "`" + `, ` + "`" + `http` + "`" + `, ` + "`" + `http2` + "`" + `, ` + "`" + `mysql` + "`" + `.`,
 										},
 										"type": schema.StringAttribute{
 											Computed:    true,

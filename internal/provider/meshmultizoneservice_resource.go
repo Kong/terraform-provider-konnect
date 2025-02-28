@@ -106,8 +106,7 @@ func (r *MeshMultiZoneServiceResource) Schema(ctx context.Context, req resource.
 				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"ports": schema.ListNestedAttribute{
-						Computed: true,
-						Optional: true,
+						Required: true,
 						PlanModifiers: []planmodifier.List{
 							custom_listplanmodifier.SupressZeroNullModifier(),
 						},

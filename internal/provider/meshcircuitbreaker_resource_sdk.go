@@ -202,6 +202,31 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 				} else {
 					disabled = nil
 				}
+				var healthyPanicThreshold *shared.MeshCircuitBreakerItemSpecFromHealthyPanicThreshold
+				if fromItem.Default.OutlierDetection.HealthyPanicThreshold != nil {
+					integer1 := new(int64)
+					if !fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsUnknown() && !fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsNull() {
+						*integer1 = fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.ValueInt64()
+					} else {
+						integer1 = nil
+					}
+					if integer1 != nil {
+						healthyPanicThreshold = &shared.MeshCircuitBreakerItemSpecFromHealthyPanicThreshold{
+							Integer: integer1,
+						}
+					}
+					str1 := new(string)
+					if !fromItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsUnknown() && !fromItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsNull() {
+						*str1 = fromItem.Default.OutlierDetection.HealthyPanicThreshold.Str.ValueString()
+					} else {
+						str1 = nil
+					}
+					if str1 != nil {
+						healthyPanicThreshold = &shared.MeshCircuitBreakerItemSpecFromHealthyPanicThreshold{
+							Str: str1,
+						}
+					}
+				}
 				interval := new(string)
 				if !fromItem.Default.OutlierDetection.Interval.IsUnknown() && !fromItem.Default.OutlierDetection.Interval.IsNull() {
 					*interval = fromItem.Default.OutlierDetection.Interval.ValueString()
@@ -224,6 +249,7 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 					BaseEjectionTime:            baseEjectionTime,
 					Detectors:                   detectors,
 					Disabled:                    disabled,
+					HealthyPanicThreshold:       healthyPanicThreshold,
 					Interval:                    interval,
 					MaxEjectionPercent:          maxEjectionPercent,
 					SplitExternalAndLocalErrors: splitExternalAndLocalErrors,
@@ -417,26 +443,26 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 						}
 						var standardDeviationFactor1 *shared.MeshCircuitBreakerItemStandardDeviationFactor
 						if rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor != nil {
-							integer1 := new(int64)
+							integer2 := new(int64)
 							if !rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.IsUnknown() && !rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.IsNull() {
-								*integer1 = rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.ValueInt64()
+								*integer2 = rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.ValueInt64()
 							} else {
-								integer1 = nil
+								integer2 = nil
 							}
-							if integer1 != nil {
+							if integer2 != nil {
 								standardDeviationFactor1 = &shared.MeshCircuitBreakerItemStandardDeviationFactor{
-									Integer: integer1,
+									Integer: integer2,
 								}
 							}
-							str1 := new(string)
+							str2 := new(string)
 							if !rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.IsUnknown() && !rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.IsNull() {
-								*str1 = rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.ValueString()
+								*str2 = rulesItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.ValueString()
 							} else {
-								str1 = nil
+								str2 = nil
 							}
-							if str1 != nil {
+							if str2 != nil {
 								standardDeviationFactor1 = &shared.MeshCircuitBreakerItemStandardDeviationFactor{
-									Str: str1,
+									Str: str2,
 								}
 							}
 						}
@@ -472,6 +498,31 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 				} else {
 					disabled1 = nil
 				}
+				var healthyPanicThreshold1 *shared.MeshCircuitBreakerItemHealthyPanicThreshold
+				if rulesItem.Default.OutlierDetection.HealthyPanicThreshold != nil {
+					integer3 := new(int64)
+					if !rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsUnknown() && !rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsNull() {
+						*integer3 = rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.ValueInt64()
+					} else {
+						integer3 = nil
+					}
+					if integer3 != nil {
+						healthyPanicThreshold1 = &shared.MeshCircuitBreakerItemHealthyPanicThreshold{
+							Integer: integer3,
+						}
+					}
+					str3 := new(string)
+					if !rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsUnknown() && !rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsNull() {
+						*str3 = rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Str.ValueString()
+					} else {
+						str3 = nil
+					}
+					if str3 != nil {
+						healthyPanicThreshold1 = &shared.MeshCircuitBreakerItemHealthyPanicThreshold{
+							Str: str3,
+						}
+					}
+				}
 				interval1 := new(string)
 				if !rulesItem.Default.OutlierDetection.Interval.IsUnknown() && !rulesItem.Default.OutlierDetection.Interval.IsNull() {
 					*interval1 = rulesItem.Default.OutlierDetection.Interval.ValueString()
@@ -494,6 +545,7 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 					BaseEjectionTime:            baseEjectionTime1,
 					Detectors:                   detectors1,
 					Disabled:                    disabled1,
+					HealthyPanicThreshold:       healthyPanicThreshold1,
 					Interval:                    interval1,
 					MaxEjectionPercent:          maxEjectionPercent1,
 					SplitExternalAndLocalErrors: splitExternalAndLocalErrors1,
@@ -689,26 +741,26 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 						}
 						var standardDeviationFactor2 *shared.MeshCircuitBreakerItemSpecStandardDeviationFactor
 						if toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor != nil {
-							integer2 := new(int64)
+							integer4 := new(int64)
 							if !toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.IsUnknown() && !toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.IsNull() {
-								*integer2 = toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.ValueInt64()
+								*integer4 = toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Integer.ValueInt64()
 							} else {
-								integer2 = nil
+								integer4 = nil
 							}
-							if integer2 != nil {
+							if integer4 != nil {
 								standardDeviationFactor2 = &shared.MeshCircuitBreakerItemSpecStandardDeviationFactor{
-									Integer: integer2,
+									Integer: integer4,
 								}
 							}
-							str2 := new(string)
+							str4 := new(string)
 							if !toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.IsUnknown() && !toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.IsNull() {
-								*str2 = toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.ValueString()
+								*str4 = toItem.Default.OutlierDetection.Detectors.SuccessRate.StandardDeviationFactor.Str.ValueString()
 							} else {
-								str2 = nil
+								str4 = nil
 							}
-							if str2 != nil {
+							if str4 != nil {
 								standardDeviationFactor2 = &shared.MeshCircuitBreakerItemSpecStandardDeviationFactor{
-									Str: str2,
+									Str: str4,
 								}
 							}
 						}
@@ -744,6 +796,31 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 				} else {
 					disabled2 = nil
 				}
+				var healthyPanicThreshold2 *shared.MeshCircuitBreakerItemSpecHealthyPanicThreshold
+				if toItem.Default.OutlierDetection.HealthyPanicThreshold != nil {
+					integer5 := new(int64)
+					if !toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsUnknown() && !toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.IsNull() {
+						*integer5 = toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer.ValueInt64()
+					} else {
+						integer5 = nil
+					}
+					if integer5 != nil {
+						healthyPanicThreshold2 = &shared.MeshCircuitBreakerItemSpecHealthyPanicThreshold{
+							Integer: integer5,
+						}
+					}
+					str5 := new(string)
+					if !toItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsUnknown() && !toItem.Default.OutlierDetection.HealthyPanicThreshold.Str.IsNull() {
+						*str5 = toItem.Default.OutlierDetection.HealthyPanicThreshold.Str.ValueString()
+					} else {
+						str5 = nil
+					}
+					if str5 != nil {
+						healthyPanicThreshold2 = &shared.MeshCircuitBreakerItemSpecHealthyPanicThreshold{
+							Str: str5,
+						}
+					}
+				}
 				interval2 := new(string)
 				if !toItem.Default.OutlierDetection.Interval.IsUnknown() && !toItem.Default.OutlierDetection.Interval.IsNull() {
 					*interval2 = toItem.Default.OutlierDetection.Interval.ValueString()
@@ -766,6 +843,7 @@ func (r *MeshCircuitBreakerResourceModel) ToSharedMeshCircuitBreakerItemInput() 
 					BaseEjectionTime:            baseEjectionTime2,
 					Detectors:                   detectors2,
 					Disabled:                    disabled2,
+					HealthyPanicThreshold:       healthyPanicThreshold2,
 					Interval:                    interval2,
 					MaxEjectionPercent:          maxEjectionPercent2,
 					SplitExternalAndLocalErrors: splitExternalAndLocalErrors2,
@@ -1011,6 +1089,17 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 						}
 					}
 					from1.Default.OutlierDetection.Disabled = types.BoolPointerValue(fromItem.Default.OutlierDetection.Disabled)
+					if fromItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
+						from1.Default.OutlierDetection.HealthyPanicThreshold = nil
+					} else {
+						from1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						if fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
+							from1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(fromItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
+						}
+						if fromItem.Default.OutlierDetection.HealthyPanicThreshold.Str != nil {
+							from1.Default.OutlierDetection.HealthyPanicThreshold.Str = types.StringPointerValue(fromItem.Default.OutlierDetection.HealthyPanicThreshold.Str)
+						}
+					}
 					from1.Default.OutlierDetection.Interval = types.StringPointerValue(fromItem.Default.OutlierDetection.Interval)
 					if fromItem.Default.OutlierDetection.MaxEjectionPercent != nil {
 						from1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*fromItem.Default.OutlierDetection.MaxEjectionPercent))
@@ -1179,6 +1268,17 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 						}
 					}
 					rules1.Default.OutlierDetection.Disabled = types.BoolPointerValue(rulesItem.Default.OutlierDetection.Disabled)
+					if rulesItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
+						rules1.Default.OutlierDetection.HealthyPanicThreshold = nil
+					} else {
+						rules1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						if rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
+							rules1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
+						}
+						if rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Str != nil {
+							rules1.Default.OutlierDetection.HealthyPanicThreshold.Str = types.StringPointerValue(rulesItem.Default.OutlierDetection.HealthyPanicThreshold.Str)
+						}
+					}
 					rules1.Default.OutlierDetection.Interval = types.StringPointerValue(rulesItem.Default.OutlierDetection.Interval)
 					if rulesItem.Default.OutlierDetection.MaxEjectionPercent != nil {
 						rules1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*rulesItem.Default.OutlierDetection.MaxEjectionPercent))
@@ -1351,6 +1451,17 @@ func (r *MeshCircuitBreakerResourceModel) RefreshFromSharedMeshCircuitBreakerIte
 						}
 					}
 					to1.Default.OutlierDetection.Disabled = types.BoolPointerValue(toItem.Default.OutlierDetection.Disabled)
+					if toItem.Default.OutlierDetection.HealthyPanicThreshold == nil {
+						to1.Default.OutlierDetection.HealthyPanicThreshold = nil
+					} else {
+						to1.Default.OutlierDetection.HealthyPanicThreshold = &tfTypes.Mode{}
+						if toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer != nil {
+							to1.Default.OutlierDetection.HealthyPanicThreshold.Integer = types.Int64PointerValue(toItem.Default.OutlierDetection.HealthyPanicThreshold.Integer)
+						}
+						if toItem.Default.OutlierDetection.HealthyPanicThreshold.Str != nil {
+							to1.Default.OutlierDetection.HealthyPanicThreshold.Str = types.StringPointerValue(toItem.Default.OutlierDetection.HealthyPanicThreshold.Str)
+						}
+					}
 					to1.Default.OutlierDetection.Interval = types.StringPointerValue(toItem.Default.OutlierDetection.Interval)
 					if toItem.Default.OutlierDetection.MaxEjectionPercent != nil {
 						to1.Default.OutlierDetection.MaxEjectionPercent = types.Int64Value(int64(*toItem.Default.OutlierDetection.MaxEjectionPercent))

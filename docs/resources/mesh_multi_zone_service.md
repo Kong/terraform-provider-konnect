@@ -68,11 +68,18 @@ Warning messages describe a problem the client making the API request should cor
 
 Required:
 
+- `ports` (Attributes List) Ports is a list of ports from selected MeshServices (see [below for nested schema](#nestedatt--spec--ports))
 - `selector` (Attributes) Selector is a way to select multiple MeshServices (see [below for nested schema](#nestedatt--spec--selector))
+
+<a id="nestedatt--spec--ports"></a>
+### Nested Schema for `spec.ports`
 
 Optional:
 
-- `ports` (Attributes List) Ports is a list of ports from selected MeshServices (see [below for nested schema](#nestedatt--spec--ports))
+- `app_protocol` (String) Protocol identifies a protocol supported by a service. Default: "tcp"
+- `name` (String)
+- `port` (Number) Not Null
+
 
 <a id="nestedatt--spec--selector"></a>
 ### Nested Schema for `spec.selector`
@@ -88,16 +95,6 @@ Required:
 
 - `match_labels` (Map of String) MatchLabels matches multiple MeshServices by labels
 
-
-
-<a id="nestedatt--spec--ports"></a>
-### Nested Schema for `spec.ports`
-
-Optional:
-
-- `app_protocol` (String) Protocol identifies a protocol supported by a service. Default: "tcp"
-- `name` (String)
-- `port` (Number) Not Null
 
 
 

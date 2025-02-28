@@ -42,7 +42,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 7
               }
             }
-            disabled                        = false
+            disabled = false
+            healthy_panic_threshold = {
+              integer = 9
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 9
             split_external_and_local_errors = true
@@ -102,7 +106,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 9
               }
             }
-            disabled                        = false
+            disabled = false
+            healthy_panic_threshold = {
+              integer = 2
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 1
             split_external_and_local_errors = false
@@ -162,7 +170,11 @@ resource "konnect_mesh_circuit_breaker" "my_meshcircuitbreaker" {
                 consecutive = 2
               }
             }
-            disabled                        = true
+            disabled = true
+            healthy_panic_threshold = {
+              integer = 8
+              str     = "...my_str..."
+            }
             interval                        = "...my_interval..."
             max_ejection_percent            = 4
             split_external_and_local_errors = true

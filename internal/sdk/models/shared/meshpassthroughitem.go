@@ -33,7 +33,7 @@ func (e *MeshPassthroughItemType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// MeshPassthroughItemProtocol - Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.
+// MeshPassthroughItemProtocol - Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.
 type MeshPassthroughItemProtocol string
 
 const (
@@ -42,6 +42,7 @@ const (
 	MeshPassthroughItemProtocolGrpc  MeshPassthroughItemProtocol = "grpc"
 	MeshPassthroughItemProtocolHTTP  MeshPassthroughItemProtocol = "http"
 	MeshPassthroughItemProtocolHttp2 MeshPassthroughItemProtocol = "http2"
+	MeshPassthroughItemProtocolMysql MeshPassthroughItemProtocol = "mysql"
 )
 
 func (e MeshPassthroughItemProtocol) ToPointer() *MeshPassthroughItemProtocol {
@@ -62,6 +63,8 @@ func (e *MeshPassthroughItemProtocol) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "http2":
+		fallthrough
+	case "mysql":
 		*e = MeshPassthroughItemProtocol(v)
 		return nil
 	default:
@@ -102,7 +105,7 @@ func (e *MeshPassthroughItemSpecType) UnmarshalJSON(data []byte) error {
 type AppendMatch struct {
 	// Port defines the port to which a user makes a request.
 	Port *int `json:"port,omitempty"`
-	// Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`.
+	// Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.
 	Protocol *MeshPassthroughItemProtocol `default:"tcp" json:"protocol"`
 	// Type of the match, one of `Domain`, `IP` or `CIDR` is available.
 	Type MeshPassthroughItemSpecType `json:"type"`

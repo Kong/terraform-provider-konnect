@@ -143,7 +143,8 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"config": schema.StringAttribute{
-								Required: true,
+								Computed: true,
+								Optional: true,
 								PlanModifiers: []planmodifier.String{
 									custom_stringplanmodifier.ArbitraryJSONModifier(),
 								},

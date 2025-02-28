@@ -337,6 +337,30 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													},
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
 												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Optional: true,
+															Validators: []validator.Int64{
+																int64validator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("str"),
+																}...),
+															},
+														},
+														"str": schema.StringAttribute{
+															Optional: true,
+															Validators: []validator.String{
+																stringvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("integer"),
+																}...),
+															},
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
+												},
 												"interval": schema.StringAttribute{
 													Optional: true,
 													MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
@@ -681,6 +705,30 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													},
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
 												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Optional: true,
+															Validators: []validator.Int64{
+																int64validator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("str"),
+																}...),
+															},
+														},
+														"str": schema.StringAttribute{
+															Optional: true,
+															Validators: []validator.String{
+																stringvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("integer"),
+																}...),
+															},
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
+												},
 												"interval": schema.StringAttribute{
 													Optional: true,
 													MarkdownDescription: `The time interval between ejection analysis sweeps. This can result in` + "\n" +
@@ -1021,6 +1069,30 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 														custom_boolplanmodifier.SupressZeroNullModifier(),
 													},
 													Description: `When set to true, outlierDetection configuration won't take any effect`,
+												},
+												"healthy_panic_threshold": schema.SingleNestedAttribute{
+													Optional: true,
+													Attributes: map[string]schema.Attribute{
+														"integer": schema.Int64Attribute{
+															Optional: true,
+															Validators: []validator.Int64{
+																int64validator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("str"),
+																}...),
+															},
+														},
+														"str": schema.StringAttribute{
+															Optional: true,
+															Validators: []validator.String{
+																stringvalidator.ConflictsWith(path.Expressions{
+																	path.MatchRelative().AtParent().AtName("integer"),
+																}...),
+															},
+														},
+													},
+													MarkdownDescription: `Allows to configure panic threshold for Envoy cluster. If not specified,` + "\n" +
+														`the default is 50%. To disable panic mode, set to 0%.` + "\n" +
+														`Either int or decimal represented as string.`,
 												},
 												"interval": schema.StringAttribute{
 													Optional: true,

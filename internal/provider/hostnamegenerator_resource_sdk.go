@@ -10,7 +10,7 @@ import (
 )
 
 func (r *HostnameGeneratorResourceModel) ToSharedHostnameGeneratorItemInput() *shared.HostnameGeneratorItemInput {
-	typeVar := shared.Type(r.Type.ValueString())
+	typeVar := shared.HostnameGeneratorItemType(r.Type.ValueString())
 	var name string
 	name = r.Name.ValueString()
 

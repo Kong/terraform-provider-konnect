@@ -29,13 +29,15 @@ type MeshTrafficPermissionListDataSource struct {
 
 // MeshTrafficPermissionListDataSourceModel describes the data model.
 type MeshTrafficPermissionListDataSourceModel struct {
-	CpID  types.String                        `tfsdk:"cp_id"`
-	Items []tfTypes.MeshTrafficPermissionItem `tfsdk:"items"`
-	Key   types.String                        `tfsdk:"key"`
-	Mesh  types.String                        `tfsdk:"mesh"`
-	Next  types.String                        `tfsdk:"next"`
-	Total types.Number                        `tfsdk:"total"`
-	Value types.String                        `tfsdk:"value"`
+	CpID   types.String                        `tfsdk:"cp_id"`
+	Items  []tfTypes.MeshTrafficPermissionItem `tfsdk:"items"`
+	Key    types.String                        `tfsdk:"key"`
+	Mesh   types.String                        `tfsdk:"mesh"`
+	Next   types.String                        `tfsdk:"next"`
+	Offset types.Int64                         `tfsdk:"offset"`
+	Size   types.Int64                         `tfsdk:"size"`
+	Total  types.Number                        `tfsdk:"total"`
+	Value  types.String                        `tfsdk:"value"`
 }
 
 // Metadata returns the data source type name.
@@ -218,6 +220,14 @@ func (r *MeshTrafficPermissionListDataSource) Schema(ctx context.Context, req da
 				Computed:    true,
 				Description: `URL to the next page`,
 			},
+			"offset": schema.Int64Attribute{
+				Optional:    true,
+				Description: `offset in the list of entities`,
+			},
+			"size": schema.Int64Attribute{
+				Optional:    true,
+				Description: `the number of items per page`,
+			},
 			"total": schema.NumberAttribute{
 				Computed:    true,
 				Description: `The total number of entities`,
@@ -270,6 +280,18 @@ func (r *MeshTrafficPermissionListDataSource) Read(ctx context.Context, req data
 	var cpID string
 	cpID = data.CpID.ValueString()
 
+	offset := new(int64)
+	if !data.Offset.IsUnknown() && !data.Offset.IsNull() {
+		*offset = data.Offset.ValueInt64()
+	} else {
+		offset = nil
+	}
+	size := new(int64)
+	if !data.Size.IsUnknown() && !data.Size.IsNull() {
+		*size = data.Size.ValueInt64()
+	} else {
+		size = nil
+	}
 	var filter *operations.GetMeshTrafficPermissionListQueryParamFilter
 	key := new(string)
 	if !data.Key.IsUnknown() && !data.Key.IsNull() {
@@ -292,6 +314,8 @@ func (r *MeshTrafficPermissionListDataSource) Read(ctx context.Context, req data
 
 	request := operations.GetMeshTrafficPermissionListRequest{
 		CpID:   cpID,
+		Offset: offset,
+		Size:   size,
 		Filter: filter,
 		Mesh:   mesh,
 	}

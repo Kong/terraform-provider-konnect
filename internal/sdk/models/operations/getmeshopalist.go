@@ -3,6 +3,7 @@
 package operations
 
 import (
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"net/http"
 )
@@ -30,10 +31,25 @@ func (o *GetMeshOPAListQueryParamFilter) GetValue() *string {
 type GetMeshOPAListRequest struct {
 	// Id of the Konnect resource
 	CpID string `pathParam:"style=simple,explode=false,name=cpId"`
+	// offset in the list of entities
+	Offset *int64 `queryParam:"style=form,explode=true,name=offset"`
+	// the number of items per page
+	Size *int64 `default:"100" queryParam:"style=form,explode=true,name=size"`
 	// filter by labels when multiple filters are present, they are ANDed
 	Filter *GetMeshOPAListQueryParamFilter `queryParam:"style=form,explode=true,name=filter"`
 	// name of the mesh
 	Mesh string `pathParam:"style=simple,explode=false,name=mesh"`
+}
+
+func (g GetMeshOPAListRequest) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(g, "", false)
+}
+
+func (g *GetMeshOPAListRequest) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (o *GetMeshOPAListRequest) GetCpID() string {
@@ -41,6 +57,20 @@ func (o *GetMeshOPAListRequest) GetCpID() string {
 		return ""
 	}
 	return o.CpID
+}
+
+func (o *GetMeshOPAListRequest) GetOffset() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Offset
+}
+
+func (o *GetMeshOPAListRequest) GetSize() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Size
 }
 
 func (o *GetMeshOPAListRequest) GetFilter() *GetMeshOPAListQueryParamFilter {

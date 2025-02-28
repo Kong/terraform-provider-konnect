@@ -101,14 +101,14 @@ func (o *MeshMultiZoneServiceItemSelector) GetMeshService() MeshMultiZoneService
 // MeshMultiZoneServiceItemSpec - Spec is the specification of the Kuma MeshMultiZoneService resource.
 type MeshMultiZoneServiceItemSpec struct {
 	// Ports is a list of ports from selected MeshServices
-	Ports []Ports `json:"ports,omitempty"`
+	Ports []Ports `json:"ports"`
 	// Selector is a way to select multiple MeshServices
 	Selector MeshMultiZoneServiceItemSelector `json:"selector"`
 }
 
 func (o *MeshMultiZoneServiceItemSpec) GetPorts() []Ports {
 	if o == nil {
-		return nil
+		return []Ports{}
 	}
 	return o.Ports
 }

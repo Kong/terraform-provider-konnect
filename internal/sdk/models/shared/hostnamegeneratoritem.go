@@ -9,27 +9,27 @@ import (
 	"time"
 )
 
-// Type - the type of the resource
-type Type string
+// HostnameGeneratorItemType - the type of the resource
+type HostnameGeneratorItemType string
 
 const (
-	TypeHostnameGenerator Type = "HostnameGenerator"
+	HostnameGeneratorItemTypeHostnameGenerator HostnameGeneratorItemType = "HostnameGenerator"
 )
 
-func (e Type) ToPointer() *Type {
+func (e HostnameGeneratorItemType) ToPointer() *HostnameGeneratorItemType {
 	return &e
 }
-func (e *Type) UnmarshalJSON(data []byte) error {
+func (e *HostnameGeneratorItemType) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}
 	switch v {
 	case "HostnameGenerator":
-		*e = Type(v)
+		*e = HostnameGeneratorItemType(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Type: %v", v)
+		return fmt.Errorf("invalid value for HostnameGeneratorItemType: %v", v)
 	}
 }
 
@@ -115,7 +115,7 @@ func (o *Spec) GetTemplate() *string {
 
 type HostnameGeneratorItem struct {
 	// the type of the resource
-	Type Type `json:"type"`
+	Type HostnameGeneratorItemType `json:"type"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -139,9 +139,9 @@ func (h *HostnameGeneratorItem) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *HostnameGeneratorItem) GetType() Type {
+func (o *HostnameGeneratorItem) GetType() HostnameGeneratorItemType {
 	if o == nil {
-		return Type("")
+		return HostnameGeneratorItemType("")
 	}
 	return o.Type
 }
@@ -183,7 +183,7 @@ func (o *HostnameGeneratorItem) GetModificationTime() *time.Time {
 
 type HostnameGeneratorItemInput struct {
 	// the type of the resource
-	Type Type `json:"type"`
+	Type HostnameGeneratorItemType `json:"type"`
 	// Name of the Kuma resource
 	Name string `json:"name"`
 	// The labels to help identity resources
@@ -192,9 +192,9 @@ type HostnameGeneratorItemInput struct {
 	Spec Spec `json:"spec"`
 }
 
-func (o *HostnameGeneratorItemInput) GetType() Type {
+func (o *HostnameGeneratorItemInput) GetType() HostnameGeneratorItemType {
 	if o == nil {
-		return Type("")
+		return HostnameGeneratorItemType("")
 	}
 	return o.Type
 }

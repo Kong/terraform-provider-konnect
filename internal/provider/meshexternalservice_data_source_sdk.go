@@ -49,8 +49,12 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 			r.Spec.Extension = nil
 		} else {
 			r.Spec.Extension = &tfTypes.Extension{}
-			configResult, _ := json.Marshal(resp.Spec.Extension.Config)
-			r.Spec.Extension.Config = types.StringValue(string(configResult))
+			if resp.Spec.Extension.Config == nil {
+				r.Spec.Extension.Config = types.StringNull()
+			} else {
+				configResult, _ := json.Marshal(resp.Spec.Extension.Config)
+				r.Spec.Extension.Config = types.StringValue(string(configResult))
+			}
 			r.Spec.Extension.Type = types.StringValue(resp.Spec.Extension.Type)
 		}
 		r.Spec.Match.Port = types.Int64Value(resp.Spec.Match.Port)

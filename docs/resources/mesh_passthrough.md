@@ -25,7 +25,7 @@ resource "konnect_mesh_passthrough" "my_meshpassthrough" {
       append_match = [
         {
           port     = 6
-          protocol = "http2"
+          protocol = "mysql"
           type     = "IP"
           value    = "...my_value..."
         }
@@ -102,7 +102,7 @@ must be one of ["All", "Matched", "None"]
 Optional:
 
 - `port` (Number) Port defines the port to which a user makes a request.
-- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2"]
+- `protocol` (String) Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`. Default: "tcp"; must be one of ["tcp", "tls", "grpc", "http", "http2", "mysql"]
 - `type` (String) Type of the match, one of `Domain`, `IP` or `CIDR` is available. Not Null; must be one of ["Domain", "IP", "CIDR"]
 - `value` (String) Value for the specified Type. Not Null
 

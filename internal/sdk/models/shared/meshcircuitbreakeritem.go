@@ -441,6 +441,72 @@ func (o *Detectors) GetTotalFailures() *TotalFailures {
 	return o.TotalFailures
 }
 
+type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType string
+
+const (
+	MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType = "integer"
+	MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr     MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType = "str"
+)
+
+// MeshCircuitBreakerItemSpecFromHealthyPanicThreshold - Allows to configure panic threshold for Envoy cluster. If not specified,
+// the default is 50%. To disable panic mode, set to 0%.
+// Either int or decimal represented as string.
+type MeshCircuitBreakerItemSpecFromHealthyPanicThreshold struct {
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
+
+	Type MeshCircuitBreakerItemSpecFromHealthyPanicThresholdType
+}
+
+func CreateMeshCircuitBreakerItemSpecFromHealthyPanicThresholdInteger(integer int64) MeshCircuitBreakerItemSpecFromHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger
+
+	return MeshCircuitBreakerItemSpecFromHealthyPanicThreshold{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func CreateMeshCircuitBreakerItemSpecFromHealthyPanicThresholdStr(str string) MeshCircuitBreakerItemSpecFromHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr
+
+	return MeshCircuitBreakerItemSpecFromHealthyPanicThreshold{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func (u *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeInteger
+		return nil
+	}
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemSpecFromHealthyPanicThresholdTypeStr
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecFromHealthyPanicThreshold", string(data))
+}
+
+func (u MeshCircuitBreakerItemSpecFromHealthyPanicThreshold) MarshalJSON() ([]byte, error) {
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshCircuitBreakerItemSpecFromHealthyPanicThreshold: all fields are null")
+}
+
 // OutlierDetection contains the configuration of the process of dynamically
 // determining whether some number of hosts in an upstream cluster are
 // performing unlike the others and removing them from the healthy load
@@ -456,6 +522,10 @@ type OutlierDetection struct {
 	Detectors *Detectors `json:"detectors,omitempty"`
 	// When set to true, outlierDetection configuration won't take any effect
 	Disabled *bool `json:"disabled,omitempty"`
+	// Allows to configure panic threshold for Envoy cluster. If not specified,
+	// the default is 50%. To disable panic mode, set to 0%.
+	// Either int or decimal represented as string.
+	HealthyPanicThreshold *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold `json:"healthyPanicThreshold,omitempty"`
 	// The time interval between ejection analysis sweeps. This can result in
 	// both new ejections and hosts being returned to service.
 	Interval *string `json:"interval,omitempty"`
@@ -488,6 +558,13 @@ func (o *OutlierDetection) GetDisabled() *bool {
 		return nil
 	}
 	return o.Disabled
+}
+
+func (o *OutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemSpecFromHealthyPanicThreshold {
+	if o == nil {
+		return nil
+	}
+	return o.HealthyPanicThreshold
 }
 
 func (o *OutlierDetection) GetInterval() *string {
@@ -1129,6 +1206,72 @@ func (o *MeshCircuitBreakerItemDetectors) GetTotalFailures() *MeshCircuitBreaker
 	return o.TotalFailures
 }
 
+type MeshCircuitBreakerItemHealthyPanicThresholdType string
+
+const (
+	MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger MeshCircuitBreakerItemHealthyPanicThresholdType = "integer"
+	MeshCircuitBreakerItemHealthyPanicThresholdTypeStr     MeshCircuitBreakerItemHealthyPanicThresholdType = "str"
+)
+
+// MeshCircuitBreakerItemHealthyPanicThreshold - Allows to configure panic threshold for Envoy cluster. If not specified,
+// the default is 50%. To disable panic mode, set to 0%.
+// Either int or decimal represented as string.
+type MeshCircuitBreakerItemHealthyPanicThreshold struct {
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
+
+	Type MeshCircuitBreakerItemHealthyPanicThresholdType
+}
+
+func CreateMeshCircuitBreakerItemHealthyPanicThresholdInteger(integer int64) MeshCircuitBreakerItemHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger
+
+	return MeshCircuitBreakerItemHealthyPanicThreshold{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func CreateMeshCircuitBreakerItemHealthyPanicThresholdStr(str string) MeshCircuitBreakerItemHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemHealthyPanicThresholdTypeStr
+
+	return MeshCircuitBreakerItemHealthyPanicThreshold{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func (u *MeshCircuitBreakerItemHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemHealthyPanicThresholdTypeInteger
+		return nil
+	}
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemHealthyPanicThresholdTypeStr
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemHealthyPanicThreshold", string(data))
+}
+
+func (u MeshCircuitBreakerItemHealthyPanicThreshold) MarshalJSON() ([]byte, error) {
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshCircuitBreakerItemHealthyPanicThreshold: all fields are null")
+}
+
 // MeshCircuitBreakerItemOutlierDetection - OutlierDetection contains the configuration of the process of dynamically
 // determining whether some number of hosts in an upstream cluster are
 // performing unlike the others and removing them from the healthy load
@@ -1144,6 +1287,10 @@ type MeshCircuitBreakerItemOutlierDetection struct {
 	Detectors *MeshCircuitBreakerItemDetectors `json:"detectors,omitempty"`
 	// When set to true, outlierDetection configuration won't take any effect
 	Disabled *bool `json:"disabled,omitempty"`
+	// Allows to configure panic threshold for Envoy cluster. If not specified,
+	// the default is 50%. To disable panic mode, set to 0%.
+	// Either int or decimal represented as string.
+	HealthyPanicThreshold *MeshCircuitBreakerItemHealthyPanicThreshold `json:"healthyPanicThreshold,omitempty"`
 	// The time interval between ejection analysis sweeps. This can result in
 	// both new ejections and hosts being returned to service.
 	Interval *string `json:"interval,omitempty"`
@@ -1176,6 +1323,13 @@ func (o *MeshCircuitBreakerItemOutlierDetection) GetDisabled() *bool {
 		return nil
 	}
 	return o.Disabled
+}
+
+func (o *MeshCircuitBreakerItemOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemHealthyPanicThreshold {
+	if o == nil {
+		return nil
+	}
+	return o.HealthyPanicThreshold
 }
 
 func (o *MeshCircuitBreakerItemOutlierDetection) GetInterval() *string {
@@ -1806,6 +1960,72 @@ func (o *MeshCircuitBreakerItemSpecDetectors) GetTotalFailures() *MeshCircuitBre
 	return o.TotalFailures
 }
 
+type MeshCircuitBreakerItemSpecHealthyPanicThresholdType string
+
+const (
+	MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger MeshCircuitBreakerItemSpecHealthyPanicThresholdType = "integer"
+	MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr     MeshCircuitBreakerItemSpecHealthyPanicThresholdType = "str"
+)
+
+// MeshCircuitBreakerItemSpecHealthyPanicThreshold - Allows to configure panic threshold for Envoy cluster. If not specified,
+// the default is 50%. To disable panic mode, set to 0%.
+// Either int or decimal represented as string.
+type MeshCircuitBreakerItemSpecHealthyPanicThreshold struct {
+	Integer *int64  `queryParam:"inline"`
+	Str     *string `queryParam:"inline"`
+
+	Type MeshCircuitBreakerItemSpecHealthyPanicThresholdType
+}
+
+func CreateMeshCircuitBreakerItemSpecHealthyPanicThresholdInteger(integer int64) MeshCircuitBreakerItemSpecHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger
+
+	return MeshCircuitBreakerItemSpecHealthyPanicThreshold{
+		Integer: &integer,
+		Type:    typ,
+	}
+}
+
+func CreateMeshCircuitBreakerItemSpecHealthyPanicThresholdStr(str string) MeshCircuitBreakerItemSpecHealthyPanicThreshold {
+	typ := MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr
+
+	return MeshCircuitBreakerItemSpecHealthyPanicThreshold{
+		Str:  &str,
+		Type: typ,
+	}
+}
+
+func (u *MeshCircuitBreakerItemSpecHealthyPanicThreshold) UnmarshalJSON(data []byte) error {
+
+	var integer int64 = int64(0)
+	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
+		u.Integer = &integer
+		u.Type = MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeInteger
+		return nil
+	}
+
+	var str string = ""
+	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
+		u.Str = &str
+		u.Type = MeshCircuitBreakerItemSpecHealthyPanicThresholdTypeStr
+		return nil
+	}
+
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshCircuitBreakerItemSpecHealthyPanicThreshold", string(data))
+}
+
+func (u MeshCircuitBreakerItemSpecHealthyPanicThreshold) MarshalJSON() ([]byte, error) {
+	if u.Integer != nil {
+		return utils.MarshalJSON(u.Integer, "", true)
+	}
+
+	if u.Str != nil {
+		return utils.MarshalJSON(u.Str, "", true)
+	}
+
+	return nil, errors.New("could not marshal union type MeshCircuitBreakerItemSpecHealthyPanicThreshold: all fields are null")
+}
+
 // MeshCircuitBreakerItemSpecOutlierDetection - OutlierDetection contains the configuration of the process of dynamically
 // determining whether some number of hosts in an upstream cluster are
 // performing unlike the others and removing them from the healthy load
@@ -1821,6 +2041,10 @@ type MeshCircuitBreakerItemSpecOutlierDetection struct {
 	Detectors *MeshCircuitBreakerItemSpecDetectors `json:"detectors,omitempty"`
 	// When set to true, outlierDetection configuration won't take any effect
 	Disabled *bool `json:"disabled,omitempty"`
+	// Allows to configure panic threshold for Envoy cluster. If not specified,
+	// the default is 50%. To disable panic mode, set to 0%.
+	// Either int or decimal represented as string.
+	HealthyPanicThreshold *MeshCircuitBreakerItemSpecHealthyPanicThreshold `json:"healthyPanicThreshold,omitempty"`
 	// The time interval between ejection analysis sweeps. This can result in
 	// both new ejections and hosts being returned to service.
 	Interval *string `json:"interval,omitempty"`
@@ -1853,6 +2077,13 @@ func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetDisabled() *bool {
 		return nil
 	}
 	return o.Disabled
+}
+
+func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetHealthyPanicThreshold() *MeshCircuitBreakerItemSpecHealthyPanicThreshold {
+	if o == nil {
+		return nil
+	}
+	return o.HealthyPanicThreshold
 }
 
 func (o *MeshCircuitBreakerItemSpecOutlierDetection) GetInterval() *string {

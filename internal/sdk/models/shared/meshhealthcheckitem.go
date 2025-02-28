@@ -235,6 +235,8 @@ const (
 // HealthyPanicThreshold - Allows to configure panic threshold for Envoy cluster. If not specified,
 // the default is 50%. To disable panic mode, set to 0%.
 // Either int or decimal represented as string.
+// Deprecated: the setting has been moved to MeshCircuitBreaker policy,
+// please use MeshCircuitBreaker policy instead.
 type HealthyPanicThreshold struct {
 	Integer *int64  `queryParam:"inline"`
 	Str     *string `queryParam:"inline"`
@@ -450,6 +452,8 @@ type MeshHealthCheckItemDefault struct {
 	// Allows to configure panic threshold for Envoy cluster. If not specified,
 	// the default is 50%. To disable panic mode, set to 0%.
 	// Either int or decimal represented as string.
+	// Deprecated: the setting has been moved to MeshCircuitBreaker policy,
+	// please use MeshCircuitBreaker policy instead.
 	HealthyPanicThreshold *HealthyPanicThreshold `json:"healthyPanicThreshold,omitempty"`
 	// Number of consecutive healthy checks before considering a host healthy.
 	// If not specified then the default value is 1
