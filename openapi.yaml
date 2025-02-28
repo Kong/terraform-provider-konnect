@@ -27559,6 +27559,7 @@ components:
           x-speakeasy-param-computed: false
     MeshControlPlaneFeatures:
       description: CP features
+      nullable: true
       title: Features
       type: array
       default:

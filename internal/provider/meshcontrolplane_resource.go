@@ -6,10 +6,12 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -70,6 +72,85 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				},
 			},
 			"features": schema.ListNestedAttribute{
+				Computed: true,
+				Default: listdefault.StaticValue(types.ListValueMust(types.ObjectType{
+					AttrTypes: map[string]attr.Type{
+						"hostname_generator_creation": types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"enabled": types.BoolType,
+							},
+						},
+						"mesh_creation": types.ObjectType{
+							AttrTypes: map[string]attr.Type{
+								"enabled": types.BoolType,
+							},
+						},
+						"type": types.StringType,
+					},
+				}, []attr.Value{
+					types.ObjectValueMust(
+						map[string]attr.Type{
+							"mesh_creation": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							},
+							"hostname_generator_creation": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							},
+							"type": types.StringType,
+						},
+						map[string]attr.Value{
+							"type": types.StringValue("MeshCreation"),
+							"mesh_creation": types.ObjectValueMust(
+								map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+								map[string]attr.Value{
+									"enabled": types.BoolValue(false),
+								},
+							),
+							"hostname_generator_creation": types.ObjectNull(
+								map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							), // Use ObjectNull() instead of an empty object
+						},
+					),
+					types.ObjectValueMust(
+						map[string]attr.Type{
+							"mesh_creation": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							},
+							"hostname_generator_creation": types.ObjectType{
+								AttrTypes: map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							},
+							"type": types.StringType,
+						},
+						map[string]attr.Value{
+							"type": types.StringValue("HostnameGeneratorCreation"),
+							"mesh_creation": types.ObjectNull(
+								map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+							), // Use ObjectNull() instead of an empty object
+							"hostname_generator_creation": types.ObjectValueMust(
+								map[string]attr.Type{
+									"enabled": types.BoolType,
+								},
+								map[string]attr.Value{
+									"enabled": types.BoolValue(false),
+								},
+							),
+						},
+					),
+				})),
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
