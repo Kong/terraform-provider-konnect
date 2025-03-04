@@ -683,7 +683,6 @@ func (r *MeshHTTPRouteResource) Schema(ctx context.Context, req resource.SchemaR
 																	Optional: true,
 																	Attributes: map[string]schema.Attribute{
 																		"host_to_backend_hostname": schema.BoolAttribute{
-																			Computed: true,
 																			Optional: true,
 																			PlanModifiers: []planmodifier.Bool{
 																				custom_boolplanmodifier.SupressZeroNullModifier(),

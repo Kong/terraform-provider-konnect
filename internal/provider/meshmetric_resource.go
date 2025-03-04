@@ -232,7 +232,6 @@ func (r *MeshMetricResource) Schema(ctx context.Context, req resource.SchemaRequ
 								Optional: true,
 								Attributes: map[string]schema.Attribute{
 									"include_unused": schema.BoolAttribute{
-										Computed: true,
 										Optional: true,
 										PlanModifiers: []planmodifier.Bool{
 											custom_boolplanmodifier.SupressZeroNullModifier(),

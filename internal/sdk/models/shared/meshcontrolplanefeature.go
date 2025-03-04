@@ -35,14 +35,14 @@ func (e *Type) UnmarshalJSON(data []byte) error {
 
 // MeshControlPlaneFeature - Features to be enabled in the control plane. Currently only defaults are supported.
 type MeshControlPlaneFeature struct {
-	Type                      *Type                                              `json:"type,omitempty"`
+	Type                      Type                                               `json:"type"`
 	HostnameGeneratorCreation *MeshControlPlaneFeatureHostnameGenerationCreation `json:"hostnameGeneratorCreation,omitempty"`
 	MeshCreation              *MeshControlPlaneFeatureMeshCreation               `json:"meshCreation,omitempty"`
 }
 
-func (o *MeshControlPlaneFeature) GetType() *Type {
+func (o *MeshControlPlaneFeature) GetType() Type {
 	if o == nil {
-		return nil
+		return Type("")
 	}
 	return o.Type
 }

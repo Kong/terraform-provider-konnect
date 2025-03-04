@@ -251,9 +251,9 @@ type OpaPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []OpaPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OpaPluginRoute `json:"route,omitempty"`
+	Route *OpaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpaPluginService `json:"service,omitempty"`
+	Service *OpaPluginService `json:"service"`
 }
 
 func (o OpaPlugin) MarshalJSON() ([]byte, error) {
@@ -362,9 +362,9 @@ type OpaPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []OpaPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OpaPluginRoute `json:"route,omitempty"`
+	Route *OpaPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpaPluginService `json:"service,omitempty"`
+	Service *OpaPluginService `json:"service"`
 }
 
 func (o OpaPluginInput) MarshalJSON() ([]byte, error) {

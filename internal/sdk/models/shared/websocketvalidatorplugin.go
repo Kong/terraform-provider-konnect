@@ -364,13 +364,13 @@ type WebsocketValidatorPlugin struct {
 	UpdatedAt *int64                         `json:"updated_at,omitempty"`
 	Config    WebsocketValidatorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *WebsocketValidatorPluginConsumer `json:"consumer,omitempty"`
+	Consumer *WebsocketValidatorPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
+	Route *WebsocketValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	Service *WebsocketValidatorPluginService `json:"service"`
 }
 
 func (w WebsocketValidatorPlugin) MarshalJSON() ([]byte, error) {
@@ -484,13 +484,13 @@ type WebsocketValidatorPluginInput struct {
 	Tags   []string                       `json:"tags,omitempty"`
 	Config WebsocketValidatorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *WebsocketValidatorPluginConsumer `json:"consumer,omitempty"`
+	Consumer *WebsocketValidatorPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
+	Route *WebsocketValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	Service *WebsocketValidatorPluginService `json:"service"`
 }
 
 func (w WebsocketValidatorPluginInput) MarshalJSON() ([]byte, error) {

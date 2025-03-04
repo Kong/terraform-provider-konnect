@@ -272,7 +272,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																Description: `Address on which a service expose HTTP endpoint with Prometheus metrics.`,
 															},
 															"enabled": schema.BoolAttribute{
-																Computed: true,
 																Optional: true,
 																PlanModifiers: []planmodifier.Bool{
 																	custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -306,7 +305,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																`Envoy metrics.`,
 														},
 														"used_only": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -329,7 +327,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`metrics.`,
 												},
 												"skip_mtls": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -345,18 +342,15 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`` + "`" + `service` + "`" + ` tag is mandatory.`,
 												},
 												"tls": schema.SingleNestedAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Object{
 														custom_objectplanmodifier.SupressZeroNullModifier(),
 													},
 													Attributes: map[string]schema.Attribute{
 														"mode": schema.SingleNestedAttribute{
-															Computed: true,
 															Optional: true,
 															Attributes: map[string]schema.Attribute{
 																"integer": schema.Int64Attribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.Int64{
 																		int64validator.ConflictsWith(path.Expressions{
@@ -365,7 +359,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 																	},
 																},
 																"str": schema.StringAttribute{
-																	Computed: true,
 																	Optional: true,
 																	Validators: []validator.String{
 																		stringvalidator.ConflictsWith(path.Expressions{
@@ -724,7 +717,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `Name of the enabled backend`,
 					},
 					"skip_validation": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Bool{
 							custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -746,7 +738,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"passthrough": schema.BoolAttribute{
-								Computed: true,
 								Optional: true,
 								PlanModifiers: []planmodifier.Bool{
 									custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -763,7 +754,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"default_forbid_mesh_external_service_access": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Bool{
 							custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -772,7 +762,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 							`Default: false`,
 					},
 					"locality_aware_load_balancing": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Bool{
 							custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -780,7 +769,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 						Description: `Enable the Locality Aware Load Balancing`,
 					},
 					"zone_egress": schema.BoolAttribute{
-						Computed: true,
 						Optional: true,
 						PlanModifiers: []planmodifier.Bool{
 							custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -831,7 +819,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 													Description: `Port of datadog collector`,
 												},
 												"split_service": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -859,7 +846,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/trace.proto#envoy-v3-api-enum-config-trace-v3-zipkinconfig-collectorendpointversion`,
 												},
 												"shared_span_context": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -869,7 +855,6 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 														`https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/trace/v3/zipkin.proto#config-trace-v3-zipkinconfig`,
 												},
 												"trace_id128bit": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),

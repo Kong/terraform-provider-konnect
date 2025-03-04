@@ -4,6 +4,7 @@ package provider
 
 import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 	"time"
 )
@@ -20,32 +21,21 @@ func (r *MeshControlPlaneResourceModel) ToSharedCreateMeshControlPlaneRequest() 
 	}
 	var features []shared.MeshControlPlaneFeature = []shared.MeshControlPlaneFeature{}
 	for _, featuresItem := range r.Features {
-		typeVar := new(shared.Type)
-		if !featuresItem.Type.IsUnknown() && !featuresItem.Type.IsNull() {
-			*typeVar = shared.Type(featuresItem.Type.ValueString())
-		} else {
-			typeVar = nil
-		}
+		typeVar := shared.Type(featuresItem.Type.ValueString())
 		var hostnameGeneratorCreation *shared.MeshControlPlaneFeatureHostnameGenerationCreation
 		if featuresItem.HostnameGeneratorCreation != nil {
-			enabled := new(bool)
-			if !featuresItem.HostnameGeneratorCreation.Enabled.IsUnknown() && !featuresItem.HostnameGeneratorCreation.Enabled.IsNull() {
-				*enabled = featuresItem.HostnameGeneratorCreation.Enabled.ValueBool()
-			} else {
-				enabled = nil
-			}
+			var enabled bool
+			enabled = featuresItem.HostnameGeneratorCreation.Enabled.ValueBool()
+
 			hostnameGeneratorCreation = &shared.MeshControlPlaneFeatureHostnameGenerationCreation{
 				Enabled: enabled,
 			}
 		}
 		var meshCreation *shared.MeshControlPlaneFeatureMeshCreation
 		if featuresItem.MeshCreation != nil {
-			enabled1 := new(bool)
-			if !featuresItem.MeshCreation.Enabled.IsUnknown() && !featuresItem.MeshCreation.Enabled.IsNull() {
-				*enabled1 = featuresItem.MeshCreation.Enabled.ValueBool()
-			} else {
-				enabled1 = nil
-			}
+			var enabled1 bool
+			enabled1 = featuresItem.MeshCreation.Enabled.ValueBool()
+
 			meshCreation = &shared.MeshControlPlaneFeatureMeshCreation{
 				Enabled: enabled1,
 			}
@@ -76,6 +66,33 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(resp *
 	if resp != nil {
 		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
 		r.Description = types.StringPointerValue(resp.Description)
+		r.Features = []tfTypes.MeshControlPlaneFeature{}
+		if len(r.Features) > len(resp.Features) {
+			r.Features = r.Features[:len(resp.Features)]
+		}
+		for featuresCount, featuresItem := range resp.Features {
+			var features1 tfTypes.MeshControlPlaneFeature
+			if featuresItem.HostnameGeneratorCreation == nil {
+				features1.HostnameGeneratorCreation = nil
+			} else {
+				features1.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features1.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
+			}
+			if featuresItem.MeshCreation == nil {
+				features1.MeshCreation = nil
+			} else {
+				features1.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features1.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
+			}
+			features1.Type = types.StringValue(string(featuresItem.Type))
+			if featuresCount+1 > len(r.Features) {
+				r.Features = append(r.Features, features1)
+			} else {
+				r.Features[featuresCount].HostnameGeneratorCreation = features1.HostnameGeneratorCreation
+				r.Features[featuresCount].MeshCreation = features1.MeshCreation
+				r.Features[featuresCount].Type = features1.Type
+			}
+		}
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String)

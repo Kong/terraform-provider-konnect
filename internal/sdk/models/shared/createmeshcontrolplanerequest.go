@@ -5,10 +5,9 @@ package shared
 // CreateMeshControlPlaneRequest - a payload to create a control plane
 type CreateMeshControlPlaneRequest struct {
 	// The name of the control plane.
-	Name        string  `json:"name"`
-	Description *string `json:"description,omitempty"`
-	// CP features
-	Features []MeshControlPlaneFeature `json:"features"`
+	Name        string                    `json:"name"`
+	Description *string                   `json:"description,omitempty"`
+	Features    []MeshControlPlaneFeature `json:"features,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 	Labels map[string]string `json:"labels,omitempty"`
 }

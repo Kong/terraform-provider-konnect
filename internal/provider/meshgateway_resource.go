@@ -76,7 +76,6 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 							},
 							Attributes: map[string]schema.Attribute{
 								"cross_mesh": schema.BoolAttribute{
-									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.Bool{
 										custom_boolplanmodifier.SupressZeroNullModifier(),

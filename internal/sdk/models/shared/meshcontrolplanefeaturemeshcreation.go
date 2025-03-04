@@ -3,12 +3,12 @@
 package shared
 
 type MeshControlPlaneFeatureMeshCreation struct {
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled bool `json:"enabled"`
 }
 
-func (o *MeshControlPlaneFeatureMeshCreation) GetEnabled() *bool {
+func (o *MeshControlPlaneFeatureMeshCreation) GetEnabled() bool {
 	if o == nil {
-		return nil
+		return false
 	}
 	return o.Enabled
 }

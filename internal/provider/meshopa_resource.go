@@ -134,7 +134,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 									},
 									Attributes: map[string]schema.Attribute{
 										"ignore_decision": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.Bool{
 												custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -192,7 +191,6 @@ func (r *MeshOPAResource) Schema(ctx context.Context, req resource.SchemaRequest
 													`sent to the agent.`,
 											},
 											"send_raw_body": schema.BoolAttribute{
-												Computed: true,
 												Optional: true,
 												PlanModifiers: []planmodifier.Bool{
 													custom_boolplanmodifier.SupressZeroNullModifier(),

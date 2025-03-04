@@ -1192,9 +1192,9 @@ type JwtSignerPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JwtSignerPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JwtSignerPluginRoute `json:"route,omitempty"`
+	Route *JwtSignerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JwtSignerPluginService `json:"service,omitempty"`
+	Service *JwtSignerPluginService `json:"service"`
 }
 
 func (j JwtSignerPlugin) MarshalJSON() ([]byte, error) {
@@ -1303,9 +1303,9 @@ type JwtSignerPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []JwtSignerPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *JwtSignerPluginRoute `json:"route,omitempty"`
+	Route *JwtSignerPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *JwtSignerPluginService `json:"service,omitempty"`
+	Service *JwtSignerPluginService `json:"service"`
 }
 
 func (j JwtSignerPluginInput) MarshalJSON() ([]byte, error) {

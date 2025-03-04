@@ -29,12 +29,13 @@ type CloudGatewayTransitGatewayDataSource struct {
 
 // CloudGatewayTransitGatewayDataSourceModel describes the data model.
 type CloudGatewayTransitGatewayDataSourceModel struct {
-	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
-	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
-	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
-	ID                          types.String                         `tfsdk:"id"`
-	Name                        types.String                         `tfsdk:"name"`
-	NetworkID                   types.String                         `tfsdk:"network_id"`
+	AwsTransitGatewayResponse    *tfTypes.AwsTransitGatewayResponse    `tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AwsVpcPeeringGatewayResponse *tfTypes.AwsVpcPeeringGatewayResponse `tfsdk:"aws_vpc_peering_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse  *tfTypes.AzureTransitGatewayResponse  `tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	EntityVersion                types.Int64                           `tfsdk:"entity_version"`
+	ID                           types.String                          `tfsdk:"id"`
+	Name                         types.String                          `tfsdk:"name"`
+	NetworkID                    types.String                          `tfsdk:"network_id"`
 }
 
 // Metadata returns the data source type name.
@@ -110,6 +111,78 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 							"transit_gateway_id": schema.StringAttribute{
 								Computed:    true,
 								Description: `AWS Transit Gateway ID to create attachment to.`,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+					},
+				},
+			},
+			"aws_vpc_peering_gateway_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"cidr_blocks": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_account_id": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_vpc_id": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_vpc_region": schema.StringAttribute{
+								Computed: true,
 							},
 						},
 					},

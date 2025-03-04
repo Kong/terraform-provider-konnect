@@ -250,7 +250,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Computed: true,
 																				Optional: true,
 																				PlanModifiers: []planmodifier.Bool{
 																					custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -326,7 +325,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																		PlanModifiers: []planmodifier.Bool{
 																			custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -411,7 +409,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		Optional: true,
 																		Attributes: map[string]schema.Attribute{
 																			"source_ip": schema.BoolAttribute{
-																				Computed: true,
 																				Optional: true,
 																				PlanModifiers: []planmodifier.Bool{
 																					custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -487,7 +484,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 																		},
 																	},
 																	"terminal": schema.BoolAttribute{
-																		Computed: true,
 																		Optional: true,
 																		PlanModifiers: []planmodifier.Bool{
 																			custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -673,7 +669,6 @@ func (r *MeshLoadBalancingStrategyResource) Schema(ctx context.Context, req reso
 														`are unavailable`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),

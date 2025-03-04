@@ -188,7 +188,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 									Optional: true,
 									Attributes: map[string]schema.Attribute{
 										"always_log_health_check_failures": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.Bool{
 												custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -203,7 +202,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`If empty, no event log will be written.`,
 										},
 										"fail_traffic_on_panic": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.Bool{
 												custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -222,7 +220,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 														`by default name of the cluster this health check is associated with`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -272,7 +269,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -406,7 +402,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 												`traffic interval" is 60 seconds.`,
 										},
 										"reuse_connection": schema.BoolAttribute{
-											Computed: true,
 											Optional: true,
 											PlanModifiers: []planmodifier.Bool{
 												custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -417,7 +412,6 @@ func (r *MeshHealthCheckResource) Schema(ctx context.Context, req resource.Schem
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),

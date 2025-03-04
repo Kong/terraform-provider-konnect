@@ -138,11 +138,11 @@ func (r *GatewayDataPlaneClientCertificateDataSource) Read(ctx context.Context, 
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.DataPlaneClientCertificate != nil && res.DataPlaneClientCertificate.Item != nil) {
+	if !(res.DataPlaneClientCertificateResponse != nil && res.DataPlaneClientCertificateResponse.Item != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedDataPlaneClientCertificateItem(res.DataPlaneClientCertificate.Item)
+	data.RefreshFromSharedDataPlaneClientCertificate(res.DataPlaneClientCertificateResponse.Item)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

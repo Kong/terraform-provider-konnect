@@ -330,7 +330,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													Description: `Contains configuration for supported outlier detectors`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -373,7 +372,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 														`the value.`,
 												},
 												"split_external_and_local_errors": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -698,7 +696,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													Description: `Contains configuration for supported outlier detectors`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -741,7 +738,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 														`the value.`,
 												},
 												"split_external_and_local_errors": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -1063,7 +1059,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 													Description: `Contains configuration for supported outlier detectors`,
 												},
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -1106,7 +1101,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 														`the value.`,
 												},
 												"split_external_and_local_errors": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),

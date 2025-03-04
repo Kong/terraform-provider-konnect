@@ -43,7 +43,7 @@ resource "konnect_mesh_control_plane" "my_meshcontrolplane" {
 ### Optional
 
 - `description` (String)
-- `features` (Attributes List) CP features. Requires replacement if changed. (see [below for nested schema](#nestedatt--features))
+- `features` (Attributes List) Requires replacement if changed. (see [below for nested schema](#nestedatt--features))
 - `labels` (Map of String) Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
 
 ### Read-Only
@@ -59,14 +59,14 @@ Optional:
 
 - `hostname_generator_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--hostname_generator_creation))
 - `mesh_creation` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--features--mesh_creation))
-- `type` (String) must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.
+- `type` (String) Not Null; must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.
 
 <a id="nestedatt--features--hostname_generator_creation"></a>
 ### Nested Schema for `features.hostname_generator_creation`
 
 Optional:
 
-- `enabled` (Boolean) Requires replacement if changed.
+- `enabled` (Boolean) Not Null; Requires replacement if changed.
 
 
 <a id="nestedatt--features--mesh_creation"></a>
@@ -74,7 +74,7 @@ Optional:
 
 Optional:
 
-- `enabled` (Boolean) Requires replacement if changed.
+- `enabled` (Boolean) Not Null; Requires replacement if changed.
 
 ## Import
 

@@ -144,9 +144,9 @@ type BotDetectionPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []BotDetectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *BotDetectionPluginRoute `json:"route,omitempty"`
+	Route *BotDetectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *BotDetectionPluginService `json:"service,omitempty"`
+	Service *BotDetectionPluginService `json:"service"`
 }
 
 func (b BotDetectionPlugin) MarshalJSON() ([]byte, error) {
@@ -255,9 +255,9 @@ type BotDetectionPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []BotDetectionPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *BotDetectionPluginRoute `json:"route,omitempty"`
+	Route *BotDetectionPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *BotDetectionPluginService `json:"service,omitempty"`
+	Service *BotDetectionPluginService `json:"service"`
 }
 
 func (b BotDetectionPluginInput) MarshalJSON() ([]byte, error) {

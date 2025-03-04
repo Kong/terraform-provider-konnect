@@ -126,7 +126,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"limit_on_service_fail": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -157,7 +156,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -534,7 +532,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"limit_on_service_fail": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -565,7 +562,6 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 											Optional: true,
 											Attributes: map[string]schema.Attribute{
 												"disabled": schema.BoolAttribute{
-													Computed: true,
 													Optional: true,
 													PlanModifiers: []planmodifier.Bool{
 														custom_boolplanmodifier.SupressZeroNullModifier(),

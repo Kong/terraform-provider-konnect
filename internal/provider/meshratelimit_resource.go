@@ -125,7 +125,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -267,7 +266,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 															Description: `Defines how many connections are allowed per interval.`,
 														},
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -383,7 +381,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -525,7 +522,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 															Description: `Defines how many connections are allowed per interval.`,
 														},
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -638,7 +634,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 													Optional: true,
 													Attributes: map[string]schema.Attribute{
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
@@ -780,7 +775,6 @@ func (r *MeshRateLimitResource) Schema(ctx context.Context, req resource.SchemaR
 															Description: `Defines how many connections are allowed per interval.`,
 														},
 														"disabled": schema.BoolAttribute{
-															Computed: true,
 															Optional: true,
 															PlanModifiers: []planmodifier.Bool{
 																custom_boolplanmodifier.SupressZeroNullModifier(),
