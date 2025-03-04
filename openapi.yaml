@@ -13107,6 +13107,26 @@ components:
         - transit_gateway_id
         - ram_share_arn
       title: AWS Transit Gateway Attachment Config
+    AwsVpcPeeringGatewayAttachmentConfig:
+      type: object
+      properties:
+        kind:
+          enum:
+            - aws-vpc-peering-attachment
+          title: AWS VPC Peering Attachment Config
+        peer_account_id:
+          type: string
+        peer_vpc_id:
+          type: string
+        peer_vpc_region:
+          type: string
+      additionalProperties: false
+      required:
+        - kind
+        - peer_account_id
+        - peer_vpc_id
+        - peer_vpc_region
+      title: AWS VPC Peering Attachment Config
     AzureVNETPeeringAttachmentConfig:
       type: object
       properties:
@@ -13249,6 +13269,27 @@ components:
             - dns_config
         - $ref: '#/components/schemas/BaseTransitGatewayResponse'
       x-flatten-allOf: true
+    AwsVpcPeeringGateway:
+      allOf:
+        - $ref: '#/components/schemas/BaseTransitGateway'
+        - title: AWS Transit Gateway
+          type: object
+          properties:
+            cidr_blocks:
+              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+            transit_gateway_attachment_config:
+              $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+          required:
+            - cidr_blocks
+            - transit_gateway_attachment_config
+      x-flatten-allOf: true
+    AwsVpcPeeringGatewayResponse:
+      allOf:
+        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
+        - required:
+            - dns_config
+        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
+      x-flatten-allOf: true
     AzureTransitGateway:
       allOf:
         - $ref: '#/components/schemas/BaseTransitGateway'
@@ -13268,10 +13309,17 @@ components:
     TransitGatewayResponse:
       oneOf:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
+        - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
     CreateAwsTransitGateway:
       allOf:
         - $ref: '#/components/schemas/AwsTransitGateway'
+        - required:
+            - name
+      x-flatten-allOf: true
+    CreateAwsVpcPeeringGateway:
+      allOf:
+        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
         - required:
             - name
       x-flatten-allOf: true
@@ -13286,6 +13334,7 @@ components:
       type: object
       oneOf:
         - $ref: '#/components/schemas/CreateAwsTransitGateway'
+        - $ref: '#/components/schemas/CreateAwsVpcPeeringGateway'
         - $ref: '#/components/schemas/CreateAzureTransitGateway'
       title: CreateTransitGatewayRequest
     CustomDomainState:
@@ -13428,6 +13477,38 @@ components:
         - control_plane_geo
         - domain
       title: CreateCustomDomainRequest
+    MeshControlPlaneFeatures:
+      type: array
+      items:
+        $ref: '#/components/schemas/MeshControlPlaneFeature'
+    MeshControlPlaneFeatureHostnameGenerationCreation:
+      properties:
+        enabled:
+          type: boolean
+      required:
+        - enabled
+    MeshControlPlaneFeatureMeshCreation:
+      properties:
+        enabled:
+          type: boolean
+      required:
+        - enabled
+    MeshControlPlaneFeature:
+      description: |
+        Features to be enabled in the control plane. Currently only defaults are supported.
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - MeshCreation
+            - HostnameGeneratorCreation
+        hostnameGeneratorCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureHostnameGenerationCreation'
+        meshCreation:
+          $ref: '#/components/schemas/MeshControlPlaneFeatureMeshCreation'
+      required:
+        - type
     MeshControlPlaneLabels:
       description: Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
       type: object
@@ -13464,6 +13545,8 @@ components:
           maxLength: 250
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
+        features:
+          $ref: '#/components/schemas/MeshControlPlaneFeatures'
         created_at:
           type: string
           format: date-time
@@ -13493,6 +13576,8 @@ components:
           type: string
           example: A control plane to handle traffic on development environment.
           maxLength: 250
+        features:
+          $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
       additionalProperties: false
@@ -16208,24 +16293,21 @@ components:
           readOnly: true
       title: AuditLogDestination
     DataPlaneClientCertificate:
+      x-speakeasy-entity: GatewayDataPlaneClientCertificate
       type: object
       properties:
-        item:
-          x-speakeasy-entity: GatewayDataPlaneClientCertificate
-          type: object
-          properties:
-            id:
-              description: Unique ID of the certificate entity.
-              type: string
-            created_at:
-              description: Date certificate was created.
-              type: integer
-            updated_at:
-              description: Date certificate was last updated.
-              type: integer
-            cert:
-              description: JSON escaped string of the certificate.
-              type: string
+        id:
+          description: Unique ID of the certificate entity.
+          type: string
+        created_at:
+          description: Date certificate was created.
+          type: integer
+        updated_at:
+          description: Date certificate was last updated.
+          type: integer
+        cert:
+          description: JSON escaped string of the certificate.
+          type: string
     ConfigStore:
       type: object
       properties:
@@ -34575,7 +34657,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/DataPlaneClientCertificate'
+            type: object
+            properties:
+              item:
+                $ref: '#/components/schemas/DataPlaneClientCertificate'
     plugin-schemas:
       description: A response for a single custom plugin schema.
       content:
