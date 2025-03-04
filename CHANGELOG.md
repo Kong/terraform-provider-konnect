@@ -6,6 +6,8 @@
 ### Features
 
 * Add support for `konnect_gateway_route_expression` resource
+* `konnect_mesh_control_plane` now supports `features` property
+* Add support for AWS VPC peering gateway in `konnect_cloud_gateway_transit_gateway` resource
 
 ## 2.3.0
 > Released on 2025/02/10
