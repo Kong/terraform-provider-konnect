@@ -31,6 +31,9 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
     name = "us-east-2 transit gateway"
     transit_gateway_attachment_config = {
       kind               = "aws-transit-gateway-attachment"
+      peer_account_id    = "...my_peer_account_id..."
+      peer_vpc_id        = "...my_peer_vpc_id..."
+      peer_vpc_region    = "...my_peer_vpc_region..."
       ram_share_arn      = "...my_ram_share_arn..."
       transit_gateway_id = "...my_transit_gateway_id..."
     }
@@ -74,6 +77,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 ### Read-Only
 
 - `aws_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response))
+- `aws_vpc_peering_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response))
 - `azure_transit_gateway_response` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response))
 - `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
 transit gateway.
@@ -103,6 +107,9 @@ Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_
 Required:
 
 - `kind` (String) must be "aws-transit-gateway-attachment"; Requires replacement if changed.
+- `peer_account_id` (String) Requires replacement if changed.
+- `peer_vpc_id` (String) Requires replacement if changed.
+- `peer_vpc_region` (String) Requires replacement if changed.
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment. Requires replacement if changed.
 - `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Requires replacement if changed.
 
@@ -193,6 +200,46 @@ Read-Only:
 - `kind` (String) must be "aws-transit-gateway-attachment"
 - `ram_share_arn` (String) Resource Share ARN to verify request to create transit gateway attachment.
 - `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to.
+
+
+
+<a id="nestedatt--aws_vpc_peering_gateway_response"></a>
+### Nested Schema for `aws_vpc_peering_gateway_response`
+
+Read-Only:
+
+- `cidr_blocks` (List of String) CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning
+network.
+- `created_at` (String) An RFC-3339 timestamp representation of transit gateway creation date.
+- `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
+attachment. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--dns_config))
+- `entity_version` (Number) Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+transit gateway.
+- `id` (String)
+- `name` (String) Human-readable name of the transit gateway.
+- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
+- `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
+
+<a id="nestedatt--aws_vpc_peering_gateway_response--dns_config"></a>
+### Nested Schema for `aws_vpc_peering_gateway_response.dns_config`
+
+Read-Only:
+
+- `domain_proxy_list` (List of String) Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,
+for a transit gateway.
+- `remote_dns_server_ip_addresses` (List of String) Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.
+
+
+<a id="nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_vpc_peering_gateway_response.transit_gateway_attachment_config`
+
+Read-Only:
+
+- `kind` (String) must be "aws-vpc-peering-attachment"
+- `peer_account_id` (String)
+- `peer_vpc_id` (String)
+- `peer_vpc_region` (String)
 
 
 

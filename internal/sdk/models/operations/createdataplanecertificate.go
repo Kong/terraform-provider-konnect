@@ -36,7 +36,7 @@ type CreateDataplaneCertificateResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Response body for retrieving a dp-client-certificate.
-	DataPlaneClientCertificate *shared.DataPlaneClientCertificate
+	DataPlaneClientCertificateResponse *shared.DataPlaneClientCertificateResponse
 }
 
 func (o *CreateDataplaneCertificateResponse) GetContentType() string {
@@ -60,9 +60,9 @@ func (o *CreateDataplaneCertificateResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *CreateDataplaneCertificateResponse) GetDataPlaneClientCertificate() *shared.DataPlaneClientCertificate {
+func (o *CreateDataplaneCertificateResponse) GetDataPlaneClientCertificateResponse() *shared.DataPlaneClientCertificateResponse {
 	if o == nil {
 		return nil
 	}
-	return o.DataPlaneClientCertificate
+	return o.DataPlaneClientCertificateResponse
 }

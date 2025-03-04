@@ -4,11 +4,8 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AwsTransitGatewayAttachmentConfig struct {
+type AwsTransitGatewayAttachmentConfig1 struct {
 	Kind             types.String `tfsdk:"kind"`
-	PeerAccountID    types.String `tfsdk:"peer_account_id"`
-	PeerVpcID        types.String `tfsdk:"peer_vpc_id"`
-	PeerVpcRegion    types.String `tfsdk:"peer_vpc_region"`
 	RAMShareArn      types.String `tfsdk:"ram_share_arn"`
 	TransitGatewayID types.String `tfsdk:"transit_gateway_id"`
 }
