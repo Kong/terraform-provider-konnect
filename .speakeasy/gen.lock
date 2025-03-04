@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 94ea37eaca6cb8afdf625d78eb0d5298
+  docChecksum: f64d334678dab8a32f8011e3a465bf32
   docVersion: 2.0.0
   speakeasyVersion: 1.503.0
   generationVersion: 2.526.1
@@ -1095,6 +1095,9 @@ generatedFiles:
   - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
+  - internal/provider/types/aws_vpc_peering_gateway.go
+  - internal/provider/types/aws_vpc_peering_gateway_attachment_config.go
+  - internal/provider/types/aws_vpc_peering_gateway_response.go
   - internal/provider/types/azure_functions_plugin_config.go
   - internal/provider/types/azure_transit_gateway.go
   - internal/provider/types/azure_transit_gateway_response.go
@@ -1171,6 +1174,8 @@ generatedFiles:
   - internal/provider/types/loggly_plugin_config.go
   - internal/provider/types/members.go
   - internal/provider/types/memory.go
+  - internal/provider/types/mesh_control_plane_feature.go
+  - internal/provider/types/mesh_control_plane_feature_hostname_generation_creation.go
   - internal/provider/types/metadata.go
   - internal/provider/types/metrics.go
   - internal/provider/types/mocking_plugin_config.go
@@ -1902,6 +1907,8 @@ generatedFiles:
   - internal/sdk/models/shared/awslambdaplugin.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
+  - internal/sdk/models/shared/awsvpcpeeringgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/azurefunctionsplugin.go
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
@@ -1964,6 +1971,7 @@ generatedFiles:
   - internal/sdk/models/shared/datadogtracingplugin.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
   - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
+  - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
   - internal/sdk/models/shared/entityregion.go
@@ -2019,6 +2027,9 @@ generatedFiles:
   - internal/sdk/models/shared/listprovideraccountsresponse.go
   - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshcontrolplane.go
+  - internal/sdk/models/shared/meshcontrolplanefeature.go
+  - internal/sdk/models/shared/meshcontrolplanefeaturehostnamegenerationcreation.go
+  - internal/sdk/models/shared/meshcontrolplanefeaturemeshcreation.go
   - internal/sdk/models/shared/mockingplugin.go
   - internal/sdk/models/shared/mtlsauth.go
   - internal/sdk/models/shared/mtlsauthplugin.go

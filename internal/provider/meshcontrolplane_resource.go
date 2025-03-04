@@ -9,12 +9,25 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/boolvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -33,12 +46,13 @@ type MeshControlPlaneResource struct {
 
 // MeshControlPlaneResourceModel describes the resource data model.
 type MeshControlPlaneResourceModel struct {
-	CreatedAt   types.String            `tfsdk:"created_at"`
-	Description types.String            `tfsdk:"description"`
-	ID          types.String            `tfsdk:"id"`
-	Labels      map[string]types.String `tfsdk:"labels"`
-	Name        types.String            `tfsdk:"name"`
-	UpdatedAt   types.String            `tfsdk:"updated_at"`
+	CreatedAt   types.String                      `tfsdk:"created_at"`
+	Description types.String                      `tfsdk:"description"`
+	Features    []tfTypes.MeshControlPlaneFeature `tfsdk:"features"`
+	ID          types.String                      `tfsdk:"id"`
+	Labels      map[string]types.String           `tfsdk:"labels"`
+	Name        types.String                      `tfsdk:"name"`
+	UpdatedAt   types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *MeshControlPlaneResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,6 +75,88 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtMost(250),
 				},
+			},
+			"features": schema.ListNestedAttribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
+				},
+				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
+					PlanModifiers: []planmodifier.Object{
+						objectplanmodifier.RequiresReplaceIfConfigured(),
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+					},
+					Attributes: map[string]schema.Attribute{
+						"hostname_generator_creation": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
+							Attributes: map[string]schema.Attribute{
+								"enabled": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.Bool{
+										boolplanmodifier.RequiresReplaceIfConfigured(),
+										speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+									},
+									Description: `Not Null; Requires replacement if changed.`,
+									Validators: []validator.Bool{
+										speakeasy_boolvalidators.NotNull(),
+									},
+								},
+							},
+							Description: `Requires replacement if changed.`,
+						},
+						"mesh_creation": schema.SingleNestedAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
+							},
+							Attributes: map[string]schema.Attribute{
+								"enabled": schema.BoolAttribute{
+									Computed: true,
+									Optional: true,
+									PlanModifiers: []planmodifier.Bool{
+										boolplanmodifier.RequiresReplaceIfConfigured(),
+										speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
+									},
+									Description: `Not Null; Requires replacement if changed.`,
+									Validators: []validator.Bool{
+										speakeasy_boolvalidators.NotNull(),
+									},
+								},
+							},
+							Description: `Requires replacement if changed.`,
+						},
+						"type": schema.StringAttribute{
+							Computed: true,
+							Optional: true,
+							PlanModifiers: []planmodifier.String{
+								stringplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+							},
+							Description: `Not Null; must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.`,
+							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
+								stringvalidator.OneOf(
+									"MeshCreation",
+									"HostnameGeneratorCreation",
+								),
+							},
+						},
+					},
+				},
+				Description: `Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed:    true,

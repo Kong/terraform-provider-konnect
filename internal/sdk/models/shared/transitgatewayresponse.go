@@ -11,14 +11,16 @@ import (
 type TransitGatewayResponseType string
 
 const (
-	TransitGatewayResponseTypeAwsTransitGatewayResponse   TransitGatewayResponseType = "AwsTransitGatewayResponse"
-	TransitGatewayResponseTypeAzureTransitGatewayResponse TransitGatewayResponseType = "AzureTransitGatewayResponse"
+	TransitGatewayResponseTypeAwsTransitGatewayResponse    TransitGatewayResponseType = "AwsTransitGatewayResponse"
+	TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse TransitGatewayResponseType = "AwsVpcPeeringGatewayResponse"
+	TransitGatewayResponseTypeAzureTransitGatewayResponse  TransitGatewayResponseType = "AzureTransitGatewayResponse"
 )
 
 // TransitGatewayResponse - Response format for creating a transit gateway.
 type TransitGatewayResponse struct {
-	AwsTransitGatewayResponse   *AwsTransitGatewayResponse   `queryParam:"inline"`
-	AzureTransitGatewayResponse *AzureTransitGatewayResponse `queryParam:"inline"`
+	AwsTransitGatewayResponse    *AwsTransitGatewayResponse    `queryParam:"inline"`
+	AwsVpcPeeringGatewayResponse *AwsVpcPeeringGatewayResponse `queryParam:"inline"`
+	AzureTransitGatewayResponse  *AzureTransitGatewayResponse  `queryParam:"inline"`
 
 	Type TransitGatewayResponseType
 }
@@ -29,6 +31,15 @@ func CreateTransitGatewayResponseAwsTransitGatewayResponse(awsTransitGatewayResp
 	return TransitGatewayResponse{
 		AwsTransitGatewayResponse: &awsTransitGatewayResponse,
 		Type:                      typ,
+	}
+}
+
+func CreateTransitGatewayResponseAwsVpcPeeringGatewayResponse(awsVpcPeeringGatewayResponse AwsVpcPeeringGatewayResponse) TransitGatewayResponse {
+	typ := TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse
+
+	return TransitGatewayResponse{
+		AwsVpcPeeringGatewayResponse: &awsVpcPeeringGatewayResponse,
+		Type:                         typ,
 	}
 }
 
@@ -57,12 +68,23 @@ func (u *TransitGatewayResponse) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
+	var awsVpcPeeringGatewayResponse AwsVpcPeeringGatewayResponse = AwsVpcPeeringGatewayResponse{}
+	if err := utils.UnmarshalJSON(data, &awsVpcPeeringGatewayResponse, "", true, true); err == nil {
+		u.AwsVpcPeeringGatewayResponse = &awsVpcPeeringGatewayResponse
+		u.Type = TransitGatewayResponseTypeAwsVpcPeeringGatewayResponse
+		return nil
+	}
+
 	return fmt.Errorf("could not unmarshal `%s` into any supported union types for TransitGatewayResponse", string(data))
 }
 
 func (u TransitGatewayResponse) MarshalJSON() ([]byte, error) {
 	if u.AwsTransitGatewayResponse != nil {
 		return utils.MarshalJSON(u.AwsTransitGatewayResponse, "", true)
+	}
+
+	if u.AwsVpcPeeringGatewayResponse != nil {
+		return utils.MarshalJSON(u.AwsVpcPeeringGatewayResponse, "", true)
 	}
 
 	if u.AzureTransitGatewayResponse != nil {

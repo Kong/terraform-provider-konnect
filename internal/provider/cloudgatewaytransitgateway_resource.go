@@ -40,14 +40,16 @@ type CloudGatewayTransitGatewayResource struct {
 
 // CloudGatewayTransitGatewayResourceModel describes the resource data model.
 type CloudGatewayTransitGatewayResourceModel struct {
-	AWSTransitGateway           *tfTypes.AWSTransitGateway           `queryParam:"inline" tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
-	AwsTransitGatewayResponse   *tfTypes.AwsTransitGatewayResponse   `queryParam:"inline" tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
-	AzureTransitGateway         *tfTypes.AzureTransitGateway         `queryParam:"inline" tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
-	AzureTransitGatewayResponse *tfTypes.AzureTransitGatewayResponse `queryParam:"inline" tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
-	EntityVersion               types.Int64                          `tfsdk:"entity_version"`
-	ID                          types.String                         `tfsdk:"id"`
-	Name                        types.String                         `tfsdk:"name"`
-	NetworkID                   types.String                         `tfsdk:"network_id"`
+	AWSTransitGateway            *tfTypes.AWSTransitGateway            `queryParam:"inline" tfsdk:"aws_transit_gateway" tfPlanOnly:"true"`
+	AwsTransitGatewayResponse    *tfTypes.AwsTransitGatewayResponse    `queryParam:"inline" tfsdk:"aws_transit_gateway_response" tfPlanOnly:"true"`
+	AWSVpcPeeringGateway         *tfTypes.AWSVpcPeeringGateway         `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway" tfPlanOnly:"true"`
+	AwsVpcPeeringGatewayResponse *tfTypes.AwsVpcPeeringGatewayResponse `queryParam:"inline" tfsdk:"aws_vpc_peering_gateway_response" tfPlanOnly:"true"`
+	AzureTransitGateway          *tfTypes.AzureTransitGateway          `queryParam:"inline" tfsdk:"azure_transit_gateway" tfPlanOnly:"true"`
+	AzureTransitGatewayResponse  *tfTypes.AzureTransitGatewayResponse  `queryParam:"inline" tfsdk:"azure_transit_gateway_response" tfPlanOnly:"true"`
+	EntityVersion                types.Int64                           `tfsdk:"entity_version"`
+	ID                           types.String                          `tfsdk:"id"`
+	Name                         types.String                          `tfsdk:"name"`
+	NetworkID                    types.String                          `tfsdk:"network_id"`
 }
 
 func (r *CloudGatewayTransitGatewayResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -154,7 +156,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -254,6 +258,221 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+					}...),
+				},
+			},
+			"aws_vpc_peering_gateway": schema.SingleNestedAttribute{
+				Optional: true,
+				PlanModifiers: []planmodifier.Object{
+					objectplanmodifier.RequiresReplaceIfConfigured(),
+				},
+				Attributes: map[string]schema.Attribute{
+					"cidr_blocks": schema.ListAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Optional: true,
+						PlanModifiers: []planmodifier.List{
+							listplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						NestedObject: schema.NestedAttributeObject{
+							PlanModifiers: []planmodifier.Object{
+								objectplanmodifier.RequiresReplaceIfConfigured(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.` + "\n" +
+										`Requires replacement if changed.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Required: true,
+									PlanModifiers: []planmodifier.List{
+										listplanmodifier.RequiresReplaceIfConfigured(),
+									},
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway. Requires replacement if changed.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.` + "\n" +
+							`Requires replacement if changed.`,
+					},
+					"name": schema.StringAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.String{
+							stringplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Description: `Human-readable name of the transit gateway. Requires replacement if changed.`,
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Required: true,
+						PlanModifiers: []planmodifier.Object{
+							objectplanmodifier.RequiresReplaceIfConfigured(),
+						},
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `must be "aws-vpc-peering-attachment"; Requires replacement if changed.`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"aws-vpc-peering-attachment",
+									),
+								},
+							},
+							"peer_account_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Requires replacement if changed.`,
+							},
+							"peer_vpc_id": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Requires replacement if changed.`,
+							},
+							"peer_vpc_region": schema.StringAttribute{
+								Required: true,
+								PlanModifiers: []planmodifier.String{
+									stringplanmodifier.RequiresReplaceIfConfigured(),
+								},
+								Description: `Requires replacement if changed.`,
+							},
+						},
+						Description: `Requires replacement if changed.`,
+					},
+				},
+				Description: `Requires replacement if changed.`,
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
+					}...),
+				},
+			},
+			"aws_vpc_peering_gateway_response": schema.SingleNestedAttribute{
+				Computed: true,
+				Attributes: map[string]schema.Attribute{
+					"cidr_blocks": schema.ListAttribute{
+						Computed:    true,
+						ElementType: types.StringType,
+						MarkdownDescription: `CIDR blocks for constructing a route table for the transit gateway, when attaching to the owning` + "\n" +
+							`network.`,
+					},
+					"created_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway creation date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+					"dns_config": schema.ListNestedAttribute{
+						Computed: true,
+						NestedObject: schema.NestedAttributeObject{
+							Attributes: map[string]schema.Attribute{
+								"domain_proxy_list": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									MarkdownDescription: `Internal domain names to proxy for DNS resolution from the listed remote DNS server IP addresses,` + "\n" +
+										`for a transit gateway.`,
+								},
+								"remote_dns_server_ip_addresses": schema.ListAttribute{
+									Computed:    true,
+									ElementType: types.StringType,
+									Description: `Remote DNS Server IP Addresses to connect to for resolving internal DNS via a transit gateway.`,
+								},
+							},
+						},
+						MarkdownDescription: `List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway` + "\n" +
+							`attachment.`,
+					},
+					"entity_version": schema.Int64Attribute{
+						Computed: true,
+						MarkdownDescription: `Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the` + "\n" +
+							`transit gateway.`,
+					},
+					"id": schema.StringAttribute{
+						Computed: true,
+					},
+					"name": schema.StringAttribute{
+						Computed:    true,
+						Description: `Human-readable name of the transit gateway.`,
+					},
+					"state": schema.StringAttribute{
+						Computed:    true,
+						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"created",
+								"initializing",
+								"ready",
+								"terminating",
+								"terminated",
+							),
+						},
+					},
+					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
+						Computed: true,
+						Attributes: map[string]schema.Attribute{
+							"kind": schema.StringAttribute{
+								Computed:    true,
+								Description: `must be "aws-vpc-peering-attachment"`,
+								Validators: []validator.String{
+									stringvalidator.OneOf(
+										"aws-vpc-peering-attachment",
+									),
+								},
+							},
+							"peer_account_id": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_vpc_id": schema.StringAttribute{
+								Computed: true,
+							},
+							"peer_vpc_region": schema.StringAttribute{
+								Computed: true,
+							},
+						},
+					},
+					"updated_at": schema.StringAttribute{
+						Computed:    true,
+						Description: `An RFC-3339 timestamp representation of transit gateway update date.`,
+						Validators: []validator.String{
+							validators.IsRFC3339(),
+						},
+					},
+				},
+				Validators: []validator.Object{
+					objectvalidator.ConflictsWith(path.Expressions{
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -360,7 +579,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
 				},
@@ -461,7 +682,9 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 					}...),
 				},
