@@ -1,13 +1,17 @@
 # Changelog
 
 ## 2.4.0
-> Released on 2025/??/??
+> Released on 2025/03/05
 
 ### Features
 
 * Add support for `konnect_gateway_route_expression` resource
 * `konnect_mesh_control_plane` now supports `features` property
 * Add support for AWS VPC peering gateway in `konnect_cloud_gateway_transit_gateway` resource
+
+### Bug fixes
+
+* Foreign key references (e.g. `service.id`) in Kong Gateway are now cleared when removed from the manifest
 
 ## 2.3.0
 > Released on 2025/02/10

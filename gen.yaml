@@ -16,7 +16,7 @@ generation:
     oAuth2PasswordEnabled: false
   baseServerURL: ""
 terraform:
-  version: 2.3.0
+  version: 2.4.0
   additionalDataSources: []
   additionalDependencies: {}
   additionalProviderAttributes:
