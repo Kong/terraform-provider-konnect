@@ -122,6 +122,7 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
+        x-speakeasy-param-suppress-computed-diff: true
     get:
       x-speakeasy-entity-operation: MeshControlPlane#read
       operationId: get-mesh-control-plane
@@ -13551,10 +13552,14 @@ components:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - id
         - name
@@ -14376,6 +14381,7 @@ components:
             - email
             - openid
             - profile
+          default: []
         claim_mappings:
           $ref: '#/components/schemas/PortalClaimMappings'
       example:
@@ -15668,6 +15674,7 @@ components:
           items:
             type: string
             maxLength: 128
+          default: []
           maxItems: 50
         auth_methods:
           type: array
@@ -15700,6 +15707,7 @@ components:
           items:
             type: string
             maxLength: 128
+          default: []
           maxItems: 50
         auth_methods:
           type: array
@@ -24489,6 +24497,7 @@ components:
                             type: array
                             items:
                               type: string
+                            default: []
                           scopes_claim:
                             description: 'The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.'
                             type: array
@@ -25719,6 +25728,7 @@ components:
               type: array
               items:
                 type: string
+              default: []
             token_expiration:
               description: 'An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to `0` to disable the expiration.'
               type: number
@@ -26842,6 +26852,7 @@ components:
               type: array
               items:
                 type: string
+              default: []
             scopes_claim:
               description: 'The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.'
               type: array
@@ -27158,8 +27169,6 @@ components:
             verify_signature:
               description: Verify signature of tokens.
               type: boolean
-          required:
-            - scopes
           shorthand_fields:
             authorization_cookie_httponly:
               type: boolean
@@ -32729,6 +32738,7 @@ components:
                   type: array
                   items:
                     type: string
+                  default: []
                 token_endpoint:
                   description: The token endpoint URI.
                   type: string
