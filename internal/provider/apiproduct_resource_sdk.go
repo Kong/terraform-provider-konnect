@@ -54,7 +54,7 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}
@@ -80,7 +80,7 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 			}
 		}
 		if len(resp.PublicLabels) > 0 {
-			r.PublicLabels = make(map[string]types.String)
+			r.PublicLabels = make(map[string]types.String, len(resp.PublicLabels))
 			for key1, value1 := range resp.PublicLabels {
 				r.PublicLabels[key1] = types.StringValue(value1)
 			}
@@ -103,18 +103,24 @@ func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAP
 	} else {
 		description = nil
 	}
-	labels := make(map[string]string)
+	labels := make(map[string]*string)
 	for labelsKey, labelsValue := range r.Labels {
-		var labelsInst string
-		labelsInst = labelsValue.ValueString()
-
+		labelsInst := new(string)
+		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
+			*labelsInst = labelsValue.ValueString()
+		} else {
+			labelsInst = nil
+		}
 		labels[labelsKey] = labelsInst
 	}
-	publicLabels := make(map[string]string)
+	publicLabels := make(map[string]*string)
 	for publicLabelsKey, publicLabelsValue := range r.PublicLabels {
-		var publicLabelsInst string
-		publicLabelsInst = publicLabelsValue.ValueString()
-
+		publicLabelsInst := new(string)
+		if !publicLabelsValue.IsUnknown() && !publicLabelsValue.IsNull() {
+			*publicLabelsInst = publicLabelsValue.ValueString()
+		} else {
+			publicLabelsInst = nil
+		}
 		publicLabels[publicLabelsKey] = publicLabelsInst
 	}
 	var portalIds []string = []string{}

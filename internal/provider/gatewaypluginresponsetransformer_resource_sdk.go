@@ -64,9 +64,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		for _, headersItem := range r.Config.Add.Headers {
 			headers = append(headers, headersItem.ValueString())
 		}
-		var json []string = []string{}
+		var jsonVar []string = []string{}
 		for _, jsonItem := range r.Config.Add.JSON {
-			json = append(json, jsonItem.ValueString())
+			jsonVar = append(jsonVar, jsonItem.ValueString())
 		}
 		var jsonTypes []shared.ResponseTransformerPluginJSONTypes = []shared.ResponseTransformerPluginJSONTypes{}
 		for _, jsonTypesItem := range r.Config.Add.JSONTypes {
@@ -74,7 +74,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		}
 		add = &shared.ResponseTransformerPluginAdd{
 			Headers:   headers,
-			JSON:      json,
+			JSON:      jsonVar,
 			JSONTypes: jsonTypes,
 		}
 	}
@@ -84,9 +84,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		for _, headersItem1 := range r.Config.Append.Headers {
 			headers1 = append(headers1, headersItem1.ValueString())
 		}
-		var json1 []string = []string{}
+		var jsonVar1 []string = []string{}
 		for _, jsonItem1 := range r.Config.Append.JSON {
-			json1 = append(json1, jsonItem1.ValueString())
+			jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
 		}
 		var jsonTypes1 []shared.ResponseTransformerPluginConfigJSONTypes = []shared.ResponseTransformerPluginConfigJSONTypes{}
 		for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
@@ -94,7 +94,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		}
 		append1 = &shared.ResponseTransformerPluginAppend{
 			Headers:   headers1,
-			JSON:      json1,
+			JSON:      jsonVar1,
 			JSONTypes: jsonTypes1,
 		}
 	}
@@ -104,13 +104,13 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		for _, headersItem2 := range r.Config.Remove.Headers {
 			headers2 = append(headers2, headersItem2.ValueString())
 		}
-		var json2 []string = []string{}
+		var jsonVar2 []string = []string{}
 		for _, jsonItem2 := range r.Config.Remove.JSON {
-			json2 = append(json2, jsonItem2.ValueString())
+			jsonVar2 = append(jsonVar2, jsonItem2.ValueString())
 		}
 		remove = &shared.ResponseTransformerPluginRemove{
 			Headers: headers2,
-			JSON:    json2,
+			JSON:    jsonVar2,
 		}
 	}
 	var rename *shared.ResponseTransformerPluginRename
@@ -119,13 +119,13 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		for _, headersItem3 := range r.Config.Rename.Headers {
 			headers3 = append(headers3, headersItem3.ValueString())
 		}
-		var json3 []string = []string{}
+		var jsonVar3 []string = []string{}
 		for _, jsonItem3 := range r.Config.Rename.JSON {
-			json3 = append(json3, jsonItem3.ValueString())
+			jsonVar3 = append(jsonVar3, jsonItem3.ValueString())
 		}
 		rename = &shared.ResponseTransformerPluginRename{
 			Headers: headers3,
-			JSON:    json3,
+			JSON:    jsonVar3,
 		}
 	}
 	var replace *shared.ResponseTransformerPluginReplace
@@ -134,9 +134,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		for _, headersItem4 := range r.Config.Replace.Headers {
 			headers4 = append(headers4, headersItem4.ValueString())
 		}
-		var json4 []string = []string{}
+		var jsonVar4 []string = []string{}
 		for _, jsonItem4 := range r.Config.Replace.JSON {
-			json4 = append(json4, jsonItem4.ValueString())
+			jsonVar4 = append(jsonVar4, jsonItem4.ValueString())
 		}
 		var jsonTypes2 []shared.ResponseTransformerPluginConfigReplaceJSONTypes = []shared.ResponseTransformerPluginConfigReplaceJSONTypes{}
 		for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
@@ -144,7 +144,7 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 		}
 		replace = &shared.ResponseTransformerPluginReplace{
 			Headers:   headers4,
-			JSON:      json4,
+			JSON:      jsonVar4,
 			JSONTypes: jsonTypes2,
 		}
 	}

@@ -24,7 +24,7 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
     }
     display_name = "...my_display_name..."
     labels = {
-      key = "value",
+      key = "value"
     }
     name          = "...my_name..."
     strategy_type = "key_auth"
@@ -41,7 +41,7 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
         ]
         issuer = "...my_issuer..."
         labels = {
-          key = "value",
+          key = "value"
         }
         scopes = [
           "..."
@@ -51,7 +51,7 @@ resource "konnect_application_auth_strategy" "my_applicationauthstrategy" {
     dcr_provider_id = "184e9c55-484e-4f4f-9de7-f6001d8ab0e7"
     display_name    = "...my_display_name..."
     labels = {
-      key = "value",
+      key = "value"
     }
     name          = "...my_name..."
     strategy_type = "openid_connect"

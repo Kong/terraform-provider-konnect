@@ -135,9 +135,9 @@ type DegraphqlPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *DegraphqlPluginRoute `json:"route,omitempty"`
+	Route *DegraphqlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *DegraphqlPluginService `json:"service,omitempty"`
+	Service *DegraphqlPluginService `json:"service"`
 }
 
 func (d DegraphqlPlugin) MarshalJSON() ([]byte, error) {
@@ -246,9 +246,9 @@ type DegraphqlPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *DegraphqlPluginRoute `json:"route,omitempty"`
+	Route *DegraphqlPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *DegraphqlPluginService `json:"service,omitempty"`
+	Service *DegraphqlPluginService `json:"service"`
 }
 
 func (d DegraphqlPluginInput) MarshalJSON() ([]byte, error) {

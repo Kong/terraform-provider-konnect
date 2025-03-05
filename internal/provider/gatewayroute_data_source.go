@@ -45,7 +45,7 @@ type GatewayRouteDataSourceModel struct {
 	RegexPriority           types.Int64                                 `tfsdk:"regex_priority"`
 	RequestBuffering        types.Bool                                  `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool                                  `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service" tfPlanOnly:"true"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service"`
 	Snis                    []types.String                              `tfsdk:"snis"`
 	Sources                 []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"sources"`
 	StripPath               types.Bool                                  `tfsdk:"strip_path"`
@@ -255,11 +255,11 @@ func (r *GatewayRouteDataSource) Read(ctx context.Context, req datasource.ReadRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Route != nil) {
+	if !(res.RouteJSON != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRoute(res.Route)
+	data.RefreshFromSharedRouteJSON(res.RouteJSON)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

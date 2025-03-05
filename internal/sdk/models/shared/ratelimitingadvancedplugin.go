@@ -764,15 +764,15 @@ type RateLimitingAdvancedPlugin struct {
 	UpdatedAt *int64                           `json:"updated_at,omitempty"`
 	Config    RateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RateLimitingAdvancedPluginRoute `json:"route,omitempty"`
+	Route *RateLimitingAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingAdvancedPluginService `json:"service,omitempty"`
+	Service *RateLimitingAdvancedPluginService `json:"service"`
 }
 
 func (r RateLimitingAdvancedPlugin) MarshalJSON() ([]byte, error) {
@@ -893,15 +893,15 @@ type RateLimitingAdvancedPluginInput struct {
 	Tags   []string                         `json:"tags,omitempty"`
 	Config RateLimitingAdvancedPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer,omitempty"`
+	Consumer *RateLimitingAdvancedPluginConsumer `json:"consumer"`
 	// If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups
-	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group,omitempty"`
+	ConsumerGroup *RateLimitingAdvancedPluginConsumerGroup `json:"consumer_group"`
 	// A set of strings representing HTTP protocols.
 	Protocols []RateLimitingAdvancedPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RateLimitingAdvancedPluginRoute `json:"route,omitempty"`
+	Route *RateLimitingAdvancedPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RateLimitingAdvancedPluginService `json:"service,omitempty"`
+	Service *RateLimitingAdvancedPluginService `json:"service"`
 }
 
 func (r RateLimitingAdvancedPluginInput) MarshalJSON() ([]byte, error) {

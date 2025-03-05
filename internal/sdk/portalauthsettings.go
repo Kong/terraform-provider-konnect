@@ -28,13 +28,6 @@ func newPortalAuthSettings(sdkConfig sdkConfiguration) *PortalAuthSettings {
 // GetPortalAuthenticationSettings - Get Auth Settings
 // Returns the developer authentication configuration for a portal, which determines how developers can log in and how they are assigned to teams.
 func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context, request operations.GetPortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.GetPortalAuthenticationSettingsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-portal-authentication-settings",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,14 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}/authentication-settings", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-portal-authentication-settings",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -182,13 +183,6 @@ func (s *PortalAuthSettings) GetPortalAuthenticationSettings(ctx context.Context
 // UpdatePortalAuthenticationSettings - Update Auth Settings
 // Updates the developer authentication configuration for a portal. Developers can be allowed to login using basic auth (email & password) or use Single-Sign-On (SSO) through an OIDC Identity Provider (IdP). Developers can be automatically assigned to teams by mapping claims from thier IdP account.
 func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Context, request operations.UpdatePortalAuthenticationSettingsRequest, opts ...operations.Option) (*operations.UpdatePortalAuthenticationSettingsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-portal-authentication-settings",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -212,6 +206,13 @@ func (s *PortalAuthSettings) UpdatePortalAuthenticationSettings(ctx context.Cont
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-portal-authentication-settings",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "PortalAuthenticationSettingsUpdateRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

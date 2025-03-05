@@ -5,10 +5,11 @@ package shared
 // CreateMeshControlPlaneRequest - a payload to create a control plane
 type CreateMeshControlPlaneRequest struct {
 	// The name of the control plane.
-	Name        string  `json:"name"`
-	Description *string `json:"description,omitempty"`
+	Name        string                    `json:"name"`
+	Description *string                   `json:"description,omitempty"`
+	Features    []MeshControlPlaneFeature `json:"features,omitempty"`
 	// Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 }
 
 func (o *CreateMeshControlPlaneRequest) GetName() string {
@@ -25,7 +26,14 @@ func (o *CreateMeshControlPlaneRequest) GetDescription() *string {
 	return o.Description
 }
 
-func (o *CreateMeshControlPlaneRequest) GetLabels() map[string]string {
+func (o *CreateMeshControlPlaneRequest) GetFeatures() []MeshControlPlaneFeature {
+	if o == nil {
+		return nil
+	}
+	return o.Features
+}
+
+func (o *CreateMeshControlPlaneRequest) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

@@ -21,7 +21,7 @@ func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResp
 			r.Config.LimitBy = types.StringNull()
 		}
 		if len(resp.Config.Limits) > 0 {
-			r.Config.Limits = make(map[string]types.String)
+			r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
 			for key, value := range resp.Config.Limits {
 				result, _ := json.Marshal(value)
 				r.Config.Limits[key] = types.StringValue(string(result))

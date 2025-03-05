@@ -34,13 +34,6 @@ func newServices(sdkConfig sdkConfiguration) *Services {
 // CreateService - Create a new Service
 // Create a new Service
 func (s *Services) CreateService(ctx context.Context, request operations.CreateServiceRequest, opts ...operations.Option) (*operations.CreateServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-service",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -63,6 +56,13 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-service",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Service", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -190,13 +190,6 @@ func (s *Services) CreateService(ctx context.Context, request operations.CreateS
 // DeleteService - Delete a Service
 // Delete a Service
 func (s *Services) DeleteService(ctx context.Context, request operations.DeleteServiceRequest, opts ...operations.Option) (*operations.DeleteServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-service",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -217,6 +210,14 @@ func (s *Services) DeleteService(ctx context.Context, request operations.DeleteS
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-service",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -318,13 +319,6 @@ func (s *Services) DeleteService(ctx context.Context, request operations.DeleteS
 // GetService - Fetch a Service
 // Get a Service using ID or name.
 func (s *Services) GetService(ctx context.Context, request operations.GetServiceRequest, opts ...operations.Option) (*operations.GetServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-service",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -345,6 +339,14 @@ func (s *Services) GetService(ctx context.Context, request operations.GetService
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/services/{ServiceId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-service",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -467,13 +469,6 @@ func (s *Services) GetService(ctx context.Context, request operations.GetService
 // UpsertService - Upsert a Service
 // Create or Update Service using ID or name.
 func (s *Services) UpsertService(ctx context.Context, request operations.UpsertServiceRequest, opts ...operations.Option) (*operations.UpsertServiceResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "upsert-service",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -496,6 +491,13 @@ func (s *Services) UpsertService(ctx context.Context, request operations.UpsertS
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "upsert-service",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Service", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

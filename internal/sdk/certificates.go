@@ -32,13 +32,6 @@ func newCertificates(sdkConfig sdkConfiguration) *Certificates {
 // CreateCertificate - Create a new Certificate
 // Create a new Certificate
 func (s *Certificates) CreateCertificate(ctx context.Context, request operations.CreateCertificateRequest, opts ...operations.Option) (*operations.CreateCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -61,6 +54,13 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Certificate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -188,13 +188,6 @@ func (s *Certificates) CreateCertificate(ctx context.Context, request operations
 // DeleteCertificate - Delete a Certificate
 // Delete a Certificate
 func (s *Certificates) DeleteCertificate(ctx context.Context, request operations.DeleteCertificateRequest, opts ...operations.Option) (*operations.DeleteCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -215,6 +208,14 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -316,13 +317,6 @@ func (s *Certificates) DeleteCertificate(ctx context.Context, request operations
 // GetCertificate - Fetch a Certificate
 // Get a Certificate using ID.
 func (s *Certificates) GetCertificate(ctx context.Context, request operations.GetCertificateRequest, opts ...operations.Option) (*operations.GetCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -343,6 +337,14 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/certificates/{CertificateId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -465,13 +467,6 @@ func (s *Certificates) GetCertificate(ctx context.Context, request operations.Ge
 // UpsertCertificate - Upsert a Certificate
 // Create or Update Certificate using ID.
 func (s *Certificates) UpsertCertificate(ctx context.Context, request operations.UpsertCertificateRequest, opts ...operations.Option) (*operations.UpsertCertificateResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "upsert-certificate",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -494,6 +489,13 @@ func (s *Certificates) UpsertCertificate(ctx context.Context, request operations
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "upsert-certificate",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Certificate", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

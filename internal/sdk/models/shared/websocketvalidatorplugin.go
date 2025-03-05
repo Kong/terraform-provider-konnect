@@ -49,51 +49,6 @@ func (o *WebsocketValidatorPluginOrdering) GetBefore() *WebsocketValidatorPlugin
 	return o.Before
 }
 
-// WebsocketValidatorPluginConfigClientType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
-type WebsocketValidatorPluginConfigClientType string
-
-const (
-	WebsocketValidatorPluginConfigClientTypeDraft4 WebsocketValidatorPluginConfigClientType = "draft4"
-)
-
-func (e WebsocketValidatorPluginConfigClientType) ToPointer() *WebsocketValidatorPluginConfigClientType {
-	return &e
-}
-func (e *WebsocketValidatorPluginConfigClientType) UnmarshalJSON(data []byte) error {
-	var v string
-	if err := json.Unmarshal(data, &v); err != nil {
-		return err
-	}
-	switch v {
-	case "draft4":
-		*e = WebsocketValidatorPluginConfigClientType(v)
-		return nil
-	default:
-		return fmt.Errorf("invalid value for WebsocketValidatorPluginConfigClientType: %v", v)
-	}
-}
-
-type Binary struct {
-	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
-	Schema string `json:"schema"`
-	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
-	Type WebsocketValidatorPluginConfigClientType `json:"type"`
-}
-
-func (o *Binary) GetSchema() string {
-	if o == nil {
-		return ""
-	}
-	return o.Schema
-}
-
-func (o *Binary) GetType() WebsocketValidatorPluginConfigClientType {
-	if o == nil {
-		return WebsocketValidatorPluginConfigClientType("")
-	}
-	return o.Type
-}
-
 // WebsocketValidatorPluginType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 type WebsocketValidatorPluginType string
 
@@ -118,44 +73,25 @@ func (e *WebsocketValidatorPluginType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type WebsocketValidatorPluginConfigText struct {
+type Binary struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 	Type WebsocketValidatorPluginType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetSchema() string {
+func (o *Binary) GetSchema() string {
 	if o == nil {
 		return ""
 	}
 	return o.Schema
 }
 
-func (o *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginType {
+func (o *Binary) GetType() WebsocketValidatorPluginType {
 	if o == nil {
 		return WebsocketValidatorPluginType("")
 	}
 	return o.Type
-}
-
-type WebsocketValidatorPluginClient struct {
-	Binary *Binary                             `json:"binary,omitempty"`
-	Text   *WebsocketValidatorPluginConfigText `json:"text,omitempty"`
-}
-
-func (o *WebsocketValidatorPluginClient) GetBinary() *Binary {
-	if o == nil {
-		return nil
-	}
-	return o.Binary
-}
-
-func (o *WebsocketValidatorPluginClient) GetText() *WebsocketValidatorPluginConfigText {
-	if o == nil {
-		return nil
-	}
-	return o.Text
 }
 
 // WebsocketValidatorPluginConfigType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -182,25 +118,44 @@ func (e *WebsocketValidatorPluginConfigType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type WebsocketValidatorPluginBinary struct {
+type WebsocketValidatorPluginConfigText struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 	Type WebsocketValidatorPluginConfigType `json:"type"`
 }
 
-func (o *WebsocketValidatorPluginBinary) GetSchema() string {
+func (o *WebsocketValidatorPluginConfigText) GetSchema() string {
 	if o == nil {
 		return ""
 	}
 	return o.Schema
 }
 
-func (o *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigType {
+func (o *WebsocketValidatorPluginConfigText) GetType() WebsocketValidatorPluginConfigType {
 	if o == nil {
 		return WebsocketValidatorPluginConfigType("")
 	}
 	return o.Type
+}
+
+type WebsocketValidatorPluginClient struct {
+	Binary *Binary                             `json:"binary,omitempty"`
+	Text   *WebsocketValidatorPluginConfigText `json:"text,omitempty"`
+}
+
+func (o *WebsocketValidatorPluginClient) GetBinary() *Binary {
+	if o == nil {
+		return nil
+	}
+	return o.Binary
+}
+
+func (o *WebsocketValidatorPluginClient) GetText() *WebsocketValidatorPluginConfigText {
+	if o == nil {
+		return nil
+	}
+	return o.Text
 }
 
 // WebsocketValidatorPluginConfigUpstreamType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
@@ -227,11 +182,56 @@ func (e *WebsocketValidatorPluginConfigUpstreamType) UnmarshalJSON(data []byte) 
 	}
 }
 
-type WebsocketValidatorPluginText struct {
+type WebsocketValidatorPluginBinary struct {
 	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
 	Schema string `json:"schema"`
 	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
 	Type WebsocketValidatorPluginConfigUpstreamType `json:"type"`
+}
+
+func (o *WebsocketValidatorPluginBinary) GetSchema() string {
+	if o == nil {
+		return ""
+	}
+	return o.Schema
+}
+
+func (o *WebsocketValidatorPluginBinary) GetType() WebsocketValidatorPluginConfigUpstreamType {
+	if o == nil {
+		return WebsocketValidatorPluginConfigUpstreamType("")
+	}
+	return o.Type
+}
+
+// WebsocketValidatorPluginConfigUpstreamTextType - The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
+type WebsocketValidatorPluginConfigUpstreamTextType string
+
+const (
+	WebsocketValidatorPluginConfigUpstreamTextTypeDraft4 WebsocketValidatorPluginConfigUpstreamTextType = "draft4"
+)
+
+func (e WebsocketValidatorPluginConfigUpstreamTextType) ToPointer() *WebsocketValidatorPluginConfigUpstreamTextType {
+	return &e
+}
+func (e *WebsocketValidatorPluginConfigUpstreamTextType) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "draft4":
+		*e = WebsocketValidatorPluginConfigUpstreamTextType(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for WebsocketValidatorPluginConfigUpstreamTextType: %v", v)
+	}
+}
+
+type WebsocketValidatorPluginText struct {
+	// Schema used to validate upstream-originated binary frames. The semantics of this field depend on the validation type set by `config.upstream.binary.type`.
+	Schema string `json:"schema"`
+	// The corresponding validation library for `config.upstream.binary.schema`. Currently, only `draft4` is supported.
+	Type WebsocketValidatorPluginConfigUpstreamTextType `json:"type"`
 }
 
 func (o *WebsocketValidatorPluginText) GetSchema() string {
@@ -241,9 +241,9 @@ func (o *WebsocketValidatorPluginText) GetSchema() string {
 	return o.Schema
 }
 
-func (o *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamType {
+func (o *WebsocketValidatorPluginText) GetType() WebsocketValidatorPluginConfigUpstreamTextType {
 	if o == nil {
-		return WebsocketValidatorPluginConfigUpstreamType("")
+		return WebsocketValidatorPluginConfigUpstreamTextType("")
 	}
 	return o.Type
 }
@@ -364,13 +364,13 @@ type WebsocketValidatorPlugin struct {
 	UpdatedAt *int64                         `json:"updated_at,omitempty"`
 	Config    WebsocketValidatorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *WebsocketValidatorPluginConsumer `json:"consumer,omitempty"`
+	Consumer *WebsocketValidatorPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
+	Route *WebsocketValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	Service *WebsocketValidatorPluginService `json:"service"`
 }
 
 func (w WebsocketValidatorPlugin) MarshalJSON() ([]byte, error) {
@@ -484,13 +484,13 @@ type WebsocketValidatorPluginInput struct {
 	Tags   []string                       `json:"tags,omitempty"`
 	Config WebsocketValidatorPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *WebsocketValidatorPluginConsumer `json:"consumer,omitempty"`
+	Consumer *WebsocketValidatorPluginConsumer `json:"consumer"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []WebsocketValidatorPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *WebsocketValidatorPluginRoute `json:"route,omitempty"`
+	Route *WebsocketValidatorPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *WebsocketValidatorPluginService `json:"service,omitempty"`
+	Service *WebsocketValidatorPluginService `json:"service"`
 }
 
 func (w WebsocketValidatorPluginInput) MarshalJSON() ([]byte, error) {

@@ -20,7 +20,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     connect_timeout   = 1207240418
     header_type       = "gcp"
     headers = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     http_response_header_for_traceid = "...my_http_response_header_for_traceid..."
     logs_endpoint                    = "...my_logs_endpoint..."
@@ -48,7 +48,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
     }
     read_timeout = 1485093464
     resource_attributes = {
-      key = jsonencode("value"),
+      key = jsonencode("value")
     }
     sampling_rate   = 0.37
     send_timeout    = 1637096441

@@ -28,13 +28,6 @@ func newControlPlanes(sdkConfig sdkConfiguration) *ControlPlanes {
 // CreateControlPlane - Create Control Plane
 // Create a control plane in the Konnect Organization.
 func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.CreateControlPlaneRequest, opts ...operations.Option) (*operations.CreateControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -58,6 +51,13 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -295,13 +295,6 @@ func (s *ControlPlanes) CreateControlPlane(ctx context.Context, request shared.C
 // GetControlPlane - Fetch Control Plane
 // Returns information about an individual control plane.
 func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.GetControlPlaneRequest, opts ...operations.Option) (*operations.GetControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -323,6 +316,14 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -497,6 +498,27 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 500:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BaseError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BaseError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	case httpRes.StatusCode == 503:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
@@ -533,13 +555,6 @@ func (s *ControlPlanes) GetControlPlane(ctx context.Context, request operations.
 // UpdateControlPlane - Update Control Plane
 // Update an individual control plane.
 func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operations.UpdateControlPlaneRequest, opts ...operations.Option) (*operations.UpdateControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -563,6 +578,13 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateControlPlaneRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -800,13 +822,6 @@ func (s *ControlPlanes) UpdateControlPlane(ctx context.Context, request operatio
 // DeleteControlPlane - Delete Control Plane
 // Delete an individual control plane.
 func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operations.DeleteControlPlaneRequest, opts ...operations.Option) (*operations.DeleteControlPlaneResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-control-plane",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -827,6 +842,14 @@ func (s *ControlPlanes) DeleteControlPlane(ctx context.Context, request operatio
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-control-plane",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

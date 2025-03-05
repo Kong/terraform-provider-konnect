@@ -27,13 +27,6 @@ func newTargets(sdkConfig sdkConfiguration) *Targets {
 // CreateTargetWithUpstream - Create a new Target associated with an Upstream
 // Create a new Target associated with an Upstream
 func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operations.CreateTargetWithUpstreamRequest, opts ...operations.Option) (*operations.CreateTargetWithUpstreamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-target-with-upstream",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,13 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-target-with-upstream",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "TargetWithoutParents", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -162,13 +162,6 @@ func (s *Targets) CreateTargetWithUpstream(ctx context.Context, request operatio
 // DeleteTargetWithUpstream - Delete a a Target associated with an Upstream
 // Delete a a Target associated with an Upstream using ID or target.
 func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operations.DeleteTargetWithUpstreamRequest, opts ...operations.Option) (*operations.DeleteTargetWithUpstreamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-target-with-upstream",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -189,6 +182,14 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-target-with-upstream",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -269,13 +270,6 @@ func (s *Targets) DeleteTargetWithUpstream(ctx context.Context, request operatio
 // GetTargetWithUpstream - Fetch a Target associated with an Upstream
 // Get a Target associated with an Upstream using ID or target.
 func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.GetTargetWithUpstreamRequest, opts ...operations.Option) (*operations.GetTargetWithUpstreamResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-target-with-upstream",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -296,6 +290,14 @@ func (s *Targets) GetTargetWithUpstream(ctx context.Context, request operations.
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/upstreams/{UpstreamIdForTarget}/targets/{TargetId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-target-with-upstream",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

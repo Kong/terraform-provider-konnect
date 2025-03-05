@@ -182,13 +182,13 @@ type FileLogPlugin struct {
 	UpdatedAt *int64              `json:"updated_at,omitempty"`
 	Config    FileLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *FileLogPluginConsumer `json:"consumer,omitempty"`
+	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []FileLogPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *FileLogPluginRoute `json:"route,omitempty"`
+	Route *FileLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *FileLogPluginService `json:"service,omitempty"`
+	Service *FileLogPluginService `json:"service"`
 }
 
 func (f FileLogPlugin) MarshalJSON() ([]byte, error) {
@@ -302,13 +302,13 @@ type FileLogPluginInput struct {
 	Tags   []string            `json:"tags,omitempty"`
 	Config FileLogPluginConfig `json:"config"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *FileLogPluginConsumer `json:"consumer,omitempty"`
+	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
 	Protocols []FileLogPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *FileLogPluginRoute `json:"route,omitempty"`
+	Route *FileLogPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *FileLogPluginService `json:"service,omitempty"`
+	Service *FileLogPluginService `json:"service"`
 }
 
 func (f FileLogPluginInput) MarshalJSON() ([]byte, error) {

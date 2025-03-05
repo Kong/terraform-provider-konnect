@@ -204,9 +204,9 @@ type KeyAuthEncPlugin struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KeyAuthEncPluginRoute `json:"route,omitempty"`
+	Route *KeyAuthEncPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthEncPluginService `json:"service,omitempty"`
+	Service *KeyAuthEncPluginService `json:"service"`
 }
 
 func (k KeyAuthEncPlugin) MarshalJSON() ([]byte, error) {
@@ -315,9 +315,9 @@ type KeyAuthEncPluginInput struct {
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []KeyAuthEncPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *KeyAuthEncPluginRoute `json:"route,omitempty"`
+	Route *KeyAuthEncPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *KeyAuthEncPluginService `json:"service,omitempty"`
+	Service *KeyAuthEncPluginService `json:"service"`
 }
 
 func (k KeyAuthEncPluginInput) MarshalJSON() ([]byte, error) {

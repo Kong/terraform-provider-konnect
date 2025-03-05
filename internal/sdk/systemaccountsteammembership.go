@@ -27,13 +27,6 @@ func newSystemAccountsTeamMembership(sdkConfig sdkConfiguration) *SystemAccounts
 // PostTeamsTeamIDSystemAccounts - Add System Account to a Team
 // Adds a system account to a team. Returns a 409 if the system account is already a member of the team.
 func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context.Context, request operations.PostTeamsTeamIDSystemAccountsRequest, opts ...operations.Option) (*operations.PostTeamsTeamIDSystemAccountsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-teams-teamId-system-accounts",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -55,7 +48,14 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "AddSystemAccountToTeam", "json", `request:"mediaType=application/json"`)
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-teams-teamId-system-accounts",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, true, false, "AddSystemAccountToTeam", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -206,13 +206,6 @@ func (s *SystemAccountsTeamMembership) PostTeamsTeamIDSystemAccounts(ctx context
 // DeleteTeamsTeamIDSystemAccountsAccountID - Remove System Account From Team
 // Removes a system account from a team. Returns 404 if the team or system account were not found.
 func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(ctx context.Context, request operations.DeleteTeamsTeamIDSystemAccountsAccountIDRequest, opts ...operations.Option) (*operations.DeleteTeamsTeamIDSystemAccountsAccountIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-teams-teamId-system-accounts-accountId",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -232,6 +225,14 @@ func (s *SystemAccountsTeamMembership) DeleteTeamsTeamIDSystemAccountsAccountID(
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/teams/{teamId}/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-teams-teamId-system-accounts-accountId",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

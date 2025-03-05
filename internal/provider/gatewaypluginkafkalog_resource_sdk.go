@@ -333,7 +333,7 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(res
 		}
 		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
 		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String)
+			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
 			for key, value := range resp.Config.CustomFieldsByLua {
 				result, _ := json.Marshal(value)
 				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))

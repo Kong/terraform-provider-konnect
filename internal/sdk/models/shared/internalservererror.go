@@ -8,7 +8,7 @@ import (
 )
 
 // InternalServerErrorStatus - The HTTP status code.
-type InternalServerErrorStatus int64
+type InternalServerErrorStatus int
 
 const (
 	InternalServerErrorStatusFiveHundred InternalServerErrorStatus = 500
@@ -18,7 +18,7 @@ func (e InternalServerErrorStatus) ToPointer() *InternalServerErrorStatus {
 	return &e
 }
 func (e *InternalServerErrorStatus) UnmarshalJSON(data []byte) error {
-	var v int64
+	var v int
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
 	}

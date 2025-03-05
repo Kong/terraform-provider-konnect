@@ -153,9 +153,9 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 			} else {
 				timeout = nil
 			}
-			typeVar := new(shared.Type)
+			typeVar := new(shared.UpstreamType)
 			if !r.Healthchecks.Active.Type.IsUnknown() && !r.Healthchecks.Active.Type.IsNull() {
-				*typeVar = shared.Type(r.Healthchecks.Active.Type.ValueString())
+				*typeVar = shared.UpstreamType(r.Healthchecks.Active.Type.ValueString())
 			} else {
 				typeVar = nil
 			}
@@ -228,9 +228,9 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 					Successes:    successes1,
 				}
 			}
-			typeVar1 := new(shared.UpstreamType)
+			typeVar1 := new(shared.UpstreamHealthchecksType)
 			if !r.Healthchecks.Passive.Type.IsUnknown() && !r.Healthchecks.Passive.Type.IsNull() {
-				*typeVar1 = shared.UpstreamType(r.Healthchecks.Passive.Type.ValueString())
+				*typeVar1 = shared.UpstreamHealthchecksType(r.Healthchecks.Passive.Type.ValueString())
 			} else {
 				typeVar1 = nil
 			}
@@ -380,7 +380,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 				r.Healthchecks.Active = &tfTypes.Active{}
 				r.Healthchecks.Active.Concurrency = types.Int64PointerValue(resp.Healthchecks.Active.Concurrency)
 				if len(resp.Healthchecks.Active.Headers) > 0 {
-					r.Healthchecks.Active.Headers = make(map[string]types.String)
+					r.Healthchecks.Active.Headers = make(map[string]types.String, len(resp.Healthchecks.Active.Headers))
 					for key, value := range resp.Healthchecks.Active.Headers {
 						r.Healthchecks.Active.Headers[key] = types.StringValue(value)
 					}

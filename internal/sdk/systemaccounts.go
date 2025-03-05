@@ -28,13 +28,6 @@ func newSystemAccounts(sdkConfig sdkConfiguration) *SystemAccounts {
 // PostSystemAccounts - Create System Account
 // Creates a system account. Returns a 409 if a system account with the same name already exists.
 func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared.CreateSystemAccount, opts ...operations.Option) (*operations.PostSystemAccountsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-system-accounts",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-system-accounts",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -212,13 +212,6 @@ func (s *SystemAccounts) PostSystemAccounts(ctx context.Context, request *shared
 // GetSystemAccountsID - Fetch System Account
 // Returns the system account (SA) for the SA ID specified as a path parameter.
 func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operations.GetSystemAccountsIDRequest, opts ...operations.Option) (*operations.GetSystemAccountsIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-system-accounts-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -239,6 +232,14 @@ func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operat
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-system-accounts-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -388,13 +389,6 @@ func (s *SystemAccounts) GetSystemAccountsID(ctx context.Context, request operat
 // PatchSystemAccountsID - Update System Account
 // Updates the specified system account. Returns a 409 if the updated name is the same as another system account in the organization.
 func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request operations.PatchSystemAccountsIDRequest, opts ...operations.Option) (*operations.PatchSystemAccountsIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "patch-system-accounts-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -417,6 +411,13 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "patch-system-accounts-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "UpdateSystemAccount", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -593,13 +594,6 @@ func (s *SystemAccounts) PatchSystemAccountsID(ctx context.Context, request oper
 // DeleteSystemAccountsID - Delete System Account
 // Deletes the specified system account. Returns 404 if the requested account was not found.
 func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request operations.DeleteSystemAccountsIDRequest, opts ...operations.Option) (*operations.DeleteSystemAccountsIDResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-system-accounts-id",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -619,6 +613,14 @@ func (s *SystemAccounts) DeleteSystemAccountsID(ctx context.Context, request ope
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v3/system-accounts/{accountId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-system-accounts-id",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

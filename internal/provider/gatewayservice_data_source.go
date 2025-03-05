@@ -30,7 +30,7 @@ type GatewayServiceDataSource struct {
 // GatewayServiceDataSourceModel describes the data model.
 type GatewayServiceDataSourceModel struct {
 	CaCertificates    []types.String                     `tfsdk:"ca_certificates"`
-	ClientCertificate *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate" tfPlanOnly:"true"`
+	ClientCertificate *tfTypes.ACLWithoutParentsConsumer `tfsdk:"client_certificate"`
 	ConnectTimeout    types.Int64                        `tfsdk:"connect_timeout"`
 	ControlPlaneID    types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt         types.Int64                        `tfsdk:"created_at"`

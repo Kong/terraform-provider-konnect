@@ -100,21 +100,21 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 			r.Config.AccessTokenUpstreamLeeway = types.NumberNull()
 		}
 		if len(resp.Config.AddAccessTokenClaims) > 0 {
-			r.Config.AddAccessTokenClaims = make(map[string]types.String)
+			r.Config.AddAccessTokenClaims = make(map[string]types.String, len(resp.Config.AddAccessTokenClaims))
 			for key, value := range resp.Config.AddAccessTokenClaims {
 				result, _ := json.Marshal(value)
 				r.Config.AddAccessTokenClaims[key] = types.StringValue(string(result))
 			}
 		}
 		if len(resp.Config.AddChannelTokenClaims) > 0 {
-			r.Config.AddChannelTokenClaims = make(map[string]types.String)
+			r.Config.AddChannelTokenClaims = make(map[string]types.String, len(resp.Config.AddChannelTokenClaims))
 			for key1, value1 := range resp.Config.AddChannelTokenClaims {
 				result1, _ := json.Marshal(value1)
 				r.Config.AddChannelTokenClaims[key1] = types.StringValue(string(result1))
 			}
 		}
 		if len(resp.Config.AddClaims) > 0 {
-			r.Config.AddClaims = make(map[string]types.String)
+			r.Config.AddClaims = make(map[string]types.String, len(resp.Config.AddClaims))
 			for key2, value2 := range resp.Config.AddClaims {
 				result2, _ := json.Marshal(value2)
 				r.Config.AddClaims[key2] = types.StringValue(string(result2))
@@ -225,21 +225,21 @@ func (r *GatewayPluginJwtSignerDataSourceModel) RefreshFromSharedJwtSignerPlugin
 			r.Config.RemoveChannelTokenClaims = append(r.Config.RemoveChannelTokenClaims, types.StringValue(v))
 		}
 		if len(resp.Config.SetAccessTokenClaims) > 0 {
-			r.Config.SetAccessTokenClaims = make(map[string]types.String)
+			r.Config.SetAccessTokenClaims = make(map[string]types.String, len(resp.Config.SetAccessTokenClaims))
 			for key3, value3 := range resp.Config.SetAccessTokenClaims {
 				result3, _ := json.Marshal(value3)
 				r.Config.SetAccessTokenClaims[key3] = types.StringValue(string(result3))
 			}
 		}
 		if len(resp.Config.SetChannelTokenClaims) > 0 {
-			r.Config.SetChannelTokenClaims = make(map[string]types.String)
+			r.Config.SetChannelTokenClaims = make(map[string]types.String, len(resp.Config.SetChannelTokenClaims))
 			for key4, value4 := range resp.Config.SetChannelTokenClaims {
 				result4, _ := json.Marshal(value4)
 				r.Config.SetChannelTokenClaims[key4] = types.StringValue(string(result4))
 			}
 		}
 		if len(resp.Config.SetClaims) > 0 {
-			r.Config.SetClaims = make(map[string]types.String)
+			r.Config.SetClaims = make(map[string]types.String, len(resp.Config.SetClaims))
 			for key5, value5 := range resp.Config.SetClaims {
 				result5, _ := json.Marshal(value5)
 				r.Config.SetClaims[key5] = types.StringValue(string(result5))

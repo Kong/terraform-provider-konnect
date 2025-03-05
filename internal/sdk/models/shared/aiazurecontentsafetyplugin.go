@@ -316,9 +316,9 @@ type AiAzureContentSafetyPlugin struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []AiAzureContentSafetyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AiAzureContentSafetyPluginRoute `json:"route,omitempty"`
+	Route *AiAzureContentSafetyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiAzureContentSafetyPluginService `json:"service,omitempty"`
+	Service *AiAzureContentSafetyPluginService `json:"service"`
 }
 
 func (a AiAzureContentSafetyPlugin) MarshalJSON() ([]byte, error) {
@@ -427,9 +427,9 @@ type AiAzureContentSafetyPluginInput struct {
 	// A set of strings representing HTTP protocols.
 	Protocols []AiAzureContentSafetyPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *AiAzureContentSafetyPluginRoute `json:"route,omitempty"`
+	Route *AiAzureContentSafetyPluginRoute `json:"route"`
 	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *AiAzureContentSafetyPluginService `json:"service,omitempty"`
+	Service *AiAzureContentSafetyPluginService `json:"service"`
 }
 
 func (a AiAzureContentSafetyPluginInput) MarshalJSON() ([]byte, error) {

@@ -30,13 +30,6 @@ func newSNIs(sdkConfig sdkConfiguration) *SNIs {
 // CreateSni - Create a new SNI
 // Create a new SNI
 func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniRequest, opts ...operations.Option) (*operations.CreateSniResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-sni",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -59,6 +52,13 @@ func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniReques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-sni",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Sni", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -186,13 +186,6 @@ func (s *SNIs) CreateSni(ctx context.Context, request operations.CreateSniReques
 // DeleteSni - Delete an SNI
 // Delete an SNI
 func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniRequest, opts ...operations.Option) (*operations.DeleteSniResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-sni",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -213,6 +206,14 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-sni",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -314,13 +315,6 @@ func (s *SNIs) DeleteSni(ctx context.Context, request operations.DeleteSniReques
 // GetSni - Fetch an SNI
 // Get an SNI using ID or name.
 func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opts ...operations.Option) (*operations.GetSniResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-sni",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -341,6 +335,14 @@ func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opt
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/snis/{SNIId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-sni",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -463,13 +465,6 @@ func (s *SNIs) GetSni(ctx context.Context, request operations.GetSniRequest, opt
 // UpsertSni - Upsert a SNI
 // Create or Update SNI using ID or name.
 func (s *SNIs) UpsertSni(ctx context.Context, request operations.UpsertSniRequest, opts ...operations.Option) (*operations.UpsertSniResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "upsert-sni",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -492,6 +487,13 @@ func (s *SNIs) UpsertSni(ctx context.Context, request operations.UpsertSniReques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "upsert-sni",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Sni", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

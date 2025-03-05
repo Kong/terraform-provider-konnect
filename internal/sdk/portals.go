@@ -29,13 +29,6 @@ func newPortals(sdkConfig sdkConfiguration) *Portals {
 // ListPortals - List Portals
 // Lists developer portals defined in this region for this organization. Each developer portal is available at a unique address and has isolated appearance, configuration, developers, and applications.
 func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortalsRequest, opts ...operations.Option) (*operations.ListPortalsResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "list-portals",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,14 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 	opURL, err := url.JoinPath(baseURL, "/v2/portals")
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "list-portals",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -229,13 +230,6 @@ func (s *Portals) ListPortals(ctx context.Context, request operations.ListPortal
 // CreatePortal - Create Portal
 // Creates a new developer portal scoped in this region for this organization.
 func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortalRequest, opts ...operations.Option) (*operations.CreatePortalResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-portal",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -259,6 +253,13 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortalR
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-portal",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -433,13 +434,6 @@ func (s *Portals) CreatePortal(ctx context.Context, request shared.CreatePortalR
 // UpdatePortal - Update Portal
 // Updates the configuration for a single portal including the visibility, access, and custom domain settings.
 func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePortalRequest, opts ...operations.Option) (*operations.UpdatePortalResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-portal",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -463,6 +457,13 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-portal",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdatePortalRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -679,13 +680,6 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 // DeletePortal - Delete Portal
 // Deletes a single portal, along with all related entities. Will not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled, unless force=true query param is included in the request.
 func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePortalRequest, opts ...operations.Option) (*operations.DeletePortalResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-portal",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -706,6 +700,14 @@ func (s *Portals) DeletePortal(ctx context.Context, request operations.DeletePor
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/portals/{portalId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-portal",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route) {
+func (r *GatewayRouteDataSourceModel) RefreshFromSharedRouteJSON(resp *shared.RouteJSON) {
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {
@@ -28,8 +28,8 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRoute(resp *shared.Route)
 				}
 			}
 		}
-		if len(resp.Headers) > 0 {
-			r.Headers = make(map[string]types.String)
+		if resp.Headers != nil {
+			r.Headers = make(map[string]types.String, len(resp.Headers))
 			for key, value := range resp.Headers {
 				r.Headers[key] = types.StringValue(value)
 			}

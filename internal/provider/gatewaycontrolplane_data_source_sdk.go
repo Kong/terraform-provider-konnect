@@ -35,7 +35,7 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(resp 
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String)
+			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
 				r.Labels[key] = types.StringValue(value)
 			}

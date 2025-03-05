@@ -56,7 +56,7 @@ type GatewayRouteResourceModel struct {
 	RegexPriority           types.Int64                                 `tfsdk:"regex_priority"`
 	RequestBuffering        types.Bool                                  `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool                                  `tfsdk:"response_buffering"`
-	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service" tfPlanOnly:"true"`
+	Service                 *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service"`
 	Snis                    []types.String                              `tfsdk:"snis"`
 	Sources                 []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"sources"`
 	StripPath               types.Bool                                  `tfsdk:"strip_path"`
@@ -284,10 +284,10 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	route := *data.ToSharedRouteInput()
+	routeJSON := *data.ToSharedRouteJSONInput()
 	request := operations.CreateRouteRequest{
 		ControlPlaneID: controlPlaneID,
-		Route:          route,
+		RouteJSON:      routeJSON,
 	}
 	res, err := r.client.Routes.CreateRoute(ctx, request)
 	if err != nil {
@@ -305,11 +305,11 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Route != nil) {
+	if !(res.RouteJSON != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRoute(res.Route)
+	data.RefreshFromSharedRouteJSON(res.RouteJSON)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
@@ -364,11 +364,11 @@ func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadReques
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Route != nil) {
+	if !(res.RouteJSON != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRoute(res.Route)
+	data.RefreshFromSharedRouteJSON(res.RouteJSON)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -394,11 +394,11 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	route := *data.ToSharedRouteInput()
+	routeJSON := *data.ToSharedRouteJSONInput()
 	request := operations.UpsertRouteRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
-		Route:          route,
+		RouteJSON:      routeJSON,
 	}
 	res, err := r.client.Routes.UpsertRoute(ctx, request)
 	if err != nil {
@@ -416,11 +416,11 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.Route != nil) {
+	if !(res.RouteJSON != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRoute(res.Route)
+	data.RefreshFromSharedRouteJSON(res.RouteJSON)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state

@@ -27,13 +27,6 @@ func newControlPlaneGroups(sdkConfig sdkConfiguration) *ControlPlaneGroups {
 // PostControlPlanesIDGroupMembershipsAdd - Add Control Plane Group Members
 // Adds one or more control planes as a member of a control plane group.
 func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.Context, request operations.PostControlPlanesIDGroupMembershipsAddRequest, opts ...operations.Option) (*operations.PostControlPlanesIDGroupMembershipsAddResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-control-planes-id-group-memberships-add",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -56,6 +49,13 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-control-planes-id-group-memberships-add",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "GroupMembership", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -211,6 +211,27 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 			}
 			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
 		}
+	case httpRes.StatusCode == 500:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BaseError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BaseError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
 	case httpRes.StatusCode == 503:
 		switch {
 		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
@@ -247,13 +268,6 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsAdd(ctx context.
 // PostControlPlanesIDGroupMembershipsRemove - Remove Control Plane Group Members
 // Removes one or more control planes from the members of a control plane group.
 func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx context.Context, request operations.PostControlPlanesIDGroupMembershipsRemoveRequest, opts ...operations.Option) (*operations.PostControlPlanesIDGroupMembershipsRemoveResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "post-control-planes-id-group-memberships-remove",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -276,6 +290,13 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx conte
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "post-control-planes-id-group-memberships-remove",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, true, "GroupMembership", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -424,6 +445,27 @@ func (s *ControlPlaneGroups) PostControlPlanesIDGroupMembershipsRemove(ctx conte
 			}
 
 			res.NotFoundError = &out
+		default:
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+			return nil, errors.NewSDKError(fmt.Sprintf("unknown content-type received: %s", httpRes.Header.Get("Content-Type")), httpRes.StatusCode, string(rawBody), httpRes)
+		}
+	case httpRes.StatusCode == 500:
+		switch {
+		case utils.MatchContentType(httpRes.Header.Get("Content-Type"), `application/problem+json`):
+			rawBody, err := utils.ConsumeRawBody(httpRes)
+			if err != nil {
+				return nil, err
+			}
+
+			var out shared.BaseError
+			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
+				return nil, err
+			}
+
+			res.BaseError = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

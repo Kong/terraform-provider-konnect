@@ -29,13 +29,6 @@ func newAPIProducts(sdkConfig sdkConfiguration) *APIProducts {
 // An API Product packages together associated APIs and their operations, backed by thorough documentation,
 // with the objective of making API consumption straightforward for developers.
 func (s *APIProducts) CreateAPIProduct(ctx context.Context, request shared.CreateAPIProductDTO, opts ...operations.Option) (*operations.CreateAPIProductResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-api-product",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -59,6 +52,13 @@ func (s *APIProducts) CreateAPIProduct(ctx context.Context, request shared.Creat
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-api-product",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Request", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -254,13 +254,6 @@ func (s *APIProducts) CreateAPIProduct(ctx context.Context, request shared.Creat
 // GetAPIProduct - Fetch API product
 // Returns an API product.
 func (s *APIProducts) GetAPIProduct(ctx context.Context, request operations.GetAPIProductRequest, opts ...operations.Option) (*operations.GetAPIProductResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-api-product",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -282,6 +275,14 @@ func (s *APIProducts) GetAPIProduct(ctx context.Context, request operations.GetA
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-api-product",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -450,13 +451,6 @@ func (s *APIProducts) GetAPIProduct(ctx context.Context, request operations.GetA
 // UpdateAPIProduct - Update an individual API product
 // Updates an API product.
 func (s *APIProducts) UpdateAPIProduct(ctx context.Context, request operations.UpdateAPIProductRequest, opts ...operations.Option) (*operations.UpdateAPIProductResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "update-api-product",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -480,6 +474,13 @@ func (s *APIProducts) UpdateAPIProduct(ctx context.Context, request operations.U
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "update-api-product",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateAPIProductDTO", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -696,13 +697,6 @@ func (s *APIProducts) UpdateAPIProduct(ctx context.Context, request operations.U
 // DeleteAPIProduct - Delete API Product
 // Removes an individual API product.
 func (s *APIProducts) DeleteAPIProduct(ctx context.Context, request operations.DeleteAPIProductRequest, opts ...operations.Option) (*operations.DeleteAPIProductResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-api-product",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -723,6 +717,14 @@ func (s *APIProducts) DeleteAPIProduct(ctx context.Context, request operations.D
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/api-products/{id}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-api-product",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout

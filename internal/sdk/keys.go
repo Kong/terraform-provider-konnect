@@ -28,13 +28,6 @@ func newKeys(sdkConfig sdkConfiguration) *Keys {
 // CreateKey - Create a new Key
 // Create a new Key
 func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyRequest, opts ...operations.Option) (*operations.CreateKeyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "create-key",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -57,6 +50,13 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "create-key",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Key", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
@@ -184,13 +184,6 @@ func (s *Keys) CreateKey(ctx context.Context, request operations.CreateKeyReques
 // DeleteKey - Delete a Key
 // Delete a Key
 func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyRequest, opts ...operations.Option) (*operations.DeleteKeyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "delete-key",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -211,6 +204,14 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "delete-key",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -312,13 +313,6 @@ func (s *Keys) DeleteKey(ctx context.Context, request operations.DeleteKeyReques
 // GetKey - Fetch a Key
 // Get a Key using ID or name.
 func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opts ...operations.Option) (*operations.GetKeyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "get-key",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -339,6 +333,14 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 	opURL, err := utils.GenerateURL(ctx, baseURL, "/v2/control-planes/{controlPlaneId}/core-entities/keys/{KeyId}", request, nil)
 	if err != nil {
 		return nil, fmt.Errorf("error generating URL: %w", err)
+	}
+
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "get-key",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
 	}
 
 	timeout := o.Timeout
@@ -461,13 +463,6 @@ func (s *Keys) GetKey(ctx context.Context, request operations.GetKeyRequest, opt
 // UpsertKey - Upsert a Key
 // Create or Update Key using ID or name.
 func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyRequest, opts ...operations.Option) (*operations.UpsertKeyResponse, error) {
-	hookCtx := hooks.HookContext{
-		Context:        ctx,
-		OperationID:    "upsert-key",
-		OAuth2Scopes:   []string{},
-		SecuritySource: s.sdkConfiguration.Security,
-	}
-
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -490,6 +485,13 @@ func (s *Keys) UpsertKey(ctx context.Context, request operations.UpsertKeyReques
 		return nil, fmt.Errorf("error generating URL: %w", err)
 	}
 
+	hookCtx := hooks.HookContext{
+		BaseURL:        baseURL,
+		Context:        ctx,
+		OperationID:    "upsert-key",
+		OAuth2Scopes:   []string{},
+		SecuritySource: s.sdkConfiguration.Security,
+	}
 	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "Key", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err

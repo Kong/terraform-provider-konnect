@@ -68,9 +68,9 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		for _, ifStatusItem := range r.Config.Add.IfStatus {
 			ifStatus = append(ifStatus, ifStatusItem.ValueString())
 		}
-		var json []string = []string{}
+		var jsonVar []string = []string{}
 		for _, jsonItem := range r.Config.Add.JSON {
-			json = append(json, jsonItem.ValueString())
+			jsonVar = append(jsonVar, jsonItem.ValueString())
 		}
 		var jsonTypes []shared.ResponseTransformerAdvancedPluginJSONTypes = []shared.ResponseTransformerAdvancedPluginJSONTypes{}
 		for _, jsonTypesItem := range r.Config.Add.JSONTypes {
@@ -79,18 +79,18 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		add = &shared.ResponseTransformerAdvancedPluginAdd{
 			Headers:   headers,
 			IfStatus:  ifStatus,
-			JSON:      json,
+			JSON:      jsonVar,
 			JSONTypes: jsonTypes,
 		}
 	}
 	var allow *shared.ResponseTransformerAdvancedPluginAllow
 	if r.Config.Allow != nil {
-		var json1 []string = []string{}
+		var jsonVar1 []string = []string{}
 		for _, jsonItem1 := range r.Config.Allow.JSON {
-			json1 = append(json1, jsonItem1.ValueString())
+			jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
 		}
 		allow = &shared.ResponseTransformerAdvancedPluginAllow{
-			JSON: json1,
+			JSON: jsonVar1,
 		}
 	}
 	var append1 *shared.ResponseTransformerAdvancedPluginAppend
@@ -103,9 +103,9 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		for _, ifStatusItem1 := range r.Config.Append.IfStatus {
 			ifStatus1 = append(ifStatus1, ifStatusItem1.ValueString())
 		}
-		var json2 []string = []string{}
+		var jsonVar2 []string = []string{}
 		for _, jsonItem2 := range r.Config.Append.JSON {
-			json2 = append(json2, jsonItem2.ValueString())
+			jsonVar2 = append(jsonVar2, jsonItem2.ValueString())
 		}
 		var jsonTypes1 []shared.ResponseTransformerAdvancedPluginConfigJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigJSONTypes{}
 		for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
@@ -114,7 +114,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		append1 = &shared.ResponseTransformerAdvancedPluginAppend{
 			Headers:   headers1,
 			IfStatus:  ifStatus1,
-			JSON:      json2,
+			JSON:      jsonVar2,
 			JSONTypes: jsonTypes1,
 		}
 	}
@@ -134,14 +134,14 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		for _, ifStatusItem2 := range r.Config.Remove.IfStatus {
 			ifStatus2 = append(ifStatus2, ifStatusItem2.ValueString())
 		}
-		var json3 []string = []string{}
+		var jsonVar3 []string = []string{}
 		for _, jsonItem3 := range r.Config.Remove.JSON {
-			json3 = append(json3, jsonItem3.ValueString())
+			jsonVar3 = append(jsonVar3, jsonItem3.ValueString())
 		}
 		remove = &shared.ResponseTransformerAdvancedPluginRemove{
 			Headers:  headers2,
 			IfStatus: ifStatus2,
-			JSON:     json3,
+			JSON:     jsonVar3,
 		}
 	}
 	var rename *shared.ResponseTransformerAdvancedPluginRename
@@ -175,9 +175,9 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		for _, ifStatusItem4 := range r.Config.Replace.IfStatus {
 			ifStatus4 = append(ifStatus4, ifStatusItem4.ValueString())
 		}
-		var json4 []string = []string{}
+		var jsonVar4 []string = []string{}
 		for _, jsonItem4 := range r.Config.Replace.JSON {
-			json4 = append(json4, jsonItem4.ValueString())
+			jsonVar4 = append(jsonVar4, jsonItem4.ValueString())
 		}
 		var jsonTypes2 []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes{}
 		for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
@@ -187,7 +187,7 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			Body:      body,
 			Headers:   headers4,
 			IfStatus:  ifStatus4,
-			JSON:      json4,
+			JSON:      jsonVar4,
 			JSONTypes: jsonTypes2,
 		}
 	}
@@ -201,14 +201,14 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 		for _, ifStatusItem5 := range r.Config.Transform.IfStatus {
 			ifStatus5 = append(ifStatus5, ifStatusItem5.ValueString())
 		}
-		var json5 []string = []string{}
+		var jsonVar5 []string = []string{}
 		for _, jsonItem5 := range r.Config.Transform.JSON {
-			json5 = append(json5, jsonItem5.ValueString())
+			jsonVar5 = append(jsonVar5, jsonItem5.ValueString())
 		}
 		transform = &shared.Transform{
 			Functions: functions,
 			IfStatus:  ifStatus5,
-			JSON:      json5,
+			JSON:      jsonVar5,
 		}
 	}
 	config := shared.ResponseTransformerAdvancedPluginConfig{

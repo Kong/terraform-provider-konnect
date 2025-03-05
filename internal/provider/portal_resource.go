@@ -43,7 +43,7 @@ type PortalResourceModel struct {
 	Description                      types.String            `tfsdk:"description"`
 	DeveloperCount                   types.Number            `tfsdk:"developer_count"`
 	DisplayName                      types.String            `tfsdk:"display_name"`
-	Force                            types.String            `tfsdk:"force"`
+	Force                            types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force"`
 	ID                               types.String            `tfsdk:"id"`
 	IsPublic                         types.Bool              `tfsdk:"is_public"`
 	Labels                           map[string]types.String `tfsdk:"labels"`
@@ -130,7 +130,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"force": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
-				Default:     stringdefault.StaticString("false"),
+				Default:     stringdefault.StaticString(`false`),
 				Description: `If true, delete specified portal and all related entities, even if there are developers registered to portal or if there are portal product versions with application registration enabled. If false, do not allow deletion if there are developers registered to portal or if there are portal product versions with application registration enabled. Default: "false"; must be one of ["true", "false"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(

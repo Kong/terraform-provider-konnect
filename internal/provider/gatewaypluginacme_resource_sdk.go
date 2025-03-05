@@ -509,7 +509,7 @@ func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(resp *share
 				r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 			}
 			if len(resp.Config.StorageConfig.Kong) > 0 {
-				r.Config.StorageConfig.Kong = make(map[string]types.String)
+				r.Config.StorageConfig.Kong = make(map[string]types.String, len(resp.Config.StorageConfig.Kong))
 				for key, value := range resp.Config.StorageConfig.Kong {
 					result, _ := json.Marshal(value)
 					r.Config.StorageConfig.Kong[key] = types.StringValue(string(result))

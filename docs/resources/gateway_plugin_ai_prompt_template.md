@@ -104,7 +104,7 @@ Optional:
 Optional:
 
 - `name` (String) Unique name for the template, can be called with `{template://NAME}`. Not Null
-- `template` (String) Template string for this request, supports mustache-style `{{"{{"}}placeholders{{"}}"}}`. Not Null
+- `template` (String) Template string for this request, supports mustache-style `{{placeholders}}`. Not Null
 
 
 
