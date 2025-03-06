@@ -155,7 +155,7 @@ func (e *MeshTrafficPermissionItemSpecProxyTypes) UnmarshalJSON(data []byte) err
 // clients.
 type MeshTrafficPermissionItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTrafficPermissionItemSpecKind `json:"kind,omitempty"`
+	Kind MeshTrafficPermissionItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -178,9 +178,9 @@ type MeshTrafficPermissionItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTrafficPermissionItemSpecTargetRef) GetKind() *MeshTrafficPermissionItemSpecKind {
+func (o *MeshTrafficPermissionItemSpecTargetRef) GetKind() MeshTrafficPermissionItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshTrafficPermissionItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -336,7 +336,7 @@ func (e *MeshTrafficPermissionItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshTrafficPermissionItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTrafficPermissionItemKind `json:"kind,omitempty"`
+	Kind MeshTrafficPermissionItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -359,9 +359,9 @@ type MeshTrafficPermissionItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTrafficPermissionItemTargetRef) GetKind() *MeshTrafficPermissionItemKind {
+func (o *MeshTrafficPermissionItemTargetRef) GetKind() MeshTrafficPermissionItemKind {
 	if o == nil {
-		return nil
+		return MeshTrafficPermissionItemKind("")
 	}
 	return o.Kind
 }

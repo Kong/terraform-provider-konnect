@@ -74,11 +74,7 @@ func (r *MeshPassthroughListDataSourceModel) RefreshFromSharedMeshPassthroughLis
 				items1.Spec.TargetRef = nil
 			} else {
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-				if itemsItem.Spec.TargetRef.Kind != nil {
-					items1.Spec.TargetRef.Kind = types.StringValue(string(*itemsItem.Spec.TargetRef.Kind))
-				} else {
-					items1.Spec.TargetRef.Kind = types.StringNull()
-				}
+				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
 					items1.Spec.TargetRef.Labels = make(map[string]types.String)
 					for key1, value2 := range itemsItem.Spec.TargetRef.Labels {

@@ -19,10 +19,7 @@ terraform:
   additionalDependencies: {}
   additionalProviderAttributes:
     httpHeaders: ""
-  additionalResources:
-    - importAlias: custom
-      importLocation: github.com/kong/terraform-provider-konnect/v2/src
-      resource: custom.NewCustomPluginResource
+  additionalResources: []
   allowUnknownFieldsInWeakUnions: false
   author: kong
   defaultErrorName: SDKError

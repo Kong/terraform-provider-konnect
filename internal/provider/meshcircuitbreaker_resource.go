@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/listvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -26,6 +25,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -397,8 +397,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+											Description: `Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
 												stringvalidator.OneOf(
 													"Mesh",
 													"MeshSubset",
@@ -441,9 +442,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
-											Validators: []validator.List{
-												listvalidator.SizeAtLeast(1),
-											},
 										},
 										"section_name": schema.StringAttribute{
 											Optional: true,
@@ -766,7 +764,7 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Optional:    true,
+								Required:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -811,9 +809,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
-								Validators: []validator.List{
-									listvalidator.SizeAtLeast(1),
-								},
 							},
 							"section_name": schema.StringAttribute{
 								Optional: true,
@@ -1126,8 +1121,9 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 									Attributes: map[string]schema.Attribute{
 										"kind": schema.StringAttribute{
 											Optional:    true,
-											Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
+											Description: `Kind of the referenced resource. Not Null; must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 											Validators: []validator.String{
+												speakeasy_stringvalidators.NotNull(),
 												stringvalidator.OneOf(
 													"Mesh",
 													"MeshSubset",
@@ -1170,9 +1166,6 @@ func (r *MeshCircuitBreakerResource) Schema(ctx context.Context, req resource.Sc
 											ElementType: types.StringType,
 											MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 												`all data plane types are targeted by the policy.`,
-											Validators: []validator.List{
-												listvalidator.SizeAtLeast(1),
-											},
 										},
 										"section_name": schema.StringAttribute{
 											Optional: true,

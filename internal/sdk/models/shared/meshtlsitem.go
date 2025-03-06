@@ -313,7 +313,7 @@ func (e *MeshTLSItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshTLSItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTLSItemSpecKind `json:"kind,omitempty"`
+	Kind MeshTLSItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -336,9 +336,9 @@ type MeshTLSItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTLSItemSpecTargetRef) GetKind() *MeshTLSItemSpecKind {
+func (o *MeshTLSItemSpecTargetRef) GetKind() MeshTLSItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshTLSItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -707,7 +707,7 @@ func (e *MeshTLSItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type MeshTLSItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTLSItemKind `json:"kind,omitempty"`
+	Kind MeshTLSItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -730,9 +730,9 @@ type MeshTLSItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTLSItemTargetRef) GetKind() *MeshTLSItemKind {
+func (o *MeshTLSItemTargetRef) GetKind() MeshTLSItemKind {
 	if o == nil {
-		return nil
+		return MeshTLSItemKind("")
 	}
 	return o.Kind
 }

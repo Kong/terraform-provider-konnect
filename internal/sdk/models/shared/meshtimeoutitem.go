@@ -205,7 +205,7 @@ func (e *MeshTimeoutItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshTimeoutItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTimeoutItemSpecKind `json:"kind,omitempty"`
+	Kind MeshTimeoutItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -228,9 +228,9 @@ type MeshTimeoutItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTimeoutItemSpecTargetRef) GetKind() *MeshTimeoutItemSpecKind {
+func (o *MeshTimeoutItemSpecTargetRef) GetKind() MeshTimeoutItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshTimeoutItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -491,7 +491,7 @@ func (e *MeshTimeoutItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshTimeoutItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTimeoutItemKind `json:"kind,omitempty"`
+	Kind MeshTimeoutItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -514,9 +514,9 @@ type MeshTimeoutItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTimeoutItemTargetRef) GetKind() *MeshTimeoutItemKind {
+func (o *MeshTimeoutItemTargetRef) GetKind() MeshTimeoutItemKind {
 	if o == nil {
-		return nil
+		return MeshTimeoutItemKind("")
 	}
 	return o.Kind
 }
@@ -742,7 +742,7 @@ func (e *MeshTimeoutItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
 // destinations.
 type MeshTimeoutItemSpecToTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTimeoutItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshTimeoutItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -765,9 +765,9 @@ type MeshTimeoutItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTimeoutItemSpecToTargetRef) GetKind() *MeshTimeoutItemSpecToKind {
+func (o *MeshTimeoutItemSpecToTargetRef) GetKind() MeshTimeoutItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshTimeoutItemSpecToKind("")
 	}
 	return o.Kind
 }

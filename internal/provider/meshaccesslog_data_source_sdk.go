@@ -125,11 +125,7 @@ func (r *MeshAccessLogDataSourceModel) RefreshFromSharedMeshAccessLogItem(resp *
 					from1.Default.Backends[backendsCount].Type = backends1.Type
 				}
 			}
-			if fromItem.TargetRef.Kind != nil {
-				from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-			} else {
-				from1.TargetRef.Kind = types.StringNull()
-			}
+			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from1.TargetRef.Labels = make(map[string]types.String)
 				for key4, value4 := range fromItem.TargetRef.Labels {
@@ -262,11 +258,7 @@ func (r *MeshAccessLogDataSourceModel) RefreshFromSharedMeshAccessLogItem(resp *
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key9, value9 := range resp.Spec.TargetRef.Labels {
@@ -383,11 +375,7 @@ func (r *MeshAccessLogDataSourceModel) RefreshFromSharedMeshAccessLogItem(resp *
 					to1.Default.Backends[backendsCount2].Type = backends5.Type
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key14, value14 := range toItem.TargetRef.Labels {

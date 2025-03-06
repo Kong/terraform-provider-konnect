@@ -322,7 +322,7 @@ func (e *MeshOPAItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshOPAItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshOPAItemKind `json:"kind,omitempty"`
+	Kind MeshOPAItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -345,9 +345,9 @@ type MeshOPAItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshOPAItemTargetRef) GetKind() *MeshOPAItemKind {
+func (o *MeshOPAItemTargetRef) GetKind() MeshOPAItemKind {
 	if o == nil {
-		return nil
+		return MeshOPAItemKind("")
 	}
 	return o.Kind
 }

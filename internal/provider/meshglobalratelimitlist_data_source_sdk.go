@@ -130,11 +130,7 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						from1.Default.Mode = types.StringNull()
 					}
 				}
-				if fromItem.TargetRef.Kind != nil {
-					from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-				} else {
-					from1.TargetRef.Kind = types.StringNull()
-				}
+				from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 				if len(fromItem.TargetRef.Labels) > 0 {
 					from1.TargetRef.Labels = make(map[string]types.String)
 					for key1, value4 := range fromItem.TargetRef.Labels {
@@ -166,11 +162,7 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 				items1.Spec.TargetRef = nil
 			} else {
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-				if itemsItem.Spec.TargetRef.Kind != nil {
-					items1.Spec.TargetRef.Kind = types.StringValue(string(*itemsItem.Spec.TargetRef.Kind))
-				} else {
-					items1.Spec.TargetRef.Kind = types.StringNull()
-				}
+				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
 					items1.Spec.TargetRef.Labels = make(map[string]types.String)
 					for key3, value6 := range itemsItem.Spec.TargetRef.Labels {
@@ -286,11 +278,7 @@ func (r *MeshGlobalRateLimitListDataSourceModel) RefreshFromSharedMeshGlobalRate
 						to1.Default.Mode = types.StringNull()
 					}
 				}
-				if toItem.TargetRef.Kind != nil {
-					to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-				} else {
-					to1.TargetRef.Kind = types.StringNull()
-				}
+				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
 					to1.TargetRef.Labels = make(map[string]types.String)
 					for key5, value11 := range toItem.TargetRef.Labels {

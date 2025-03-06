@@ -697,7 +697,7 @@ func (e *MeshCircuitBreakerItemSpecProxyTypes) UnmarshalJSON(data []byte) error 
 // destinations.
 type MeshCircuitBreakerItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshCircuitBreakerItemSpecKind `json:"kind,omitempty"`
+	Kind MeshCircuitBreakerItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -720,9 +720,9 @@ type MeshCircuitBreakerItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshCircuitBreakerItemSpecTargetRef) GetKind() *MeshCircuitBreakerItemSpecKind {
+func (o *MeshCircuitBreakerItemSpecTargetRef) GetKind() MeshCircuitBreakerItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshCircuitBreakerItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -1474,7 +1474,7 @@ func (e *MeshCircuitBreakerItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in place.
 type MeshCircuitBreakerItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshCircuitBreakerItemKind `json:"kind,omitempty"`
+	Kind MeshCircuitBreakerItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1497,9 +1497,9 @@ type MeshCircuitBreakerItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshCircuitBreakerItemTargetRef) GetKind() *MeshCircuitBreakerItemKind {
+func (o *MeshCircuitBreakerItemTargetRef) GetKind() MeshCircuitBreakerItemKind {
 	if o == nil {
-		return nil
+		return MeshCircuitBreakerItemKind("")
 	}
 	return o.Kind
 }
@@ -2216,7 +2216,7 @@ func (e *MeshCircuitBreakerItemSpecToProxyTypes) UnmarshalJSON(data []byte) erro
 // destinations.
 type MeshCircuitBreakerItemSpecToTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshCircuitBreakerItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshCircuitBreakerItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -2239,9 +2239,9 @@ type MeshCircuitBreakerItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshCircuitBreakerItemSpecToTargetRef) GetKind() *MeshCircuitBreakerItemSpecToKind {
+func (o *MeshCircuitBreakerItemSpecToTargetRef) GetKind() MeshCircuitBreakerItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshCircuitBreakerItemSpecToKind("")
 	}
 	return o.Kind
 }

@@ -49,11 +49,7 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 						from1.Default.Action = types.StringNull()
 					}
 				}
-				if fromItem.TargetRef.Kind != nil {
-					from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-				} else {
-					from1.TargetRef.Kind = types.StringNull()
-				}
+				from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 				if len(fromItem.TargetRef.Labels) > 0 {
 					from1.TargetRef.Labels = make(map[string]types.String)
 					for key1, value1 := range fromItem.TargetRef.Labels {
@@ -85,11 +81,7 @@ func (r *MeshTrafficPermissionListDataSourceModel) RefreshFromSharedMeshTrafficP
 				items1.Spec.TargetRef = nil
 			} else {
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-				if itemsItem.Spec.TargetRef.Kind != nil {
-					items1.Spec.TargetRef.Kind = types.StringValue(string(*itemsItem.Spec.TargetRef.Kind))
-				} else {
-					items1.Spec.TargetRef.Kind = types.StringNull()
-				}
+				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
 					items1.Spec.TargetRef.Labels = make(map[string]types.String)
 					for key3, value3 := range itemsItem.Spec.TargetRef.Labels {

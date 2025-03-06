@@ -15,6 +15,8 @@ servers:
   - url: 'https://us.api.konghq.com'
   - url: 'https://eu.api.konghq.com'
   - url: 'https://au.api.konghq.com'
+  - url: 'https://me.api.konghq.com'
+  - url: 'https://in.api.konghq.com'
 paths:
   /v0/serverless-cloud-gateways:
     post:
@@ -122,6 +124,7 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
+        x-speakeasy-param-suppress-computed-diff: true
     get:
       x-speakeasy-entity-operation: MeshControlPlane#read
       operationId: get-mesh-control-plane
@@ -16041,6 +16044,7 @@ components:
       required: true
       description: Id of the Konnect resource
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
+      x-speakeasy-param-suppress-computed-diff: true
       schema:
         type: string
         format: uuid
@@ -17799,7 +17803,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -17815,6 +17818,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - default
@@ -18066,7 +18071,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -18082,6 +18086,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between the consumed services and corresponding configurations
@@ -18324,7 +18330,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -18340,6 +18345,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - default
@@ -18745,7 +18752,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -18761,6 +18767,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -19105,7 +19113,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -19121,6 +19128,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: |-
@@ -19460,7 +19469,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -19476,6 +19484,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -19689,7 +19699,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -19705,6 +19714,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -19765,7 +19776,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -19781,6 +19791,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between clients and corresponding configurations
@@ -19927,7 +19939,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -19943,6 +19954,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -20066,7 +20079,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -20082,6 +20094,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between the consumed services and corresponding configurations
@@ -20374,7 +20388,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -20390,6 +20403,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -20513,7 +20528,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -20529,6 +20543,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To matches destination services of requests and holds configuration.
@@ -20616,7 +20632,6 @@ components:
                                         - Sidecar
                                         - Gateway
                                       type: string
-                                    minItems: 1
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                   sectionName:
                                     description: |-
@@ -20637,6 +20652,8 @@ components:
                                     default: 1
                                     minimum: 0
                                     x-speakeasy-param-computed: false
+                                required:
+                                  - kind
                                 type: object
                               x-speakeasy-plan-modifiers: SupressZeroNullModifier
                             filters:
@@ -20761,7 +20778,6 @@ components:
                                                 - Sidecar
                                                 - Gateway
                                               type: string
-                                            minItems: 1
                                             x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                           sectionName:
                                             description: |-
@@ -20782,6 +20798,8 @@ components:
                                             default: 1
                                             minimum: 0
                                             x-speakeasy-param-computed: false
+                                        required:
+                                          - kind
                                         x-speakeasy-param-computed: false
                                       percentage:
                                         description: |-
@@ -21135,7 +21153,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -21151,6 +21168,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - rules
@@ -21275,7 +21294,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -21291,6 +21309,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between the consumed services and corresponding configurations
@@ -21779,7 +21799,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -21795,6 +21814,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -22101,7 +22122,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -22117,6 +22137,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -22291,7 +22313,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -22307,6 +22328,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -22886,7 +22909,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -22902,6 +22924,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           required:
             - default
@@ -23161,7 +23185,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -23177,6 +23200,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -23378,7 +23403,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -23394,6 +23418,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between clients and corresponding configurations
@@ -23588,7 +23614,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -23604,6 +23629,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -23727,7 +23754,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -23743,6 +23769,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between the consumed services and corresponding configurations
@@ -24154,7 +24182,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -24170,6 +24197,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -24293,7 +24322,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -24309,6 +24337,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: |-
@@ -24388,7 +24418,6 @@ components:
                                         - Sidecar
                                         - Gateway
                                       type: string
-                                    minItems: 1
                                     x-speakeasy-plan-modifiers: SupressZeroNullModifier
                                   sectionName:
                                     description: |-
@@ -24409,6 +24438,8 @@ components:
                                     default: 1
                                     minimum: 0
                                     x-speakeasy-param-computed: false
+                                required:
+                                  - kind
                                 type: object
                               x-speakeasy-plan-modifiers: SupressZeroNullModifier
                           x-speakeasy-param-computed: false
@@ -24471,7 +24502,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -24487,6 +24517,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - rules
@@ -24676,7 +24708,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -24692,6 +24723,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -24819,7 +24852,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -24835,6 +24867,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between the consumed services and corresponding configurations
@@ -24955,7 +24989,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -24971,6 +25004,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -25152,7 +25187,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -25168,6 +25202,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -25289,7 +25325,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -25305,6 +25340,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -25612,7 +25649,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -25628,6 +25664,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -25766,7 +25804,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -25782,6 +25819,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -25842,7 +25881,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -25858,6 +25896,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -27953,7 +27993,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -27969,6 +28008,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -28029,7 +28070,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -28045,6 +28085,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
             to:
               description: To list makes a match between clients and corresponding configurations
@@ -28287,7 +28329,6 @@ components:
                             - Sidecar
                             - Gateway
                           type: string
-                        minItems: 1
                         x-speakeasy-plan-modifiers: SupressZeroNullModifier
                       sectionName:
                         description: |-
@@ -28303,6 +28344,8 @@ components:
                         additionalProperties:
                           type: string
                         x-speakeasy-param-computed: false
+                    required:
+                      - kind
                     x-speakeasy-param-computed: false
                 required:
                   - targetRef
@@ -28526,7 +28569,6 @@ components:
                       - Sidecar
                       - Gateway
                     type: string
-                  minItems: 1
                   x-speakeasy-plan-modifiers: SupressZeroNullModifier
                 sectionName:
                   description: |-
@@ -28542,6 +28584,8 @@ components:
                   additionalProperties:
                     type: string
                   x-speakeasy-param-computed: false
+              required:
+                - kind
               x-speakeasy-param-computed: false
           x-speakeasy-param-computed: false
         creationTime:
@@ -28602,6 +28646,7 @@ components:
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: The name of the control plane.
           type: string
@@ -28620,10 +28665,14 @@ components:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - id
         - name
@@ -42595,6 +42644,12 @@ components:
                   type: array
                   items:
                     type: string
+        partials:
+          type: array
+          items:
+            additionalProperties: true
+            type: object
+          nullable: true
         protocols:
           description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.'
           type: array
@@ -42654,6 +42709,11 @@ components:
         enabled: true
         id: 3fd1eea1-885a-4011-b986-289943ff8177
         name: key-auth
+        partials:
+          - id: cff1230a-00f7-4ae8-b376-c370f0eb4dae
+            path: config.redis
+          - id: 129ee345-cba8-4e55-9d6d-93c223ff91ae
+            path: config.redis
         protocols:
           - grpc
           - grpcs
@@ -42724,6 +42784,11 @@ components:
         enabled: true
         id: 3fd1eea1-885a-4011-b986-289943ff8177
         name: key-auth
+        partials:
+          - id: cff1230a-00f7-4ae8-b376-c370f0eb4dae
+            path: config.redis
+          - id: 129ee345-cba8-4e55-9d6d-93c223ff91ae
+            path: config.redis
         protocols:
           - grpc
           - grpcs

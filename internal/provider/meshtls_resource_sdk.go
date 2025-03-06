@@ -66,12 +66,7 @@ func (r *MeshTLSResourceModel) ToSharedMeshTLSItemInput() *shared.MeshTLSItemInp
 				TLSVersion: tlsVersion,
 			}
 		}
-		kind := new(shared.MeshTLSItemSpecKind)
-		if !fromItem.TargetRef.Kind.IsUnknown() && !fromItem.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshTLSItemSpecKind(fromItem.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshTLSItemSpecKind(fromItem.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range fromItem.TargetRef.Labels {
 			var labelsInst1 string
@@ -174,12 +169,7 @@ func (r *MeshTLSResourceModel) ToSharedMeshTLSItemInput() *shared.MeshTLSItemInp
 	}
 	var targetRef1 *shared.MeshTLSItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind1 := new(shared.MeshTLSItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind1 = shared.MeshTLSItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind1 = nil
-		}
+		kind1 := shared.MeshTLSItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels2 := make(map[string]string)
 		for labelsKey2, labelsValue2 := range r.Spec.TargetRef.Labels {
 			var labelsInst2 string
@@ -312,11 +302,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 					}
 				}
 			}
-			if fromItem.TargetRef.Kind != nil {
-				from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-			} else {
-				from1.TargetRef.Kind = types.StringNull()
-			}
+			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from1.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range fromItem.TargetRef.Labels {
@@ -389,11 +375,7 @@ func (r *MeshTLSResourceModel) RefreshFromSharedMeshTLSItem(resp *shared.MeshTLS
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key3, value3 := range resp.Spec.TargetRef.Labels {

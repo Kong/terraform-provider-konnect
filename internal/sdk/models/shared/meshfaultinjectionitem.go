@@ -428,7 +428,7 @@ func (e *MeshFaultInjectionItemSpecProxyTypes) UnmarshalJSON(data []byte) error 
 // destinations.
 type MeshFaultInjectionItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshFaultInjectionItemSpecKind `json:"kind,omitempty"`
+	Kind MeshFaultInjectionItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -451,9 +451,9 @@ type MeshFaultInjectionItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshFaultInjectionItemSpecTargetRef) GetKind() *MeshFaultInjectionItemSpecKind {
+func (o *MeshFaultInjectionItemSpecTargetRef) GetKind() MeshFaultInjectionItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshFaultInjectionItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -609,7 +609,7 @@ func (e *MeshFaultInjectionItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshFaultInjectionItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshFaultInjectionItemKind `json:"kind,omitempty"`
+	Kind MeshFaultInjectionItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -632,9 +632,9 @@ type MeshFaultInjectionItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshFaultInjectionItemTargetRef) GetKind() *MeshFaultInjectionItemKind {
+func (o *MeshFaultInjectionItemTargetRef) GetKind() MeshFaultInjectionItemKind {
 	if o == nil {
-		return nil
+		return MeshFaultInjectionItemKind("")
 	}
 	return o.Kind
 }
@@ -1082,7 +1082,7 @@ func (e *MeshFaultInjectionItemSpecToProxyTypes) UnmarshalJSON(data []byte) erro
 // destinations.
 type MeshFaultInjectionItemSpecToTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshFaultInjectionItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshFaultInjectionItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1105,9 +1105,9 @@ type MeshFaultInjectionItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshFaultInjectionItemSpecToTargetRef) GetKind() *MeshFaultInjectionItemSpecToKind {
+func (o *MeshFaultInjectionItemSpecToTargetRef) GetKind() MeshFaultInjectionItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshFaultInjectionItemSpecToKind("")
 	}
 	return o.Kind
 }

@@ -29,12 +29,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 	}
 	var targetRef *shared.MeshRetryItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshRetryItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshRetryItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshRetryItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -326,12 +321,7 @@ func (r *MeshRetryResourceModel) ToSharedMeshRetryItemInput() *shared.MeshRetryI
 				TCP:  tcp,
 			}
 		}
-		kind1 := new(shared.MeshRetryItemSpecKind)
-		if !toItem.TargetRef.Kind.IsUnknown() && !toItem.TargetRef.Kind.IsNull() {
-			*kind1 = shared.MeshRetryItemSpecKind(toItem.TargetRef.Kind.ValueString())
-		} else {
-			kind1 = nil
-		}
+		kind1 := shared.MeshRetryItemSpecKind(toItem.TargetRef.Kind.ValueString())
 		labels2 := make(map[string]string)
 		for labelsKey2, labelsValue2 := range toItem.TargetRef.Labels {
 			var labelsInst2 string
@@ -436,11 +426,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
@@ -623,11 +609,7 @@ func (r *MeshRetryResourceModel) RefreshFromSharedMeshRetryItem(resp *shared.Mes
 					}
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key4, value6 := range toItem.TargetRef.Labels {

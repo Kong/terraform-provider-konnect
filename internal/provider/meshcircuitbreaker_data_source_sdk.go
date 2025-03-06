@@ -176,11 +176,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					from1.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(fromItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
 			}
-			if fromItem.TargetRef.Kind != nil {
-				from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-			} else {
-				from1.TargetRef.Kind = types.StringNull()
-			}
+			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from1.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range fromItem.TargetRef.Labels {
@@ -365,11 +361,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key3, value3 := range resp.Spec.TargetRef.Labels {
@@ -538,11 +530,7 @@ func (r *MeshCircuitBreakerDataSourceModel) RefreshFromSharedMeshCircuitBreakerI
 					to1.Default.OutlierDetection.SplitExternalAndLocalErrors = types.BoolPointerValue(toItem.Default.OutlierDetection.SplitExternalAndLocalErrors)
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key5, value5 := range toItem.TargetRef.Labels {

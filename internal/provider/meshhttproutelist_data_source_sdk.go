@@ -40,11 +40,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 				items1.Spec.TargetRef = nil
 			} else {
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-				if itemsItem.Spec.TargetRef.Kind != nil {
-					items1.Spec.TargetRef.Kind = types.StringValue(string(*itemsItem.Spec.TargetRef.Kind))
-				} else {
-					items1.Spec.TargetRef.Kind = types.StringNull()
-				}
+				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
 					items1.Spec.TargetRef.Labels = make(map[string]types.String)
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
@@ -79,11 +75,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 					rules1.Default.BackendRefs = []tfTypes.BackendRefs{}
 					for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
 						var backendRefs1 tfTypes.BackendRefs
-						if backendRefsItem.Kind != nil {
-							backendRefs1.Kind = types.StringValue(string(*backendRefsItem.Kind))
-						} else {
-							backendRefs1.Kind = types.StringNull()
-						}
+						backendRefs1.Kind = types.StringValue(string(backendRefsItem.Kind))
 						if len(backendRefsItem.Labels) > 0 {
 							backendRefs1.Labels = make(map[string]types.String)
 							for key3, value3 := range backendRefsItem.Labels {
@@ -165,11 +157,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 							filters1.RequestMirror = nil
 						} else {
 							filters1.RequestMirror = &tfTypes.RequestMirror{}
-							if filtersItem.RequestMirror.BackendRef.Kind != nil {
-								filters1.RequestMirror.BackendRef.Kind = types.StringValue(string(*filtersItem.RequestMirror.BackendRef.Kind))
-							} else {
-								filters1.RequestMirror.BackendRef.Kind = types.StringNull()
-							}
+							filters1.RequestMirror.BackendRef.Kind = types.StringValue(string(filtersItem.RequestMirror.BackendRef.Kind))
 							if len(filtersItem.RequestMirror.BackendRef.Labels) > 0 {
 								filters1.RequestMirror.BackendRef.Labels = make(map[string]types.String)
 								for key5, value7 := range filtersItem.RequestMirror.BackendRef.Labels {
@@ -360,11 +348,7 @@ func (r *MeshHTTPRouteListDataSourceModel) RefreshFromSharedMeshHTTPRouteList(re
 						to1.Rules[rulesCount].Matches = rules1.Matches
 					}
 				}
-				if toItem.TargetRef.Kind != nil {
-					to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-				} else {
-					to1.TargetRef.Kind = types.StringNull()
-				}
+				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
 					to1.TargetRef.Labels = make(map[string]types.String)
 					for key7, value14 := range toItem.TargetRef.Labels {

@@ -669,7 +669,7 @@ func (e *MeshTraceItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshTraceItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTraceItemKind `json:"kind,omitempty"`
+	Kind MeshTraceItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -692,9 +692,9 @@ type MeshTraceItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTraceItemTargetRef) GetKind() *MeshTraceItemKind {
+func (o *MeshTraceItemTargetRef) GetKind() MeshTraceItemKind {
 	if o == nil {
-		return nil
+		return MeshTraceItemKind("")
 	}
 	return o.Kind
 }

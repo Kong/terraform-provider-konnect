@@ -159,8 +159,9 @@ type Plugin struct {
 	ID           *string `json:"id,omitempty"`
 	InstanceName *string `json:"instance_name,omitempty"`
 	// The name of the Plugin that's going to be added. Currently, the Plugin must be installed in every Kong instance separately.
-	Name     string    `json:"name"`
-	Ordering *Ordering `json:"ordering,omitempty"`
+	Name     string           `json:"name"`
+	Ordering *Ordering        `json:"ordering,omitempty"`
+	Partials []map[string]any `json:"partials,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []Protocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
@@ -236,6 +237,13 @@ func (o *Plugin) GetOrdering() *Ordering {
 	return o.Ordering
 }
 
+func (o *Plugin) GetPartials() []map[string]any {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
+}
+
 func (o *Plugin) GetProtocols() []Protocols {
 	if o == nil {
 		return nil
@@ -283,8 +291,9 @@ type PluginInput struct {
 	ID           *string `json:"id,omitempty"`
 	InstanceName *string `json:"instance_name,omitempty"`
 	// The name of the Plugin that's going to be added. Currently, the Plugin must be installed in every Kong instance separately.
-	Name     string    `json:"name"`
-	Ordering *Ordering `json:"ordering,omitempty"`
+	Name     string           `json:"name"`
+	Ordering *Ordering        `json:"ordering,omitempty"`
+	Partials []map[string]any `json:"partials,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support `"tcp"` and `"tls"`.
 	Protocols []Protocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.
@@ -349,6 +358,13 @@ func (o *PluginInput) GetOrdering() *Ordering {
 		return nil
 	}
 	return o.Ordering
+}
+
+func (o *PluginInput) GetPartials() []map[string]any {
+	if o == nil {
+		return nil
+	}
+	return o.Partials
 }
 
 func (o *PluginInput) GetProtocols() []Protocols {

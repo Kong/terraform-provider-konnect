@@ -287,7 +287,7 @@ func (e *MeshPassthroughItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type MeshPassthroughItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshPassthroughItemKind `json:"kind,omitempty"`
+	Kind MeshPassthroughItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -310,9 +310,9 @@ type MeshPassthroughItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshPassthroughItemTargetRef) GetKind() *MeshPassthroughItemKind {
+func (o *MeshPassthroughItemTargetRef) GetKind() MeshPassthroughItemKind {
 	if o == nil {
-		return nil
+		return MeshPassthroughItemKind("")
 	}
 	return o.Kind
 }

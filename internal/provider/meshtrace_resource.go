@@ -368,7 +368,7 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 						Optional: true,
 						Attributes: map[string]schema.Attribute{
 							"kind": schema.StringAttribute{
-								Optional:    true,
+								Required:    true,
 								Description: `Kind of the referenced resource. must be one of ["Mesh", "MeshSubset", "MeshGateway", "MeshService", "MeshExternalService", "MeshMultiZoneService", "MeshServiceSubset", "MeshHTTPRoute", "Dataplane"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
@@ -413,9 +413,6 @@ func (r *MeshTraceResource) Schema(ctx context.Context, req resource.SchemaReque
 								ElementType: types.StringType,
 								MarkdownDescription: `ProxyTypes specifies the data plane types that are subject to the policy. When not specified,` + "\n" +
 									`all data plane types are targeted by the policy.`,
-								Validators: []validator.List{
-									listvalidator.SizeAtLeast(1),
-								},
 							},
 							"section_name": schema.StringAttribute{
 								Optional: true,

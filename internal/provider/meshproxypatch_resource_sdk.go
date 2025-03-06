@@ -375,12 +375,7 @@ func (r *MeshProxyPatchResourceModel) ToSharedMeshProxyPatchItemInput() *shared.
 	}
 	var targetRef *shared.MeshProxyPatchItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshProxyPatchItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshProxyPatchItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshProxyPatchItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -688,11 +683,7 @@ func (r *MeshProxyPatchResourceModel) RefreshFromSharedMeshProxyPatchItem(resp *
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key4, value14 := range resp.Spec.TargetRef.Labels {

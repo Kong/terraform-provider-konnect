@@ -29,12 +29,7 @@ func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItemInput() *shared.Mesh
 	}
 	var targetRef *shared.MeshTCPRouteItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshTCPRouteItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshTCPRouteItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshTCPRouteItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -94,12 +89,7 @@ func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItemInput() *shared.Mesh
 		for _, rulesItem := range toItem.Rules {
 			var backendRefs []shared.MeshTCPRouteItemBackendRefs = []shared.MeshTCPRouteItemBackendRefs{}
 			for _, backendRefsItem := range rulesItem.Default.BackendRefs {
-				kind1 := new(shared.MeshTCPRouteItemSpecToKind)
-				if !backendRefsItem.Kind.IsUnknown() && !backendRefsItem.Kind.IsNull() {
-					*kind1 = shared.MeshTCPRouteItemSpecToKind(backendRefsItem.Kind.ValueString())
-				} else {
-					kind1 = nil
-				}
+				kind1 := shared.MeshTCPRouteItemSpecToKind(backendRefsItem.Kind.ValueString())
 				labels2 := make(map[string]string)
 				for labelsKey2, labelsValue2 := range backendRefsItem.Labels {
 					var labelsInst2 string
@@ -174,12 +164,7 @@ func (r *MeshTCPRouteResourceModel) ToSharedMeshTCPRouteItemInput() *shared.Mesh
 				Default: defaultVar,
 			})
 		}
-		kind2 := new(shared.MeshTCPRouteItemSpecKind)
-		if !toItem.TargetRef.Kind.IsUnknown() && !toItem.TargetRef.Kind.IsNull() {
-			*kind2 = shared.MeshTCPRouteItemSpecKind(toItem.TargetRef.Kind.ValueString())
-		} else {
-			kind2 = nil
-		}
+		kind2 := shared.MeshTCPRouteItemSpecKind(toItem.TargetRef.Kind.ValueString())
 		labels3 := make(map[string]string)
 		for labelsKey3, labelsValue3 := range toItem.TargetRef.Labels {
 			var labelsInst3 string
@@ -284,11 +269,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
@@ -322,11 +303,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 				rules1.Default.BackendRefs = []tfTypes.BackendRefs{}
 				for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
 					var backendRefs1 tfTypes.BackendRefs
-					if backendRefsItem.Kind != nil {
-						backendRefs1.Kind = types.StringValue(string(*backendRefsItem.Kind))
-					} else {
-						backendRefs1.Kind = types.StringNull()
-					}
+					backendRefs1.Kind = types.StringValue(string(backendRefsItem.Kind))
 					if len(backendRefsItem.Labels) > 0 {
 						backendRefs1.Labels = make(map[string]types.String)
 						for key3, value3 := range backendRefsItem.Labels {
@@ -374,11 +351,7 @@ func (r *MeshTCPRouteResourceModel) RefreshFromSharedMeshTCPRouteItem(resp *shar
 					to1.Rules[rulesCount].Default = rules1.Default
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key5, value5 := range toItem.TargetRef.Labels {

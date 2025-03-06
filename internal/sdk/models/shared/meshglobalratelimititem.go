@@ -453,7 +453,7 @@ func (e *MeshGlobalRateLimitItemSpecProxyTypes) UnmarshalJSON(data []byte) error
 // clients.
 type MeshGlobalRateLimitItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshGlobalRateLimitItemSpecKind `json:"kind,omitempty"`
+	Kind MeshGlobalRateLimitItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -476,9 +476,9 @@ type MeshGlobalRateLimitItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshGlobalRateLimitItemSpecTargetRef) GetKind() *MeshGlobalRateLimitItemSpecKind {
+func (o *MeshGlobalRateLimitItemSpecTargetRef) GetKind() MeshGlobalRateLimitItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshGlobalRateLimitItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -634,7 +634,7 @@ func (e *MeshGlobalRateLimitItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshGlobalRateLimitItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshGlobalRateLimitItemKind `json:"kind,omitempty"`
+	Kind MeshGlobalRateLimitItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -657,9 +657,9 @@ type MeshGlobalRateLimitItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshGlobalRateLimitItemTargetRef) GetKind() *MeshGlobalRateLimitItemKind {
+func (o *MeshGlobalRateLimitItemTargetRef) GetKind() MeshGlobalRateLimitItemKind {
 	if o == nil {
-		return nil
+		return MeshGlobalRateLimitItemKind("")
 	}
 	return o.Kind
 }
@@ -1133,7 +1133,7 @@ func (e *MeshGlobalRateLimitItemSpecToProxyTypes) UnmarshalJSON(data []byte) err
 // clients.
 type MeshGlobalRateLimitItemSpecToTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshGlobalRateLimitItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshGlobalRateLimitItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1156,9 +1156,9 @@ type MeshGlobalRateLimitItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshGlobalRateLimitItemSpecToTargetRef) GetKind() *MeshGlobalRateLimitItemSpecToKind {
+func (o *MeshGlobalRateLimitItemSpecToTargetRef) GetKind() MeshGlobalRateLimitItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshGlobalRateLimitItemSpecToKind("")
 	}
 	return o.Kind
 }

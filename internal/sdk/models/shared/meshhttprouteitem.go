@@ -113,7 +113,7 @@ func (e *MeshHTTPRouteItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshHTTPRouteItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshHTTPRouteItemKind `json:"kind,omitempty"`
+	Kind MeshHTTPRouteItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -136,9 +136,9 @@ type MeshHTTPRouteItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshHTTPRouteItemTargetRef) GetKind() *MeshHTTPRouteItemKind {
+func (o *MeshHTTPRouteItemTargetRef) GetKind() MeshHTTPRouteItemKind {
 	if o == nil {
-		return nil
+		return MeshHTTPRouteItemKind("")
 	}
 	return o.Kind
 }
@@ -269,7 +269,7 @@ func (e *MeshHTTPRouteItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
 // BackendRefs - BackendRef defines where to forward traffic.
 type BackendRefs struct {
 	// Kind of the referenced resource
-	Kind *MeshHTTPRouteItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshHTTPRouteItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -306,9 +306,9 @@ func (b *BackendRefs) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BackendRefs) GetKind() *MeshHTTPRouteItemSpecToKind {
+func (o *BackendRefs) GetKind() MeshHTTPRouteItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshHTTPRouteItemSpecToKind("")
 	}
 	return o.Kind
 }
@@ -521,7 +521,7 @@ func (e *MeshHTTPRouteItemSpecToRulesProxyTypes) UnmarshalJSON(data []byte) erro
 // BackendRef defines where to forward traffic.
 type BackendRef struct {
 	// Kind of the referenced resource
-	Kind *MeshHTTPRouteItemSpecToRulesKind `json:"kind,omitempty"`
+	Kind MeshHTTPRouteItemSpecToRulesKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -558,9 +558,9 @@ func (b *BackendRef) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *BackendRef) GetKind() *MeshHTTPRouteItemSpecToRulesKind {
+func (o *BackendRef) GetKind() MeshHTTPRouteItemSpecToRulesKind {
 	if o == nil {
-		return nil
+		return MeshHTTPRouteItemSpecToRulesKind("")
 	}
 	return o.Kind
 }
@@ -1535,7 +1535,7 @@ func (e *MeshHTTPRouteItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // request destinations.
 type MeshHTTPRouteItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshHTTPRouteItemSpecKind `json:"kind,omitempty"`
+	Kind MeshHTTPRouteItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1558,9 +1558,9 @@ type MeshHTTPRouteItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshHTTPRouteItemSpecTargetRef) GetKind() *MeshHTTPRouteItemSpecKind {
+func (o *MeshHTTPRouteItemSpecTargetRef) GetKind() MeshHTTPRouteItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshHTTPRouteItemSpecKind("")
 	}
 	return o.Kind
 }

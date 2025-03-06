@@ -113,7 +113,7 @@ func (e *MeshLoadBalancingStrategyItemProxyTypes) UnmarshalJSON(data []byte) err
 // defined inplace.
 type MeshLoadBalancingStrategyItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshLoadBalancingStrategyItemKind `json:"kind,omitempty"`
+	Kind MeshLoadBalancingStrategyItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -136,9 +136,9 @@ type MeshLoadBalancingStrategyItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshLoadBalancingStrategyItemTargetRef) GetKind() *MeshLoadBalancingStrategyItemKind {
+func (o *MeshLoadBalancingStrategyItemTargetRef) GetKind() MeshLoadBalancingStrategyItemKind {
 	if o == nil {
-		return nil
+		return MeshLoadBalancingStrategyItemKind("")
 	}
 	return o.Kind
 }
@@ -1243,7 +1243,7 @@ func (e *MeshLoadBalancingStrategyItemSpecProxyTypes) UnmarshalJSON(data []byte)
 // destinations.
 type MeshLoadBalancingStrategyItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshLoadBalancingStrategyItemSpecKind `json:"kind,omitempty"`
+	Kind MeshLoadBalancingStrategyItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1266,9 +1266,9 @@ type MeshLoadBalancingStrategyItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshLoadBalancingStrategyItemSpecTargetRef) GetKind() *MeshLoadBalancingStrategyItemSpecKind {
+func (o *MeshLoadBalancingStrategyItemSpecTargetRef) GetKind() MeshLoadBalancingStrategyItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshLoadBalancingStrategyItemSpecKind("")
 	}
 	return o.Kind
 }

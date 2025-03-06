@@ -181,12 +181,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput() *shared.MeshMetr
 	}
 	var targetRef *shared.MeshMetricItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshMetricItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshMetricItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshMetricItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -409,11 +404,7 @@ func (r *MeshMetricResourceModel) RefreshFromSharedMeshMetricItem(resp *shared.M
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range resp.Spec.TargetRef.Labels {

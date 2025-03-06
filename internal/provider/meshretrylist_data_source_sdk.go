@@ -40,11 +40,7 @@ func (r *MeshRetryListDataSourceModel) RefreshFromSharedMeshRetryList(resp *shar
 				items1.Spec.TargetRef = nil
 			} else {
 				items1.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-				if itemsItem.Spec.TargetRef.Kind != nil {
-					items1.Spec.TargetRef.Kind = types.StringValue(string(*itemsItem.Spec.TargetRef.Kind))
-				} else {
-					items1.Spec.TargetRef.Kind = types.StringNull()
-				}
+				items1.Spec.TargetRef.Kind = types.StringValue(string(itemsItem.Spec.TargetRef.Kind))
 				if len(itemsItem.Spec.TargetRef.Labels) > 0 {
 					items1.Spec.TargetRef.Labels = make(map[string]types.String)
 					for key1, value1 := range itemsItem.Spec.TargetRef.Labels {
@@ -224,11 +220,7 @@ func (r *MeshRetryListDataSourceModel) RefreshFromSharedMeshRetryList(resp *shar
 						}
 					}
 				}
-				if toItem.TargetRef.Kind != nil {
-					to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-				} else {
-					to1.TargetRef.Kind = types.StringNull()
-				}
+				to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 				if len(toItem.TargetRef.Labels) > 0 {
 					to1.TargetRef.Labels = make(map[string]types.String)
 					for key4, value6 := range toItem.TargetRef.Labels {

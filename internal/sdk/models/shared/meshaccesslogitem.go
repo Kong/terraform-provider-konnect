@@ -477,7 +477,7 @@ func (e *MeshAccessLogItemProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshAccessLogItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemSpecFromKind `json:"kind,omitempty"`
+	Kind MeshAccessLogItemSpecFromKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -500,9 +500,9 @@ type MeshAccessLogItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshAccessLogItemTargetRef) GetKind() *MeshAccessLogItemSpecFromKind {
+func (o *MeshAccessLogItemTargetRef) GetKind() MeshAccessLogItemSpecFromKind {
 	if o == nil {
-		return nil
+		return MeshAccessLogItemSpecFromKind("")
 	}
 	return o.Kind
 }
@@ -1035,7 +1035,7 @@ func (e *ProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type TargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemKind `json:"kind,omitempty"`
+	Kind MeshAccessLogItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1058,9 +1058,9 @@ type TargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *TargetRef) GetKind() *MeshAccessLogItemKind {
+func (o *TargetRef) GetKind() MeshAccessLogItemKind {
 	if o == nil {
-		return nil
+		return MeshAccessLogItemKind("")
 	}
 	return o.Kind
 }
@@ -1558,7 +1558,7 @@ func (e *MeshAccessLogItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // destinations.
 type MeshAccessLogItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshAccessLogItemSpecKind `json:"kind,omitempty"`
+	Kind MeshAccessLogItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1581,9 +1581,9 @@ type MeshAccessLogItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshAccessLogItemSpecTargetRef) GetKind() *MeshAccessLogItemSpecKind {
+func (o *MeshAccessLogItemSpecTargetRef) GetKind() MeshAccessLogItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshAccessLogItemSpecKind("")
 	}
 	return o.Kind
 }

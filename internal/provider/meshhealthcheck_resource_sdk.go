@@ -29,12 +29,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 	}
 	var targetRef *shared.MeshHealthCheckItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshHealthCheckItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshHealthCheckItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshHealthCheckItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -316,12 +311,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 				UnhealthyThreshold:           unhealthyThreshold,
 			}
 		}
-		kind1 := new(shared.MeshHealthCheckItemSpecKind)
-		if !toItem.TargetRef.Kind.IsUnknown() && !toItem.TargetRef.Kind.IsNull() {
-			*kind1 = shared.MeshHealthCheckItemSpecKind(toItem.TargetRef.Kind.ValueString())
-		} else {
-			kind1 = nil
-		}
+		kind1 := shared.MeshHealthCheckItemSpecKind(toItem.TargetRef.Kind.ValueString())
 		labels2 := make(map[string]string)
 		for labelsKey2, labelsValue2 := range toItem.TargetRef.Labels {
 			var labelsInst2 string
@@ -426,11 +416,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
@@ -557,11 +543,7 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 					to1.Default.UnhealthyThreshold = types.Int64Null()
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key3, value5 := range toItem.TargetRef.Labels {

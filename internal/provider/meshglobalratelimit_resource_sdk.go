@@ -175,12 +175,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				Mode:    mode,
 			}
 		}
-		kind1 := new(shared.MeshGlobalRateLimitItemSpecKind)
-		if !fromItem.TargetRef.Kind.IsUnknown() && !fromItem.TargetRef.Kind.IsNull() {
-			*kind1 = shared.MeshGlobalRateLimitItemSpecKind(fromItem.TargetRef.Kind.ValueString())
-		} else {
-			kind1 = nil
-		}
+		kind1 := shared.MeshGlobalRateLimitItemSpecKind(fromItem.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range fromItem.TargetRef.Labels {
 			var labelsInst1 string
@@ -240,12 +235,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 	}
 	var targetRef1 *shared.MeshGlobalRateLimitItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind2 := new(shared.MeshGlobalRateLimitItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind2 = shared.MeshGlobalRateLimitItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind2 = nil
-		}
+		kind2 := shared.MeshGlobalRateLimitItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels2 := make(map[string]string)
 		for labelsKey2, labelsValue2 := range r.Spec.TargetRef.Labels {
 			var labelsInst2 string
@@ -447,12 +437,7 @@ func (r *MeshGlobalRateLimitResourceModel) ToSharedMeshGlobalRateLimitItemInput(
 				Mode:    mode1,
 			}
 		}
-		kind4 := new(shared.MeshGlobalRateLimitItemSpecToKind)
-		if !toItem.TargetRef.Kind.IsUnknown() && !toItem.TargetRef.Kind.IsNull() {
-			*kind4 = shared.MeshGlobalRateLimitItemSpecToKind(toItem.TargetRef.Kind.ValueString())
-		} else {
-			kind4 = nil
-		}
+		kind4 := shared.MeshGlobalRateLimitItemSpecToKind(toItem.TargetRef.Kind.ValueString())
 		labels3 := make(map[string]string)
 		for labelsKey3, labelsValue3 := range toItem.TargetRef.Labels {
 			var labelsInst3 string
@@ -651,11 +636,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 					from1.Default.Mode = types.StringNull()
 				}
 			}
-			if fromItem.TargetRef.Kind != nil {
-				from1.TargetRef.Kind = types.StringValue(string(*fromItem.TargetRef.Kind))
-			} else {
-				from1.TargetRef.Kind = types.StringNull()
-			}
+			from1.TargetRef.Kind = types.StringValue(string(fromItem.TargetRef.Kind))
 			if len(fromItem.TargetRef.Labels) > 0 {
 				from1.TargetRef.Labels = make(map[string]types.String)
 				for key1, value4 := range fromItem.TargetRef.Labels {
@@ -687,11 +668,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key3, value6 := range resp.Spec.TargetRef.Labels {
@@ -810,11 +787,7 @@ func (r *MeshGlobalRateLimitResourceModel) RefreshFromSharedMeshGlobalRateLimitI
 					to1.Default.Mode = types.StringNull()
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key5, value11 := range toItem.TargetRef.Labels {

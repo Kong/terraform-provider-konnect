@@ -29,12 +29,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput() *shared.Me
 	}
 	var targetRef *shared.MeshHTTPRouteItemTargetRef
 	if r.Spec.TargetRef != nil {
-		kind := new(shared.MeshHTTPRouteItemKind)
-		if !r.Spec.TargetRef.Kind.IsUnknown() && !r.Spec.TargetRef.Kind.IsNull() {
-			*kind = shared.MeshHTTPRouteItemKind(r.Spec.TargetRef.Kind.ValueString())
-		} else {
-			kind = nil
-		}
+		kind := shared.MeshHTTPRouteItemKind(r.Spec.TargetRef.Kind.ValueString())
 		labels1 := make(map[string]string)
 		for labelsKey1, labelsValue1 := range r.Spec.TargetRef.Labels {
 			var labelsInst1 string
@@ -98,12 +93,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput() *shared.Me
 		for _, rulesItem := range toItem.Rules {
 			var backendRefs []shared.BackendRefs = []shared.BackendRefs{}
 			for _, backendRefsItem := range rulesItem.Default.BackendRefs {
-				kind1 := new(shared.MeshHTTPRouteItemSpecToKind)
-				if !backendRefsItem.Kind.IsUnknown() && !backendRefsItem.Kind.IsNull() {
-					*kind1 = shared.MeshHTTPRouteItemSpecToKind(backendRefsItem.Kind.ValueString())
-				} else {
-					kind1 = nil
-				}
+				kind1 := shared.MeshHTTPRouteItemSpecToKind(backendRefsItem.Kind.ValueString())
 				labels2 := make(map[string]string)
 				for labelsKey2, labelsValue2 := range backendRefsItem.Labels {
 					var labelsInst2 string
@@ -213,12 +203,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput() *shared.Me
 				}
 				var requestMirror *shared.RequestMirror
 				if filtersItem.RequestMirror != nil {
-					kind2 := new(shared.MeshHTTPRouteItemSpecToRulesKind)
-					if !filtersItem.RequestMirror.BackendRef.Kind.IsUnknown() && !filtersItem.RequestMirror.BackendRef.Kind.IsNull() {
-						*kind2 = shared.MeshHTTPRouteItemSpecToRulesKind(filtersItem.RequestMirror.BackendRef.Kind.ValueString())
-					} else {
-						kind2 = nil
-					}
+					kind2 := shared.MeshHTTPRouteItemSpecToRulesKind(filtersItem.RequestMirror.BackendRef.Kind.ValueString())
 					labels3 := make(map[string]string)
 					for labelsKey3, labelsValue3 := range filtersItem.RequestMirror.BackendRef.Labels {
 						var labelsInst3 string
@@ -532,12 +517,7 @@ func (r *MeshHTTPRouteResourceModel) ToSharedMeshHTTPRouteItemInput() *shared.Me
 				Matches: matches,
 			})
 		}
-		kind3 := new(shared.MeshHTTPRouteItemSpecKind)
-		if !toItem.TargetRef.Kind.IsUnknown() && !toItem.TargetRef.Kind.IsNull() {
-			*kind3 = shared.MeshHTTPRouteItemSpecKind(toItem.TargetRef.Kind.ValueString())
-		} else {
-			kind3 = nil
-		}
+		kind3 := shared.MeshHTTPRouteItemSpecKind(toItem.TargetRef.Kind.ValueString())
 		labels4 := make(map[string]string)
 		for labelsKey4, labelsValue4 := range toItem.TargetRef.Labels {
 			var labelsInst4 string
@@ -643,11 +623,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *sh
 			r.Spec.TargetRef = nil
 		} else {
 			r.Spec.TargetRef = &tfTypes.MeshAccessLogItemTargetRef{}
-			if resp.Spec.TargetRef.Kind != nil {
-				r.Spec.TargetRef.Kind = types.StringValue(string(*resp.Spec.TargetRef.Kind))
-			} else {
-				r.Spec.TargetRef.Kind = types.StringNull()
-			}
+			r.Spec.TargetRef.Kind = types.StringValue(string(resp.Spec.TargetRef.Kind))
 			if len(resp.Spec.TargetRef.Labels) > 0 {
 				r.Spec.TargetRef.Labels = make(map[string]types.String)
 				for key1, value1 := range resp.Spec.TargetRef.Labels {
@@ -685,11 +661,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *sh
 				rules1.Default.BackendRefs = []tfTypes.BackendRefs{}
 				for backendRefsCount, backendRefsItem := range rulesItem.Default.BackendRefs {
 					var backendRefs1 tfTypes.BackendRefs
-					if backendRefsItem.Kind != nil {
-						backendRefs1.Kind = types.StringValue(string(*backendRefsItem.Kind))
-					} else {
-						backendRefs1.Kind = types.StringNull()
-					}
+					backendRefs1.Kind = types.StringValue(string(backendRefsItem.Kind))
 					if len(backendRefsItem.Labels) > 0 {
 						backendRefs1.Labels = make(map[string]types.String)
 						for key3, value3 := range backendRefsItem.Labels {
@@ -771,11 +743,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *sh
 						filters1.RequestMirror = nil
 					} else {
 						filters1.RequestMirror = &tfTypes.RequestMirror{}
-						if filtersItem.RequestMirror.BackendRef.Kind != nil {
-							filters1.RequestMirror.BackendRef.Kind = types.StringValue(string(*filtersItem.RequestMirror.BackendRef.Kind))
-						} else {
-							filters1.RequestMirror.BackendRef.Kind = types.StringNull()
-						}
+						filters1.RequestMirror.BackendRef.Kind = types.StringValue(string(filtersItem.RequestMirror.BackendRef.Kind))
 						if len(filtersItem.RequestMirror.BackendRef.Labels) > 0 {
 							filters1.RequestMirror.BackendRef.Labels = make(map[string]types.String)
 							for key5, value7 := range filtersItem.RequestMirror.BackendRef.Labels {
@@ -966,11 +934,7 @@ func (r *MeshHTTPRouteResourceModel) RefreshFromSharedMeshHTTPRouteItem(resp *sh
 					to1.Rules[rulesCount].Matches = rules1.Matches
 				}
 			}
-			if toItem.TargetRef.Kind != nil {
-				to1.TargetRef.Kind = types.StringValue(string(*toItem.TargetRef.Kind))
-			} else {
-				to1.TargetRef.Kind = types.StringNull()
-			}
+			to1.TargetRef.Kind = types.StringValue(string(toItem.TargetRef.Kind))
 			if len(toItem.TargetRef.Labels) > 0 {
 				to1.TargetRef.Labels = make(map[string]types.String)
 				for key7, value14 := range toItem.TargetRef.Labels {

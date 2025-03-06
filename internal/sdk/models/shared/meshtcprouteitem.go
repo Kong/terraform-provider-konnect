@@ -112,7 +112,7 @@ func (e *MeshTCPRouteItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined in-place.
 type MeshTCPRouteItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTCPRouteItemKind `json:"kind,omitempty"`
+	Kind MeshTCPRouteItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -135,9 +135,9 @@ type MeshTCPRouteItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTCPRouteItemTargetRef) GetKind() *MeshTCPRouteItemKind {
+func (o *MeshTCPRouteItemTargetRef) GetKind() MeshTCPRouteItemKind {
 	if o == nil {
-		return nil
+		return MeshTCPRouteItemKind("")
 	}
 	return o.Kind
 }
@@ -268,7 +268,7 @@ func (e *MeshTCPRouteItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
 // MeshTCPRouteItemBackendRefs - BackendRef defines where to forward traffic.
 type MeshTCPRouteItemBackendRefs struct {
 	// Kind of the referenced resource
-	Kind *MeshTCPRouteItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshTCPRouteItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -305,9 +305,9 @@ func (m *MeshTCPRouteItemBackendRefs) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (o *MeshTCPRouteItemBackendRefs) GetKind() *MeshTCPRouteItemSpecToKind {
+func (o *MeshTCPRouteItemBackendRefs) GetKind() MeshTCPRouteItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshTCPRouteItemSpecToKind("")
 	}
 	return o.Kind
 }
@@ -479,7 +479,7 @@ func (e *MeshTCPRouteItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // destinations.
 type MeshTCPRouteItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshTCPRouteItemSpecKind `json:"kind,omitempty"`
+	Kind MeshTCPRouteItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -502,9 +502,9 @@ type MeshTCPRouteItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshTCPRouteItemSpecTargetRef) GetKind() *MeshTCPRouteItemSpecKind {
+func (o *MeshTCPRouteItemSpecTargetRef) GetKind() MeshTCPRouteItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshTCPRouteItemSpecKind("")
 	}
 	return o.Kind
 }

@@ -331,7 +331,7 @@ func (e *MeshRateLimitItemSpecProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshRateLimitItemSpecTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshRateLimitItemSpecKind `json:"kind,omitempty"`
+	Kind MeshRateLimitItemSpecKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -354,9 +354,9 @@ type MeshRateLimitItemSpecTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshRateLimitItemSpecTargetRef) GetKind() *MeshRateLimitItemSpecKind {
+func (o *MeshRateLimitItemSpecTargetRef) GetKind() MeshRateLimitItemSpecKind {
 	if o == nil {
-		return nil
+		return MeshRateLimitItemSpecKind("")
 	}
 	return o.Kind
 }
@@ -743,7 +743,7 @@ func (e *MeshRateLimitItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshRateLimitItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshRateLimitItemKind `json:"kind,omitempty"`
+	Kind MeshRateLimitItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -766,9 +766,9 @@ type MeshRateLimitItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshRateLimitItemTargetRef) GetKind() *MeshRateLimitItemKind {
+func (o *MeshRateLimitItemTargetRef) GetKind() MeshRateLimitItemKind {
 	if o == nil {
-		return nil
+		return MeshRateLimitItemKind("")
 	}
 	return o.Kind
 }
@@ -1120,7 +1120,7 @@ func (e *MeshRateLimitItemSpecToProxyTypes) UnmarshalJSON(data []byte) error {
 // clients.
 type MeshRateLimitItemSpecToTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshRateLimitItemSpecToKind `json:"kind,omitempty"`
+	Kind MeshRateLimitItemSpecToKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1143,9 +1143,9 @@ type MeshRateLimitItemSpecToTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshRateLimitItemSpecToTargetRef) GetKind() *MeshRateLimitItemSpecToKind {
+func (o *MeshRateLimitItemSpecToTargetRef) GetKind() MeshRateLimitItemSpecToKind {
 	if o == nil {
-		return nil
+		return MeshRateLimitItemSpecToKind("")
 	}
 	return o.Kind
 }

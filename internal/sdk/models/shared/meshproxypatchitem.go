@@ -1160,7 +1160,7 @@ func (e *MeshProxyPatchItemProxyTypes) UnmarshalJSON(data []byte) error {
 // defined inplace.
 type MeshProxyPatchItemTargetRef struct {
 	// Kind of the referenced resource
-	Kind *MeshProxyPatchItemKind `json:"kind,omitempty"`
+	Kind MeshProxyPatchItemKind `json:"kind"`
 	// Labels are used to select group of MeshServices that match labels. Either Labels or
 	// Name and Namespace can be used.
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1183,9 +1183,9 @@ type MeshProxyPatchItemTargetRef struct {
 	Tags map[string]string `json:"tags,omitempty"`
 }
 
-func (o *MeshProxyPatchItemTargetRef) GetKind() *MeshProxyPatchItemKind {
+func (o *MeshProxyPatchItemTargetRef) GetKind() MeshProxyPatchItemKind {
 	if o == nil {
-		return nil
+		return MeshProxyPatchItemKind("")
 	}
 	return o.Kind
 }
