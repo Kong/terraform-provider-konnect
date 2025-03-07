@@ -1247,24 +1247,24 @@ func (o *Headers) GetValue() *string {
 	return o.Value
 }
 
-type MeshHTTPRouteItemMethod string
+type Method string
 
 const (
-	MeshHTTPRouteItemMethodConnect MeshHTTPRouteItemMethod = "CONNECT"
-	MeshHTTPRouteItemMethodDelete  MeshHTTPRouteItemMethod = "DELETE"
-	MeshHTTPRouteItemMethodGet     MeshHTTPRouteItemMethod = "GET"
-	MeshHTTPRouteItemMethodHead    MeshHTTPRouteItemMethod = "HEAD"
-	MeshHTTPRouteItemMethodOptions MeshHTTPRouteItemMethod = "OPTIONS"
-	MeshHTTPRouteItemMethodPatch   MeshHTTPRouteItemMethod = "PATCH"
-	MeshHTTPRouteItemMethodPost    MeshHTTPRouteItemMethod = "POST"
-	MeshHTTPRouteItemMethodPut     MeshHTTPRouteItemMethod = "PUT"
-	MeshHTTPRouteItemMethodTrace   MeshHTTPRouteItemMethod = "TRACE"
+	MethodConnect Method = "CONNECT"
+	MethodDelete  Method = "DELETE"
+	MethodGet     Method = "GET"
+	MethodHead    Method = "HEAD"
+	MethodOptions Method = "OPTIONS"
+	MethodPatch   Method = "PATCH"
+	MethodPost    Method = "POST"
+	MethodPut     Method = "PUT"
+	MethodTrace   Method = "TRACE"
 )
 
-func (e MeshHTTPRouteItemMethod) ToPointer() *MeshHTTPRouteItemMethod {
+func (e Method) ToPointer() *Method {
 	return &e
 }
-func (e *MeshHTTPRouteItemMethod) UnmarshalJSON(data []byte) error {
+func (e *Method) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -1287,10 +1287,10 @@ func (e *MeshHTTPRouteItemMethod) UnmarshalJSON(data []byte) error {
 	case "PUT":
 		fallthrough
 	case "TRACE":
-		*e = MeshHTTPRouteItemMethod(v)
+		*e = Method(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for MeshHTTPRouteItemMethod: %v", v)
+		return fmt.Errorf("invalid value for Method: %v", v)
 	}
 }
 
@@ -1398,9 +1398,9 @@ func (o *QueryParams) GetValue() string {
 }
 
 type Matches struct {
-	Headers []Headers                `json:"headers,omitempty"`
-	Method  *MeshHTTPRouteItemMethod `json:"method,omitempty"`
-	Path    *Path                    `json:"path,omitempty"`
+	Headers []Headers `json:"headers,omitempty"`
+	Method  *Method   `json:"method,omitempty"`
+	Path    *Path     `json:"path,omitempty"`
 	// QueryParams matches based on HTTP URL query parameters. Multiple matches
 	// are ANDed together such that all listed matches must succeed.
 	QueryParams []QueryParams `json:"queryParams,omitempty"`
@@ -1413,7 +1413,7 @@ func (o *Matches) GetHeaders() []Headers {
 	return o.Headers
 }
 
-func (o *Matches) GetMethod() *MeshHTTPRouteItemMethod {
+func (o *Matches) GetMethod() *Method {
 	if o == nil {
 		return nil
 	}

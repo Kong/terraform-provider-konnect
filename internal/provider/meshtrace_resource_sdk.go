@@ -96,7 +96,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput() *shared.MeshTraceI
 		}
 		var sampling *shared.Sampling
 		if r.Spec.Default.Sampling != nil {
-			var client *shared.MeshTraceItemClient
+			var client *shared.Client
 			if r.Spec.Default.Sampling.Client != nil {
 				integer := new(int64)
 				if !r.Spec.Default.Sampling.Client.Integer.IsUnknown() && !r.Spec.Default.Sampling.Client.Integer.IsNull() {
@@ -105,7 +105,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput() *shared.MeshTraceI
 					integer = nil
 				}
 				if integer != nil {
-					client = &shared.MeshTraceItemClient{
+					client = &shared.Client{
 						Integer: integer,
 					}
 				}
@@ -116,7 +116,7 @@ func (r *MeshTraceResourceModel) ToSharedMeshTraceItemInput() *shared.MeshTraceI
 					str = nil
 				}
 				if str != nil {
-					client = &shared.MeshTraceItemClient{
+					client = &shared.Client{
 						Str: str,
 					}
 				}

@@ -21,6 +21,7 @@ import (
 	custom_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	custom_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -728,7 +729,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 					`+optional`,
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the Mesh`,
 			},
 			"networking": schema.SingleNestedAttribute{

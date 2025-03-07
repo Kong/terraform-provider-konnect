@@ -744,11 +744,11 @@ func (o *AwsCredentials) GetAccessKeySecret() *AccessKeySecret {
 	return o.AccessKeySecret
 }
 
-type ConfAuth struct {
+type Auth struct {
 	AwsCredentials *AwsCredentials `json:"awsCredentials,omitempty"`
 }
 
-func (o *ConfAuth) GetAwsCredentials() *AwsCredentials {
+func (o *Auth) GetAwsCredentials() *AwsCredentials {
 	if o == nil {
 		return nil
 	}
@@ -768,7 +768,7 @@ func (o *ConfCaCert) GetType() any {
 
 type ACMCertificateAuthorityConfig struct {
 	Arn        *string     `json:"arn,omitempty"`
-	Auth       *ConfAuth   `json:"auth,omitempty"`
+	Auth       *Auth       `json:"auth,omitempty"`
 	CaCert     *ConfCaCert `json:"caCert,omitempty"`
 	CommonName *string     `json:"commonName,omitempty"`
 }
@@ -780,7 +780,7 @@ func (o *ACMCertificateAuthorityConfig) GetArn() *string {
 	return o.Arn
 }
 
-func (o *ACMCertificateAuthorityConfig) GetAuth() *ConfAuth {
+func (o *ACMCertificateAuthorityConfig) GetAuth() *Auth {
 	if o == nil {
 		return nil
 	}
@@ -853,11 +853,11 @@ func (o *Cert) GetType() any {
 	return o.Type
 }
 
-type ConfKey struct {
+type Key struct {
 	Type any `json:"Type"`
 }
 
-func (o *ConfKey) GetType() any {
+func (o *Key) GetType() any {
 	if o == nil {
 		return nil
 	}
@@ -865,8 +865,8 @@ func (o *ConfKey) GetType() any {
 }
 
 type ProvidedCertificateAuthorityConfig struct {
-	Cert *Cert    `json:"cert,omitempty"`
-	Key  *ConfKey `json:"key,omitempty"`
+	Cert *Cert `json:"cert,omitempty"`
+	Key  *Key  `json:"key,omitempty"`
 }
 
 func (o *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
@@ -876,7 +876,7 @@ func (o *ProvidedCertificateAuthorityConfig) GetCert() *Cert {
 	return o.Cert
 }
 
-func (o *ProvidedCertificateAuthorityConfig) GetKey() *ConfKey {
+func (o *ProvidedCertificateAuthorityConfig) GetKey() *Key {
 	if o == nil {
 		return nil
 	}

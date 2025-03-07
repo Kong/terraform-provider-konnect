@@ -6,7 +6,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ACMCertificateAuthorityConfig struct {
 	Arn        types.String `tfsdk:"arn"`
-	Auth       *ConfAuth    `tfsdk:"auth"`
+	Auth       *Auth        `tfsdk:"auth"`
 	CaCert     *AccessKey   `tfsdk:"ca_cert"`
 	CommonName types.String `tfsdk:"common_name"`
 }

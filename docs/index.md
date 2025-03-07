@@ -32,7 +32,6 @@ provider "konnect" {
 
 ### Optional
 
-- `konnect_access_token` (String, Sensitive)
 - `personal_access_token` (String, Sensitive)
 - `server_url` (String) Server URL (defaults to https://global.api.konghq.com)
 - `system_account_access_token` (String, Sensitive)

@@ -111,9 +111,9 @@ func (r *MeshGatewayResourceModel) ToSharedMeshGatewayItem() *shared.MeshGateway
 						}
 					}
 				}
-				var optionsVar *shared.MeshGatewayItemOptions
+				var optionsVar *shared.OptionsObj
 				if listenersItem.TLS.Options != nil {
-					optionsVar = &shared.MeshGatewayItemOptions{}
+					optionsVar = &shared.OptionsObj{}
 				}
 				tls = &shared.MeshGatewayItemTLS{
 					Certificates: certificates,
@@ -259,7 +259,7 @@ func (r *MeshGatewayResourceModel) RefreshFromSharedMeshGatewayItem(resp *shared
 					if listenersItem.TLS.Options == nil {
 						listeners1.TLS.Options = nil
 					} else {
-						listeners1.TLS.Options = &tfTypes.Metadata{}
+						listeners1.TLS.Options = &tfTypes.OptionsObj{}
 					}
 				}
 				if listenersCount+1 > len(r.Conf.Listeners) {

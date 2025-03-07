@@ -96,7 +96,10 @@ func (r *MeshAccessLogResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the MeshAccessLog`,
 			},
 			"spec": schema.SingleNestedAttribute{

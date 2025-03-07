@@ -208,7 +208,7 @@ func (r *MeshListDataSourceModel) RefreshFromSharedMeshList(resp *shared.MeshLis
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 								backends5.Conf.ACMCertificateAuthorityConfig.Auth = nil
 							} else {
-								backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
+								backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
 								if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 									backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 								} else {

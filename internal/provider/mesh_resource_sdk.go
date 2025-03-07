@@ -349,11 +349,11 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 							Type: typeVar1,
 						}
 					}
-					var key *shared.ConfKey
+					var key *shared.Key
 					if backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key != nil {
 						var typeVar2 interface{}
 						_ = json.Unmarshal([]byte(backendsItem2.Conf.ProvidedCertificateAuthorityConfig.Key.Type.ValueString()), &typeVar2)
-						key = &shared.ConfKey{
+						key = &shared.Key{
 							Type: typeVar2,
 						}
 					}
@@ -420,7 +420,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 					} else {
 						arn = nil
 					}
-					var auth *shared.ConfAuth
+					var auth *shared.Auth
 					if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth != nil {
 						var awsCredentials *shared.AwsCredentials
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials != nil {
@@ -445,7 +445,7 @@ func (r *MeshResourceModel) ToSharedMeshItem() *shared.MeshItem {
 								AccessKeySecret: accessKeySecret,
 							}
 						}
-						auth = &shared.ConfAuth{
+						auth = &shared.Auth{
 							AwsCredentials: awsCredentials,
 						}
 					}
@@ -1060,7 +1060,7 @@ func (r *MeshResourceModel) RefreshFromSharedMeshItem(resp *shared.MeshItem) {
 						if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth == nil {
 							backends5.Conf.ACMCertificateAuthorityConfig.Auth = nil
 						} else {
-							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.ConfAuth{}
+							backends5.Conf.ACMCertificateAuthorityConfig.Auth = &tfTypes.Auth{}
 							if backendsItem2.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials == nil {
 								backends5.Conf.ACMCertificateAuthorityConfig.Auth.AwsCredentials = nil
 							} else {

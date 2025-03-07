@@ -51,9 +51,9 @@ func (r *MeshGlobalRateLimitDataSourceModel) RefreshFromSharedMeshGlobalRateLimi
 						from1.Default.HTTP.OnRateLimit.Headers = nil
 					} else {
 						from1.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						from1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+						from1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
 						for addCount, addItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Add {
-							var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+							var add1 tfTypes.MeshGlobalRateLimitItemSpecAdd
 							add1.Name = types.StringValue(addItem.Name)
 							add1.Value = types.StringValue(addItem.Value)
 							if addCount+1 > len(from1.Default.HTTP.OnRateLimit.Headers.Add) {
@@ -63,9 +63,9 @@ func (r *MeshGlobalRateLimitDataSourceModel) RefreshFromSharedMeshGlobalRateLimi
 								from1.Default.HTTP.OnRateLimit.Headers.Add[addCount].Value = add1.Value
 							}
 						}
-						from1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+						from1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
 						for setCount, setItem := range fromItem.Default.HTTP.OnRateLimit.Headers.Set {
-							var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+							var set1 tfTypes.MeshGlobalRateLimitItemSpecAdd
 							set1.Name = types.StringValue(setItem.Name)
 							set1.Value = types.StringValue(setItem.Value)
 							if setCount+1 > len(from1.Default.HTTP.OnRateLimit.Headers.Set) {
@@ -202,9 +202,9 @@ func (r *MeshGlobalRateLimitDataSourceModel) RefreshFromSharedMeshGlobalRateLimi
 						to1.Default.HTTP.OnRateLimit.Headers = nil
 					} else {
 						to1.Default.HTTP.OnRateLimit.Headers = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						to1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+						to1.Default.HTTP.OnRateLimit.Headers.Add = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
 						for addCount1, addItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Add {
-							var add3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+							var add3 tfTypes.MeshGlobalRateLimitItemSpecAdd
 							add3.Name = types.StringValue(addItem1.Name)
 							add3.Value = types.StringValue(addItem1.Value)
 							if addCount1+1 > len(to1.Default.HTTP.OnRateLimit.Headers.Add) {
@@ -214,9 +214,9 @@ func (r *MeshGlobalRateLimitDataSourceModel) RefreshFromSharedMeshGlobalRateLimi
 								to1.Default.HTTP.OnRateLimit.Headers.Add[addCount1].Value = add3.Value
 							}
 						}
-						to1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
+						to1.Default.HTTP.OnRateLimit.Headers.Set = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
 						for setCount1, setItem1 := range toItem.Default.HTTP.OnRateLimit.Headers.Set {
-							var set3 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+							var set3 tfTypes.MeshGlobalRateLimitItemSpecAdd
 							set3.Name = types.StringValue(setItem1.Name)
 							set3.Value = types.StringValue(setItem1.Value)
 							if setCount1+1 > len(to1.Default.HTTP.OnRateLimit.Headers.Set) {

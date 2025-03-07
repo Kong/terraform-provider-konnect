@@ -293,38 +293,38 @@ func (u HealthyPanicThreshold) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("could not marshal union type HealthyPanicThreshold: all fields are null")
 }
 
-type MeshHealthCheckItemAdd struct {
+type Add struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
-func (o *MeshHealthCheckItemAdd) GetName() string {
+func (o *Add) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *MeshHealthCheckItemAdd) GetValue() string {
+func (o *Add) GetValue() string {
 	if o == nil {
 		return ""
 	}
 	return o.Value
 }
 
-type MeshHealthCheckItemSet struct {
+type Set struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
-func (o *MeshHealthCheckItemSet) GetName() string {
+func (o *Set) GetName() string {
 	if o == nil {
 		return ""
 	}
 	return o.Name
 }
 
-func (o *MeshHealthCheckItemSet) GetValue() string {
+func (o *Set) GetValue() string {
 	if o == nil {
 		return ""
 	}
@@ -334,18 +334,18 @@ func (o *MeshHealthCheckItemSet) GetValue() string {
 // RequestHeadersToAdd - The list of HTTP headers which should be added to each health check
 // request
 type RequestHeadersToAdd struct {
-	Add []MeshHealthCheckItemAdd `json:"add,omitempty"`
-	Set []MeshHealthCheckItemSet `json:"set,omitempty"`
+	Add []Add `json:"add,omitempty"`
+	Set []Set `json:"set,omitempty"`
 }
 
-func (o *RequestHeadersToAdd) GetAdd() []MeshHealthCheckItemAdd {
+func (o *RequestHeadersToAdd) GetAdd() []Add {
 	if o == nil {
 		return nil
 	}
 	return o.Add
 }
 
-func (o *RequestHeadersToAdd) GetSet() []MeshHealthCheckItemSet {
+func (o *RequestHeadersToAdd) GetSet() []Set {
 	if o == nil {
 		return nil
 	}

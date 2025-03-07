@@ -6,12 +6,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
-	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -19,10 +17,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
+	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_objectplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/objectplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
+	speakeasy_boolvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/boolvalidators"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
+	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 	"regexp"
 )
 
@@ -60,6 +65,9 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -73,132 +81,76 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"features": schema.ListNestedAttribute{
 				Computed: true,
-				Default: listdefault.StaticValue(types.ListValueMust(types.ObjectType{
-					AttrTypes: map[string]attr.Type{
-						"hostname_generator_creation": types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								"enabled": types.BoolType,
-							},
-						},
-						"mesh_creation": types.ObjectType{
-							AttrTypes: map[string]attr.Type{
-								"enabled": types.BoolType,
-							},
-						},
-						"type": types.StringType,
-					},
-				}, []attr.Value{
-					types.ObjectValueMust(
-						map[string]attr.Type{
-							"mesh_creation": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							},
-							"hostname_generator_creation": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							},
-							"type": types.StringType,
-						},
-						map[string]attr.Value{
-							"type": types.StringValue("MeshCreation"),
-							"mesh_creation": types.ObjectValueMust(
-								map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-								map[string]attr.Value{
-									"enabled": types.BoolValue(false),
-								},
-							),
-							"hostname_generator_creation": types.ObjectNull(
-								map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							), // Use ObjectNull() instead of an empty object
-						},
-					),
-					types.ObjectValueMust(
-						map[string]attr.Type{
-							"mesh_creation": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							},
-							"hostname_generator_creation": types.ObjectType{
-								AttrTypes: map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							},
-							"type": types.StringType,
-						},
-						map[string]attr.Value{
-							"type": types.StringValue("HostnameGeneratorCreation"),
-							"mesh_creation": types.ObjectNull(
-								map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-							), // Use ObjectNull() instead of an empty object
-							"hostname_generator_creation": types.ObjectValueMust(
-								map[string]attr.Type{
-									"enabled": types.BoolType,
-								},
-								map[string]attr.Value{
-									"enabled": types.BoolValue(false),
-								},
-							),
-						},
-					),
-				})),
 				Optional: true,
 				PlanModifiers: []planmodifier.List{
 					listplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_listplanmodifier.SuppressDiff(speakeasy_listplanmodifier.ExplicitSuppress),
 				},
 				NestedObject: schema.NestedAttributeObject{
+					Validators: []validator.Object{
+						speakeasy_objectvalidators.NotNull(),
+					},
 					PlanModifiers: []planmodifier.Object{
 						objectplanmodifier.RequiresReplaceIfConfigured(),
+						speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 					},
 					Attributes: map[string]schema.Attribute{
 						"hostname_generator_creation": schema.SingleNestedAttribute{
+							Computed: true,
 							Optional: true,
 							PlanModifiers: []planmodifier.Object{
 								objectplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"enabled": schema.BoolAttribute{
+									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.Bool{
 										boolplanmodifier.RequiresReplaceIfConfigured(),
+										speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 									},
-									Description: `Requires replacement if changed.`,
+									Description: `Not Null; Requires replacement if changed.`,
+									Validators: []validator.Bool{
+										speakeasy_boolvalidators.NotNull(),
+									},
 								},
 							},
 							Description: `Requires replacement if changed.`,
 						},
 						"mesh_creation": schema.SingleNestedAttribute{
+							Computed: true,
 							Optional: true,
 							PlanModifiers: []planmodifier.Object{
 								objectplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_objectplanmodifier.SuppressDiff(speakeasy_objectplanmodifier.ExplicitSuppress),
 							},
 							Attributes: map[string]schema.Attribute{
 								"enabled": schema.BoolAttribute{
+									Computed: true,
 									Optional: true,
 									PlanModifiers: []planmodifier.Bool{
 										boolplanmodifier.RequiresReplaceIfConfigured(),
+										speakeasy_boolplanmodifier.SuppressDiff(speakeasy_boolplanmodifier.ExplicitSuppress),
 									},
-									Description: `Requires replacement if changed.`,
+									Description: `Not Null; Requires replacement if changed.`,
+									Validators: []validator.Bool{
+										speakeasy_boolvalidators.NotNull(),
+									},
 								},
 							},
 							Description: `Requires replacement if changed.`,
 						},
 						"type": schema.StringAttribute{
+							Computed: true,
 							Optional: true,
 							PlanModifiers: []planmodifier.String{
 								stringplanmodifier.RequiresReplaceIfConfigured(),
+								speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
 							},
-							Description: `must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.`,
+							Description: `Not Null; must be one of ["MeshCreation", "HostnameGeneratorCreation"]; Requires replacement if changed.`,
 							Validators: []validator.String{
+								speakeasy_stringvalidators.NotNull(),
 								stringvalidator.OneOf(
 									"MeshCreation",
 									"HostnameGeneratorCreation",
@@ -207,10 +159,13 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 						},
 					},
 				},
-				Description: `CP features. Requires replacement if changed.`,
+				Description: `Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `ID of the control plane.`,
 			},
 			"labels": schema.MapAttribute{
@@ -229,6 +184,9 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -297,34 +255,6 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
-	var cpID string
-	cpID = data.ID.ValueString()
-
-	request1 := operations.GetMeshControlPlaneRequest{
-		CpID: cpID,
-	}
-	res1, err := r.client.Mesh.GetMeshControlPlane(ctx, request1)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res1 != nil && res1.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
-		}
-		return
-	}
-	if res1 == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
-		return
-	}
-	if res1.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
-		return
-	}
-	if !(res1.MeshControlPlane != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
-		return
-	}
-	data.RefreshFromSharedMeshControlPlane(res1.MeshControlPlane)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state

@@ -130,8 +130,6 @@ data "http" "production_cp" {
 ## Summary
 
 Konnect API: The Konnect platform API
-
-For more information about the API: [Documentation for Kong Gateway and its APIs](https://docs.konghq.com)
 <!-- End Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->

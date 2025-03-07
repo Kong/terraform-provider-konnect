@@ -102,7 +102,10 @@ func (r *MeshExternalServiceResource) Schema(ctx context.Context, req resource.S
 				},
 			},
 			"name": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the MeshExternalService`,
 			},
 			"spec": schema.SingleNestedAttribute{

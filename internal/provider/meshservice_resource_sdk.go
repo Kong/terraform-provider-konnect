@@ -113,9 +113,9 @@ func (r *MeshServiceResourceModel) ToSharedMeshServiceItemInput() *shared.MeshSe
 			DataplaneTags: dataplaneTags,
 		}
 	}
-	state := new(shared.MeshServiceItemState)
+	state := new(shared.State)
 	if !r.Spec.State.IsUnknown() && !r.Spec.State.IsNull() {
-		*state = shared.MeshServiceItemState(r.Spec.State.ValueString())
+		*state = shared.State(r.Spec.State.ValueString())
 	} else {
 		state = nil
 	}

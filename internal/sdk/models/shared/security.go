@@ -5,7 +5,6 @@ package shared
 type Security struct {
 	PersonalAccessToken      *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 	SystemAccountAccessToken *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
-	KonnectAccessToken       *string `security:"scheme,type=http,subtype=bearer,name=Authorization"`
 }
 
 func (o *Security) GetPersonalAccessToken() *string {
@@ -20,11 +19,4 @@ func (o *Security) GetSystemAccountAccessToken() *string {
 		return nil
 	}
 	return o.SystemAccountAccessToken
-}
-
-func (o *Security) GetKonnectAccessToken() *string {
-	if o == nil {
-		return nil
-	}
-	return o.KonnectAccessToken
 }
