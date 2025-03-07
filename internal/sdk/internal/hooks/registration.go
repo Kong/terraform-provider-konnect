@@ -11,7 +11,7 @@ import "os"
  */
 
 func initHooks(h *Hooks) {
-    h.registerBeforeRequestHook(&FeaturesHook{})
+    h.registerBeforeRequestHook(&MeshDefaultsHook{})
 
     // Domain customization - enable usage with non-prod domains
     h.registerBeforeRequestHook(&CustomizeKongDomainHook{})
