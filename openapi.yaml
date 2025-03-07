@@ -4157,7 +4157,7 @@ components:
       required: true
       description: Id of the Konnect resource
       example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
-      x-speakeasy-param-suppress-computed-diff: true
+      x-speakeasy-plan-modifiers: RequiresReplaceModifier
       schema:
         type: string
         format: uuid
@@ -4176,6 +4176,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -5031,6 +5032,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -6170,6 +6172,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -6641,6 +6644,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -7091,6 +7095,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -7858,6 +7863,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -8504,6 +8510,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -8824,6 +8831,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -9016,6 +9024,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -9615,6 +9624,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -10323,6 +10333,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -10892,6 +10903,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -11215,6 +11227,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -11701,6 +11714,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -12034,6 +12048,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -12359,6 +12374,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -13244,6 +13260,7 @@ components:
         mesh:
           type: string
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           type: string
           x-speakeasy-param-computed: false
@@ -13403,6 +13420,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -13775,6 +13793,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -14012,6 +14031,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -14380,6 +14400,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string
@@ -15043,6 +15064,7 @@ components:
           type: string
           default: default
           x-speakeasy-param-computed: false
+          x-speakeasy-plan-modifiers: RequiresReplaceModifier
         name:
           description: Name of the Kuma resource
           type: string

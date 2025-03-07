@@ -64,7 +64,10 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 		MarkdownDescription: "MeshFaultInjection Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
@@ -83,7 +86,10 @@ func (r *MeshFaultInjectionResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The labels to help identity resources`,
 			},
 			"mesh": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{

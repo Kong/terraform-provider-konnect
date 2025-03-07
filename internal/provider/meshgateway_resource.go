@@ -223,7 +223,10 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				Description: `The desired configuration of the MeshGateway.`,
 			},
 			"cp_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{
@@ -231,7 +234,10 @@ func (r *MeshGatewayResource) Schema(ctx context.Context, req resource.SchemaReq
 				ElementType: types.StringType,
 			},
 			"mesh": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the mesh`,
 			},
 			"name": schema.StringAttribute{

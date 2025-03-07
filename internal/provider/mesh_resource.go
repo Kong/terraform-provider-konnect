@@ -131,7 +131,10 @@ func (r *MeshResource) Schema(ctx context.Context, req resource.SchemaRequest, r
 				Description: `Constraints that applies to the mesh and its entities`,
 			},
 			"cp_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `Id of the Konnect resource`,
 			},
 			"labels": schema.MapAttribute{

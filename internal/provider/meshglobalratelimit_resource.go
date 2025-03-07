@@ -67,7 +67,10 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "MeshGlobalRateLimit Resource",
 		Attributes: map[string]schema.Attribute{
 			"cp_id": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `Id of the Konnect resource`,
 			},
 			"creation_time": schema.StringAttribute{
@@ -86,7 +89,10 @@ func (r *MeshGlobalRateLimitResource) Schema(ctx context.Context, req resource.S
 				Description: `The labels to help identity resources`,
 			},
 			"mesh": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.RequiresReplaceModifier(),
+				},
 				Description: `name of the mesh`,
 			},
 			"modification_time": schema.StringAttribute{
