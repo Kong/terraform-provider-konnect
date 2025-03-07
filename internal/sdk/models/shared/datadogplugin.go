@@ -160,7 +160,7 @@ func (e *StatType) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Metrics struct {
+type DatadogPluginMetrics struct {
 	// Authenticated user detail
 	ConsumerIdentifier *ConsumerIdentifier `json:"consumer_identifier,omitempty"`
 	// Datadog metric’s name
@@ -173,35 +173,35 @@ type Metrics struct {
 	Tags []string `json:"tags,omitempty"`
 }
 
-func (o *Metrics) GetConsumerIdentifier() *ConsumerIdentifier {
+func (o *DatadogPluginMetrics) GetConsumerIdentifier() *ConsumerIdentifier {
 	if o == nil {
 		return nil
 	}
 	return o.ConsumerIdentifier
 }
 
-func (o *Metrics) GetName() DatadogPluginName {
+func (o *DatadogPluginMetrics) GetName() DatadogPluginName {
 	if o == nil {
 		return DatadogPluginName("")
 	}
 	return o.Name
 }
 
-func (o *Metrics) GetSampleRate() *float64 {
+func (o *DatadogPluginMetrics) GetSampleRate() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.SampleRate
 }
 
-func (o *Metrics) GetStatType() StatType {
+func (o *DatadogPluginMetrics) GetStatType() StatType {
 	if o == nil {
 		return StatType("")
 	}
 	return o.StatType
 }
 
-func (o *Metrics) GetTags() []string {
+func (o *DatadogPluginMetrics) GetTags() []string {
 	if o == nil {
 		return nil
 	}
@@ -318,7 +318,7 @@ type DatadogPluginConfig struct {
 	// A string representing a host name, such as example.com.
 	Host *string `json:"host,omitempty"`
 	// List of metrics to be logged.
-	Metrics []Metrics `json:"metrics,omitempty"`
+	Metrics []DatadogPluginMetrics `json:"metrics,omitempty"`
 	// An integer representing a port number between 0 and 65535, inclusive.
 	Port *int64 `json:"port,omitempty"`
 	// String to be attached as a prefix to a metric's name.
@@ -355,7 +355,7 @@ func (o *DatadogPluginConfig) GetHost() *string {
 	return o.Host
 }
 
-func (o *DatadogPluginConfig) GetMetrics() []Metrics {
+func (o *DatadogPluginConfig) GetMetrics() []DatadogPluginMetrics {
 	if o == nil {
 		return nil
 	}

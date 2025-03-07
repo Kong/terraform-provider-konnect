@@ -3,8 +3,8 @@
 package types
 
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings *AiSemanticCachePluginEmbeddings `tfsdk:"embeddings"`
-	Rules      *Rules                           `tfsdk:"rules"`
-	Search     *Search                          `tfsdk:"search"`
-	Vectordb   *AiSemanticCachePluginVectordb   `tfsdk:"vectordb"`
+	Embeddings *AiSemanticCachePluginEmbeddings  `tfsdk:"embeddings"`
+	Rules      *AiSemanticPromptGuardPluginRules `tfsdk:"rules"`
+	Search     *Search                           `tfsdk:"search"`
+	Vectordb   *AiSemanticCachePluginVectordb    `tfsdk:"vectordb"`
 }

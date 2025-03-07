@@ -294,7 +294,7 @@ func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() *AiSemanticPromptGuar
 	return o.Model
 }
 
-type Rules struct {
+type AiSemanticPromptGuardPluginRules struct {
 	// List of prompts to allow.
 	AllowPrompts []string `json:"allow_prompts,omitempty"`
 	// List of prompts to deny.
@@ -307,35 +307,35 @@ type Rules struct {
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 }
 
-func (o *Rules) GetAllowPrompts() []string {
+func (o *AiSemanticPromptGuardPluginRules) GetAllowPrompts() []string {
 	if o == nil {
 		return nil
 	}
 	return o.AllowPrompts
 }
 
-func (o *Rules) GetDenyPrompts() []string {
+func (o *AiSemanticPromptGuardPluginRules) GetDenyPrompts() []string {
 	if o == nil {
 		return nil
 	}
 	return o.DenyPrompts
 }
 
-func (o *Rules) GetMatchAllConversationHistory() *bool {
+func (o *AiSemanticPromptGuardPluginRules) GetMatchAllConversationHistory() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.MatchAllConversationHistory
 }
 
-func (o *Rules) GetMatchAllRoles() *bool {
+func (o *AiSemanticPromptGuardPluginRules) GetMatchAllRoles() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.MatchAllRoles
 }
 
-func (o *Rules) GetMaxRequestBodySize() *int64 {
+func (o *AiSemanticPromptGuardPluginRules) GetMaxRequestBodySize() *int64 {
 	if o == nil {
 		return nil
 	}
@@ -718,7 +718,7 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
 
 type AiSemanticPromptGuardPluginConfig struct {
 	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
-	Rules      *Rules                                 `json:"rules,omitempty"`
+	Rules      *AiSemanticPromptGuardPluginRules      `json:"rules,omitempty"`
 	Search     *Search                                `json:"search,omitempty"`
 	Vectordb   *AiSemanticPromptGuardPluginVectordb   `json:"vectordb,omitempty"`
 }
@@ -730,7 +730,7 @@ func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGua
 	return o.Embeddings
 }
 
-func (o *AiSemanticPromptGuardPluginConfig) GetRules() *Rules {
+func (o *AiSemanticPromptGuardPluginConfig) GetRules() *AiSemanticPromptGuardPluginRules {
 	if o == nil {
 		return nil
 	}

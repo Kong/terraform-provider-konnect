@@ -205,21 +205,21 @@ func (o *Auth) GetParamValue() *string {
 	return o.ParamValue
 }
 
-type Logging struct {
+type AiProxyPluginLogging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
 	LogPayloads *bool `json:"log_payloads,omitempty"`
 	// If enabled and supported by the driver, will add model usage and token metrics into the Kong log plugin(s) output.
 	LogStatistics *bool `json:"log_statistics,omitempty"`
 }
 
-func (o *Logging) GetLogPayloads() *bool {
+func (o *AiProxyPluginLogging) GetLogPayloads() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.LogPayloads
 }
 
-func (o *Logging) GetLogStatistics() *bool {
+func (o *AiProxyPluginLogging) GetLogStatistics() *bool {
 	if o == nil {
 		return nil
 	}
@@ -639,8 +639,8 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyPluginConfig struct {
-	Auth    *Auth    `json:"auth,omitempty"`
-	Logging *Logging `json:"logging,omitempty"`
+	Auth    *Auth                 `json:"auth,omitempty"`
+	Logging *AiProxyPluginLogging `json:"logging,omitempty"`
 	// max allowed body size allowed to be introspected
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	Model              *Model `json:"model,omitempty"`
@@ -659,7 +659,7 @@ func (o *AiProxyPluginConfig) GetAuth() *Auth {
 	return o.Auth
 }
 
-func (o *AiProxyPluginConfig) GetLogging() *Logging {
+func (o *AiProxyPluginConfig) GetLogging() *AiProxyPluginLogging {
 	if o == nil {
 		return nil
 	}

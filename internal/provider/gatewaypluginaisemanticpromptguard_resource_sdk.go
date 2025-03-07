@@ -201,7 +201,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 			Model: model,
 		}
 	}
-	var rules *shared.Rules
+	var rules *shared.AiSemanticPromptGuardPluginRules
 	if r.Config.Rules != nil {
 		var allowPrompts []string = []string{}
 		for _, allowPromptsItem := range r.Config.Rules.AllowPrompts {
@@ -229,7 +229,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 		} else {
 			maxRequestBodySize = nil
 		}
-		rules = &shared.Rules{
+		rules = &shared.AiSemanticPromptGuardPluginRules{
 			AllowPrompts:                allowPrompts,
 			DenyPrompts:                 denyPrompts,
 			MatchAllConversationHistory: matchAllConversationHistory,
@@ -585,7 +585,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) RefreshFromSharedAiSem
 		if resp.Config.Rules == nil {
 			r.Config.Rules = nil
 		} else {
-			r.Config.Rules = &tfTypes.Rules{}
+			r.Config.Rules = &tfTypes.AiSemanticPromptGuardPluginRules{}
 			r.Config.Rules.AllowPrompts = make([]types.String, 0, len(resp.Config.Rules.AllowPrompts))
 			for _, v := range resp.Config.Rules.AllowPrompts {
 				r.Config.Rules.AllowPrompts = append(r.Config.Rules.AllowPrompts, types.StringValue(v))

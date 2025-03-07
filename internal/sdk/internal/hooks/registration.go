@@ -11,18 +11,19 @@ import "os"
  */
 
 func initHooks(h *Hooks) {
+    h.registerBeforeRequestHook(&MeshDefaultsHook{})
 
-	// Domain customization - enable usage with non-prod domains
-	h.registerBeforeRequestHook(&CustomizeKongDomainHook{})
+    // Domain customization - enable usage with non-prod domains
+    h.registerBeforeRequestHook(&CustomizeKongDomainHook{})
 
-	// Debug hooks - dump request/response
-	h.registerBeforeRequestHook(&HTTPDumpRequestHook{
-		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_REQUEST") == "true",
-	})
-	h.registerAfterSuccessHook(&HTTPDumpResponseHook{
-		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE") == "true",
-	})
-	h.registerAfterErrorHook(&HTTPDumpResponseErrorHook{
-		Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE_ERROR") == "true",
-	})
+    // Debug hooks - dump request/response
+    h.registerBeforeRequestHook(&HTTPDumpRequestHook{
+        Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_REQUEST") == "true",
+    })
+    h.registerAfterSuccessHook(&HTTPDumpResponseHook{
+        Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE") == "true",
+    })
+    h.registerAfterErrorHook(&HTTPDumpResponseErrorHook{
+        Enabled: os.Getenv("KONNECT_SDK_HTTP_DUMP_RESPONSE_ERROR") == "true",
+    })
 }
