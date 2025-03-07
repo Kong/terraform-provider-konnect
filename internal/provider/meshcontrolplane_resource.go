@@ -19,7 +19,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
-	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -61,9 +60,6 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 		Attributes: map[string]schema.Attribute{
 			"created_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -214,10 +210,7 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 				Description: `CP features. Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
+				Computed:    true,
 				Description: `ID of the control plane.`,
 			},
 			"labels": schema.MapAttribute{
@@ -236,9 +229,6 @@ func (r *MeshControlPlaneResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-				},
 				Validators: []validator.String{
 					validators.IsRFC3339(),
 				},
@@ -307,6 +297,34 @@ func (r *MeshControlPlaneResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	var cpID string
+	cpID = data.ID.ValueString()
+
+	request1 := operations.GetMeshControlPlaneRequest{
+		CpID: cpID,
+	}
+	res1, err := r.client.Mesh.GetMeshControlPlane(ctx, request1)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res1 != nil && res1.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res1.RawResponse))
+		}
+		return
+	}
+	if res1 == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res1))
+		return
+	}
+	if res1.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res1.StatusCode), debugResponse(res1.RawResponse))
+		return
+	}
+	if !(res1.MeshControlPlane != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
+		return
+	}
+	data.RefreshFromSharedMeshControlPlane(res1.MeshControlPlane)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
