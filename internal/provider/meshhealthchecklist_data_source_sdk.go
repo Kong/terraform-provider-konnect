@@ -110,9 +110,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 							to1.Default.HTTP.RequestHeadersToAdd = nil
 						} else {
 							to1.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-							to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
+							to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 							for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
-								var add1 tfTypes.MeshGlobalRateLimitItemSpecAdd
+								var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 								add1.Name = types.StringValue(addItem.Name)
 								add1.Value = types.StringValue(addItem.Value)
 								if addCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Add) {
@@ -122,9 +122,9 @@ func (r *MeshHealthCheckListDataSourceModel) RefreshFromSharedMeshHealthCheckLis
 									to1.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add1.Value
 								}
 							}
-							to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
+							to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 							for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
-								var set1 tfTypes.MeshGlobalRateLimitItemSpecAdd
+								var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 								set1.Name = types.StringValue(setItem.Name)
 								set1.Value = types.StringValue(setItem.Value)
 								if setCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Set) {

@@ -2,6 +2,21 @@
 
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/types"
+
 type Auth struct {
-	AwsCredentials *AwsCredentials `tfsdk:"aws_credentials"`
+	AllowOverride           types.Bool   `tfsdk:"allow_override"`
+	AwsAccessKeyID          types.String `tfsdk:"aws_access_key_id"`
+	AwsSecretAccessKey      types.String `tfsdk:"aws_secret_access_key"`
+	AzureClientID           types.String `tfsdk:"azure_client_id"`
+	AzureClientSecret       types.String `tfsdk:"azure_client_secret"`
+	AzureTenantID           types.String `tfsdk:"azure_tenant_id"`
+	AzureUseManagedIdentity types.Bool   `tfsdk:"azure_use_managed_identity"`
+	GcpServiceAccountJSON   types.String `tfsdk:"gcp_service_account_json"`
+	GcpUseServiceAccount    types.Bool   `tfsdk:"gcp_use_service_account"`
+	HeaderName              types.String `tfsdk:"header_name"`
+	HeaderValue             types.String `tfsdk:"header_value"`
+	ParamLocation           types.String `tfsdk:"param_location"`
+	ParamName               types.String `tfsdk:"param_name"`
+	ParamValue              types.String `tfsdk:"param_value"`
 }

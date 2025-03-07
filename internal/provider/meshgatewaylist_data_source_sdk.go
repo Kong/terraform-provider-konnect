@@ -80,7 +80,7 @@ func (r *MeshGatewayListDataSourceModel) RefreshFromSharedMeshGatewayList(resp *
 						if listenersItem.TLS.Options == nil {
 							listeners1.TLS.Options = nil
 						} else {
-							listeners1.TLS.Options = &tfTypes.OptionsObj{}
+							listeners1.TLS.Options = &tfTypes.Metadata{}
 						}
 					}
 					if listenersCount+1 > len(items1.Conf.Listeners) {

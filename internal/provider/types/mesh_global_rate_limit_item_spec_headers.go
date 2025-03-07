@@ -3,6 +3,6 @@
 package types
 
 type MeshGlobalRateLimitItemSpecHeaders struct {
-	Add []MeshGlobalRateLimitItemSpecAdd `tfsdk:"add"`
-	Set []MeshGlobalRateLimitItemSpecAdd `tfsdk:"set"`
+	Add []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"add"`
+	Set []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"set"`
 }

@@ -7,8 +7,8 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type LoadBalancer struct {
 	LeastRequest *LeastRequest `tfsdk:"least_request"`
 	Maglev       *Maglev       `tfsdk:"maglev"`
-	Random       *OptionsObj   `tfsdk:"random"`
+	Random       *Metadata     `tfsdk:"random"`
 	RingHash     *RingHash     `tfsdk:"ring_hash"`
-	RoundRobin   *OptionsObj   `tfsdk:"round_robin"`
+	RoundRobin   *Metadata     `tfsdk:"round_robin"`
 	Type         types.String  `tfsdk:"type"`
 }

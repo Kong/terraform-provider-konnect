@@ -267,19 +267,19 @@ func (o *MeshMetricItemBackends) GetType() MeshMetricItemSpecType {
 	return o.Type
 }
 
-// Name of the predefined profile, one of: all, basic, none
-type Name string
+// MeshMetricItemName - Name of the predefined profile, one of: all, basic, none
+type MeshMetricItemName string
 
 const (
-	NameAll   Name = "All"
-	NameBasic Name = "Basic"
-	NameNone  Name = "None"
+	MeshMetricItemNameAll   MeshMetricItemName = "All"
+	MeshMetricItemNameBasic MeshMetricItemName = "Basic"
+	MeshMetricItemNameNone  MeshMetricItemName = "None"
 )
 
-func (e Name) ToPointer() *Name {
+func (e MeshMetricItemName) ToPointer() *MeshMetricItemName {
 	return &e
 }
-func (e *Name) UnmarshalJSON(data []byte) error {
+func (e *MeshMetricItemName) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -290,21 +290,21 @@ func (e *Name) UnmarshalJSON(data []byte) error {
 	case "Basic":
 		fallthrough
 	case "None":
-		*e = Name(v)
+		*e = MeshMetricItemName(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Name: %v", v)
+		return fmt.Errorf("invalid value for MeshMetricItemName: %v", v)
 	}
 }
 
 type AppendProfiles struct {
 	// Name of the predefined profile, one of: all, basic, none
-	Name Name `json:"name"`
+	Name MeshMetricItemName `json:"name"`
 }
 
-func (o *AppendProfiles) GetName() Name {
+func (o *AppendProfiles) GetName() MeshMetricItemName {
 	if o == nil {
-		return Name("")
+		return MeshMetricItemName("")
 	}
 	return o.Name
 }

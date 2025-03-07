@@ -235,63 +235,63 @@ func (o *MeshTraceItemBackends) GetZipkin() *Zipkin {
 	return o.Zipkin
 }
 
-type ClientType string
+type MeshTraceItemClientType string
 
 const (
-	ClientTypeInteger ClientType = "integer"
-	ClientTypeStr     ClientType = "str"
+	MeshTraceItemClientTypeInteger MeshTraceItemClientType = "integer"
+	MeshTraceItemClientTypeStr     MeshTraceItemClientType = "str"
 )
 
-// Client - Target percentage of requests that will be force traced if the
+// MeshTraceItemClient - Target percentage of requests that will be force traced if the
 // 'x-client-trace-id' header is set. Mirror of client_sampling in Envoy
 // https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133
 // Either int or decimal represented as string.
 // If not specified then the default value is 100.
-type Client struct {
+type MeshTraceItemClient struct {
 	Integer *int64  `queryParam:"inline"`
 	Str     *string `queryParam:"inline"`
 
-	Type ClientType
+	Type MeshTraceItemClientType
 }
 
-func CreateClientInteger(integer int64) Client {
-	typ := ClientTypeInteger
+func CreateMeshTraceItemClientInteger(integer int64) MeshTraceItemClient {
+	typ := MeshTraceItemClientTypeInteger
 
-	return Client{
+	return MeshTraceItemClient{
 		Integer: &integer,
 		Type:    typ,
 	}
 }
 
-func CreateClientStr(str string) Client {
-	typ := ClientTypeStr
+func CreateMeshTraceItemClientStr(str string) MeshTraceItemClient {
+	typ := MeshTraceItemClientTypeStr
 
-	return Client{
+	return MeshTraceItemClient{
 		Str:  &str,
 		Type: typ,
 	}
 }
 
-func (u *Client) UnmarshalJSON(data []byte) error {
+func (u *MeshTraceItemClient) UnmarshalJSON(data []byte) error {
 
 	var integer int64 = int64(0)
 	if err := utils.UnmarshalJSON(data, &integer, "", true, true); err == nil {
 		u.Integer = &integer
-		u.Type = ClientTypeInteger
+		u.Type = MeshTraceItemClientTypeInteger
 		return nil
 	}
 
 	var str string = ""
 	if err := utils.UnmarshalJSON(data, &str, "", true, true); err == nil {
 		u.Str = &str
-		u.Type = ClientTypeStr
+		u.Type = MeshTraceItemClientTypeStr
 		return nil
 	}
 
-	return fmt.Errorf("could not unmarshal `%s` into any supported union types for Client", string(data))
+	return fmt.Errorf("could not unmarshal `%s` into any supported union types for MeshTraceItemClient", string(data))
 }
 
-func (u Client) MarshalJSON() ([]byte, error) {
+func (u MeshTraceItemClient) MarshalJSON() ([]byte, error) {
 	if u.Integer != nil {
 		return utils.MarshalJSON(u.Integer, "", true)
 	}
@@ -300,7 +300,7 @@ func (u Client) MarshalJSON() ([]byte, error) {
 		return utils.MarshalJSON(u.Str, "", true)
 	}
 
-	return nil, errors.New("could not marshal union type Client: all fields are null")
+	return nil, errors.New("could not marshal union type MeshTraceItemClient: all fields are null")
 }
 
 type OverallType string
@@ -454,7 +454,7 @@ type Sampling struct {
 	// https://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133
 	// Either int or decimal represented as string.
 	// If not specified then the default value is 100.
-	Client *Client `json:"client,omitempty"`
+	Client *MeshTraceItemClient `json:"client,omitempty"`
 	// Target percentage of requests will be traced
 	// after all other sampling checks have been applied (client, force tracing,
 	// random sampling). This field functions as an upper limit on the total
@@ -475,7 +475,7 @@ type Sampling struct {
 	Random *Random `json:"random,omitempty"`
 }
 
-func (o *Sampling) GetClient() *Client {
+func (o *Sampling) GetClient() *MeshTraceItemClient {
 	if o == nil {
 		return nil
 	}

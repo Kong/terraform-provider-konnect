@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type MeshTLSItemDefault struct {
-	Mode       types.String   `tfsdk:"mode"`
-	TLSCiphers []types.String `tfsdk:"tls_ciphers"`
-	TLSVersion *Version       `tfsdk:"tls_version"`
+	Mode       types.String                    `tfsdk:"mode"`
+	TLSCiphers []types.String                  `tfsdk:"tls_ciphers"`
+	TLSVersion *MeshExternalServiceItemVersion `tfsdk:"tls_version"`
 }

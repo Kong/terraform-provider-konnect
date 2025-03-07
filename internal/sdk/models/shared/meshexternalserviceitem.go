@@ -76,20 +76,20 @@ func (o *Extension) GetType() string {
 	return o.Type
 }
 
-// Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.
-type Protocol string
+// MeshExternalServiceItemProtocol - Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.
+type MeshExternalServiceItemProtocol string
 
 const (
-	ProtocolTCP   Protocol = "tcp"
-	ProtocolGrpc  Protocol = "grpc"
-	ProtocolHTTP  Protocol = "http"
-	ProtocolHttp2 Protocol = "http2"
+	MeshExternalServiceItemProtocolTCP   MeshExternalServiceItemProtocol = "tcp"
+	MeshExternalServiceItemProtocolGrpc  MeshExternalServiceItemProtocol = "grpc"
+	MeshExternalServiceItemProtocolHTTP  MeshExternalServiceItemProtocol = "http"
+	MeshExternalServiceItemProtocolHttp2 MeshExternalServiceItemProtocol = "http2"
 )
 
-func (e Protocol) ToPointer() *Protocol {
+func (e MeshExternalServiceItemProtocol) ToPointer() *MeshExternalServiceItemProtocol {
 	return &e
 }
-func (e *Protocol) UnmarshalJSON(data []byte) error {
+func (e *MeshExternalServiceItemProtocol) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -102,10 +102,10 @@ func (e *Protocol) UnmarshalJSON(data []byte) error {
 	case "http":
 		fallthrough
 	case "http2":
-		*e = Protocol(v)
+		*e = MeshExternalServiceItemProtocol(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Protocol: %v", v)
+		return fmt.Errorf("invalid value for MeshExternalServiceItemProtocol: %v", v)
 	}
 }
 
@@ -138,7 +138,7 @@ type Match struct {
 	// Port defines a port to which a user does request.
 	Port int64 `json:"port"`
 	// Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.
-	Protocol *Protocol `default:"tcp" json:"protocol"`
+	Protocol *MeshExternalServiceItemProtocol `default:"tcp" json:"protocol"`
 	// Type of the match, only `HostnameGenerator` is available at the moment.
 	Type *MeshExternalServiceItemSpecType `default:"HostnameGenerator" json:"type"`
 }
@@ -161,7 +161,7 @@ func (o *Match) GetPort() int64 {
 	return o.Port
 }
 
-func (o *Match) GetProtocol() *Protocol {
+func (o *Match) GetProtocol() *MeshExternalServiceItemProtocol {
 	if o == nil {
 		return nil
 	}
@@ -501,33 +501,33 @@ func (e *Min) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Version section for providing version specification.
-type Version struct {
+// MeshExternalServiceItemVersion - Version section for providing version specification.
+type MeshExternalServiceItemVersion struct {
 	// Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
 	Max *Max `default:"TLSAuto" json:"max"`
 	// Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.
 	Min *Min `default:"TLSAuto" json:"min"`
 }
 
-func (v Version) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(v, "", false)
+func (m MeshExternalServiceItemVersion) MarshalJSON() ([]byte, error) {
+	return utils.MarshalJSON(m, "", false)
 }
 
-func (v *Version) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &v, "", false, false); err != nil {
+func (m *MeshExternalServiceItemVersion) UnmarshalJSON(data []byte) error {
+	if err := utils.UnmarshalJSON(data, &m, "", false, false); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Version) GetMax() *Max {
+func (o *MeshExternalServiceItemVersion) GetMax() *Max {
 	if o == nil {
 		return nil
 	}
 	return o.Max
 }
 
-func (o *Version) GetMin() *Min {
+func (o *MeshExternalServiceItemVersion) GetMin() *Min {
 	if o == nil {
 		return nil
 	}
@@ -544,7 +544,7 @@ type TLS struct {
 	// Verification section for providing TLS verification details.
 	Verification *Verification `json:"verification,omitempty"`
 	// Version section for providing version specification.
-	Version *Version `json:"version,omitempty"`
+	Version *MeshExternalServiceItemVersion `json:"version,omitempty"`
 }
 
 func (t TLS) MarshalJSON() ([]byte, error) {
@@ -579,7 +579,7 @@ func (o *TLS) GetVerification() *Verification {
 	return o.Verification
 }
 
-func (o *TLS) GetVersion() *Version {
+func (o *TLS) GetVersion() *MeshExternalServiceItemVersion {
 	if o == nil {
 		return nil
 	}

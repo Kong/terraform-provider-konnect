@@ -131,7 +131,7 @@ func (r *MeshExternalServiceDataSourceModel) RefreshFromSharedMeshExternalServic
 			if resp.Spec.TLS.Version == nil {
 				r.Spec.TLS.Version = nil
 			} else {
-				r.Spec.TLS.Version = &tfTypes.Version{}
+				r.Spec.TLS.Version = &tfTypes.MeshExternalServiceItemVersion{}
 				if resp.Spec.TLS.Version.Max != nil {
 					r.Spec.TLS.Version.Max = types.StringValue(string(*resp.Spec.TLS.Version.Max))
 				} else {

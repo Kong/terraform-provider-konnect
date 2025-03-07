@@ -182,7 +182,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 				}
 				var requestHeadersToAdd *shared.RequestHeadersToAdd
 				if toItem.Default.HTTP.RequestHeadersToAdd != nil {
-					var add []shared.Add = []shared.Add{}
+					var add []shared.MeshHealthCheckItemAdd = []shared.MeshHealthCheckItemAdd{}
 					for _, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
 						var name2 string
 						name2 = addItem.Name.ValueString()
@@ -190,12 +190,12 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 						var value string
 						value = addItem.Value.ValueString()
 
-						add = append(add, shared.Add{
+						add = append(add, shared.MeshHealthCheckItemAdd{
 							Name:  name2,
 							Value: value,
 						})
 					}
-					var set []shared.Set = []shared.Set{}
+					var set []shared.MeshHealthCheckItemSet = []shared.MeshHealthCheckItemSet{}
 					for _, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
 						var name3 string
 						name3 = setItem.Name.ValueString()
@@ -203,7 +203,7 @@ func (r *MeshHealthCheckResourceModel) ToSharedMeshHealthCheckItemInput() *share
 						var value1 string
 						value1 = setItem.Value.ValueString()
 
-						set = append(set, shared.Set{
+						set = append(set, shared.MeshHealthCheckItemSet{
 							Name:  name3,
 							Value: value1,
 						})
@@ -489,9 +489,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 						to1.Default.HTTP.RequestHeadersToAdd = nil
 					} else {
 						to1.Default.HTTP.RequestHeadersToAdd = &tfTypes.MeshGlobalRateLimitItemSpecHeaders{}
-						to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
+						to1.Default.HTTP.RequestHeadersToAdd.Add = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for addCount, addItem := range toItem.Default.HTTP.RequestHeadersToAdd.Add {
-							var add1 tfTypes.MeshGlobalRateLimitItemSpecAdd
+							var add1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							add1.Name = types.StringValue(addItem.Name)
 							add1.Value = types.StringValue(addItem.Value)
 							if addCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Add) {
@@ -501,9 +501,9 @@ func (r *MeshHealthCheckResourceModel) RefreshFromSharedMeshHealthCheckItem(resp
 								to1.Default.HTTP.RequestHeadersToAdd.Add[addCount].Value = add1.Value
 							}
 						}
-						to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.MeshGlobalRateLimitItemSpecAdd{}
+						to1.Default.HTTP.RequestHeadersToAdd.Set = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 						for setCount, setItem := range toItem.Default.HTTP.RequestHeadersToAdd.Set {
-							var set1 tfTypes.MeshGlobalRateLimitItemSpecAdd
+							var set1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
 							set1.Name = types.StringValue(setItem.Name)
 							set1.Value = types.StringValue(setItem.Value)
 							if setCount+1 > len(to1.Default.HTTP.RequestHeadersToAdd.Set) {

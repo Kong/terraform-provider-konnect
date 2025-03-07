@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RequestHeaderModifier struct {
-	Add    []MeshGlobalRateLimitItemSpecAdd `tfsdk:"add"`
-	Remove []types.String                   `tfsdk:"remove"`
-	Set    []MeshGlobalRateLimitItemSpecAdd `tfsdk:"set"`
+	Add    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"add"`
+	Remove []types.String                                `tfsdk:"remove"`
+	Set    []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"set"`
 }

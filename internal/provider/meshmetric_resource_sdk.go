@@ -135,7 +135,7 @@ func (r *MeshMetricResourceModel) ToSharedMeshMetricItemInput() *shared.MeshMetr
 			if r.Spec.Default.Sidecar.Profiles != nil {
 				var appendProfiles []shared.AppendProfiles = []shared.AppendProfiles{}
 				for _, appendProfilesItem := range r.Spec.Default.Sidecar.Profiles.AppendProfiles {
-					name2 := shared.Name(appendProfilesItem.Name.ValueString())
+					name2 := shared.MeshMetricItemName(appendProfilesItem.Name.ValueString())
 					appendProfiles = append(appendProfiles, shared.AppendProfiles{
 						Name: name2,
 					})

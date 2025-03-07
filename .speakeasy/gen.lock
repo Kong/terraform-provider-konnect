@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: 9de609b1030b377c5eeb7a6dc4af324b
+  docChecksum: 0dc57f39880f76be4173eb1b6f9eeb3b
   docVersion: 2.0.0
   speakeasyVersion: 1.486.0
   generationVersion: 2.505.0
@@ -10,18 +10,155 @@ management:
 features:
   terraform:
     additionalDependencies: 0.1.0
+    additionalProperties: 0.1.2
     constsAndDefaults: 0.2.0
     core: 3.30.0
+    deprecations: 2.82.0
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.9
     globalServerURLs: 2.82.1
+    groups: 2.81.2
+    ignores: 2.81.1
     inputOutputModels: 2.83.0
+    methodServerURLs: 2.82.1
+    nameOverrides: 2.81.2
     nullables: 0.0.0
+    retries: 2.81.2
+    sets: 0.1.2
+    typeOverrides: 2.81.1
     unions: 2.81.17
 generatedFiles:
   - .gitattributes
   - USAGE.md
   - examples/README.md
+  - examples/data-sources/konnect_api_product/data-source.tf
+  - examples/data-sources/konnect_api_product_document/data-source.tf
+  - examples/data-sources/konnect_api_product_specification/data-source.tf
+  - examples/data-sources/konnect_api_product_version/data-source.tf
+  - examples/data-sources/konnect_application_auth_strategy/data-source.tf
+  - examples/data-sources/konnect_audit_log/data-source.tf
+  - examples/data-sources/konnect_audit_log_destination/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_configuration/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_custom_domain/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_network/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_provider_account_list/data-source.tf
+  - examples/data-sources/konnect_cloud_gateway_transit_gateway/data-source.tf
+  - examples/data-sources/konnect_gateway_acl/data-source.tf
+  - examples/data-sources/konnect_gateway_basic_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_ca_certificate/data-source.tf
+  - examples/data-sources/konnect_gateway_certificate/data-source.tf
+  - examples/data-sources/konnect_gateway_config_store/data-source.tf
+  - examples/data-sources/konnect_gateway_consumer/data-source.tf
+  - examples/data-sources/konnect_gateway_consumer_group/data-source.tf
+  - examples/data-sources/konnect_gateway_control_plane/data-source.tf
+  - examples/data-sources/konnect_gateway_custom_plugin_schema/data-source.tf
+  - examples/data-sources/konnect_gateway_data_plane_client_certificate/data-source.tf
+  - examples/data-sources/konnect_gateway_hmac_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_jwt/data-source.tf
+  - examples/data-sources/konnect_gateway_key/data-source.tf
+  - examples/data-sources/konnect_gateway_key_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_key_set/data-source.tf
+  - examples/data-sources/konnect_gateway_mtls_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_acl/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_acme/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_azure_content_safety/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_prompt_decorator/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_prompt_guard/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_prompt_template/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_proxy/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_proxy_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_rate_limiting_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_request_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_response_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_semantic_cache/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_semantic_prompt_guard/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_aws_lambda/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_azure_functions/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_basic_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_bot_detection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_canary/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_confluent/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_correlation_id/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_cors/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_datadog/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_datadog_tracing/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_degraphql/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_exit_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_file_log/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_forward_proxy/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_graphql_proxy_cache_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_graphql_rate_limiting_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_grpc_gateway/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_grpc_web/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_header_cert_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_hmac_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_http_log/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_injection_protection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ip_restriction/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_jq/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_json_threat_protection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_jwe_decrypt/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_jwt/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_jwt_signer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_kafka_log/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_kafka_upstream/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_key_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_key_auth_enc/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_konnect_application_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ldap_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ldap_auth_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_loggly/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_mocking/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_mtls_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_oas_validation/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_oauth2/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_oauth2_introspection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_opa/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_openid_connect/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_opentelemetry/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_post_function/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_pre_function/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_prometheus/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_proxy_cache/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_proxy_cache_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_rate_limiting/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_rate_limiting_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_redirect/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_size_limiting/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_termination/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_transformer_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_validator/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_response_ratelimiting/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_response_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_response_transformer_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_route_by_header/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_route_transformer_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_saml/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_service_protection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_session/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_standard_webhooks/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_statsd/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_statsd_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_syslog/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_tcp_log/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_tls_handshake_modifier/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_tls_metadata_headers/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_udp_log/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_upstream_oauth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_upstream_timeout/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_vault_auth/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_websocket_size_limit/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_websocket_validator/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_xml_threat_protection/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_zipkin/data-source.tf
+  - examples/data-sources/konnect_gateway_route/data-source.tf
+  - examples/data-sources/konnect_gateway_route_expression/data-source.tf
+  - examples/data-sources/konnect_gateway_service/data-source.tf
+  - examples/data-sources/konnect_gateway_sni/data-source.tf
+  - examples/data-sources/konnect_gateway_target/data-source.tf
+  - examples/data-sources/konnect_gateway_upstream/data-source.tf
+  - examples/data-sources/konnect_gateway_vault/data-source.tf
   - examples/data-sources/konnect_hostname_generator/data-source.tf
   - examples/data-sources/konnect_hostname_generator_list/data-source.tf
   - examples/data-sources/konnect_mesh/data-source.tf
@@ -71,7 +208,271 @@ generatedFiles:
   - examples/data-sources/konnect_mesh_trace_list/data-source.tf
   - examples/data-sources/konnect_mesh_traffic_permission/data-source.tf
   - examples/data-sources/konnect_mesh_traffic_permission_list/data-source.tf
+  - examples/data-sources/konnect_portal_appearance/data-source.tf
+  - examples/data-sources/konnect_portal_auth/data-source.tf
+  - examples/data-sources/konnect_portal_list/data-source.tf
+  - examples/data-sources/konnect_portal_product_version/data-source.tf
+  - examples/data-sources/konnect_portal_team/data-source.tf
+  - examples/data-sources/konnect_serverless_cloud_gateway/data-source.tf
+  - examples/data-sources/konnect_system_account/data-source.tf
+  - examples/data-sources/konnect_system_account_access_token/data-source.tf
+  - examples/data-sources/konnect_team/data-source.tf
   - examples/provider/provider.tf
+  - examples/resources/konnect_api_product/import.sh
+  - examples/resources/konnect_api_product/resource.tf
+  - examples/resources/konnect_api_product_document/import.sh
+  - examples/resources/konnect_api_product_document/resource.tf
+  - examples/resources/konnect_api_product_specification/import.sh
+  - examples/resources/konnect_api_product_specification/resource.tf
+  - examples/resources/konnect_api_product_version/import.sh
+  - examples/resources/konnect_api_product_version/resource.tf
+  - examples/resources/konnect_application_auth_strategy/import.sh
+  - examples/resources/konnect_application_auth_strategy/resource.tf
+  - examples/resources/konnect_audit_log/resource.tf
+  - examples/resources/konnect_audit_log_destination/import.sh
+  - examples/resources/konnect_audit_log_destination/resource.tf
+  - examples/resources/konnect_cloud_gateway_configuration/import.sh
+  - examples/resources/konnect_cloud_gateway_configuration/resource.tf
+  - examples/resources/konnect_cloud_gateway_custom_domain/import.sh
+  - examples/resources/konnect_cloud_gateway_custom_domain/resource.tf
+  - examples/resources/konnect_cloud_gateway_network/import.sh
+  - examples/resources/konnect_cloud_gateway_network/resource.tf
+  - examples/resources/konnect_cloud_gateway_transit_gateway/import.sh
+  - examples/resources/konnect_cloud_gateway_transit_gateway/resource.tf
+  - examples/resources/konnect_gateway_acl/import.sh
+  - examples/resources/konnect_gateway_acl/resource.tf
+  - examples/resources/konnect_gateway_basic_auth/import.sh
+  - examples/resources/konnect_gateway_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_ca_certificate/import.sh
+  - examples/resources/konnect_gateway_ca_certificate/resource.tf
+  - examples/resources/konnect_gateway_certificate/import.sh
+  - examples/resources/konnect_gateway_certificate/resource.tf
+  - examples/resources/konnect_gateway_config_store/import.sh
+  - examples/resources/konnect_gateway_config_store/resource.tf
+  - examples/resources/konnect_gateway_consumer/import.sh
+  - examples/resources/konnect_gateway_consumer/resource.tf
+  - examples/resources/konnect_gateway_consumer_group/import.sh
+  - examples/resources/konnect_gateway_consumer_group/resource.tf
+  - examples/resources/konnect_gateway_consumer_group_member/resource.tf
+  - examples/resources/konnect_gateway_control_plane/import.sh
+  - examples/resources/konnect_gateway_control_plane/resource.tf
+  - examples/resources/konnect_gateway_control_plane_membership/resource.tf
+  - examples/resources/konnect_gateway_custom_plugin_schema/import.sh
+  - examples/resources/konnect_gateway_custom_plugin_schema/resource.tf
+  - examples/resources/konnect_gateway_data_plane_client_certificate/import.sh
+  - examples/resources/konnect_gateway_data_plane_client_certificate/resource.tf
+  - examples/resources/konnect_gateway_hmac_auth/import.sh
+  - examples/resources/konnect_gateway_hmac_auth/resource.tf
+  - examples/resources/konnect_gateway_jwt/import.sh
+  - examples/resources/konnect_gateway_jwt/resource.tf
+  - examples/resources/konnect_gateway_key/import.sh
+  - examples/resources/konnect_gateway_key/resource.tf
+  - examples/resources/konnect_gateway_key_auth/import.sh
+  - examples/resources/konnect_gateway_key_auth/resource.tf
+  - examples/resources/konnect_gateway_key_set/import.sh
+  - examples/resources/konnect_gateway_key_set/resource.tf
+  - examples/resources/konnect_gateway_mtls_auth/import.sh
+  - examples/resources/konnect_gateway_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_acl/import.sh
+  - examples/resources/konnect_gateway_plugin_acl/resource.tf
+  - examples/resources/konnect_gateway_plugin_acme/import.sh
+  - examples/resources/konnect_gateway_plugin_acme/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_azure_content_safety/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_prompt_decorator/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_guard/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_prompt_template/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_prompt_template/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_proxy/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_proxy/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_request_transformer/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_request_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_response_transformer/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_cache/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_semantic_cache/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/resource.tf
+  - examples/resources/konnect_gateway_plugin_aws_lambda/import.sh
+  - examples/resources/konnect_gateway_plugin_aws_lambda/resource.tf
+  - examples/resources/konnect_gateway_plugin_azure_functions/import.sh
+  - examples/resources/konnect_gateway_plugin_azure_functions/resource.tf
+  - examples/resources/konnect_gateway_plugin_basic_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_basic_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_bot_detection/import.sh
+  - examples/resources/konnect_gateway_plugin_bot_detection/resource.tf
+  - examples/resources/konnect_gateway_plugin_canary/import.sh
+  - examples/resources/konnect_gateway_plugin_canary/resource.tf
+  - examples/resources/konnect_gateway_plugin_confluent/import.sh
+  - examples/resources/konnect_gateway_plugin_confluent/resource.tf
+  - examples/resources/konnect_gateway_plugin_correlation_id/import.sh
+  - examples/resources/konnect_gateway_plugin_correlation_id/resource.tf
+  - examples/resources/konnect_gateway_plugin_cors/import.sh
+  - examples/resources/konnect_gateway_plugin_cors/resource.tf
+  - examples/resources/konnect_gateway_plugin_datadog/import.sh
+  - examples/resources/konnect_gateway_plugin_datadog/resource.tf
+  - examples/resources/konnect_gateway_plugin_datadog_tracing/import.sh
+  - examples/resources/konnect_gateway_plugin_datadog_tracing/resource.tf
+  - examples/resources/konnect_gateway_plugin_degraphql/import.sh
+  - examples/resources/konnect_gateway_plugin_degraphql/resource.tf
+  - examples/resources/konnect_gateway_plugin_exit_transformer/import.sh
+  - examples/resources/konnect_gateway_plugin_exit_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_file_log/import.sh
+  - examples/resources/konnect_gateway_plugin_file_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_forward_proxy/import.sh
+  - examples/resources/konnect_gateway_plugin_forward_proxy/resource.tf
+  - examples/resources/konnect_gateway_plugin_graphql_proxy_cache_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_graphql_proxy_cache_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_graphql_rate_limiting_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_graphql_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_grpc_gateway/import.sh
+  - examples/resources/konnect_gateway_plugin_grpc_gateway/resource.tf
+  - examples/resources/konnect_gateway_plugin_grpc_web/import.sh
+  - examples/resources/konnect_gateway_plugin_grpc_web/resource.tf
+  - examples/resources/konnect_gateway_plugin_header_cert_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_header_cert_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_hmac_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_hmac_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_http_log/import.sh
+  - examples/resources/konnect_gateway_plugin_http_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_injection_protection/import.sh
+  - examples/resources/konnect_gateway_plugin_injection_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_ip_restriction/import.sh
+  - examples/resources/konnect_gateway_plugin_ip_restriction/resource.tf
+  - examples/resources/konnect_gateway_plugin_jq/import.sh
+  - examples/resources/konnect_gateway_plugin_jq/resource.tf
+  - examples/resources/konnect_gateway_plugin_json_threat_protection/import.sh
+  - examples/resources/konnect_gateway_plugin_json_threat_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwe_decrypt/import.sh
+  - examples/resources/konnect_gateway_plugin_jwe_decrypt/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt/import.sh
+  - examples/resources/konnect_gateway_plugin_jwt/resource.tf
+  - examples/resources/konnect_gateway_plugin_jwt_signer/import.sh
+  - examples/resources/konnect_gateway_plugin_jwt_signer/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_log/import.sh
+  - examples/resources/konnect_gateway_plugin_kafka_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_upstream/import.sh
+  - examples/resources/konnect_gateway_plugin_kafka_upstream/resource.tf
+  - examples/resources/konnect_gateway_plugin_key_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_key_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_key_auth_enc/import.sh
+  - examples/resources/konnect_gateway_plugin_key_auth_enc/resource.tf
+  - examples/resources/konnect_gateway_plugin_konnect_application_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_konnect_application_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_ldap_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_ldap_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_loggly/import.sh
+  - examples/resources/konnect_gateway_plugin_loggly/resource.tf
+  - examples/resources/konnect_gateway_plugin_mocking/import.sh
+  - examples/resources/konnect_gateway_plugin_mocking/resource.tf
+  - examples/resources/konnect_gateway_plugin_mtls_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_mtls_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_oas_validation/import.sh
+  - examples/resources/konnect_gateway_plugin_oas_validation/resource.tf
+  - examples/resources/konnect_gateway_plugin_oauth2/import.sh
+  - examples/resources/konnect_gateway_plugin_oauth2/resource.tf
+  - examples/resources/konnect_gateway_plugin_oauth2_introspection/import.sh
+  - examples/resources/konnect_gateway_plugin_oauth2_introspection/resource.tf
+  - examples/resources/konnect_gateway_plugin_opa/import.sh
+  - examples/resources/konnect_gateway_plugin_opa/resource.tf
+  - examples/resources/konnect_gateway_plugin_openid_connect/import.sh
+  - examples/resources/konnect_gateway_plugin_openid_connect/resource.tf
+  - examples/resources/konnect_gateway_plugin_opentelemetry/import.sh
+  - examples/resources/konnect_gateway_plugin_opentelemetry/resource.tf
+  - examples/resources/konnect_gateway_plugin_post_function/import.sh
+  - examples/resources/konnect_gateway_plugin_post_function/resource.tf
+  - examples/resources/konnect_gateway_plugin_pre_function/import.sh
+  - examples/resources/konnect_gateway_plugin_pre_function/resource.tf
+  - examples/resources/konnect_gateway_plugin_prometheus/import.sh
+  - examples/resources/konnect_gateway_plugin_prometheus/resource.tf
+  - examples/resources/konnect_gateway_plugin_proxy_cache/import.sh
+  - examples/resources/konnect_gateway_plugin_proxy_cache/resource.tf
+  - examples/resources/konnect_gateway_plugin_proxy_cache_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_proxy_cache_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting/import.sh
+  - examples/resources/konnect_gateway_plugin_rate_limiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_redirect/import.sh
+  - examples/resources/konnect_gateway_plugin_redirect/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_size_limiting/import.sh
+  - examples/resources/konnect_gateway_plugin_request_size_limiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_termination/import.sh
+  - examples/resources/konnect_gateway_plugin_request_termination/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer/import.sh
+  - examples/resources/konnect_gateway_plugin_request_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_transformer_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_request_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_validator/import.sh
+  - examples/resources/konnect_gateway_plugin_request_validator/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_ratelimiting/import.sh
+  - examples/resources/konnect_gateway_plugin_response_ratelimiting/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer/import.sh
+  - examples/resources/konnect_gateway_plugin_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_response_transformer_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_response_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_route_by_header/import.sh
+  - examples/resources/konnect_gateway_plugin_route_by_header/resource.tf
+  - examples/resources/konnect_gateway_plugin_route_transformer_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_route_transformer_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_saml/import.sh
+  - examples/resources/konnect_gateway_plugin_saml/resource.tf
+  - examples/resources/konnect_gateway_plugin_service_protection/import.sh
+  - examples/resources/konnect_gateway_plugin_service_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_session/import.sh
+  - examples/resources/konnect_gateway_plugin_session/resource.tf
+  - examples/resources/konnect_gateway_plugin_standard_webhooks/import.sh
+  - examples/resources/konnect_gateway_plugin_standard_webhooks/resource.tf
+  - examples/resources/konnect_gateway_plugin_statsd/import.sh
+  - examples/resources/konnect_gateway_plugin_statsd/resource.tf
+  - examples/resources/konnect_gateway_plugin_statsd_advanced/import.sh
+  - examples/resources/konnect_gateway_plugin_statsd_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_syslog/import.sh
+  - examples/resources/konnect_gateway_plugin_syslog/resource.tf
+  - examples/resources/konnect_gateway_plugin_tcp_log/import.sh
+  - examples/resources/konnect_gateway_plugin_tcp_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_tls_handshake_modifier/import.sh
+  - examples/resources/konnect_gateway_plugin_tls_handshake_modifier/resource.tf
+  - examples/resources/konnect_gateway_plugin_tls_metadata_headers/import.sh
+  - examples/resources/konnect_gateway_plugin_tls_metadata_headers/resource.tf
+  - examples/resources/konnect_gateway_plugin_udp_log/import.sh
+  - examples/resources/konnect_gateway_plugin_udp_log/resource.tf
+  - examples/resources/konnect_gateway_plugin_upstream_oauth/import.sh
+  - examples/resources/konnect_gateway_plugin_upstream_oauth/resource.tf
+  - examples/resources/konnect_gateway_plugin_upstream_timeout/import.sh
+  - examples/resources/konnect_gateway_plugin_upstream_timeout/resource.tf
+  - examples/resources/konnect_gateway_plugin_vault_auth/import.sh
+  - examples/resources/konnect_gateway_plugin_vault_auth/resource.tf
+  - examples/resources/konnect_gateway_plugin_websocket_size_limit/import.sh
+  - examples/resources/konnect_gateway_plugin_websocket_size_limit/resource.tf
+  - examples/resources/konnect_gateway_plugin_websocket_validator/import.sh
+  - examples/resources/konnect_gateway_plugin_websocket_validator/resource.tf
+  - examples/resources/konnect_gateway_plugin_xml_threat_protection/import.sh
+  - examples/resources/konnect_gateway_plugin_xml_threat_protection/resource.tf
+  - examples/resources/konnect_gateway_plugin_zipkin/import.sh
+  - examples/resources/konnect_gateway_plugin_zipkin/resource.tf
+  - examples/resources/konnect_gateway_route/import.sh
+  - examples/resources/konnect_gateway_route/resource.tf
+  - examples/resources/konnect_gateway_route_expression/import.sh
+  - examples/resources/konnect_gateway_route_expression/resource.tf
+  - examples/resources/konnect_gateway_service/import.sh
+  - examples/resources/konnect_gateway_service/resource.tf
+  - examples/resources/konnect_gateway_sni/import.sh
+  - examples/resources/konnect_gateway_sni/resource.tf
+  - examples/resources/konnect_gateway_target/import.sh
+  - examples/resources/konnect_gateway_target/resource.tf
+  - examples/resources/konnect_gateway_upstream/import.sh
+  - examples/resources/konnect_gateway_upstream/resource.tf
+  - examples/resources/konnect_gateway_vault/import.sh
+  - examples/resources/konnect_gateway_vault/resource.tf
   - examples/resources/konnect_hostname_generator/import.sh
   - examples/resources/konnect_hostname_generator/resource.tf
   - examples/resources/konnect_mesh/import.sh
@@ -122,6 +523,27 @@ generatedFiles:
   - examples/resources/konnect_mesh_trace/resource.tf
   - examples/resources/konnect_mesh_traffic_permission/import.sh
   - examples/resources/konnect_mesh_traffic_permission/resource.tf
+  - examples/resources/konnect_portal/resource.tf
+  - examples/resources/konnect_portal_appearance/import.sh
+  - examples/resources/konnect_portal_appearance/resource.tf
+  - examples/resources/konnect_portal_auth/import.sh
+  - examples/resources/konnect_portal_auth/resource.tf
+  - examples/resources/konnect_portal_product_version/import.sh
+  - examples/resources/konnect_portal_product_version/resource.tf
+  - examples/resources/konnect_portal_team/import.sh
+  - examples/resources/konnect_portal_team/resource.tf
+  - examples/resources/konnect_serverless_cloud_gateway/import.sh
+  - examples/resources/konnect_serverless_cloud_gateway/resource.tf
+  - examples/resources/konnect_system_account/import.sh
+  - examples/resources/konnect_system_account/resource.tf
+  - examples/resources/konnect_system_account_access_token/import.sh
+  - examples/resources/konnect_system_account_access_token/resource.tf
+  - examples/resources/konnect_system_account_role/resource.tf
+  - examples/resources/konnect_system_account_team/resource.tf
+  - examples/resources/konnect_team/import.sh
+  - examples/resources/konnect_team/resource.tf
+  - examples/resources/konnect_team_role/resource.tf
+  - examples/resources/konnect_team_user/resource.tf
   - go.mod
   - go.sum
   - internal/planmodifiers/boolplanmodifier/suppress_diff.go
@@ -134,6 +556,520 @@ generatedFiles:
   - internal/planmodifiers/setplanmodifier/suppress_diff.go
   - internal/planmodifiers/stringplanmodifier/suppress_diff.go
   - internal/planmodifiers/utils/state_check.go
+  - internal/provider/apiproduct_data_source.go
+  - internal/provider/apiproduct_data_source_sdk.go
+  - internal/provider/apiproduct_resource.go
+  - internal/provider/apiproduct_resource_sdk.go
+  - internal/provider/apiproductdocument_data_source.go
+  - internal/provider/apiproductdocument_data_source_sdk.go
+  - internal/provider/apiproductdocument_resource.go
+  - internal/provider/apiproductdocument_resource_sdk.go
+  - internal/provider/apiproductspecification_data_source.go
+  - internal/provider/apiproductspecification_data_source_sdk.go
+  - internal/provider/apiproductspecification_resource.go
+  - internal/provider/apiproductspecification_resource_sdk.go
+  - internal/provider/apiproductversion_data_source.go
+  - internal/provider/apiproductversion_data_source_sdk.go
+  - internal/provider/apiproductversion_resource.go
+  - internal/provider/apiproductversion_resource_sdk.go
+  - internal/provider/applicationauthstrategy_data_source.go
+  - internal/provider/applicationauthstrategy_data_source_sdk.go
+  - internal/provider/applicationauthstrategy_resource.go
+  - internal/provider/applicationauthstrategy_resource_sdk.go
+  - internal/provider/auditlog_data_source.go
+  - internal/provider/auditlog_data_source_sdk.go
+  - internal/provider/auditlog_resource.go
+  - internal/provider/auditlog_resource_sdk.go
+  - internal/provider/auditlogdestination_data_source.go
+  - internal/provider/auditlogdestination_data_source_sdk.go
+  - internal/provider/auditlogdestination_resource.go
+  - internal/provider/auditlogdestination_resource_sdk.go
+  - internal/provider/cloudgatewayconfiguration_data_source.go
+  - internal/provider/cloudgatewayconfiguration_data_source_sdk.go
+  - internal/provider/cloudgatewayconfiguration_resource.go
+  - internal/provider/cloudgatewayconfiguration_resource_sdk.go
+  - internal/provider/cloudgatewaycustomdomain_data_source.go
+  - internal/provider/cloudgatewaycustomdomain_data_source_sdk.go
+  - internal/provider/cloudgatewaycustomdomain_resource.go
+  - internal/provider/cloudgatewaycustomdomain_resource_sdk.go
+  - internal/provider/cloudgatewaynetwork_data_source.go
+  - internal/provider/cloudgatewaynetwork_data_source_sdk.go
+  - internal/provider/cloudgatewaynetwork_resource.go
+  - internal/provider/cloudgatewaynetwork_resource_sdk.go
+  - internal/provider/cloudgatewayprovideraccountlist_data_source.go
+  - internal/provider/cloudgatewayprovideraccountlist_data_source_sdk.go
+  - internal/provider/cloudgatewaytransitgateway_data_source.go
+  - internal/provider/cloudgatewaytransitgateway_data_source_sdk.go
+  - internal/provider/cloudgatewaytransitgateway_resource.go
+  - internal/provider/cloudgatewaytransitgateway_resource_sdk.go
+  - internal/provider/gatewayacl_data_source.go
+  - internal/provider/gatewayacl_data_source_sdk.go
+  - internal/provider/gatewayacl_resource.go
+  - internal/provider/gatewayacl_resource_sdk.go
+  - internal/provider/gatewaybasicauth_data_source.go
+  - internal/provider/gatewaybasicauth_data_source_sdk.go
+  - internal/provider/gatewaybasicauth_resource.go
+  - internal/provider/gatewaybasicauth_resource_sdk.go
+  - internal/provider/gatewaycacertificate_data_source.go
+  - internal/provider/gatewaycacertificate_data_source_sdk.go
+  - internal/provider/gatewaycacertificate_resource.go
+  - internal/provider/gatewaycacertificate_resource_sdk.go
+  - internal/provider/gatewaycertificate_data_source.go
+  - internal/provider/gatewaycertificate_data_source_sdk.go
+  - internal/provider/gatewaycertificate_resource.go
+  - internal/provider/gatewaycertificate_resource_sdk.go
+  - internal/provider/gatewayconfigstore_data_source.go
+  - internal/provider/gatewayconfigstore_data_source_sdk.go
+  - internal/provider/gatewayconfigstore_resource.go
+  - internal/provider/gatewayconfigstore_resource_sdk.go
+  - internal/provider/gatewayconsumer_data_source.go
+  - internal/provider/gatewayconsumer_data_source_sdk.go
+  - internal/provider/gatewayconsumer_resource.go
+  - internal/provider/gatewayconsumer_resource_sdk.go
+  - internal/provider/gatewayconsumergroup_data_source.go
+  - internal/provider/gatewayconsumergroup_data_source_sdk.go
+  - internal/provider/gatewayconsumergroup_resource.go
+  - internal/provider/gatewayconsumergroup_resource_sdk.go
+  - internal/provider/gatewayconsumergroupmember_resource.go
+  - internal/provider/gatewayconsumergroupmember_resource_sdk.go
+  - internal/provider/gatewaycontrolplane_data_source.go
+  - internal/provider/gatewaycontrolplane_data_source_sdk.go
+  - internal/provider/gatewaycontrolplane_resource.go
+  - internal/provider/gatewaycontrolplane_resource_sdk.go
+  - internal/provider/gatewaycontrolplanemembership_resource.go
+  - internal/provider/gatewaycontrolplanemembership_resource_sdk.go
+  - internal/provider/gatewaycustompluginschema_data_source.go
+  - internal/provider/gatewaycustompluginschema_data_source_sdk.go
+  - internal/provider/gatewaycustompluginschema_resource.go
+  - internal/provider/gatewaycustompluginschema_resource_sdk.go
+  - internal/provider/gatewaydataplaneclientcertificate_data_source.go
+  - internal/provider/gatewaydataplaneclientcertificate_data_source_sdk.go
+  - internal/provider/gatewaydataplaneclientcertificate_resource.go
+  - internal/provider/gatewaydataplaneclientcertificate_resource_sdk.go
+  - internal/provider/gatewayhmacauth_data_source.go
+  - internal/provider/gatewayhmacauth_data_source_sdk.go
+  - internal/provider/gatewayhmacauth_resource.go
+  - internal/provider/gatewayhmacauth_resource_sdk.go
+  - internal/provider/gatewayjwt_data_source.go
+  - internal/provider/gatewayjwt_data_source_sdk.go
+  - internal/provider/gatewayjwt_resource.go
+  - internal/provider/gatewayjwt_resource_sdk.go
+  - internal/provider/gatewaykey_data_source.go
+  - internal/provider/gatewaykey_data_source_sdk.go
+  - internal/provider/gatewaykey_resource.go
+  - internal/provider/gatewaykey_resource_sdk.go
+  - internal/provider/gatewaykeyauth_data_source.go
+  - internal/provider/gatewaykeyauth_data_source_sdk.go
+  - internal/provider/gatewaykeyauth_resource.go
+  - internal/provider/gatewaykeyauth_resource_sdk.go
+  - internal/provider/gatewaykeyset_data_source.go
+  - internal/provider/gatewaykeyset_data_source_sdk.go
+  - internal/provider/gatewaykeyset_resource.go
+  - internal/provider/gatewaykeyset_resource_sdk.go
+  - internal/provider/gatewaymtlsauth_data_source.go
+  - internal/provider/gatewaymtlsauth_data_source_sdk.go
+  - internal/provider/gatewaymtlsauth_resource.go
+  - internal/provider/gatewaymtlsauth_resource_sdk.go
+  - internal/provider/gatewaypluginacl_data_source.go
+  - internal/provider/gatewaypluginacl_data_source_sdk.go
+  - internal/provider/gatewaypluginacl_resource.go
+  - internal/provider/gatewaypluginacl_resource_sdk.go
+  - internal/provider/gatewaypluginacme_data_source.go
+  - internal/provider/gatewaypluginacme_data_source_sdk.go
+  - internal/provider/gatewaypluginacme_resource.go
+  - internal/provider/gatewaypluginacme_resource_sdk.go
+  - internal/provider/gatewaypluginaiazurecontentsafety_data_source.go
+  - internal/provider/gatewaypluginaiazurecontentsafety_data_source_sdk.go
+  - internal/provider/gatewaypluginaiazurecontentsafety_resource.go
+  - internal/provider/gatewaypluginaiazurecontentsafety_resource_sdk.go
+  - internal/provider/gatewaypluginaipromptdecorator_data_source.go
+  - internal/provider/gatewaypluginaipromptdecorator_data_source_sdk.go
+  - internal/provider/gatewaypluginaipromptdecorator_resource.go
+  - internal/provider/gatewaypluginaipromptdecorator_resource_sdk.go
+  - internal/provider/gatewaypluginaipromptguard_data_source.go
+  - internal/provider/gatewaypluginaipromptguard_data_source_sdk.go
+  - internal/provider/gatewaypluginaipromptguard_resource.go
+  - internal/provider/gatewaypluginaipromptguard_resource_sdk.go
+  - internal/provider/gatewaypluginaiprompttemplate_data_source.go
+  - internal/provider/gatewaypluginaiprompttemplate_data_source_sdk.go
+  - internal/provider/gatewaypluginaiprompttemplate_resource.go
+  - internal/provider/gatewaypluginaiprompttemplate_resource_sdk.go
+  - internal/provider/gatewaypluginaiproxy_data_source.go
+  - internal/provider/gatewaypluginaiproxy_data_source_sdk.go
+  - internal/provider/gatewaypluginaiproxy_resource.go
+  - internal/provider/gatewaypluginaiproxy_resource_sdk.go
+  - internal/provider/gatewaypluginaiproxyadvanced_data_source.go
+  - internal/provider/gatewaypluginaiproxyadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginaiproxyadvanced_resource.go
+  - internal/provider/gatewaypluginaiproxyadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginairatelimitingadvanced_data_source.go
+  - internal/provider/gatewaypluginairatelimitingadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginairatelimitingadvanced_resource.go
+  - internal/provider/gatewaypluginairatelimitingadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginairequesttransformer_data_source.go
+  - internal/provider/gatewaypluginairequesttransformer_data_source_sdk.go
+  - internal/provider/gatewaypluginairequesttransformer_resource.go
+  - internal/provider/gatewaypluginairequesttransformer_resource_sdk.go
+  - internal/provider/gatewaypluginairesponsetransformer_data_source.go
+  - internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go
+  - internal/provider/gatewaypluginairesponsetransformer_resource.go
+  - internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go
+  - internal/provider/gatewaypluginaisemanticcache_data_source.go
+  - internal/provider/gatewaypluginaisemanticcache_data_source_sdk.go
+  - internal/provider/gatewaypluginaisemanticcache_resource.go
+  - internal/provider/gatewaypluginaisemanticcache_resource_sdk.go
+  - internal/provider/gatewaypluginaisemanticpromptguard_data_source.go
+  - internal/provider/gatewaypluginaisemanticpromptguard_data_source_sdk.go
+  - internal/provider/gatewaypluginaisemanticpromptguard_resource.go
+  - internal/provider/gatewaypluginaisemanticpromptguard_resource_sdk.go
+  - internal/provider/gatewaypluginawslambda_data_source.go
+  - internal/provider/gatewaypluginawslambda_data_source_sdk.go
+  - internal/provider/gatewaypluginawslambda_resource.go
+  - internal/provider/gatewaypluginawslambda_resource_sdk.go
+  - internal/provider/gatewaypluginazurefunctions_data_source.go
+  - internal/provider/gatewaypluginazurefunctions_data_source_sdk.go
+  - internal/provider/gatewaypluginazurefunctions_resource.go
+  - internal/provider/gatewaypluginazurefunctions_resource_sdk.go
+  - internal/provider/gatewaypluginbasicauth_data_source.go
+  - internal/provider/gatewaypluginbasicauth_data_source_sdk.go
+  - internal/provider/gatewaypluginbasicauth_resource.go
+  - internal/provider/gatewaypluginbasicauth_resource_sdk.go
+  - internal/provider/gatewaypluginbotdetection_data_source.go
+  - internal/provider/gatewaypluginbotdetection_data_source_sdk.go
+  - internal/provider/gatewaypluginbotdetection_resource.go
+  - internal/provider/gatewaypluginbotdetection_resource_sdk.go
+  - internal/provider/gatewayplugincanary_data_source.go
+  - internal/provider/gatewayplugincanary_data_source_sdk.go
+  - internal/provider/gatewayplugincanary_resource.go
+  - internal/provider/gatewayplugincanary_resource_sdk.go
+  - internal/provider/gatewaypluginconfluent_data_source.go
+  - internal/provider/gatewaypluginconfluent_data_source_sdk.go
+  - internal/provider/gatewaypluginconfluent_resource.go
+  - internal/provider/gatewaypluginconfluent_resource_sdk.go
+  - internal/provider/gatewayplugincorrelationid_data_source.go
+  - internal/provider/gatewayplugincorrelationid_data_source_sdk.go
+  - internal/provider/gatewayplugincorrelationid_resource.go
+  - internal/provider/gatewayplugincorrelationid_resource_sdk.go
+  - internal/provider/gatewayplugincors_data_source.go
+  - internal/provider/gatewayplugincors_data_source_sdk.go
+  - internal/provider/gatewayplugincors_resource.go
+  - internal/provider/gatewayplugincors_resource_sdk.go
+  - internal/provider/gatewayplugindatadog_data_source.go
+  - internal/provider/gatewayplugindatadog_data_source_sdk.go
+  - internal/provider/gatewayplugindatadog_resource.go
+  - internal/provider/gatewayplugindatadog_resource_sdk.go
+  - internal/provider/gatewayplugindatadogtracing_data_source.go
+  - internal/provider/gatewayplugindatadogtracing_data_source_sdk.go
+  - internal/provider/gatewayplugindatadogtracing_resource.go
+  - internal/provider/gatewayplugindatadogtracing_resource_sdk.go
+  - internal/provider/gatewayplugindegraphql_data_source.go
+  - internal/provider/gatewayplugindegraphql_data_source_sdk.go
+  - internal/provider/gatewayplugindegraphql_resource.go
+  - internal/provider/gatewayplugindegraphql_resource_sdk.go
+  - internal/provider/gatewaypluginexittransformer_data_source.go
+  - internal/provider/gatewaypluginexittransformer_data_source_sdk.go
+  - internal/provider/gatewaypluginexittransformer_resource.go
+  - internal/provider/gatewaypluginexittransformer_resource_sdk.go
+  - internal/provider/gatewaypluginfilelog_data_source.go
+  - internal/provider/gatewaypluginfilelog_data_source_sdk.go
+  - internal/provider/gatewaypluginfilelog_resource.go
+  - internal/provider/gatewaypluginfilelog_resource_sdk.go
+  - internal/provider/gatewaypluginforwardproxy_data_source.go
+  - internal/provider/gatewaypluginforwardproxy_data_source_sdk.go
+  - internal/provider/gatewaypluginforwardproxy_resource.go
+  - internal/provider/gatewaypluginforwardproxy_resource_sdk.go
+  - internal/provider/gatewayplugingraphqlproxycacheadvanced_data_source.go
+  - internal/provider/gatewayplugingraphqlproxycacheadvanced_data_source_sdk.go
+  - internal/provider/gatewayplugingraphqlproxycacheadvanced_resource.go
+  - internal/provider/gatewayplugingraphqlproxycacheadvanced_resource_sdk.go
+  - internal/provider/gatewayplugingraphqlratelimitingadvanced_data_source.go
+  - internal/provider/gatewayplugingraphqlratelimitingadvanced_data_source_sdk.go
+  - internal/provider/gatewayplugingraphqlratelimitingadvanced_resource.go
+  - internal/provider/gatewayplugingraphqlratelimitingadvanced_resource_sdk.go
+  - internal/provider/gatewayplugingrpcgateway_data_source.go
+  - internal/provider/gatewayplugingrpcgateway_data_source_sdk.go
+  - internal/provider/gatewayplugingrpcgateway_resource.go
+  - internal/provider/gatewayplugingrpcgateway_resource_sdk.go
+  - internal/provider/gatewayplugingrpcweb_data_source.go
+  - internal/provider/gatewayplugingrpcweb_data_source_sdk.go
+  - internal/provider/gatewayplugingrpcweb_resource.go
+  - internal/provider/gatewayplugingrpcweb_resource_sdk.go
+  - internal/provider/gatewaypluginheadercertauth_data_source.go
+  - internal/provider/gatewaypluginheadercertauth_data_source_sdk.go
+  - internal/provider/gatewaypluginheadercertauth_resource.go
+  - internal/provider/gatewaypluginheadercertauth_resource_sdk.go
+  - internal/provider/gatewaypluginhmacauth_data_source.go
+  - internal/provider/gatewaypluginhmacauth_data_source_sdk.go
+  - internal/provider/gatewaypluginhmacauth_resource.go
+  - internal/provider/gatewaypluginhmacauth_resource_sdk.go
+  - internal/provider/gatewaypluginhttplog_data_source.go
+  - internal/provider/gatewaypluginhttplog_data_source_sdk.go
+  - internal/provider/gatewaypluginhttplog_resource.go
+  - internal/provider/gatewaypluginhttplog_resource_sdk.go
+  - internal/provider/gatewayplugininjectionprotection_data_source.go
+  - internal/provider/gatewayplugininjectionprotection_data_source_sdk.go
+  - internal/provider/gatewayplugininjectionprotection_resource.go
+  - internal/provider/gatewayplugininjectionprotection_resource_sdk.go
+  - internal/provider/gatewaypluginiprestriction_data_source.go
+  - internal/provider/gatewaypluginiprestriction_data_source_sdk.go
+  - internal/provider/gatewaypluginiprestriction_resource.go
+  - internal/provider/gatewaypluginiprestriction_resource_sdk.go
+  - internal/provider/gatewaypluginjq_data_source.go
+  - internal/provider/gatewaypluginjq_data_source_sdk.go
+  - internal/provider/gatewaypluginjq_resource.go
+  - internal/provider/gatewaypluginjq_resource_sdk.go
+  - internal/provider/gatewaypluginjsonthreatprotection_data_source.go
+  - internal/provider/gatewaypluginjsonthreatprotection_data_source_sdk.go
+  - internal/provider/gatewaypluginjsonthreatprotection_resource.go
+  - internal/provider/gatewaypluginjsonthreatprotection_resource_sdk.go
+  - internal/provider/gatewaypluginjwedecrypt_data_source.go
+  - internal/provider/gatewaypluginjwedecrypt_data_source_sdk.go
+  - internal/provider/gatewaypluginjwedecrypt_resource.go
+  - internal/provider/gatewaypluginjwedecrypt_resource_sdk.go
+  - internal/provider/gatewaypluginjwt_data_source.go
+  - internal/provider/gatewaypluginjwt_data_source_sdk.go
+  - internal/provider/gatewaypluginjwt_resource.go
+  - internal/provider/gatewaypluginjwt_resource_sdk.go
+  - internal/provider/gatewaypluginjwtsigner_data_source.go
+  - internal/provider/gatewaypluginjwtsigner_data_source_sdk.go
+  - internal/provider/gatewaypluginjwtsigner_resource.go
+  - internal/provider/gatewaypluginjwtsigner_resource_sdk.go
+  - internal/provider/gatewaypluginkafkalog_data_source.go
+  - internal/provider/gatewaypluginkafkalog_data_source_sdk.go
+  - internal/provider/gatewaypluginkafkalog_resource.go
+  - internal/provider/gatewaypluginkafkalog_resource_sdk.go
+  - internal/provider/gatewaypluginkafkaupstream_data_source.go
+  - internal/provider/gatewaypluginkafkaupstream_data_source_sdk.go
+  - internal/provider/gatewaypluginkafkaupstream_resource.go
+  - internal/provider/gatewaypluginkafkaupstream_resource_sdk.go
+  - internal/provider/gatewaypluginkeyauth_data_source.go
+  - internal/provider/gatewaypluginkeyauth_data_source_sdk.go
+  - internal/provider/gatewaypluginkeyauth_resource.go
+  - internal/provider/gatewaypluginkeyauth_resource_sdk.go
+  - internal/provider/gatewaypluginkeyauthenc_data_source.go
+  - internal/provider/gatewaypluginkeyauthenc_data_source_sdk.go
+  - internal/provider/gatewaypluginkeyauthenc_resource.go
+  - internal/provider/gatewaypluginkeyauthenc_resource_sdk.go
+  - internal/provider/gatewaypluginkonnectapplicationauth_data_source.go
+  - internal/provider/gatewaypluginkonnectapplicationauth_data_source_sdk.go
+  - internal/provider/gatewaypluginkonnectapplicationauth_resource.go
+  - internal/provider/gatewaypluginkonnectapplicationauth_resource_sdk.go
+  - internal/provider/gatewaypluginldapauth_data_source.go
+  - internal/provider/gatewaypluginldapauth_data_source_sdk.go
+  - internal/provider/gatewaypluginldapauth_resource.go
+  - internal/provider/gatewaypluginldapauth_resource_sdk.go
+  - internal/provider/gatewaypluginldapauthadvanced_data_source.go
+  - internal/provider/gatewaypluginldapauthadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginldapauthadvanced_resource.go
+  - internal/provider/gatewaypluginldapauthadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginloggly_data_source.go
+  - internal/provider/gatewaypluginloggly_data_source_sdk.go
+  - internal/provider/gatewaypluginloggly_resource.go
+  - internal/provider/gatewaypluginloggly_resource_sdk.go
+  - internal/provider/gatewaypluginmocking_data_source.go
+  - internal/provider/gatewaypluginmocking_data_source_sdk.go
+  - internal/provider/gatewaypluginmocking_resource.go
+  - internal/provider/gatewaypluginmocking_resource_sdk.go
+  - internal/provider/gatewaypluginmtlsauth_data_source.go
+  - internal/provider/gatewaypluginmtlsauth_data_source_sdk.go
+  - internal/provider/gatewaypluginmtlsauth_resource.go
+  - internal/provider/gatewaypluginmtlsauth_resource_sdk.go
+  - internal/provider/gatewaypluginoasvalidation_data_source.go
+  - internal/provider/gatewaypluginoasvalidation_data_source_sdk.go
+  - internal/provider/gatewaypluginoasvalidation_resource.go
+  - internal/provider/gatewaypluginoasvalidation_resource_sdk.go
+  - internal/provider/gatewaypluginoauth2_data_source.go
+  - internal/provider/gatewaypluginoauth2_data_source_sdk.go
+  - internal/provider/gatewaypluginoauth2_resource.go
+  - internal/provider/gatewaypluginoauth2_resource_sdk.go
+  - internal/provider/gatewaypluginoauth2introspection_data_source.go
+  - internal/provider/gatewaypluginoauth2introspection_data_source_sdk.go
+  - internal/provider/gatewaypluginoauth2introspection_resource.go
+  - internal/provider/gatewaypluginoauth2introspection_resource_sdk.go
+  - internal/provider/gatewaypluginopa_data_source.go
+  - internal/provider/gatewaypluginopa_data_source_sdk.go
+  - internal/provider/gatewaypluginopa_resource.go
+  - internal/provider/gatewaypluginopa_resource_sdk.go
+  - internal/provider/gatewaypluginopenidconnect_data_source.go
+  - internal/provider/gatewaypluginopenidconnect_data_source_sdk.go
+  - internal/provider/gatewaypluginopenidconnect_resource.go
+  - internal/provider/gatewaypluginopenidconnect_resource_sdk.go
+  - internal/provider/gatewaypluginopentelemetry_data_source.go
+  - internal/provider/gatewaypluginopentelemetry_data_source_sdk.go
+  - internal/provider/gatewaypluginopentelemetry_resource.go
+  - internal/provider/gatewaypluginopentelemetry_resource_sdk.go
+  - internal/provider/gatewaypluginpostfunction_data_source.go
+  - internal/provider/gatewaypluginpostfunction_data_source_sdk.go
+  - internal/provider/gatewaypluginpostfunction_resource.go
+  - internal/provider/gatewaypluginpostfunction_resource_sdk.go
+  - internal/provider/gatewaypluginprefunction_data_source.go
+  - internal/provider/gatewaypluginprefunction_data_source_sdk.go
+  - internal/provider/gatewaypluginprefunction_resource.go
+  - internal/provider/gatewaypluginprefunction_resource_sdk.go
+  - internal/provider/gatewaypluginprometheus_data_source.go
+  - internal/provider/gatewaypluginprometheus_data_source_sdk.go
+  - internal/provider/gatewaypluginprometheus_resource.go
+  - internal/provider/gatewaypluginprometheus_resource_sdk.go
+  - internal/provider/gatewaypluginproxycache_data_source.go
+  - internal/provider/gatewaypluginproxycache_data_source_sdk.go
+  - internal/provider/gatewaypluginproxycache_resource.go
+  - internal/provider/gatewaypluginproxycache_resource_sdk.go
+  - internal/provider/gatewaypluginproxycacheadvanced_data_source.go
+  - internal/provider/gatewaypluginproxycacheadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginproxycacheadvanced_resource.go
+  - internal/provider/gatewaypluginproxycacheadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginratelimiting_data_source.go
+  - internal/provider/gatewaypluginratelimiting_data_source_sdk.go
+  - internal/provider/gatewaypluginratelimiting_resource.go
+  - internal/provider/gatewaypluginratelimiting_resource_sdk.go
+  - internal/provider/gatewaypluginratelimitingadvanced_data_source.go
+  - internal/provider/gatewaypluginratelimitingadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginratelimitingadvanced_resource.go
+  - internal/provider/gatewaypluginratelimitingadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginredirect_data_source.go
+  - internal/provider/gatewaypluginredirect_data_source_sdk.go
+  - internal/provider/gatewaypluginredirect_resource.go
+  - internal/provider/gatewaypluginredirect_resource_sdk.go
+  - internal/provider/gatewaypluginrequestsizelimiting_data_source.go
+  - internal/provider/gatewaypluginrequestsizelimiting_data_source_sdk.go
+  - internal/provider/gatewaypluginrequestsizelimiting_resource.go
+  - internal/provider/gatewaypluginrequestsizelimiting_resource_sdk.go
+  - internal/provider/gatewaypluginrequesttermination_data_source.go
+  - internal/provider/gatewaypluginrequesttermination_data_source_sdk.go
+  - internal/provider/gatewaypluginrequesttermination_resource.go
+  - internal/provider/gatewaypluginrequesttermination_resource_sdk.go
+  - internal/provider/gatewaypluginrequesttransformer_data_source.go
+  - internal/provider/gatewaypluginrequesttransformer_data_source_sdk.go
+  - internal/provider/gatewaypluginrequesttransformer_resource.go
+  - internal/provider/gatewaypluginrequesttransformer_resource_sdk.go
+  - internal/provider/gatewaypluginrequesttransformeradvanced_data_source.go
+  - internal/provider/gatewaypluginrequesttransformeradvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginrequesttransformeradvanced_resource.go
+  - internal/provider/gatewaypluginrequesttransformeradvanced_resource_sdk.go
+  - internal/provider/gatewaypluginrequestvalidator_data_source.go
+  - internal/provider/gatewaypluginrequestvalidator_data_source_sdk.go
+  - internal/provider/gatewaypluginrequestvalidator_resource.go
+  - internal/provider/gatewaypluginrequestvalidator_resource_sdk.go
+  - internal/provider/gatewaypluginresponseratelimiting_data_source.go
+  - internal/provider/gatewaypluginresponseratelimiting_data_source_sdk.go
+  - internal/provider/gatewaypluginresponseratelimiting_resource.go
+  - internal/provider/gatewaypluginresponseratelimiting_resource_sdk.go
+  - internal/provider/gatewaypluginresponsetransformer_data_source.go
+  - internal/provider/gatewaypluginresponsetransformer_data_source_sdk.go
+  - internal/provider/gatewaypluginresponsetransformer_resource.go
+  - internal/provider/gatewaypluginresponsetransformer_resource_sdk.go
+  - internal/provider/gatewaypluginresponsetransformeradvanced_data_source.go
+  - internal/provider/gatewaypluginresponsetransformeradvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginresponsetransformeradvanced_resource.go
+  - internal/provider/gatewaypluginresponsetransformeradvanced_resource_sdk.go
+  - internal/provider/gatewaypluginroutebyheader_data_source.go
+  - internal/provider/gatewaypluginroutebyheader_data_source_sdk.go
+  - internal/provider/gatewaypluginroutebyheader_resource.go
+  - internal/provider/gatewaypluginroutebyheader_resource_sdk.go
+  - internal/provider/gatewaypluginroutetransformeradvanced_data_source.go
+  - internal/provider/gatewaypluginroutetransformeradvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginroutetransformeradvanced_resource.go
+  - internal/provider/gatewaypluginroutetransformeradvanced_resource_sdk.go
+  - internal/provider/gatewaypluginsaml_data_source.go
+  - internal/provider/gatewaypluginsaml_data_source_sdk.go
+  - internal/provider/gatewaypluginsaml_resource.go
+  - internal/provider/gatewaypluginsaml_resource_sdk.go
+  - internal/provider/gatewaypluginserviceprotection_data_source.go
+  - internal/provider/gatewaypluginserviceprotection_data_source_sdk.go
+  - internal/provider/gatewaypluginserviceprotection_resource.go
+  - internal/provider/gatewaypluginserviceprotection_resource_sdk.go
+  - internal/provider/gatewaypluginsession_data_source.go
+  - internal/provider/gatewaypluginsession_data_source_sdk.go
+  - internal/provider/gatewaypluginsession_resource.go
+  - internal/provider/gatewaypluginsession_resource_sdk.go
+  - internal/provider/gatewaypluginstandardwebhooks_data_source.go
+  - internal/provider/gatewaypluginstandardwebhooks_data_source_sdk.go
+  - internal/provider/gatewaypluginstandardwebhooks_resource.go
+  - internal/provider/gatewaypluginstandardwebhooks_resource_sdk.go
+  - internal/provider/gatewaypluginstatsd_data_source.go
+  - internal/provider/gatewaypluginstatsd_data_source_sdk.go
+  - internal/provider/gatewaypluginstatsd_resource.go
+  - internal/provider/gatewaypluginstatsd_resource_sdk.go
+  - internal/provider/gatewaypluginstatsdadvanced_data_source.go
+  - internal/provider/gatewaypluginstatsdadvanced_data_source_sdk.go
+  - internal/provider/gatewaypluginstatsdadvanced_resource.go
+  - internal/provider/gatewaypluginstatsdadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginsyslog_data_source.go
+  - internal/provider/gatewaypluginsyslog_data_source_sdk.go
+  - internal/provider/gatewaypluginsyslog_resource.go
+  - internal/provider/gatewaypluginsyslog_resource_sdk.go
+  - internal/provider/gatewayplugintcplog_data_source.go
+  - internal/provider/gatewayplugintcplog_data_source_sdk.go
+  - internal/provider/gatewayplugintcplog_resource.go
+  - internal/provider/gatewayplugintcplog_resource_sdk.go
+  - internal/provider/gatewayplugintlshandshakemodifier_data_source.go
+  - internal/provider/gatewayplugintlshandshakemodifier_data_source_sdk.go
+  - internal/provider/gatewayplugintlshandshakemodifier_resource.go
+  - internal/provider/gatewayplugintlshandshakemodifier_resource_sdk.go
+  - internal/provider/gatewayplugintlsmetadataheaders_data_source.go
+  - internal/provider/gatewayplugintlsmetadataheaders_data_source_sdk.go
+  - internal/provider/gatewayplugintlsmetadataheaders_resource.go
+  - internal/provider/gatewayplugintlsmetadataheaders_resource_sdk.go
+  - internal/provider/gatewaypluginudplog_data_source.go
+  - internal/provider/gatewaypluginudplog_data_source_sdk.go
+  - internal/provider/gatewaypluginudplog_resource.go
+  - internal/provider/gatewaypluginudplog_resource_sdk.go
+  - internal/provider/gatewaypluginupstreamoauth_data_source.go
+  - internal/provider/gatewaypluginupstreamoauth_data_source_sdk.go
+  - internal/provider/gatewaypluginupstreamoauth_resource.go
+  - internal/provider/gatewaypluginupstreamoauth_resource_sdk.go
+  - internal/provider/gatewaypluginupstreamtimeout_data_source.go
+  - internal/provider/gatewaypluginupstreamtimeout_data_source_sdk.go
+  - internal/provider/gatewaypluginupstreamtimeout_resource.go
+  - internal/provider/gatewaypluginupstreamtimeout_resource_sdk.go
+  - internal/provider/gatewaypluginvaultauth_data_source.go
+  - internal/provider/gatewaypluginvaultauth_data_source_sdk.go
+  - internal/provider/gatewaypluginvaultauth_resource.go
+  - internal/provider/gatewaypluginvaultauth_resource_sdk.go
+  - internal/provider/gatewaypluginwebsocketsizelimit_data_source.go
+  - internal/provider/gatewaypluginwebsocketsizelimit_data_source_sdk.go
+  - internal/provider/gatewaypluginwebsocketsizelimit_resource.go
+  - internal/provider/gatewaypluginwebsocketsizelimit_resource_sdk.go
+  - internal/provider/gatewaypluginwebsocketvalidator_data_source.go
+  - internal/provider/gatewaypluginwebsocketvalidator_data_source_sdk.go
+  - internal/provider/gatewaypluginwebsocketvalidator_resource.go
+  - internal/provider/gatewaypluginwebsocketvalidator_resource_sdk.go
+  - internal/provider/gatewaypluginxmlthreatprotection_data_source.go
+  - internal/provider/gatewaypluginxmlthreatprotection_data_source_sdk.go
+  - internal/provider/gatewaypluginxmlthreatprotection_resource.go
+  - internal/provider/gatewaypluginxmlthreatprotection_resource_sdk.go
+  - internal/provider/gatewaypluginzipkin_data_source.go
+  - internal/provider/gatewaypluginzipkin_data_source_sdk.go
+  - internal/provider/gatewaypluginzipkin_resource.go
+  - internal/provider/gatewaypluginzipkin_resource_sdk.go
+  - internal/provider/gatewayroute_data_source.go
+  - internal/provider/gatewayroute_data_source_sdk.go
+  - internal/provider/gatewayroute_resource.go
+  - internal/provider/gatewayroute_resource_sdk.go
+  - internal/provider/gatewayrouteexpression_data_source.go
+  - internal/provider/gatewayrouteexpression_data_source_sdk.go
+  - internal/provider/gatewayrouteexpression_resource.go
+  - internal/provider/gatewayrouteexpression_resource_sdk.go
+  - internal/provider/gatewayservice_data_source.go
+  - internal/provider/gatewayservice_data_source_sdk.go
+  - internal/provider/gatewayservice_resource.go
+  - internal/provider/gatewayservice_resource_sdk.go
+  - internal/provider/gatewaysni_data_source.go
+  - internal/provider/gatewaysni_data_source_sdk.go
+  - internal/provider/gatewaysni_resource.go
+  - internal/provider/gatewaysni_resource_sdk.go
+  - internal/provider/gatewaytarget_data_source.go
+  - internal/provider/gatewaytarget_data_source_sdk.go
+  - internal/provider/gatewaytarget_resource.go
+  - internal/provider/gatewaytarget_resource_sdk.go
+  - internal/provider/gatewayupstream_data_source.go
+  - internal/provider/gatewayupstream_data_source_sdk.go
+  - internal/provider/gatewayupstream_resource.go
+  - internal/provider/gatewayupstream_resource_sdk.go
+  - internal/provider/gatewayvault_data_source.go
+  - internal/provider/gatewayvault_data_source_sdk.go
+  - internal/provider/gatewayvault_resource.go
+  - internal/provider/gatewayvault_resource_sdk.go
   - internal/provider/hostnamegenerator_data_source.go
   - internal/provider/hostnamegenerator_data_source_sdk.go
   - internal/provider/hostnamegenerator_resource.go
@@ -282,6 +1218,26 @@ generatedFiles:
   - internal/provider/meshtrafficpermission_resource_sdk.go
   - internal/provider/meshtrafficpermissionlist_data_source.go
   - internal/provider/meshtrafficpermissionlist_data_source_sdk.go
+  - internal/provider/portal_resource.go
+  - internal/provider/portal_resource_sdk.go
+  - internal/provider/portalappearance_data_source.go
+  - internal/provider/portalappearance_data_source_sdk.go
+  - internal/provider/portalappearance_resource.go
+  - internal/provider/portalappearance_resource_sdk.go
+  - internal/provider/portalauth_data_source.go
+  - internal/provider/portalauth_data_source_sdk.go
+  - internal/provider/portalauth_resource.go
+  - internal/provider/portalauth_resource_sdk.go
+  - internal/provider/portallist_data_source.go
+  - internal/provider/portallist_data_source_sdk.go
+  - internal/provider/portalproductversion_data_source.go
+  - internal/provider/portalproductversion_data_source_sdk.go
+  - internal/provider/portalproductversion_resource.go
+  - internal/provider/portalproductversion_resource_sdk.go
+  - internal/provider/portalteam_data_source.go
+  - internal/provider/portalteam_data_source_sdk.go
+  - internal/provider/portalteam_resource.go
+  - internal/provider/portalteam_resource_sdk.go
   - internal/provider/provider.go
   - internal/provider/reflect/diags.go
   - internal/provider/reflect/doc.go
@@ -297,83 +1253,244 @@ generatedFiles:
   - internal/provider/reflect/primitive.go
   - internal/provider/reflect/slice.go
   - internal/provider/reflect/struct.go
+  - internal/provider/serverlesscloudgateway_data_source.go
+  - internal/provider/serverlesscloudgateway_data_source_sdk.go
+  - internal/provider/serverlesscloudgateway_resource.go
+  - internal/provider/serverlesscloudgateway_resource_sdk.go
+  - internal/provider/systemaccount_data_source.go
+  - internal/provider/systemaccount_data_source_sdk.go
+  - internal/provider/systemaccount_resource.go
+  - internal/provider/systemaccount_resource_sdk.go
+  - internal/provider/systemaccountaccesstoken_data_source.go
+  - internal/provider/systemaccountaccesstoken_data_source_sdk.go
+  - internal/provider/systemaccountaccesstoken_resource.go
+  - internal/provider/systemaccountaccesstoken_resource_sdk.go
+  - internal/provider/systemaccountrole_resource.go
+  - internal/provider/systemaccountrole_resource_sdk.go
+  - internal/provider/systemaccountteam_resource.go
+  - internal/provider/systemaccountteam_resource_sdk.go
+  - internal/provider/team_data_source.go
+  - internal/provider/team_data_source_sdk.go
+  - internal/provider/team_resource.go
+  - internal/provider/team_resource_sdk.go
+  - internal/provider/teamrole_resource.go
+  - internal/provider/teamrole_resource_sdk.go
+  - internal/provider/teamuser_resource.go
+  - internal/provider/teamuser_resource_sdk.go
   - internal/provider/types/abort.go
   - internal/provider/types/access_key.go
+  - internal/provider/types/account_key.go
+  - internal/provider/types/acl_plugin_after.go
+  - internal/provider/types/acl_plugin_config.go
+  - internal/provider/types/acl_plugin_ordering.go
+  - internal/provider/types/acl_without_parents_consumer.go
   - internal/provider/types/acm_certificate_authority_config.go
+  - internal/provider/types/acme_plugin_config.go
+  - internal/provider/types/acme_plugin_redis.go
+  - internal/provider/types/acme_plugin_vault.go
+  - internal/provider/types/active.go
+  - internal/provider/types/add.go
   - internal/provider/types/addresses.go
   - internal/provider/types/affinity_tags.go
   - internal/provider/types/aggregate.go
+  - internal/provider/types/ai_azure_content_safety_plugin_config.go
+  - internal/provider/types/ai_prompt_decorator_plugin_append.go
+  - internal/provider/types/ai_prompt_decorator_plugin_config.go
+  - internal/provider/types/ai_prompt_guard_plugin_config.go
+  - internal/provider/types/ai_prompt_template_plugin_config.go
+  - internal/provider/types/ai_proxy_advanced_plugin_cluster_nodes.go
+  - internal/provider/types/ai_proxy_advanced_plugin_config.go
+  - internal/provider/types/ai_proxy_advanced_plugin_config_model.go
+  - internal/provider/types/ai_proxy_advanced_plugin_model.go
+  - internal/provider/types/ai_proxy_advanced_plugin_options.go
+  - internal/provider/types/ai_proxy_advanced_plugin_redis.go
+  - internal/provider/types/ai_proxy_advanced_plugin_sentinel_nodes.go
+  - internal/provider/types/ai_proxy_plugin_config.go
+  - internal/provider/types/ai_proxy_plugin_logging.go
+  - internal/provider/types/ai_rate_limiting_advanced_plugin_config.go
+  - internal/provider/types/ai_request_transformer_plugin_config.go
+  - internal/provider/types/ai_response_transformer_plugin_config.go
+  - internal/provider/types/ai_semantic_cache_plugin_config.go
+  - internal/provider/types/ai_semantic_cache_plugin_embeddings.go
+  - internal/provider/types/ai_semantic_cache_plugin_model.go
+  - internal/provider/types/ai_semantic_cache_plugin_vectordb.go
+  - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
+  - internal/provider/types/ai_semantic_prompt_guard_plugin_rules.go
+  - internal/provider/types/allow.go
+  - internal/provider/types/api_product_portal.go
+  - internal/provider/types/api_product_version_auth_strategy.go
+  - internal/provider/types/api_product_version_portal.go
+  - internal/provider/types/app_auth_strategy_config_key_auth.go
+  - internal/provider/types/app_auth_strategy_config_open_id_connect.go
+  - internal/provider/types/app_auth_strategy_key_auth_request.go
+  - internal/provider/types/app_auth_strategy_key_auth_request_configs.go
+  - internal/provider/types/app_auth_strategy_key_auth_response_app_auth_strategy_key_auth_response.go
+  - internal/provider/types/app_auth_strategy_open_id_connect_request.go
+  - internal/provider/types/app_auth_strategy_open_id_connect_request_configs.go
+  - internal/provider/types/app_auth_strategy_open_id_connect_response_app_auth_strategy_open_id_connect_response.go
+  - internal/provider/types/appearance_color_variable.go
+  - internal/provider/types/appearance_image.go
+  - internal/provider/types/appearance_images.go
+  - internal/provider/types/appearance_theme_color_variables.go
   - internal/provider/types/append_match.go
   - internal/provider/types/append_modifications.go
   - internal/provider/types/append_policies.go
   - internal/provider/types/applications.go
   - internal/provider/types/auth.go
   - internal/provider/types/auth_config.go
+  - internal/provider/types/auth_strategy.go
+  - internal/provider/types/auth_strategy_client_credentials.go
+  - internal/provider/types/auth_strategy_key_auth.go
+  - internal/provider/types/authentication.go
   - internal/provider/types/aws_credentials.go
+  - internal/provider/types/aws_lambda_plugin_config.go
+  - internal/provider/types/aws_transit_gateway.go
+  - internal/provider/types/aws_transit_gateway_attachment_config.go
+  - internal/provider/types/aws_transit_gateway_response.go
+  - internal/provider/types/aws_vpc_peering_gateway.go
+  - internal/provider/types/aws_vpc_peering_gateway_attachment_config.go
+  - internal/provider/types/aws_vpc_peering_gateway_response.go
+  - internal/provider/types/azure_functions_plugin_config.go
+  - internal/provider/types/azure_transit_gateway.go
+  - internal/provider/types/azure_transit_gateway_response.go
+  - internal/provider/types/azure_vnet_peering_attachment_config.go
   - internal/provider/types/back_off.go
   - internal/provider/types/backend.go
   - internal/provider/types/backend_refs.go
   - internal/provider/types/backends.go
+  - internal/provider/types/balancer.go
+  - internal/provider/types/basic_auth_plugin_config.go
+  - internal/provider/types/bedrock.go
+  - internal/provider/types/behavior.go
+  - internal/provider/types/binary.go
+  - internal/provider/types/bootstrap_servers.go
+  - internal/provider/types/bot_detection_plugin_config.go
   - internal/provider/types/builtin_certificate_authority_config.go
   - internal/provider/types/builtin_certificate_authority_config_conf_ca_cert.go
+  - internal/provider/types/button.go
   - internal/provider/types/ca_cert.go
+  - internal/provider/types/cache.go
+  - internal/provider/types/canary_plugin_config.go
+  - internal/provider/types/catalog.go
+  - internal/provider/types/categories.go
   - internal/provider/types/cert_manager_certificate_authority_config.go
+  - internal/provider/types/client.go
   - internal/provider/types/cluster.go
   - internal/provider/types/conditions.go
   - internal/provider/types/conf.go
+  - internal/provider/types/conf_auth.go
+  - internal/provider/types/config.go
+  - internal/provider/types/configuration_data_plane_group.go
+  - internal/provider/types/configuration_data_plane_group_autoscale.go
+  - internal/provider/types/configuration_data_plane_group_autoscale_autopilot.go
+  - internal/provider/types/configuration_data_plane_group_autoscale_static.go
+  - internal/provider/types/configuration_data_plane_group_config.go
+  - internal/provider/types/configuration_data_plane_group_environment_field.go
+  - internal/provider/types/confluent_plugin_config.go
   - internal/provider/types/connection.go
   - internal/provider/types/connection_limits.go
   - internal/provider/types/constraints.go
+  - internal/provider/types/consul.go
   - internal/provider/types/cookie.go
+  - internal/provider/types/correlation_id_plugin_config.go
+  - internal/provider/types/cors_plugin_config.go
   - internal/provider/types/cross_zone.go
+  - internal/provider/types/custom_domain_state_metadata.go
+  - internal/provider/types/custom_injections.go
   - internal/provider/types/datadog.go
+  - internal/provider/types/datadog_plugin_config.go
+  - internal/provider/types/datadog_plugin_metrics.go
   - internal/provider/types/datadog_tracing_backend_config.go
+  - internal/provider/types/datadog_tracing_plugin_config.go
   - internal/provider/types/dataplane_proxies.go
   - internal/provider/types/dataplane_proxy.go
   - internal/provider/types/dataplane_ref.go
+  - internal/provider/types/dcr_provider.go
   - internal/provider/types/default.go
+  - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/delay.go
   - internal/provider/types/detectors.go
   - internal/provider/types/dp_cert.go
+  - internal/provider/types/embeddings.go
   - internal/provider/types/endpoints.go
   - internal/provider/types/envoy.go
   - internal/provider/types/exclude.go
+  - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extension.go
+  - internal/provider/types/extra_options.go
   - internal/provider/types/failover.go
   - internal/provider/types/failover_threshold.go
   - internal/provider/types/failure_percentage.go
   - internal/provider/types/file.go
+  - internal/provider/types/file_log_plugin_config.go
   - internal/provider/types/file_logging_backend_config.go
   - internal/provider/types/filter_state.go
   - internal/provider/types/filters.go
   - internal/provider/types/format.go
+  - internal/provider/types/forward_proxy_plugin_config.go
   - internal/provider/types/from.go
   - internal/provider/types/gateway_failures.go
+  - internal/provider/types/gateway_service.go
+  - internal/provider/types/gateway_service_payload.go
+  - internal/provider/types/gemini.go
+  - internal/provider/types/graphql_proxy_cache_advanced_plugin_config.go
+  - internal/provider/types/graphql_rate_limiting_advanced_plugin_config.go
   - internal/provider/types/grpc.go
+  - internal/provider/types/grpc_gateway_plugin_config.go
+  - internal/provider/types/grpc_web_plugin_config.go
   - internal/provider/types/hash_policies.go
   - internal/provider/types/header.go
+  - internal/provider/types/header_cert_auth_plugin_config.go
   - internal/provider/types/headers.go
+  - internal/provider/types/healthchecks.go
+  - internal/provider/types/healthy.go
+  - internal/provider/types/hmac_auth_plugin_config.go
   - internal/provider/types/host_selection.go
   - internal/provider/types/hostname_generator_item.go
   - internal/provider/types/hostname_generator_ref.go
   - internal/provider/types/hostname_generators.go
   - internal/provider/types/http.go
   - internal/provider/types/http_filter.go
+  - internal/provider/types/http_log_plugin_config.go
+  - internal/provider/types/huggingface.go
+  - internal/provider/types/injection_protection_plugin_config.go
+  - internal/provider/types/ip_restriction_plugin_config.go
   - internal/provider/types/issuer_ref.go
+  - internal/provider/types/jq_plugin_config.go
   - internal/provider/types/json.go
   - internal/provider/types/json_patches.go
+  - internal/provider/types/json_threat_protection_plugin_config.go
+  - internal/provider/types/jwe_decrypt_plugin_config.go
+  - internal/provider/types/jwt_plugin_config.go
+  - internal/provider/types/jwt_signer_plugin_config.go
+  - internal/provider/types/kafka_log_plugin_config.go
+  - internal/provider/types/kafka_log_plugin_security.go
+  - internal/provider/types/kafka_upstream_plugin_config.go
+  - internal/provider/types/key_auth_plugin_config.go
+  - internal/provider/types/konnect_application_auth_plugin_client_jwk.go
+  - internal/provider/types/konnect_application_auth_plugin_config.go
+  - internal/provider/types/konnect_application_auth_plugin_config_config.go
+  - internal/provider/types/konnect_application_auth_plugin_key_auth.go
+  - internal/provider/types/konnect_application_auth_plugin_redis.go
+  - internal/provider/types/ldap_auth_advanced_plugin_config.go
+  - internal/provider/types/ldap_auth_plugin_config.go
   - internal/provider/types/least_request.go
   - internal/provider/types/limits.go
   - internal/provider/types/listener.go
   - internal/provider/types/listeners.go
+  - internal/provider/types/llm.go
+  - internal/provider/types/llm_providers.go
   - internal/provider/types/load_balancer.go
   - internal/provider/types/local.go
   - internal/provider/types/local_zone.go
   - internal/provider/types/locality_awareness.go
   - internal/provider/types/logging.go
+  - internal/provider/types/loggly_plugin_config.go
   - internal/provider/types/maglev.go
   - internal/provider/types/match.go
   - internal/provider/types/matches.go
+  - internal/provider/types/members.go
+  - internal/provider/types/memory.go
   - internal/provider/types/mesh_access_log_item.go
   - internal/provider/types/mesh_access_log_item_backends.go
   - internal/provider/types/mesh_access_log_item_spec.go
@@ -391,6 +1508,7 @@ generatedFiles:
   - internal/provider/types/mesh_external_service.go
   - internal/provider/types/mesh_external_service_item.go
   - internal/provider/types/mesh_external_service_item_spec.go
+  - internal/provider/types/mesh_external_service_item_version.go
   - internal/provider/types/mesh_fault_injection_item.go
   - internal/provider/types/mesh_fault_injection_item_default.go
   - internal/provider/types/mesh_fault_injection_item_from.go
@@ -402,7 +1520,6 @@ generatedFiles:
   - internal/provider/types/mesh_global_rate_limit_item_from.go
   - internal/provider/types/mesh_global_rate_limit_item_http.go
   - internal/provider/types/mesh_global_rate_limit_item_spec.go
-  - internal/provider/types/mesh_global_rate_limit_item_spec_add.go
   - internal/provider/types/mesh_global_rate_limit_item_spec_from_request_rate.go
   - internal/provider/types/mesh_global_rate_limit_item_spec_headers.go
   - internal/provider/types/mesh_health_check_item.go
@@ -500,62 +1617,177 @@ generatedFiles:
   - internal/provider/types/mesh_traffic_permission_item_default.go
   - internal/provider/types/mesh_traffic_permission_item_from.go
   - internal/provider/types/mesh_traffic_permission_item_spec.go
+  - internal/provider/types/metadata.go
   - internal/provider/types/metrics.go
+  - internal/provider/types/mocking_plugin_config.go
   - internal/provider/types/mode.go
+  - internal/provider/types/model.go
   - internal/provider/types/mtls.go
+  - internal/provider/types/mtls_auth_plugin_config.go
+  - internal/provider/types/network_provider_metadata.go
   - internal/provider/types/networking.go
+  - internal/provider/types/nullable_appearance_fonts.go
+  - internal/provider/types/nullable_appearance_text_variables.go
+  - internal/provider/types/nullable_appearance_theme_variables.go
+  - internal/provider/types/oas_validation_plugin_config.go
+  - internal/provider/types/oauth.go
+  - internal/provider/types/oauth2_introspection_plugin_config.go
+  - internal/provider/types/oauth2_plugin_config.go
   - internal/provider/types/on_rate_limit.go
+  - internal/provider/types/opa_plugin_config.go
   - internal/provider/types/open_telemetry.go
+  - internal/provider/types/openid_connect.go
+  - internal/provider/types/openid_connect_plugin_config.go
+  - internal/provider/types/opentelemetry_plugin_config.go
   - internal/provider/types/options_obj.go
   - internal/provider/types/outbound.go
   - internal/provider/types/outlier_detection.go
+  - internal/provider/types/page_meta.go
+  - internal/provider/types/paginated_meta.go
+  - internal/provider/types/parameter_schema.go
+  - internal/provider/types/passive.go
   - internal/provider/types/path.go
+  - internal/provider/types/pem.go
+  - internal/provider/types/portal.go
+  - internal/provider/types/portal_claim_mappings.go
+  - internal/provider/types/portal_oidc_config.go
   - internal/provider/types/ports.go
+  - internal/provider/types/post_function_plugin_config.go
   - internal/provider/types/profiles.go
   - internal/provider/types/prometheus.go
   - internal/provider/types/prometheus_metrics_backend_config.go
+  - internal/provider/types/prometheus_plugin_config.go
+  - internal/provider/types/prompts.go
+  - internal/provider/types/propagation.go
   - internal/provider/types/provided_certificate_authority_config.go
+  - internal/provider/types/provider_account.go
+  - internal/provider/types/proxy_cache_advanced_plugin_config.go
+  - internal/provider/types/proxy_cache_plugin_config.go
+  - internal/provider/types/proxy_url.go
   - internal/provider/types/query_params.go
+  - internal/provider/types/queue.go
   - internal/provider/types/rate_limit_service.go
   - internal/provider/types/rate_limited_back_off.go
+  - internal/provider/types/rate_limiting_advanced_plugin_config.go
+  - internal/provider/types/rate_limiting_advanced_plugin_redis.go
+  - internal/provider/types/rate_limiting_plugin_config.go
+  - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/ratelimit_on_request.go
+  - internal/provider/types/redirect_plugin_config.go
+  - internal/provider/types/replace.go
   - internal/provider/types/request_body.go
   - internal/provider/types/request_header_modifier.go
+  - internal/provider/types/request_jq_program_options.go
   - internal/provider/types/request_mirror.go
   - internal/provider/types/request_redirect.go
+  - internal/provider/types/request_size_limiting_plugin_config.go
+  - internal/provider/types/request_termination_plugin_config.go
   - internal/provider/types/request_timeout.go
+  - internal/provider/types/request_transformer_advanced_plugin_add.go
+  - internal/provider/types/request_transformer_advanced_plugin_config.go
+  - internal/provider/types/request_transformer_advanced_plugin_replace.go
+  - internal/provider/types/request_transformer_plugin_config.go
+  - internal/provider/types/request_validator_plugin_config.go
   - internal/provider/types/requirements.go
   - internal/provider/types/reset_headers.go
   - internal/provider/types/resources.go
   - internal/provider/types/response_bandwidth.go
+  - internal/provider/types/response_headers.go
+  - internal/provider/types/response_ratelimiting_plugin_config.go
+  - internal/provider/types/response_transformer_advanced_plugin_add.go
+  - internal/provider/types/response_transformer_advanced_plugin_allow.go
+  - internal/provider/types/response_transformer_advanced_plugin_config.go
+  - internal/provider/types/response_transformer_advanced_plugin_remove.go
+  - internal/provider/types/response_transformer_advanced_plugin_rename.go
+  - internal/provider/types/response_transformer_advanced_plugin_replace.go
+  - internal/provider/types/response_transformer_plugin_add.go
+  - internal/provider/types/response_transformer_plugin_config.go
+  - internal/provider/types/response_transformer_plugin_remove.go
   - internal/provider/types/ring_hash.go
   - internal/provider/types/root_chain.go
   - internal/provider/types/rotation.go
+  - internal/provider/types/route_by_header_plugin_config.go
+  - internal/provider/types/route_by_header_plugin_rules.go
+  - internal/provider/types/route_transformer_advanced_plugin_config.go
   - internal/provider/types/routing.go
   - internal/provider/types/rules.go
+  - internal/provider/types/saml_plugin_config.go
   - internal/provider/types/sampling.go
+  - internal/provider/types/search.go
+  - internal/provider/types/section.go
   - internal/provider/types/selector.go
   - internal/provider/types/selectors.go
+  - internal/provider/types/serverless_control_plane.go
+  - internal/provider/types/service_protection_plugin_config.go
+  - internal/provider/types/session_plugin_config.go
+  - internal/provider/types/shm.go
   - internal/provider/types/sidecar.go
   - internal/provider/types/spec.go
+  - internal/provider/types/standard_webhooks_plugin_config.go
+  - internal/provider/types/statsd_advanced_plugin_config.go
+  - internal/provider/types/statsd_plugin_config.go
+  - internal/provider/types/statsd_plugin_metrics.go
   - internal/provider/types/status.go
+  - internal/provider/types/storage_config.go
   - internal/provider/types/subject_alt_names.go
   - internal/provider/types/success_rate.go
+  - internal/provider/types/syslog_plugin_config.go
   - internal/provider/types/tags.go
+  - internal/provider/types/targets.go
   - internal/provider/types/tcp.go
+  - internal/provider/types/tcp_log_plugin_config.go
   - internal/provider/types/tcp_logging_backend_config.go
+  - internal/provider/types/templates.go
+  - internal/provider/types/text.go
   - internal/provider/types/tls.go
+  - internal/provider/types/tls_handshake_modifier_plugin_config.go
+  - internal/provider/types/tls_metadata_headers_plugin_config.go
   - internal/provider/types/tracing.go
+  - internal/provider/types/transform.go
+  - internal/provider/types/transit_gateway_dns_config.go
+  - internal/provider/types/udp_log_plugin_config.go
+  - internal/provider/types/unhealthy.go
+  - internal/provider/types/upstream_healthy.go
+  - internal/provider/types/upstream_oauth_plugin_config.go
+  - internal/provider/types/upstream_timeout_plugin_config.go
+  - internal/provider/types/upstream_unhealthy.go
   - internal/provider/types/url_rewrite.go
+  - internal/provider/types/v2_strategies.go
+  - internal/provider/types/vault_auth_plugin_config.go
   - internal/provider/types/vault_certificate_authority_config.go
+  - internal/provider/types/vectordb.go
   - internal/provider/types/verification.go
-  - internal/provider/types/version.go
   - internal/provider/types/vip.go
   - internal/provider/types/virtual_host.go
+  - internal/provider/types/websocket_size_limit_plugin_config.go
+  - internal/provider/types/websocket_validator_plugin_client.go
+  - internal/provider/types/websocket_validator_plugin_config.go
+  - internal/provider/types/xml_threat_protection_plugin_config.go
   - internal/provider/types/zipkin.go
+  - internal/provider/types/zipkin_plugin_config.go
   - internal/provider/types/zipkin_tracing_backend_config.go
   - internal/provider/utils.go
   - internal/sdk/.gitattributes
+  - internal/sdk/acls.go
+  - internal/sdk/apikeys.go
+  - internal/sdk/apiproductdocumentation.go
+  - internal/sdk/apiproducts.go
+  - internal/sdk/apiproductversions.go
+  - internal/sdk/apiproductversionspecification.go
+  - internal/sdk/appauthstrategies.go
+  - internal/sdk/auditlogs.go
+  - internal/sdk/basicauthcredentials.go
+  - internal/sdk/cacertificates.go
+  - internal/sdk/certificates.go
+  - internal/sdk/cloudgateways.go
+  - internal/sdk/configstores.go
+  - internal/sdk/consumergroups.go
+  - internal/sdk/consumers.go
+  - internal/sdk/controlplanegroups.go
+  - internal/sdk/controlplanes.go
+  - internal/sdk/custompluginschemas.go
+  - internal/sdk/dpcertificates.go
+  - internal/sdk/hmacauthcredentials.go
   - internal/sdk/hostnamegenerator.go
   - internal/sdk/internal/hooks/hooks.go
   - internal/sdk/internal/utils/contenttype.go
@@ -569,6 +1801,9 @@ generatedFiles:
   - internal/sdk/internal/utils/retries.go
   - internal/sdk/internal/utils/security.go
   - internal/sdk/internal/utils/utils.go
+  - internal/sdk/jwts.go
+  - internal/sdk/keys.go
+  - internal/sdk/keysets.go
   - internal/sdk/konnect.go
   - internal/sdk/mesh.go
   - internal/sdk/meshaccesslog.go
@@ -594,8 +1829,81 @@ generatedFiles:
   - internal/sdk/meshtrace.go
   - internal/sdk/meshtrafficpermission.go
   - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/models/operations/addconsumertogroup.go
+  - internal/sdk/models/operations/addusertoteam.go
+  - internal/sdk/models/operations/createaclplugin.go
+  - internal/sdk/models/operations/createaclwithconsumer.go
+  - internal/sdk/models/operations/createacmeplugin.go
+  - internal/sdk/models/operations/createaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/createaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/createaipromptguardplugin.go
+  - internal/sdk/models/operations/createaiprompttemplateplugin.go
+  - internal/sdk/models/operations/createaiproxyadvancedplugin.go
+  - internal/sdk/models/operations/createaiproxyplugin.go
+  - internal/sdk/models/operations/createairatelimitingadvancedplugin.go
+  - internal/sdk/models/operations/createairequesttransformerplugin.go
+  - internal/sdk/models/operations/createairesponsetransformerplugin.go
+  - internal/sdk/models/operations/createaisemanticcacheplugin.go
+  - internal/sdk/models/operations/createaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/createapiproduct.go
+  - internal/sdk/models/operations/createapiproductdocument.go
+  - internal/sdk/models/operations/createapiproductversion.go
+  - internal/sdk/models/operations/createapiproductversionspec.go
+  - internal/sdk/models/operations/createappauthstrategy.go
+  - internal/sdk/models/operations/createauditlogdestination.go
+  - internal/sdk/models/operations/createawslambdaplugin.go
+  - internal/sdk/models/operations/createazurefunctionsplugin.go
+  - internal/sdk/models/operations/createbasicauthplugin.go
+  - internal/sdk/models/operations/createbasicauthwithconsumer.go
+  - internal/sdk/models/operations/createbotdetectionplugin.go
+  - internal/sdk/models/operations/createcacertificate.go
+  - internal/sdk/models/operations/createcanaryplugin.go
+  - internal/sdk/models/operations/createcertificate.go
+  - internal/sdk/models/operations/createconfigstore.go
+  - internal/sdk/models/operations/createconfiguration.go
+  - internal/sdk/models/operations/createconfluentplugin.go
+  - internal/sdk/models/operations/createconsumer.go
+  - internal/sdk/models/operations/createconsumergroup.go
+  - internal/sdk/models/operations/createcontrolplane.go
+  - internal/sdk/models/operations/createcorrelationidplugin.go
+  - internal/sdk/models/operations/createcorsplugin.go
   - internal/sdk/models/operations/createcp.go
+  - internal/sdk/models/operations/createcustomdomains.go
+  - internal/sdk/models/operations/createdatadogplugin.go
+  - internal/sdk/models/operations/createdatadogtracingplugin.go
+  - internal/sdk/models/operations/createdataplanecertificate.go
+  - internal/sdk/models/operations/createdegraphqlplugin.go
+  - internal/sdk/models/operations/createexittransformerplugin.go
+  - internal/sdk/models/operations/createfilelogplugin.go
+  - internal/sdk/models/operations/createforwardproxyplugin.go
+  - internal/sdk/models/operations/creategraphqlproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/creategraphqlratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/creategrpcgatewayplugin.go
+  - internal/sdk/models/operations/creategrpcwebplugin.go
+  - internal/sdk/models/operations/createheadercertauthplugin.go
+  - internal/sdk/models/operations/createhmacauthplugin.go
+  - internal/sdk/models/operations/createhmacauthwithconsumer.go
   - internal/sdk/models/operations/createhostnamegenerator.go
+  - internal/sdk/models/operations/createhttplogplugin.go
+  - internal/sdk/models/operations/createinjectionprotectionplugin.go
+  - internal/sdk/models/operations/createiprestrictionplugin.go
+  - internal/sdk/models/operations/createjqplugin.go
+  - internal/sdk/models/operations/createjsonthreatprotectionplugin.go
+  - internal/sdk/models/operations/createjwedecryptplugin.go
+  - internal/sdk/models/operations/createjwtplugin.go
+  - internal/sdk/models/operations/createjwtsignerplugin.go
+  - internal/sdk/models/operations/createjwtwithconsumer.go
+  - internal/sdk/models/operations/createkafkalogplugin.go
+  - internal/sdk/models/operations/createkafkaupstreamplugin.go
+  - internal/sdk/models/operations/createkey.go
+  - internal/sdk/models/operations/createkeyauthencplugin.go
+  - internal/sdk/models/operations/createkeyauthplugin.go
+  - internal/sdk/models/operations/createkeyauthwithconsumer.go
+  - internal/sdk/models/operations/createkeyset.go
+  - internal/sdk/models/operations/createkonnectapplicationauthplugin.go
+  - internal/sdk/models/operations/createldapauthadvancedplugin.go
+  - internal/sdk/models/operations/createldapauthplugin.go
+  - internal/sdk/models/operations/createlogglyplugin.go
   - internal/sdk/models/operations/createmeshaccesslog.go
   - internal/sdk/models/operations/createmeshcircuitbreaker.go
   - internal/sdk/models/operations/createmeshexternalservice.go
@@ -618,7 +1926,138 @@ generatedFiles:
   - internal/sdk/models/operations/createmeshtls.go
   - internal/sdk/models/operations/createmeshtrace.go
   - internal/sdk/models/operations/createmeshtrafficpermission.go
+  - internal/sdk/models/operations/createmockingplugin.go
+  - internal/sdk/models/operations/createmtlsauthplugin.go
+  - internal/sdk/models/operations/createmtlsauthwithconsumer.go
+  - internal/sdk/models/operations/createnetwork.go
+  - internal/sdk/models/operations/createoasvalidationplugin.go
+  - internal/sdk/models/operations/createoauth2introspectionplugin.go
+  - internal/sdk/models/operations/createoauth2plugin.go
+  - internal/sdk/models/operations/createopaplugin.go
+  - internal/sdk/models/operations/createopenidconnectplugin.go
+  - internal/sdk/models/operations/createopentelemetryplugin.go
+  - internal/sdk/models/operations/createplugin.go
+  - internal/sdk/models/operations/createpluginschemas.go
+  - internal/sdk/models/operations/createportal.go
+  - internal/sdk/models/operations/createportalteam.go
+  - internal/sdk/models/operations/createpostfunctionplugin.go
+  - internal/sdk/models/operations/createprefunctionplugin.go
+  - internal/sdk/models/operations/createprometheusplugin.go
+  - internal/sdk/models/operations/createproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/createproxycacheplugin.go
+  - internal/sdk/models/operations/createratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/createratelimitingplugin.go
+  - internal/sdk/models/operations/createredirectplugin.go
+  - internal/sdk/models/operations/createrequestsizelimitingplugin.go
+  - internal/sdk/models/operations/createrequestterminationplugin.go
+  - internal/sdk/models/operations/createrequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/createrequesttransformerplugin.go
+  - internal/sdk/models/operations/createrequestvalidatorplugin.go
+  - internal/sdk/models/operations/createresponseratelimitingplugin.go
+  - internal/sdk/models/operations/createresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/createresponsetransformerplugin.go
+  - internal/sdk/models/operations/createroute.go
+  - internal/sdk/models/operations/createroutebyheaderplugin.go
+  - internal/sdk/models/operations/createrouterouteexpression.go
+  - internal/sdk/models/operations/createroutetransformeradvancedplugin.go
+  - internal/sdk/models/operations/createsamlplugin.go
+  - internal/sdk/models/operations/createserverlesscloudgateway.go
+  - internal/sdk/models/operations/createservice.go
+  - internal/sdk/models/operations/createserviceprotectionplugin.go
+  - internal/sdk/models/operations/createsessionplugin.go
+  - internal/sdk/models/operations/createsni.go
+  - internal/sdk/models/operations/createstandardwebhooksplugin.go
+  - internal/sdk/models/operations/createstatsdadvancedplugin.go
+  - internal/sdk/models/operations/createstatsdplugin.go
+  - internal/sdk/models/operations/createsyslogplugin.go
+  - internal/sdk/models/operations/createtargetwithupstream.go
+  - internal/sdk/models/operations/createtcplogplugin.go
+  - internal/sdk/models/operations/createteam.go
+  - internal/sdk/models/operations/createtlshandshakemodifierplugin.go
+  - internal/sdk/models/operations/createtlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/createtransitgateway.go
+  - internal/sdk/models/operations/createudplogplugin.go
+  - internal/sdk/models/operations/createupstream.go
+  - internal/sdk/models/operations/createupstreamoauthplugin.go
+  - internal/sdk/models/operations/createupstreamtimeoutplugin.go
+  - internal/sdk/models/operations/createvault.go
+  - internal/sdk/models/operations/createvaultauthplugin.go
+  - internal/sdk/models/operations/createwebsocketsizelimitplugin.go
+  - internal/sdk/models/operations/createwebsocketvalidatorplugin.go
+  - internal/sdk/models/operations/createxmlthreatprotectionplugin.go
+  - internal/sdk/models/operations/createzipkinplugin.go
+  - internal/sdk/models/operations/deleteaclplugin.go
+  - internal/sdk/models/operations/deleteaclwithconsumer.go
+  - internal/sdk/models/operations/deleteacmeplugin.go
+  - internal/sdk/models/operations/deleteaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/deleteaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/deleteaipromptguardplugin.go
+  - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
+  - internal/sdk/models/operations/deleteaiproxyadvancedplugin.go
+  - internal/sdk/models/operations/deleteaiproxyplugin.go
+  - internal/sdk/models/operations/deleteairatelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deleteairequesttransformerplugin.go
+  - internal/sdk/models/operations/deleteairesponsetransformerplugin.go
+  - internal/sdk/models/operations/deleteaisemanticcacheplugin.go
+  - internal/sdk/models/operations/deleteaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/deleteapiproduct.go
+  - internal/sdk/models/operations/deleteapiproductdocument.go
+  - internal/sdk/models/operations/deleteapiproductversion.go
+  - internal/sdk/models/operations/deleteapiproductversionspec.go
+  - internal/sdk/models/operations/deleteappauthstrategy.go
+  - internal/sdk/models/operations/deleteauditlogdestination.go
+  - internal/sdk/models/operations/deleteauditlogwebhook.go
+  - internal/sdk/models/operations/deleteawslambdaplugin.go
+  - internal/sdk/models/operations/deleteazurefunctionsplugin.go
+  - internal/sdk/models/operations/deletebasicauthplugin.go
+  - internal/sdk/models/operations/deletebasicauthwithconsumer.go
+  - internal/sdk/models/operations/deletebotdetectionplugin.go
+  - internal/sdk/models/operations/deletecacertificate.go
+  - internal/sdk/models/operations/deletecanaryplugin.go
+  - internal/sdk/models/operations/deletecertificate.go
+  - internal/sdk/models/operations/deleteconfigstore.go
+  - internal/sdk/models/operations/deleteconfluentplugin.go
+  - internal/sdk/models/operations/deleteconsumer.go
+  - internal/sdk/models/operations/deleteconsumergroup.go
+  - internal/sdk/models/operations/deletecontrolplane.go
+  - internal/sdk/models/operations/deletecorrelationidplugin.go
+  - internal/sdk/models/operations/deletecorsplugin.go
+  - internal/sdk/models/operations/deletecustomdomain.go
+  - internal/sdk/models/operations/deletedatadogplugin.go
+  - internal/sdk/models/operations/deletedatadogtracingplugin.go
+  - internal/sdk/models/operations/deletedataplanecertificate.go
+  - internal/sdk/models/operations/deletedegraphqlplugin.go
+  - internal/sdk/models/operations/deleteexittransformerplugin.go
+  - internal/sdk/models/operations/deletefilelogplugin.go
+  - internal/sdk/models/operations/deleteforwardproxyplugin.go
+  - internal/sdk/models/operations/deletegraphqlproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/deletegraphqlratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deletegrpcgatewayplugin.go
+  - internal/sdk/models/operations/deletegrpcwebplugin.go
+  - internal/sdk/models/operations/deleteheadercertauthplugin.go
+  - internal/sdk/models/operations/deletehmacauthplugin.go
+  - internal/sdk/models/operations/deletehmacauthwithconsumer.go
   - internal/sdk/models/operations/deletehostnamegenerator.go
+  - internal/sdk/models/operations/deletehttplogplugin.go
+  - internal/sdk/models/operations/deleteinjectionprotectionplugin.go
+  - internal/sdk/models/operations/deleteiprestrictionplugin.go
+  - internal/sdk/models/operations/deletejqplugin.go
+  - internal/sdk/models/operations/deletejsonthreatprotectionplugin.go
+  - internal/sdk/models/operations/deletejwedecryptplugin.go
+  - internal/sdk/models/operations/deletejwtplugin.go
+  - internal/sdk/models/operations/deletejwtsignerplugin.go
+  - internal/sdk/models/operations/deletejwtwithconsumer.go
+  - internal/sdk/models/operations/deletekafkalogplugin.go
+  - internal/sdk/models/operations/deletekafkaupstreamplugin.go
+  - internal/sdk/models/operations/deletekey.go
+  - internal/sdk/models/operations/deletekeyauthencplugin.go
+  - internal/sdk/models/operations/deletekeyauthplugin.go
+  - internal/sdk/models/operations/deletekeyauthwithconsumer.go
+  - internal/sdk/models/operations/deletekeyset.go
+  - internal/sdk/models/operations/deletekonnectapplicationauthplugin.go
+  - internal/sdk/models/operations/deleteldapauthadvancedplugin.go
+  - internal/sdk/models/operations/deleteldapauthplugin.go
+  - internal/sdk/models/operations/deletelogglyplugin.go
   - internal/sdk/models/operations/deletemesh.go
   - internal/sdk/models/operations/deletemeshaccesslog.go
   - internal/sdk/models/operations/deletemeshcircuitbreaker.go
@@ -643,8 +2082,146 @@ generatedFiles:
   - internal/sdk/models/operations/deletemeshtls.go
   - internal/sdk/models/operations/deletemeshtrace.go
   - internal/sdk/models/operations/deletemeshtrafficpermission.go
+  - internal/sdk/models/operations/deletemockingplugin.go
+  - internal/sdk/models/operations/deletemtlsauthplugin.go
+  - internal/sdk/models/operations/deletemtlsauthwithconsumer.go
+  - internal/sdk/models/operations/deletenetwork.go
+  - internal/sdk/models/operations/deleteoasvalidationplugin.go
+  - internal/sdk/models/operations/deleteoauth2introspectionplugin.go
+  - internal/sdk/models/operations/deleteoauth2plugin.go
+  - internal/sdk/models/operations/deleteopaplugin.go
+  - internal/sdk/models/operations/deleteopenidconnectplugin.go
+  - internal/sdk/models/operations/deleteopentelemetryplugin.go
+  - internal/sdk/models/operations/deleteplugin.go
+  - internal/sdk/models/operations/deletepluginschemas.go
+  - internal/sdk/models/operations/deleteportal.go
+  - internal/sdk/models/operations/deleteportalproductversion.go
+  - internal/sdk/models/operations/deleteportalteam.go
+  - internal/sdk/models/operations/deletepostfunctionplugin.go
+  - internal/sdk/models/operations/deleteprefunctionplugin.go
+  - internal/sdk/models/operations/deleteprometheusplugin.go
+  - internal/sdk/models/operations/deleteproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/deleteproxycacheplugin.go
+  - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/deleteratelimitingplugin.go
+  - internal/sdk/models/operations/deleteredirectplugin.go
+  - internal/sdk/models/operations/deleterequestsizelimitingplugin.go
+  - internal/sdk/models/operations/deleterequestterminationplugin.go
+  - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleterequesttransformerplugin.go
+  - internal/sdk/models/operations/deleterequestvalidatorplugin.go
+  - internal/sdk/models/operations/deleteresponseratelimitingplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/deleteresponsetransformerplugin.go
+  - internal/sdk/models/operations/deleteroute.go
+  - internal/sdk/models/operations/deleteroutebyheaderplugin.go
+  - internal/sdk/models/operations/deleterouterouteexpression.go
+  - internal/sdk/models/operations/deleteroutetransformeradvancedplugin.go
+  - internal/sdk/models/operations/deletesamlplugin.go
+  - internal/sdk/models/operations/deleteserverlesscloudgateway.go
+  - internal/sdk/models/operations/deleteservice.go
+  - internal/sdk/models/operations/deleteserviceprotectionplugin.go
+  - internal/sdk/models/operations/deletesessionplugin.go
+  - internal/sdk/models/operations/deletesni.go
+  - internal/sdk/models/operations/deletestandardwebhooksplugin.go
+  - internal/sdk/models/operations/deletestatsdadvancedplugin.go
+  - internal/sdk/models/operations/deletestatsdplugin.go
+  - internal/sdk/models/operations/deletesyslogplugin.go
+  - internal/sdk/models/operations/deletesystemaccountsaccountidassignedrolesroleid.go
+  - internal/sdk/models/operations/deletesystemaccountsid.go
+  - internal/sdk/models/operations/deletesystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/deletetargetwithupstream.go
+  - internal/sdk/models/operations/deletetcplogplugin.go
+  - internal/sdk/models/operations/deleteteam.go
+  - internal/sdk/models/operations/deleteteamsteamidsystemaccountsaccountid.go
+  - internal/sdk/models/operations/deletetlshandshakemodifierplugin.go
+  - internal/sdk/models/operations/deletetlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/deletetransitgateway.go
+  - internal/sdk/models/operations/deleteudplogplugin.go
+  - internal/sdk/models/operations/deleteupstream.go
+  - internal/sdk/models/operations/deleteupstreamoauthplugin.go
+  - internal/sdk/models/operations/deleteupstreamtimeoutplugin.go
+  - internal/sdk/models/operations/deletevault.go
+  - internal/sdk/models/operations/deletevaultauthplugin.go
+  - internal/sdk/models/operations/deletewebsocketsizelimitplugin.go
+  - internal/sdk/models/operations/deletewebsocketvalidatorplugin.go
+  - internal/sdk/models/operations/deletexmlthreatprotectionplugin.go
+  - internal/sdk/models/operations/deletezipkinplugin.go
+  - internal/sdk/models/operations/fetchpluginschema.go
+  - internal/sdk/models/operations/getaclplugin.go
+  - internal/sdk/models/operations/getaclwithconsumer.go
+  - internal/sdk/models/operations/getacmeplugin.go
+  - internal/sdk/models/operations/getaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/getaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/getaipromptguardplugin.go
+  - internal/sdk/models/operations/getaiprompttemplateplugin.go
+  - internal/sdk/models/operations/getaiproxyadvancedplugin.go
+  - internal/sdk/models/operations/getaiproxyplugin.go
+  - internal/sdk/models/operations/getairatelimitingadvancedplugin.go
+  - internal/sdk/models/operations/getairequesttransformerplugin.go
+  - internal/sdk/models/operations/getairesponsetransformerplugin.go
+  - internal/sdk/models/operations/getaisemanticcacheplugin.go
+  - internal/sdk/models/operations/getaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/getapiproduct.go
+  - internal/sdk/models/operations/getapiproductdocument.go
+  - internal/sdk/models/operations/getapiproductversion.go
+  - internal/sdk/models/operations/getapiproductversionspec.go
+  - internal/sdk/models/operations/getappauthstrategy.go
+  - internal/sdk/models/operations/getauditlogdestination.go
+  - internal/sdk/models/operations/getauditlogwebhook.go
+  - internal/sdk/models/operations/getawslambdaplugin.go
+  - internal/sdk/models/operations/getazurefunctionsplugin.go
+  - internal/sdk/models/operations/getbasicauthplugin.go
+  - internal/sdk/models/operations/getbasicauthwithconsumer.go
+  - internal/sdk/models/operations/getbotdetectionplugin.go
+  - internal/sdk/models/operations/getcacertificate.go
+  - internal/sdk/models/operations/getcanaryplugin.go
+  - internal/sdk/models/operations/getcertificate.go
+  - internal/sdk/models/operations/getconfigstore.go
+  - internal/sdk/models/operations/getconfiguration.go
+  - internal/sdk/models/operations/getconfluentplugin.go
+  - internal/sdk/models/operations/getconsumer.go
+  - internal/sdk/models/operations/getconsumergroup.go
+  - internal/sdk/models/operations/getcontrolplane.go
+  - internal/sdk/models/operations/getcorrelationidplugin.go
+  - internal/sdk/models/operations/getcorsplugin.go
+  - internal/sdk/models/operations/getcustomdomain.go
+  - internal/sdk/models/operations/getdatadogplugin.go
+  - internal/sdk/models/operations/getdatadogtracingplugin.go
+  - internal/sdk/models/operations/getdataplanecertificate.go
+  - internal/sdk/models/operations/getdegraphqlplugin.go
+  - internal/sdk/models/operations/getexittransformerplugin.go
+  - internal/sdk/models/operations/getfilelogplugin.go
+  - internal/sdk/models/operations/getforwardproxyplugin.go
+  - internal/sdk/models/operations/getgraphqlproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/getgraphqlratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/getgrpcgatewayplugin.go
+  - internal/sdk/models/operations/getgrpcwebplugin.go
+  - internal/sdk/models/operations/getheadercertauthplugin.go
+  - internal/sdk/models/operations/gethmacauthplugin.go
+  - internal/sdk/models/operations/gethmacauthwithconsumer.go
   - internal/sdk/models/operations/gethostnamegenerator.go
   - internal/sdk/models/operations/gethostnamegeneratorlist.go
+  - internal/sdk/models/operations/gethttplogplugin.go
+  - internal/sdk/models/operations/getinjectionprotectionplugin.go
+  - internal/sdk/models/operations/getiprestrictionplugin.go
+  - internal/sdk/models/operations/getjqplugin.go
+  - internal/sdk/models/operations/getjsonthreatprotectionplugin.go
+  - internal/sdk/models/operations/getjwedecryptplugin.go
+  - internal/sdk/models/operations/getjwtplugin.go
+  - internal/sdk/models/operations/getjwtsignerplugin.go
+  - internal/sdk/models/operations/getjwtwithconsumer.go
+  - internal/sdk/models/operations/getkafkalogplugin.go
+  - internal/sdk/models/operations/getkafkaupstreamplugin.go
+  - internal/sdk/models/operations/getkey.go
+  - internal/sdk/models/operations/getkeyauthencplugin.go
+  - internal/sdk/models/operations/getkeyauthplugin.go
+  - internal/sdk/models/operations/getkeyauthwithconsumer.go
+  - internal/sdk/models/operations/getkeyset.go
+  - internal/sdk/models/operations/getkonnectapplicationauthplugin.go
+  - internal/sdk/models/operations/getldapauthadvancedplugin.go
+  - internal/sdk/models/operations/getldapauthplugin.go
+  - internal/sdk/models/operations/getlogglyplugin.go
   - internal/sdk/models/operations/getmesh.go
   - internal/sdk/models/operations/getmeshaccesslog.go
   - internal/sdk/models/operations/getmeshaccessloglist.go
@@ -692,9 +2269,146 @@ generatedFiles:
   - internal/sdk/models/operations/getmeshtracelist.go
   - internal/sdk/models/operations/getmeshtrafficpermission.go
   - internal/sdk/models/operations/getmeshtrafficpermissionlist.go
+  - internal/sdk/models/operations/getmockingplugin.go
+  - internal/sdk/models/operations/getmtlsauthplugin.go
+  - internal/sdk/models/operations/getmtlsauthwithconsumer.go
+  - internal/sdk/models/operations/getnetwork.go
+  - internal/sdk/models/operations/getoasvalidationplugin.go
+  - internal/sdk/models/operations/getoauth2introspectionplugin.go
+  - internal/sdk/models/operations/getoauth2plugin.go
+  - internal/sdk/models/operations/getopaplugin.go
+  - internal/sdk/models/operations/getopenidconnectplugin.go
+  - internal/sdk/models/operations/getopentelemetryplugin.go
+  - internal/sdk/models/operations/getplugin.go
+  - internal/sdk/models/operations/getpluginschema.go
+  - internal/sdk/models/operations/getportalappearance.go
+  - internal/sdk/models/operations/getportalauthenticationsettings.go
+  - internal/sdk/models/operations/getportalproductversion.go
+  - internal/sdk/models/operations/getportalteam.go
+  - internal/sdk/models/operations/getpostfunctionplugin.go
+  - internal/sdk/models/operations/getprefunctionplugin.go
+  - internal/sdk/models/operations/getprometheusplugin.go
+  - internal/sdk/models/operations/getproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/getproxycacheplugin.go
+  - internal/sdk/models/operations/getratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/getratelimitingplugin.go
+  - internal/sdk/models/operations/getredirectplugin.go
+  - internal/sdk/models/operations/getrequestsizelimitingplugin.go
+  - internal/sdk/models/operations/getrequestterminationplugin.go
+  - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/getrequesttransformerplugin.go
+  - internal/sdk/models/operations/getrequestvalidatorplugin.go
+  - internal/sdk/models/operations/getresponseratelimitingplugin.go
+  - internal/sdk/models/operations/getresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/getresponsetransformerplugin.go
+  - internal/sdk/models/operations/getroute.go
+  - internal/sdk/models/operations/getroutebyheaderplugin.go
+  - internal/sdk/models/operations/getrouterouteexpression.go
+  - internal/sdk/models/operations/getroutetransformeradvancedplugin.go
+  - internal/sdk/models/operations/getsamlplugin.go
+  - internal/sdk/models/operations/getserverlesscloudgateway.go
+  - internal/sdk/models/operations/getservice.go
+  - internal/sdk/models/operations/getserviceprotectionplugin.go
+  - internal/sdk/models/operations/getsessionplugin.go
+  - internal/sdk/models/operations/getsni.go
+  - internal/sdk/models/operations/getstandardwebhooksplugin.go
+  - internal/sdk/models/operations/getstatsdadvancedplugin.go
+  - internal/sdk/models/operations/getstatsdplugin.go
+  - internal/sdk/models/operations/getsyslogplugin.go
+  - internal/sdk/models/operations/getsystemaccountsid.go
+  - internal/sdk/models/operations/getsystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/gettargetwithupstream.go
+  - internal/sdk/models/operations/gettcplogplugin.go
+  - internal/sdk/models/operations/getteam.go
+  - internal/sdk/models/operations/gettlshandshakemodifierplugin.go
+  - internal/sdk/models/operations/gettlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/gettransitgateway.go
+  - internal/sdk/models/operations/getudplogplugin.go
+  - internal/sdk/models/operations/getupstream.go
+  - internal/sdk/models/operations/getupstreamoauthplugin.go
+  - internal/sdk/models/operations/getupstreamtimeoutplugin.go
+  - internal/sdk/models/operations/getvault.go
+  - internal/sdk/models/operations/getvaultauthplugin.go
+  - internal/sdk/models/operations/getwebsocketsizelimitplugin.go
+  - internal/sdk/models/operations/getwebsocketvalidatorplugin.go
+  - internal/sdk/models/operations/getxmlthreatprotectionplugin.go
+  - internal/sdk/models/operations/getzipkinplugin.go
+  - internal/sdk/models/operations/listportals.go
+  - internal/sdk/models/operations/listprovideraccounts.go
   - internal/sdk/models/operations/options.go
+  - internal/sdk/models/operations/patchsystemaccountsid.go
+  - internal/sdk/models/operations/patchsystemaccountsidaccesstokensid.go
+  - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsadd.go
+  - internal/sdk/models/operations/postcontrolplanesidgroupmembershipsremove.go
+  - internal/sdk/models/operations/postsystemaccounts.go
+  - internal/sdk/models/operations/postsystemaccountsaccountidassignedroles.go
+  - internal/sdk/models/operations/postsystemaccountsidaccesstokens.go
+  - internal/sdk/models/operations/postteamsteamidsystemaccounts.go
   - internal/sdk/models/operations/putmesh.go
+  - internal/sdk/models/operations/removeconsumerfromgroup.go
+  - internal/sdk/models/operations/removeuserfromteam.go
+  - internal/sdk/models/operations/replaceportalproductversion.go
+  - internal/sdk/models/operations/teamsassignrole.go
+  - internal/sdk/models/operations/teamsremoverole.go
+  - internal/sdk/models/operations/updateaclplugin.go
+  - internal/sdk/models/operations/updateacmeplugin.go
+  - internal/sdk/models/operations/updateaiazurecontentsafetyplugin.go
+  - internal/sdk/models/operations/updateaipromptdecoratorplugin.go
+  - internal/sdk/models/operations/updateaipromptguardplugin.go
+  - internal/sdk/models/operations/updateaiprompttemplateplugin.go
+  - internal/sdk/models/operations/updateaiproxyadvancedplugin.go
+  - internal/sdk/models/operations/updateaiproxyplugin.go
+  - internal/sdk/models/operations/updateairatelimitingadvancedplugin.go
+  - internal/sdk/models/operations/updateairequesttransformerplugin.go
+  - internal/sdk/models/operations/updateairesponsetransformerplugin.go
+  - internal/sdk/models/operations/updateaisemanticcacheplugin.go
+  - internal/sdk/models/operations/updateaisemanticpromptguardplugin.go
+  - internal/sdk/models/operations/updateapiproduct.go
+  - internal/sdk/models/operations/updateapiproductdocument.go
+  - internal/sdk/models/operations/updateapiproductversion.go
+  - internal/sdk/models/operations/updateapiproductversionspec.go
+  - internal/sdk/models/operations/updateappauthstrategy.go
+  - internal/sdk/models/operations/updateauditlogdestination.go
+  - internal/sdk/models/operations/updateauditlogwebhook.go
+  - internal/sdk/models/operations/updateawslambdaplugin.go
+  - internal/sdk/models/operations/updateazurefunctionsplugin.go
+  - internal/sdk/models/operations/updatebasicauthplugin.go
+  - internal/sdk/models/operations/updatebotdetectionplugin.go
+  - internal/sdk/models/operations/updatecanaryplugin.go
+  - internal/sdk/models/operations/updateconfigstore.go
+  - internal/sdk/models/operations/updateconfluentplugin.go
+  - internal/sdk/models/operations/updatecontrolplane.go
+  - internal/sdk/models/operations/updatecorrelationidplugin.go
+  - internal/sdk/models/operations/updatecorsplugin.go
+  - internal/sdk/models/operations/updatedatadogplugin.go
+  - internal/sdk/models/operations/updatedatadogtracingplugin.go
+  - internal/sdk/models/operations/updatedegraphqlplugin.go
+  - internal/sdk/models/operations/updateexittransformerplugin.go
+  - internal/sdk/models/operations/updatefilelogplugin.go
+  - internal/sdk/models/operations/updateforwardproxyplugin.go
+  - internal/sdk/models/operations/updategraphqlproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/updategraphqlratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/updategrpcgatewayplugin.go
+  - internal/sdk/models/operations/updategrpcwebplugin.go
+  - internal/sdk/models/operations/updateheadercertauthplugin.go
+  - internal/sdk/models/operations/updatehmacauthplugin.go
   - internal/sdk/models/operations/updatehostnamegenerator.go
+  - internal/sdk/models/operations/updatehttplogplugin.go
+  - internal/sdk/models/operations/updateinjectionprotectionplugin.go
+  - internal/sdk/models/operations/updateiprestrictionplugin.go
+  - internal/sdk/models/operations/updatejqplugin.go
+  - internal/sdk/models/operations/updatejsonthreatprotectionplugin.go
+  - internal/sdk/models/operations/updatejwedecryptplugin.go
+  - internal/sdk/models/operations/updatejwtplugin.go
+  - internal/sdk/models/operations/updatejwtsignerplugin.go
+  - internal/sdk/models/operations/updatekafkalogplugin.go
+  - internal/sdk/models/operations/updatekafkaupstreamplugin.go
+  - internal/sdk/models/operations/updatekeyauthencplugin.go
+  - internal/sdk/models/operations/updatekeyauthplugin.go
+  - internal/sdk/models/operations/updatekonnectapplicationauthplugin.go
+  - internal/sdk/models/operations/updateldapauthadvancedplugin.go
+  - internal/sdk/models/operations/updateldapauthplugin.go
+  - internal/sdk/models/operations/updatelogglyplugin.go
   - internal/sdk/models/operations/updatemeshaccesslog.go
   - internal/sdk/models/operations/updatemeshcircuitbreaker.go
   - internal/sdk/models/operations/updatemeshcontrolplane.go
@@ -718,13 +2432,207 @@ generatedFiles:
   - internal/sdk/models/operations/updatemeshtls.go
   - internal/sdk/models/operations/updatemeshtrace.go
   - internal/sdk/models/operations/updatemeshtrafficpermission.go
+  - internal/sdk/models/operations/updatemockingplugin.go
+  - internal/sdk/models/operations/updatemtlsauthplugin.go
+  - internal/sdk/models/operations/updatenetwork.go
+  - internal/sdk/models/operations/updateoasvalidationplugin.go
+  - internal/sdk/models/operations/updateoauth2introspectionplugin.go
+  - internal/sdk/models/operations/updateoauth2plugin.go
+  - internal/sdk/models/operations/updateopaplugin.go
+  - internal/sdk/models/operations/updateopenidconnectplugin.go
+  - internal/sdk/models/operations/updateopentelemetryplugin.go
+  - internal/sdk/models/operations/updatepluginschemas.go
+  - internal/sdk/models/operations/updateportal.go
+  - internal/sdk/models/operations/updateportalappearance.go
+  - internal/sdk/models/operations/updateportalauthenticationsettings.go
+  - internal/sdk/models/operations/updateportalteam.go
+  - internal/sdk/models/operations/updatepostfunctionplugin.go
+  - internal/sdk/models/operations/updateprefunctionplugin.go
+  - internal/sdk/models/operations/updateprometheusplugin.go
+  - internal/sdk/models/operations/updateproxycacheadvancedplugin.go
+  - internal/sdk/models/operations/updateproxycacheplugin.go
+  - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
+  - internal/sdk/models/operations/updateratelimitingplugin.go
+  - internal/sdk/models/operations/updateredirectplugin.go
+  - internal/sdk/models/operations/updaterequestsizelimitingplugin.go
+  - internal/sdk/models/operations/updaterequestterminationplugin.go
+  - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
+  - internal/sdk/models/operations/updaterequesttransformerplugin.go
+  - internal/sdk/models/operations/updaterequestvalidatorplugin.go
+  - internal/sdk/models/operations/updateresponseratelimitingplugin.go
+  - internal/sdk/models/operations/updateresponsetransformeradvancedplugin.go
+  - internal/sdk/models/operations/updateresponsetransformerplugin.go
+  - internal/sdk/models/operations/updateroutebyheaderplugin.go
+  - internal/sdk/models/operations/updateroutetransformeradvancedplugin.go
+  - internal/sdk/models/operations/updatesamlplugin.go
+  - internal/sdk/models/operations/updateserviceprotectionplugin.go
+  - internal/sdk/models/operations/updatesessionplugin.go
+  - internal/sdk/models/operations/updatestandardwebhooksplugin.go
+  - internal/sdk/models/operations/updatestatsdadvancedplugin.go
+  - internal/sdk/models/operations/updatestatsdplugin.go
+  - internal/sdk/models/operations/updatesyslogplugin.go
+  - internal/sdk/models/operations/updatetcplogplugin.go
+  - internal/sdk/models/operations/updateteam.go
+  - internal/sdk/models/operations/updatetlshandshakemodifierplugin.go
+  - internal/sdk/models/operations/updatetlsmetadataheadersplugin.go
+  - internal/sdk/models/operations/updateudplogplugin.go
+  - internal/sdk/models/operations/updateupstreamoauthplugin.go
+  - internal/sdk/models/operations/updateupstreamtimeoutplugin.go
+  - internal/sdk/models/operations/updatevaultauthplugin.go
+  - internal/sdk/models/operations/updatewebsocketsizelimitplugin.go
+  - internal/sdk/models/operations/updatewebsocketvalidatorplugin.go
+  - internal/sdk/models/operations/updatexmlthreatprotectionplugin.go
+  - internal/sdk/models/operations/updatezipkinplugin.go
+  - internal/sdk/models/operations/upsertcacertificate.go
+  - internal/sdk/models/operations/upsertcertificate.go
+  - internal/sdk/models/operations/upsertconsumer.go
+  - internal/sdk/models/operations/upsertconsumergroup.go
+  - internal/sdk/models/operations/upsertkey.go
+  - internal/sdk/models/operations/upsertkeyset.go
+  - internal/sdk/models/operations/upsertplugin.go
+  - internal/sdk/models/operations/upsertroute.go
+  - internal/sdk/models/operations/upsertrouterouteexpression.go
+  - internal/sdk/models/operations/upsertservice.go
+  - internal/sdk/models/operations/upsertsni.go
+  - internal/sdk/models/operations/upsertupstream.go
+  - internal/sdk/models/operations/upsertvault.go
+  - internal/sdk/models/shared/acl.go
+  - internal/sdk/models/shared/aclplugin.go
+  - internal/sdk/models/shared/aclwithoutparents.go
+  - internal/sdk/models/shared/acmeplugin.go
+  - internal/sdk/models/shared/addsystemaccounttoteam.go
+  - internal/sdk/models/shared/addusertoteam.go
+  - internal/sdk/models/shared/aiazurecontentsafetyplugin.go
+  - internal/sdk/models/shared/aipromptdecoratorplugin.go
+  - internal/sdk/models/shared/aipromptguardplugin.go
+  - internal/sdk/models/shared/aiprompttemplateplugin.go
+  - internal/sdk/models/shared/aiproxyadvancedplugin.go
+  - internal/sdk/models/shared/aiproxyplugin.go
+  - internal/sdk/models/shared/airatelimitingadvancedplugin.go
+  - internal/sdk/models/shared/airequesttransformerplugin.go
+  - internal/sdk/models/shared/airesponsetransformerplugin.go
+  - internal/sdk/models/shared/aisemanticcacheplugin.go
+  - internal/sdk/models/shared/aisemanticpromptguardplugin.go
+  - internal/sdk/models/shared/apiaccess.go
+  - internal/sdk/models/shared/apiproduct.go
+  - internal/sdk/models/shared/apiproductdocument.go
+  - internal/sdk/models/shared/apiproductportal.go
+  - internal/sdk/models/shared/apiproductversion.go
+  - internal/sdk/models/shared/apiproductversionauthstrategy.go
+  - internal/sdk/models/shared/apiproductversionportal.go
+  - internal/sdk/models/shared/apiproductversionpublishstatus.go
+  - internal/sdk/models/shared/apiproductversionspec.go
+  - internal/sdk/models/shared/appauthstrategyconfigkeyauth.go
+  - internal/sdk/models/shared/appauthstrategyconfigopenidconnect.go
+  - internal/sdk/models/shared/appearancecolorvariable.go
+  - internal/sdk/models/shared/appearancefontname.go
+  - internal/sdk/models/shared/appearanceimage.go
+  - internal/sdk/models/shared/appearanceimages.go
+  - internal/sdk/models/shared/appearancethemecolorvariables.go
+  - internal/sdk/models/shared/assignedrole.go
+  - internal/sdk/models/shared/assignrole.go
+  - internal/sdk/models/shared/auditlogdestination.go
+  - internal/sdk/models/shared/auditlogwebhook.go
+  - internal/sdk/models/shared/authstrategy.go
+  - internal/sdk/models/shared/authstrategyclientcredentials.go
+  - internal/sdk/models/shared/authstrategykeyauth.go
+  - internal/sdk/models/shared/authstrategysyncerror.go
+  - internal/sdk/models/shared/awslambdaplugin.go
+  - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awstransitgatewayresponse.go
+  - internal/sdk/models/shared/awsvpcpeeringgatewayattachmentconfig.go
+  - internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go
+  - internal/sdk/models/shared/azurefunctionsplugin.go
+  - internal/sdk/models/shared/azuretransitgatewayresponse.go
+  - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
+  - internal/sdk/models/shared/baseerror.go
+  - internal/sdk/models/shared/basicauth.go
+  - internal/sdk/models/shared/basicauthplugin.go
+  - internal/sdk/models/shared/basicauthwithoutparents.go
+  - internal/sdk/models/shared/botdetectionplugin.go
+  - internal/sdk/models/shared/cacertificate.go
+  - internal/sdk/models/shared/cacertificateinput.go
+  - internal/sdk/models/shared/canaryplugin.go
+  - internal/sdk/models/shared/certificate.go
+  - internal/sdk/models/shared/certificateinput.go
+  - internal/sdk/models/shared/configstore.go
+  - internal/sdk/models/shared/configurationdataplanegroup.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscale.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscaleautopilot.go
+  - internal/sdk/models/shared/configurationdataplanegroupautoscalestatic.go
+  - internal/sdk/models/shared/configurationdataplanegroupconfig.go
+  - internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go
+  - internal/sdk/models/shared/configurationmanifest.go
+  - internal/sdk/models/shared/conflicterror.go
+  - internal/sdk/models/shared/confluentplugin.go
+  - internal/sdk/models/shared/consumer.go
+  - internal/sdk/models/shared/consumergroup.go
+  - internal/sdk/models/shared/consumergroupinput.go
+  - internal/sdk/models/shared/consumergroupinsidewrapper.go
+  - internal/sdk/models/shared/consumerinput.go
+  - internal/sdk/models/shared/controlplane.go
+  - internal/sdk/models/shared/controlplanegeo.go
+  - internal/sdk/models/shared/correlationidplugin.go
+  - internal/sdk/models/shared/corsplugin.go
+  - internal/sdk/models/shared/cpregion.go
+  - internal/sdk/models/shared/createapiproductdocumentdto.go
+  - internal/sdk/models/shared/createapiproductdto.go
+  - internal/sdk/models/shared/createapiproductversiondto.go
+  - internal/sdk/models/shared/createapiproductversionspecdto.go
+  - internal/sdk/models/shared/createappauthstrategyrequest.go
+  - internal/sdk/models/shared/createappauthstrategyresponse.go
+  - internal/sdk/models/shared/createauditlogdestination.go
+  - internal/sdk/models/shared/createconfigstore.go
+  - internal/sdk/models/shared/createconfigurationdataplanegroup.go
+  - internal/sdk/models/shared/createconfigurationrequest.go
+  - internal/sdk/models/shared/createcontrolplanerequest.go
+  - internal/sdk/models/shared/createcustomdomainrequest.go
   - internal/sdk/models/shared/createmeshcontrolplanerequest.go
+  - internal/sdk/models/shared/createnetworkrequest.go
+  - internal/sdk/models/shared/createpluginschemas.go
+  - internal/sdk/models/shared/createportalrequest.go
+  - internal/sdk/models/shared/createportalresponse.go
+  - internal/sdk/models/shared/createserverlesscloudgatewayrequest.go
+  - internal/sdk/models/shared/createsystemaccount.go
+  - internal/sdk/models/shared/createsystemaccountaccesstoken.go
+  - internal/sdk/models/shared/createteam.go
+  - internal/sdk/models/shared/createtransitgatewayrequest.go
+  - internal/sdk/models/shared/customdomain.go
+  - internal/sdk/models/shared/customdomainstate.go
+  - internal/sdk/models/shared/datadogplugin.go
+  - internal/sdk/models/shared/datadogtracingplugin.go
+  - internal/sdk/models/shared/dataplaneclientcertificate.go
+  - internal/sdk/models/shared/dataplaneclientcertificaterequest.go
+  - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
+  - internal/sdk/models/shared/dcrprovidertype.go
+  - internal/sdk/models/shared/degraphqlplugin.go
+  - internal/sdk/models/shared/entityregion.go
+  - internal/sdk/models/shared/exittransformerplugin.go
+  - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
+  - internal/sdk/models/shared/forwardproxyplugin.go
+  - internal/sdk/models/shared/gatewayservicepayload.go
+  - internal/sdk/models/shared/gatewayunauthorizederror.go
+  - internal/sdk/models/shared/getappauthstrategyresponse.go
+  - internal/sdk/models/shared/getportalappearanceresponse.go
+  - internal/sdk/models/shared/graphqlproxycacheadvancedplugin.go
+  - internal/sdk/models/shared/graphqlratelimitingadvancedplugin.go
+  - internal/sdk/models/shared/groupmembership.go
+  - internal/sdk/models/shared/grpcgatewayplugin.go
+  - internal/sdk/models/shared/grpcwebplugin.go
+  - internal/sdk/models/shared/headercertauthplugin.go
+  - internal/sdk/models/shared/hmacauth.go
+  - internal/sdk/models/shared/hmacauthplugin.go
+  - internal/sdk/models/shared/hmacauthwithoutparents.go
   - internal/sdk/models/shared/hostnamegeneratorcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratordeletesuccessresponse.go
   - internal/sdk/models/shared/hostnamegeneratoritem.go
   - internal/sdk/models/shared/hostnamegeneratorlist.go
+  - internal/sdk/models/shared/httplogplugin.go
+  - internal/sdk/models/shared/injectionprotectionplugin.go
+  - internal/sdk/models/shared/instancetypename.go
+  - internal/sdk/models/shared/internalservererror.go
   - internal/sdk/models/shared/invalidparameterchoiceitem.go
   - internal/sdk/models/shared/invalidparameterdependentitem.go
   - internal/sdk/models/shared/invalidparametermaximumlength.go
@@ -732,6 +2640,29 @@ generatedFiles:
   - internal/sdk/models/shared/invalidparameters.go
   - internal/sdk/models/shared/invalidparameterstandard.go
   - internal/sdk/models/shared/invalidrules.go
+  - internal/sdk/models/shared/iprestrictionplugin.go
+  - internal/sdk/models/shared/jqplugin.go
+  - internal/sdk/models/shared/jsonthreatprotectionplugin.go
+  - internal/sdk/models/shared/jwedecryptplugin.go
+  - internal/sdk/models/shared/jwt.go
+  - internal/sdk/models/shared/jwtplugin.go
+  - internal/sdk/models/shared/jwtsignerplugin.go
+  - internal/sdk/models/shared/jwtwithoutparents.go
+  - internal/sdk/models/shared/kafkalogplugin.go
+  - internal/sdk/models/shared/kafkaupstreamplugin.go
+  - internal/sdk/models/shared/key.go
+  - internal/sdk/models/shared/keyauth.go
+  - internal/sdk/models/shared/keyauthencplugin.go
+  - internal/sdk/models/shared/keyauthplugin.go
+  - internal/sdk/models/shared/keyauthwithoutparents.go
+  - internal/sdk/models/shared/keyset.go
+  - internal/sdk/models/shared/keysetinput.go
+  - internal/sdk/models/shared/konnectapplicationauthplugin.go
+  - internal/sdk/models/shared/ldapauthadvancedplugin.go
+  - internal/sdk/models/shared/ldapauthplugin.go
+  - internal/sdk/models/shared/listportalsresponse.go
+  - internal/sdk/models/shared/listprovideraccountsresponse.go
+  - internal/sdk/models/shared/logglyplugin.go
   - internal/sdk/models/shared/meshaccesslogcreateorupdatesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogdeletesuccessresponse.go
   - internal/sdk/models/shared/meshaccesslogitem.go
@@ -828,16 +2759,150 @@ generatedFiles:
   - internal/sdk/models/shared/meshtrafficpermissiondeletesuccessresponse.go
   - internal/sdk/models/shared/meshtrafficpermissionitem.go
   - internal/sdk/models/shared/meshtrafficpermissionlist.go
+  - internal/sdk/models/shared/mockingplugin.go
+  - internal/sdk/models/shared/mtlsauth.go
+  - internal/sdk/models/shared/mtlsauthplugin.go
+  - internal/sdk/models/shared/mtlsauthwithoutparents.go
+  - internal/sdk/models/shared/network.go
+  - internal/sdk/models/shared/networkcreatestate.go
+  - internal/sdk/models/shared/networkprovidermetadata.go
+  - internal/sdk/models/shared/networkstate.go
   - internal/sdk/models/shared/notfounderror.go
+  - internal/sdk/models/shared/nullableappearancefonts.go
+  - internal/sdk/models/shared/nullableappearancetextvariables.go
+  - internal/sdk/models/shared/nullableappearancethemevariables.go
+  - internal/sdk/models/shared/oasvalidationplugin.go
+  - internal/sdk/models/shared/oauth2introspectionplugin.go
+  - internal/sdk/models/shared/oauth2plugin.go
+  - internal/sdk/models/shared/opaplugin.go
+  - internal/sdk/models/shared/openidconnectplugin.go
+  - internal/sdk/models/shared/opentelemetryplugin.go
+  - internal/sdk/models/shared/pagemeta.go
+  - internal/sdk/models/shared/paginatedmeta.go
+  - internal/sdk/models/shared/partialappauthstrategyconfigopenidconnect.go
+  - internal/sdk/models/shared/patchnetworkrequest.go
+  - internal/sdk/models/shared/plugin.go
+  - internal/sdk/models/shared/pluginschemas.go
+  - internal/sdk/models/shared/portal.go
+  - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
+  - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
+  - internal/sdk/models/shared/portalclaimmappings.go
+  - internal/sdk/models/shared/portalcreateteamrequest.go
+  - internal/sdk/models/shared/portaloidcconfig.go
+  - internal/sdk/models/shared/portalproductversion.go
+  - internal/sdk/models/shared/portalproductversionpublishstatus.go
+  - internal/sdk/models/shared/portalteamresponse.go
+  - internal/sdk/models/shared/portaltheme.go
+  - internal/sdk/models/shared/portalupdateteamrequest.go
+  - internal/sdk/models/shared/postfunctionplugin.go
+  - internal/sdk/models/shared/prefunctionplugin.go
+  - internal/sdk/models/shared/prometheusplugin.go
+  - internal/sdk/models/shared/provideraccount.go
+  - internal/sdk/models/shared/providername.go
+  - internal/sdk/models/shared/proxycacheadvancedplugin.go
+  - internal/sdk/models/shared/proxycacheplugin.go
+  - internal/sdk/models/shared/proxyurl.go
+  - internal/sdk/models/shared/publishstatus.go
+  - internal/sdk/models/shared/ratelimitingadvancedplugin.go
+  - internal/sdk/models/shared/ratelimitingplugin.go
+  - internal/sdk/models/shared/redirectplugin.go
+  - internal/sdk/models/shared/replaceportalproductversionpayload.go
+  - internal/sdk/models/shared/requestsizelimitingplugin.go
+  - internal/sdk/models/shared/requestterminationplugin.go
+  - internal/sdk/models/shared/requesttransformeradvancedplugin.go
+  - internal/sdk/models/shared/requesttransformerplugin.go
+  - internal/sdk/models/shared/requestvalidatorplugin.go
+  - internal/sdk/models/shared/responseratelimitingplugin.go
+  - internal/sdk/models/shared/responsetransformeradvancedplugin.go
+  - internal/sdk/models/shared/responsetransformerplugin.go
+  - internal/sdk/models/shared/routebyheaderplugin.go
+  - internal/sdk/models/shared/routeexpression.go
+  - internal/sdk/models/shared/routejson.go
+  - internal/sdk/models/shared/routetransformeradvancedplugin.go
+  - internal/sdk/models/shared/samlplugin.go
   - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/serverlesscloudgateway.go
+  - internal/sdk/models/shared/serverlesscontrolplane.go
+  - internal/sdk/models/shared/service.go
+  - internal/sdk/models/shared/serviceprotectionplugin.go
+  - internal/sdk/models/shared/serviceunavailable.go
+  - internal/sdk/models/shared/sessionplugin.go
+  - internal/sdk/models/shared/slugconflict.go
+  - internal/sdk/models/shared/sni.go
+  - internal/sdk/models/shared/standardwebhooksplugin.go
+  - internal/sdk/models/shared/statsdadvancedplugin.go
+  - internal/sdk/models/shared/statsdplugin.go
+  - internal/sdk/models/shared/syslogplugin.go
+  - internal/sdk/models/shared/systemaccount.go
+  - internal/sdk/models/shared/systemaccountaccesstoken.go
+  - internal/sdk/models/shared/systemaccountaccesstokencreated.go
+  - internal/sdk/models/shared/target.go
+  - internal/sdk/models/shared/targetwithoutparents.go
+  - internal/sdk/models/shared/tcplogplugin.go
+  - internal/sdk/models/shared/team.go
+  - internal/sdk/models/shared/tlshandshakemodifierplugin.go
+  - internal/sdk/models/shared/tlsmetadataheadersplugin.go
+  - internal/sdk/models/shared/transitgatewaydnsconfig.go
+  - internal/sdk/models/shared/transitgatewayresponse.go
+  - internal/sdk/models/shared/transitgatewaystate.go
+  - internal/sdk/models/shared/udplogplugin.go
   - internal/sdk/models/shared/unauthorizederror.go
+  - internal/sdk/models/shared/unsupportedmediatypeerror.go
+  - internal/sdk/models/shared/updateapiproductdocumentdto.go
+  - internal/sdk/models/shared/updateapiproductdto.go
+  - internal/sdk/models/shared/updateapiproductversiondto.go
+  - internal/sdk/models/shared/updateapiproductversionspecdto.go
+  - internal/sdk/models/shared/updateappauthstrategyrequest.go
+  - internal/sdk/models/shared/updateappauthstrategyresponse.go
+  - internal/sdk/models/shared/updateauditlogdestination.go
+  - internal/sdk/models/shared/updateauditlogwebhook.go
+  - internal/sdk/models/shared/updateconfigstore.go
+  - internal/sdk/models/shared/updatecontrolplanerequest.go
   - internal/sdk/models/shared/updatemeshcontrolplanerequest.go
+  - internal/sdk/models/shared/updateportalappearancerequest.go
+  - internal/sdk/models/shared/updateportalappearanceresponse.go
+  - internal/sdk/models/shared/updateportalrequest.go
+  - internal/sdk/models/shared/updateportalresponse.go
+  - internal/sdk/models/shared/updatesystemaccount.go
+  - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
+  - internal/sdk/models/shared/updateteam.go
+  - internal/sdk/models/shared/upstream.go
+  - internal/sdk/models/shared/upstreamoauthplugin.go
+  - internal/sdk/models/shared/upstreamtimeoutplugin.go
+  - internal/sdk/models/shared/vault.go
+  - internal/sdk/models/shared/vaultauthplugin.go
+  - internal/sdk/models/shared/vaultinput.go
+  - internal/sdk/models/shared/websocketsizelimitplugin.go
+  - internal/sdk/models/shared/websocketvalidatorplugin.go
+  - internal/sdk/models/shared/xmlthreatprotectionplugin.go
+  - internal/sdk/models/shared/zipkinplugin.go
+  - internal/sdk/mtlsauthcredentials.go
+  - internal/sdk/plugins.go
+  - internal/sdk/portalappearance.go
+  - internal/sdk/portalauthsettings.go
+  - internal/sdk/portalproductversions.go
+  - internal/sdk/portals.go
+  - internal/sdk/portalteams.go
   - internal/sdk/retry/config.go
+  - internal/sdk/roles.go
+  - internal/sdk/routes.go
+  - internal/sdk/serverlesscloudgateways.go
+  - internal/sdk/services.go
+  - internal/sdk/snis.go
+  - internal/sdk/systemaccounts.go
+  - internal/sdk/systemaccountsaccesstokens.go
+  - internal/sdk/systemaccountsroles.go
+  - internal/sdk/systemaccountsteammembership.go
+  - internal/sdk/targets.go
+  - internal/sdk/teammembership.go
+  - internal/sdk/teams.go
   - internal/sdk/types/bigint.go
   - internal/sdk/types/date.go
   - internal/sdk/types/datetime.go
   - internal/sdk/types/decimal.go
   - internal/sdk/types/pointers.go
+  - internal/sdk/upstreams.go
+  - internal/sdk/vaults.go
   - internal/validators/DateValidator.go
   - internal/validators/ExactlyOneChild.go
   - internal/validators/JSONParseValidator.go

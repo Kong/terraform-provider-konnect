@@ -58,9 +58,9 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 	var port1 int64
 	port1 = r.Spec.Match.Port.ValueInt64()
 
-	protocol := new(shared.Protocol)
+	protocol := new(shared.MeshExternalServiceItemProtocol)
 	if !r.Spec.Match.Protocol.IsUnknown() && !r.Spec.Match.Protocol.IsNull() {
-		*protocol = shared.Protocol(r.Spec.Match.Protocol.ValueString())
+		*protocol = shared.MeshExternalServiceItemProtocol(r.Spec.Match.Protocol.ValueString())
 	} else {
 		protocol = nil
 	}
@@ -206,7 +206,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 				SubjectAltNames: subjectAltNames,
 			}
 		}
-		var version *shared.Version
+		var version *shared.MeshExternalServiceItemVersion
 		if r.Spec.TLS.Version != nil {
 			max := new(shared.Max)
 			if !r.Spec.TLS.Version.Max.IsUnknown() && !r.Spec.TLS.Version.Max.IsNull() {
@@ -220,7 +220,7 @@ func (r *MeshExternalServiceResourceModel) ToSharedMeshExternalServiceItemInput(
 			} else {
 				min = nil
 			}
-			version = &shared.Version{
+			version = &shared.MeshExternalServiceItemVersion{
 				Max: max,
 				Min: min,
 			}
@@ -378,7 +378,7 @@ func (r *MeshExternalServiceResourceModel) RefreshFromSharedMeshExternalServiceI
 			if resp.Spec.TLS.Version == nil {
 				r.Spec.TLS.Version = nil
 			} else {
-				r.Spec.TLS.Version = &tfTypes.Version{}
+				r.Spec.TLS.Version = &tfTypes.MeshExternalServiceItemVersion{}
 				if resp.Spec.TLS.Version.Max != nil {
 					r.Spec.TLS.Version.Max = types.StringValue(string(*resp.Spec.TLS.Version.Max))
 				} else {
