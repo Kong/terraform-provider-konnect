@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.0
+> Released on ??
+
+### Features
+
 ## 2.4.0
 > Released on 2025/03/05
 
