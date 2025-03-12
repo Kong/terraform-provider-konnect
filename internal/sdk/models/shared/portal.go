@@ -40,7 +40,7 @@ type Portal struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]*string `json:"labels,omitempty"`
 	// Number of applications created in the portal.
 	ApplicationCount float64 `json:"application_count"`
 	// Number of developers using the portal.
@@ -158,7 +158,7 @@ func (o *Portal) GetDefaultApplicationAuthStrategyID() *string {
 	return o.DefaultApplicationAuthStrategyID
 }
 
-func (o *Portal) GetLabels() map[string]string {
+func (o *Portal) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

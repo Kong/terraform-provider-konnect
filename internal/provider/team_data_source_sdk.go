@@ -20,7 +20,7 @@ func (r *TeamDataSourceModel) RefreshFromSharedTeam(resp *shared.Team) {
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
 			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringValue(value)
+				r.Labels[key] = types.StringPointerValue(value)
 			}
 		}
 		r.Name = types.StringPointerValue(resp.Name)

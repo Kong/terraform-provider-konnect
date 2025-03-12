@@ -19,8 +19,8 @@ type AppAuthStrategyConfigOpenIDConnect struct {
 	//
 	// Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".
 	//
-	Labels               map[string]string `json:"labels,omitempty"`
-	AdditionalProperties any               `additionalProperties:"true" json:"-"`
+	Labels               map[string]*string `json:"labels,omitempty"`
+	AdditionalProperties any                `additionalProperties:"true" json:"-"`
 }
 
 func (a AppAuthStrategyConfigOpenIDConnect) MarshalJSON() ([]byte, error) {
@@ -62,7 +62,7 @@ func (o *AppAuthStrategyConfigOpenIDConnect) GetAuthMethods() []string {
 	return o.AuthMethods
 }
 
-func (o *AppAuthStrategyConfigOpenIDConnect) GetLabels() map[string]string {
+func (o *AppAuthStrategyConfigOpenIDConnect) GetLabels() map[string]*string {
 	if o == nil {
 		return nil
 	}

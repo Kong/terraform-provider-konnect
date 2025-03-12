@@ -19,6 +19,8 @@ var ServerList = []string{
 	"https://us.api.konghq.com",
 	"https://eu.api.konghq.com",
 	"https://au.api.konghq.com",
+	"https://me.api.konghq.com",
+	"https://in.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client

@@ -34,7 +34,7 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *s
 			if len(dataItem.Labels) > 0 {
 				data1.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
-					data1.Labels[key] = types.StringValue(value)
+					data1.Labels[key] = types.StringPointerValue(value)
 				}
 			}
 			data1.Name = types.StringValue(dataItem.Name)
