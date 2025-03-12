@@ -15,6 +15,8 @@ servers:
   - url: 'https://us.api.konghq.com'
   - url: 'https://eu.api.konghq.com'
   - url: 'https://au.api.konghq.com'
+  - url: 'https://me.api.konghq.com'
+  - url: 'https://in.api.konghq.com'
 paths:
   /v0/serverless-cloud-gateways:
     post:
@@ -122,6 +124,7 @@ paths:
           format: uuid
         example: bf138ba2-c9b1-4229-b268-04d9d8a6410b
         x-speakeasy-match: id
+        x-speakeasy-param-suppress-computed-diff: true
     get:
       x-speakeasy-entity-operation: MeshControlPlane#read
       operationId: get-mesh-control-plane
@@ -12178,6 +12181,7 @@ components:
         pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z-._]*[a-z0-9A-Z]+)?$'
         minLength: 1
         maxLength: 63
+        nullable: true
       maxProperties: 50
       title: Labels
     ProxyURL:
@@ -13533,6 +13537,7 @@ components:
           format: uuid
           example: d32d905a-ed33-46a3-a093-d8f536af9a8a
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: The name of the control plane.
           type: string
@@ -13551,10 +13556,14 @@ components:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         updated_at:
           type: string
           format: date-time
           example: '2023-01-11T02:30:42.227Z'
+          readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
       required:
         - id
         - name
@@ -33766,6 +33775,7 @@ components:
                   - Cloud Gateway Cluster Admin
                   - Cloud Gateway Cluster Viewer
                   - Consumer Admin
+                  - Connector
                   - Creator
                   - Deployer
                   - Discovery Admin

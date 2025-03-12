@@ -18,6 +18,7 @@ const (
 	RoleNameCloudGatewayClusterAdmin  RoleName = "Cloud Gateway Cluster Admin"
 	RoleNameCloudGatewayClusterViewer RoleName = "Cloud Gateway Cluster Viewer"
 	RoleNameConsumerAdmin             RoleName = "Consumer Admin"
+	RoleNameConnector                 RoleName = "Connector"
 	RoleNameCreator                   RoleName = "Creator"
 	RoleNameDeployer                  RoleName = "Deployer"
 	RoleNameDiscoveryAdmin            RoleName = "Discovery Admin"
@@ -66,6 +67,8 @@ func (e *RoleName) UnmarshalJSON(data []byte) error {
 	case "Cloud Gateway Cluster Viewer":
 		fallthrough
 	case "Consumer Admin":
+		fallthrough
+	case "Connector":
 		fallthrough
 	case "Creator":
 		fallthrough
