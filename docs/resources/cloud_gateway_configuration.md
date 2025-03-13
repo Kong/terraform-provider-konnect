@@ -20,11 +20,6 @@ resource "konnect_cloud_gateway_configuration" "my_cloudgatewayconfiguration" {
   dataplane_groups = [
     {
       autoscale = {
-        configuration_data_plane_group_autoscale_autopilot = {
-          base_rps = 1
-          kind     = "autopilot"
-          max_rps  = 1000
-        }
         configuration_data_plane_group_autoscale_static = {
           instance_type       = "medium"
           kind                = "static"
