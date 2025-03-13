@@ -24,7 +24,7 @@ func (r *GatewayPluginSamlDataSourceModel) RefreshFromSharedSamlPlugin(resp *sha
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
+			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
