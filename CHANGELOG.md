@@ -5,6 +5,12 @@
 
 ### Features
 
+* ...
+
+### Bug fixes
+
+* Fixed support for `headers` in the `konnect_gateway_route` resource
+
 ## 2.4.0
 > Released on 2025/03/05
 
