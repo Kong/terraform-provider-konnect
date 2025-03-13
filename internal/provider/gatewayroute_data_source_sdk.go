@@ -29,9 +29,15 @@ func (r *GatewayRouteDataSourceModel) RefreshFromSharedRouteJSON(resp *shared.Ro
 			}
 		}
 		if resp.Headers != nil {
-			r.Headers = make(map[string]types.String, len(resp.Headers))
-			for key, value := range resp.Headers {
-				r.Headers[key] = types.StringValue(value)
+			r.Headers = make(map[string][]types.String, len(resp.Headers))
+			for headersKey, headersValue := range resp.Headers {
+				var headersResult []types.String
+				headersResult = make([]types.String, 0, len(headersValue))
+				for _, v := range headersValue {
+					headersResult = append(headersResult, types.StringValue(v))
+				}
+
+				r.Headers[headersKey] = headersResult
 			}
 		}
 		if resp.Hosts != nil {

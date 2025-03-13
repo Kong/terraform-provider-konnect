@@ -28,11 +28,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONIn
 			Port: port,
 		})
 	}
-	headers := make(map[string]string)
+	headers := make(map[string][]string)
 	for headersKey, headersValue := range r.Headers {
-		var headersInst string
-		headersInst = headersValue.ValueString()
-
+		var headersInst []string = []string{}
+		for _, item := range headersValue {
+			headersInst = append(headersInst, item.ValueString())
+		}
 		headers[headersKey] = headersInst
 	}
 	var hosts []string = []string{}
@@ -189,9 +190,15 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.Rout
 			}
 		}
 		if resp.Headers != nil {
-			r.Headers = make(map[string]types.String, len(resp.Headers))
-			for key, value := range resp.Headers {
-				r.Headers[key] = types.StringValue(value)
+			r.Headers = make(map[string][]types.String, len(resp.Headers))
+			for headersKey, headersValue := range resp.Headers {
+				var headersResult []types.String
+				headersResult = make([]types.String, 0, len(headersValue))
+				for _, v := range headersValue {
+					headersResult = append(headersResult, types.StringValue(v))
+				}
+
+				r.Headers[headersKey] = headersResult
 			}
 		}
 		if resp.Hosts != nil {

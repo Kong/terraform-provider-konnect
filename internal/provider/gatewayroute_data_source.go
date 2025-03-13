@@ -32,7 +32,7 @@ type GatewayRouteDataSourceModel struct {
 	ControlPlaneID          types.String                                `tfsdk:"control_plane_id"`
 	CreatedAt               types.Int64                                 `tfsdk:"created_at"`
 	Destinations            []tfTypes.AiProxyAdvancedPluginClusterNodes `tfsdk:"destinations"`
-	Headers                 map[string]types.String                     `tfsdk:"headers"`
+	Headers                 map[string][]types.String                   `tfsdk:"headers"`
 	Hosts                   []types.String                              `tfsdk:"hosts"`
 	HTTPSRedirectStatusCode types.Int64                                 `tfsdk:"https_redirect_status_code"`
 	ID                      types.String                                `tfsdk:"id"`
@@ -87,8 +87,10 @@ func (r *GatewayRouteDataSource) Schema(ctx context.Context, req datasource.Sche
 				Description: `A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".`,
 			},
 			"headers": schema.MapAttribute{
-				Computed:    true,
-				ElementType: types.StringType,
+				Computed: true,
+				ElementType: types.ListType{
+					ElemType: types.StringType,
+				},
 				Description: `One or more lists of values indexed by header name that will cause this Route to match if present in the request. The ` + "`" + `Host` + "`" + ` header cannot be used with this attribute: hosts should be specified using the ` + "`" + `hosts` + "`" + ` attribute. When ` + "`" + `headers` + "`" + ` contains only one value and that value starts with the special prefix ` + "`" + `~*` + "`" + `, the value is interpreted as a regular expression.`,
 			},
 			"hosts": schema.ListAttribute{
