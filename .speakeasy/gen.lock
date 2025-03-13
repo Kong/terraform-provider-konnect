@@ -3,8 +3,8 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: 0e87d02b4401149d149dbdee074a2f46
   docVersion: 2.0.0
-  speakeasyVersion: 1.503.0
-  generationVersion: 2.526.1
+  speakeasyVersion: 1.517.3
+  generationVersion: 2.548.6
   releaseVersion: 2.4.0
   configChecksum: d433cfd8474eb5e235c092f1aff57e21
 features:
@@ -12,7 +12,7 @@ features:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
-    core: 3.33.0
+    core: 3.36.1
     deprecations: 2.82.0
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.10
