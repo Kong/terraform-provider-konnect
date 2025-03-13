@@ -28,6 +28,9 @@ resource "konnect_gateway_route" "hello" {
   methods = ["GET"]
   name    = "Anything"
   paths   = ["/anything"]
+  headers = {
+    Accept = ["application/json"]
+  }
 
   strip_path = false
 

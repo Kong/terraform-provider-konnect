@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f64d334678dab8a32f8011e3a465bf32
+  docChecksum: 1852d6b66045145ae21c57edac8924f3
   docVersion: 2.0.0
-  speakeasyVersion: 1.503.0
-  generationVersion: 2.526.1
-  releaseVersion: 2.4.0
-  configChecksum: d433cfd8474eb5e235c092f1aff57e21
+  speakeasyVersion: 1.517.3
+  generationVersion: 2.548.6
+  releaseVersion: 2.4.1
+  configChecksum: 2088bc487a15cd7bdfefdbd33015f9d6
 features:
   terraform:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
-    core: 3.33.0
+    core: 3.36.1
     deprecations: 2.82.0
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.10
@@ -104,7 +104,6 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_kafka_upstream/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_key_auth/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_key_auth_enc/data-source.tf
-  - examples/data-sources/konnect_gateway_plugin_konnect_application_auth/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ldap_auth/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ldap_auth_advanced/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_loggly/data-source.tf
@@ -315,8 +314,6 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_key_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_key_auth_enc/import.sh
   - examples/resources/konnect_gateway_plugin_key_auth_enc/resource.tf
-  - examples/resources/konnect_gateway_plugin_konnect_application_auth/import.sh
-  - examples/resources/konnect_gateway_plugin_konnect_application_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth/import.sh
   - examples/resources/konnect_gateway_plugin_ldap_auth/resource.tf
   - examples/resources/konnect_gateway_plugin_ldap_auth_advanced/import.sh
@@ -756,10 +753,6 @@ generatedFiles:
   - internal/provider/gatewaypluginkeyauthenc_data_source_sdk.go
   - internal/provider/gatewaypluginkeyauthenc_resource.go
   - internal/provider/gatewaypluginkeyauthenc_resource_sdk.go
-  - internal/provider/gatewaypluginkonnectapplicationauth_data_source.go
-  - internal/provider/gatewaypluginkonnectapplicationauth_data_source_sdk.go
-  - internal/provider/gatewaypluginkonnectapplicationauth_resource.go
-  - internal/provider/gatewaypluginkonnectapplicationauth_resource_sdk.go
   - internal/provider/gatewaypluginldapauth_data_source.go
   - internal/provider/gatewaypluginldapauth_data_source_sdk.go
   - internal/provider/gatewaypluginldapauth_resource.go
@@ -1115,6 +1108,7 @@ generatedFiles:
   - internal/provider/types/catalog.go
   - internal/provider/types/categories.go
   - internal/provider/types/client.go
+  - internal/provider/types/client_jwk.go
   - internal/provider/types/config.go
   - internal/provider/types/configuration_data_plane_group.go
   - internal/provider/types/configuration_data_plane_group_autoscale.go
@@ -1161,11 +1155,6 @@ generatedFiles:
   - internal/provider/types/kafka_log_plugin_security.go
   - internal/provider/types/kafka_upstream_plugin_config.go
   - internal/provider/types/key_auth_plugin_config.go
-  - internal/provider/types/konnect_application_auth_plugin_client_jwk.go
-  - internal/provider/types/konnect_application_auth_plugin_config.go
-  - internal/provider/types/konnect_application_auth_plugin_config_config.go
-  - internal/provider/types/konnect_application_auth_plugin_key_auth.go
-  - internal/provider/types/konnect_application_auth_plugin_redis.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
   - internal/provider/types/llm.go
@@ -1190,8 +1179,8 @@ generatedFiles:
   - internal/provider/types/oauth2_introspection_plugin_config.go
   - internal/provider/types/oauth2_plugin_config.go
   - internal/provider/types/opa_plugin_config.go
-  - internal/provider/types/openid_connect.go
   - internal/provider/types/openid_connect_plugin_config.go
+  - internal/provider/types/openid_connect_plugin_redis.go
   - internal/provider/types/opentelemetry_plugin_config.go
   - internal/provider/types/options_obj.go
   - internal/provider/types/page_meta.go
@@ -1267,7 +1256,6 @@ generatedFiles:
   - internal/provider/types/upstream_oauth_plugin_config.go
   - internal/provider/types/upstream_timeout_plugin_config.go
   - internal/provider/types/upstream_unhealthy.go
-  - internal/provider/types/v2_strategies.go
   - internal/provider/types/vault_auth_plugin_config.go
   - internal/provider/types/vectordb.go
   - internal/provider/types/websocket_size_limit_plugin_config.go
@@ -1385,7 +1373,6 @@ generatedFiles:
   - internal/sdk/models/operations/createkeyauthplugin.go
   - internal/sdk/models/operations/createkeyauthwithconsumer.go
   - internal/sdk/models/operations/createkeyset.go
-  - internal/sdk/models/operations/createkonnectapplicationauthplugin.go
   - internal/sdk/models/operations/createldapauthadvancedplugin.go
   - internal/sdk/models/operations/createldapauthplugin.go
   - internal/sdk/models/operations/createlogglyplugin.go
@@ -1516,7 +1503,6 @@ generatedFiles:
   - internal/sdk/models/operations/deletekeyauthplugin.go
   - internal/sdk/models/operations/deletekeyauthwithconsumer.go
   - internal/sdk/models/operations/deletekeyset.go
-  - internal/sdk/models/operations/deletekonnectapplicationauthplugin.go
   - internal/sdk/models/operations/deleteldapauthadvancedplugin.go
   - internal/sdk/models/operations/deleteldapauthplugin.go
   - internal/sdk/models/operations/deletelogglyplugin.go
@@ -1655,7 +1641,6 @@ generatedFiles:
   - internal/sdk/models/operations/getkeyauthplugin.go
   - internal/sdk/models/operations/getkeyauthwithconsumer.go
   - internal/sdk/models/operations/getkeyset.go
-  - internal/sdk/models/operations/getkonnectapplicationauthplugin.go
   - internal/sdk/models/operations/getldapauthadvancedplugin.go
   - internal/sdk/models/operations/getldapauthplugin.go
   - internal/sdk/models/operations/getlogglyplugin.go
@@ -1794,7 +1779,6 @@ generatedFiles:
   - internal/sdk/models/operations/updatekafkaupstreamplugin.go
   - internal/sdk/models/operations/updatekeyauthencplugin.go
   - internal/sdk/models/operations/updatekeyauthplugin.go
-  - internal/sdk/models/operations/updatekonnectapplicationauthplugin.go
   - internal/sdk/models/operations/updateldapauthadvancedplugin.go
   - internal/sdk/models/operations/updateldapauthplugin.go
   - internal/sdk/models/operations/updatelogglyplugin.go
@@ -2020,7 +2004,6 @@ generatedFiles:
   - internal/sdk/models/shared/keyauthwithoutparents.go
   - internal/sdk/models/shared/keyset.go
   - internal/sdk/models/shared/keysetinput.go
-  - internal/sdk/models/shared/konnectapplicationauthplugin.go
   - internal/sdk/models/shared/ldapauthadvancedplugin.go
   - internal/sdk/models/shared/ldapauthplugin.go
   - internal/sdk/models/shared/listportalsresponse.go

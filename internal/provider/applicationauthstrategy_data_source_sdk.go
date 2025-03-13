@@ -37,7 +37,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			if len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
 				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels))
 				for key, value := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key] = types.StringValue(value)
+					r.KeyAuth.Labels[key] = types.StringPointerValue(value)
 				}
 			}
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Name)
@@ -67,7 +67,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
 				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels))
 				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
-					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringValue(value1)
+					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
 				}
 			}
 			r.OpenidConnect.Configs.OpenidConnect.Scopes = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes))
@@ -91,7 +91,7 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedGetAppAuthStra
 			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
 				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels))
 				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key2] = types.StringValue(value2)
+					r.OpenidConnect.Labels[key2] = types.StringPointerValue(value2)
 				}
 			}
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Name)

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.1
+> Released on 2025/03/13
+
+### Bug fixes
+
+* Fixed support for `headers` in the `konnect_gateway_route` resource
+* Removed the `gateway_plugin_konnect_application_auth` plugin as it is a system-managed plugin and can not be configured by users
+
 ## 2.4.0
 > Released on 2025/03/05
 

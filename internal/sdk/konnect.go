@@ -19,6 +19,8 @@ var ServerList = []string{
 	"https://us.api.konghq.com",
 	"https://eu.api.konghq.com",
 	"https://au.api.konghq.com",
+	"https://me.api.konghq.com",
+	"https://in.api.konghq.com",
 }
 
 // HTTPClient provides an interface for suplying the SDK with a custom HTTP client
@@ -293,9 +295,9 @@ func New(opts ...SDKOption) *Konnect {
 		sdkConfiguration: sdkConfiguration{
 			Language:          "go",
 			OpenAPIDocVersion: "2.0.0",
-			SDKVersion:        "2.4.0",
-			GenVersion:        "2.526.1",
-			UserAgent:         "speakeasy-sdk/terraform 2.4.0 2.526.1 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
+			SDKVersion:        "2.4.1",
+			GenVersion:        "2.548.6",
+			UserAgent:         "speakeasy-sdk/terraform 2.4.1 2.548.6 2.0.0 github.com/kong/terraform-provider-konnect/v2/internal/sdk",
 			Hooks:             hooks.New(),
 		},
 	}
