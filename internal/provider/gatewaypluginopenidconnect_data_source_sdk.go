@@ -117,12 +117,12 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		for _, v := range resp.Config.ClientID {
 			r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 		}
-		r.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
+		r.Config.ClientJwk = []tfTypes.ClientJwk{}
 		if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
 			r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
 		}
 		for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
-			var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
+			var clientJwk1 tfTypes.ClientJwk
 			clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
 			clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
 			clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
@@ -475,7 +475,7 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
+			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
