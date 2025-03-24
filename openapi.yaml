@@ -157,22 +157,22 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
-    patch:
+    put:
       x-speakeasy-entity-operation: MeshControlPlane#update
-      operationId: update-mesh-control-plane
-      summary: Update control plane
-      description: Update an individual control plane.
+      operationId: update-cp
+      summary: Update a whole control plane
+      description: Update a whole control plane
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+              $ref: '#/components/schemas/PutMeshControlPlaneRequest'
       responses:
         '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+          $ref: '#/components/responses/PutMeshControlPlaneResponse'
         '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+          $ref: '#/components/responses/PutMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
@@ -4958,6 +4958,62 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#KonnectApplicationAuth':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginKonnectApplicationAuth#delete
+      operationId: delete-konnectapplicationauth-plugin
+      summary: Delete a KonnectApplicationAuth plugin
+      description: Delete a KonnectApplicationAuth plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginKonnectApplicationAuth#read
+      operationId: get-konnectapplicationauth-plugin
+      summary: Get a KonnectApplicationAuth plugin
+      description: Get a KonnectApplicationAuth plugin
+      responses:
+        '200':
+          description: KonnectApplicationAuth plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginKonnectApplicationAuth#update
+      operationId: update-konnectapplicationauth-plugin
+      summary: Update a KonnectApplicationAuth plugin
+      description: Update a KonnectApplicationAuth plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+      responses:
+        '200':
+          description: KonnectApplicationAuth plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#LdapAuth':
     delete:
       x-speakeasy-entity-operation: GatewayPluginLdapAuth#delete
@@ -8711,6 +8767,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/KeyAuthEncPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#KonnectApplicationAuth':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginKonnectApplicationAuth#create
+      operationId: create-konnectapplicationauth-plugin
+      summary: Create a KonnectApplicationAuth plugin
+      description: Create a KonnectApplicationAuth plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
+      responses:
+        '201':
+          description: Created KonnectApplicationAuth plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KonnectApplicationAuthPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -12999,11 +13080,19 @@ components:
       additionalProperties: false
       title: PatchNetworkRequest
     TransitGatewayState:
-      description: State of the transit gateway.
+      description: |
+        The current state of the Transit Gateway. Possible values:
+        - `created` - The attachment has been created but is not attached to transit gateway.
+        - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+        - `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+        - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+        - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+        - `terminated` - The attachment has been fully deleted and is no longer available.
       type: string
       enum:
         - created
         - initializing
+        - pending-acceptance
         - ready
         - terminating
         - terminated
@@ -13446,6 +13535,19 @@ components:
       maxProperties: 10
       nullable: true
       title: Labels
+    MeshControlPlaneNonNullableLabels:
+      description: Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
+      type: object
+      example:
+        test: 'true'
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 10
+      nullable: true
+      title: Labels
     MeshControlPlane:
       description: a control plane
       type: object
@@ -13458,15 +13560,9 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         features:
@@ -13494,16 +13590,9 @@ components:
       type: object
       properties:
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          minLength: 1
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         features:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
@@ -13512,23 +13601,30 @@ components:
       required:
         - name
       title: CreateMeshControlPlaneRequest
-    UpdateMeshControlPlaneRequest:
-      description: a payload to update the control plane
+    PutMeshControlPlaneRequest:
+      description: a payload to update the whole control plane
       type: object
       properties:
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
-          $ref: '#/components/schemas/MeshControlPlaneLabels'
-      title: UpdateMeshControlPlaneRequest
+          $ref: '#/components/schemas/MeshControlPlaneNonNullableLabels'
+      required:
+        - name
+      title: PutMeshControlPlaneRequest
+    MeshControlPlaneName:
+      description: The name of the control plane.
+      type: string
+      example: Test control plane
+      maxLength: 100
+      minLength: 1
+      pattern: '^[a-z0-9A-Z]{1}.*$'
+    MeshControlPlaneDescription:
+      type: string
+      example: A control plane to handle traffic on development environment.
+      maxLength: 250
     APIProductPortals:
       description: The list of portals which this API product is published to
       type: array
@@ -23362,6 +23458,1420 @@ components:
         tags:
           - idp-keys
       additionalProperties: false
+    KonnectApplicationAuthPlugin:
+      x-speakeasy-entity: GatewayPluginKonnectApplicationAuth
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/KonnectApplicationAuthPluginConfig'
+    KonnectApplicationAuthPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            auth_type:
+              description: 'The type of authentication to be performed. Possible values are: ''openid-connect'', ''key-auth'', ''v2-strategies''.'
+              type: string
+              enum:
+                - key-auth
+                - openid-connect
+                - v2-strategies
+            key_names:
+              description: The names of the headers containing the API key. You can specify multiple header names.
+              type: array
+              items:
+                description: A string representing an HTTP header name.
+                type: string
+            scope:
+              description: The unique scope identifier for the plugin configuration.
+              type: string
+            v2_strategies:
+              description: The map of v2 strategies.
+              type: object
+              properties:
+                key_auth:
+                  description: List of key_auth strategies.
+                  type: array
+                  items:
+                    properties:
+                      config:
+                        type: object
+                        properties:
+                          key_names:
+                            description: The names of the headers containing the API key. You can specify multiple header names.
+                            type: array
+                            items:
+                              description: A string representing an HTTP header name.
+                              type: string
+                      strategy_id:
+                        description: The strategy id the config is tied to.
+                        type: string
+                    required:
+                      - config
+                      - strategy_id
+                    type: object
+                openid_connect:
+                  description: List of openid_connect strategies.
+                  type: array
+                  items:
+                    properties:
+                      config:
+                        description: openid-connect plugin configuration.
+                        type: object
+                        properties:
+                          anonymous:
+                            description: 'An optional string (consumer UUID or username) value that functions as an “anonymous” consumer if authentication fails. If empty (default null), requests that fail authentication will return a `4xx` HTTP status code. This value must refer to the consumer `id` or `username` attribute, and **not** its `custom_id`.'
+                            type: string
+                          audience:
+                            description: The audience passed to the authorization endpoint.
+                            type: array
+                            items:
+                              type: string
+                          audience_claim:
+                            description: 'The claim that contains the audience. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          audience_required:
+                            description: The audiences (`audience_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+                            type: array
+                            items:
+                              type: string
+                          auth_methods:
+                            description: Types of credentials/grants to enable.
+                            type: array
+                            items:
+                              enum:
+                                - authorization_code
+                                - bearer
+                                - client_credentials
+                                - introspection
+                                - kong_oauth2
+                                - password
+                                - refresh_token
+                                - session
+                                - userinfo
+                              type: string
+                          authenticated_groups_claim:
+                            description: 'The claim that contains authenticated groups. This setting can be used together with ACL plugin, but it also enables IdP managed groups with other applications and integrations. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          authorization_cookie_domain:
+                            description: The authorization cookie Domain flag.
+                            type: string
+                          authorization_cookie_http_only:
+                            description: 'Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.'
+                            type: boolean
+                          authorization_cookie_name:
+                            description: The authorization cookie name.
+                            type: string
+                          authorization_cookie_path:
+                            description: The authorization cookie Path flag.
+                            type: string
+                          authorization_cookie_same_site:
+                            description: 'Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.'
+                            type: string
+                            enum:
+                              - Default
+                              - Lax
+                              - None
+                              - Strict
+                          authorization_cookie_secure:
+                            description: 'Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.'
+                            type: boolean
+                          authorization_endpoint:
+                            description: The authorization endpoint. If set it overrides the value in `authorization_endpoint` returned by the discovery endpoint.
+                            type: string
+                          authorization_query_args_client:
+                            description: Extra query arguments passed from the client to the authorization endpoint.
+                            type: array
+                            items:
+                              type: string
+                          authorization_query_args_names:
+                            description: Extra query argument names passed to the authorization endpoint.
+                            type: array
+                            items:
+                              type: string
+                          authorization_query_args_values:
+                            description: Extra query argument values passed to the authorization endpoint.
+                            type: array
+                            items:
+                              type: string
+                          authorization_rolling_timeout:
+                            description: Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+                            type: number
+                          bearer_token_cookie_name:
+                            description: The name of the cookie in which the bearer token is passed.
+                            type: string
+                          bearer_token_param_type:
+                            description: 'Where to look for the bearer token: - `header`: search the `Authorization`, `access-token`, and `x-access-token` HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body - `cookie`: search the HTTP request cookies specified with `config.bearer_token_cookie_name`.'
+                            type: array
+                            items:
+                              enum:
+                                - body
+                                - cookie
+                                - header
+                                - query
+                              type: string
+                          by_username_ignore_case:
+                            description: 'If `consumer_by` is set to `username`, specify whether `username` can match consumers case-insensitively.'
+                            type: boolean
+                          cache_introspection:
+                            description: Cache the introspection endpoint requests.
+                            type: boolean
+                          cache_token_exchange:
+                            description: Cache the token exchange endpoint requests.
+                            type: boolean
+                          cache_tokens:
+                            description: Cache the token endpoint requests.
+                            type: boolean
+                          cache_tokens_salt:
+                            description: Salt used for generating the cache key that is used for caching the token endpoint requests.
+                            type: string
+                          cache_ttl:
+                            description: The default cache ttl in seconds that is used in case the cached object does not specify the expiry.
+                            type: number
+                          cache_ttl_max:
+                            description: The maximum cache ttl in seconds (enforced).
+                            type: number
+                          cache_ttl_min:
+                            description: The minimum cache ttl in seconds (enforced).
+                            type: number
+                          cache_ttl_neg:
+                            description: The negative cache ttl in seconds.
+                            type: number
+                          cache_ttl_resurrect:
+                            description: The resurrection ttl in seconds.
+                            type: number
+                          cache_user_info:
+                            description: Cache the user info requests.
+                            type: boolean
+                          claims_forbidden:
+                            description: 'If given, these claims are forbidden in the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          client_alg:
+                            description: The algorithm to use for client_secret_jwt (only HS***) or private_key_jwt authentication.
+                            type: array
+                            items:
+                              enum:
+                                - ES256
+                                - ES384
+                                - ES512
+                                - EdDSA
+                                - HS256
+                                - HS384
+                                - HS512
+                                - PS256
+                                - PS384
+                                - PS512
+                                - RS256
+                                - RS384
+                                - RS512
+                              type: string
+                          client_arg:
+                            description: The client to use for this request (the selection is made with a request parameter with the same name).
+                            type: string
+                          client_auth:
+                            description: 'The default OpenID Connect client authentication method is ''client_secret_basic'' (using ''Authorization: Basic'' header), ''client_secret_post'' (credentials in body), ''client_secret_jwt'' (signed client assertion in body), ''private_key_jwt'' (private key-signed assertion), ''tls_client_auth'' (client certificate), ''self_signed_tls_client_auth'' (self-signed client certificate), and ''none'' (no authentication).'
+                            type: array
+                            items:
+                              enum:
+                                - client_secret_basic
+                                - client_secret_jwt
+                                - client_secret_post
+                                - none
+                                - private_key_jwt
+                                - self_signed_tls_client_auth
+                                - tls_client_auth
+                              type: string
+                          client_credentials_param_type:
+                            description: 'Where to look for the client credentials: - `header`: search the HTTP headers - `query`: search the URL''s query string - `body`: search from the HTTP request body.'
+                            type: array
+                            items:
+                              enum:
+                                - body
+                                - header
+                                - query
+                              type: string
+                          client_id:
+                            description: The client id(s) that the plugin uses when it calls authenticated endpoints on the identity provider.
+                            type: array
+                            items:
+                              type: string
+                          client_jwk:
+                            description: The JWK used for the private_key_jwt authentication.
+                            type: array
+                            items:
+                              properties:
+                                alg:
+                                  type: string
+                                crv:
+                                  type: string
+                                d:
+                                  type: string
+                                dp:
+                                  type: string
+                                dq:
+                                  type: string
+                                e:
+                                  type: string
+                                issuer:
+                                  type: string
+                                k:
+                                  type: string
+                                key_ops:
+                                  type: array
+                                  items:
+                                    type: string
+                                kid:
+                                  type: string
+                                kty:
+                                  type: string
+                                'n':
+                                  type: string
+                                oth:
+                                  type: string
+                                p:
+                                  type: string
+                                q:
+                                  type: string
+                                qi:
+                                  type: string
+                                r:
+                                  type: string
+                                t:
+                                  type: string
+                                use:
+                                  type: string
+                                x:
+                                  type: string
+                                x5c:
+                                  type: array
+                                  items:
+                                    type: string
+                                x5t:
+                                  type: string
+                                x5t#S256:
+                                  type: string
+                                x5u:
+                                  type: string
+                                'y':
+                                  type: string
+                              type: object
+                          client_secret:
+                            description: The client secret.
+                            type: array
+                            items:
+                              type: string
+                          cluster_cache_redis:
+                            type: object
+                            properties:
+                              cluster_max_redirections:
+                                description: Maximum retry attempts for redirection.
+                                type: integer
+                              cluster_nodes:
+                                description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                                type: array
+                                items:
+                                  properties:
+                                    ip:
+                                      description: 'A string representing a host name, such as example.com.'
+                                      type: string
+                                    port:
+                                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                      type: integer
+                                      maximum: 65535
+                                      minimum: 0
+                                  type: object
+                                minLength: 1
+                              connect_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              connection_is_proxied:
+                                description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                                type: boolean
+                              database:
+                                description: Database to use for the Redis connection when using the `redis` strategy
+                                type: integer
+                              host:
+                                description: 'A string representing a host name, such as example.com.'
+                                type: string
+                              keepalive_backlog:
+                                description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              keepalive_pool_size:
+                                description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 1
+                              password:
+                                description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                                type: string
+                              port:
+                                description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                type: integer
+                                maximum: 65535
+                                minimum: 0
+                              read_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              send_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              sentinel_master:
+                                description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                                type: string
+                              sentinel_nodes:
+                                description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                                type: array
+                                items:
+                                  properties:
+                                    host:
+                                      description: 'A string representing a host name, such as example.com.'
+                                      type: string
+                                    port:
+                                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                      type: integer
+                                      maximum: 65535
+                                      minimum: 0
+                                  type: object
+                                minLength: 1
+                              sentinel_password:
+                                description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                                type: string
+                              sentinel_role:
+                                description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                                type: string
+                                enum:
+                                  - any
+                                  - master
+                                  - slave
+                              sentinel_username:
+                                description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                                type: string
+                              server_name:
+                                description: A string representing an SNI (server name indication) value for TLS.
+                                type: string
+                              ssl:
+                                description: 'If set to true, uses SSL to connect to Redis.'
+                                type: boolean
+                              ssl_verify:
+                                description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                                type: boolean
+                              username:
+                                description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                                type: string
+                            shorthand_fields:
+                              cluster_addresses:
+                                items:
+                                  type: string
+                                minLength: 1
+                                type: array
+                              sentinel_addresses:
+                                items:
+                                  type: string
+                                minLength: 1
+                                type: array
+                              timeout:
+                                type: integer
+                          cluster_cache_strategy:
+                            description: 'The strategy to use for the cluster cache. If set, the plugin will share cache with nodes configured with the same strategy backend. Currentlly only introspection cache is shared.'
+                            type: string
+                            enum:
+                              - 'off'
+                              - redis
+                          consumer_by:
+                            description: 'Consumer fields used for mapping: - `id`: try to find the matching Consumer by `id` - `username`: try to find the matching Consumer by `username` - `custom_id`: try to find the matching Consumer by `custom_id`.'
+                            type: array
+                            items:
+                              enum:
+                                - custom_id
+                                - id
+                                - username
+                              type: string
+                          consumer_claim:
+                            description: 'The claim used for consumer mapping. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          consumer_optional:
+                            description: Do not terminate the request if consumer mapping fails.
+                            type: boolean
+                          credential_claim:
+                            description: 'The claim used to derive virtual credentials (e.g. to be consumed by the rate-limiting plugin), in case the consumer mapping is not used. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          disable_session:
+                            description: Disable issuing the session cookie with the specified grants.
+                            type: array
+                            items:
+                              enum:
+                                - authorization_code
+                                - bearer
+                                - client_credentials
+                                - introspection
+                                - kong_oauth2
+                                - password
+                                - refresh_token
+                                - session
+                                - userinfo
+                              type: string
+                          discovery_headers_names:
+                            description: Extra header names passed to the discovery endpoint.
+                            type: array
+                            items:
+                              type: string
+                          discovery_headers_values:
+                            description: Extra header values passed to the discovery endpoint.
+                            type: array
+                            items:
+                              type: string
+                          display_errors:
+                            description: Display errors on failure responses.
+                            type: boolean
+                          domains:
+                            description: The allowed values for the `hd` claim.
+                            type: array
+                            items:
+                              type: string
+                          downstream_access_token_header:
+                            description: The downstream access token header.
+                            type: string
+                          downstream_access_token_jwk_header:
+                            description: The downstream access token JWK header.
+                            type: string
+                          downstream_headers_claims:
+                            description: 'The downstream header claims. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          downstream_headers_names:
+                            description: The downstream header names for the claim values.
+                            type: array
+                            items:
+                              type: string
+                          downstream_id_token_header:
+                            description: The downstream id token header.
+                            type: string
+                          downstream_id_token_jwk_header:
+                            description: The downstream id token JWK header.
+                            type: string
+                          downstream_introspection_header:
+                            description: The downstream introspection header.
+                            type: string
+                          downstream_introspection_jwt_header:
+                            description: The downstream introspection JWT header.
+                            type: string
+                          downstream_refresh_token_header:
+                            description: The downstream refresh token header.
+                            type: string
+                          downstream_session_id_header:
+                            description: The downstream session id header.
+                            type: string
+                          downstream_user_info_header:
+                            description: The downstream user info header.
+                            type: string
+                          downstream_user_info_jwt_header:
+                            description: The downstream user info JWT header (in case the user info returns a JWT response).
+                            type: string
+                          dpop_proof_lifetime:
+                            description: 'Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.'
+                            type: number
+                          dpop_use_nonce:
+                            description: Specifies whether to challenge the client with a nonce value for DPoP proof. When enabled it will also be used to calculate the DPoP proof lifetime.
+                            type: boolean
+                          enable_hs_signatures:
+                            description: 'Enable shared secret, for example, HS256, signatures (when disabled they will not be accepted).'
+                            type: boolean
+                          end_session_endpoint:
+                            description: The end session endpoint. If set it overrides the value in `end_session_endpoint` returned by the discovery endpoint.
+                            type: string
+                          expose_error_code:
+                            description: 'Specifies whether to expose the error code header, as defined in RFC 6750. If an authorization request fails, this header is sent in the response. Set to `false` to disable.'
+                            type: boolean
+                          extra_jwks_uris:
+                            description: JWKS URIs whose public keys are trusted (in addition to the keys found with the discovery).
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          forbidden_destroy_session:
+                            description: Destroy any active session for the forbidden requests.
+                            type: boolean
+                          forbidden_error_message:
+                            description: The error message for the forbidden requests (when not using the redirection).
+                            type: string
+                          forbidden_redirect_uri:
+                            description: Where to redirect the client on forbidden requests.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          groups_claim:
+                            description: 'The claim that contains the groups. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          groups_required:
+                            description: The groups (`groups_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+                            type: array
+                            items:
+                              type: string
+                          hide_credentials:
+                            description: 'Remove the credentials used for authentication from the request. If multiple credentials are sent with the same request, the plugin will remove those that were used for successful authentication.'
+                            type: boolean
+                          http_proxy:
+                            description: The HTTP proxy.
+                            type: string
+                          http_proxy_authorization:
+                            description: The HTTP proxy authorization.
+                            type: string
+                          http_version:
+                            description: 'The HTTP version used for the requests by this plugin: - `1.1`: HTTP 1.1 (the default) - `1.0`: HTTP 1.0.'
+                            type: number
+                          https_proxy:
+                            description: The HTTPS proxy.
+                            type: string
+                          https_proxy_authorization:
+                            description: The HTTPS proxy authorization.
+                            type: string
+                          id_token_param_name:
+                            description: The name of the parameter used to pass the id token.
+                            type: string
+                          id_token_param_type:
+                            description: 'Where to look for the id token: - `header`: search the HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body.'
+                            type: array
+                            items:
+                              enum:
+                                - body
+                                - header
+                                - query
+                              type: string
+                          ignore_signature:
+                            description: 'Skip the token signature verification on certain grants: - `password`: OAuth password grant - `client_credentials`: OAuth client credentials grant - `authorization_code`: authorization code flow - `refresh_token`: OAuth refresh token grant - `session`: session cookie authentication - `introspection`: OAuth introspection - `userinfo`: OpenID Connect user info endpoint authentication.'
+                            type: array
+                            items:
+                              enum:
+                                - authorization_code
+                                - client_credentials
+                                - introspection
+                                - password
+                                - refresh_token
+                                - session
+                                - userinfo
+                              type: string
+                          introspect_jwt_tokens:
+                            description: Specifies whether to introspect the JWT access tokens (can be used to check for revocations).
+                            type: boolean
+                          introspection_accept:
+                            description: 'The value of `Accept` header for introspection requests: - `application/json`: introspection response as JSON - `application/token-introspection+jwt`: introspection response as JWT (from the current IETF draft document) - `application/jwt`: introspection response as JWT (from the obsolete IETF draft document).'
+                            type: string
+                            enum:
+                              - application/json
+                              - application/jwt
+                              - application/token-introspection+jwt
+                          introspection_check_active:
+                            description: Check that the introspection response has an `active` claim with a value of `true`.
+                            type: boolean
+                          introspection_endpoint:
+                            description: The introspection endpoint. If set it overrides the value in `introspection_endpoint` returned by the discovery endpoint.
+                            type: string
+                          introspection_endpoint_auth_method:
+                            description: 'The introspection endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate'
+                            type: string
+                            enum:
+                              - client_secret_basic
+                              - client_secret_jwt
+                              - client_secret_post
+                              - none
+                              - private_key_jwt
+                              - self_signed_tls_client_auth
+                              - tls_client_auth
+                          introspection_headers_client:
+                            description: Extra headers passed from the client to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_headers_names:
+                            description: Extra header names passed to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_headers_values:
+                            description: Extra header values passed to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_hint:
+                            description: Introspection hint parameter value passed to the introspection endpoint.
+                            type: string
+                          introspection_post_args_client:
+                            description: Extra post arguments passed from the client to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_post_args_client_headers:
+                            description: Extra post arguments passed from the client headers to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_post_args_names:
+                            description: Extra post argument names passed to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_post_args_values:
+                            description: Extra post argument values passed to the introspection endpoint.
+                            type: array
+                            items:
+                              type: string
+                          introspection_token_param_name:
+                            description: Designate token's parameter name for introspection.
+                            type: string
+                          issuer:
+                            description: 'The discovery endpoint (or the issuer identifier). When there is no discovery endpoint, please also configure `config.using_pseudo_issuer=true`.'
+                            type: string
+                          issuers_allowed:
+                            description: The issuers allowed to be present in the tokens (`iss` claim).
+                            type: array
+                            items:
+                              type: string
+                          jwt_session_claim:
+                            description: The claim to match against the JWT session cookie.
+                            type: string
+                          jwt_session_cookie:
+                            description: The name of the JWT session cookie.
+                            type: string
+                          keepalive:
+                            description: Use keepalive with the HTTP client.
+                            type: boolean
+                          leeway:
+                            description: 'Defines leeway time (in seconds) for `auth_time`, `exp`, `iat`, and `nbf` claims'
+                            type: number
+                          login_action:
+                            description: 'What to do after successful login: - `upstream`: proxy request to upstream service - `response`: terminate request with a response - `redirect`: redirect to a different location.'
+                            type: string
+                            enum:
+                              - redirect
+                              - response
+                              - upstream
+                          login_methods:
+                            description: Enable login functionality with specified grants.
+                            type: array
+                            items:
+                              enum:
+                                - authorization_code
+                                - bearer
+                                - client_credentials
+                                - introspection
+                                - kong_oauth2
+                                - password
+                                - refresh_token
+                                - session
+                                - userinfo
+                              type: string
+                          login_redirect_mode:
+                            description: 'Where to place `login_tokens` when using `redirect` `login_action`: - `query`: place tokens in query string - `fragment`: place tokens in url fragment (not readable by servers).'
+                            type: string
+                            enum:
+                              - fragment
+                              - query
+                          login_redirect_uri:
+                            description: Where to redirect the client when `login_action` is set to `redirect`.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          login_tokens:
+                            description: 'What tokens to include in `response` body or `redirect` query string or fragment: - `id_token`: include id token - `access_token`: include access token - `refresh_token`: include refresh token - `tokens`: include the full token endpoint response - `introspection`: include introspection response.'
+                            type: array
+                            items:
+                              enum:
+                                - access_token
+                                - id_token
+                                - introspection
+                                - refresh_token
+                                - tokens
+                              type: string
+                          logout_methods:
+                            description: 'The request methods that can activate the logout: - `POST`: HTTP POST method - `GET`: HTTP GET method - `DELETE`: HTTP DELETE method.'
+                            type: array
+                            items:
+                              enum:
+                                - DELETE
+                                - GET
+                                - POST
+                              type: string
+                          logout_post_arg:
+                            description: The request body argument that activates the logout.
+                            type: string
+                          logout_query_arg:
+                            description: The request query argument that activates the logout.
+                            type: string
+                          logout_redirect_uri:
+                            description: Where to redirect the client after the logout.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          logout_revoke:
+                            description: |-
+                              Revoke tokens as part of the logout.
+
+                              For more granular token revocation, you can also adjust the `logout_revoke_access_token` and `logout_revoke_refresh_token` parameters.
+                            type: boolean
+                          logout_revoke_access_token:
+                            description: Revoke the access token as part of the logout. Requires `logout_revoke` to be set to `true`.
+                            type: boolean
+                          logout_revoke_refresh_token:
+                            description: Revoke the refresh token as part of the logout. Requires `logout_revoke` to be set to `true`.
+                            type: boolean
+                          logout_uri_suffix:
+                            description: The request URI suffix that activates the logout.
+                            type: string
+                          max_age:
+                            description: The maximum age (in seconds) compared to the `auth_time` claim.
+                            type: number
+                          mtls_introspection_endpoint:
+                            description: Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+                            type: string
+                          mtls_revocation_endpoint:
+                            description: Alias for the introspection endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+                            type: string
+                          mtls_token_endpoint:
+                            description: Alias for the token endpoint to be used for mTLS client authentication. If set it overrides the value in `mtls_endpoint_aliases` returned by the discovery endpoint.
+                            type: string
+                          no_proxy:
+                            description: Do not use proxy with these hosts.
+                            type: string
+                          password_param_type:
+                            description: 'Where to look for the username and password: - `header`: search the HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body.'
+                            type: array
+                            items:
+                              enum:
+                                - body
+                                - header
+                                - query
+                              type: string
+                          preserve_query_args:
+                            description: 'With this parameter, you can preserve request query arguments even when doing authorization code flow.'
+                            type: boolean
+                          proof_of_possession_auth_methods_validation:
+                            description: 'If set to true, only the auth_methods that are compatible with Proof of Possession (PoP) can be configured when PoP is enabled. If set to false, all auth_methods will be configurable and PoP checks will be silently skipped for those auth_methods that are not compatible with PoP.'
+                            type: boolean
+                          proof_of_possession_dpop:
+                            description: 'Enable Demonstrating Proof-of-Possession (DPoP). If set to strict, all request are verified despite the presence of the DPoP key claim (cnf.jkt). If set to optional, only tokens bound with DPoP''s key are verified with the proof.'
+                            type: string
+                            enum:
+                              - 'off'
+                              - optional
+                              - strict
+                          proof_of_possession_mtls:
+                            description: 'Enable mtls proof of possession. If set to strict, all tokens (from supported auth_methods: bearer, introspection, and session granted with bearer or introspection) are verified, if set to optional, only tokens that contain the certificate hash claim are verified. If the verification fails, the request will be rejected with 401.'
+                            type: string
+                            enum:
+                              - 'off'
+                              - optional
+                              - strict
+                          pushed_authorization_request_endpoint:
+                            description: The pushed authorization endpoint. If set it overrides the value in `pushed_authorization_request_endpoint` returned by the discovery endpoint.
+                            type: string
+                          pushed_authorization_request_endpoint_auth_method:
+                            description: 'The pushed authorization request endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate'
+                            type: string
+                            enum:
+                              - client_secret_basic
+                              - client_secret_jwt
+                              - client_secret_post
+                              - none
+                              - private_key_jwt
+                              - self_signed_tls_client_auth
+                              - tls_client_auth
+                          redirect_uri:
+                            description: The redirect URI passed to the authorization and token endpoints.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          redis:
+                            type: object
+                            properties:
+                              cluster_max_redirections:
+                                description: Maximum retry attempts for redirection.
+                                type: integer
+                              cluster_nodes:
+                                description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                                type: array
+                                items:
+                                  properties:
+                                    ip:
+                                      description: 'A string representing a host name, such as example.com.'
+                                      type: string
+                                    port:
+                                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                      type: integer
+                                      maximum: 65535
+                                      minimum: 0
+                                  type: object
+                                minLength: 1
+                              connect_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              connection_is_proxied:
+                                description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                                type: boolean
+                              database:
+                                description: Database to use for the Redis connection when using the `redis` strategy
+                                type: integer
+                              host:
+                                description: 'A string representing a host name, such as example.com.'
+                                type: string
+                              keepalive_backlog:
+                                description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              keepalive_pool_size:
+                                description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 1
+                              password:
+                                description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                                type: string
+                              port:
+                                description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                type: integer
+                                maximum: 65535
+                                minimum: 0
+                              prefix:
+                                description: The Redis session key prefix.
+                                type: string
+                              read_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              send_timeout:
+                                description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              sentinel_master:
+                                description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                                type: string
+                              sentinel_nodes:
+                                description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                                type: array
+                                items:
+                                  properties:
+                                    host:
+                                      description: 'A string representing a host name, such as example.com.'
+                                      type: string
+                                    port:
+                                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                                      type: integer
+                                      maximum: 65535
+                                      minimum: 0
+                                  type: object
+                                minLength: 1
+                              sentinel_password:
+                                description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                                type: string
+                              sentinel_role:
+                                description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                                type: string
+                                enum:
+                                  - any
+                                  - master
+                                  - slave
+                              sentinel_username:
+                                description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                                type: string
+                              server_name:
+                                description: A string representing an SNI (server name indication) value for TLS.
+                                type: string
+                              socket:
+                                description: The Redis unix socket path.
+                                type: string
+                              ssl:
+                                description: 'If set to true, uses SSL to connect to Redis.'
+                                type: boolean
+                              ssl_verify:
+                                description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                                type: boolean
+                              username:
+                                description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                                type: string
+                            shorthand_fields:
+                              cluster_addresses:
+                                items:
+                                  type: string
+                                minLength: 1
+                                type: array
+                              sentinel_addresses:
+                                items:
+                                  type: string
+                                minLength: 1
+                                type: array
+                              timeout:
+                                type: integer
+                          rediscovery_lifetime:
+                            description: Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.
+                            type: number
+                          refresh_token_param_name:
+                            description: The name of the parameter used to pass the refresh token.
+                            type: string
+                          refresh_token_param_type:
+                            description: 'Where to look for the refresh token: - `header`: search the HTTP headers - `query`: search the URL''s query string - `body`: search the HTTP request body.'
+                            type: array
+                            items:
+                              enum:
+                                - body
+                                - header
+                                - query
+                              type: string
+                          refresh_tokens:
+                            description: Specifies whether the plugin should try to refresh (soon to be) expired access tokens if the plugin has a `refresh_token` available.
+                            type: boolean
+                          require_proof_key_for_code_exchange:
+                            description: 'Forcibly enable or disable the proof key for code exchange. When not set the value is determined through the discovery using the value of `code_challenge_methods_supported`, and enabled automatically (in case the `code_challenge_methods_supported` is missing, the PKCE will not be enabled).'
+                            type: boolean
+                          require_pushed_authorization_requests:
+                            description: Forcibly enable or disable the pushed authorization requests. When not set the value is determined through the discovery using the value of `require_pushed_authorization_requests` (which defaults to `false`).
+                            type: boolean
+                          require_signed_request_object:
+                            description: 'Forcibly enable or disable the usage of signed request object on authorization or pushed authorization endpoint. When not set the value is determined through the discovery using the value of `require_signed_request_object`, and enabled automatically (in case the `require_signed_request_object` is missing, the feature will not be enabled).'
+                            type: boolean
+                          resolve_distributed_claims:
+                            description: 'Distributed claims are represented by the `_claim_names` and `_claim_sources` members of the JSON object containing the claims. If this parameter is set to `true`, the plugin explicitly resolves these distributed claims.'
+                            type: boolean
+                          response_mode:
+                            description: 'Response mode passed to the authorization endpoint: - `query`: for parameters in query string - `form_post`: for parameters in request body - `fragment`: for parameters in uri fragment (rarely useful as the plugin itself cannot read it) - `query.jwt`, `form_post.jwt`, `fragment.jwt`: similar to `query`, `form_post` and `fragment` but the parameters are encoded in a JWT - `jwt`: shortcut that indicates the default encoding for the requested response type.'
+                            type: string
+                            enum:
+                              - form_post
+                              - form_post.jwt
+                              - fragment
+                              - fragment.jwt
+                              - jwt
+                              - query
+                              - query.jwt
+                          response_type:
+                            description: The response type passed to the authorization endpoint.
+                            type: array
+                            items:
+                              type: string
+                          reverify:
+                            description: Specifies whether to always verify tokens stored in the session.
+                            type: boolean
+                          revocation_endpoint:
+                            description: The revocation endpoint. If set it overrides the value in `revocation_endpoint` returned by the discovery endpoint.
+                            type: string
+                          revocation_endpoint_auth_method:
+                            description: 'The revocation endpoint authentication method: : `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate'
+                            type: string
+                            enum:
+                              - client_secret_basic
+                              - client_secret_jwt
+                              - client_secret_post
+                              - none
+                              - private_key_jwt
+                              - self_signed_tls_client_auth
+                              - tls_client_auth
+                          revocation_token_param_name:
+                            description: Designate token's parameter name for revocation.
+                            type: string
+                          roles_claim:
+                            description: 'The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          roles_required:
+                            description: The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+                            type: array
+                            items:
+                              type: string
+                          run_on_preflight:
+                            description: Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
+                            type: boolean
+                          scopes:
+                            description: The scopes passed to the authorization and token endpoints.
+                            type: array
+                            items:
+                              type: string
+                          scopes_claim:
+                            description: 'The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.'
+                            type: array
+                            items:
+                              type: string
+                          scopes_required:
+                            description: The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
+                            type: array
+                            items:
+                              type: string
+                          search_user_info:
+                            description: 'Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.'
+                            type: boolean
+                          session_absolute_timeout:
+                            description: 'Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.'
+                            type: number
+                          session_audience:
+                            description: 'The session audience, which is the intended target application. For example `"my-application"`.'
+                            type: string
+                          session_cookie_domain:
+                            description: The session cookie Domain flag.
+                            type: string
+                          session_cookie_http_only:
+                            description: 'Forbids JavaScript from accessing the cookie, for example, through the `Document.cookie` property.'
+                            type: boolean
+                          session_cookie_name:
+                            description: The session cookie name.
+                            type: string
+                          session_cookie_path:
+                            description: The session cookie Path flag.
+                            type: string
+                          session_cookie_same_site:
+                            description: 'Controls whether a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.'
+                            type: string
+                            enum:
+                              - Default
+                              - Lax
+                              - None
+                              - Strict
+                          session_cookie_secure:
+                            description: 'Cookie is only sent to the server when a request is made with the https: scheme (except on localhost), and therefore is more resistant to man-in-the-middle attacks.'
+                            type: boolean
+                          session_enforce_same_subject:
+                            description: 'When set to `true`, audiences are forced to share the same subject.'
+                            type: boolean
+                          session_hash_storage_key:
+                            description: 'When set to `true`, the storage key (session ID) is hashed for extra security. Hashing the storage key means it is impossible to decrypt data from the storage without a cookie.'
+                            type: boolean
+                          session_hash_subject:
+                            description: 'When set to `true`, the value of subject is hashed before being stored. Only applies when `session_store_metadata` is enabled.'
+                            type: boolean
+                          session_idling_timeout:
+                            description: Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.
+                            type: number
+                          session_memcached_host:
+                            description: The memcached host.
+                            type: string
+                          session_memcached_port:
+                            description: The memcached port.
+                            type: integer
+                            maximum: 65535
+                            minimum: 0
+                          session_memcached_prefix:
+                            description: The memcached session key prefix.
+                            type: string
+                          session_memcached_socket:
+                            description: The memcached unix socket path.
+                            type: string
+                          session_remember:
+                            description: Enables or disables persistent sessions.
+                            type: boolean
+                          session_remember_absolute_timeout:
+                            description: 'Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.'
+                            type: number
+                          session_remember_cookie_name:
+                            description: Persistent session cookie name. Use with the `remember` configuration parameter.
+                            type: string
+                          session_remember_rolling_timeout:
+                            description: Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.
+                            type: number
+                          session_request_headers:
+                            description: 'Set of headers to send to upstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout request headers.'
+                            type: array
+                            items:
+                              enum:
+                                - absolute-timeout
+                                - audience
+                                - id
+                                - idling-timeout
+                                - rolling-timeout
+                                - subject
+                                - timeout
+                              type: string
+                          session_response_headers:
+                            description: 'Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. `[ "id", "timeout" ]` will set Session-Id and Session-Timeout response headers.'
+                            type: array
+                            items:
+                              enum:
+                                - absolute-timeout
+                                - audience
+                                - id
+                                - idling-timeout
+                                - rolling-timeout
+                                - subject
+                                - timeout
+                              type: string
+                          session_rolling_timeout:
+                            description: Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.
+                            type: number
+                          session_secret:
+                            description: The session secret.
+                            type: string
+                          session_storage:
+                            description: 'The session storage for session data: - `cookie`: stores session data with the session cookie (the session cannot be invalidated or revoked without changing session secret, but is stateless, and doesn''t require a database) - `memcache`: stores session data in memcached - `redis`: stores session data in Redis.'
+                            type: string
+                            enum:
+                              - cookie
+                              - memcache
+                              - memcached
+                              - redis
+                          session_store_metadata:
+                            description: Configures whether or not session metadata should be stored. This metadata includes information about the active sessions for a specific audience belonging to a specific subject.
+                            type: boolean
+                          ssl_verify:
+                            description: 'Verify identity provider server certificate. If set to `true`, the plugin uses the CA certificate set in the `kong.conf` config parameter `lua_ssl_trusted_certificate`.'
+                            type: boolean
+                          timeout:
+                            description: Network IO timeout in milliseconds.
+                            type: number
+                          tls_client_auth_cert_id:
+                            description: ID of the Certificate entity representing the client certificate to use for mTLS client authentication for connections between Kong and the Auth Server.
+                            type: string
+                            uuid: true
+                          tls_client_auth_ssl_verify:
+                            description: Verify identity provider server certificate during mTLS client authentication.
+                            type: boolean
+                          token_cache_key_include_scope:
+                            description: 'Include the scope in the token cache key, so token with different scopes are considered diffrent tokens.'
+                            type: boolean
+                          token_endpoint:
+                            description: The token endpoint. If set it overrides the value in `token_endpoint` returned by the discovery endpoint.
+                            type: string
+                          token_endpoint_auth_method:
+                            description: 'The token endpoint authentication method: `client_secret_basic`, `client_secret_post`, `client_secret_jwt`, `private_key_jwt`, `tls_client_auth`, `self_signed_tls_client_auth`, or `none`: do not authenticate'
+                            type: string
+                            enum:
+                              - client_secret_basic
+                              - client_secret_jwt
+                              - client_secret_post
+                              - none
+                              - private_key_jwt
+                              - self_signed_tls_client_auth
+                              - tls_client_auth
+                          token_exchange_endpoint:
+                            description: The token exchange endpoint.
+                            type: string
+                          token_headers_client:
+                            description: Extra headers passed from the client to the token endpoint.
+                            type: array
+                            items:
+                              type: string
+                          token_headers_grants:
+                            description: 'Enable the sending of the token endpoint response headers only with certain grants: - `password`: with OAuth password grant - `client_credentials`: with OAuth client credentials grant - `authorization_code`: with authorization code flow - `refresh_token` with refresh token grant.'
+                            type: array
+                            items:
+                              enum:
+                                - authorization_code
+                                - client_credentials
+                                - password
+                                - refresh_token
+                              type: string
+                          token_headers_names:
+                            description: Extra header names passed to the token endpoint.
+                            type: array
+                            items:
+                              type: string
+                          token_headers_prefix:
+                            description: Add a prefix to the token endpoint response headers before forwarding them to the downstream client.
+                            type: string
+                          token_headers_replay:
+                            description: The names of token endpoint response headers to forward to the downstream client.
+                            type: array
+                            items:
+                              type: string
+                          token_headers_values:
+                            description: Extra header values passed to the token endpoint.
+                            type: array
+                            items:
+                              type: string
+                          token_post_args_client:
+                            description: 'Pass extra arguments from the client to the OpenID-Connect plugin. If arguments exist, the client can pass them using: - Query parameters - Request Body - Request Header  This parameter can be used with `scope` values, like this:  `config.token_post_args_client=scope`  In this case, the token would take the `scope` value from the query parameter or from the request body or from the header and send it to the token endpoint.'
+                            type: array
+                            items:
+                              type: string
+                          token_post_args_names:
+                            description: Extra post argument names passed to the token endpoint.
+                            type: array
+                            items:
+                              type: string
+                          token_post_args_values:
+                            description: Extra post argument values passed to the token endpoint.
+                            type: array
+                            items:
+                              type: string
+                          unauthorized_destroy_session:
+                            description: Destroy any active session for the unauthorized requests.
+                            type: boolean
+                          unauthorized_error_message:
+                            description: The error message for the unauthorized requests (when not using the redirection).
+                            type: string
+                          unauthorized_redirect_uri:
+                            description: Where to redirect the client on unauthorized requests.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          unexpected_redirect_uri:
+                            description: Where to redirect the client when unexpected errors happen with the requests.
+                            type: array
+                            items:
+                              description: 'A string representing a URL, such as https://example.com/path/to/resource?q=search.'
+                              type: string
+                          upstream_access_token_header:
+                            description: The upstream access token header.
+                            type: string
+                          upstream_access_token_jwk_header:
+                            description: The upstream access token JWK header.
+                            type: string
+                          upstream_headers_claims:
+                            description: The upstream header claims. Only top level claims are supported.
+                            type: array
+                            items:
+                              type: string
+                          upstream_headers_names:
+                            description: The upstream header names for the claim values.
+                            type: array
+                            items:
+                              type: string
+                          upstream_id_token_header:
+                            description: The upstream id token header.
+                            type: string
+                          upstream_id_token_jwk_header:
+                            description: The upstream id token JWK header.
+                            type: string
+                          upstream_introspection_header:
+                            description: The upstream introspection header.
+                            type: string
+                          upstream_introspection_jwt_header:
+                            description: The upstream introspection JWT header.
+                            type: string
+                          upstream_refresh_token_header:
+                            description: The upstream refresh token header.
+                            type: string
+                          upstream_session_id_header:
+                            description: The upstream session id header.
+                            type: string
+                          upstream_user_info_header:
+                            description: The upstream user info header.
+                            type: string
+                          upstream_user_info_jwt_header:
+                            description: The upstream user info JWT header (in case the user info returns a JWT response).
+                            type: string
+                          userinfo_accept:
+                            description: 'The value of `Accept` header for user info requests: - `application/json`: user info response as JSON - `application/jwt`: user info response as JWT (from the obsolete IETF draft document).'
+                            type: string
+                            enum:
+                              - application/json
+                              - application/jwt
+                          userinfo_endpoint:
+                            description: The user info endpoint. If set it overrides the value in `userinfo_endpoint` returned by the discovery endpoint.
+                            type: string
+                          userinfo_headers_client:
+                            description: Extra headers passed from the client to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          userinfo_headers_names:
+                            description: Extra header names passed to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          userinfo_headers_values:
+                            description: Extra header values passed to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          userinfo_query_args_client:
+                            description: Extra query arguments passed from the client to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          userinfo_query_args_names:
+                            description: Extra query argument names passed to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          userinfo_query_args_values:
+                            description: Extra query argument values passed to the user info endpoint.
+                            type: array
+                            items:
+                              type: string
+                          using_pseudo_issuer:
+                            description: 'If the plugin uses a pseudo issuer. When set to true, the plugin will not discover the configuration from the issuer URL specified with `config.issuer`.'
+                            type: boolean
+                          verify_claims:
+                            description: Verify tokens for standard claims.
+                            type: boolean
+                          verify_nonce:
+                            description: Verify nonce on authorization code flow.
+                            type: boolean
+                          verify_parameters:
+                            description: Verify plugin configuration against discovery.
+                            type: boolean
+                          verify_signature:
+                            description: Verify signature of tokens.
+                            type: boolean
+                        required:
+                          - cluster_cache_redis
+                          - issuer
+                          - redis
+                      strategy_id:
+                        description: The strategy id the config is tied to.
+                        type: string
+                    required:
+                      - strategy_id
+                    type: object
+        name:
+          type: string
+          const: konnect-application-auth
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
     LdapAuthAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginLdapAuthAdvanced
       allOf:
@@ -26131,22 +27641,9 @@ components:
           type: string
         ordering:
           type: object
+          additionalProperties:
+            type: string
           nullable: true
-          properties:
-            after:
-              type: object
-              properties:
-                access:
-                  type: array
-                  items:
-                    type: string
-            before:
-              type: object
-              properties:
-                access:
-                  type: array
-                  items:
-                    type: string
         tags:
           description: An optional set of strings associated with the Plugin for grouping and filtering.
           type: array
@@ -28624,9 +30121,7 @@ components:
           description: 'One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.'
           type: object
           additionalProperties:
-            items:
-              type: string
-            type: array
+            type: string
           nullable: true
         hosts:
           description: A list of domain names that match this Route. Note that the hosts value is case sensitive.
@@ -32831,7 +34326,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
-    UpdateMeshControlPlaneValidationError:
+    PutMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
@@ -32855,7 +34350,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
-    UpdateMeshControlPlaneResponse:
+    PutMeshControlPlaneResponse:
       description: A response to updating a control plane.
       content:
         application/json:
