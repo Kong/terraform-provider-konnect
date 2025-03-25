@@ -408,28 +408,6 @@ func tagsToStringSlice(s []string) []basetypes.StringValue {
 	return x
 }
 
-func orderingToValue(o *shared.Ordering) *tfTypes.ACLPluginOrdering {
-	if o == nil {
-		return nil
-	}
-
-	x := &tfTypes.ACLPluginOrdering{}
-
-	if o.After != nil {
-		x.After = &tfTypes.ACLPluginAfter{
-			Access: tagsToStringSlice(o.After.Access),
-		}
-	}
-
-	if o.Before != nil {
-		x.Before = &tfTypes.ACLPluginAfter{
-			Access: tagsToStringSlice(o.Before.Access),
-		}
-	}
-
-	return x
-}
-
 func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, client *sdk.Konnect, diags diag.Diagnostics, resp *shared.Plugin) {
 
 	r.ID = types.StringPointerValue(resp.ID)
@@ -439,7 +417,7 @@ func (r *CustomPluginResourceModel) RefreshFromResponse(ctx context.Context, cli
 	r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 	r.Enabled = types.BoolPointerValue(resp.Enabled)
 	r.InstanceName = types.StringPointerValue(resp.InstanceName)
-	r.Ordering = orderingToValue(resp.Ordering)
+	r.Ordering = resp.Ordering
 	r.Protocols = protocolsToStringSlice(resp.Protocols)
 	r.Route = pointerToId(resp.Route)
 	r.Service = pointerToId(resp.Service)

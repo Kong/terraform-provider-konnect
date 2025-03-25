@@ -19,7 +19,7 @@ type CustomPluginResourceModel struct {
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
 	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
+	Ordering       *shared.Ordering                   `tfsdk:"ordering"`
 	Protocols      []types.String                     `tfsdk:"protocols"`
 	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
 	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
@@ -95,18 +95,11 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, e
 		orderingBefore := []string{}
 		orderingAfter := []string{}
 		if r.Ordering.Before != nil && r.Ordering.Before.Access != nil {
-			for _, before := range r.Ordering.Before.Access {
-				orderingBefore = append(orderingBefore, before.ValueString())
-			}
+			orderingBefore = append(orderingBefore, r.Ordering.Before.Access...)
 		}
 
 		if r.Ordering.After != nil && r.Ordering.After.Access != nil {
-			for _, after := range r.Ordering.After.Access {
-				orderingAfter = append(orderingAfter, after.ValueString())
-			}
-			pluginInput.Ordering.After = &shared.After{
-				Access: orderingAfter,
-			}
+			orderingAfter = append(orderingAfter, r.Ordering.After.Access...)
 		}
 
 		if len(orderingBefore) > 0 || len(orderingAfter) > 0 {
