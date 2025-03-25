@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type RequestSizeLimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestSizeLimitingPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestSizeLimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestSizeLimitingPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestSizeLimitingPluginOrdering struct {
-	After  *RequestSizeLimitingPluginAfter  `json:"after,omitempty"`
-	Before *RequestSizeLimitingPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RequestSizeLimitingPluginOrdering) GetAfter() *RequestSizeLimitingPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RequestSizeLimitingPluginOrdering) GetBefore() *RequestSizeLimitingPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // SizeUnit - Size unit can be set either in `bytes`, `kilobytes`, or `megabytes` (default). This configuration is not available in versions prior to Kong Gateway 1.3 and Kong Gateway (OSS) 2.0.
 type SizeUnit string
 
@@ -182,11 +141,11 @@ type RequestSizeLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"request-size-limiting" json:"name"`
-	Ordering     *RequestSizeLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"request-size-limiting" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -245,7 +204,7 @@ func (o *RequestSizeLimitingPlugin) GetName() string {
 	return "request-size-limiting"
 }
 
-func (o *RequestSizeLimitingPlugin) GetOrdering() *RequestSizeLimitingPluginOrdering {
+func (o *RequestSizeLimitingPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -304,11 +263,11 @@ func (o *RequestSizeLimitingPlugin) GetService() *RequestSizeLimitingPluginServi
 // RequestSizeLimitingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestSizeLimitingPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"request-size-limiting" json:"name"`
-	Ordering     *RequestSizeLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"request-size-limiting" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                        `json:"tags,omitempty"`
 	Config RequestSizeLimitingPluginConfig `json:"config"`
@@ -358,7 +317,7 @@ func (o *RequestSizeLimitingPluginInput) GetName() string {
 	return "request-size-limiting"
 }
 
-func (o *RequestSizeLimitingPluginInput) GetOrdering() *RequestSizeLimitingPluginOrdering {
+func (o *RequestSizeLimitingPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

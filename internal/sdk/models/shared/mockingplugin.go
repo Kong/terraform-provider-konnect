@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type MockingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *MockingPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type MockingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *MockingPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type MockingPluginOrdering struct {
-	After  *MockingPluginAfter  `json:"after,omitempty"`
-	Before *MockingPluginBefore `json:"before,omitempty"`
-}
-
-func (o *MockingPluginOrdering) GetAfter() *MockingPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *MockingPluginOrdering) GetBefore() *MockingPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type MockingPluginConfig struct {
 	// The contents of the specification file. You must use this option for hybrid or DB-less mode. You can include the full specification as part of the configuration. In Kong Manager, you can copy and paste the contents of the spec directly into the `Config.Api Specification` text field.
 	APISpecification *string `json:"api_specification,omitempty"`
@@ -215,11 +174,11 @@ type MockingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"mocking" json:"name"`
-	Ordering     *MockingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"mocking" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -278,7 +237,7 @@ func (o *MockingPlugin) GetName() string {
 	return "mocking"
 }
 
-func (o *MockingPlugin) GetOrdering() *MockingPluginOrdering {
+func (o *MockingPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -337,11 +296,11 @@ func (o *MockingPlugin) GetService() *MockingPluginService {
 // MockingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type MockingPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"mocking" json:"name"`
-	Ordering     *MockingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"mocking" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string            `json:"tags,omitempty"`
 	Config MockingPluginConfig `json:"config"`
@@ -391,7 +350,7 @@ func (o *MockingPluginInput) GetName() string {
 	return "mocking"
 }
 
-func (o *MockingPluginInput) GetOrdering() *MockingPluginOrdering {
+func (o *MockingPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type StatsdAdvancedPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type StatsdAdvancedPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type StatsdAdvancedPluginOrdering struct {
-	After  *StatsdAdvancedPluginAfter  `json:"after,omitempty"`
-	Before *StatsdAdvancedPluginBefore `json:"before,omitempty"`
-}
-
-func (o *StatsdAdvancedPluginOrdering) GetAfter() *StatsdAdvancedPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *StatsdAdvancedPluginOrdering) GetBefore() *StatsdAdvancedPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // StatsdAdvancedPluginConsumerIdentifierDefault - The default consumer identifier for metrics. This will take effect when a metric's consumer identifier is omitted. Allowed values are `custom_id`, `consumer_id`, `username`.
 type StatsdAdvancedPluginConsumerIdentifierDefault string
 
@@ -684,11 +643,11 @@ type StatsdAdvancedPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"statsd-advanced" json:"name"`
-	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"statsd-advanced" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -747,7 +706,7 @@ func (o *StatsdAdvancedPlugin) GetName() string {
 	return "statsd-advanced"
 }
 
-func (o *StatsdAdvancedPlugin) GetOrdering() *StatsdAdvancedPluginOrdering {
+func (o *StatsdAdvancedPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -806,11 +765,11 @@ func (o *StatsdAdvancedPlugin) GetService() *StatsdAdvancedPluginService {
 // StatsdAdvancedPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type StatsdAdvancedPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"statsd-advanced" json:"name"`
-	Ordering     *StatsdAdvancedPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"statsd-advanced" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                   `json:"tags,omitempty"`
 	Config StatsdAdvancedPluginConfig `json:"config"`
@@ -860,7 +819,7 @@ func (o *StatsdAdvancedPluginInput) GetName() string {
 	return "statsd-advanced"
 }
 
-func (o *StatsdAdvancedPluginInput) GetOrdering() *StatsdAdvancedPluginOrdering {
+func (o *StatsdAdvancedPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

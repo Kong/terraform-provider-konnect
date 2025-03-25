@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type ZipkinPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *ZipkinPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type ZipkinPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *ZipkinPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type ZipkinPluginOrdering struct {
-	After  *ZipkinPluginAfter  `json:"after,omitempty"`
-	Before *ZipkinPluginBefore `json:"before,omitempty"`
-}
-
-func (o *ZipkinPluginOrdering) GetAfter() *ZipkinPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *ZipkinPluginOrdering) GetBefore() *ZipkinPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // DefaultHeaderType - Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored.
 type DefaultHeaderType string
 
@@ -773,11 +732,11 @@ type ZipkinPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"zipkin" json:"name"`
-	Ordering     *ZipkinPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"zipkin" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -836,7 +795,7 @@ func (o *ZipkinPlugin) GetName() string {
 	return "zipkin"
 }
 
-func (o *ZipkinPlugin) GetOrdering() *ZipkinPluginOrdering {
+func (o *ZipkinPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -895,11 +854,11 @@ func (o *ZipkinPlugin) GetService() *ZipkinPluginService {
 // ZipkinPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ZipkinPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"zipkin" json:"name"`
-	Ordering     *ZipkinPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"zipkin" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string           `json:"tags,omitempty"`
 	Config ZipkinPluginConfig `json:"config"`
@@ -949,7 +908,7 @@ func (o *ZipkinPluginInput) GetName() string {
 	return "zipkin"
 }
 
-func (o *ZipkinPluginInput) GetOrdering() *ZipkinPluginOrdering {
+func (o *ZipkinPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

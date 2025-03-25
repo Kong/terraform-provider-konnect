@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type PreFunctionPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *PreFunctionPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type PreFunctionPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *PreFunctionPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type PreFunctionPluginOrdering struct {
-	After  *PreFunctionPluginAfter  `json:"after,omitempty"`
-	Before *PreFunctionPluginBefore `json:"before,omitempty"`
-}
-
-func (o *PreFunctionPluginOrdering) GetAfter() *PreFunctionPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *PreFunctionPluginOrdering) GetBefore() *PreFunctionPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type PreFunctionPluginConfig struct {
 	Access          []string `json:"access,omitempty"`
 	BodyFilter      []string `json:"body_filter,omitempty"`
@@ -212,11 +171,11 @@ type PreFunctionPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"pre-function" json:"name"`
-	Ordering     *PreFunctionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"pre-function" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -273,7 +232,7 @@ func (o *PreFunctionPlugin) GetName() string {
 	return "pre-function"
 }
 
-func (o *PreFunctionPlugin) GetOrdering() *PreFunctionPluginOrdering {
+func (o *PreFunctionPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -325,11 +284,11 @@ func (o *PreFunctionPlugin) GetService() *PreFunctionPluginService {
 // PreFunctionPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type PreFunctionPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"pre-function" json:"name"`
-	Ordering     *PreFunctionPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"pre-function" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                `json:"tags,omitempty"`
 	Config PreFunctionPluginConfig `json:"config"`
@@ -377,7 +336,7 @@ func (o *PreFunctionPluginInput) GetName() string {
 	return "pre-function"
 }
 
-func (o *PreFunctionPluginInput) GetOrdering() *PreFunctionPluginOrdering {
+func (o *PreFunctionPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

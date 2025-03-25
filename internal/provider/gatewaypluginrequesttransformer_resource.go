@@ -47,7 +47,7 @@ type GatewayPluginRequestTransformerResourceModel struct {
 	Enabled        types.Bool                             `tfsdk:"enabled"`
 	ID             types.String                           `tfsdk:"id"`
 	InstanceName   types.String                           `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Ordering       map[string]types.String                `tfsdk:"ordering"`
 	Protocols      []types.String                         `tfsdk:"protocols"`
 	Route          *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"route"`
 	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
@@ -237,33 +237,10 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 				Computed: true,
 				Optional: true,
 			},
-			"ordering": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"after": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-					"before": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-				},
+			"ordering": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

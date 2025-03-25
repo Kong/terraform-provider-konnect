@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type HeaderCertAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *HeaderCertAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type HeaderCertAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *HeaderCertAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type HeaderCertAuthPluginOrdering struct {
-	After  *HeaderCertAuthPluginAfter  `json:"after,omitempty"`
-	Before *HeaderCertAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *HeaderCertAuthPluginOrdering) GetAfter() *HeaderCertAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *HeaderCertAuthPluginOrdering) GetBefore() *HeaderCertAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // AuthenticatedGroupBy - Certificate property to use as the authenticated group. Valid values are `CN` (Common Name) or `DN` (Distinguished Name). Once `skip_consumer_lookup` is applied, any client with a valid certificate can access the Service/API. To restrict usage to only some of the authenticated users, also add the ACL plugin (not covered here) and create allowed or denied groups of users.
 type AuthenticatedGroupBy string
 
@@ -385,11 +344,11 @@ type HeaderCertAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"header-cert-auth" json:"name"`
-	Ordering     *HeaderCertAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"header-cert-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -446,7 +405,7 @@ func (o *HeaderCertAuthPlugin) GetName() string {
 	return "header-cert-auth"
 }
 
-func (o *HeaderCertAuthPlugin) GetOrdering() *HeaderCertAuthPluginOrdering {
+func (o *HeaderCertAuthPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -498,11 +457,11 @@ func (o *HeaderCertAuthPlugin) GetService() *HeaderCertAuthPluginService {
 // HeaderCertAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HeaderCertAuthPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"header-cert-auth" json:"name"`
-	Ordering     *HeaderCertAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"header-cert-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                   `json:"tags,omitempty"`
 	Config HeaderCertAuthPluginConfig `json:"config"`
@@ -550,7 +509,7 @@ func (o *HeaderCertAuthPluginInput) GetName() string {
 	return "header-cert-auth"
 }
 
-func (o *HeaderCertAuthPluginInput) GetOrdering() *HeaderCertAuthPluginOrdering {
+func (o *HeaderCertAuthPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type JqPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *JqPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type JqPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *JqPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type JqPluginOrdering struct {
-	After  *JqPluginAfter  `json:"after,omitempty"`
-	Before *JqPluginBefore `json:"before,omitempty"`
-}
-
-func (o *JqPluginOrdering) GetAfter() *JqPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *JqPluginOrdering) GetBefore() *JqPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type RequestJqProgramOptions struct {
 	ASCIIOutput   *bool `json:"ascii_output,omitempty"`
 	CompactOutput *bool `json:"compact_output,omitempty"`
@@ -271,7 +230,7 @@ type JqPlugin struct {
 	ID           *string           `json:"id,omitempty"`
 	InstanceName *string           `json:"instance_name,omitempty"`
 	name         string            `const:"jq" json:"name"`
-	Ordering     *JqPluginOrdering `json:"ordering,omitempty"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -330,7 +289,7 @@ func (o *JqPlugin) GetName() string {
 	return "jq"
 }
 
-func (o *JqPlugin) GetOrdering() *JqPluginOrdering {
+func (o *JqPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -393,7 +352,7 @@ type JqPluginInput struct {
 	ID           *string           `json:"id,omitempty"`
 	InstanceName *string           `json:"instance_name,omitempty"`
 	name         string            `const:"jq" json:"name"`
-	Ordering     *JqPluginOrdering `json:"ordering,omitempty"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string       `json:"tags,omitempty"`
 	Config JqPluginConfig `json:"config"`
@@ -443,7 +402,7 @@ func (o *JqPluginInput) GetName() string {
 	return "jq"
 }
 
-func (o *JqPluginInput) GetOrdering() *JqPluginOrdering {
+func (o *JqPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

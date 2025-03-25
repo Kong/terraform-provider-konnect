@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type TLSMetadataHeadersPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type TLSMetadataHeadersPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type TLSMetadataHeadersPluginOrdering struct {
-	After  *TLSMetadataHeadersPluginAfter  `json:"after,omitempty"`
-	Before *TLSMetadataHeadersPluginBefore `json:"before,omitempty"`
-}
-
-func (o *TLSMetadataHeadersPluginOrdering) GetAfter() *TLSMetadataHeadersPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *TLSMetadataHeadersPluginOrdering) GetBefore() *TLSMetadataHeadersPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type TLSMetadataHeadersPluginConfig struct {
 	// Define the HTTP header name used for the SHA1 fingerprint of the client certificate.
 	ClientCertFingerprintHeaderName *string `json:"client_cert_fingerprint_header_name,omitempty"`
@@ -164,11 +123,11 @@ type TLSMetadataHeadersPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"tls-metadata-headers" json:"name"`
-	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"tls-metadata-headers" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -225,7 +184,7 @@ func (o *TLSMetadataHeadersPlugin) GetName() string {
 	return "tls-metadata-headers"
 }
 
-func (o *TLSMetadataHeadersPlugin) GetOrdering() *TLSMetadataHeadersPluginOrdering {
+func (o *TLSMetadataHeadersPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -277,11 +236,11 @@ func (o *TLSMetadataHeadersPlugin) GetService() *TLSMetadataHeadersPluginService
 // TLSMetadataHeadersPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type TLSMetadataHeadersPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                             `json:"enabled,omitempty"`
-	ID           *string                           `json:"id,omitempty"`
-	InstanceName *string                           `json:"instance_name,omitempty"`
-	name         string                            `const:"tls-metadata-headers" json:"name"`
-	Ordering     *TLSMetadataHeadersPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"tls-metadata-headers" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                       `json:"tags,omitempty"`
 	Config TLSMetadataHeadersPluginConfig `json:"config"`
@@ -329,7 +288,7 @@ func (o *TLSMetadataHeadersPluginInput) GetName() string {
 	return "tls-metadata-headers"
 }
 
-func (o *TLSMetadataHeadersPluginInput) GetOrdering() *TLSMetadataHeadersPluginOrdering {
+func (o *TLSMetadataHeadersPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type HTTPLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *HTTPLogPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type HTTPLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *HTTPLogPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type HTTPLogPluginOrdering struct {
-	After  *HTTPLogPluginAfter  `json:"after,omitempty"`
-	Before *HTTPLogPluginBefore `json:"before,omitempty"`
-}
-
-func (o *HTTPLogPluginOrdering) GetAfter() *HTTPLogPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *HTTPLogPluginOrdering) GetBefore() *HTTPLogPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // ContentType - Indicates the type of data sent. The only available option is `application/json`.
 type ContentType string
 
@@ -401,11 +360,11 @@ type HTTPLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"http-log" json:"name"`
-	Ordering     *HTTPLogPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"http-log" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -464,7 +423,7 @@ func (o *HTTPLogPlugin) GetName() string {
 	return "http-log"
 }
 
-func (o *HTTPLogPlugin) GetOrdering() *HTTPLogPluginOrdering {
+func (o *HTTPLogPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -523,11 +482,11 @@ func (o *HTTPLogPlugin) GetService() *HTTPLogPluginService {
 // HTTPLogPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type HTTPLogPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"http-log" json:"name"`
-	Ordering     *HTTPLogPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"http-log" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string            `json:"tags,omitempty"`
 	Config HTTPLogPluginConfig `json:"config"`
@@ -577,7 +536,7 @@ func (o *HTTPLogPluginInput) GetName() string {
 	return "http-log"
 }
 
-func (o *HTTPLogPluginInput) GetOrdering() *HTTPLogPluginOrdering {
+func (o *HTTPLogPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

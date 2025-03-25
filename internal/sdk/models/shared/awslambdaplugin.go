@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type AwsLambdaPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AwsLambdaPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AwsLambdaPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AwsLambdaPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AwsLambdaPluginOrdering struct {
-	After  *AwsLambdaPluginAfter  `json:"after,omitempty"`
-	Before *AwsLambdaPluginBefore `json:"before,omitempty"`
-}
-
-func (o *AwsLambdaPluginOrdering) GetAfter() *AwsLambdaPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *AwsLambdaPluginOrdering) GetBefore() *AwsLambdaPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // AwsImdsProtocolVersion - Identifier to select the IMDS protocol version to use: `v1` or `v2`.
 type AwsImdsProtocolVersion string
 
@@ -478,11 +437,11 @@ type AwsLambdaPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"aws-lambda" json:"name"`
-	Ordering     *AwsLambdaPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"aws-lambda" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -541,7 +500,7 @@ func (o *AwsLambdaPlugin) GetName() string {
 	return "aws-lambda"
 }
 
-func (o *AwsLambdaPlugin) GetOrdering() *AwsLambdaPluginOrdering {
+func (o *AwsLambdaPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -600,11 +559,11 @@ func (o *AwsLambdaPlugin) GetService() *AwsLambdaPluginService {
 // AwsLambdaPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AwsLambdaPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"aws-lambda" json:"name"`
-	Ordering     *AwsLambdaPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"aws-lambda" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string              `json:"tags,omitempty"`
 	Config AwsLambdaPluginConfig `json:"config"`
@@ -654,7 +613,7 @@ func (o *AwsLambdaPluginInput) GetName() string {
 	return "aws-lambda"
 }
 
-func (o *AwsLambdaPluginInput) GetOrdering() *AwsLambdaPluginOrdering {
+func (o *AwsLambdaPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

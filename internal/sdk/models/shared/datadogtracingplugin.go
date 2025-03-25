@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type DatadogTracingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *DatadogTracingPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type DatadogTracingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *DatadogTracingPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type DatadogTracingPluginOrdering struct {
-	After  *DatadogTracingPluginAfter  `json:"after,omitempty"`
-	Before *DatadogTracingPluginBefore `json:"before,omitempty"`
-}
-
-func (o *DatadogTracingPluginOrdering) GetAfter() *DatadogTracingPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *DatadogTracingPluginOrdering) GetBefore() *DatadogTracingPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type DatadogTracingPluginConfig struct {
 	BatchFlushDelay *int64  `json:"batch_flush_delay,omitempty"`
 	BatchSpanCount  *int64  `json:"batch_span_count,omitempty"`
@@ -189,11 +148,11 @@ type DatadogTracingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"datadog-tracing" json:"name"`
-	Ordering     *DatadogTracingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"datadog-tracing" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -252,7 +211,7 @@ func (o *DatadogTracingPlugin) GetName() string {
 	return "datadog-tracing"
 }
 
-func (o *DatadogTracingPlugin) GetOrdering() *DatadogTracingPluginOrdering {
+func (o *DatadogTracingPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -311,11 +270,11 @@ func (o *DatadogTracingPlugin) GetService() *DatadogTracingPluginService {
 // DatadogTracingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type DatadogTracingPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                         `json:"enabled,omitempty"`
-	ID           *string                       `json:"id,omitempty"`
-	InstanceName *string                       `json:"instance_name,omitempty"`
-	name         string                        `const:"datadog-tracing" json:"name"`
-	Ordering     *DatadogTracingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"datadog-tracing" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                   `json:"tags,omitempty"`
 	Config DatadogTracingPluginConfig `json:"config"`
@@ -365,7 +324,7 @@ func (o *DatadogTracingPluginInput) GetName() string {
 	return "datadog-tracing"
 }
 
-func (o *DatadogTracingPluginInput) GetOrdering() *DatadogTracingPluginOrdering {
+func (o *DatadogTracingPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

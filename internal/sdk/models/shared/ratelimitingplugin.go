@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type RateLimitingPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RateLimitingPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RateLimitingPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RateLimitingPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RateLimitingPluginOrdering struct {
-	After  *RateLimitingPluginAfter  `json:"after,omitempty"`
-	Before *RateLimitingPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RateLimitingPluginOrdering) GetAfter() *RateLimitingPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RateLimitingPluginOrdering) GetBefore() *RateLimitingPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // LimitBy - The entity that is used when aggregating the limits.
 type LimitBy string
 
@@ -438,11 +397,11 @@ type RateLimitingPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"rate-limiting" json:"name"`
-	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"rate-limiting" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -503,7 +462,7 @@ func (o *RateLimitingPlugin) GetName() string {
 	return "rate-limiting"
 }
 
-func (o *RateLimitingPlugin) GetOrdering() *RateLimitingPluginOrdering {
+func (o *RateLimitingPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -569,11 +528,11 @@ func (o *RateLimitingPlugin) GetService() *RateLimitingPluginService {
 // RateLimitingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RateLimitingPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                       `json:"enabled,omitempty"`
-	ID           *string                     `json:"id,omitempty"`
-	InstanceName *string                     `json:"instance_name,omitempty"`
-	name         string                      `const:"rate-limiting" json:"name"`
-	Ordering     *RateLimitingPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"rate-limiting" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                 `json:"tags,omitempty"`
 	Config RateLimitingPluginConfig `json:"config"`
@@ -625,7 +584,7 @@ func (o *RateLimitingPluginInput) GetName() string {
 	return "rate-limiting"
 }
 
-func (o *RateLimitingPluginInput) GetOrdering() *RateLimitingPluginOrdering {
+func (o *RateLimitingPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

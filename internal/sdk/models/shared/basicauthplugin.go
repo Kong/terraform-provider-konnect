@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type BasicAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *BasicAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type BasicAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *BasicAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type BasicAuthPluginOrdering struct {
-	After  *BasicAuthPluginAfter  `json:"after,omitempty"`
-	Before *BasicAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *BasicAuthPluginOrdering) GetAfter() *BasicAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *BasicAuthPluginOrdering) GetBefore() *BasicAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type BasicAuthPluginConfig struct {
 	// An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`. Please note that this value must refer to the Consumer `id` or `username` attribute, and **not** its `custom_id`.
 	Anonymous *string `json:"anonymous,omitempty"`
@@ -146,11 +105,11 @@ type BasicAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"basic-auth" json:"name"`
-	Ordering     *BasicAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"basic-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -207,7 +166,7 @@ func (o *BasicAuthPlugin) GetName() string {
 	return "basic-auth"
 }
 
-func (o *BasicAuthPlugin) GetOrdering() *BasicAuthPluginOrdering {
+func (o *BasicAuthPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -259,11 +218,11 @@ func (o *BasicAuthPlugin) GetService() *BasicAuthPluginService {
 // BasicAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type BasicAuthPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"basic-auth" json:"name"`
-	Ordering     *BasicAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"basic-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string              `json:"tags,omitempty"`
 	Config BasicAuthPluginConfig `json:"config"`
@@ -311,7 +270,7 @@ func (o *BasicAuthPluginInput) GetName() string {
 	return "basic-auth"
 }
 
-func (o *BasicAuthPluginInput) GetOrdering() *BasicAuthPluginOrdering {
+func (o *BasicAuthPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

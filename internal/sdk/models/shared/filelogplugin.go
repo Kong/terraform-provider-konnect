@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type FileLogPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *FileLogPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type FileLogPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *FileLogPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type FileLogPluginOrdering struct {
-	After  *FileLogPluginAfter  `json:"after,omitempty"`
-	Before *FileLogPluginBefore `json:"before,omitempty"`
-}
-
-func (o *FileLogPluginOrdering) GetAfter() *FileLogPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *FileLogPluginOrdering) GetBefore() *FileLogPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type FileLogPluginConfig struct {
 	// Lua code as a key-value map
 	CustomFieldsByLua map[string]any `json:"custom_fields_by_lua,omitempty"`
@@ -171,11 +130,11 @@ type FileLogPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"file-log" json:"name"`
-	Ordering     *FileLogPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"file-log" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -234,7 +193,7 @@ func (o *FileLogPlugin) GetName() string {
 	return "file-log"
 }
 
-func (o *FileLogPlugin) GetOrdering() *FileLogPluginOrdering {
+func (o *FileLogPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -293,11 +252,11 @@ func (o *FileLogPlugin) GetService() *FileLogPluginService {
 // FileLogPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type FileLogPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"file-log" json:"name"`
-	Ordering     *FileLogPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"file-log" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string            `json:"tags,omitempty"`
 	Config FileLogPluginConfig `json:"config"`
@@ -347,7 +306,7 @@ func (o *FileLogPluginInput) GetName() string {
 	return "file-log"
 }
 
-func (o *FileLogPluginInput) GetOrdering() *FileLogPluginOrdering {
+func (o *FileLogPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

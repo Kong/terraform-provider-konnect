@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type AiPromptDecoratorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiPromptDecoratorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type AiPromptDecoratorPluginOrdering struct {
-	After  *AiPromptDecoratorPluginAfter  `json:"after,omitempty"`
-	Before *AiPromptDecoratorPluginBefore `json:"before,omitempty"`
-}
-
-func (o *AiPromptDecoratorPluginOrdering) GetAfter() *AiPromptDecoratorPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *AiPromptDecoratorPluginOrdering) GetBefore() *AiPromptDecoratorPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type Role string
 
 const (
@@ -271,11 +230,11 @@ type AiPromptDecoratorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                            `json:"enabled,omitempty"`
-	ID           *string                          `json:"id,omitempty"`
-	InstanceName *string                          `json:"instance_name,omitempty"`
-	name         string                           `const:"ai-prompt-decorator" json:"name"`
-	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"ai-prompt-decorator" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -336,7 +295,7 @@ func (o *AiPromptDecoratorPlugin) GetName() string {
 	return "ai-prompt-decorator"
 }
 
-func (o *AiPromptDecoratorPlugin) GetOrdering() *AiPromptDecoratorPluginOrdering {
+func (o *AiPromptDecoratorPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -402,11 +361,11 @@ func (o *AiPromptDecoratorPlugin) GetService() *AiPromptDecoratorPluginService {
 // AiPromptDecoratorPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type AiPromptDecoratorPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                            `json:"enabled,omitempty"`
-	ID           *string                          `json:"id,omitempty"`
-	InstanceName *string                          `json:"instance_name,omitempty"`
-	name         string                           `const:"ai-prompt-decorator" json:"name"`
-	Ordering     *AiPromptDecoratorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"ai-prompt-decorator" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                      `json:"tags,omitempty"`
 	Config AiPromptDecoratorPluginConfig `json:"config"`
@@ -458,7 +417,7 @@ func (o *AiPromptDecoratorPluginInput) GetName() string {
 	return "ai-prompt-decorator"
 }
 
-func (o *AiPromptDecoratorPluginInput) GetOrdering() *AiPromptDecoratorPluginOrdering {
+func (o *AiPromptDecoratorPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

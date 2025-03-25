@@ -28,32 +28,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) ToSharedOpenidConnectPluginInp
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.OpenidConnectPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.OpenidConnectPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.OpenidConnectPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.OpenidConnectPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.OpenidConnectPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.OpenidConnectPluginOrdering{
-			After:  after,
-			Before: before,
-		}
+	ordering := make(map[string]string)
+	for orderingKey, orderingValue := range r.Ordering {
+		var orderingInst string
+		orderingInst = orderingValue.ValueString()
+
+		ordering[orderingKey] = orderingInst
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
@@ -2142,12 +2122,12 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		for _, v := range resp.Config.ClientID {
 			r.Config.ClientID = append(r.Config.ClientID, types.StringValue(v))
 		}
-		r.Config.ClientJwk = []tfTypes.ClientJwk{}
+		r.Config.ClientJwk = []tfTypes.KonnectApplicationAuthPluginClientJwk{}
 		if len(r.Config.ClientJwk) > len(resp.Config.ClientJwk) {
 			r.Config.ClientJwk = r.Config.ClientJwk[:len(resp.Config.ClientJwk)]
 		}
 		for clientJwkCount, clientJwkItem := range resp.Config.ClientJwk {
-			var clientJwk1 tfTypes.ClientJwk
+			var clientJwk1 tfTypes.KonnectApplicationAuthPluginClientJwk
 			clientJwk1.Alg = types.StringPointerValue(clientJwkItem.Alg)
 			clientJwk1.Crv = types.StringPointerValue(clientJwkItem.Crv)
 			clientJwk1.D = types.StringPointerValue(clientJwkItem.D)
@@ -2500,7 +2480,7 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		if resp.Config.Redis == nil {
 			r.Config.Redis = nil
 		} else {
-			r.Config.Redis = &tfTypes.OpenidConnectPluginRedis{}
+			r.Config.Redis = &tfTypes.KonnectApplicationAuthPluginRedis{}
 			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
 			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
@@ -2787,27 +2767,10 @@ func (r *GatewayPluginOpenidConnectResourceModel) RefreshFromSharedOpenidConnect
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
+		if resp.Ordering != nil {
+			r.Ordering = make(map[string]types.String, len(resp.Ordering))
+			for key, value := range resp.Ordering {
+				r.Ordering[key] = types.StringValue(value)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

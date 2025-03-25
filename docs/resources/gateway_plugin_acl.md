@@ -30,16 +30,7 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
-    after = {
-      access = [
-        "..."
-      ]
-    }
-    before = {
-      access = [
-        "..."
-      ]
-    }
+    key = "value"
   }
   protocols = [
     "grpc"
@@ -68,7 +59,7 @@ resource "konnect_gateway_plugin_acl" "my_gatewaypluginacl" {
 
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
-- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `ordering` (Map of String)
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -90,31 +81,6 @@ Optional:
 - `deny` (List of String) Arbitrary group names that are not allowed to consume the service or route. One of `config.allow` or `config.deny` must be specified.
 - `hide_groups_header` (Boolean) If enabled (`true`), prevents the `X-Consumer-Groups` header from being sent in the request to the upstream service.
 - `include_consumer_groups` (Boolean) If enabled (`true`), allows the consumer-groups to be used in the `allow|deny` fields
-
-
-<a id="nestedatt--ordering"></a>
-### Nested Schema for `ordering`
-
-Optional:
-
-- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
-- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
-
-<a id="nestedatt--ordering--after"></a>
-### Nested Schema for `ordering.after`
-
-Optional:
-
-- `access` (List of String)
-
-
-<a id="nestedatt--ordering--before"></a>
-### Nested Schema for `ordering.before`
-
-Optional:
-
-- `access` (List of String)
-
 
 
 <a id="nestedatt--route"></a>

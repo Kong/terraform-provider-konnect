@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type ProxyCachePluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *ProxyCachePluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type ProxyCachePluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *ProxyCachePluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type ProxyCachePluginOrdering struct {
-	After  *ProxyCachePluginAfter  `json:"after,omitempty"`
-	Before *ProxyCachePluginBefore `json:"before,omitempty"`
-}
-
-func (o *ProxyCachePluginOrdering) GetAfter() *ProxyCachePluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *ProxyCachePluginOrdering) GetBefore() *ProxyCachePluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type ProxyCachePluginMemory struct {
 	// The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
 	DictionaryName *string `json:"dictionary_name,omitempty"`
@@ -361,11 +320,11 @@ type ProxyCachePlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
-	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
-	name         string                    `const:"proxy-cache" json:"name"`
-	Ordering     *ProxyCachePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"proxy-cache" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -426,7 +385,7 @@ func (o *ProxyCachePlugin) GetName() string {
 	return "proxy-cache"
 }
 
-func (o *ProxyCachePlugin) GetOrdering() *ProxyCachePluginOrdering {
+func (o *ProxyCachePlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -492,11 +451,11 @@ func (o *ProxyCachePlugin) GetService() *ProxyCachePluginService {
 // ProxyCachePluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type ProxyCachePluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                     `json:"enabled,omitempty"`
-	ID           *string                   `json:"id,omitempty"`
-	InstanceName *string                   `json:"instance_name,omitempty"`
-	name         string                    `const:"proxy-cache" json:"name"`
-	Ordering     *ProxyCachePluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"proxy-cache" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string               `json:"tags,omitempty"`
 	Config ProxyCachePluginConfig `json:"config"`
@@ -548,7 +507,7 @@ func (o *ProxyCachePluginInput) GetName() string {
 	return "proxy-cache"
 }
 
-func (o *ProxyCachePluginInput) GetOrdering() *ProxyCachePluginOrdering {
+func (o *ProxyCachePluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

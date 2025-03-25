@@ -29,32 +29,12 @@ func (r *GatewayPluginJwtSignerResourceModel) ToSharedJwtSignerPluginInput() *sh
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.JwtSignerPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.JwtSignerPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.JwtSignerPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.JwtSignerPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.JwtSignerPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.JwtSignerPluginOrdering{
-			After:  after,
-			Before: before,
-		}
+	ordering := make(map[string]string)
+	for orderingKey, orderingValue := range r.Ordering {
+		var orderingInst string
+		orderingInst = orderingValue.ValueString()
+
+		ordering[orderingKey] = orderingInst
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
@@ -966,27 +946,10 @@ func (r *GatewayPluginJwtSignerResourceModel) RefreshFromSharedJwtSignerPlugin(r
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
+		if resp.Ordering != nil {
+			r.Ordering = make(map[string]types.String, len(resp.Ordering))
+			for key6, value6 := range resp.Ordering {
+				r.Ordering[key6] = types.StringValue(value6)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

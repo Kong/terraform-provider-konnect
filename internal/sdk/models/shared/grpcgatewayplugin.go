@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type GrpcGatewayPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *GrpcGatewayPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type GrpcGatewayPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *GrpcGatewayPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type GrpcGatewayPluginOrdering struct {
-	After  *GrpcGatewayPluginAfter  `json:"after,omitempty"`
-	Before *GrpcGatewayPluginBefore `json:"before,omitempty"`
-}
-
-func (o *GrpcGatewayPluginOrdering) GetAfter() *GrpcGatewayPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *GrpcGatewayPluginOrdering) GetBefore() *GrpcGatewayPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type GrpcGatewayPluginConfig struct {
 	// Describes the gRPC types and methods.
 	Proto *string `json:"proto,omitempty"`
@@ -153,11 +112,11 @@ type GrpcGatewayPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"grpc-gateway" json:"name"`
-	Ordering     *GrpcGatewayPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"grpc-gateway" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -216,7 +175,7 @@ func (o *GrpcGatewayPlugin) GetName() string {
 	return "grpc-gateway"
 }
 
-func (o *GrpcGatewayPlugin) GetOrdering() *GrpcGatewayPluginOrdering {
+func (o *GrpcGatewayPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -275,11 +234,11 @@ func (o *GrpcGatewayPlugin) GetService() *GrpcGatewayPluginService {
 // GrpcGatewayPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type GrpcGatewayPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                      `json:"enabled,omitempty"`
-	ID           *string                    `json:"id,omitempty"`
-	InstanceName *string                    `json:"instance_name,omitempty"`
-	name         string                     `const:"grpc-gateway" json:"name"`
-	Ordering     *GrpcGatewayPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"grpc-gateway" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                `json:"tags,omitempty"`
 	Config GrpcGatewayPluginConfig `json:"config"`
@@ -329,7 +288,7 @@ func (o *GrpcGatewayPluginInput) GetName() string {
 	return "grpc-gateway"
 }
 
-func (o *GrpcGatewayPluginInput) GetOrdering() *GrpcGatewayPluginOrdering {
+func (o *GrpcGatewayPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

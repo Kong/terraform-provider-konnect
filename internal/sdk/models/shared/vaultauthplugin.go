@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type VaultAuthPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *VaultAuthPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type VaultAuthPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *VaultAuthPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type VaultAuthPluginOrdering struct {
-	After  *VaultAuthPluginAfter  `json:"after,omitempty"`
-	Before *VaultAuthPluginBefore `json:"before,omitempty"`
-}
-
-func (o *VaultAuthPluginOrdering) GetAfter() *VaultAuthPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *VaultAuthPluginOrdering) GetBefore() *VaultAuthPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type VaultAuthPluginConfig struct {
 	// Describes an array of comma-separated parameter names where the plugin looks for an access token. The client must send the access token in one of those key names, and the plugin will try to read the credential from a header or the querystring parameter with the same name. The key names can only contain [a-z], [A-Z], [0-9], [_], and [-].
 	AccessTokenName *string `json:"access_token_name,omitempty"`
@@ -176,11 +135,11 @@ type VaultAuthPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"vault-auth" json:"name"`
-	Ordering     *VaultAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"vault-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -237,7 +196,7 @@ func (o *VaultAuthPlugin) GetName() string {
 	return "vault-auth"
 }
 
-func (o *VaultAuthPlugin) GetOrdering() *VaultAuthPluginOrdering {
+func (o *VaultAuthPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -289,11 +248,11 @@ func (o *VaultAuthPlugin) GetService() *VaultAuthPluginService {
 // VaultAuthPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type VaultAuthPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"vault-auth" json:"name"`
-	Ordering     *VaultAuthPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"vault-auth" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string              `json:"tags,omitempty"`
 	Config VaultAuthPluginConfig `json:"config"`
@@ -341,7 +300,7 @@ func (o *VaultAuthPluginInput) GetName() string {
 	return "vault-auth"
 }
 
-func (o *VaultAuthPluginInput) GetOrdering() *VaultAuthPluginOrdering {
+func (o *VaultAuthPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

@@ -50,16 +50,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
-    after = {
-      access = [
-        "..."
-      ]
-    }
-    before = {
-      access = [
-        "..."
-      ]
-    }
+    key = "value"
   }
   protocols = [
     "wss"
@@ -88,7 +79,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
 
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
-- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `ordering` (Map of String)
 - `protocols` (List of String) A set of strings representing protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -128,31 +119,6 @@ Optional:
 - `secret` (String) The secret that is used in keyed HMAC generation.
 - `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 - `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]
-
-
-<a id="nestedatt--ordering"></a>
-### Nested Schema for `ordering`
-
-Optional:
-
-- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
-- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
-
-<a id="nestedatt--ordering--after"></a>
-### Nested Schema for `ordering.after`
-
-Optional:
-
-- `access` (List of String)
-
-
-<a id="nestedatt--ordering--before"></a>
-### Nested Schema for `ordering.before`
-
-Optional:
-
-- `access` (List of String)
-
 
 
 <a id="nestedatt--route"></a>

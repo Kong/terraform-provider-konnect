@@ -41,16 +41,16 @@ type GatewayPluginAcmeResource struct {
 
 // GatewayPluginAcmeResourceModel describes the resource data model.
 type GatewayPluginAcmeResourceModel struct {
-	Config         tfTypes.AcmePluginConfig   `tfsdk:"config"`
-	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                `tfsdk:"created_at"`
-	Enabled        types.Bool                 `tfsdk:"enabled"`
-	ID             types.String               `tfsdk:"id"`
-	InstanceName   types.String               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering `tfsdk:"ordering"`
-	Protocols      []types.String             `tfsdk:"protocols"`
-	Tags           []types.String             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                `tfsdk:"updated_at"`
+	Config         tfTypes.AcmePluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64              `tfsdk:"created_at"`
+	Enabled        types.Bool               `tfsdk:"enabled"`
+	ID             types.String             `tfsdk:"id"`
+	InstanceName   types.String             `tfsdk:"instance_name"`
+	Ordering       map[string]types.String  `tfsdk:"ordering"`
+	Protocols      []types.String           `tfsdk:"protocols"`
+	Tags           []types.String           `tfsdk:"tags"`
+	UpdatedAt      types.Int64              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAcmeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -420,33 +420,10 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 				Computed: true,
 				Optional: true,
 			},
-			"ordering": schema.SingleNestedAttribute{
-				Computed: true,
-				Optional: true,
-				Attributes: map[string]schema.Attribute{
-					"after": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-					"before": schema.SingleNestedAttribute{
-						Computed: true,
-						Optional: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								Optional:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-				},
+			"ordering": schema.MapAttribute{
+				Computed:    true,
+				Optional:    true,
+				ElementType: types.StringType,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

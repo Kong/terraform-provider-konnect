@@ -43,16 +43,7 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
-    after = {
-      access = [
-        "..."
-      ]
-    }
-    before = {
-      access = [
-        "..."
-      ]
-    }
+    key = "value"
   }
   protocols = [
     "https"
@@ -81,7 +72,7 @@ resource "konnect_gateway_plugin_header_cert_auth" "my_gatewaypluginheadercertau
 
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
-- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `ordering` (Map of String)
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -116,31 +107,6 @@ Optional:
 - `revocation_check_mode` (String) Controls client certificate revocation check behavior. If set to `SKIP`, no revocation check is performed. If set to `IGNORE_CA_ERROR`, the plugin respects the revocation status when either OCSP or CRL URL is set, and doesn't fail on network issues. If set to `STRICT`, the plugin only treats the certificate as valid when it's able to verify the revocation status. must be one of ["IGNORE_CA_ERROR", "SKIP", "STRICT"]
 - `secure_source` (Boolean) Whether to secure the source of the request. If set to `true`, the plugin will only allow requests from trusted IPs (configured by the `trusted_ips` config option).
 - `skip_consumer_lookup` (Boolean) Skip consumer lookup once certificate is trusted against the configured CA list.
-
-
-<a id="nestedatt--ordering"></a>
-### Nested Schema for `ordering`
-
-Optional:
-
-- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
-- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
-
-<a id="nestedatt--ordering--after"></a>
-### Nested Schema for `ordering.after`
-
-Optional:
-
-- `access` (List of String)
-
-
-<a id="nestedatt--ordering--before"></a>
-### Nested Schema for `ordering.before`
-
-Optional:
-
-- `access` (List of String)
-
 
 
 <a id="nestedatt--route"></a>

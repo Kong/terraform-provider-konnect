@@ -41,16 +41,7 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
-    after = {
-      access = [
-        "..."
-      ]
-    }
-    before = {
-      access = [
-        "..."
-      ]
-    }
+    key = "value"
   }
   protocols = [
     "wss"
@@ -79,7 +70,7 @@ resource "konnect_gateway_plugin_oauth2" "my_gatewaypluginoauth2" {
 
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
-- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `ordering` (Map of String)
 - `protocols` (List of String) A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
@@ -114,31 +105,6 @@ Optional:
 - `reuse_refresh_token` (Boolean) An optional boolean value that indicates whether an OAuth refresh token is reused when refreshing an access token.
 - `scopes` (List of String) Describes an array of scope names that will be available to the end user. If `mandatory_scope` is set to `true`, then `scopes` are required.
 - `token_expiration` (Number) An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to `0` to disable the expiration.
-
-
-<a id="nestedatt--ordering"></a>
-### Nested Schema for `ordering`
-
-Optional:
-
-- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
-- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
-
-<a id="nestedatt--ordering--after"></a>
-### Nested Schema for `ordering.after`
-
-Optional:
-
-- `access` (List of String)
-
-
-<a id="nestedatt--ordering--before"></a>
-### Nested Schema for `ordering.before`
-
-Optional:
-
-- `access` (List of String)
-
 
 
 <a id="nestedatt--route"></a>

@@ -86,16 +86,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
   ordering = {
-    after = {
-      access = [
-        "..."
-      ]
-    }
-    before = {
-      access = [
-        "..."
-      ]
-    }
+    key = "value"
   }
   protocols = [
     "grpc"
@@ -118,7 +109,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
-- `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
+- `ordering` (Map of String)
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
 
@@ -235,32 +226,6 @@ Optional:
 - `tls_server_name` (String) SNI used in request, default to host if omitted.
 - `tls_verify` (Boolean) Turn on TLS verification.
 - `token` (String) Consul ACL token.
-
-
-
-
-<a id="nestedatt--ordering"></a>
-### Nested Schema for `ordering`
-
-Optional:
-
-- `after` (Attributes) (see [below for nested schema](#nestedatt--ordering--after))
-- `before` (Attributes) (see [below for nested schema](#nestedatt--ordering--before))
-
-<a id="nestedatt--ordering--after"></a>
-### Nested Schema for `ordering.after`
-
-Optional:
-
-- `access` (List of String)
-
-
-<a id="nestedatt--ordering--before"></a>
-### Nested Schema for `ordering.before`
-
-Optional:
-
-- `access` (List of String)
 
 ## Import
 

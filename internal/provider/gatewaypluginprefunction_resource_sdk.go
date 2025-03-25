@@ -27,40 +27,20 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 	} else {
 		instanceName = nil
 	}
-	var ordering *shared.PreFunctionPluginOrdering
-	if r.Ordering != nil {
-		var after *shared.PreFunctionPluginAfter
-		if r.Ordering.After != nil {
-			var access []string = []string{}
-			for _, accessItem := range r.Ordering.After.Access {
-				access = append(access, accessItem.ValueString())
-			}
-			after = &shared.PreFunctionPluginAfter{
-				Access: access,
-			}
-		}
-		var before *shared.PreFunctionPluginBefore
-		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
-			for _, accessItem1 := range r.Ordering.Before.Access {
-				access1 = append(access1, accessItem1.ValueString())
-			}
-			before = &shared.PreFunctionPluginBefore{
-				Access: access1,
-			}
-		}
-		ordering = &shared.PreFunctionPluginOrdering{
-			After:  after,
-			Before: before,
-		}
+	ordering := make(map[string]string)
+	for orderingKey, orderingValue := range r.Ordering {
+		var orderingInst string
+		orderingInst = orderingValue.ValueString()
+
+		ordering[orderingKey] = orderingInst
 	}
 	var tags []string = []string{}
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var access2 []string = []string{}
-	for _, accessItem2 := range r.Config.Access {
-		access2 = append(access2, accessItem2.ValueString())
+	var access []string = []string{}
+	for _, accessItem := range r.Config.Access {
+		access = append(access, accessItem.ValueString())
 	}
 	var bodyFilter []string = []string{}
 	for _, bodyFilterItem := range r.Config.BodyFilter {
@@ -99,7 +79,7 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
 	}
 	config := shared.PreFunctionPluginConfig{
-		Access:          access2,
+		Access:          access,
 		BodyFilter:      bodyFilter,
 		Certificate:     certificate,
 		HeaderFilter:    headerFilter,
@@ -198,27 +178,10 @@ func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlug
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.InstanceName = types.StringPointerValue(resp.InstanceName)
-		if resp.Ordering == nil {
-			r.Ordering = nil
-		} else {
-			r.Ordering = &tfTypes.ACLPluginOrdering{}
-			if resp.Ordering.After == nil {
-				r.Ordering.After = nil
-			} else {
-				r.Ordering.After = &tfTypes.ACLPluginAfter{}
-				r.Ordering.After.Access = make([]types.String, 0, len(resp.Ordering.After.Access))
-				for _, v := range resp.Ordering.After.Access {
-					r.Ordering.After.Access = append(r.Ordering.After.Access, types.StringValue(v))
-				}
-			}
-			if resp.Ordering.Before == nil {
-				r.Ordering.Before = nil
-			} else {
-				r.Ordering.Before = &tfTypes.ACLPluginAfter{}
-				r.Ordering.Before.Access = make([]types.String, 0, len(resp.Ordering.Before.Access))
-				for _, v := range resp.Ordering.Before.Access {
-					r.Ordering.Before.Access = append(r.Ordering.Before.Access, types.StringValue(v))
-				}
+		if resp.Ordering != nil {
+			r.Ordering = make(map[string]types.String, len(resp.Ordering))
+			for key, value := range resp.Ordering {
+				r.Ordering[key] = types.StringValue(value)
 			}
 		}
 		r.Protocols = make([]types.String, 0, len(resp.Protocols))

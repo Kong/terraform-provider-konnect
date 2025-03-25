@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type LogglyPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LogglyPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LogglyPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *LogglyPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type LogglyPluginOrdering struct {
-	After  *LogglyPluginAfter  `json:"after,omitempty"`
-	Before *LogglyPluginBefore `json:"before,omitempty"`
-}
-
-func (o *LogglyPluginOrdering) GetAfter() *LogglyPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *LogglyPluginOrdering) GetBefore() *LogglyPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type ClientErrorsSeverity string
 
 const (
@@ -403,11 +362,11 @@ type LogglyPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"loggly" json:"name"`
-	Ordering     *LogglyPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"loggly" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -466,7 +425,7 @@ func (o *LogglyPlugin) GetName() string {
 	return "loggly"
 }
 
-func (o *LogglyPlugin) GetOrdering() *LogglyPluginOrdering {
+func (o *LogglyPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -525,11 +484,11 @@ func (o *LogglyPlugin) GetService() *LogglyPluginService {
 // LogglyPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type LogglyPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"loggly" json:"name"`
-	Ordering     *LogglyPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"loggly" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string           `json:"tags,omitempty"`
 	Config LogglyPluginConfig `json:"config"`
@@ -579,7 +538,7 @@ func (o *LogglyPluginInput) GetName() string {
 	return "loggly"
 }
 
-func (o *LogglyPluginInput) GetOrdering() *LogglyPluginOrdering {
+func (o *LogglyPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

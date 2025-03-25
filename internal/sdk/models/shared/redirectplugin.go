@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type RedirectPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RedirectPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RedirectPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RedirectPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RedirectPluginOrdering struct {
-	After  *RedirectPluginAfter  `json:"after,omitempty"`
-	Before *RedirectPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RedirectPluginOrdering) GetAfter() *RedirectPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RedirectPluginOrdering) GetBefore() *RedirectPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 type RedirectPluginConfig struct {
 	// Use the incoming request's path and query string in the redirect URL
 	KeepIncomingPath *bool `json:"keep_incoming_path,omitempty"`
@@ -164,11 +123,11 @@ type RedirectPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"redirect" json:"name"`
-	Ordering     *RedirectPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"redirect" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -229,7 +188,7 @@ func (o *RedirectPlugin) GetName() string {
 	return "redirect"
 }
 
-func (o *RedirectPlugin) GetOrdering() *RedirectPluginOrdering {
+func (o *RedirectPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -295,11 +254,11 @@ func (o *RedirectPlugin) GetService() *RedirectPluginService {
 // RedirectPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RedirectPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                   `json:"enabled,omitempty"`
-	ID           *string                 `json:"id,omitempty"`
-	InstanceName *string                 `json:"instance_name,omitempty"`
-	name         string                  `const:"redirect" json:"name"`
-	Ordering     *RedirectPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"redirect" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string             `json:"tags,omitempty"`
 	Config RedirectPluginConfig `json:"config"`
@@ -351,7 +310,7 @@ func (o *RedirectPluginInput) GetName() string {
 	return "redirect"
 }
 
-func (o *RedirectPluginInput) GetOrdering() *RedirectPluginOrdering {
+func (o *RedirectPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

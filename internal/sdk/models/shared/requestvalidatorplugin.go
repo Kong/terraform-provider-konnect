@@ -8,47 +8,6 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/internal/utils"
 )
 
-type RequestValidatorPluginAfter struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestValidatorPluginAfter) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestValidatorPluginBefore struct {
-	Access []string `json:"access,omitempty"`
-}
-
-func (o *RequestValidatorPluginBefore) GetAccess() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Access
-}
-
-type RequestValidatorPluginOrdering struct {
-	After  *RequestValidatorPluginAfter  `json:"after,omitempty"`
-	Before *RequestValidatorPluginBefore `json:"before,omitempty"`
-}
-
-func (o *RequestValidatorPluginOrdering) GetAfter() *RequestValidatorPluginAfter {
-	if o == nil {
-		return nil
-	}
-	return o.After
-}
-
-func (o *RequestValidatorPluginOrdering) GetBefore() *RequestValidatorPluginBefore {
-	if o == nil {
-		return nil
-	}
-	return o.Before
-}
-
 // In - The location of the parameter.
 type In string
 
@@ -335,11 +294,11 @@ type RequestValidatorPlugin struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"request-validator" json:"name"`
-	Ordering     *RequestValidatorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"request-validator" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
@@ -398,7 +357,7 @@ func (o *RequestValidatorPlugin) GetName() string {
 	return "request-validator"
 }
 
-func (o *RequestValidatorPlugin) GetOrdering() *RequestValidatorPluginOrdering {
+func (o *RequestValidatorPlugin) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}
@@ -457,11 +416,11 @@ func (o *RequestValidatorPlugin) GetService() *RequestValidatorPluginService {
 // RequestValidatorPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
 type RequestValidatorPluginInput struct {
 	// Whether the plugin is applied.
-	Enabled      *bool                           `json:"enabled,omitempty"`
-	ID           *string                         `json:"id,omitempty"`
-	InstanceName *string                         `json:"instance_name,omitempty"`
-	name         string                          `const:"request-validator" json:"name"`
-	Ordering     *RequestValidatorPluginOrdering `json:"ordering,omitempty"`
+	Enabled      *bool             `json:"enabled,omitempty"`
+	ID           *string           `json:"id,omitempty"`
+	InstanceName *string           `json:"instance_name,omitempty"`
+	name         string            `const:"request-validator" json:"name"`
+	Ordering     map[string]string `json:"ordering,omitempty"`
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags   []string                     `json:"tags,omitempty"`
 	Config RequestValidatorPluginConfig `json:"config"`
@@ -511,7 +470,7 @@ func (o *RequestValidatorPluginInput) GetName() string {
 	return "request-validator"
 }
 
-func (o *RequestValidatorPluginInput) GetOrdering() *RequestValidatorPluginOrdering {
+func (o *RequestValidatorPluginInput) GetOrdering() map[string]string {
 	if o == nil {
 		return nil
 	}

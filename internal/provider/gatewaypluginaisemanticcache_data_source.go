@@ -37,7 +37,7 @@ type GatewayPluginAiSemanticCacheDataSourceModel struct {
 	Enabled        types.Bool                          `tfsdk:"enabled"`
 	ID             types.String                        `tfsdk:"id"`
 	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Ordering       map[string]types.String             `tfsdk:"ordering"`
 	Protocols      []types.String                      `tfsdk:"protocols"`
 	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
 	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
@@ -352,28 +352,9 @@ func (r *GatewayPluginAiSemanticCacheDataSource) Schema(ctx context.Context, req
 			"instance_name": schema.StringAttribute{
 				Computed: true,
 			},
-			"ordering": schema.SingleNestedAttribute{
-				Computed: true,
-				Attributes: map[string]schema.Attribute{
-					"after": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-					"before": schema.SingleNestedAttribute{
-						Computed: true,
-						Attributes: map[string]schema.Attribute{
-							"access": schema.ListAttribute{
-								Computed:    true,
-								ElementType: types.StringType,
-							},
-						},
-					},
-				},
+			"ordering": schema.MapAttribute{
+				Computed:    true,
+				ElementType: types.StringType,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,
