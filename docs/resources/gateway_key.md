@@ -29,6 +29,7 @@ resource "konnect_gateway_key" "my_gatewaykey" {
   tags = [
     "..."
   ]
+  x5t = "...my_x5t..."
 }
 ```
 
@@ -47,6 +48,7 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 - `pem` (Attributes) A keypair in PEM format. (see [below for nested schema](#nestedatt--pem))
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))
 - `tags` (List of String) An optional set of strings associated with the Key for grouping and filtering.
+- `x5t` (String)
 
 ### Read-Only
 

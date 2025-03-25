@@ -52,7 +52,8 @@ type Key struct {
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64  `json:"updated_at,omitempty"`
+	X5t       *string `json:"x5t,omitempty"`
 }
 
 func (o *Key) GetCreatedAt() *int64 {
@@ -118,6 +119,13 @@ func (o *Key) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
+func (o *Key) GetX5t() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X5t
+}
+
 // KeyInput - A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
 type KeyInput struct {
 	ID *string `json:"id,omitempty"`
@@ -133,6 +141,7 @@ type KeyInput struct {
 	Set *Set `json:"set"`
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
+	X5t  *string  `json:"x5t,omitempty"`
 }
 
 func (o *KeyInput) GetID() *string {
@@ -182,4 +191,11 @@ func (o *KeyInput) GetTags() []string {
 		return nil
 	}
 	return o.Tags
+}
+
+func (o *KeyInput) GetX5t() *string {
+	if o == nil {
+		return nil
+	}
+	return o.X5t
 }

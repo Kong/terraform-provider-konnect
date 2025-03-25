@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type OpenidConnectPluginRedis struct {
+type KonnectApplicationAuthPluginRedis struct {
 	ClusterMaxRedirections types.Int64                          `tfsdk:"cluster_max_redirections"`
 	ClusterNodes           []AiProxyAdvancedPluginClusterNodes  `tfsdk:"cluster_nodes"`
 	ConnectTimeout         types.Int64                          `tfsdk:"connect_timeout"`

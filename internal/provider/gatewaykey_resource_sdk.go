@@ -65,6 +65,12 @@ func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
+	x5t := new(string)
+	if !r.X5t.IsUnknown() && !r.X5t.IsNull() {
+		*x5t = r.X5t.ValueString()
+	} else {
+		x5t = nil
+	}
 	out := shared.KeyInput{
 		ID:   id,
 		Jwk:  jwk,
@@ -73,6 +79,7 @@ func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 		Pem:  pem,
 		Set:  set,
 		Tags: tags,
+		X5t:  x5t,
 	}
 	return &out
 }
@@ -102,5 +109,6 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.X5t = types.StringPointerValue(resp.X5t)
 	}
 }

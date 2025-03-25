@@ -90,9 +90,9 @@ type Service struct {
 	// The path to be used in requests to the upstream server.
 	Path *string `json:"path,omitempty"`
 	// The upstream server port.
-	Port int64 `json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// The protocol used to communicate with the upstream.
-	Protocol Protocol `json:"protocol"`
+	Protocol *Protocol `json:"protocol,omitempty"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// The number of retries to execute upon failure to proxy.
@@ -172,16 +172,16 @@ func (o *Service) GetPath() *string {
 	return o.Path
 }
 
-func (o *Service) GetPort() int64 {
+func (o *Service) GetPort() *int64 {
 	if o == nil {
-		return 0
+		return nil
 	}
 	return o.Port
 }
 
-func (o *Service) GetProtocol() Protocol {
+func (o *Service) GetProtocol() *Protocol {
 	if o == nil {
-		return Protocol("")
+		return nil
 	}
 	return o.Protocol
 }
@@ -253,9 +253,9 @@ type ServiceInput struct {
 	// The path to be used in requests to the upstream server.
 	Path *string `json:"path,omitempty"`
 	// The upstream server port.
-	Port int64 `json:"port"`
+	Port *int64 `json:"port,omitempty"`
 	// The protocol used to communicate with the upstream.
-	Protocol Protocol `json:"protocol"`
+	Protocol *Protocol `json:"protocol,omitempty"`
 	// The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 	ReadTimeout *int64 `json:"read_timeout,omitempty"`
 	// The number of retries to execute upon failure to proxy.
@@ -326,16 +326,16 @@ func (o *ServiceInput) GetPath() *string {
 	return o.Path
 }
 
-func (o *ServiceInput) GetPort() int64 {
+func (o *ServiceInput) GetPort() *int64 {
 	if o == nil {
-		return 0
+		return nil
 	}
 	return o.Port
 }
 
-func (o *ServiceInput) GetProtocol() Protocol {
+func (o *ServiceInput) GetProtocol() *Protocol {
 	if o == nil {
-		return Protocol("")
+		return nil
 	}
 	return o.Protocol
 }

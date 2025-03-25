@@ -47,8 +47,6 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 - `host` (String) The host of the upstream server. Note that the host value is case sensitive.
-- `port` (Number) The upstream server port.
-- `protocol` (String) The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]
 
 ### Optional
 
@@ -58,6 +56,8 @@ resource "konnect_gateway_service" "my_gatewayservice" {
 - `enabled` (Boolean) Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.
 - `name` (String) The Service name.
 - `path` (String) The path to be used in requests to the upstream server.
+- `port` (Number) The upstream server port.
+- `protocol` (String) The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]
 - `read_timeout` (Number) The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
 - `retries` (Number) The number of retries to execute upon failure to proxy.
 - `tags` (List of String) An optional set of strings associated with the Service for grouping and filtering.

@@ -7,15 +7,22 @@ import (
 	"fmt"
 )
 
-// TransitGatewayState - State of the transit gateway.
+// TransitGatewayState - The current state of the Transit Gateway. Possible values:
+// - `created` - The attachment has been created but is not attached to transit gateway.
+// - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+// - `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+// - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+// - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+// - `terminated` - The attachment has been fully deleted and is no longer available.
 type TransitGatewayState string
 
 const (
-	TransitGatewayStateCreated      TransitGatewayState = "created"
-	TransitGatewayStateInitializing TransitGatewayState = "initializing"
-	TransitGatewayStateReady        TransitGatewayState = "ready"
-	TransitGatewayStateTerminating  TransitGatewayState = "terminating"
-	TransitGatewayStateTerminated   TransitGatewayState = "terminated"
+	TransitGatewayStateCreated           TransitGatewayState = "created"
+	TransitGatewayStateInitializing      TransitGatewayState = "initializing"
+	TransitGatewayStatePendingAcceptance TransitGatewayState = "pending-acceptance"
+	TransitGatewayStateReady             TransitGatewayState = "ready"
+	TransitGatewayStateTerminating       TransitGatewayState = "terminating"
+	TransitGatewayStateTerminated        TransitGatewayState = "terminated"
 )
 
 func (e TransitGatewayState) ToPointer() *TransitGatewayState {
@@ -30,6 +37,8 @@ func (e *TransitGatewayState) UnmarshalJSON(data []byte) error {
 	case "created":
 		fallthrough
 	case "initializing":
+		fallthrough
+	case "pending-acceptance":
 		fallthrough
 	case "ready":
 		fallthrough

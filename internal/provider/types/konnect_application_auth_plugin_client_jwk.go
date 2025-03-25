@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type ClientJwk struct {
+type KonnectApplicationAuthPluginClientJwk struct {
 	Alg           types.String   `tfsdk:"alg"`
 	Crv           types.String   `tfsdk:"crv"`
 	D             types.String   `tfsdk:"d"`

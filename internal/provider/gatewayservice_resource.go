@@ -127,11 +127,13 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The path to be used in requests to the upstream server.`,
 			},
 			"port": schema.Int64Attribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The upstream server port.`,
 			},
 			"protocol": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(

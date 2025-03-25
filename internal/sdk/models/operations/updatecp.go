@@ -7,27 +7,27 @@ import (
 	"net/http"
 )
 
-type UpdateMeshControlPlaneRequest struct {
+type UpdateCpRequest struct {
 	// Id of the Konnect resource
-	CpID                          string                               `pathParam:"style=simple,explode=false,name=cpId"`
-	UpdateMeshControlPlaneRequest shared.UpdateMeshControlPlaneRequest `request:"mediaType=application/json"`
+	CpID                       string                            `pathParam:"style=simple,explode=false,name=cpId"`
+	PutMeshControlPlaneRequest shared.PutMeshControlPlaneRequest `request:"mediaType=application/json"`
 }
 
-func (o *UpdateMeshControlPlaneRequest) GetCpID() string {
+func (o *UpdateCpRequest) GetCpID() string {
 	if o == nil {
 		return ""
 	}
 	return o.CpID
 }
 
-func (o *UpdateMeshControlPlaneRequest) GetUpdateMeshControlPlaneRequest() shared.UpdateMeshControlPlaneRequest {
+func (o *UpdateCpRequest) GetPutMeshControlPlaneRequest() shared.PutMeshControlPlaneRequest {
 	if o == nil {
-		return shared.UpdateMeshControlPlaneRequest{}
+		return shared.PutMeshControlPlaneRequest{}
 	}
-	return o.UpdateMeshControlPlaneRequest
+	return o.PutMeshControlPlaneRequest
 }
 
-type UpdateMeshControlPlaneResponse struct {
+type UpdateCpResponse struct {
 	// HTTP response content type for this operation
 	ContentType string
 	// HTTP response status code for this operation
@@ -46,56 +46,56 @@ type UpdateMeshControlPlaneResponse struct {
 	NotFoundError *shared.NotFoundError
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetContentType() string {
+func (o *UpdateCpResponse) GetContentType() string {
 	if o == nil {
 		return ""
 	}
 	return o.ContentType
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetStatusCode() int {
+func (o *UpdateCpResponse) GetStatusCode() int {
 	if o == nil {
 		return 0
 	}
 	return o.StatusCode
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetRawResponse() *http.Response {
+func (o *UpdateCpResponse) GetRawResponse() *http.Response {
 	if o == nil {
 		return nil
 	}
 	return o.RawResponse
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetMeshControlPlane() *shared.MeshControlPlane {
+func (o *UpdateCpResponse) GetMeshControlPlane() *shared.MeshControlPlane {
 	if o == nil {
 		return nil
 	}
 	return o.MeshControlPlane
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetBadRequestError() *shared.BadRequestError {
+func (o *UpdateCpResponse) GetBadRequestError() *shared.BadRequestError {
 	if o == nil {
 		return nil
 	}
 	return o.BadRequestError
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetUnauthorizedError() *shared.UnauthorizedError {
+func (o *UpdateCpResponse) GetUnauthorizedError() *shared.UnauthorizedError {
 	if o == nil {
 		return nil
 	}
 	return o.UnauthorizedError
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetForbiddenError() *shared.ForbiddenError {
+func (o *UpdateCpResponse) GetForbiddenError() *shared.ForbiddenError {
 	if o == nil {
 		return nil
 	}
 	return o.ForbiddenError
 }
 
-func (o *UpdateMeshControlPlaneResponse) GetNotFoundError() *shared.NotFoundError {
+func (o *UpdateCpResponse) GetNotFoundError() *shared.NotFoundError {
 	if o == nil {
 		return nil
 	}

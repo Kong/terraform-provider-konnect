@@ -46,6 +46,7 @@ type GatewayKeyResourceModel struct {
 	Set            *tfTypes.ACLWithoutParentsConsumer `tfsdk:"set"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	X5t            types.String                       `tfsdk:"x5t"`
 }
 
 func (r *GatewayKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -123,6 +124,10 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"x5t": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 		},
 	}

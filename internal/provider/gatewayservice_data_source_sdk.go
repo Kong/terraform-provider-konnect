@@ -29,8 +29,12 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
 		r.Path = types.StringPointerValue(resp.Path)
-		r.Port = types.Int64Value(resp.Port)
-		r.Protocol = types.StringValue(string(resp.Protocol))
+		r.Port = types.Int64PointerValue(resp.Port)
+		if resp.Protocol != nil {
+			r.Protocol = types.StringValue(string(*resp.Protocol))
+		} else {
+			r.Protocol = types.StringNull()
+		}
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
 		r.Tags = make([]types.String, 0, len(resp.Tags))

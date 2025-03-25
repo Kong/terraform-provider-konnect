@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type OpenidConnectPluginConfig struct {
+type KonnectApplicationAuthPluginConfigConfig struct {
 	Anonymous                                    types.String                            `tfsdk:"anonymous"`
 	Audience                                     []types.String                          `tfsdk:"audience"`
 	AudienceClaim                                []types.String                          `tfsdk:"audience_claim"`
@@ -43,7 +43,7 @@ type OpenidConnectPluginConfig struct {
 	ClientID                                     []types.String                          `tfsdk:"client_id"`
 	ClientJwk                                    []KonnectApplicationAuthPluginClientJwk `tfsdk:"client_jwk"`
 	ClientSecret                                 []types.String                          `tfsdk:"client_secret"`
-	ClusterCacheRedis                            *AiProxyAdvancedPluginRedis             `tfsdk:"cluster_cache_redis"`
+	ClusterCacheRedis                            AiProxyAdvancedPluginRedis              `tfsdk:"cluster_cache_redis"`
 	ClusterCacheStrategy                         types.String                            `tfsdk:"cluster_cache_strategy"`
 	ConsumerBy                                   []types.String                          `tfsdk:"consumer_by"`
 	ConsumerClaim                                []types.String                          `tfsdk:"consumer_claim"`
@@ -132,7 +132,7 @@ type OpenidConnectPluginConfig struct {
 	PushedAuthorizationRequestEndpoint           types.String                            `tfsdk:"pushed_authorization_request_endpoint"`
 	PushedAuthorizationRequestEndpointAuthMethod types.String                            `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String                          `tfsdk:"redirect_uri"`
-	Redis                                        *KonnectApplicationAuthPluginRedis      `tfsdk:"redis"`
+	Redis                                        KonnectApplicationAuthPluginRedis       `tfsdk:"redis"`
 	RediscoveryLifetime                          types.Number                            `tfsdk:"rediscovery_lifetime"`
 	RefreshTokenParamName                        types.String                            `tfsdk:"refresh_token_param_name"`
 	RefreshTokenParamType                        []types.String                          `tfsdk:"refresh_token_param_type"`

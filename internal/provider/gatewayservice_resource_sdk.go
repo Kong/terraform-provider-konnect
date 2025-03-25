@@ -58,10 +58,18 @@ func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInpu
 	} else {
 		path = nil
 	}
-	var port int64
-	port = r.Port.ValueInt64()
-
-	protocol := shared.Protocol(r.Protocol.ValueString())
+	port := new(int64)
+	if !r.Port.IsUnknown() && !r.Port.IsNull() {
+		*port = r.Port.ValueInt64()
+	} else {
+		port = nil
+	}
+	protocol := new(shared.Protocol)
+	if !r.Protocol.IsUnknown() && !r.Protocol.IsNull() {
+		*protocol = shared.Protocol(r.Protocol.ValueString())
+	} else {
+		protocol = nil
+	}
 	readTimeout := new(int64)
 	if !r.ReadTimeout.IsUnknown() && !r.ReadTimeout.IsNull() {
 		*readTimeout = r.ReadTimeout.ValueInt64()
@@ -138,8 +146,12 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(resp *shared.Serv
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
 		r.Path = types.StringPointerValue(resp.Path)
-		r.Port = types.Int64Value(resp.Port)
-		r.Protocol = types.StringValue(string(resp.Protocol))
+		r.Port = types.Int64PointerValue(resp.Port)
+		if resp.Protocol != nil {
+			r.Protocol = types.StringValue(string(*resp.Protocol))
+		} else {
+			r.Protocol = types.StringNull()
+		}
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
 		r.Tags = make([]types.String, 0, len(resp.Tags))

@@ -95,8 +95,14 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway.`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -166,8 +172,14 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway.`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
@@ -232,8 +244,14 @@ func (r *CloudGatewayTransitGatewayDataSource) Schema(ctx context.Context, req d
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway.`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.`,
 					},
 					"transit_gateway_attachment_config": schema.SingleNestedAttribute{
 						Computed: true,
