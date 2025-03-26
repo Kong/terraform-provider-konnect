@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.
+> Released on ?
+
+* Add support for `gateway_plugin_konnect_application_auth` plugin
+
 ## 2.4.1
 > Released on 2025/03/13
 
