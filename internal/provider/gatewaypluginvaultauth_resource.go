@@ -36,7 +36,7 @@ type GatewayPluginVaultAuthResource struct {
 
 // GatewayPluginVaultAuthResourceModel describes the resource data model.
 type GatewayPluginVaultAuthResourceModel struct {
-	Config         tfTypes.VaultAuthPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.VaultAuthPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginVaultAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"access_token_name": schema.StringAttribute{
 						Computed:    true,
@@ -107,6 +108,7 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -192,6 +194,7 @@ func (r *GatewayPluginVaultAuthResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -239,7 +242,7 @@ func (r *GatewayPluginVaultAuthResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vaultAuthPlugin := *data.ToSharedVaultAuthPluginInput()
+	vaultAuthPlugin := *data.ToSharedVaultAuthPlugin()
 	request := operations.CreateVaultauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		VaultAuthPlugin: vaultAuthPlugin,
@@ -349,7 +352,7 @@ func (r *GatewayPluginVaultAuthResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vaultAuthPlugin := *data.ToSharedVaultAuthPluginInput()
+	vaultAuthPlugin := *data.ToSharedVaultAuthPlugin()
 	request := operations.UpdateVaultauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

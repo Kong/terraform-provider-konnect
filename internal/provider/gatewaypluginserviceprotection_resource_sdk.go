@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionPluginInput() *shared.ServiceProtectionPluginInput {
+func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,275 +65,284 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	dictionaryName := new(string)
-	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
-		*dictionaryName = r.Config.DictionaryName.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		dictionaryName = nil
+		updatedAt = nil
 	}
-	disablePenalty := new(bool)
-	if !r.Config.DisablePenalty.IsUnknown() && !r.Config.DisablePenalty.IsNull() {
-		*disablePenalty = r.Config.DisablePenalty.ValueBool()
-	} else {
-		disablePenalty = nil
-	}
-	errorCode := new(float64)
-	if !r.Config.ErrorCode.IsUnknown() && !r.Config.ErrorCode.IsNull() {
-		*errorCode, _ = r.Config.ErrorCode.ValueBigFloat().Float64()
-	} else {
-		errorCode = nil
-	}
-	errorMessage := new(string)
-	if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
-		*errorMessage = r.Config.ErrorMessage.ValueString()
-	} else {
-		errorMessage = nil
-	}
-	hideClientHeaders := new(bool)
-	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
-		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
-	} else {
-		hideClientHeaders = nil
-	}
-	var limit []float64 = []float64{}
-	for _, limitItem := range r.Config.Limit {
-		limitTmp, _ := limitItem.ValueBigFloat().Float64()
-		limit = append(limit, limitTmp)
-	}
-	lockDictionaryName := new(string)
-	if !r.Config.LockDictionaryName.IsUnknown() && !r.Config.LockDictionaryName.IsNull() {
-		*lockDictionaryName = r.Config.LockDictionaryName.ValueString()
-	} else {
-		lockDictionaryName = nil
-	}
-	namespace := new(string)
-	if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
-		*namespace = r.Config.Namespace.ValueString()
-	} else {
-		namespace = nil
-	}
-	var redis *shared.ServiceProtectionPluginRedis
-	if r.Config.Redis != nil {
-		clusterMaxRedirections := new(int64)
-		if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
-			*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
+	var config *shared.ServiceProtectionPluginConfig
+	if r.Config != nil {
+		dictionaryName := new(string)
+		if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
+			*dictionaryName = r.Config.DictionaryName.ValueString()
 		} else {
-			clusterMaxRedirections = nil
+			dictionaryName = nil
 		}
-		var clusterNodes []shared.ServiceProtectionPluginClusterNodes = []shared.ServiceProtectionPluginClusterNodes{}
-		for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
+		disablePenalty := new(bool)
+		if !r.Config.DisablePenalty.IsUnknown() && !r.Config.DisablePenalty.IsNull() {
+			*disablePenalty = r.Config.DisablePenalty.ValueBool()
+		} else {
+			disablePenalty = nil
+		}
+		errorCode := new(float64)
+		if !r.Config.ErrorCode.IsUnknown() && !r.Config.ErrorCode.IsNull() {
+			*errorCode, _ = r.Config.ErrorCode.ValueBigFloat().Float64()
+		} else {
+			errorCode = nil
+		}
+		errorMessage := new(string)
+		if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
+			*errorMessage = r.Config.ErrorMessage.ValueString()
+		} else {
+			errorMessage = nil
+		}
+		hideClientHeaders := new(bool)
+		if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
+			*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
+		} else {
+			hideClientHeaders = nil
+		}
+		var limit []float64 = []float64{}
+		for _, limitItem := range r.Config.Limit {
+			limitTmp, _ := limitItem.ValueBigFloat().Float64()
+			limit = append(limit, limitTmp)
+		}
+		lockDictionaryName := new(string)
+		if !r.Config.LockDictionaryName.IsUnknown() && !r.Config.LockDictionaryName.IsNull() {
+			*lockDictionaryName = r.Config.LockDictionaryName.ValueString()
+		} else {
+			lockDictionaryName = nil
+		}
+		namespace := new(string)
+		if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
+			*namespace = r.Config.Namespace.ValueString()
+		} else {
+			namespace = nil
+		}
+		var redis *shared.ServiceProtectionPluginRedis
+		if r.Config.Redis != nil {
+			clusterMaxRedirections := new(int64)
+			if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
 			} else {
-				ip = nil
+				clusterMaxRedirections = nil
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
+			var clusterNodes []shared.ServiceProtectionPluginClusterNodes = []shared.ServiceProtectionPluginClusterNodes{}
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.ServiceProtectionPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
+			}
+			connectTimeout := new(int64)
+			if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
+				*connectTimeout = r.Config.Redis.ConnectTimeout.ValueInt64()
 			} else {
-				port = nil
+				connectTimeout = nil
 			}
-			clusterNodes = append(clusterNodes, shared.ServiceProtectionPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
-		}
-		connectTimeout := new(int64)
-		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
-			*connectTimeout = r.Config.Redis.ConnectTimeout.ValueInt64()
-		} else {
-			connectTimeout = nil
-		}
-		connectionIsProxied := new(bool)
-		if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
-			*connectionIsProxied = r.Config.Redis.ConnectionIsProxied.ValueBool()
-		} else {
-			connectionIsProxied = nil
-		}
-		database := new(int64)
-		if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
-			*database = r.Config.Redis.Database.ValueInt64()
-		} else {
-			database = nil
-		}
-		host := new(string)
-		if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
-			*host = r.Config.Redis.Host.ValueString()
-		} else {
-			host = nil
-		}
-		keepaliveBacklog := new(int64)
-		if !r.Config.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Redis.KeepaliveBacklog.IsNull() {
-			*keepaliveBacklog = r.Config.Redis.KeepaliveBacklog.ValueInt64()
-		} else {
-			keepaliveBacklog = nil
-		}
-		keepalivePoolSize := new(int64)
-		if !r.Config.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Redis.KeepalivePoolSize.IsNull() {
-			*keepalivePoolSize = r.Config.Redis.KeepalivePoolSize.ValueInt64()
-		} else {
-			keepalivePoolSize = nil
-		}
-		password := new(string)
-		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-			*password = r.Config.Redis.Password.ValueString()
-		} else {
-			password = nil
-		}
-		port1 := new(int64)
-		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port1 = r.Config.Redis.Port.ValueInt64()
-		} else {
-			port1 = nil
-		}
-		readTimeout := new(int64)
-		if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
-			*readTimeout = r.Config.Redis.ReadTimeout.ValueInt64()
-		} else {
-			readTimeout = nil
-		}
-		sendTimeout := new(int64)
-		if !r.Config.Redis.SendTimeout.IsUnknown() && !r.Config.Redis.SendTimeout.IsNull() {
-			*sendTimeout = r.Config.Redis.SendTimeout.ValueInt64()
-		} else {
-			sendTimeout = nil
-		}
-		sentinelMaster := new(string)
-		if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
-			*sentinelMaster = r.Config.Redis.SentinelMaster.ValueString()
-		} else {
-			sentinelMaster = nil
-		}
-		var sentinelNodes []shared.ServiceProtectionPluginSentinelNodes = []shared.ServiceProtectionPluginSentinelNodes{}
-		for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
+			connectionIsProxied := new(bool)
+			if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.Redis.ConnectionIsProxied.ValueBool()
 			} else {
-				host1 = nil
+				connectionIsProxied = nil
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
+			database := new(int64)
+			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
+				*database = r.Config.Redis.Database.ValueInt64()
 			} else {
-				port2 = nil
+				database = nil
 			}
-			sentinelNodes = append(sentinelNodes, shared.ServiceProtectionPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
+			host := new(string)
+			if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
+				*host = r.Config.Redis.Host.ValueString()
+			} else {
+				host = nil
+			}
+			keepaliveBacklog := new(int64)
+			if !r.Config.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Redis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog = r.Config.Redis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog = nil
+			}
+			keepalivePoolSize := new(int64)
+			if !r.Config.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Redis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize = r.Config.Redis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize = nil
+			}
+			password := new(string)
+			if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
+				*password = r.Config.Redis.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port1 := new(int64)
+			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
+				*port1 = r.Config.Redis.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			readTimeout := new(int64)
+			if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
+				*readTimeout = r.Config.Redis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout = nil
+			}
+			sendTimeout := new(int64)
+			if !r.Config.Redis.SendTimeout.IsUnknown() && !r.Config.Redis.SendTimeout.IsNull() {
+				*sendTimeout = r.Config.Redis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout = nil
+			}
+			sentinelMaster := new(string)
+			if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
+				*sentinelMaster = r.Config.Redis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster = nil
+			}
+			var sentinelNodes []shared.ServiceProtectionPluginSentinelNodes = []shared.ServiceProtectionPluginSentinelNodes{}
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.ServiceProtectionPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
+			}
+			sentinelPassword := new(string)
+			if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
+				*sentinelPassword = r.Config.Redis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword = nil
+			}
+			sentinelRole := new(shared.ServiceProtectionPluginSentinelRole)
+			if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
+				*sentinelRole = shared.ServiceProtectionPluginSentinelRole(r.Config.Redis.SentinelRole.ValueString())
+			} else {
+				sentinelRole = nil
+			}
+			sentinelUsername := new(string)
+			if !r.Config.Redis.SentinelUsername.IsUnknown() && !r.Config.Redis.SentinelUsername.IsNull() {
+				*sentinelUsername = r.Config.Redis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername = nil
+			}
+			serverName := new(string)
+			if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
+				*serverName = r.Config.Redis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl := new(bool)
+			if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
+				*ssl = r.Config.Redis.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
+				*sslVerify = r.Config.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			username := new(string)
+			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
+				*username = r.Config.Redis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			redis = &shared.ServiceProtectionPluginRedis{
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database,
+				Host:                   host,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password,
+				Port:                   port1,
+				ReadTimeout:            readTimeout,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl,
+				SslVerify:              sslVerify,
+				Username:               username,
+			}
 		}
-		sentinelPassword := new(string)
-		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
-			*sentinelPassword = r.Config.Redis.SentinelPassword.ValueString()
+		retryAfterJitterMax := new(float64)
+		if !r.Config.RetryAfterJitterMax.IsUnknown() && !r.Config.RetryAfterJitterMax.IsNull() {
+			*retryAfterJitterMax, _ = r.Config.RetryAfterJitterMax.ValueBigFloat().Float64()
 		} else {
-			sentinelPassword = nil
+			retryAfterJitterMax = nil
 		}
-		sentinelRole := new(shared.ServiceProtectionPluginSentinelRole)
-		if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
-			*sentinelRole = shared.ServiceProtectionPluginSentinelRole(r.Config.Redis.SentinelRole.ValueString())
+		strategy := new(shared.ServiceProtectionPluginStrategy)
+		if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
+			*strategy = shared.ServiceProtectionPluginStrategy(r.Config.Strategy.ValueString())
 		} else {
-			sentinelRole = nil
+			strategy = nil
 		}
-		sentinelUsername := new(string)
-		if !r.Config.Redis.SentinelUsername.IsUnknown() && !r.Config.Redis.SentinelUsername.IsNull() {
-			*sentinelUsername = r.Config.Redis.SentinelUsername.ValueString()
+		syncRate := new(float64)
+		if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
+			*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
 		} else {
-			sentinelUsername = nil
+			syncRate = nil
 		}
-		serverName := new(string)
-		if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
-			*serverName = r.Config.Redis.ServerName.ValueString()
+		var windowSize []float64 = []float64{}
+		for _, windowSizeItem := range r.Config.WindowSize {
+			windowSizeTmp, _ := windowSizeItem.ValueBigFloat().Float64()
+			windowSize = append(windowSize, windowSizeTmp)
+		}
+		windowType := new(shared.ServiceProtectionPluginWindowType)
+		if !r.Config.WindowType.IsUnknown() && !r.Config.WindowType.IsNull() {
+			*windowType = shared.ServiceProtectionPluginWindowType(r.Config.WindowType.ValueString())
 		} else {
-			serverName = nil
+			windowType = nil
 		}
-		ssl := new(bool)
-		if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
-			*ssl = r.Config.Redis.Ssl.ValueBool()
-		} else {
-			ssl = nil
+		config = &shared.ServiceProtectionPluginConfig{
+			DictionaryName:      dictionaryName,
+			DisablePenalty:      disablePenalty,
+			ErrorCode:           errorCode,
+			ErrorMessage:        errorMessage,
+			HideClientHeaders:   hideClientHeaders,
+			Limit:               limit,
+			LockDictionaryName:  lockDictionaryName,
+			Namespace:           namespace,
+			Redis:               redis,
+			RetryAfterJitterMax: retryAfterJitterMax,
+			Strategy:            strategy,
+			SyncRate:            syncRate,
+			WindowSize:          windowSize,
+			WindowType:          windowType,
 		}
-		sslVerify := new(bool)
-		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify = r.Config.Redis.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
-		}
-		username := new(string)
-		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-			*username = r.Config.Redis.Username.ValueString()
-		} else {
-			username = nil
-		}
-		redis = &shared.ServiceProtectionPluginRedis{
-			ClusterMaxRedirections: clusterMaxRedirections,
-			ClusterNodes:           clusterNodes,
-			ConnectTimeout:         connectTimeout,
-			ConnectionIsProxied:    connectionIsProxied,
-			Database:               database,
-			Host:                   host,
-			KeepaliveBacklog:       keepaliveBacklog,
-			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password,
-			Port:                   port1,
-			ReadTimeout:            readTimeout,
-			SendTimeout:            sendTimeout,
-			SentinelMaster:         sentinelMaster,
-			SentinelNodes:          sentinelNodes,
-			SentinelPassword:       sentinelPassword,
-			SentinelRole:           sentinelRole,
-			SentinelUsername:       sentinelUsername,
-			ServerName:             serverName,
-			Ssl:                    ssl,
-			SslVerify:              sslVerify,
-			Username:               username,
-		}
-	}
-	retryAfterJitterMax := new(float64)
-	if !r.Config.RetryAfterJitterMax.IsUnknown() && !r.Config.RetryAfterJitterMax.IsNull() {
-		*retryAfterJitterMax, _ = r.Config.RetryAfterJitterMax.ValueBigFloat().Float64()
-	} else {
-		retryAfterJitterMax = nil
-	}
-	strategy := new(shared.ServiceProtectionPluginStrategy)
-	if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
-		*strategy = shared.ServiceProtectionPluginStrategy(r.Config.Strategy.ValueString())
-	} else {
-		strategy = nil
-	}
-	syncRate := new(float64)
-	if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
-		*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
-	} else {
-		syncRate = nil
-	}
-	var windowSize []float64 = []float64{}
-	for _, windowSizeItem := range r.Config.WindowSize {
-		windowSizeTmp, _ := windowSizeItem.ValueBigFloat().Float64()
-		windowSize = append(windowSize, windowSizeTmp)
-	}
-	windowType := new(shared.ServiceProtectionPluginWindowType)
-	if !r.Config.WindowType.IsUnknown() && !r.Config.WindowType.IsNull() {
-		*windowType = shared.ServiceProtectionPluginWindowType(r.Config.WindowType.ValueString())
-	} else {
-		windowType = nil
-	}
-	config := shared.ServiceProtectionPluginConfig{
-		DictionaryName:      dictionaryName,
-		DisablePenalty:      disablePenalty,
-		ErrorCode:           errorCode,
-		ErrorMessage:        errorMessage,
-		HideClientHeaders:   hideClientHeaders,
-		Limit:               limit,
-		LockDictionaryName:  lockDictionaryName,
-		Namespace:           namespace,
-		Redis:               redis,
-		RetryAfterJitterMax: retryAfterJitterMax,
-		Strategy:            strategy,
-		SyncRate:            syncRate,
-		WindowSize:          windowSize,
-		WindowType:          windowType,
 	}
 	var protocols []shared.ServiceProtectionPluginProtocols = []shared.ServiceProtectionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -345,12 +360,14 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 			ID: id1,
 		}
 	}
-	out := shared.ServiceProtectionPluginInput{
+	out := shared.ServiceProtectionPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Service:      service,
@@ -360,102 +377,107 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 
 func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServiceProtectionPlugin(resp *shared.ServiceProtectionPlugin) {
 	if resp != nil {
-		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
-		r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
-		if resp.Config.ErrorCode != nil {
-			r.Config.ErrorCode = types.NumberValue(big.NewFloat(float64(*resp.Config.ErrorCode)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ErrorCode = types.NumberNull()
-		}
-		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-		r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
-		for _, v := range resp.Config.Limit {
-			r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
-		}
-		r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
-		r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
-		if resp.Config.Redis == nil {
-			r.Config.Redis = nil
-		} else {
-			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
-			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
-			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
-				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
-				} else {
-					r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-					r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-				}
-			}
-			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
-			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
-			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
-			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
-			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
-			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
-			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
-			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
-				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
-				} else {
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-				}
-			}
-			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
-			if resp.Config.Redis.SentinelRole != nil {
-				r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+			r.Config = &tfTypes.ServiceProtectionPluginConfig{}
+			r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
+			r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
+			if resp.Config.ErrorCode != nil {
+				r.Config.ErrorCode = types.NumberValue(big.NewFloat(float64(*resp.Config.ErrorCode)))
 			} else {
-				r.Config.Redis.SentinelRole = types.StringNull()
+				r.Config.ErrorCode = types.NumberNull()
 			}
-			r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
-			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
-		}
-		if resp.Config.RetryAfterJitterMax != nil {
-			r.Config.RetryAfterJitterMax = types.NumberValue(big.NewFloat(float64(*resp.Config.RetryAfterJitterMax)))
-		} else {
-			r.Config.RetryAfterJitterMax = types.NumberNull()
-		}
-		if resp.Config.Strategy != nil {
-			r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
-		} else {
-			r.Config.Strategy = types.StringNull()
-		}
-		if resp.Config.SyncRate != nil {
-			r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
-		} else {
-			r.Config.SyncRate = types.NumberNull()
-		}
-		r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
-		for _, v := range resp.Config.WindowSize {
-			r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
-		}
-		if resp.Config.WindowType != nil {
-			r.Config.WindowType = types.StringValue(string(*resp.Config.WindowType))
-		} else {
-			r.Config.WindowType = types.StringNull()
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+			r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
+			for _, v := range resp.Config.Limit {
+				r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
+			}
+			r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
+			r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
+			if resp.Config.Redis == nil {
+				r.Config.Redis = nil
+			} else {
+				r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+				r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+				}
+				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
+					} else {
+						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+					}
+				}
+				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
+				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
+				r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
+				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
+				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+				r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
+				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+					} else {
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+					}
+				}
+				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
+				if resp.Config.Redis.SentinelRole != nil {
+					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+				} else {
+					r.Config.Redis.SentinelRole = types.StringNull()
+				}
+				r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
+				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			}
+			if resp.Config.RetryAfterJitterMax != nil {
+				r.Config.RetryAfterJitterMax = types.NumberValue(big.NewFloat(float64(*resp.Config.RetryAfterJitterMax)))
+			} else {
+				r.Config.RetryAfterJitterMax = types.NumberNull()
+			}
+			if resp.Config.Strategy != nil {
+				r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
+			} else {
+				r.Config.Strategy = types.StringNull()
+			}
+			if resp.Config.SyncRate != nil {
+				r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
+			} else {
+				r.Config.SyncRate = types.NumberNull()
+			}
+			r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
+			for _, v := range resp.Config.WindowSize {
+				r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
+			}
+			if resp.Config.WindowType != nil {
+				r.Config.WindowType = types.StringValue(string(*resp.Config.WindowType))
+			} else {
+				r.Config.WindowType = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

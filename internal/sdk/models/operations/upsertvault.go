@@ -13,7 +13,7 @@ type UpsertVaultRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the Vault
-	Vault shared.VaultInput `request:"mediaType=application/json"`
+	Vault shared.Vault `request:"mediaType=application/json"`
 }
 
 func (o *UpsertVaultRequest) GetVaultID() string {
@@ -30,9 +30,9 @@ func (o *UpsertVaultRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertVaultRequest) GetVault() shared.VaultInput {
+func (o *UpsertVaultRequest) GetVault() shared.Vault {
 	if o == nil {
-		return shared.VaultInput{}
+		return shared.Vault{}
 	}
 	return o.Vault
 }

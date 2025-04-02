@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPluginInput() *shared.RedirectPluginInput {
+func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.RedirectPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,28 +64,37 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPluginInput() *shar
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	keepIncomingPath := new(bool)
-	if !r.Config.KeepIncomingPath.IsUnknown() && !r.Config.KeepIncomingPath.IsNull() {
-		*keepIncomingPath = r.Config.KeepIncomingPath.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		keepIncomingPath = nil
+		updatedAt = nil
 	}
-	location := new(string)
-	if !r.Config.Location.IsUnknown() && !r.Config.Location.IsNull() {
-		*location = r.Config.Location.ValueString()
-	} else {
-		location = nil
-	}
-	statusCode := new(int64)
-	if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
-		*statusCode = r.Config.StatusCode.ValueInt64()
-	} else {
-		statusCode = nil
-	}
-	config := shared.RedirectPluginConfig{
-		KeepIncomingPath: keepIncomingPath,
-		Location:         location,
-		StatusCode:       statusCode,
+	var config *shared.RedirectPluginConfig
+	if r.Config != nil {
+		keepIncomingPath := new(bool)
+		if !r.Config.KeepIncomingPath.IsUnknown() && !r.Config.KeepIncomingPath.IsNull() {
+			*keepIncomingPath = r.Config.KeepIncomingPath.ValueBool()
+		} else {
+			keepIncomingPath = nil
+		}
+		location := new(string)
+		if !r.Config.Location.IsUnknown() && !r.Config.Location.IsNull() {
+			*location = r.Config.Location.ValueString()
+		} else {
+			location = nil
+		}
+		statusCode := new(int64)
+		if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
+			*statusCode = r.Config.StatusCode.ValueInt64()
+		} else {
+			statusCode = nil
+		}
+		config = &shared.RedirectPluginConfig{
+			KeepIncomingPath: keepIncomingPath,
+			Location:         location,
+			StatusCode:       statusCode,
+		}
 	}
 	var consumer *shared.RedirectPluginConsumer
 	if r.Consumer != nil {
@@ -133,12 +148,14 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPluginInput() *shar
 			ID: id4,
 		}
 	}
-	out := shared.RedirectPluginInput{
+	out := shared.RedirectPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
@@ -151,9 +168,14 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPluginInput() *shar
 
 func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(resp *shared.RedirectPlugin) {
 	if resp != nil {
-		r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
-		r.Config.Location = types.StringPointerValue(resp.Config.Location)
-		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RedirectPluginConfig{}
+			r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
+			r.Config.Location = types.StringPointerValue(resp.Config.Location)
+			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

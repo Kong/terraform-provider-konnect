@@ -29,7 +29,7 @@ type GatewayPluginGrpcGatewayDataSource struct {
 
 // GatewayPluginGrpcGatewayDataSourceModel describes the data model.
 type GatewayPluginGrpcGatewayDataSourceModel struct {
-	Config         tfTypes.GrpcGatewayPluginConfig    `tfsdk:"config"`
+	Config         *tfTypes.GrpcGatewayPluginConfig   `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

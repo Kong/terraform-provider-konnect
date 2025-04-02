@@ -11,8 +11,8 @@ type UpdateAiproxyadvancedPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiProxyAdvancedPlugin shared.AiProxyAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiProxyAdvancedPlugin shared.AiProxyAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAiproxyadvancedPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateAiproxyadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAiproxyadvancedPluginRequest) GetAiProxyAdvancedPlugin() shared.AiProxyAdvancedPluginInput {
+func (o *UpdateAiproxyadvancedPluginRequest) GetAiProxyAdvancedPlugin() shared.AiProxyAdvancedPlugin {
 	if o == nil {
-		return shared.AiProxyAdvancedPluginInput{}
+		return shared.AiProxyAdvancedPlugin{}
 	}
 	return o.AiProxyAdvancedPlugin
 }

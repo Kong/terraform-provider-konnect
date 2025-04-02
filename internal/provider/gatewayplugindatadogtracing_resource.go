@@ -38,19 +38,19 @@ type GatewayPluginDatadogTracingResource struct {
 
 // GatewayPluginDatadogTracingResourceModel describes the resource data model.
 type GatewayPluginDatadogTracingResourceModel struct {
-	Config         tfTypes.DatadogTracingPluginConfig `tfsdk:"config"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         *tfTypes.DatadogTracingPluginConfig `tfsdk:"config"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                         `tfsdk:"created_at"`
+	Enabled        types.Bool                          `tfsdk:"enabled"`
+	ID             types.String                        `tfsdk:"id"`
+	InstanceName   types.String                        `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Protocols      []types.String                      `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
+	Tags           []types.String                      `tfsdk:"tags"`
+	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginDatadogTracingResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,8 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginDatadogTracing Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
 						Computed: true,
@@ -130,6 +131,7 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -215,6 +217,7 @@ func (r *GatewayPluginDatadogTracingResource) Schema(ctx context.Context, req re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -262,7 +265,7 @@ func (r *GatewayPluginDatadogTracingResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogTracingPlugin := *data.ToSharedDatadogTracingPluginInput()
+	datadogTracingPlugin := *data.ToSharedDatadogTracingPlugin()
 	request := operations.CreateDatadogtracingPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		DatadogTracingPlugin: datadogTracingPlugin,
@@ -372,7 +375,7 @@ func (r *GatewayPluginDatadogTracingResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogTracingPlugin := *data.ToSharedDatadogTracingPluginInput()
+	datadogTracingPlugin := *data.ToSharedDatadogTracingPlugin()
 	request := operations.UpdateDatadogtracingPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,

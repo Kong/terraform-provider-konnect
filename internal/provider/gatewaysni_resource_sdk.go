@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
+func (r *GatewaySNIResourceModel) ToSharedSni() *shared.Sni {
 	var certificate *shared.SNICertificate
 	if r.Certificate != nil {
 		id := new(string)
@@ -20,6 +20,12 @@ func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
 		certificate = &shared.SNICertificate{
 			ID: id,
 		}
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -34,11 +40,19 @@ func (r *GatewaySNIResourceModel) ToSharedSNIInput() *shared.SNIInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.SNIInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.Sni{
 		Certificate: certificate,
+		CreatedAt:   createdAt,
 		ID:          id1,
 		Name:        name,
 		Tags:        tags,
+		UpdatedAt:   updatedAt,
 	}
 	return &out
 }

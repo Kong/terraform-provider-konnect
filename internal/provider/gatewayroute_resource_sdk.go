@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONInput {
+func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	var destinations []shared.Destinations = []shared.Destinations{}
 	for _, destinationsItem := range r.Destinations {
 		ip := new(string)
@@ -145,7 +151,14 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONIn
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.RouteJSONInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.RouteJSON{
+		CreatedAt:               createdAt,
 		Destinations:            destinations,
 		Headers:                 headers,
 		Hosts:                   hosts,
@@ -165,6 +178,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONIn
 		Sources:                 sources,
 		StripPath:               stripPath,
 		Tags:                    tags,
+		UpdatedAt:               updatedAt,
 	}
 	return &out
 }

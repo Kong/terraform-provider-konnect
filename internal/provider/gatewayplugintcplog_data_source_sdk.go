@@ -12,27 +12,32 @@ import (
 
 func (r *GatewayPluginTCPLogDataSourceModel) RefreshFromSharedTCPLogPlugin(resp *shared.TCPLogPlugin) {
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.TCPLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			if resp.Config.Keepalive != nil {
+				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+			} else {
+				r.Config.Keepalive = types.NumberNull()
+			}
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
+			r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
+			r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		}
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
-		r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

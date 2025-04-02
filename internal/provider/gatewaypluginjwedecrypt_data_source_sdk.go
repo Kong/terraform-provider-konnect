@@ -10,13 +10,18 @@ import (
 
 func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlugin(resp *shared.JweDecryptPlugin) {
 	if resp != nil {
-		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
-		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
-		for _, v := range resp.Config.KeySets {
-			r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.JweDecryptPluginConfig{}
+			r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
+			r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
+			for _, v := range resp.Config.KeySets {
+				r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+			}
+			r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
+			r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		}
-		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
-		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -9,7 +9,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInput() *shared.RouteByHeaderPluginInput {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() *shared.RouteByHeaderPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,24 +65,33 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInp
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var rules []shared.RouteByHeaderPluginRules = []shared.RouteByHeaderPluginRules{}
-	for _, rulesItem := range r.Config.Rules {
-		condition := make(map[string]interface{})
-		for conditionKey, conditionValue := range rulesItem.Condition {
-			var conditionInst interface{}
-			_ = json.Unmarshal([]byte(conditionValue.ValueString()), &conditionInst)
-			condition[conditionKey] = conditionInst
-		}
-		var upstreamName string
-		upstreamName = rulesItem.UpstreamName.ValueString()
-
-		rules = append(rules, shared.RouteByHeaderPluginRules{
-			Condition:    condition,
-			UpstreamName: upstreamName,
-		})
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
 	}
-	config := shared.RouteByHeaderPluginConfig{
-		Rules: rules,
+	var config *shared.RouteByHeaderPluginConfig
+	if r.Config != nil {
+		var rules []shared.RouteByHeaderPluginRules = []shared.RouteByHeaderPluginRules{}
+		for _, rulesItem := range r.Config.Rules {
+			condition := make(map[string]interface{})
+			for conditionKey, conditionValue := range rulesItem.Condition {
+				var conditionInst interface{}
+				_ = json.Unmarshal([]byte(conditionValue.ValueString()), &conditionInst)
+				condition[conditionKey] = conditionInst
+			}
+			var upstreamName string
+			upstreamName = rulesItem.UpstreamName.ValueString()
+
+			rules = append(rules, shared.RouteByHeaderPluginRules{
+				Condition:    condition,
+				UpstreamName: upstreamName,
+			})
+		}
+		config = &shared.RouteByHeaderPluginConfig{
+			Rules: rules,
+		}
 	}
 	var consumer *shared.RouteByHeaderPluginConsumer
 	if r.Consumer != nil {
@@ -118,12 +133,14 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInp
 			ID: id3,
 		}
 	}
-	out := shared.RouteByHeaderPluginInput{
+	out := shared.RouteByHeaderPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -135,25 +152,30 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPluginInp
 
 func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
-		if len(r.Config.Rules) > len(resp.Config.Rules) {
-			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Config.Rules {
-			var rules1 tfTypes.RouteByHeaderPluginRules
-			if len(rulesItem.Condition) > 0 {
-				rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
-				for key, value := range rulesItem.Condition {
-					result, _ := json.Marshal(value)
-					rules1.Condition[key] = types.StringValue(string(result))
-				}
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RouteByHeaderPluginConfig{}
+			r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
+			if len(r.Config.Rules) > len(resp.Config.Rules) {
+				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 			}
-			rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
-			if rulesCount+1 > len(r.Config.Rules) {
-				r.Config.Rules = append(r.Config.Rules, rules1)
-			} else {
-				r.Config.Rules[rulesCount].Condition = rules1.Condition
-				r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
+			for rulesCount, rulesItem := range resp.Config.Rules {
+				var rules1 tfTypes.RouteByHeaderPluginRules
+				if len(rulesItem.Condition) > 0 {
+					rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
+					for key, value := range rulesItem.Condition {
+						result, _ := json.Marshal(value)
+						rules1.Condition[key] = types.StringValue(string(result))
+					}
+				}
+				rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
+				if rulesCount+1 > len(r.Config.Rules) {
+					r.Config.Rules = append(r.Config.Rules, rules1)
+				} else {
+					r.Config.Rules[rulesCount].Condition = rules1.Condition
+					r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
+				}
 			}
 		}
 		if resp.Consumer == nil {

@@ -597,9 +597,9 @@ func (s *Mesh) DeleteMeshControlPlane(ctx context.Context, request operations.De
 
 }
 
-// UpdateMeshControlPlane - Update control plane
-// Update an individual control plane.
-func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.UpdateMeshControlPlaneRequest, opts ...operations.Option) (*operations.UpdateMeshControlPlaneResponse, error) {
+// UpdateCp - Update a whole control plane
+// Update a whole control plane
+func (s *Mesh) UpdateCp(ctx context.Context, request operations.UpdateCpRequest, opts ...operations.Option) (*operations.UpdateCpResponse, error) {
 	o := operations.Options{}
 	supportedOptions := []string{
 		operations.SupportedOptionTimeout,
@@ -626,11 +626,11 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 	hookCtx := hooks.HookContext{
 		BaseURL:        baseURL,
 		Context:        ctx,
-		OperationID:    "update-mesh-control-plane",
+		OperationID:    "update-cp",
 		OAuth2Scopes:   []string{},
 		SecuritySource: s.sdkConfiguration.Security,
 	}
-	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "UpdateMeshControlPlaneRequest", "json", `request:"mediaType=application/json"`)
+	bodyReader, reqContentType, err := utils.SerializeRequestBody(ctx, request, false, false, "PutMeshControlPlaneRequest", "json", `request:"mediaType=application/json"`)
 	if err != nil {
 		return nil, err
 	}
@@ -646,7 +646,7 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 		defer cancel()
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "PATCH", opURL, bodyReader)
+	req, err := http.NewRequestWithContext(ctx, "PUT", opURL, bodyReader)
 	if err != nil {
 		return nil, fmt.Errorf("error creating request: %w", err)
 	}
@@ -698,7 +698,7 @@ func (s *Mesh) UpdateMeshControlPlane(ctx context.Context, request operations.Up
 		}
 	}
 
-	res := &operations.UpdateMeshControlPlaneResponse{
+	res := &operations.UpdateCpResponse{
 		StatusCode:  httpRes.StatusCode,
 		ContentType: httpRes.Header.Get("Content-Type"),
 		RawResponse: httpRes,

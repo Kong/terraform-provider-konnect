@@ -40,19 +40,19 @@ type GatewayPluginGraphqlProxyCacheAdvancedResource struct {
 
 // GatewayPluginGraphqlProxyCacheAdvancedResourceModel describes the resource data model.
 type GatewayPluginGraphqlProxyCacheAdvancedResourceModel struct {
-	Config         tfTypes.GraphqlProxyCacheAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"consumer"`
-	ControlPlaneID types.String                                  `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                   `tfsdk:"created_at"`
-	Enabled        types.Bool                                    `tfsdk:"enabled"`
-	ID             types.String                                  `tfsdk:"id"`
-	InstanceName   types.String                                  `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                    `tfsdk:"ordering"`
-	Protocols      []types.String                                `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"service"`
-	Tags           []types.String                                `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                   `tfsdk:"updated_at"`
+	Config         *tfTypes.GraphqlProxyCacheAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer             `tfsdk:"consumer"`
+	ControlPlaneID types.String                                   `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                    `tfsdk:"created_at"`
+	Enabled        types.Bool                                     `tfsdk:"enabled"`
+	ID             types.String                                   `tfsdk:"id"`
+	InstanceName   types.String                                   `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                     `tfsdk:"ordering"`
+	Protocols      []types.String                                 `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer             `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer             `tfsdk:"service"`
+	Tags           []types.String                                 `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                    `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 		MarkdownDescription: "GatewayPluginGraphqlProxyCacheAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"bypass_on_err": schema.BoolAttribute{
 						Computed:    true,
@@ -305,6 +306,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -390,6 +392,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Schema(ctx context.Cont
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -437,7 +440,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Create(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
+	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPlugin()
 	request := operations.CreateGraphqlproxycacheadvancedPluginRequest{
 		ControlPlaneID:                  controlPlaneID,
 		GraphqlProxyCacheAdvancedPlugin: graphqlProxyCacheAdvancedPlugin,
@@ -547,7 +550,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResource) Update(ctx context.Cont
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPluginInput()
+	graphqlProxyCacheAdvancedPlugin := *data.ToSharedGraphqlProxyCacheAdvancedPlugin()
 	request := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
 		PluginID:                        pluginID,
 		ControlPlaneID:                  controlPlaneID,

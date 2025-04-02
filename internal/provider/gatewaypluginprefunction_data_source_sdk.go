@@ -10,45 +10,50 @@ import (
 
 func (r *GatewayPluginPreFunctionDataSourceModel) RefreshFromSharedPreFunctionPlugin(resp *shared.PreFunctionPlugin) {
 	if resp != nil {
-		r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
-		for _, v := range resp.Config.Access {
-			r.Config.Access = append(r.Config.Access, types.StringValue(v))
-		}
-		r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
-		for _, v := range resp.Config.BodyFilter {
-			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
-		}
-		r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
-		for _, v := range resp.Config.Certificate {
-			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
-		}
-		r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
-		for _, v := range resp.Config.HeaderFilter {
-			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
-		}
-		r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
-		for _, v := range resp.Config.Log {
-			r.Config.Log = append(r.Config.Log, types.StringValue(v))
-		}
-		r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
-		for _, v := range resp.Config.Rewrite {
-			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
-		}
-		r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
-		for _, v := range resp.Config.WsClientFrame {
-			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
-		}
-		r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
-		for _, v := range resp.Config.WsClose {
-			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
-		}
-		r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
-		for _, v := range resp.Config.WsHandshake {
-			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
-		}
-		r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
-		for _, v := range resp.Config.WsUpstreamFrame {
-			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.PostFunctionPluginConfig{}
+			r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
+			for _, v := range resp.Config.Access {
+				r.Config.Access = append(r.Config.Access, types.StringValue(v))
+			}
+			r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
+			for _, v := range resp.Config.BodyFilter {
+				r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
+			}
+			r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
+			for _, v := range resp.Config.Certificate {
+				r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
+			}
+			r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
+			for _, v := range resp.Config.HeaderFilter {
+				r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
+			}
+			r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
+			for _, v := range resp.Config.Log {
+				r.Config.Log = append(r.Config.Log, types.StringValue(v))
+			}
+			r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
+			for _, v := range resp.Config.Rewrite {
+				r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
+			}
+			r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
+			for _, v := range resp.Config.WsClientFrame {
+				r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
+			}
+			r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
+			for _, v := range resp.Config.WsClose {
+				r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
+			}
+			r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
+			for _, v := range resp.Config.WsHandshake {
+				r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
+			}
+			r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
+			for _, v := range resp.Config.WsUpstreamFrame {
+				r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

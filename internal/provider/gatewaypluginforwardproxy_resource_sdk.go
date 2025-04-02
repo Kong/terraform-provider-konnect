@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPluginInput() *shared.ForwardProxyPluginInput {
+func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPlugin() *shared.ForwardProxyPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,70 +64,79 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPluginInput
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	authPassword := new(string)
-	if !r.Config.AuthPassword.IsUnknown() && !r.Config.AuthPassword.IsNull() {
-		*authPassword = r.Config.AuthPassword.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		authPassword = nil
+		updatedAt = nil
 	}
-	authUsername := new(string)
-	if !r.Config.AuthUsername.IsUnknown() && !r.Config.AuthUsername.IsNull() {
-		*authUsername = r.Config.AuthUsername.ValueString()
-	} else {
-		authUsername = nil
-	}
-	httpProxyHost := new(string)
-	if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
-		*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
-	} else {
-		httpProxyHost = nil
-	}
-	httpProxyPort := new(int64)
-	if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
-		*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
-	} else {
-		httpProxyPort = nil
-	}
-	httpsProxyHost := new(string)
-	if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
-		*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
-	} else {
-		httpsProxyHost = nil
-	}
-	httpsProxyPort := new(int64)
-	if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
-		*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
-	} else {
-		httpsProxyPort = nil
-	}
-	httpsVerify := new(bool)
-	if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
-		*httpsVerify = r.Config.HTTPSVerify.ValueBool()
-	} else {
-		httpsVerify = nil
-	}
-	proxyScheme := new(shared.ProxyScheme)
-	if !r.Config.ProxyScheme.IsUnknown() && !r.Config.ProxyScheme.IsNull() {
-		*proxyScheme = shared.ProxyScheme(r.Config.ProxyScheme.ValueString())
-	} else {
-		proxyScheme = nil
-	}
-	xHeaders := new(shared.XHeaders)
-	if !r.Config.XHeaders.IsUnknown() && !r.Config.XHeaders.IsNull() {
-		*xHeaders = shared.XHeaders(r.Config.XHeaders.ValueString())
-	} else {
-		xHeaders = nil
-	}
-	config := shared.ForwardProxyPluginConfig{
-		AuthPassword:   authPassword,
-		AuthUsername:   authUsername,
-		HTTPProxyHost:  httpProxyHost,
-		HTTPProxyPort:  httpProxyPort,
-		HTTPSProxyHost: httpsProxyHost,
-		HTTPSProxyPort: httpsProxyPort,
-		HTTPSVerify:    httpsVerify,
-		ProxyScheme:    proxyScheme,
-		XHeaders:       xHeaders,
+	var config *shared.ForwardProxyPluginConfig
+	if r.Config != nil {
+		authPassword := new(string)
+		if !r.Config.AuthPassword.IsUnknown() && !r.Config.AuthPassword.IsNull() {
+			*authPassword = r.Config.AuthPassword.ValueString()
+		} else {
+			authPassword = nil
+		}
+		authUsername := new(string)
+		if !r.Config.AuthUsername.IsUnknown() && !r.Config.AuthUsername.IsNull() {
+			*authUsername = r.Config.AuthUsername.ValueString()
+		} else {
+			authUsername = nil
+		}
+		httpProxyHost := new(string)
+		if !r.Config.HTTPProxyHost.IsUnknown() && !r.Config.HTTPProxyHost.IsNull() {
+			*httpProxyHost = r.Config.HTTPProxyHost.ValueString()
+		} else {
+			httpProxyHost = nil
+		}
+		httpProxyPort := new(int64)
+		if !r.Config.HTTPProxyPort.IsUnknown() && !r.Config.HTTPProxyPort.IsNull() {
+			*httpProxyPort = r.Config.HTTPProxyPort.ValueInt64()
+		} else {
+			httpProxyPort = nil
+		}
+		httpsProxyHost := new(string)
+		if !r.Config.HTTPSProxyHost.IsUnknown() && !r.Config.HTTPSProxyHost.IsNull() {
+			*httpsProxyHost = r.Config.HTTPSProxyHost.ValueString()
+		} else {
+			httpsProxyHost = nil
+		}
+		httpsProxyPort := new(int64)
+		if !r.Config.HTTPSProxyPort.IsUnknown() && !r.Config.HTTPSProxyPort.IsNull() {
+			*httpsProxyPort = r.Config.HTTPSProxyPort.ValueInt64()
+		} else {
+			httpsProxyPort = nil
+		}
+		httpsVerify := new(bool)
+		if !r.Config.HTTPSVerify.IsUnknown() && !r.Config.HTTPSVerify.IsNull() {
+			*httpsVerify = r.Config.HTTPSVerify.ValueBool()
+		} else {
+			httpsVerify = nil
+		}
+		proxyScheme := new(shared.ProxyScheme)
+		if !r.Config.ProxyScheme.IsUnknown() && !r.Config.ProxyScheme.IsNull() {
+			*proxyScheme = shared.ProxyScheme(r.Config.ProxyScheme.ValueString())
+		} else {
+			proxyScheme = nil
+		}
+		xHeaders := new(shared.XHeaders)
+		if !r.Config.XHeaders.IsUnknown() && !r.Config.XHeaders.IsNull() {
+			*xHeaders = shared.XHeaders(r.Config.XHeaders.ValueString())
+		} else {
+			xHeaders = nil
+		}
+		config = &shared.ForwardProxyPluginConfig{
+			AuthPassword:   authPassword,
+			AuthUsername:   authUsername,
+			HTTPProxyHost:  httpProxyHost,
+			HTTPProxyPort:  httpProxyPort,
+			HTTPSProxyHost: httpsProxyHost,
+			HTTPSProxyPort: httpsProxyPort,
+			HTTPSVerify:    httpsVerify,
+			ProxyScheme:    proxyScheme,
+			XHeaders:       xHeaders,
+		}
 	}
 	var consumer *shared.ForwardProxyPluginConsumer
 	if r.Consumer != nil {
@@ -163,12 +178,14 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPluginInput
 			ID: id3,
 		}
 	}
-	out := shared.ForwardProxyPluginInput{
+	out := shared.ForwardProxyPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -180,22 +197,27 @@ func (r *GatewayPluginForwardProxyResourceModel) ToSharedForwardProxyPluginInput
 
 func (r *GatewayPluginForwardProxyResourceModel) RefreshFromSharedForwardProxyPlugin(resp *shared.ForwardProxyPlugin) {
 	if resp != nil {
-		r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
-		r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
-		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-		if resp.Config.ProxyScheme != nil {
-			r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ProxyScheme = types.StringNull()
-		}
-		if resp.Config.XHeaders != nil {
-			r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
-		} else {
-			r.Config.XHeaders = types.StringNull()
+			r.Config = &tfTypes.ForwardProxyPluginConfig{}
+			r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
+			r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
+			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+			if resp.Config.ProxyScheme != nil {
+				r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
+			} else {
+				r.Config.ProxyScheme = types.StringNull()
+			}
+			if resp.Config.XHeaders != nil {
+				r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
+			} else {
+				r.Config.XHeaders = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

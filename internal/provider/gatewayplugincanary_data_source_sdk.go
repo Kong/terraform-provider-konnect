@@ -11,41 +11,46 @@ import (
 
 func (r *GatewayPluginCanaryDataSourceModel) RefreshFromSharedCanaryPlugin(resp *shared.CanaryPlugin) {
 	if resp != nil {
-		r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
-		if resp.Config.Duration != nil {
-			r.Config.Duration = types.NumberValue(big.NewFloat(float64(*resp.Config.Duration)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Duration = types.NumberNull()
+			r.Config = &tfTypes.CanaryPluginConfig{}
+			r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
+			if resp.Config.Duration != nil {
+				r.Config.Duration = types.NumberValue(big.NewFloat(float64(*resp.Config.Duration)))
+			} else {
+				r.Config.Duration = types.NumberNull()
+			}
+			r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
+			for _, v := range resp.Config.Groups {
+				r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+			}
+			if resp.Config.Hash != nil {
+				r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
+			} else {
+				r.Config.Hash = types.StringNull()
+			}
+			r.Config.HashHeader = types.StringPointerValue(resp.Config.HashHeader)
+			if resp.Config.Percentage != nil {
+				r.Config.Percentage = types.NumberValue(big.NewFloat(float64(*resp.Config.Percentage)))
+			} else {
+				r.Config.Percentage = types.NumberNull()
+			}
+			if resp.Config.Start != nil {
+				r.Config.Start = types.NumberValue(big.NewFloat(float64(*resp.Config.Start)))
+			} else {
+				r.Config.Start = types.NumberNull()
+			}
+			if resp.Config.Steps != nil {
+				r.Config.Steps = types.NumberValue(big.NewFloat(float64(*resp.Config.Steps)))
+			} else {
+				r.Config.Steps = types.NumberNull()
+			}
+			r.Config.UpstreamFallback = types.BoolPointerValue(resp.Config.UpstreamFallback)
+			r.Config.UpstreamHost = types.StringPointerValue(resp.Config.UpstreamHost)
+			r.Config.UpstreamPort = types.Int64PointerValue(resp.Config.UpstreamPort)
+			r.Config.UpstreamURI = types.StringPointerValue(resp.Config.UpstreamURI)
 		}
-		r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
-		for _, v := range resp.Config.Groups {
-			r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
-		}
-		if resp.Config.Hash != nil {
-			r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
-		} else {
-			r.Config.Hash = types.StringNull()
-		}
-		r.Config.HashHeader = types.StringPointerValue(resp.Config.HashHeader)
-		if resp.Config.Percentage != nil {
-			r.Config.Percentage = types.NumberValue(big.NewFloat(float64(*resp.Config.Percentage)))
-		} else {
-			r.Config.Percentage = types.NumberNull()
-		}
-		if resp.Config.Start != nil {
-			r.Config.Start = types.NumberValue(big.NewFloat(float64(*resp.Config.Start)))
-		} else {
-			r.Config.Start = types.NumberNull()
-		}
-		if resp.Config.Steps != nil {
-			r.Config.Steps = types.NumberValue(big.NewFloat(float64(*resp.Config.Steps)))
-		} else {
-			r.Config.Steps = types.NumberNull()
-		}
-		r.Config.UpstreamFallback = types.BoolPointerValue(resp.Config.UpstreamFallback)
-		r.Config.UpstreamHost = types.StringPointerValue(resp.Config.UpstreamHost)
-		r.Config.UpstreamPort = types.Int64PointerValue(resp.Config.UpstreamPort)
-		r.Config.UpstreamURI = types.StringPointerValue(resp.Config.UpstreamURI)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

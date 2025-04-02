@@ -29,7 +29,7 @@ type GatewayPluginDegraphqlDataSource struct {
 
 // GatewayPluginDegraphqlDataSourceModel describes the data model.
 type GatewayPluginDegraphqlDataSourceModel struct {
-	Config         tfTypes.DegraphqlPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.DegraphqlPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

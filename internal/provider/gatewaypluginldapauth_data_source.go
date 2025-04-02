@@ -29,7 +29,7 @@ type GatewayPluginLdapAuthDataSource struct {
 
 // GatewayPluginLdapAuthDataSourceModel describes the data model.
 type GatewayPluginLdapAuthDataSourceModel struct {
-	Config         tfTypes.LdapAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.LdapAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

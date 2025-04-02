@@ -42,7 +42,7 @@ type GatewayPluginRouteByHeaderResource struct {
 
 // GatewayPluginRouteByHeaderResourceModel describes the resource data model.
 type GatewayPluginRouteByHeaderResourceModel struct {
-	Config         tfTypes.RouteByHeaderPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.RouteByHeaderPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -66,7 +66,8 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginRouteByHeader Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"rules": schema.ListNestedAttribute{
 						Computed: true,
@@ -123,6 +124,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -208,6 +210,7 @@ func (r *GatewayPluginRouteByHeaderResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -255,7 +258,7 @@ func (r *GatewayPluginRouteByHeaderResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPluginInput()
+	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPlugin()
 	request := operations.CreateRoutebyheaderPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		RouteByHeaderPlugin: routeByHeaderPlugin,
@@ -365,7 +368,7 @@ func (r *GatewayPluginRouteByHeaderResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPluginInput()
+	routeByHeaderPlugin := *data.ToSharedRouteByHeaderPlugin()
 	request := operations.UpdateRoutebyheaderPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

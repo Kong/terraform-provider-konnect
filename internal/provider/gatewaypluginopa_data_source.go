@@ -29,7 +29,7 @@ type GatewayPluginOpaDataSource struct {
 
 // GatewayPluginOpaDataSourceModel describes the data model.
 type GatewayPluginOpaDataSourceModel struct {
-	Config         tfTypes.OpaPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.OpaPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

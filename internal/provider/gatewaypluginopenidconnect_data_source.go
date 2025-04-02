@@ -29,7 +29,7 @@ type GatewayPluginOpenidConnectDataSource struct {
 
 // GatewayPluginOpenidConnectDataSourceModel describes the data model.
 type GatewayPluginOpenidConnectDataSourceModel struct {
-	Config         tfTypes.OpenidConnectPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OpenidConnectPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

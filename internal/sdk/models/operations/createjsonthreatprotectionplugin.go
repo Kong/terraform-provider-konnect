@@ -9,8 +9,8 @@ import (
 
 type CreateJsonthreatprotectionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID             string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JSONThreatProtectionPlugin shared.JSONThreatProtectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JSONThreatProtectionPlugin shared.JSONThreatProtectionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJsonthreatprotectionPluginRequest) GetJSONThreatProtectionPlugin() shared.JSONThreatProtectionPluginInput {
+func (o *CreateJsonthreatprotectionPluginRequest) GetJSONThreatProtectionPlugin() shared.JSONThreatProtectionPlugin {
 	if o == nil {
-		return shared.JSONThreatProtectionPluginInput{}
+		return shared.JSONThreatProtectionPlugin{}
 	}
 	return o.JSONThreatProtectionPlugin
 }

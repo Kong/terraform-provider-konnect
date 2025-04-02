@@ -480,6 +480,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
     verify_signature    = false
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 7
   enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -507,6 +508,7 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
   tags = [
     "..."
   ]
+  updated_at = 2
 }
 ```
 
@@ -515,11 +517,12 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 
 ### Required
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
+- `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -527,19 +530,14 @@ resource "konnect_gateway_plugin_openid_connect" "my_gatewaypluginopenidconnect"
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
-
-Required:
-
-- `scopes` (List of String) The scopes passed to the authorization and token endpoints.
 
 Optional:
 
@@ -690,6 +688,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `roles_claim` (List of String) The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `roles_required` (List of String) The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 - `run_on_preflight` (Boolean) Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
+- `scopes` (List of String) The scopes passed to the authorization and token endpoints. Not Null
 - `scopes_claim` (List of String) The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `scopes_required` (List of String) The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 - `search_user_info` (Boolean) Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.

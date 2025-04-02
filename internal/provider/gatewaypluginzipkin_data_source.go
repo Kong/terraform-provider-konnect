@@ -29,7 +29,7 @@ type GatewayPluginZipkinDataSource struct {
 
 // GatewayPluginZipkinDataSourceModel describes the data model.
 type GatewayPluginZipkinDataSourceModel struct {
-	Config         tfTypes.ZipkinPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.ZipkinPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

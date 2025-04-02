@@ -36,7 +36,7 @@ type GatewayPluginKeyAuthEncResource struct {
 
 // GatewayPluginKeyAuthEncResourceModel describes the resource data model.
 type GatewayPluginKeyAuthEncResourceModel struct {
-	Config         tfTypes.KeyAuthPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.KeyAuthPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginKeyAuthEnc Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -113,6 +114,7 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -198,6 +200,7 @@ func (r *GatewayPluginKeyAuthEncResource) Schema(ctx context.Context, req resour
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -245,7 +248,7 @@ func (r *GatewayPluginKeyAuthEncResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPluginInput()
+	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPlugin()
 	request := operations.CreateKeyauthencPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		KeyAuthEncPlugin: keyAuthEncPlugin,
@@ -355,7 +358,7 @@ func (r *GatewayPluginKeyAuthEncResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPluginInput()
+	keyAuthEncPlugin := *data.ToSharedKeyAuthEncPlugin()
 	request := operations.UpdateKeyauthencPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,

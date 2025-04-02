@@ -9,8 +9,8 @@ import (
 
 type CreateSessionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	SessionPlugin  shared.SessionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	SessionPlugin  shared.SessionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateSessionPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateSessionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateSessionPluginRequest) GetSessionPlugin() shared.SessionPluginInput {
+func (o *CreateSessionPluginRequest) GetSessionPlugin() shared.SessionPlugin {
 	if o == nil {
-		return shared.SessionPluginInput{}
+		return shared.SessionPlugin{}
 	}
 	return o.SessionPlugin
 }

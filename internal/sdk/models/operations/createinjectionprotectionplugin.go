@@ -9,8 +9,8 @@ import (
 
 type CreateInjectionprotectionPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	InjectionProtectionPlugin shared.InjectionProtectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID            string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	InjectionProtectionPlugin shared.InjectionProtectionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateInjectionprotectionPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateInjectionprotectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPluginInput {
+func (o *CreateInjectionprotectionPluginRequest) GetInjectionProtectionPlugin() shared.InjectionProtectionPlugin {
 	if o == nil {
-		return shared.InjectionProtectionPluginInput{}
+		return shared.InjectionProtectionPlugin{}
 	}
 	return o.InjectionProtectionPlugin
 }

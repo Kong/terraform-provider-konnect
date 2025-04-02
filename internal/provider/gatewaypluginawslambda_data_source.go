@@ -29,7 +29,7 @@ type GatewayPluginAwsLambdaDataSource struct {
 
 // GatewayPluginAwsLambdaDataSourceModel describes the data model.
 type GatewayPluginAwsLambdaDataSourceModel struct {
-	Config         tfTypes.AwsLambdaPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.AwsLambdaPluginConfig     `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

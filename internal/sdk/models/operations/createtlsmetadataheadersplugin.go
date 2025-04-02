@@ -9,8 +9,8 @@ import (
 
 type CreateTlsmetadataheadersPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	TLSMetadataHeadersPlugin shared.TLSMetadataHeadersPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	TLSMetadataHeadersPlugin shared.TLSMetadataHeadersPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateTlsmetadataheadersPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() shared.TLSMetadataHeadersPluginInput {
+func (o *CreateTlsmetadataheadersPluginRequest) GetTLSMetadataHeadersPlugin() shared.TLSMetadataHeadersPlugin {
 	if o == nil {
-		return shared.TLSMetadataHeadersPluginInput{}
+		return shared.TLSMetadataHeadersPlugin{}
 	}
 	return o.TLSMetadataHeadersPlugin
 }

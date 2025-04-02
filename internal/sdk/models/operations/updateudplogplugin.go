@@ -11,8 +11,8 @@ type UpdateUdplogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	UDPLogPlugin   shared.UDPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	UDPLogPlugin   shared.UDPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateUdplogPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateUdplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateUdplogPluginRequest) GetUDPLogPlugin() shared.UDPLogPluginInput {
+func (o *UpdateUdplogPluginRequest) GetUDPLogPlugin() shared.UDPLogPlugin {
 	if o == nil {
-		return shared.UDPLogPluginInput{}
+		return shared.UDPLogPlugin{}
 	}
 	return o.UDPLogPlugin
 }

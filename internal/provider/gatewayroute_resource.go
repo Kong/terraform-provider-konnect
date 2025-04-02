@@ -81,6 +81,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"destinations": schema.ListNestedAttribute{
@@ -239,6 +240,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -286,7 +288,7 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
+	routeJSON := *data.ToSharedRouteJSON()
 	request := operations.CreateRouteRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteJSON:      routeJSON,
@@ -396,7 +398,7 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
+	routeJSON := *data.ToSharedRouteJSON()
 	request := operations.UpsertRouteRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,

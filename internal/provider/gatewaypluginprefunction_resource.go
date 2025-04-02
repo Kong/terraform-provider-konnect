@@ -36,7 +36,7 @@ type GatewayPluginPreFunctionResource struct {
 
 // GatewayPluginPreFunctionResourceModel describes the resource data model.
 type GatewayPluginPreFunctionResourceModel struct {
-	Config         tfTypes.PostFunctionPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.PostFunctionPluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginPreFunctionResource) Schema(ctx context.Context, req resou
 		MarkdownDescription: "GatewayPluginPreFunction Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"access": schema.ListAttribute{
 						Computed:    true,
@@ -122,6 +123,7 @@ func (r *GatewayPluginPreFunctionResource) Schema(ctx context.Context, req resou
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -207,6 +209,7 @@ func (r *GatewayPluginPreFunctionResource) Schema(ctx context.Context, req resou
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -254,7 +257,7 @@ func (r *GatewayPluginPreFunctionResource) Create(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	preFunctionPlugin := *data.ToSharedPreFunctionPluginInput()
+	preFunctionPlugin := *data.ToSharedPreFunctionPlugin()
 	request := operations.CreatePrefunctionPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		PreFunctionPlugin: preFunctionPlugin,
@@ -364,7 +367,7 @@ func (r *GatewayPluginPreFunctionResource) Update(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	preFunctionPlugin := *data.ToSharedPreFunctionPluginInput()
+	preFunctionPlugin := *data.ToSharedPreFunctionPlugin()
 	request := operations.UpdatePrefunctionPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,

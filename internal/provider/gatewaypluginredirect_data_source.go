@@ -29,7 +29,7 @@ type GatewayPluginRedirectDataSource struct {
 
 // GatewayPluginRedirectDataSourceModel describes the data model.
 type GatewayPluginRedirectDataSourceModel struct {
-	Config         tfTypes.RedirectPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.RedirectPluginConfig      `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

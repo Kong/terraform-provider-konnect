@@ -11,7 +11,7 @@ type CreateConsumerRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Consumer for creation
-	Consumer shared.ConsumerInput `request:"mediaType=application/json"`
+	Consumer shared.Consumer `request:"mediaType=application/json"`
 }
 
 func (o *CreateConsumerRequest) GetControlPlaneID() string {
@@ -21,9 +21,9 @@ func (o *CreateConsumerRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateConsumerRequest) GetConsumer() shared.ConsumerInput {
+func (o *CreateConsumerRequest) GetConsumer() shared.Consumer {
 	if o == nil {
-		return shared.ConsumerInput{}
+		return shared.Consumer{}
 	}
 	return o.Consumer
 }

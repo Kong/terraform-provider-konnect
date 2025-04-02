@@ -38,20 +38,20 @@ type GatewayPluginRequestTerminationResource struct {
 
 // GatewayPluginRequestTerminationResourceModel describes the resource data model.
 type GatewayPluginRequestTerminationResourceModel struct {
-	Config         tfTypes.RequestTerminationPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                            `tfsdk:"created_at"`
-	Enabled        types.Bool                             `tfsdk:"enabled"`
-	ID             types.String                           `tfsdk:"id"`
-	InstanceName   types.String                           `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
-	Protocols      []types.String                         `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
-	Tags           []types.String                         `tfsdk:"tags"`
-	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
+	Config         *tfTypes.RequestTerminationPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestTerminationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,8 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 		MarkdownDescription: "GatewayPluginRequestTermination Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"body": schema.StringAttribute{
 						Computed:    true,
@@ -137,6 +138,7 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -222,6 +224,7 @@ func (r *GatewayPluginRequestTerminationResource) Schema(ctx context.Context, re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -269,7 +272,7 @@ func (r *GatewayPluginRequestTerminationResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTerminationPlugin := *data.ToSharedRequestTerminationPluginInput()
+	requestTerminationPlugin := *data.ToSharedRequestTerminationPlugin()
 	request := operations.CreateRequestterminationPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		RequestTerminationPlugin: requestTerminationPlugin,
@@ -379,7 +382,7 @@ func (r *GatewayPluginRequestTerminationResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTerminationPlugin := *data.ToSharedRequestTerminationPluginInput()
+	requestTerminationPlugin := *data.ToSharedRequestTerminationPlugin()
 	request := operations.UpdateRequestterminationPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,

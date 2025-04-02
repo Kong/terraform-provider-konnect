@@ -10,13 +10,18 @@ import (
 
 func (r *GatewayPluginVaultAuthDataSourceModel) RefreshFromSharedVaultAuthPlugin(resp *shared.VaultAuthPlugin) {
 	if resp != nil {
-		r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-		r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
-		r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
-		r.Config.Vault = types.StringPointerValue(resp.Config.Vault)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.VaultAuthPluginConfig{}
+			r.Config.AccessTokenName = types.StringPointerValue(resp.Config.AccessTokenName)
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+			r.Config.SecretTokenName = types.StringPointerValue(resp.Config.SecretTokenName)
+			r.Config.TokensInBody = types.BoolPointerValue(resp.Config.TokensInBody)
+			r.Config.Vault = types.StringPointerValue(resp.Config.Vault)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

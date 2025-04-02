@@ -15,11 +15,13 @@ GatewayKeySet Resource
 ```terraform
 resource "konnect_gateway_key_set" "my_gatewaykeyset" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 3
   id               = "...my_id..."
   name             = "...my_name..."
   tags = [
     "..."
   ]
+  updated_at = 0
 }
 ```
 
@@ -32,14 +34,14 @@ resource "konnect_gateway_key_set" "my_gatewaykeyset" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `name` (String)
 - `tags` (List of String)
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ## Import
 

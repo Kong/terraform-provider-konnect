@@ -9,8 +9,8 @@ import (
 
 type CreateAwslambdaPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AwsLambdaPlugin shared.AwsLambdaPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AwsLambdaPlugin shared.AwsLambdaPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAwslambdaPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateAwslambdaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPluginInput {
+func (o *CreateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPlugin {
 	if o == nil {
-		return shared.AwsLambdaPluginInput{}
+		return shared.AwsLambdaPlugin{}
 	}
 	return o.AwsLambdaPlugin
 }

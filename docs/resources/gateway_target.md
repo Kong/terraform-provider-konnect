@@ -15,11 +15,13 @@ GatewayTarget Resource
 ```terraform
 resource "konnect_gateway_target" "my_gatewaytarget" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 2.48
   id               = "...my_id..."
   tags = [
     "..."
   ]
-  target = "...my_target..."
+  target     = "...my_target..."
+  updated_at = 6.8
   upstream = {
     id = "...my_id..."
   }
@@ -38,16 +40,13 @@ resource "konnect_gateway_target" "my_gatewaytarget" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) An optional set of strings associated with the Target for grouping and filtering. Requires replacement if changed.
 - `target` (String) The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the `port` value will be overridden by the value from the DNS record. Requires replacement if changed.
+- `updated_at` (Number) Unix epoch when the resource was last updated. Requires replacement if changed.
 - `upstream` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--upstream))
 - `weight` (Number) The weight this target gets within the upstream loadbalancer (`0`-`65535`). If the hostname resolves to an SRV record, the `weight` value will be overridden by the value from the DNS record. Requires replacement if changed.
-
-### Read-Only
-
-- `created_at` (Number) Unix epoch when the resource was created.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--upstream"></a>
 ### Nested Schema for `upstream`

@@ -29,7 +29,7 @@ type GatewayPluginDatadogDataSource struct {
 
 // GatewayPluginDatadogDataSourceModel describes the data model.
 type GatewayPluginDatadogDataSourceModel struct {
-	Config         tfTypes.DatadogPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.DatadogPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

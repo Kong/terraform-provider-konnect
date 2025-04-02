@@ -15,6 +15,7 @@ GatewayKey Resource
 ```terraform
 resource "konnect_gateway_key" "my_gatewaykey" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 3
   id               = "...my_id..."
   jwk              = "...my_jwk..."
   kid              = "...my_kid..."
@@ -29,6 +30,8 @@ resource "konnect_gateway_key" "my_gatewaykey" {
   tags = [
     "..."
   ]
+  updated_at = 2
+  x5t        = "...my_x5t..."
 }
 ```
 
@@ -42,17 +45,18 @@ resource "konnect_gateway_key" "my_gatewaykey" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `jwk` (String) A JSON Web Key represented as a string.
 - `name` (String) The name to associate with the given keys.
 - `pem` (Attributes) A keypair in PEM format. (see [below for nested schema](#nestedatt--pem))
 - `set` (Attributes) The id (an UUID) of the key-set with which to associate the key. (see [below for nested schema](#nestedatt--set))
 - `tags` (List of String) An optional set of strings associated with the Key for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
+- `x5t` (String)
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--pem"></a>
 ### Nested Schema for `pem`

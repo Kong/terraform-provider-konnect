@@ -58,6 +58,7 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -75,6 +76,7 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -122,7 +124,7 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keySet := *data.ToSharedKeySetInput()
+	keySet := *data.ToSharedKeySet()
 	request := operations.CreateKeySetRequest{
 		ControlPlaneID: controlPlaneID,
 		KeySet:         keySet,
@@ -232,7 +234,7 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keySet := *data.ToSharedKeySetInput()
+	keySet := *data.ToSharedKeySet()
 	request := operations.UpsertKeySetRequest{
 		KeySetID:       keySetID,
 		ControlPlaneID: controlPlaneID,

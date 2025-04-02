@@ -11,7 +11,7 @@ type CreateUpstreamRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Upstream for creation
-	Upstream shared.UpstreamInput `request:"mediaType=application/json"`
+	Upstream shared.Upstream `request:"mediaType=application/json"`
 }
 
 func (o *CreateUpstreamRequest) GetControlPlaneID() string {
@@ -21,9 +21,9 @@ func (o *CreateUpstreamRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateUpstreamRequest) GetUpstream() shared.UpstreamInput {
+func (o *CreateUpstreamRequest) GetUpstream() shared.Upstream {
 	if o == nil {
-		return shared.UpstreamInput{}
+		return shared.Upstream{}
 	}
 	return o.Upstream
 }

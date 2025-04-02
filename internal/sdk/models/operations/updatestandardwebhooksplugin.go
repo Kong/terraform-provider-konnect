@@ -11,8 +11,8 @@ type UpdateStandardwebhooksPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	StandardWebhooksPlugin shared.StandardWebhooksPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StandardWebhooksPlugin shared.StandardWebhooksPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateStandardwebhooksPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateStandardwebhooksPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPluginInput {
+func (o *UpdateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPlugin {
 	if o == nil {
-		return shared.StandardWebhooksPluginInput{}
+		return shared.StandardWebhooksPlugin{}
 	}
 	return o.StandardWebhooksPlugin
 }

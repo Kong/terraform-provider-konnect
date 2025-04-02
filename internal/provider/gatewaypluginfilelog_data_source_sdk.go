@@ -11,15 +11,20 @@ import (
 
 func (r *GatewayPluginFileLogDataSourceModel) RefreshFromSharedFileLogPlugin(resp *shared.FileLogPlugin) {
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.FileLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		}
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

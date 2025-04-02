@@ -11,8 +11,8 @@ type UpdateRequesttransformeradvancedPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                   string                                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestTransformerAdvancedPlugin shared.RequestTransformerAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID                   string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestTransformerAdvancedPlugin shared.RequestTransformerAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRequesttransformeradvancedPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateRequesttransformeradvancedPluginRequest) GetControlPlaneID() stri
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() shared.RequestTransformerAdvancedPluginInput {
+func (o *UpdateRequesttransformeradvancedPluginRequest) GetRequestTransformerAdvancedPlugin() shared.RequestTransformerAdvancedPlugin {
 	if o == nil {
-		return shared.RequestTransformerAdvancedPluginInput{}
+		return shared.RequestTransformerAdvancedPlugin{}
 	}
 	return o.RequestTransformerAdvancedPlugin
 }

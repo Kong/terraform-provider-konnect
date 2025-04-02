@@ -29,7 +29,7 @@ type GatewayPluginHmacAuthDataSource struct {
 
 // GatewayPluginHmacAuthDataSourceModel describes the data model.
 type GatewayPluginHmacAuthDataSourceModel struct {
-	Config         tfTypes.HmacAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.HmacAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

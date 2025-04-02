@@ -29,7 +29,7 @@ type GatewayPluginSamlDataSource struct {
 
 // GatewayPluginSamlDataSourceModel describes the data model.
 type GatewayPluginSamlDataSourceModel struct {
-	Config         tfTypes.SamlPluginConfig           `tfsdk:"config"`
+	Config         *tfTypes.SamlPluginConfig          `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

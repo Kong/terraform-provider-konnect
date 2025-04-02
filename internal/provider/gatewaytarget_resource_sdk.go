@@ -10,6 +10,12 @@ import (
 )
 
 func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.TargetWithoutParents {
+	createdAt := new(float64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt, _ = r.CreatedAt.ValueBigFloat().Float64()
+	} else {
+		createdAt = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -25,6 +31,12 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 		*target = r.Target.ValueString()
 	} else {
 		target = nil
+	}
+	updatedAt := new(float64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt, _ = r.UpdatedAt.ValueBigFloat().Float64()
+	} else {
+		updatedAt = nil
 	}
 	var upstream *shared.TargetWithoutParentsUpstream
 	if r.Upstream != nil {
@@ -45,11 +57,13 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 		weight = nil
 	}
 	out := shared.TargetWithoutParents{
-		ID:       id,
-		Tags:     tags,
-		Target:   target,
-		Upstream: upstream,
-		Weight:   weight,
+		CreatedAt: createdAt,
+		ID:        id,
+		Tags:      tags,
+		Target:    target,
+		UpdatedAt: updatedAt,
+		Upstream:  upstream,
+		Weight:    weight,
 	}
 	return &out
 }

@@ -130,8 +130,8 @@ type DegraphqlPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                `json:"updated_at,omitempty"`
-	Config    DegraphqlPluginConfig `json:"config"`
+	UpdatedAt *int64                 `json:"updated_at,omitempty"`
+	Config    *DegraphqlPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
 	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -204,9 +204,9 @@ func (o *DegraphqlPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *DegraphqlPlugin) GetConfig() DegraphqlPluginConfig {
+func (o *DegraphqlPlugin) GetConfig() *DegraphqlPluginConfig {
 	if o == nil {
-		return DegraphqlPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -226,103 +226,6 @@ func (o *DegraphqlPlugin) GetRoute() *DegraphqlPluginRoute {
 }
 
 func (o *DegraphqlPlugin) GetService() *DegraphqlPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// DegraphqlPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type DegraphqlPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                    `json:"enabled,omitempty"`
-	ID           *string                  `json:"id,omitempty"`
-	InstanceName *string                  `json:"instance_name,omitempty"`
-	name         string                   `const:"degraphql" json:"name"`
-	Ordering     *DegraphqlPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string              `json:"tags,omitempty"`
-	Config DegraphqlPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
-	Protocols []DegraphqlPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *DegraphqlPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *DegraphqlPluginService `json:"service"`
-}
-
-func (d DegraphqlPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(d, "", false)
-}
-
-func (d *DegraphqlPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &d, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *DegraphqlPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *DegraphqlPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *DegraphqlPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *DegraphqlPluginInput) GetName() string {
-	return "degraphql"
-}
-
-func (o *DegraphqlPluginInput) GetOrdering() *DegraphqlPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *DegraphqlPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *DegraphqlPluginInput) GetConfig() DegraphqlPluginConfig {
-	if o == nil {
-		return DegraphqlPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *DegraphqlPluginInput) GetProtocols() []DegraphqlPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *DegraphqlPluginInput) GetRoute() *DegraphqlPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *DegraphqlPluginInput) GetService() *DegraphqlPluginService {
 	if o == nil {
 		return nil
 	}

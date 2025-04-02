@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPluginInput() *shared.ExitTransformerPluginInput {
+func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugin() *shared.ExitTransformerPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,26 +64,35 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var functions []string = []string{}
-	for _, functionsItem := range r.Config.Functions {
-		functions = append(functions, functionsItem.ValueString())
-	}
-	handleUnexpected := new(bool)
-	if !r.Config.HandleUnexpected.IsUnknown() && !r.Config.HandleUnexpected.IsNull() {
-		*handleUnexpected = r.Config.HandleUnexpected.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		handleUnexpected = nil
+		updatedAt = nil
 	}
-	handleUnknown := new(bool)
-	if !r.Config.HandleUnknown.IsUnknown() && !r.Config.HandleUnknown.IsNull() {
-		*handleUnknown = r.Config.HandleUnknown.ValueBool()
-	} else {
-		handleUnknown = nil
-	}
-	config := shared.ExitTransformerPluginConfig{
-		Functions:        functions,
-		HandleUnexpected: handleUnexpected,
-		HandleUnknown:    handleUnknown,
+	var config *shared.ExitTransformerPluginConfig
+	if r.Config != nil {
+		var functions []string = []string{}
+		for _, functionsItem := range r.Config.Functions {
+			functions = append(functions, functionsItem.ValueString())
+		}
+		handleUnexpected := new(bool)
+		if !r.Config.HandleUnexpected.IsUnknown() && !r.Config.HandleUnexpected.IsNull() {
+			*handleUnexpected = r.Config.HandleUnexpected.ValueBool()
+		} else {
+			handleUnexpected = nil
+		}
+		handleUnknown := new(bool)
+		if !r.Config.HandleUnknown.IsUnknown() && !r.Config.HandleUnknown.IsNull() {
+			*handleUnknown = r.Config.HandleUnknown.ValueBool()
+		} else {
+			handleUnknown = nil
+		}
+		config = &shared.ExitTransformerPluginConfig{
+			Functions:        functions,
+			HandleUnexpected: handleUnexpected,
+			HandleUnknown:    handleUnknown,
+		}
 	}
 	var consumer *shared.ExitTransformerPluginConsumer
 	if r.Consumer != nil {
@@ -119,12 +134,14 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 			ID: id3,
 		}
 	}
-	out := shared.ExitTransformerPluginInput{
+	out := shared.ExitTransformerPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -136,12 +153,17 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 
 func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransformerPlugin(resp *shared.ExitTransformerPlugin) {
 	if resp != nil {
-		r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
-		for _, v := range resp.Config.Functions {
-			r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ExitTransformerPluginConfig{}
+			r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
+			for _, v := range resp.Config.Functions {
+				r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+			}
+			r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
+			r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		}
-		r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
-		r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

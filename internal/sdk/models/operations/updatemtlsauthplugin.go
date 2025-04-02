@@ -11,8 +11,8 @@ type UpdateMtlsauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	MtlsAuthPlugin shared.MtlsAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	MtlsAuthPlugin shared.MtlsAuthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMtlsauthPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateMtlsauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateMtlsauthPluginRequest) GetMtlsAuthPlugin() shared.MtlsAuthPluginInput {
+func (o *UpdateMtlsauthPluginRequest) GetMtlsAuthPlugin() shared.MtlsAuthPlugin {
 	if o == nil {
-		return shared.MtlsAuthPluginInput{}
+		return shared.MtlsAuthPlugin{}
 	}
 	return o.MtlsAuthPlugin
 }

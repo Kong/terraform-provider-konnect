@@ -39,7 +39,7 @@ type GatewayPluginOpaResource struct {
 
 // GatewayPluginOpaResourceModel describes the resource data model.
 type GatewayPluginOpaResourceModel struct {
-	Config         tfTypes.OpaPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.OpaPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -62,7 +62,8 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayPluginOpa Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"include_body_in_opa_input": schema.BoolAttribute{
 						Computed: true,
@@ -138,6 +139,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -223,6 +225,7 @@ func (r *GatewayPluginOpaResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -270,7 +273,7 @@ func (r *GatewayPluginOpaResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opaPlugin := *data.ToSharedOpaPluginInput()
+	opaPlugin := *data.ToSharedOpaPlugin()
 	request := operations.CreateOpaPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		OpaPlugin:      opaPlugin,
@@ -380,7 +383,7 @@ func (r *GatewayPluginOpaResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opaPlugin := *data.ToSharedOpaPluginInput()
+	opaPlugin := *data.ToSharedOpaPlugin()
 	request := operations.UpdateOpaPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

@@ -10,12 +10,17 @@ import (
 
 func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedRequestTerminationPlugin(resp *shared.RequestTerminationPlugin) {
 	if resp != nil {
-		r.Config.Body = types.StringPointerValue(resp.Config.Body)
-		r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
-		r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
-		r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RequestTerminationPluginConfig{}
+			r.Config.Body = types.StringPointerValue(resp.Config.Body)
+			r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
+			r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+			r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

@@ -10,44 +10,49 @@ import (
 
 func (r *GatewayPluginRequestValidatorDataSourceModel) RefreshFromSharedRequestValidatorPlugin(resp *shared.RequestValidatorPlugin) {
 	if resp != nil {
-		r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
-		for _, v := range resp.Config.AllowedContentTypes {
-			r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
-		}
-		r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
-		r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
-		r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
-		if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
-			r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
-		}
-		for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
-			var parameterSchema1 tfTypes.ParameterSchema
-			parameterSchema1.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
-			parameterSchema1.In = types.StringValue(string(parameterSchemaItem.In))
-			parameterSchema1.Name = types.StringValue(parameterSchemaItem.Name)
-			parameterSchema1.Required = types.BoolValue(parameterSchemaItem.Required)
-			parameterSchema1.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
-			if parameterSchemaItem.Style != nil {
-				parameterSchema1.Style = types.StringValue(string(*parameterSchemaItem.Style))
-			} else {
-				parameterSchema1.Style = types.StringNull()
-			}
-			if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-				r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema1)
-			} else {
-				r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema1.Explode
-				r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema1.In
-				r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema1.Name
-				r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema1.Required
-				r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema1.Schema
-				r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema1.Style
-			}
-		}
-		r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
-		if resp.Config.Version != nil {
-			r.Config.Version = types.StringValue(string(*resp.Config.Version))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Version = types.StringNull()
+			r.Config = &tfTypes.RequestValidatorPluginConfig{}
+			r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
+			for _, v := range resp.Config.AllowedContentTypes {
+				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
+			}
+			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
+			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
+			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
+			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
+				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
+			}
+			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
+				var parameterSchema1 tfTypes.ParameterSchema
+				parameterSchema1.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
+				parameterSchema1.In = types.StringValue(string(parameterSchemaItem.In))
+				parameterSchema1.Name = types.StringValue(parameterSchemaItem.Name)
+				parameterSchema1.Required = types.BoolValue(parameterSchemaItem.Required)
+				parameterSchema1.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
+				if parameterSchemaItem.Style != nil {
+					parameterSchema1.Style = types.StringValue(string(*parameterSchemaItem.Style))
+				} else {
+					parameterSchema1.Style = types.StringNull()
+				}
+				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
+					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema1)
+				} else {
+					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema1.Explode
+					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema1.In
+					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema1.Name
+					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema1.Required
+					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema1.Schema
+					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema1.Style
+				}
+			}
+			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
+			if resp.Config.Version != nil {
+				r.Config.Version = types.StringValue(string(*resp.Config.Version))
+			} else {
+				r.Config.Version = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

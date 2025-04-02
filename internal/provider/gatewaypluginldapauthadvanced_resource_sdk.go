@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPluginInput() *shared.LdapAuthAdvancedPluginInput {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlugin() *shared.LdapAuthAdvancedPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,164 +65,173 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		anonymous = nil
+		updatedAt = nil
 	}
-	attribute := new(string)
-	if !r.Config.Attribute.IsUnknown() && !r.Config.Attribute.IsNull() {
-		*attribute = r.Config.Attribute.ValueString()
-	} else {
-		attribute = nil
-	}
-	baseDn := new(string)
-	if !r.Config.BaseDn.IsUnknown() && !r.Config.BaseDn.IsNull() {
-		*baseDn = r.Config.BaseDn.ValueString()
-	} else {
-		baseDn = nil
-	}
-	bindDn := new(string)
-	if !r.Config.BindDn.IsUnknown() && !r.Config.BindDn.IsNull() {
-		*bindDn = r.Config.BindDn.ValueString()
-	} else {
-		bindDn = nil
-	}
-	cacheTTL := new(float64)
-	if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
-		*cacheTTL, _ = r.Config.CacheTTL.ValueBigFloat().Float64()
-	} else {
-		cacheTTL = nil
-	}
-	var consumerBy []shared.LdapAuthAdvancedPluginConsumerBy = []shared.LdapAuthAdvancedPluginConsumerBy{}
-	for _, consumerByItem := range r.Config.ConsumerBy {
-		consumerBy = append(consumerBy, shared.LdapAuthAdvancedPluginConsumerBy(consumerByItem.ValueString()))
-	}
-	consumerOptional := new(bool)
-	if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
-		*consumerOptional = r.Config.ConsumerOptional.ValueBool()
-	} else {
-		consumerOptional = nil
-	}
-	groupBaseDn := new(string)
-	if !r.Config.GroupBaseDn.IsUnknown() && !r.Config.GroupBaseDn.IsNull() {
-		*groupBaseDn = r.Config.GroupBaseDn.ValueString()
-	} else {
-		groupBaseDn = nil
-	}
-	groupMemberAttribute := new(string)
-	if !r.Config.GroupMemberAttribute.IsUnknown() && !r.Config.GroupMemberAttribute.IsNull() {
-		*groupMemberAttribute = r.Config.GroupMemberAttribute.ValueString()
-	} else {
-		groupMemberAttribute = nil
-	}
-	groupNameAttribute := new(string)
-	if !r.Config.GroupNameAttribute.IsUnknown() && !r.Config.GroupNameAttribute.IsNull() {
-		*groupNameAttribute = r.Config.GroupNameAttribute.ValueString()
-	} else {
-		groupNameAttribute = nil
-	}
-	var groupsRequired []string = []string{}
-	for _, groupsRequiredItem := range r.Config.GroupsRequired {
-		groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
-	}
-	headerType := new(string)
-	if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
-		*headerType = r.Config.HeaderType.ValueString()
-	} else {
-		headerType = nil
-	}
-	hideCredentials := new(bool)
-	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-		*hideCredentials = r.Config.HideCredentials.ValueBool()
-	} else {
-		hideCredentials = nil
-	}
-	keepalive := new(float64)
-	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-		*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
-	} else {
-		keepalive = nil
-	}
-	ldapHost := new(string)
-	if !r.Config.LdapHost.IsUnknown() && !r.Config.LdapHost.IsNull() {
-		*ldapHost = r.Config.LdapHost.ValueString()
-	} else {
-		ldapHost = nil
-	}
-	ldapPassword := new(string)
-	if !r.Config.LdapPassword.IsUnknown() && !r.Config.LdapPassword.IsNull() {
-		*ldapPassword = r.Config.LdapPassword.ValueString()
-	} else {
-		ldapPassword = nil
-	}
-	ldapPort := new(float64)
-	if !r.Config.LdapPort.IsUnknown() && !r.Config.LdapPort.IsNull() {
-		*ldapPort, _ = r.Config.LdapPort.ValueBigFloat().Float64()
-	} else {
-		ldapPort = nil
-	}
-	ldaps := new(bool)
-	if !r.Config.Ldaps.IsUnknown() && !r.Config.Ldaps.IsNull() {
-		*ldaps = r.Config.Ldaps.ValueBool()
-	} else {
-		ldaps = nil
-	}
-	logSearchResults := new(bool)
-	if !r.Config.LogSearchResults.IsUnknown() && !r.Config.LogSearchResults.IsNull() {
-		*logSearchResults = r.Config.LogSearchResults.ValueBool()
-	} else {
-		logSearchResults = nil
-	}
-	realm := new(string)
-	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-		*realm = r.Config.Realm.ValueString()
-	} else {
-		realm = nil
-	}
-	startTLS := new(bool)
-	if !r.Config.StartTLS.IsUnknown() && !r.Config.StartTLS.IsNull() {
-		*startTLS = r.Config.StartTLS.ValueBool()
-	} else {
-		startTLS = nil
-	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
-	} else {
-		timeout = nil
-	}
-	verifyLdapHost := new(bool)
-	if !r.Config.VerifyLdapHost.IsUnknown() && !r.Config.VerifyLdapHost.IsNull() {
-		*verifyLdapHost = r.Config.VerifyLdapHost.ValueBool()
-	} else {
-		verifyLdapHost = nil
-	}
-	config := shared.LdapAuthAdvancedPluginConfig{
-		Anonymous:            anonymous,
-		Attribute:            attribute,
-		BaseDn:               baseDn,
-		BindDn:               bindDn,
-		CacheTTL:             cacheTTL,
-		ConsumerBy:           consumerBy,
-		ConsumerOptional:     consumerOptional,
-		GroupBaseDn:          groupBaseDn,
-		GroupMemberAttribute: groupMemberAttribute,
-		GroupNameAttribute:   groupNameAttribute,
-		GroupsRequired:       groupsRequired,
-		HeaderType:           headerType,
-		HideCredentials:      hideCredentials,
-		Keepalive:            keepalive,
-		LdapHost:             ldapHost,
-		LdapPassword:         ldapPassword,
-		LdapPort:             ldapPort,
-		Ldaps:                ldaps,
-		LogSearchResults:     logSearchResults,
-		Realm:                realm,
-		StartTLS:             startTLS,
-		Timeout:              timeout,
-		VerifyLdapHost:       verifyLdapHost,
+	var config *shared.LdapAuthAdvancedPluginConfig
+	if r.Config != nil {
+		anonymous := new(string)
+		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+			*anonymous = r.Config.Anonymous.ValueString()
+		} else {
+			anonymous = nil
+		}
+		attribute := new(string)
+		if !r.Config.Attribute.IsUnknown() && !r.Config.Attribute.IsNull() {
+			*attribute = r.Config.Attribute.ValueString()
+		} else {
+			attribute = nil
+		}
+		baseDn := new(string)
+		if !r.Config.BaseDn.IsUnknown() && !r.Config.BaseDn.IsNull() {
+			*baseDn = r.Config.BaseDn.ValueString()
+		} else {
+			baseDn = nil
+		}
+		bindDn := new(string)
+		if !r.Config.BindDn.IsUnknown() && !r.Config.BindDn.IsNull() {
+			*bindDn = r.Config.BindDn.ValueString()
+		} else {
+			bindDn = nil
+		}
+		cacheTTL := new(float64)
+		if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
+			*cacheTTL, _ = r.Config.CacheTTL.ValueBigFloat().Float64()
+		} else {
+			cacheTTL = nil
+		}
+		var consumerBy []shared.LdapAuthAdvancedPluginConsumerBy = []shared.LdapAuthAdvancedPluginConsumerBy{}
+		for _, consumerByItem := range r.Config.ConsumerBy {
+			consumerBy = append(consumerBy, shared.LdapAuthAdvancedPluginConsumerBy(consumerByItem.ValueString()))
+		}
+		consumerOptional := new(bool)
+		if !r.Config.ConsumerOptional.IsUnknown() && !r.Config.ConsumerOptional.IsNull() {
+			*consumerOptional = r.Config.ConsumerOptional.ValueBool()
+		} else {
+			consumerOptional = nil
+		}
+		groupBaseDn := new(string)
+		if !r.Config.GroupBaseDn.IsUnknown() && !r.Config.GroupBaseDn.IsNull() {
+			*groupBaseDn = r.Config.GroupBaseDn.ValueString()
+		} else {
+			groupBaseDn = nil
+		}
+		groupMemberAttribute := new(string)
+		if !r.Config.GroupMemberAttribute.IsUnknown() && !r.Config.GroupMemberAttribute.IsNull() {
+			*groupMemberAttribute = r.Config.GroupMemberAttribute.ValueString()
+		} else {
+			groupMemberAttribute = nil
+		}
+		groupNameAttribute := new(string)
+		if !r.Config.GroupNameAttribute.IsUnknown() && !r.Config.GroupNameAttribute.IsNull() {
+			*groupNameAttribute = r.Config.GroupNameAttribute.ValueString()
+		} else {
+			groupNameAttribute = nil
+		}
+		var groupsRequired []string = []string{}
+		for _, groupsRequiredItem := range r.Config.GroupsRequired {
+			groupsRequired = append(groupsRequired, groupsRequiredItem.ValueString())
+		}
+		headerType := new(string)
+		if !r.Config.HeaderType.IsUnknown() && !r.Config.HeaderType.IsNull() {
+			*headerType = r.Config.HeaderType.ValueString()
+		} else {
+			headerType = nil
+		}
+		hideCredentials := new(bool)
+		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+			*hideCredentials = r.Config.HideCredentials.ValueBool()
+		} else {
+			hideCredentials = nil
+		}
+		keepalive := new(float64)
+		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+			*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+		} else {
+			keepalive = nil
+		}
+		ldapHost := new(string)
+		if !r.Config.LdapHost.IsUnknown() && !r.Config.LdapHost.IsNull() {
+			*ldapHost = r.Config.LdapHost.ValueString()
+		} else {
+			ldapHost = nil
+		}
+		ldapPassword := new(string)
+		if !r.Config.LdapPassword.IsUnknown() && !r.Config.LdapPassword.IsNull() {
+			*ldapPassword = r.Config.LdapPassword.ValueString()
+		} else {
+			ldapPassword = nil
+		}
+		ldapPort := new(float64)
+		if !r.Config.LdapPort.IsUnknown() && !r.Config.LdapPort.IsNull() {
+			*ldapPort, _ = r.Config.LdapPort.ValueBigFloat().Float64()
+		} else {
+			ldapPort = nil
+		}
+		ldaps := new(bool)
+		if !r.Config.Ldaps.IsUnknown() && !r.Config.Ldaps.IsNull() {
+			*ldaps = r.Config.Ldaps.ValueBool()
+		} else {
+			ldaps = nil
+		}
+		logSearchResults := new(bool)
+		if !r.Config.LogSearchResults.IsUnknown() && !r.Config.LogSearchResults.IsNull() {
+			*logSearchResults = r.Config.LogSearchResults.ValueBool()
+		} else {
+			logSearchResults = nil
+		}
+		realm := new(string)
+		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+			*realm = r.Config.Realm.ValueString()
+		} else {
+			realm = nil
+		}
+		startTLS := new(bool)
+		if !r.Config.StartTLS.IsUnknown() && !r.Config.StartTLS.IsNull() {
+			*startTLS = r.Config.StartTLS.ValueBool()
+		} else {
+			startTLS = nil
+		}
+		timeout := new(float64)
+		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+		} else {
+			timeout = nil
+		}
+		verifyLdapHost := new(bool)
+		if !r.Config.VerifyLdapHost.IsUnknown() && !r.Config.VerifyLdapHost.IsNull() {
+			*verifyLdapHost = r.Config.VerifyLdapHost.ValueBool()
+		} else {
+			verifyLdapHost = nil
+		}
+		config = &shared.LdapAuthAdvancedPluginConfig{
+			Anonymous:            anonymous,
+			Attribute:            attribute,
+			BaseDn:               baseDn,
+			BindDn:               bindDn,
+			CacheTTL:             cacheTTL,
+			ConsumerBy:           consumerBy,
+			ConsumerOptional:     consumerOptional,
+			GroupBaseDn:          groupBaseDn,
+			GroupMemberAttribute: groupMemberAttribute,
+			GroupNameAttribute:   groupNameAttribute,
+			GroupsRequired:       groupsRequired,
+			HeaderType:           headerType,
+			HideCredentials:      hideCredentials,
+			Keepalive:            keepalive,
+			LdapHost:             ldapHost,
+			LdapPassword:         ldapPassword,
+			LdapPort:             ldapPort,
+			Ldaps:                ldaps,
+			LogSearchResults:     logSearchResults,
+			Realm:                realm,
+			StartTLS:             startTLS,
+			Timeout:              timeout,
+			VerifyLdapHost:       verifyLdapHost,
+		}
 	}
 	var protocols []shared.LdapAuthAdvancedPluginProtocols = []shared.LdapAuthAdvancedPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -246,12 +261,14 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 			ID: id2,
 		}
 	}
-	out := shared.LdapAuthAdvancedPluginInput{
+	out := shared.LdapAuthAdvancedPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -262,51 +279,56 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 
 func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAdvancedPlugin(resp *shared.LdapAuthAdvancedPlugin) {
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
-		r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
-		r.Config.BindDn = types.StringPointerValue(resp.Config.BindDn)
-		if resp.Config.CacheTTL != nil {
-			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.CacheTTL = types.NumberNull()
+			r.Config = &tfTypes.LdapAuthAdvancedPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
+			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
+			r.Config.BindDn = types.StringPointerValue(resp.Config.BindDn)
+			if resp.Config.CacheTTL != nil {
+				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+			} else {
+				r.Config.CacheTTL = types.NumberNull()
+			}
+			r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
+			for _, v := range resp.Config.ConsumerBy {
+				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+			}
+			r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
+			r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
+			r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
+			r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
+			r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
+			for _, v := range resp.Config.GroupsRequired {
+				r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
+			}
+			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			if resp.Config.Keepalive != nil {
+				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+			} else {
+				r.Config.Keepalive = types.NumberNull()
+			}
+			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
+			r.Config.LdapPassword = types.StringPointerValue(resp.Config.LdapPassword)
+			if resp.Config.LdapPort != nil {
+				r.Config.LdapPort = types.NumberValue(big.NewFloat(float64(*resp.Config.LdapPort)))
+			} else {
+				r.Config.LdapPort = types.NumberNull()
+			}
+			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
+			r.Config.LogSearchResults = types.BoolPointerValue(resp.Config.LogSearchResults)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
+			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		}
-		r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
-		for _, v := range resp.Config.ConsumerBy {
-			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-		}
-		r.Config.ConsumerOptional = types.BoolPointerValue(resp.Config.ConsumerOptional)
-		r.Config.GroupBaseDn = types.StringPointerValue(resp.Config.GroupBaseDn)
-		r.Config.GroupMemberAttribute = types.StringPointerValue(resp.Config.GroupMemberAttribute)
-		r.Config.GroupNameAttribute = types.StringPointerValue(resp.Config.GroupNameAttribute)
-		r.Config.GroupsRequired = make([]types.String, 0, len(resp.Config.GroupsRequired))
-		for _, v := range resp.Config.GroupsRequired {
-			r.Config.GroupsRequired = append(r.Config.GroupsRequired, types.StringValue(v))
-		}
-		r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
-		r.Config.LdapPassword = types.StringPointerValue(resp.Config.LdapPassword)
-		if resp.Config.LdapPort != nil {
-			r.Config.LdapPort = types.NumberValue(big.NewFloat(float64(*resp.Config.LdapPort)))
-		} else {
-			r.Config.LdapPort = types.NumberNull()
-		}
-		r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
-		r.Config.LogSearchResults = types.BoolPointerValue(resp.Config.LogSearchResults)
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

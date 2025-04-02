@@ -39,18 +39,18 @@ type GatewayPluginHeaderCertAuthResource struct {
 
 // GatewayPluginHeaderCertAuthResourceModel describes the resource data model.
 type GatewayPluginHeaderCertAuthResourceModel struct {
-	Config         tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         *tfTypes.HeaderCertAuthPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                         `tfsdk:"created_at"`
+	Enabled        types.Bool                          `tfsdk:"enabled"`
+	ID             types.String                        `tfsdk:"id"`
+	InstanceName   types.String                        `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Protocols      []types.String                      `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
+	Tags           []types.String                      `tfsdk:"tags"`
+	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginHeaderCertAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,8 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginHeaderCertAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
@@ -189,6 +190,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -274,6 +276,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -321,7 +324,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	headerCertAuthPlugin := *data.ToSharedHeaderCertAuthPluginInput()
+	headerCertAuthPlugin := *data.ToSharedHeaderCertAuthPlugin()
 	request := operations.CreateHeadercertauthPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		HeaderCertAuthPlugin: headerCertAuthPlugin,
@@ -431,7 +434,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	headerCertAuthPlugin := *data.ToSharedHeaderCertAuthPluginInput()
+	headerCertAuthPlugin := *data.ToSharedHeaderCertAuthPlugin()
 	request := operations.UpdateHeadercertauthPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,

@@ -40,20 +40,20 @@ type GatewayPluginAiPromptDecoratorResource struct {
 
 // GatewayPluginAiPromptDecoratorResourceModel describes the resource data model.
 type GatewayPluginAiPromptDecoratorResourceModel struct {
-	Config         tfTypes.AiPromptDecoratorPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         *tfTypes.AiPromptDecoratorPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                            `tfsdk:"created_at"`
+	Enabled        types.Bool                             `tfsdk:"enabled"`
+	ID             types.String                           `tfsdk:"id"`
+	InstanceName   types.String                           `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Protocols      []types.String                         `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
+	Tags           []types.String                         `tfsdk:"tags"`
+	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiPromptDecoratorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,8 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 		MarkdownDescription: "GatewayPluginAiPromptDecorator Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"max_request_body_size": schema.Int64Attribute{
 						Computed:    true,
@@ -183,6 +184,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -268,6 +270,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Schema(ctx context.Context, req
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -315,7 +318,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Create(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPluginInput()
+	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPlugin()
 	request := operations.CreateAipromptdecoratorPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		AiPromptDecoratorPlugin: aiPromptDecoratorPlugin,
@@ -425,7 +428,7 @@ func (r *GatewayPluginAiPromptDecoratorResource) Update(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPluginInput()
+	aiPromptDecoratorPlugin := *data.ToSharedAiPromptDecoratorPlugin()
 	request := operations.UpdateAipromptdecoratorPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,

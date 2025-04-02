@@ -9,8 +9,8 @@ import (
 
 type CreateKeyauthencPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	KeyAuthEncPlugin shared.KeyAuthEncPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	KeyAuthEncPlugin shared.KeyAuthEncPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateKeyauthencPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateKeyauthencPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateKeyauthencPluginRequest) GetKeyAuthEncPlugin() shared.KeyAuthEncPluginInput {
+func (o *CreateKeyauthencPluginRequest) GetKeyAuthEncPlugin() shared.KeyAuthEncPlugin {
 	if o == nil {
-		return shared.KeyAuthEncPluginInput{}
+		return shared.KeyAuthEncPlugin{}
 	}
 	return o.KeyAuthEncPlugin
 }

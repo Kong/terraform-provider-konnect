@@ -38,7 +38,7 @@ type GatewayPluginRedirectResource struct {
 
 // GatewayPluginRedirectResourceModel describes the resource data model.
 type GatewayPluginRedirectResourceModel struct {
-	Config         tfTypes.RedirectPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.RedirectPluginConfig      `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginRedirect Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"keep_incoming_path": schema.BoolAttribute{
 						Computed:    true,
@@ -122,6 +123,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -207,6 +209,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -254,7 +257,7 @@ func (r *GatewayPluginRedirectResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	redirectPlugin := *data.ToSharedRedirectPluginInput()
+	redirectPlugin := *data.ToSharedRedirectPlugin()
 	request := operations.CreateRedirectPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		RedirectPlugin: redirectPlugin,
@@ -364,7 +367,7 @@ func (r *GatewayPluginRedirectResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	redirectPlugin := *data.ToSharedRedirectPluginInput()
+	redirectPlugin := *data.ToSharedRedirectPlugin()
 	request := operations.UpdateRedirectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

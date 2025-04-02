@@ -36,7 +36,7 @@ type GatewayPluginAiPromptGuardResource struct {
 
 // GatewayPluginAiPromptGuardResourceModel describes the resource data model.
 type GatewayPluginAiPromptGuardResourceModel struct {
-	Config         tfTypes.AiPromptGuardPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.AiPromptGuardPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -61,7 +61,8 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginAiPromptGuard Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_all_conversation_history": schema.BoolAttribute{
 						Computed:    true,
@@ -129,6 +130,7 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -214,6 +216,7 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -261,7 +264,7 @@ func (r *GatewayPluginAiPromptGuardResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptGuardPlugin := *data.ToSharedAiPromptGuardPluginInput()
+	aiPromptGuardPlugin := *data.ToSharedAiPromptGuardPlugin()
 	request := operations.CreateAipromptguardPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		AiPromptGuardPlugin: aiPromptGuardPlugin,
@@ -371,7 +374,7 @@ func (r *GatewayPluginAiPromptGuardResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptGuardPlugin := *data.ToSharedAiPromptGuardPluginInput()
+	aiPromptGuardPlugin := *data.ToSharedAiPromptGuardPlugin()
 	request := operations.UpdateAipromptguardPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

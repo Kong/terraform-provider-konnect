@@ -11,23 +11,28 @@ import (
 
 func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunctionsPlugin(resp *shared.AzureFunctionsPlugin) {
 	if resp != nil {
-		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
-		r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
-		r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
-		r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
-		r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
-		r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
-		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
+			r.Config = &tfTypes.AzureFunctionsPluginConfig{}
+			r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
+			r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
+			r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
+			r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
+			r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
+			r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
+			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+			if resp.Config.Keepalive != nil {
+				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+			} else {
+				r.Config.Keepalive = types.NumberNull()
+			}
+			r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

@@ -10,39 +10,44 @@ import (
 
 func (r *GatewayPluginJqDataSourceModel) RefreshFromSharedJqPlugin(resp *shared.JqPlugin) {
 	if resp != nil {
-		r.Config.RequestIfMediaType = make([]types.String, 0, len(resp.Config.RequestIfMediaType))
-		for _, v := range resp.Config.RequestIfMediaType {
-			r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
-		}
-		r.Config.RequestJqProgram = types.StringPointerValue(resp.Config.RequestJqProgram)
-		if resp.Config.RequestJqProgramOptions == nil {
-			r.Config.RequestJqProgramOptions = nil
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.RequestJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
-			r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
-			r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
-			r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
-			r.Config.RequestJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.RawOutput)
-			r.Config.RequestJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.SortKeys)
-		}
-		r.Config.ResponseIfMediaType = make([]types.String, 0, len(resp.Config.ResponseIfMediaType))
-		for _, v := range resp.Config.ResponseIfMediaType {
-			r.Config.ResponseIfMediaType = append(r.Config.ResponseIfMediaType, types.StringValue(v))
-		}
-		r.Config.ResponseIfStatusCode = make([]types.Int64, 0, len(resp.Config.ResponseIfStatusCode))
-		for _, v := range resp.Config.ResponseIfStatusCode {
-			r.Config.ResponseIfStatusCode = append(r.Config.ResponseIfStatusCode, types.Int64Value(v))
-		}
-		r.Config.ResponseJqProgram = types.StringPointerValue(resp.Config.ResponseJqProgram)
-		if resp.Config.ResponseJqProgramOptions == nil {
-			r.Config.ResponseJqProgramOptions = nil
-		} else {
-			r.Config.ResponseJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
-			r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
-			r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
-			r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
-			r.Config.ResponseJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.RawOutput)
-			r.Config.ResponseJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.SortKeys)
+			r.Config = &tfTypes.JqPluginConfig{}
+			r.Config.RequestIfMediaType = make([]types.String, 0, len(resp.Config.RequestIfMediaType))
+			for _, v := range resp.Config.RequestIfMediaType {
+				r.Config.RequestIfMediaType = append(r.Config.RequestIfMediaType, types.StringValue(v))
+			}
+			r.Config.RequestJqProgram = types.StringPointerValue(resp.Config.RequestJqProgram)
+			if resp.Config.RequestJqProgramOptions == nil {
+				r.Config.RequestJqProgramOptions = nil
+			} else {
+				r.Config.RequestJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+				r.Config.RequestJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.ASCIIOutput)
+				r.Config.RequestJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.CompactOutput)
+				r.Config.RequestJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.JoinOutput)
+				r.Config.RequestJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.RawOutput)
+				r.Config.RequestJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.RequestJqProgramOptions.SortKeys)
+			}
+			r.Config.ResponseIfMediaType = make([]types.String, 0, len(resp.Config.ResponseIfMediaType))
+			for _, v := range resp.Config.ResponseIfMediaType {
+				r.Config.ResponseIfMediaType = append(r.Config.ResponseIfMediaType, types.StringValue(v))
+			}
+			r.Config.ResponseIfStatusCode = make([]types.Int64, 0, len(resp.Config.ResponseIfStatusCode))
+			for _, v := range resp.Config.ResponseIfStatusCode {
+				r.Config.ResponseIfStatusCode = append(r.Config.ResponseIfStatusCode, types.Int64Value(v))
+			}
+			r.Config.ResponseJqProgram = types.StringPointerValue(resp.Config.ResponseJqProgram)
+			if resp.Config.ResponseJqProgramOptions == nil {
+				r.Config.ResponseJqProgramOptions = nil
+			} else {
+				r.Config.ResponseJqProgramOptions = &tfTypes.RequestJqProgramOptions{}
+				r.Config.ResponseJqProgramOptions.ASCIIOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.ASCIIOutput)
+				r.Config.ResponseJqProgramOptions.CompactOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.CompactOutput)
+				r.Config.ResponseJqProgramOptions.JoinOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.JoinOutput)
+				r.Config.ResponseJqProgramOptions.RawOutput = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.RawOutput)
+				r.Config.ResponseJqProgramOptions.SortKeys = types.BoolPointerValue(resp.Config.ResponseJqProgramOptions.SortKeys)
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

@@ -38,7 +38,7 @@ type GatewayPluginSessionResource struct {
 
 // GatewayPluginSessionResourceModel describes the resource data model.
 type GatewayPluginSessionResourceModel struct {
-	Config         tfTypes.SessionPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.SessionPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,7 +61,8 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginSession Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"absolute_timeout": schema.NumberAttribute{
 						Computed:    true,
@@ -205,6 +206,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -290,6 +292,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -337,7 +340,7 @@ func (r *GatewayPluginSessionResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := *data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPlugin()
 	request := operations.CreateSessionPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SessionPlugin:  sessionPlugin,
@@ -447,7 +450,7 @@ func (r *GatewayPluginSessionResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := *data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPlugin()
 	request := operations.UpdateSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

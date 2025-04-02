@@ -10,17 +10,22 @@ import (
 
 func (r *GatewayPluginKeyAuthDataSourceModel) RefreshFromSharedKeyAuthPlugin(resp *shared.KeyAuthPlugin) {
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
-		r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
-		r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
-		r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
-		for _, v := range resp.Config.KeyNames {
-			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.KeyAuthPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
+			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
+			r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
+			r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
+			for _, v := range resp.Config.KeyNames {
+				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+			}
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		}
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

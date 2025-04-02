@@ -13,7 +13,7 @@ type UpsertKeySetRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the KeySet
-	KeySet shared.KeySetInput `request:"mediaType=application/json"`
+	KeySet shared.KeySet `request:"mediaType=application/json"`
 }
 
 func (o *UpsertKeySetRequest) GetKeySetID() string {
@@ -30,9 +30,9 @@ func (o *UpsertKeySetRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertKeySetRequest) GetKeySet() shared.KeySetInput {
+func (o *UpsertKeySetRequest) GetKeySet() shared.KeySet {
 	if o == nil {
-		return shared.KeySetInput{}
+		return shared.KeySet{}
 	}
 	return o.KeySet
 }

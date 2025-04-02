@@ -39,7 +39,7 @@ type GatewayPluginMtlsAuthResource struct {
 
 // GatewayPluginMtlsAuthResourceModel describes the resource data model.
 type GatewayPluginMtlsAuthResourceModel struct {
-	Config         tfTypes.MtlsAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.MtlsAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -62,7 +62,8 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginMtlsAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_partial_chain": schema.BoolAttribute{
 						Computed:    true,
@@ -173,6 +174,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -258,6 +260,7 @@ func (r *GatewayPluginMtlsAuthResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -305,7 +308,7 @@ func (r *GatewayPluginMtlsAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mtlsAuthPlugin := *data.ToSharedMtlsAuthPluginInput()
+	mtlsAuthPlugin := *data.ToSharedMtlsAuthPlugin()
 	request := operations.CreateMtlsauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		MtlsAuthPlugin: mtlsAuthPlugin,
@@ -415,7 +418,7 @@ func (r *GatewayPluginMtlsAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mtlsAuthPlugin := *data.ToSharedMtlsAuthPluginInput()
+	mtlsAuthPlugin := *data.ToSharedMtlsAuthPlugin()
 	request := operations.UpdateMtlsauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

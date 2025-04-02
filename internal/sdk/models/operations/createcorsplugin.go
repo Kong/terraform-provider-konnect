@@ -9,8 +9,8 @@ import (
 
 type CreateCorsPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CorsPlugin     shared.CorsPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CorsPlugin     shared.CorsPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateCorsPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateCorsPluginRequest) GetCorsPlugin() shared.CorsPluginInput {
+func (o *CreateCorsPluginRequest) GetCorsPlugin() shared.CorsPlugin {
 	if o == nil {
-		return shared.CorsPluginInput{}
+		return shared.CorsPlugin{}
 	}
 	return o.CorsPlugin
 }

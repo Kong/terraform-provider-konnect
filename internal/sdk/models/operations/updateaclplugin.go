@@ -11,8 +11,8 @@ type UpdateACLPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ACLPlugin      shared.ACLPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ACLPlugin      shared.ACLPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateACLPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateACLPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateACLPluginRequest) GetACLPlugin() shared.ACLPluginInput {
+func (o *UpdateACLPluginRequest) GetACLPlugin() shared.ACLPlugin {
 	if o == nil {
-		return shared.ACLPluginInput{}
+		return shared.ACLPlugin{}
 	}
 	return o.ACLPlugin
 }

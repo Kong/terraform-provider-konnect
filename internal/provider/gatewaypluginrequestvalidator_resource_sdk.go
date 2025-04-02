@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPluginInput() *shared.RequestValidatorPluginInput {
+func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlugin() *shared.RequestValidatorPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,77 +64,86 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var allowedContentTypes []string = []string{}
-	for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
-		allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
-	}
-	bodySchema := new(string)
-	if !r.Config.BodySchema.IsUnknown() && !r.Config.BodySchema.IsNull() {
-		*bodySchema = r.Config.BodySchema.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		bodySchema = nil
+		updatedAt = nil
 	}
-	contentTypeParameterValidation := new(bool)
-	if !r.Config.ContentTypeParameterValidation.IsUnknown() && !r.Config.ContentTypeParameterValidation.IsNull() {
-		*contentTypeParameterValidation = r.Config.ContentTypeParameterValidation.ValueBool()
-	} else {
-		contentTypeParameterValidation = nil
-	}
-	var parameterSchema []shared.ParameterSchema = []shared.ParameterSchema{}
-	for _, parameterSchemaItem := range r.Config.ParameterSchema {
-		explode := new(bool)
-		if !parameterSchemaItem.Explode.IsUnknown() && !parameterSchemaItem.Explode.IsNull() {
-			*explode = parameterSchemaItem.Explode.ValueBool()
-		} else {
-			explode = nil
+	var config *shared.RequestValidatorPluginConfig
+	if r.Config != nil {
+		var allowedContentTypes []string = []string{}
+		for _, allowedContentTypesItem := range r.Config.AllowedContentTypes {
+			allowedContentTypes = append(allowedContentTypes, allowedContentTypesItem.ValueString())
 		}
-		in := shared.In(parameterSchemaItem.In.ValueString())
-		var name string
-		name = parameterSchemaItem.Name.ValueString()
+		bodySchema := new(string)
+		if !r.Config.BodySchema.IsUnknown() && !r.Config.BodySchema.IsNull() {
+			*bodySchema = r.Config.BodySchema.ValueString()
+		} else {
+			bodySchema = nil
+		}
+		contentTypeParameterValidation := new(bool)
+		if !r.Config.ContentTypeParameterValidation.IsUnknown() && !r.Config.ContentTypeParameterValidation.IsNull() {
+			*contentTypeParameterValidation = r.Config.ContentTypeParameterValidation.ValueBool()
+		} else {
+			contentTypeParameterValidation = nil
+		}
+		var parameterSchema []shared.ParameterSchema = []shared.ParameterSchema{}
+		for _, parameterSchemaItem := range r.Config.ParameterSchema {
+			explode := new(bool)
+			if !parameterSchemaItem.Explode.IsUnknown() && !parameterSchemaItem.Explode.IsNull() {
+				*explode = parameterSchemaItem.Explode.ValueBool()
+			} else {
+				explode = nil
+			}
+			in := shared.In(parameterSchemaItem.In.ValueString())
+			var name string
+			name = parameterSchemaItem.Name.ValueString()
 
-		var required bool
-		required = parameterSchemaItem.Required.ValueBool()
+			var required bool
+			required = parameterSchemaItem.Required.ValueBool()
 
-		schema := new(string)
-		if !parameterSchemaItem.Schema.IsUnknown() && !parameterSchemaItem.Schema.IsNull() {
-			*schema = parameterSchemaItem.Schema.ValueString()
-		} else {
-			schema = nil
+			schema := new(string)
+			if !parameterSchemaItem.Schema.IsUnknown() && !parameterSchemaItem.Schema.IsNull() {
+				*schema = parameterSchemaItem.Schema.ValueString()
+			} else {
+				schema = nil
+			}
+			style := new(shared.Style)
+			if !parameterSchemaItem.Style.IsUnknown() && !parameterSchemaItem.Style.IsNull() {
+				*style = shared.Style(parameterSchemaItem.Style.ValueString())
+			} else {
+				style = nil
+			}
+			parameterSchema = append(parameterSchema, shared.ParameterSchema{
+				Explode:  explode,
+				In:       in,
+				Name:     name,
+				Required: required,
+				Schema:   schema,
+				Style:    style,
+			})
 		}
-		style := new(shared.Style)
-		if !parameterSchemaItem.Style.IsUnknown() && !parameterSchemaItem.Style.IsNull() {
-			*style = shared.Style(parameterSchemaItem.Style.ValueString())
+		verboseResponse := new(bool)
+		if !r.Config.VerboseResponse.IsUnknown() && !r.Config.VerboseResponse.IsNull() {
+			*verboseResponse = r.Config.VerboseResponse.ValueBool()
 		} else {
-			style = nil
+			verboseResponse = nil
 		}
-		parameterSchema = append(parameterSchema, shared.ParameterSchema{
-			Explode:  explode,
-			In:       in,
-			Name:     name,
-			Required: required,
-			Schema:   schema,
-			Style:    style,
-		})
-	}
-	verboseResponse := new(bool)
-	if !r.Config.VerboseResponse.IsUnknown() && !r.Config.VerboseResponse.IsNull() {
-		*verboseResponse = r.Config.VerboseResponse.ValueBool()
-	} else {
-		verboseResponse = nil
-	}
-	version := new(shared.Version)
-	if !r.Config.Version.IsUnknown() && !r.Config.Version.IsNull() {
-		*version = shared.Version(r.Config.Version.ValueString())
-	} else {
-		version = nil
-	}
-	config := shared.RequestValidatorPluginConfig{
-		AllowedContentTypes:            allowedContentTypes,
-		BodySchema:                     bodySchema,
-		ContentTypeParameterValidation: contentTypeParameterValidation,
-		ParameterSchema:                parameterSchema,
-		VerboseResponse:                verboseResponse,
-		Version:                        version,
+		version := new(shared.Version)
+		if !r.Config.Version.IsUnknown() && !r.Config.Version.IsNull() {
+			*version = shared.Version(r.Config.Version.ValueString())
+		} else {
+			version = nil
+		}
+		config = &shared.RequestValidatorPluginConfig{
+			AllowedContentTypes:            allowedContentTypes,
+			BodySchema:                     bodySchema,
+			ContentTypeParameterValidation: contentTypeParameterValidation,
+			ParameterSchema:                parameterSchema,
+			VerboseResponse:                verboseResponse,
+			Version:                        version,
+		}
 	}
 	var consumer *shared.RequestValidatorPluginConsumer
 	if r.Consumer != nil {
@@ -170,12 +185,14 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 			ID: id3,
 		}
 	}
-	out := shared.RequestValidatorPluginInput{
+	out := shared.RequestValidatorPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -187,44 +204,49 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 
 func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(resp *shared.RequestValidatorPlugin) {
 	if resp != nil {
-		r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
-		for _, v := range resp.Config.AllowedContentTypes {
-			r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
-		}
-		r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
-		r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
-		r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
-		if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
-			r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
-		}
-		for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
-			var parameterSchema1 tfTypes.ParameterSchema
-			parameterSchema1.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
-			parameterSchema1.In = types.StringValue(string(parameterSchemaItem.In))
-			parameterSchema1.Name = types.StringValue(parameterSchemaItem.Name)
-			parameterSchema1.Required = types.BoolValue(parameterSchemaItem.Required)
-			parameterSchema1.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
-			if parameterSchemaItem.Style != nil {
-				parameterSchema1.Style = types.StringValue(string(*parameterSchemaItem.Style))
-			} else {
-				parameterSchema1.Style = types.StringNull()
-			}
-			if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-				r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema1)
-			} else {
-				r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema1.Explode
-				r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema1.In
-				r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema1.Name
-				r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema1.Required
-				r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema1.Schema
-				r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema1.Style
-			}
-		}
-		r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
-		if resp.Config.Version != nil {
-			r.Config.Version = types.StringValue(string(*resp.Config.Version))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Version = types.StringNull()
+			r.Config = &tfTypes.RequestValidatorPluginConfig{}
+			r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
+			for _, v := range resp.Config.AllowedContentTypes {
+				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
+			}
+			r.Config.BodySchema = types.StringPointerValue(resp.Config.BodySchema)
+			r.Config.ContentTypeParameterValidation = types.BoolPointerValue(resp.Config.ContentTypeParameterValidation)
+			r.Config.ParameterSchema = []tfTypes.ParameterSchema{}
+			if len(r.Config.ParameterSchema) > len(resp.Config.ParameterSchema) {
+				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
+			}
+			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
+				var parameterSchema1 tfTypes.ParameterSchema
+				parameterSchema1.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
+				parameterSchema1.In = types.StringValue(string(parameterSchemaItem.In))
+				parameterSchema1.Name = types.StringValue(parameterSchemaItem.Name)
+				parameterSchema1.Required = types.BoolValue(parameterSchemaItem.Required)
+				parameterSchema1.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
+				if parameterSchemaItem.Style != nil {
+					parameterSchema1.Style = types.StringValue(string(*parameterSchemaItem.Style))
+				} else {
+					parameterSchema1.Style = types.StringNull()
+				}
+				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
+					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema1)
+				} else {
+					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema1.Explode
+					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema1.In
+					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema1.Name
+					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema1.Required
+					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema1.Schema
+					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema1.Style
+				}
+			}
+			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
+			if resp.Config.Version != nil {
+				r.Config.Version = types.StringValue(string(*resp.Config.Version))
+			} else {
+				r.Config.Version = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

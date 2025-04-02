@@ -36,7 +36,7 @@ type GatewayPluginJweDecryptResource struct {
 
 // GatewayPluginJweDecryptResourceModel describes the resource data model.
 type GatewayPluginJweDecryptResourceModel struct {
-	Config         tfTypes.JweDecryptPluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.JweDecryptPluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginJweDecrypt Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"forward_header_name": schema.StringAttribute{
 						Computed:    true,
@@ -93,6 +94,7 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -178,6 +180,7 @@ func (r *GatewayPluginJweDecryptResource) Schema(ctx context.Context, req resour
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -225,7 +228,7 @@ func (r *GatewayPluginJweDecryptResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jweDecryptPlugin := *data.ToSharedJweDecryptPluginInput()
+	jweDecryptPlugin := *data.ToSharedJweDecryptPlugin()
 	request := operations.CreateJwedecryptPluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		JweDecryptPlugin: jweDecryptPlugin,
@@ -335,7 +338,7 @@ func (r *GatewayPluginJweDecryptResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jweDecryptPlugin := *data.ToSharedJweDecryptPluginInput()
+	jweDecryptPlugin := *data.ToSharedJweDecryptPlugin()
 	request := operations.UpdateJwedecryptPluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,

@@ -10,7 +10,12 @@ import (
 
 func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPlugin(resp *shared.GrpcGatewayPlugin) {
 	if resp != nil {
-		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.GrpcGatewayPluginConfig{}
+			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

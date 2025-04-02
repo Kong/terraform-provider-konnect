@@ -9,7 +9,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPluginInput() *shared.FileLogPluginInput {
+func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPlugin() *shared.FileLogPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,28 +65,37 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPluginInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
-	path := new(string)
-	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-		*path = r.Config.Path.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		path = nil
+		updatedAt = nil
 	}
-	reopen := new(bool)
-	if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
-		*reopen = r.Config.Reopen.ValueBool()
-	} else {
-		reopen = nil
-	}
-	config := shared.FileLogPluginConfig{
-		CustomFieldsByLua: customFieldsByLua,
-		Path:              path,
-		Reopen:            reopen,
+	var config *shared.FileLogPluginConfig
+	if r.Config != nil {
+		customFieldsByLua := make(map[string]interface{})
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst interface{}
+			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
+		path := new(string)
+		if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+			*path = r.Config.Path.ValueString()
+		} else {
+			path = nil
+		}
+		reopen := new(bool)
+		if !r.Config.Reopen.IsUnknown() && !r.Config.Reopen.IsNull() {
+			*reopen = r.Config.Reopen.ValueBool()
+		} else {
+			reopen = nil
+		}
+		config = &shared.FileLogPluginConfig{
+			CustomFieldsByLua: customFieldsByLua,
+			Path:              path,
+			Reopen:            reopen,
+		}
 	}
 	var consumer *shared.FileLogPluginConsumer
 	if r.Consumer != nil {
@@ -122,12 +137,14 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPluginInput() *shared
 			ID: id3,
 		}
 	}
-	out := shared.FileLogPluginInput{
+	out := shared.FileLogPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -139,15 +156,20 @@ func (r *GatewayPluginFileLogResourceModel) ToSharedFileLogPluginInput() *shared
 
 func (r *GatewayPluginFileLogResourceModel) RefreshFromSharedFileLogPlugin(resp *shared.FileLogPlugin) {
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.FileLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		}
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

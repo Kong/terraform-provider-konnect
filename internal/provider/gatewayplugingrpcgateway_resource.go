@@ -36,7 +36,7 @@ type GatewayPluginGrpcGatewayResource struct {
 
 // GatewayPluginGrpcGatewayResourceModel describes the resource data model.
 type GatewayPluginGrpcGatewayResourceModel struct {
-	Config         tfTypes.GrpcGatewayPluginConfig    `tfsdk:"config"`
+	Config         *tfTypes.GrpcGatewayPluginConfig   `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 		MarkdownDescription: "GatewayPluginGrpcGateway Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"proto": schema.StringAttribute{
 						Computed:    true,
@@ -92,6 +93,7 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -177,6 +179,7 @@ func (r *GatewayPluginGrpcGatewayResource) Schema(ctx context.Context, req resou
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -224,7 +227,7 @@ func (r *GatewayPluginGrpcGatewayResource) Create(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPluginInput()
+	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPlugin()
 	request := operations.CreateGrpcgatewayPluginRequest{
 		ControlPlaneID:    controlPlaneID,
 		GrpcGatewayPlugin: grpcGatewayPlugin,
@@ -334,7 +337,7 @@ func (r *GatewayPluginGrpcGatewayResource) Update(ctx context.Context, req resou
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPluginInput()
+	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPlugin()
 	request := operations.UpdateGrpcgatewayPluginRequest{
 		PluginID:          pluginID,
 		ControlPlaneID:    controlPlaneID,

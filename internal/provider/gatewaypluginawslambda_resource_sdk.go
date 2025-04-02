@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPluginInput() *shared.AwsLambdaPluginInput {
+func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.AwsLambdaPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,196 +65,205 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPluginInput() *sh
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	awsAssumeRoleArn := new(string)
-	if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
-		*awsAssumeRoleArn = r.Config.AwsAssumeRoleArn.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		awsAssumeRoleArn = nil
+		updatedAt = nil
 	}
-	awsImdsProtocolVersion := new(shared.AwsImdsProtocolVersion)
-	if !r.Config.AwsImdsProtocolVersion.IsUnknown() && !r.Config.AwsImdsProtocolVersion.IsNull() {
-		*awsImdsProtocolVersion = shared.AwsImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
-	} else {
-		awsImdsProtocolVersion = nil
-	}
-	awsKey := new(string)
-	if !r.Config.AwsKey.IsUnknown() && !r.Config.AwsKey.IsNull() {
-		*awsKey = r.Config.AwsKey.ValueString()
-	} else {
-		awsKey = nil
-	}
-	awsRegion := new(string)
-	if !r.Config.AwsRegion.IsUnknown() && !r.Config.AwsRegion.IsNull() {
-		*awsRegion = r.Config.AwsRegion.ValueString()
-	} else {
-		awsRegion = nil
-	}
-	awsRoleSessionName := new(string)
-	if !r.Config.AwsRoleSessionName.IsUnknown() && !r.Config.AwsRoleSessionName.IsNull() {
-		*awsRoleSessionName = r.Config.AwsRoleSessionName.ValueString()
-	} else {
-		awsRoleSessionName = nil
-	}
-	awsSecret := new(string)
-	if !r.Config.AwsSecret.IsUnknown() && !r.Config.AwsSecret.IsNull() {
-		*awsSecret = r.Config.AwsSecret.ValueString()
-	} else {
-		awsSecret = nil
-	}
-	awsStsEndpointURL := new(string)
-	if !r.Config.AwsStsEndpointURL.IsUnknown() && !r.Config.AwsStsEndpointURL.IsNull() {
-		*awsStsEndpointURL = r.Config.AwsStsEndpointURL.ValueString()
-	} else {
-		awsStsEndpointURL = nil
-	}
-	awsgatewayCompatible := new(bool)
-	if !r.Config.AwsgatewayCompatible.IsUnknown() && !r.Config.AwsgatewayCompatible.IsNull() {
-		*awsgatewayCompatible = r.Config.AwsgatewayCompatible.ValueBool()
-	} else {
-		awsgatewayCompatible = nil
-	}
-	base64EncodeBody := new(bool)
-	if !r.Config.Base64EncodeBody.IsUnknown() && !r.Config.Base64EncodeBody.IsNull() {
-		*base64EncodeBody = r.Config.Base64EncodeBody.ValueBool()
-	} else {
-		base64EncodeBody = nil
-	}
-	disableHTTPS := new(bool)
-	if !r.Config.DisableHTTPS.IsUnknown() && !r.Config.DisableHTTPS.IsNull() {
-		*disableHTTPS = r.Config.DisableHTTPS.ValueBool()
-	} else {
-		disableHTTPS = nil
-	}
-	emptyArraysMode := new(shared.EmptyArraysMode)
-	if !r.Config.EmptyArraysMode.IsUnknown() && !r.Config.EmptyArraysMode.IsNull() {
-		*emptyArraysMode = shared.EmptyArraysMode(r.Config.EmptyArraysMode.ValueString())
-	} else {
-		emptyArraysMode = nil
-	}
-	forwardRequestBody := new(bool)
-	if !r.Config.ForwardRequestBody.IsUnknown() && !r.Config.ForwardRequestBody.IsNull() {
-		*forwardRequestBody = r.Config.ForwardRequestBody.ValueBool()
-	} else {
-		forwardRequestBody = nil
-	}
-	forwardRequestHeaders := new(bool)
-	if !r.Config.ForwardRequestHeaders.IsUnknown() && !r.Config.ForwardRequestHeaders.IsNull() {
-		*forwardRequestHeaders = r.Config.ForwardRequestHeaders.ValueBool()
-	} else {
-		forwardRequestHeaders = nil
-	}
-	forwardRequestMethod := new(bool)
-	if !r.Config.ForwardRequestMethod.IsUnknown() && !r.Config.ForwardRequestMethod.IsNull() {
-		*forwardRequestMethod = r.Config.ForwardRequestMethod.ValueBool()
-	} else {
-		forwardRequestMethod = nil
-	}
-	forwardRequestURI := new(bool)
-	if !r.Config.ForwardRequestURI.IsUnknown() && !r.Config.ForwardRequestURI.IsNull() {
-		*forwardRequestURI = r.Config.ForwardRequestURI.ValueBool()
-	} else {
-		forwardRequestURI = nil
-	}
-	functionName := new(string)
-	if !r.Config.FunctionName.IsUnknown() && !r.Config.FunctionName.IsNull() {
-		*functionName = r.Config.FunctionName.ValueString()
-	} else {
-		functionName = nil
-	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
-	} else {
-		host = nil
-	}
-	invocationType := new(shared.InvocationType)
-	if !r.Config.InvocationType.IsUnknown() && !r.Config.InvocationType.IsNull() {
-		*invocationType = shared.InvocationType(r.Config.InvocationType.ValueString())
-	} else {
-		invocationType = nil
-	}
-	isProxyIntegration := new(bool)
-	if !r.Config.IsProxyIntegration.IsUnknown() && !r.Config.IsProxyIntegration.IsNull() {
-		*isProxyIntegration = r.Config.IsProxyIntegration.ValueBool()
-	} else {
-		isProxyIntegration = nil
-	}
-	keepalive := new(float64)
-	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-		*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
-	} else {
-		keepalive = nil
-	}
-	logType := new(shared.LogType)
-	if !r.Config.LogType.IsUnknown() && !r.Config.LogType.IsNull() {
-		*logType = shared.LogType(r.Config.LogType.ValueString())
-	} else {
-		logType = nil
-	}
-	port := new(int64)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueInt64()
-	} else {
-		port = nil
-	}
-	proxyURL := new(string)
-	if !r.Config.ProxyURL.IsUnknown() && !r.Config.ProxyURL.IsNull() {
-		*proxyURL = r.Config.ProxyURL.ValueString()
-	} else {
-		proxyURL = nil
-	}
-	qualifier := new(string)
-	if !r.Config.Qualifier.IsUnknown() && !r.Config.Qualifier.IsNull() {
-		*qualifier = r.Config.Qualifier.ValueString()
-	} else {
-		qualifier = nil
-	}
-	skipLargeBodies := new(bool)
-	if !r.Config.SkipLargeBodies.IsUnknown() && !r.Config.SkipLargeBodies.IsNull() {
-		*skipLargeBodies = r.Config.SkipLargeBodies.ValueBool()
-	} else {
-		skipLargeBodies = nil
-	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
-	} else {
-		timeout = nil
-	}
-	unhandledStatus := new(int64)
-	if !r.Config.UnhandledStatus.IsUnknown() && !r.Config.UnhandledStatus.IsNull() {
-		*unhandledStatus = r.Config.UnhandledStatus.ValueInt64()
-	} else {
-		unhandledStatus = nil
-	}
-	config := shared.AwsLambdaPluginConfig{
-		AwsAssumeRoleArn:       awsAssumeRoleArn,
-		AwsImdsProtocolVersion: awsImdsProtocolVersion,
-		AwsKey:                 awsKey,
-		AwsRegion:              awsRegion,
-		AwsRoleSessionName:     awsRoleSessionName,
-		AwsSecret:              awsSecret,
-		AwsStsEndpointURL:      awsStsEndpointURL,
-		AwsgatewayCompatible:   awsgatewayCompatible,
-		Base64EncodeBody:       base64EncodeBody,
-		DisableHTTPS:           disableHTTPS,
-		EmptyArraysMode:        emptyArraysMode,
-		ForwardRequestBody:     forwardRequestBody,
-		ForwardRequestHeaders:  forwardRequestHeaders,
-		ForwardRequestMethod:   forwardRequestMethod,
-		ForwardRequestURI:      forwardRequestURI,
-		FunctionName:           functionName,
-		Host:                   host,
-		InvocationType:         invocationType,
-		IsProxyIntegration:     isProxyIntegration,
-		Keepalive:              keepalive,
-		LogType:                logType,
-		Port:                   port,
-		ProxyURL:               proxyURL,
-		Qualifier:              qualifier,
-		SkipLargeBodies:        skipLargeBodies,
-		Timeout:                timeout,
-		UnhandledStatus:        unhandledStatus,
+	var config *shared.AwsLambdaPluginConfig
+	if r.Config != nil {
+		awsAssumeRoleArn := new(string)
+		if !r.Config.AwsAssumeRoleArn.IsUnknown() && !r.Config.AwsAssumeRoleArn.IsNull() {
+			*awsAssumeRoleArn = r.Config.AwsAssumeRoleArn.ValueString()
+		} else {
+			awsAssumeRoleArn = nil
+		}
+		awsImdsProtocolVersion := new(shared.AwsImdsProtocolVersion)
+		if !r.Config.AwsImdsProtocolVersion.IsUnknown() && !r.Config.AwsImdsProtocolVersion.IsNull() {
+			*awsImdsProtocolVersion = shared.AwsImdsProtocolVersion(r.Config.AwsImdsProtocolVersion.ValueString())
+		} else {
+			awsImdsProtocolVersion = nil
+		}
+		awsKey := new(string)
+		if !r.Config.AwsKey.IsUnknown() && !r.Config.AwsKey.IsNull() {
+			*awsKey = r.Config.AwsKey.ValueString()
+		} else {
+			awsKey = nil
+		}
+		awsRegion := new(string)
+		if !r.Config.AwsRegion.IsUnknown() && !r.Config.AwsRegion.IsNull() {
+			*awsRegion = r.Config.AwsRegion.ValueString()
+		} else {
+			awsRegion = nil
+		}
+		awsRoleSessionName := new(string)
+		if !r.Config.AwsRoleSessionName.IsUnknown() && !r.Config.AwsRoleSessionName.IsNull() {
+			*awsRoleSessionName = r.Config.AwsRoleSessionName.ValueString()
+		} else {
+			awsRoleSessionName = nil
+		}
+		awsSecret := new(string)
+		if !r.Config.AwsSecret.IsUnknown() && !r.Config.AwsSecret.IsNull() {
+			*awsSecret = r.Config.AwsSecret.ValueString()
+		} else {
+			awsSecret = nil
+		}
+		awsStsEndpointURL := new(string)
+		if !r.Config.AwsStsEndpointURL.IsUnknown() && !r.Config.AwsStsEndpointURL.IsNull() {
+			*awsStsEndpointURL = r.Config.AwsStsEndpointURL.ValueString()
+		} else {
+			awsStsEndpointURL = nil
+		}
+		awsgatewayCompatible := new(bool)
+		if !r.Config.AwsgatewayCompatible.IsUnknown() && !r.Config.AwsgatewayCompatible.IsNull() {
+			*awsgatewayCompatible = r.Config.AwsgatewayCompatible.ValueBool()
+		} else {
+			awsgatewayCompatible = nil
+		}
+		base64EncodeBody := new(bool)
+		if !r.Config.Base64EncodeBody.IsUnknown() && !r.Config.Base64EncodeBody.IsNull() {
+			*base64EncodeBody = r.Config.Base64EncodeBody.ValueBool()
+		} else {
+			base64EncodeBody = nil
+		}
+		disableHTTPS := new(bool)
+		if !r.Config.DisableHTTPS.IsUnknown() && !r.Config.DisableHTTPS.IsNull() {
+			*disableHTTPS = r.Config.DisableHTTPS.ValueBool()
+		} else {
+			disableHTTPS = nil
+		}
+		emptyArraysMode := new(shared.EmptyArraysMode)
+		if !r.Config.EmptyArraysMode.IsUnknown() && !r.Config.EmptyArraysMode.IsNull() {
+			*emptyArraysMode = shared.EmptyArraysMode(r.Config.EmptyArraysMode.ValueString())
+		} else {
+			emptyArraysMode = nil
+		}
+		forwardRequestBody := new(bool)
+		if !r.Config.ForwardRequestBody.IsUnknown() && !r.Config.ForwardRequestBody.IsNull() {
+			*forwardRequestBody = r.Config.ForwardRequestBody.ValueBool()
+		} else {
+			forwardRequestBody = nil
+		}
+		forwardRequestHeaders := new(bool)
+		if !r.Config.ForwardRequestHeaders.IsUnknown() && !r.Config.ForwardRequestHeaders.IsNull() {
+			*forwardRequestHeaders = r.Config.ForwardRequestHeaders.ValueBool()
+		} else {
+			forwardRequestHeaders = nil
+		}
+		forwardRequestMethod := new(bool)
+		if !r.Config.ForwardRequestMethod.IsUnknown() && !r.Config.ForwardRequestMethod.IsNull() {
+			*forwardRequestMethod = r.Config.ForwardRequestMethod.ValueBool()
+		} else {
+			forwardRequestMethod = nil
+		}
+		forwardRequestURI := new(bool)
+		if !r.Config.ForwardRequestURI.IsUnknown() && !r.Config.ForwardRequestURI.IsNull() {
+			*forwardRequestURI = r.Config.ForwardRequestURI.ValueBool()
+		} else {
+			forwardRequestURI = nil
+		}
+		functionName := new(string)
+		if !r.Config.FunctionName.IsUnknown() && !r.Config.FunctionName.IsNull() {
+			*functionName = r.Config.FunctionName.ValueString()
+		} else {
+			functionName = nil
+		}
+		host := new(string)
+		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+			*host = r.Config.Host.ValueString()
+		} else {
+			host = nil
+		}
+		invocationType := new(shared.InvocationType)
+		if !r.Config.InvocationType.IsUnknown() && !r.Config.InvocationType.IsNull() {
+			*invocationType = shared.InvocationType(r.Config.InvocationType.ValueString())
+		} else {
+			invocationType = nil
+		}
+		isProxyIntegration := new(bool)
+		if !r.Config.IsProxyIntegration.IsUnknown() && !r.Config.IsProxyIntegration.IsNull() {
+			*isProxyIntegration = r.Config.IsProxyIntegration.ValueBool()
+		} else {
+			isProxyIntegration = nil
+		}
+		keepalive := new(float64)
+		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+			*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+		} else {
+			keepalive = nil
+		}
+		logType := new(shared.LogType)
+		if !r.Config.LogType.IsUnknown() && !r.Config.LogType.IsNull() {
+			*logType = shared.LogType(r.Config.LogType.ValueString())
+		} else {
+			logType = nil
+		}
+		port := new(int64)
+		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+			*port = r.Config.Port.ValueInt64()
+		} else {
+			port = nil
+		}
+		proxyURL := new(string)
+		if !r.Config.ProxyURL.IsUnknown() && !r.Config.ProxyURL.IsNull() {
+			*proxyURL = r.Config.ProxyURL.ValueString()
+		} else {
+			proxyURL = nil
+		}
+		qualifier := new(string)
+		if !r.Config.Qualifier.IsUnknown() && !r.Config.Qualifier.IsNull() {
+			*qualifier = r.Config.Qualifier.ValueString()
+		} else {
+			qualifier = nil
+		}
+		skipLargeBodies := new(bool)
+		if !r.Config.SkipLargeBodies.IsUnknown() && !r.Config.SkipLargeBodies.IsNull() {
+			*skipLargeBodies = r.Config.SkipLargeBodies.ValueBool()
+		} else {
+			skipLargeBodies = nil
+		}
+		timeout := new(float64)
+		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+		} else {
+			timeout = nil
+		}
+		unhandledStatus := new(int64)
+		if !r.Config.UnhandledStatus.IsUnknown() && !r.Config.UnhandledStatus.IsNull() {
+			*unhandledStatus = r.Config.UnhandledStatus.ValueInt64()
+		} else {
+			unhandledStatus = nil
+		}
+		config = &shared.AwsLambdaPluginConfig{
+			AwsAssumeRoleArn:       awsAssumeRoleArn,
+			AwsImdsProtocolVersion: awsImdsProtocolVersion,
+			AwsKey:                 awsKey,
+			AwsRegion:              awsRegion,
+			AwsRoleSessionName:     awsRoleSessionName,
+			AwsSecret:              awsSecret,
+			AwsStsEndpointURL:      awsStsEndpointURL,
+			AwsgatewayCompatible:   awsgatewayCompatible,
+			Base64EncodeBody:       base64EncodeBody,
+			DisableHTTPS:           disableHTTPS,
+			EmptyArraysMode:        emptyArraysMode,
+			ForwardRequestBody:     forwardRequestBody,
+			ForwardRequestHeaders:  forwardRequestHeaders,
+			ForwardRequestMethod:   forwardRequestMethod,
+			ForwardRequestURI:      forwardRequestURI,
+			FunctionName:           functionName,
+			Host:                   host,
+			InvocationType:         invocationType,
+			IsProxyIntegration:     isProxyIntegration,
+			Keepalive:              keepalive,
+			LogType:                logType,
+			Port:                   port,
+			ProxyURL:               proxyURL,
+			Qualifier:              qualifier,
+			SkipLargeBodies:        skipLargeBodies,
+			Timeout:                timeout,
+			UnhandledStatus:        unhandledStatus,
+		}
 	}
 	var consumer *shared.AwsLambdaPluginConsumer
 	if r.Consumer != nil {
@@ -290,12 +305,14 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPluginInput() *sh
 			ID: id3,
 		}
 	}
-	out := shared.AwsLambdaPluginInput{
+	out := shared.AwsLambdaPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -307,57 +324,62 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPluginInput() *sh
 
 func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(resp *shared.AwsLambdaPlugin) {
 	if resp != nil {
-		r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
-		if resp.Config.AwsImdsProtocolVersion != nil {
-			r.Config.AwsImdsProtocolVersion = types.StringValue(string(*resp.Config.AwsImdsProtocolVersion))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.AwsImdsProtocolVersion = types.StringNull()
+			r.Config = &tfTypes.AwsLambdaPluginConfig{}
+			r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
+			if resp.Config.AwsImdsProtocolVersion != nil {
+				r.Config.AwsImdsProtocolVersion = types.StringValue(string(*resp.Config.AwsImdsProtocolVersion))
+			} else {
+				r.Config.AwsImdsProtocolVersion = types.StringNull()
+			}
+			r.Config.AwsKey = types.StringPointerValue(resp.Config.AwsKey)
+			r.Config.AwsRegion = types.StringPointerValue(resp.Config.AwsRegion)
+			r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
+			r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
+			r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
+			r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
+			r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
+			r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
+			if resp.Config.EmptyArraysMode != nil {
+				r.Config.EmptyArraysMode = types.StringValue(string(*resp.Config.EmptyArraysMode))
+			} else {
+				r.Config.EmptyArraysMode = types.StringNull()
+			}
+			r.Config.ForwardRequestBody = types.BoolPointerValue(resp.Config.ForwardRequestBody)
+			r.Config.ForwardRequestHeaders = types.BoolPointerValue(resp.Config.ForwardRequestHeaders)
+			r.Config.ForwardRequestMethod = types.BoolPointerValue(resp.Config.ForwardRequestMethod)
+			r.Config.ForwardRequestURI = types.BoolPointerValue(resp.Config.ForwardRequestURI)
+			r.Config.FunctionName = types.StringPointerValue(resp.Config.FunctionName)
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			if resp.Config.InvocationType != nil {
+				r.Config.InvocationType = types.StringValue(string(*resp.Config.InvocationType))
+			} else {
+				r.Config.InvocationType = types.StringNull()
+			}
+			r.Config.IsProxyIntegration = types.BoolPointerValue(resp.Config.IsProxyIntegration)
+			if resp.Config.Keepalive != nil {
+				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+			} else {
+				r.Config.Keepalive = types.NumberNull()
+			}
+			if resp.Config.LogType != nil {
+				r.Config.LogType = types.StringValue(string(*resp.Config.LogType))
+			} else {
+				r.Config.LogType = types.StringNull()
+			}
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			r.Config.ProxyURL = types.StringPointerValue(resp.Config.ProxyURL)
+			r.Config.Qualifier = types.StringPointerValue(resp.Config.Qualifier)
+			r.Config.SkipLargeBodies = types.BoolPointerValue(resp.Config.SkipLargeBodies)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
+			r.Config.UnhandledStatus = types.Int64PointerValue(resp.Config.UnhandledStatus)
 		}
-		r.Config.AwsKey = types.StringPointerValue(resp.Config.AwsKey)
-		r.Config.AwsRegion = types.StringPointerValue(resp.Config.AwsRegion)
-		r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
-		r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
-		r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
-		r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
-		r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
-		r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
-		if resp.Config.EmptyArraysMode != nil {
-			r.Config.EmptyArraysMode = types.StringValue(string(*resp.Config.EmptyArraysMode))
-		} else {
-			r.Config.EmptyArraysMode = types.StringNull()
-		}
-		r.Config.ForwardRequestBody = types.BoolPointerValue(resp.Config.ForwardRequestBody)
-		r.Config.ForwardRequestHeaders = types.BoolPointerValue(resp.Config.ForwardRequestHeaders)
-		r.Config.ForwardRequestMethod = types.BoolPointerValue(resp.Config.ForwardRequestMethod)
-		r.Config.ForwardRequestURI = types.BoolPointerValue(resp.Config.ForwardRequestURI)
-		r.Config.FunctionName = types.StringPointerValue(resp.Config.FunctionName)
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		if resp.Config.InvocationType != nil {
-			r.Config.InvocationType = types.StringValue(string(*resp.Config.InvocationType))
-		} else {
-			r.Config.InvocationType = types.StringNull()
-		}
-		r.Config.IsProxyIntegration = types.BoolPointerValue(resp.Config.IsProxyIntegration)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		if resp.Config.LogType != nil {
-			r.Config.LogType = types.StringValue(string(*resp.Config.LogType))
-		} else {
-			r.Config.LogType = types.StringNull()
-		}
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		r.Config.ProxyURL = types.StringPointerValue(resp.Config.ProxyURL)
-		r.Config.Qualifier = types.StringPointerValue(resp.Config.Qualifier)
-		r.Config.SkipLargeBodies = types.BoolPointerValue(resp.Config.SkipLargeBodies)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.UnhandledStatus = types.Int64PointerValue(resp.Config.UnhandledStatus)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

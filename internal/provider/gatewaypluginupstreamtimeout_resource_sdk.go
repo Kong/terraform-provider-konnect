@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPluginInput() *shared.UpstreamTimeoutPluginInput {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,28 +64,37 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	connectTimeout := new(int64)
-	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
-		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		connectTimeout = nil
+		updatedAt = nil
 	}
-	readTimeout := new(int64)
-	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
-		*readTimeout = r.Config.ReadTimeout.ValueInt64()
-	} else {
-		readTimeout = nil
-	}
-	sendTimeout := new(int64)
-	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
-		*sendTimeout = r.Config.SendTimeout.ValueInt64()
-	} else {
-		sendTimeout = nil
-	}
-	config := shared.UpstreamTimeoutPluginConfig{
-		ConnectTimeout: connectTimeout,
-		ReadTimeout:    readTimeout,
-		SendTimeout:    sendTimeout,
+	var config *shared.UpstreamTimeoutPluginConfig
+	if r.Config != nil {
+		connectTimeout := new(int64)
+		if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
+			*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+		} else {
+			connectTimeout = nil
+		}
+		readTimeout := new(int64)
+		if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
+			*readTimeout = r.Config.ReadTimeout.ValueInt64()
+		} else {
+			readTimeout = nil
+		}
+		sendTimeout := new(int64)
+		if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
+			*sendTimeout = r.Config.SendTimeout.ValueInt64()
+		} else {
+			sendTimeout = nil
+		}
+		config = &shared.UpstreamTimeoutPluginConfig{
+			ConnectTimeout: connectTimeout,
+			ReadTimeout:    readTimeout,
+			SendTimeout:    sendTimeout,
+		}
 	}
 	var consumer *shared.UpstreamTimeoutPluginConsumer
 	if r.Consumer != nil {
@@ -121,12 +136,14 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 			ID: id3,
 		}
 	}
-	out := shared.UpstreamTimeoutPluginInput{
+	out := shared.UpstreamTimeoutPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -138,9 +155,14 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 
 func (r *GatewayPluginUpstreamTimeoutResourceModel) RefreshFromSharedUpstreamTimeoutPlugin(resp *shared.UpstreamTimeoutPlugin) {
 	if resp != nil {
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.UpstreamTimeoutPluginConfig{}
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

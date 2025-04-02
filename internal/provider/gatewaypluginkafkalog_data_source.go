@@ -29,7 +29,7 @@ type GatewayPluginKafkaLogDataSource struct {
 
 // GatewayPluginKafkaLogDataSourceModel describes the data model.
 type GatewayPluginKafkaLogDataSourceModel struct {
-	Config         tfTypes.KafkaLogPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.KafkaLogPluginConfig      `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

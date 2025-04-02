@@ -9,8 +9,8 @@ import (
 
 type CreateAisemanticcachePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiSemanticCachePlugin shared.AiSemanticCachePluginInput `request:"mediaType=application/json"`
+	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiSemanticCachePlugin shared.AiSemanticCachePlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAisemanticcachePluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateAisemanticcachePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAisemanticcachePluginRequest) GetAiSemanticCachePlugin() shared.AiSemanticCachePluginInput {
+func (o *CreateAisemanticcachePluginRequest) GetAiSemanticCachePlugin() shared.AiSemanticCachePlugin {
 	if o == nil {
-		return shared.AiSemanticCachePluginInput{}
+		return shared.AiSemanticCachePlugin{}
 	}
 	return o.AiSemanticCachePlugin
 }

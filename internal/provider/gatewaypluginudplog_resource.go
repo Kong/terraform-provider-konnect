@@ -40,7 +40,7 @@ type GatewayPluginUDPLogResource struct {
 
 // GatewayPluginUDPLogResourceModel describes the resource data model.
 type GatewayPluginUDPLogResourceModel struct {
-	Config         tfTypes.UDPLogPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.UDPLogPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -64,7 +64,8 @@ func (r *GatewayPluginUDPLogResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginUDPLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
@@ -118,6 +119,7 @@ func (r *GatewayPluginUDPLogResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -203,6 +205,7 @@ func (r *GatewayPluginUDPLogResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -250,7 +253,7 @@ func (r *GatewayPluginUDPLogResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	udpLogPlugin := *data.ToSharedUDPLogPluginInput()
+	udpLogPlugin := *data.ToSharedUDPLogPlugin()
 	request := operations.CreateUdplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		UDPLogPlugin:   udpLogPlugin,
@@ -360,7 +363,7 @@ func (r *GatewayPluginUDPLogResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	udpLogPlugin := *data.ToSharedUDPLogPluginInput()
+	udpLogPlugin := *data.ToSharedUDPLogPlugin()
 	request := operations.UpdateUdplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

@@ -11,8 +11,8 @@ type UpdateUpstreamoauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	UpstreamOauthPlugin shared.UpstreamOauthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	UpstreamOauthPlugin shared.UpstreamOauthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateUpstreamoauthPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateUpstreamoauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPluginInput {
+func (o *UpdateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPlugin {
 	if o == nil {
-		return shared.UpstreamOauthPluginInput{}
+		return shared.UpstreamOauthPlugin{}
 	}
 	return o.UpstreamOauthPlugin
 }
