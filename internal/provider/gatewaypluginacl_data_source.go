@@ -29,7 +29,7 @@ type GatewayPluginACLDataSource struct {
 
 // GatewayPluginACLDataSourceModel describes the data model.
 type GatewayPluginACLDataSourceModel struct {
-	Config         tfTypes.ACLPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.ACLPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

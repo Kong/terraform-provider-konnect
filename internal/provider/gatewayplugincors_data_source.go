@@ -29,7 +29,7 @@ type GatewayPluginCorsDataSource struct {
 
 // GatewayPluginCorsDataSourceModel describes the data model.
 type GatewayPluginCorsDataSourceModel struct {
-	Config         tfTypes.CorsPluginConfig           `tfsdk:"config"`
+	Config         *tfTypes.CorsPluginConfig          `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

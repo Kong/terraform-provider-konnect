@@ -29,7 +29,7 @@ type GatewayPluginMockingDataSource struct {
 
 // GatewayPluginMockingDataSourceModel describes the data model.
 type GatewayPluginMockingDataSourceModel struct {
-	Config         tfTypes.MockingPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.MockingPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

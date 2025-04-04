@@ -18,11 +18,13 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
     id = "...my_id..."
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 9
   id               = "...my_id..."
   name             = "...my_name..."
   tags = [
     "..."
   ]
+  updated_at = 10
 }
 ```
 
@@ -37,13 +39,13 @@ resource "konnect_gateway_sni" "my_gatewaysni" {
 ### Optional
 
 - `certificate` (Attributes) The id (a UUID) of the certificate with which to associate the SNI hostname. The Certificate must have a valid private key associated with it to be used by the SNI object. (see [below for nested schema](#nestedatt--certificate))
+- `created_at` (Number) Unix epoch when the resource was created.
 - `tags` (List of String) An optional set of strings associated with the SNIs for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--certificate"></a>
 ### Nested Schema for `certificate`

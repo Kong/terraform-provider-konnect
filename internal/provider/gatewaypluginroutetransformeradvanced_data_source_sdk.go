@@ -10,10 +10,15 @@ import (
 
 func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(resp *shared.RouteTransformerAdvancedPlugin) {
 	if resp != nil {
-		r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RouteTransformerAdvancedPluginConfig{}
+			r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

@@ -21,6 +21,12 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
@@ -35,10 +41,11 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.KeyAuthWithoutParents{
-		Consumer: consumer,
-		ID:       id1,
-		Key:      key,
-		Tags:     tags,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		ID:        id1,
+		Key:       key,
+		Tags:      tags,
 	}
 	return &out
 }

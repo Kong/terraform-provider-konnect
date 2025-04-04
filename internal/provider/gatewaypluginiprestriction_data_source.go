@@ -29,7 +29,7 @@ type GatewayPluginIPRestrictionDataSource struct {
 
 // GatewayPluginIPRestrictionDataSourceModel describes the data model.
 type GatewayPluginIPRestrictionDataSourceModel struct {
-	Config         tfTypes.IPRestrictionPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.IPRestrictionPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

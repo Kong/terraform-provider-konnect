@@ -7,7 +7,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroupInput() *shared.ConsumerGroupInput {
+func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroup() *shared.ConsumerGroup {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -21,10 +27,18 @@ func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroupInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.ConsumerGroupInput{
-		ID:   id,
-		Name: name,
-		Tags: tags,
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.ConsumerGroup{
+		CreatedAt: createdAt,
+		ID:        id,
+		Name:      name,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
 	}
 	return &out
 }

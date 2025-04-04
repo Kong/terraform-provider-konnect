@@ -29,7 +29,7 @@ type GatewayPluginProxyCacheDataSource struct {
 
 // GatewayPluginProxyCacheDataSourceModel describes the data model.
 type GatewayPluginProxyCacheDataSourceModel struct {
-	Config         tfTypes.ProxyCachePluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.ProxyCachePluginConfig    `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

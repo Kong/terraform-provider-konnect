@@ -43,20 +43,20 @@ type GatewayPluginAiProxyAdvancedResource struct {
 
 // GatewayPluginAiProxyAdvancedResourceModel describes the resource data model.
 type GatewayPluginAiProxyAdvancedResourceModel struct {
-	Config         tfTypes.AiProxyAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         *tfTypes.AiProxyAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiProxyAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -68,7 +68,8 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 		MarkdownDescription: "GatewayPluginAiProxyAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"balancer": schema.SingleNestedAttribute{
 						Computed: true,
@@ -883,6 +884,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -968,6 +970,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Schema(ctx context.Context, req r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -1015,7 +1018,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPluginInput()
+	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPlugin()
 	request := operations.CreateAiproxyadvancedPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		AiProxyAdvancedPlugin: aiProxyAdvancedPlugin,
@@ -1125,7 +1128,7 @@ func (r *GatewayPluginAiProxyAdvancedResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPluginInput()
+	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPlugin()
 	request := operations.UpdateAiproxyadvancedPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,

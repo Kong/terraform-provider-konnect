@@ -10,9 +10,14 @@ import (
 
 func (r *GatewayPluginGrpcWebDataSourceModel) RefreshFromSharedGrpcWebPlugin(resp *shared.GrpcWebPlugin) {
 	if resp != nil {
-		r.Config.AllowOriginHeader = types.StringPointerValue(resp.Config.AllowOriginHeader)
-		r.Config.PassStrippedPath = types.BoolPointerValue(resp.Config.PassStrippedPath)
-		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.GrpcWebPluginConfig{}
+			r.Config.AllowOriginHeader = types.StringPointerValue(resp.Config.AllowOriginHeader)
+			r.Config.PassStrippedPath = types.BoolPointerValue(resp.Config.PassStrippedPath)
+			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

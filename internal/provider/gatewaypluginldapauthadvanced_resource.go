@@ -36,18 +36,18 @@ type GatewayPluginLdapAuthAdvancedResource struct {
 
 // GatewayPluginLdapAuthAdvancedResourceModel describes the resource data model.
 type GatewayPluginLdapAuthAdvancedResourceModel struct {
-	Config         tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         *tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginLdapAuthAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -59,7 +59,8 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginLdapAuthAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -189,6 +190,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -274,6 +276,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Schema(ctx context.Context, req 
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -321,7 +324,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPluginInput()
+	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPlugin()
 	request := operations.CreateLdapauthadvancedPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		LdapAuthAdvancedPlugin: ldapAuthAdvancedPlugin,
@@ -431,7 +434,7 @@ func (r *GatewayPluginLdapAuthAdvancedResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPluginInput()
+	ldapAuthAdvancedPlugin := *data.ToSharedLdapAuthAdvancedPlugin()
 	request := operations.UpdateLdapauthadvancedPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

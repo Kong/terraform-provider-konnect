@@ -9,8 +9,8 @@ import (
 
 type CreateHeadercertauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	HeaderCertAuthPlugin shared.HeaderCertAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID       string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	HeaderCertAuthPlugin shared.HeaderCertAuthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateHeadercertauthPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateHeadercertauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateHeadercertauthPluginRequest) GetHeaderCertAuthPlugin() shared.HeaderCertAuthPluginInput {
+func (o *CreateHeadercertauthPluginRequest) GetHeaderCertAuthPlugin() shared.HeaderCertAuthPlugin {
 	if o == nil {
-		return shared.HeaderCertAuthPluginInput{}
+		return shared.HeaderCertAuthPlugin{}
 	}
 	return o.HeaderCertAuthPlugin
 }

@@ -39,7 +39,7 @@ type GatewayPluginAiProxyResource struct {
 
 // GatewayPluginAiProxyResourceModel describes the resource data model.
 type GatewayPluginAiProxyResourceModel struct {
-	Config         tfTypes.AiProxyPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.AiProxyPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -64,7 +64,8 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginAiProxy Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"auth": schema.SingleNestedAttribute{
 						Computed: true,
@@ -407,6 +408,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -492,6 +494,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -539,7 +542,7 @@ func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyPlugin := *data.ToSharedAiProxyPluginInput()
+	aiProxyPlugin := *data.ToSharedAiProxyPlugin()
 	request := operations.CreateAiproxyPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		AiProxyPlugin:  aiProxyPlugin,
@@ -649,7 +652,7 @@ func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiProxyPlugin := *data.ToSharedAiProxyPluginInput()
+	aiProxyPlugin := *data.ToSharedAiProxyPlugin()
 	request := operations.UpdateAiproxyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

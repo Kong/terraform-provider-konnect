@@ -11,8 +11,8 @@ type UpdateJwtPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JwtPlugin      shared.JwtPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JwtPlugin      shared.JwtPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJwtPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateJwtPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateJwtPluginRequest) GetJwtPlugin() shared.JwtPluginInput {
+func (o *UpdateJwtPluginRequest) GetJwtPlugin() shared.JwtPlugin {
 	if o == nil {
-		return shared.JwtPluginInput{}
+		return shared.JwtPlugin{}
 	}
 	return o.JwtPlugin
 }

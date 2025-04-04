@@ -11,8 +11,8 @@ type UpdateServiceprotectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID          string                              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ServiceProtectionPlugin shared.ServiceProtectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID          string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ServiceProtectionPlugin shared.ServiceProtectionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateServiceprotectionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateServiceprotectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPluginInput {
+func (o *UpdateServiceprotectionPluginRequest) GetServiceProtectionPlugin() shared.ServiceProtectionPlugin {
 	if o == nil {
-		return shared.ServiceProtectionPluginInput{}
+		return shared.ServiceProtectionPlugin{}
 	}
 	return o.ServiceProtectionPlugin
 }

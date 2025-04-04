@@ -11,8 +11,8 @@ type UpdateGraphqlratelimitingadvancedPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                    string                                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	GraphqlRateLimitingAdvancedPlugin shared.GraphqlRateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID                    string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	GraphqlRateLimitingAdvancedPlugin shared.GraphqlRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateGraphqlratelimitingadvancedPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateGraphqlratelimitingadvancedPluginRequest) GetControlPlaneID() str
 	return o.ControlPlaneID
 }
 
-func (o *UpdateGraphqlratelimitingadvancedPluginRequest) GetGraphqlRateLimitingAdvancedPlugin() shared.GraphqlRateLimitingAdvancedPluginInput {
+func (o *UpdateGraphqlratelimitingadvancedPluginRequest) GetGraphqlRateLimitingAdvancedPlugin() shared.GraphqlRateLimitingAdvancedPlugin {
 	if o == nil {
-		return shared.GraphqlRateLimitingAdvancedPluginInput{}
+		return shared.GraphqlRateLimitingAdvancedPlugin{}
 	}
 	return o.GraphqlRateLimitingAdvancedPlugin
 }

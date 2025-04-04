@@ -29,7 +29,7 @@ type GatewayPluginJwtSignerDataSource struct {
 
 // GatewayPluginJwtSignerDataSourceModel describes the data model.
 type GatewayPluginJwtSignerDataSourceModel struct {
-	Config         tfTypes.JwtSignerPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.JwtSignerPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

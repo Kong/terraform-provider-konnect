@@ -38,7 +38,7 @@ type GatewayPluginOauth2Resource struct {
 
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
-	Config         tfTypes.Oauth2PluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.Oauth2PluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,7 +61,8 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"accept_http_if_already_terminated": schema.BoolAttribute{
 						Computed:    true,
@@ -171,6 +172,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -256,6 +258,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -303,7 +306,7 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := *data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2Plugin()
 	request := operations.CreateOauth2PluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Oauth2Plugin:   oauth2Plugin,
@@ -413,7 +416,7 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := *data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2Plugin()
 	request := operations.UpdateOauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

@@ -36,7 +36,7 @@ type GatewayPluginMockingResource struct {
 
 // GatewayPluginMockingResourceModel describes the resource data model.
 type GatewayPluginMockingResourceModel struct {
-	Config         tfTypes.MockingPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.MockingPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginMocking Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"api_specification": schema.StringAttribute{
 						Computed:    true,
@@ -138,6 +139,7 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -223,6 +225,7 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -270,7 +273,7 @@ func (r *GatewayPluginMockingResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := *data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPlugin()
 	request := operations.CreateMockingPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		MockingPlugin:  mockingPlugin,
@@ -380,7 +383,7 @@ func (r *GatewayPluginMockingResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := *data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPlugin()
 	request := operations.UpdateMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

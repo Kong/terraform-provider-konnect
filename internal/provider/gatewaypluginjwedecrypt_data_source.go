@@ -29,7 +29,7 @@ type GatewayPluginJweDecryptDataSource struct {
 
 // GatewayPluginJweDecryptDataSourceModel describes the data model.
 type GatewayPluginJweDecryptDataSourceModel struct {
-	Config         tfTypes.JweDecryptPluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.JweDecryptPluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

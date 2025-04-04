@@ -29,7 +29,7 @@ type GatewayPluginForwardProxyDataSource struct {
 
 // GatewayPluginForwardProxyDataSourceModel describes the data model.
 type GatewayPluginForwardProxyDataSourceModel struct {
-	Config         tfTypes.ForwardProxyPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.ForwardProxyPluginConfig  `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

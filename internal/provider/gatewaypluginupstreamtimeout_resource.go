@@ -38,19 +38,19 @@ type GatewayPluginUpstreamTimeoutResource struct {
 
 // GatewayPluginUpstreamTimeoutResourceModel describes the resource data model.
 type GatewayPluginUpstreamTimeoutResourceModel struct {
-	Config         tfTypes.UpstreamTimeoutPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         *tfTypes.UpstreamTimeoutPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginUpstreamTimeoutResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,8 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 		MarkdownDescription: "GatewayPluginUpstreamTimeout Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -113,6 +114,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -198,6 +200,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Schema(ctx context.Context, req r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -245,7 +248,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPluginInput()
+	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPlugin()
 	request := operations.CreateUpstreamtimeoutPluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		UpstreamTimeoutPlugin: upstreamTimeoutPlugin,
@@ -355,7 +358,7 @@ func (r *GatewayPluginUpstreamTimeoutResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPluginInput()
+	upstreamTimeoutPlugin := *data.ToSharedUpstreamTimeoutPlugin()
 	request := operations.UpdateUpstreamtimeoutPluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,

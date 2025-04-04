@@ -58,6 +58,7 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -74,6 +75,7 @@ func (r *GatewayConsumerGroupResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -121,7 +123,7 @@ func (r *GatewayConsumerGroupResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	consumerGroup := *data.ToSharedConsumerGroupInput()
+	consumerGroup := *data.ToSharedConsumerGroup()
 	request := operations.CreateConsumerGroupRequest{
 		ControlPlaneID: controlPlaneID,
 		ConsumerGroup:  consumerGroup,
@@ -231,7 +233,7 @@ func (r *GatewayConsumerGroupResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	consumerGroup := *data.ToSharedConsumerGroupInput()
+	consumerGroup := *data.ToSharedConsumerGroup()
 	request := operations.UpsertConsumerGroupRequest{
 		ConsumerGroupID: consumerGroupID,
 		ControlPlaneID:  controlPlaneID,

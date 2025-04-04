@@ -1064,8 +1064,8 @@ type SamlPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64           `json:"updated_at,omitempty"`
-	Config    SamlPluginConfig `json:"config"`
+	UpdatedAt *int64            `json:"updated_at,omitempty"`
+	Config    *SamlPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
 	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -1138,9 +1138,9 @@ func (o *SamlPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *SamlPlugin) GetConfig() SamlPluginConfig {
+func (o *SamlPlugin) GetConfig() *SamlPluginConfig {
 	if o == nil {
-		return SamlPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -1160,103 +1160,6 @@ func (o *SamlPlugin) GetRoute() *SamlPluginRoute {
 }
 
 func (o *SamlPlugin) GetService() *SamlPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// SamlPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type SamlPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool               `json:"enabled,omitempty"`
-	ID           *string             `json:"id,omitempty"`
-	InstanceName *string             `json:"instance_name,omitempty"`
-	name         string              `const:"saml" json:"name"`
-	Ordering     *SamlPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string         `json:"tags,omitempty"`
-	Config SamlPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
-	Protocols []SamlPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *SamlPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *SamlPluginService `json:"service"`
-}
-
-func (s SamlPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *SamlPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *SamlPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *SamlPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *SamlPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *SamlPluginInput) GetName() string {
-	return "saml"
-}
-
-func (o *SamlPluginInput) GetOrdering() *SamlPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *SamlPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *SamlPluginInput) GetConfig() SamlPluginConfig {
-	if o == nil {
-		return SamlPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *SamlPluginInput) GetProtocols() []SamlPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *SamlPluginInput) GetRoute() *SamlPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *SamlPluginInput) GetService() *SamlPluginService {
 	if o == nil {
 		return nil
 	}

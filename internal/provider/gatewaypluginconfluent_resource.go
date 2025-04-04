@@ -41,7 +41,7 @@ type GatewayPluginConfluentResource struct {
 
 // GatewayPluginConfluentResourceModel describes the resource data model.
 type GatewayPluginConfluentResourceModel struct {
-	Config         tfTypes.ConfluentPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.ConfluentPluginConfig     `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginConfluent Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"bootstrap_servers": schema.ListNestedAttribute{
 						Computed: true,
@@ -233,6 +234,7 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -318,6 +320,7 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -365,7 +368,7 @@ func (r *GatewayPluginConfluentResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	confluentPlugin := *data.ToSharedConfluentPluginInput()
+	confluentPlugin := *data.ToSharedConfluentPlugin()
 	request := operations.CreateConfluentPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		ConfluentPlugin: confluentPlugin,
@@ -475,7 +478,7 @@ func (r *GatewayPluginConfluentResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	confluentPlugin := *data.ToSharedConfluentPluginInput()
+	confluentPlugin := *data.ToSharedConfluentPlugin()
 	request := operations.UpdateConfluentPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

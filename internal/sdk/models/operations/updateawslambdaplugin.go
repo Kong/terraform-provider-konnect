@@ -11,8 +11,8 @@ type UpdateAwslambdaPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AwsLambdaPlugin shared.AwsLambdaPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AwsLambdaPlugin shared.AwsLambdaPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAwslambdaPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateAwslambdaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPluginInput {
+func (o *UpdateAwslambdaPluginRequest) GetAwsLambdaPlugin() shared.AwsLambdaPlugin {
 	if o == nil {
-		return shared.AwsLambdaPluginInput{}
+		return shared.AwsLambdaPlugin{}
 	}
 	return o.AwsLambdaPlugin
 }

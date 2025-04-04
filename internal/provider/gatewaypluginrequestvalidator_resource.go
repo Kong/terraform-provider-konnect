@@ -41,19 +41,19 @@ type GatewayPluginRequestValidatorResource struct {
 
 // GatewayPluginRequestValidatorResourceModel describes the resource data model.
 type GatewayPluginRequestValidatorResourceModel struct {
-	Config         tfTypes.RequestValidatorPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         *tfTypes.RequestValidatorPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestValidatorResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,8 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginRequestValidator Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allowed_content_types": schema.ListAttribute{
 						Computed:    true,
@@ -191,6 +192,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -276,6 +278,7 @@ func (r *GatewayPluginRequestValidatorResource) Schema(ctx context.Context, req 
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -323,7 +326,7 @@ func (r *GatewayPluginRequestValidatorResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestValidatorPlugin := *data.ToSharedRequestValidatorPluginInput()
+	requestValidatorPlugin := *data.ToSharedRequestValidatorPlugin()
 	request := operations.CreateRequestvalidatorPluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		RequestValidatorPlugin: requestValidatorPlugin,
@@ -433,7 +436,7 @@ func (r *GatewayPluginRequestValidatorResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestValidatorPlugin := *data.ToSharedRequestValidatorPluginInput()
+	requestValidatorPlugin := *data.ToSharedRequestValidatorPlugin()
 	request := operations.UpdateRequestvalidatorPluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

@@ -29,7 +29,7 @@ type GatewayPluginAiProxyDataSource struct {
 
 // GatewayPluginAiProxyDataSourceModel describes the data model.
 type GatewayPluginAiProxyDataSourceModel struct {
-	Config         tfTypes.AiProxyPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.AiProxyPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

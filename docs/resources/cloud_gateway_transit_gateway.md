@@ -235,7 +235,14 @@ attachment. (see [below for nested schema](#nestedatt--aws_transit_gateway_respo
 transit gateway.
 - `id` (String)
 - `name` (String) Human-readable name of the transit gateway.
-- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
@@ -274,7 +281,14 @@ attachment. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_r
 transit gateway.
 - `id` (String)
 - `name` (String) Human-readable name of the transit gateway.
-- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 
@@ -312,7 +326,14 @@ attachment. (see [below for nested schema](#nestedatt--azure_transit_gateway_res
 transit gateway.
 - `id` (String)
 - `name` (String) Human-readable name of the transit gateway.
-- `state` (String) State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]
+- `state` (String) The current state of the Transit Gateway. Possible values:
+- `created` - The attachment has been created but is not attached to transit gateway.
+- `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+- `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+- `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+- `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+- `terminated` - The attachment has been fully deleted and is no longer available.
+must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]
 - `transit_gateway_attachment_config` (Attributes) (see [below for nested schema](#nestedatt--azure_transit_gateway_response--transit_gateway_attachment_config))
 - `updated_at` (String) An RFC-3339 timestamp representation of transit gateway update date.
 

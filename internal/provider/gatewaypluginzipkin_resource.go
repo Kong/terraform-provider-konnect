@@ -41,7 +41,7 @@ type GatewayPluginZipkinResource struct {
 
 // GatewayPluginZipkinResourceModel describes the resource data model.
 type GatewayPluginZipkinResourceModel struct {
-	Config         tfTypes.ZipkinPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.ZipkinPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginZipkin Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -341,6 +342,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -426,6 +428,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -473,7 +476,7 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := *data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPlugin()
 	request := operations.CreateZipkinPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		ZipkinPlugin:   zipkinPlugin,
@@ -583,7 +586,7 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := *data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPlugin()
 	request := operations.UpdateZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

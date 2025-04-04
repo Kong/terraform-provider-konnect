@@ -40,19 +40,19 @@ type GatewayPluginGraphqlRateLimitingAdvancedResource struct {
 
 // GatewayPluginGraphqlRateLimitingAdvancedResourceModel describes the resource data model.
 type GatewayPluginGraphqlRateLimitingAdvancedResourceModel struct {
-	Config         tfTypes.GraphqlRateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer              `tfsdk:"consumer"`
-	ControlPlaneID types.String                                    `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                     `tfsdk:"created_at"`
-	Enabled        types.Bool                                      `tfsdk:"enabled"`
-	ID             types.String                                    `tfsdk:"id"`
-	InstanceName   types.String                                    `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                      `tfsdk:"ordering"`
-	Protocols      []types.String                                  `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer              `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer              `tfsdk:"service"`
-	Tags           []types.String                                  `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                     `tfsdk:"updated_at"`
+	Config         *tfTypes.GraphqlRateLimitingAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer               `tfsdk:"consumer"`
+	ControlPlaneID types.String                                     `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                      `tfsdk:"created_at"`
+	Enabled        types.Bool                                       `tfsdk:"enabled"`
+	ID             types.String                                     `tfsdk:"id"`
+	InstanceName   types.String                                     `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                       `tfsdk:"ordering"`
+	Protocols      []types.String                                   `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer               `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer               `tfsdk:"service"`
+	Tags           []types.String                                   `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                      `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 		MarkdownDescription: "GatewayPluginGraphqlRateLimitingAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"cost_strategy": schema.StringAttribute{
 						Computed:    true,
@@ -354,6 +355,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -439,6 +441,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -486,7 +489,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
+	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPlugin()
 	request := operations.CreateGraphqlratelimitingadvancedPluginRequest{
 		ControlPlaneID:                    controlPlaneID,
 		GraphqlRateLimitingAdvancedPlugin: graphqlRateLimitingAdvancedPlugin,
@@ -596,7 +599,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPluginInput()
+	graphqlRateLimitingAdvancedPlugin := *data.ToSharedGraphqlRateLimitingAdvancedPlugin()
 	request := operations.UpdateGraphqlratelimitingadvancedPluginRequest{
 		PluginID:                          pluginID,
 		ControlPlaneID:                    controlPlaneID,

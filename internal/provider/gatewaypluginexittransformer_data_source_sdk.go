@@ -10,12 +10,17 @@ import (
 
 func (r *GatewayPluginExitTransformerDataSourceModel) RefreshFromSharedExitTransformerPlugin(resp *shared.ExitTransformerPlugin) {
 	if resp != nil {
-		r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
-		for _, v := range resp.Config.Functions {
-			r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ExitTransformerPluginConfig{}
+			r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
+			for _, v := range resp.Config.Functions {
+				r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+			}
+			r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
+			r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		}
-		r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
-		r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

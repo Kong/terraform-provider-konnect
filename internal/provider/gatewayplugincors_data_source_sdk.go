@@ -11,30 +11,35 @@ import (
 
 func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(resp *shared.CorsPlugin) {
 	if resp != nil {
-		r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-		r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
-		for _, v := range resp.Config.ExposedHeaders {
-			r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
-		}
-		r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
-		for _, v := range resp.Config.Headers {
-			r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
-		}
-		if resp.Config.MaxAge != nil {
-			r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.MaxAge = types.NumberNull()
+			r.Config = &tfTypes.CorsPluginConfig{}
+			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
+			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
+			for _, v := range resp.Config.ExposedHeaders {
+				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			}
+			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
+			for _, v := range resp.Config.Headers {
+				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			}
+			if resp.Config.MaxAge != nil {
+				r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+			} else {
+				r.Config.MaxAge = types.NumberNull()
+			}
+			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
+			for _, v := range resp.Config.Methods {
+				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
+			}
+			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
+			for _, v := range resp.Config.Origins {
+				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			}
+			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
+			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		}
-		r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
-		for _, v := range resp.Config.Methods {
-			r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
-		}
-		r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
-		for _, v := range resp.Config.Origins {
-			r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
-		}
-		r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
-		r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

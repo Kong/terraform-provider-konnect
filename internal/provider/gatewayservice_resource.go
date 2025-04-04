@@ -101,6 +101,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -127,11 +128,13 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 				Description: `The path to be used in requests to the upstream server.`,
 			},
 			"port": schema.Int64Attribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The upstream server port.`,
 			},
 			"protocol": schema.StringAttribute{
-				Required:    true,
+				Computed:    true,
+				Optional:    true,
 				Description: `The protocol used to communicate with the upstream. must be one of ["grpc", "grpcs", "http", "https", "tcp", "tls", "tls_passthrough", "udp", "ws", "wss"]`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
@@ -176,6 +179,7 @@ func (r *GatewayServiceResource) Schema(ctx context.Context, req resource.Schema
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"write_timeout": schema.Int64Attribute{
@@ -228,7 +232,7 @@ func (r *GatewayServiceResource) Create(ctx context.Context, req resource.Create
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	service := *data.ToSharedServiceInput()
+	service := *data.ToSharedService()
 	request := operations.CreateServiceRequest{
 		ControlPlaneID: controlPlaneID,
 		Service:        service,
@@ -338,7 +342,7 @@ func (r *GatewayServiceResource) Update(ctx context.Context, req resource.Update
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	service := *data.ToSharedServiceInput()
+	service := *data.ToSharedService()
 	request := operations.UpsertServiceRequest{
 		ServiceID:      serviceID,
 		ControlPlaneID: controlPlaneID,

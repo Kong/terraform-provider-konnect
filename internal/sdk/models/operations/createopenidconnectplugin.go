@@ -9,8 +9,8 @@ import (
 
 type CreateOpenidconnectPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	OpenidConnectPlugin shared.OpenidConnectPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpenidConnectPlugin shared.OpenidConnectPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateOpenidconnectPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOpenidconnectPluginRequest) GetOpenidConnectPlugin() shared.OpenidConnectPluginInput {
+func (o *CreateOpenidconnectPluginRequest) GetOpenidConnectPlugin() shared.OpenidConnectPlugin {
 	if o == nil {
-		return shared.OpenidConnectPluginInput{}
+		return shared.OpenidConnectPlugin{}
 	}
 	return o.OpenidConnectPlugin
 }

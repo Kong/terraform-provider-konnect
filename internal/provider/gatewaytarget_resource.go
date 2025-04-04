@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/numberplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -21,6 +22,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
+	speakeasy_numberplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/numberplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
@@ -69,8 +71,13 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
 			"created_at": schema.NumberAttribute{
-				Computed:    true,
-				Description: `Unix epoch when the resource was created.`,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Number{
+					numberplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
+				},
+				Description: `Unix epoch when the resource was created. Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -101,8 +108,13 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed.`,
 			},
 			"updated_at": schema.NumberAttribute{
-				Computed:    true,
-				Description: `Unix epoch when the resource was last updated.`,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Number{
+					numberplanmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_numberplanmodifier.SuppressDiff(speakeasy_numberplanmodifier.ExplicitSuppress),
+				},
+				Description: `Unix epoch when the resource was last updated. Requires replacement if changed.`,
 			},
 			"upstream": schema.SingleNestedAttribute{
 				Computed: true,

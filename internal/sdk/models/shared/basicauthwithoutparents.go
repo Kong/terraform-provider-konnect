@@ -15,10 +15,12 @@ func (o *BasicAuthWithoutParentsConsumer) GetID() *string {
 
 type BasicAuthWithoutParents struct {
 	Consumer *BasicAuthWithoutParentsConsumer `json:"consumer"`
-	ID       *string                          `json:"id,omitempty"`
-	Password string                           `json:"password"`
-	Tags     []string                         `json:"tags,omitempty"`
-	Username string                           `json:"username"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Password  string   `json:"password"`
+	Tags      []string `json:"tags,omitempty"`
+	Username  string   `json:"username"`
 }
 
 func (o *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer {
@@ -26,6 +28,13 @@ func (o *BasicAuthWithoutParents) GetConsumer() *BasicAuthWithoutParentsConsumer
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *BasicAuthWithoutParents) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *BasicAuthWithoutParents) GetID() *string {

@@ -27,6 +27,12 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
@@ -58,6 +64,7 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
 		Consumer:     consumer,
+		CreatedAt:    createdAt,
 		ID:           id1,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,

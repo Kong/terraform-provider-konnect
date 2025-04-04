@@ -10,9 +10,14 @@ import (
 
 func (r *GatewayPluginUpstreamTimeoutDataSourceModel) RefreshFromSharedUpstreamTimeoutPlugin(resp *shared.UpstreamTimeoutPlugin) {
 	if resp != nil {
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.UpstreamTimeoutPluginConfig{}
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

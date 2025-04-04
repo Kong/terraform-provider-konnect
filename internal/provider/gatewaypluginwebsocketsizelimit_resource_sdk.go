@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimitPluginInput() *shared.WebsocketSizeLimitPluginInput {
+func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimitPlugin() *shared.WebsocketSizeLimitPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,21 +64,30 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	clientMaxPayload := new(int64)
-	if !r.Config.ClientMaxPayload.IsUnknown() && !r.Config.ClientMaxPayload.IsNull() {
-		*clientMaxPayload = r.Config.ClientMaxPayload.ValueInt64()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		clientMaxPayload = nil
+		updatedAt = nil
 	}
-	upstreamMaxPayload := new(int64)
-	if !r.Config.UpstreamMaxPayload.IsUnknown() && !r.Config.UpstreamMaxPayload.IsNull() {
-		*upstreamMaxPayload = r.Config.UpstreamMaxPayload.ValueInt64()
-	} else {
-		upstreamMaxPayload = nil
-	}
-	config := shared.WebsocketSizeLimitPluginConfig{
-		ClientMaxPayload:   clientMaxPayload,
-		UpstreamMaxPayload: upstreamMaxPayload,
+	var config *shared.WebsocketSizeLimitPluginConfig
+	if r.Config != nil {
+		clientMaxPayload := new(int64)
+		if !r.Config.ClientMaxPayload.IsUnknown() && !r.Config.ClientMaxPayload.IsNull() {
+			*clientMaxPayload = r.Config.ClientMaxPayload.ValueInt64()
+		} else {
+			clientMaxPayload = nil
+		}
+		upstreamMaxPayload := new(int64)
+		if !r.Config.UpstreamMaxPayload.IsUnknown() && !r.Config.UpstreamMaxPayload.IsNull() {
+			*upstreamMaxPayload = r.Config.UpstreamMaxPayload.ValueInt64()
+		} else {
+			upstreamMaxPayload = nil
+		}
+		config = &shared.WebsocketSizeLimitPluginConfig{
+			ClientMaxPayload:   clientMaxPayload,
+			UpstreamMaxPayload: upstreamMaxPayload,
+		}
 	}
 	var consumer *shared.WebsocketSizeLimitPluginConsumer
 	if r.Consumer != nil {
@@ -114,12 +129,14 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 			ID: id3,
 		}
 	}
-	out := shared.WebsocketSizeLimitPluginInput{
+	out := shared.WebsocketSizeLimitPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -131,8 +148,13 @@ func (r *GatewayPluginWebsocketSizeLimitResourceModel) ToSharedWebsocketSizeLimi
 
 func (r *GatewayPluginWebsocketSizeLimitResourceModel) RefreshFromSharedWebsocketSizeLimitPlugin(resp *shared.WebsocketSizeLimitPlugin) {
 	if resp != nil {
-		r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
-		r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.WebsocketSizeLimitPluginConfig{}
+			r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
+			r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

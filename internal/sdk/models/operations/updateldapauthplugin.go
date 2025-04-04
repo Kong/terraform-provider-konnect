@@ -11,8 +11,8 @@ type UpdateLdapauthPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	LdapAuthPlugin shared.LdapAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LdapAuthPlugin shared.LdapAuthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateLdapauthPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateLdapauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPluginInput {
+func (o *UpdateLdapauthPluginRequest) GetLdapAuthPlugin() shared.LdapAuthPlugin {
 	if o == nil {
-		return shared.LdapAuthPluginInput{}
+		return shared.LdapAuthPlugin{}
 	}
 	return o.LdapAuthPlugin
 }

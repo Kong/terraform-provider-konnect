@@ -11,69 +11,74 @@ import (
 
 func (r *GatewayPluginSessionDataSourceModel) RefreshFromSharedSessionPlugin(resp *shared.SessionPlugin) {
 	if resp != nil {
-		if resp.Config.AbsoluteTimeout != nil {
-			r.Config.AbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.AbsoluteTimeout)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.AbsoluteTimeout = types.NumberNull()
-		}
-		r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
-		r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
-		r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
-		r.Config.CookieName = types.StringPointerValue(resp.Config.CookieName)
-		r.Config.CookiePath = types.StringPointerValue(resp.Config.CookiePath)
-		if resp.Config.CookieSameSite != nil {
-			r.Config.CookieSameSite = types.StringValue(string(*resp.Config.CookieSameSite))
-		} else {
-			r.Config.CookieSameSite = types.StringNull()
-		}
-		r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
-		if resp.Config.IdlingTimeout != nil {
-			r.Config.IdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.IdlingTimeout)))
-		} else {
-			r.Config.IdlingTimeout = types.NumberNull()
-		}
-		r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
-		for _, v := range resp.Config.LogoutMethods {
-			r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
-		}
-		r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
-		r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
-		r.Config.ReadBodyForLogout = types.BoolPointerValue(resp.Config.ReadBodyForLogout)
-		r.Config.Remember = types.BoolPointerValue(resp.Config.Remember)
-		if resp.Config.RememberAbsoluteTimeout != nil {
-			r.Config.RememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberAbsoluteTimeout)))
-		} else {
-			r.Config.RememberAbsoluteTimeout = types.NumberNull()
-		}
-		r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
-		if resp.Config.RememberRollingTimeout != nil {
-			r.Config.RememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberRollingTimeout)))
-		} else {
-			r.Config.RememberRollingTimeout = types.NumberNull()
-		}
-		r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
-		for _, v := range resp.Config.RequestHeaders {
-			r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
-		}
-		r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
-		for _, v := range resp.Config.ResponseHeaders {
-			r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
-		}
-		if resp.Config.RollingTimeout != nil {
-			r.Config.RollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RollingTimeout)))
-		} else {
-			r.Config.RollingTimeout = types.NumberNull()
-		}
-		r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
-		if resp.Config.StaleTTL != nil {
-			r.Config.StaleTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.StaleTTL)))
-		} else {
-			r.Config.StaleTTL = types.NumberNull()
-		}
-		if resp.Config.Storage != nil {
-			r.Config.Storage = types.StringValue(string(*resp.Config.Storage))
-		} else {
-			r.Config.Storage = types.StringNull()
+			r.Config = &tfTypes.SessionPluginConfig{}
+			if resp.Config.AbsoluteTimeout != nil {
+				r.Config.AbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.AbsoluteTimeout)))
+			} else {
+				r.Config.AbsoluteTimeout = types.NumberNull()
+			}
+			r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
+			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
+			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
+			r.Config.CookieName = types.StringPointerValue(resp.Config.CookieName)
+			r.Config.CookiePath = types.StringPointerValue(resp.Config.CookiePath)
+			if resp.Config.CookieSameSite != nil {
+				r.Config.CookieSameSite = types.StringValue(string(*resp.Config.CookieSameSite))
+			} else {
+				r.Config.CookieSameSite = types.StringNull()
+			}
+			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
+			if resp.Config.IdlingTimeout != nil {
+				r.Config.IdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.IdlingTimeout)))
+			} else {
+				r.Config.IdlingTimeout = types.NumberNull()
+			}
+			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
+			for _, v := range resp.Config.LogoutMethods {
+				r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
+			}
+			r.Config.LogoutPostArg = types.StringPointerValue(resp.Config.LogoutPostArg)
+			r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
+			r.Config.ReadBodyForLogout = types.BoolPointerValue(resp.Config.ReadBodyForLogout)
+			r.Config.Remember = types.BoolPointerValue(resp.Config.Remember)
+			if resp.Config.RememberAbsoluteTimeout != nil {
+				r.Config.RememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberAbsoluteTimeout)))
+			} else {
+				r.Config.RememberAbsoluteTimeout = types.NumberNull()
+			}
+			r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
+			if resp.Config.RememberRollingTimeout != nil {
+				r.Config.RememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberRollingTimeout)))
+			} else {
+				r.Config.RememberRollingTimeout = types.NumberNull()
+			}
+			r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
+			for _, v := range resp.Config.RequestHeaders {
+				r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
+			}
+			r.Config.ResponseHeaders = make([]types.String, 0, len(resp.Config.ResponseHeaders))
+			for _, v := range resp.Config.ResponseHeaders {
+				r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
+			}
+			if resp.Config.RollingTimeout != nil {
+				r.Config.RollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RollingTimeout)))
+			} else {
+				r.Config.RollingTimeout = types.NumberNull()
+			}
+			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
+			if resp.Config.StaleTTL != nil {
+				r.Config.StaleTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.StaleTTL)))
+			} else {
+				r.Config.StaleTTL = types.NumberNull()
+			}
+			if resp.Config.Storage != nil {
+				r.Config.Storage = types.StringValue(string(*resp.Config.Storage))
+			} else {
+				r.Config.Storage = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

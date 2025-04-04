@@ -29,7 +29,7 @@ type GatewayPluginRateLimitingDataSource struct {
 
 // GatewayPluginRateLimitingDataSourceModel describes the data model.
 type GatewayPluginRateLimitingDataSourceModel struct {
-	Config         tfTypes.RateLimitingPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.RateLimitingPluginConfig  `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

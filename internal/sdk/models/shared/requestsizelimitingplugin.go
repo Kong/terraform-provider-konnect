@@ -190,8 +190,8 @@ type RequestSizeLimitingPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                          `json:"updated_at,omitempty"`
-	Config    RequestSizeLimitingPluginConfig `json:"config"`
+	UpdatedAt *int64                           `json:"updated_at,omitempty"`
+	Config    *RequestSizeLimitingPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer"`
 	// A set of strings representing HTTP protocols.
@@ -266,9 +266,9 @@ func (o *RequestSizeLimitingPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *RequestSizeLimitingPlugin) GetConfig() RequestSizeLimitingPluginConfig {
+func (o *RequestSizeLimitingPlugin) GetConfig() *RequestSizeLimitingPluginConfig {
 	if o == nil {
-		return RequestSizeLimitingPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -295,112 +295,6 @@ func (o *RequestSizeLimitingPlugin) GetRoute() *RequestSizeLimitingPluginRoute {
 }
 
 func (o *RequestSizeLimitingPlugin) GetService() *RequestSizeLimitingPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// RequestSizeLimitingPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type RequestSizeLimitingPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                              `json:"enabled,omitempty"`
-	ID           *string                            `json:"id,omitempty"`
-	InstanceName *string                            `json:"instance_name,omitempty"`
-	name         string                             `const:"request-size-limiting" json:"name"`
-	Ordering     *RequestSizeLimitingPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string                        `json:"tags,omitempty"`
-	Config RequestSizeLimitingPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *RequestSizeLimitingPluginConsumer `json:"consumer"`
-	// A set of strings representing HTTP protocols.
-	Protocols []RequestSizeLimitingPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *RequestSizeLimitingPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *RequestSizeLimitingPluginService `json:"service"`
-}
-
-func (r RequestSizeLimitingPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(r, "", false)
-}
-
-func (r *RequestSizeLimitingPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &r, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *RequestSizeLimitingPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *RequestSizeLimitingPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *RequestSizeLimitingPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *RequestSizeLimitingPluginInput) GetName() string {
-	return "request-size-limiting"
-}
-
-func (o *RequestSizeLimitingPluginInput) GetOrdering() *RequestSizeLimitingPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *RequestSizeLimitingPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *RequestSizeLimitingPluginInput) GetConfig() RequestSizeLimitingPluginConfig {
-	if o == nil {
-		return RequestSizeLimitingPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *RequestSizeLimitingPluginInput) GetConsumer() *RequestSizeLimitingPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *RequestSizeLimitingPluginInput) GetProtocols() []RequestSizeLimitingPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *RequestSizeLimitingPluginInput) GetRoute() *RequestSizeLimitingPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *RequestSizeLimitingPluginInput) GetService() *RequestSizeLimitingPluginService {
 	if o == nil {
 		return nil
 	}

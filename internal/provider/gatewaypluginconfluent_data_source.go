@@ -29,7 +29,7 @@ type GatewayPluginConfluentDataSource struct {
 
 // GatewayPluginConfluentDataSourceModel describes the data model.
 type GatewayPluginConfluentDataSourceModel struct {
-	Config         tfTypes.ConfluentPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.ConfluentPluginConfig     `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

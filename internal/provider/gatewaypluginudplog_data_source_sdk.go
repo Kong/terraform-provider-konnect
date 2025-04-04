@@ -12,19 +12,24 @@ import (
 
 func (r *GatewayPluginUDPLogDataSourceModel) RefreshFromSharedUDPLogPlugin(resp *shared.UDPLogPlugin) {
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
-			}
-		}
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Timeout = types.NumberNull()
+			r.Config = &tfTypes.UDPLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

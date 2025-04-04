@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpressionInput() *shared.RouteExpressionInput {
+func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.RouteExpression {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	expression := new(string)
 	if !r.Expression.IsUnknown() && !r.Expression.IsNull() {
 		*expression = r.Expression.ValueString()
@@ -89,7 +95,14 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpressionInput() *sh
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.RouteExpressionInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.RouteExpression{
+		CreatedAt:               createdAt,
 		Expression:              expression,
 		HTTPSRedirectStatusCode: httpsRedirectStatusCode,
 		ID:                      id,
@@ -103,6 +116,7 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpressionInput() *sh
 		Service:                 service,
 		StripPath:               stripPath,
 		Tags:                    tags,
+		UpdatedAt:               updatedAt,
 	}
 	return &out
 }

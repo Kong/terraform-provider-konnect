@@ -39,7 +39,7 @@ type GatewayPluginForwardProxyResource struct {
 
 // GatewayPluginForwardProxyResourceModel describes the resource data model.
 type GatewayPluginForwardProxyResourceModel struct {
-	Config         tfTypes.ForwardProxyPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.ForwardProxyPluginConfig  `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginForwardProxy Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"auth_password": schema.StringAttribute{
 						Computed: true,
@@ -153,6 +154,7 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -238,6 +240,7 @@ func (r *GatewayPluginForwardProxyResource) Schema(ctx context.Context, req reso
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -285,7 +288,7 @@ func (r *GatewayPluginForwardProxyResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	forwardProxyPlugin := *data.ToSharedForwardProxyPluginInput()
+	forwardProxyPlugin := *data.ToSharedForwardProxyPlugin()
 	request := operations.CreateForwardproxyPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		ForwardProxyPlugin: forwardProxyPlugin,
@@ -395,7 +398,7 @@ func (r *GatewayPluginForwardProxyResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	forwardProxyPlugin := *data.ToSharedForwardProxyPluginInput()
+	forwardProxyPlugin := *data.ToSharedForwardProxyPlugin()
 	request := operations.UpdateForwardproxyPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

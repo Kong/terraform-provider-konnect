@@ -10,10 +10,15 @@ import (
 
 func (r *GatewayPluginTLSHandshakeModifierDataSourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(resp *shared.TLSHandshakeModifierPlugin) {
 	if resp != nil {
-		if resp.Config.TLSClientCertificate != nil {
-			r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.TLSClientCertificate = types.StringNull()
+			r.Config = &tfTypes.TLSHandshakeModifierPluginConfig{}
+			if resp.Config.TLSClientCertificate != nil {
+				r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
+			} else {
+				r.Config.TLSClientCertificate = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

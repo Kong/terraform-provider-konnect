@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProtectionPluginInput() *shared.JSONThreatProtectionPluginInput {
+func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProtectionPlugin() *shared.JSONThreatProtectionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,70 +64,79 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProte
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	enforcementMode := new(shared.JSONThreatProtectionPluginEnforcementMode)
-	if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
-		*enforcementMode = shared.JSONThreatProtectionPluginEnforcementMode(r.Config.EnforcementMode.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		enforcementMode = nil
+		updatedAt = nil
 	}
-	errorMessage := new(string)
-	if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
-		*errorMessage = r.Config.ErrorMessage.ValueString()
-	} else {
-		errorMessage = nil
-	}
-	errorStatusCode := new(int64)
-	if !r.Config.ErrorStatusCode.IsUnknown() && !r.Config.ErrorStatusCode.IsNull() {
-		*errorStatusCode = r.Config.ErrorStatusCode.ValueInt64()
-	} else {
-		errorStatusCode = nil
-	}
-	maxArrayElementCount := new(int64)
-	if !r.Config.MaxArrayElementCount.IsUnknown() && !r.Config.MaxArrayElementCount.IsNull() {
-		*maxArrayElementCount = r.Config.MaxArrayElementCount.ValueInt64()
-	} else {
-		maxArrayElementCount = nil
-	}
-	maxBodySize := new(int64)
-	if !r.Config.MaxBodySize.IsUnknown() && !r.Config.MaxBodySize.IsNull() {
-		*maxBodySize = r.Config.MaxBodySize.ValueInt64()
-	} else {
-		maxBodySize = nil
-	}
-	maxContainerDepth := new(int64)
-	if !r.Config.MaxContainerDepth.IsUnknown() && !r.Config.MaxContainerDepth.IsNull() {
-		*maxContainerDepth = r.Config.MaxContainerDepth.ValueInt64()
-	} else {
-		maxContainerDepth = nil
-	}
-	maxObjectEntryCount := new(int64)
-	if !r.Config.MaxObjectEntryCount.IsUnknown() && !r.Config.MaxObjectEntryCount.IsNull() {
-		*maxObjectEntryCount = r.Config.MaxObjectEntryCount.ValueInt64()
-	} else {
-		maxObjectEntryCount = nil
-	}
-	maxObjectEntryNameLength := new(int64)
-	if !r.Config.MaxObjectEntryNameLength.IsUnknown() && !r.Config.MaxObjectEntryNameLength.IsNull() {
-		*maxObjectEntryNameLength = r.Config.MaxObjectEntryNameLength.ValueInt64()
-	} else {
-		maxObjectEntryNameLength = nil
-	}
-	maxStringValueLength := new(int64)
-	if !r.Config.MaxStringValueLength.IsUnknown() && !r.Config.MaxStringValueLength.IsNull() {
-		*maxStringValueLength = r.Config.MaxStringValueLength.ValueInt64()
-	} else {
-		maxStringValueLength = nil
-	}
-	config := shared.JSONThreatProtectionPluginConfig{
-		EnforcementMode:          enforcementMode,
-		ErrorMessage:             errorMessage,
-		ErrorStatusCode:          errorStatusCode,
-		MaxArrayElementCount:     maxArrayElementCount,
-		MaxBodySize:              maxBodySize,
-		MaxContainerDepth:        maxContainerDepth,
-		MaxObjectEntryCount:      maxObjectEntryCount,
-		MaxObjectEntryNameLength: maxObjectEntryNameLength,
-		MaxStringValueLength:     maxStringValueLength,
+	var config *shared.JSONThreatProtectionPluginConfig
+	if r.Config != nil {
+		enforcementMode := new(shared.JSONThreatProtectionPluginEnforcementMode)
+		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
+			*enforcementMode = shared.JSONThreatProtectionPluginEnforcementMode(r.Config.EnforcementMode.ValueString())
+		} else {
+			enforcementMode = nil
+		}
+		errorMessage := new(string)
+		if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
+			*errorMessage = r.Config.ErrorMessage.ValueString()
+		} else {
+			errorMessage = nil
+		}
+		errorStatusCode := new(int64)
+		if !r.Config.ErrorStatusCode.IsUnknown() && !r.Config.ErrorStatusCode.IsNull() {
+			*errorStatusCode = r.Config.ErrorStatusCode.ValueInt64()
+		} else {
+			errorStatusCode = nil
+		}
+		maxArrayElementCount := new(int64)
+		if !r.Config.MaxArrayElementCount.IsUnknown() && !r.Config.MaxArrayElementCount.IsNull() {
+			*maxArrayElementCount = r.Config.MaxArrayElementCount.ValueInt64()
+		} else {
+			maxArrayElementCount = nil
+		}
+		maxBodySize := new(int64)
+		if !r.Config.MaxBodySize.IsUnknown() && !r.Config.MaxBodySize.IsNull() {
+			*maxBodySize = r.Config.MaxBodySize.ValueInt64()
+		} else {
+			maxBodySize = nil
+		}
+		maxContainerDepth := new(int64)
+		if !r.Config.MaxContainerDepth.IsUnknown() && !r.Config.MaxContainerDepth.IsNull() {
+			*maxContainerDepth = r.Config.MaxContainerDepth.ValueInt64()
+		} else {
+			maxContainerDepth = nil
+		}
+		maxObjectEntryCount := new(int64)
+		if !r.Config.MaxObjectEntryCount.IsUnknown() && !r.Config.MaxObjectEntryCount.IsNull() {
+			*maxObjectEntryCount = r.Config.MaxObjectEntryCount.ValueInt64()
+		} else {
+			maxObjectEntryCount = nil
+		}
+		maxObjectEntryNameLength := new(int64)
+		if !r.Config.MaxObjectEntryNameLength.IsUnknown() && !r.Config.MaxObjectEntryNameLength.IsNull() {
+			*maxObjectEntryNameLength = r.Config.MaxObjectEntryNameLength.ValueInt64()
+		} else {
+			maxObjectEntryNameLength = nil
+		}
+		maxStringValueLength := new(int64)
+		if !r.Config.MaxStringValueLength.IsUnknown() && !r.Config.MaxStringValueLength.IsNull() {
+			*maxStringValueLength = r.Config.MaxStringValueLength.ValueInt64()
+		} else {
+			maxStringValueLength = nil
+		}
+		config = &shared.JSONThreatProtectionPluginConfig{
+			EnforcementMode:          enforcementMode,
+			ErrorMessage:             errorMessage,
+			ErrorStatusCode:          errorStatusCode,
+			MaxArrayElementCount:     maxArrayElementCount,
+			MaxBodySize:              maxBodySize,
+			MaxContainerDepth:        maxContainerDepth,
+			MaxObjectEntryCount:      maxObjectEntryCount,
+			MaxObjectEntryNameLength: maxObjectEntryNameLength,
+			MaxStringValueLength:     maxStringValueLength,
+		}
 	}
 	var protocols []shared.JSONThreatProtectionPluginProtocols = []shared.JSONThreatProtectionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -151,12 +166,14 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProte
 			ID: id2,
 		}
 	}
-	out := shared.JSONThreatProtectionPluginInput{
+	out := shared.JSONThreatProtectionPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -167,19 +184,24 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProte
 
 func (r *GatewayPluginJSONThreatProtectionResourceModel) RefreshFromSharedJSONThreatProtectionPlugin(resp *shared.JSONThreatProtectionPlugin) {
 	if resp != nil {
-		if resp.Config.EnforcementMode != nil {
-			r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.EnforcementMode = types.StringNull()
+			r.Config = &tfTypes.JSONThreatProtectionPluginConfig{}
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
+			r.Config.MaxArrayElementCount = types.Int64PointerValue(resp.Config.MaxArrayElementCount)
+			r.Config.MaxBodySize = types.Int64PointerValue(resp.Config.MaxBodySize)
+			r.Config.MaxContainerDepth = types.Int64PointerValue(resp.Config.MaxContainerDepth)
+			r.Config.MaxObjectEntryCount = types.Int64PointerValue(resp.Config.MaxObjectEntryCount)
+			r.Config.MaxObjectEntryNameLength = types.Int64PointerValue(resp.Config.MaxObjectEntryNameLength)
+			r.Config.MaxStringValueLength = types.Int64PointerValue(resp.Config.MaxStringValueLength)
 		}
-		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-		r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-		r.Config.MaxArrayElementCount = types.Int64PointerValue(resp.Config.MaxArrayElementCount)
-		r.Config.MaxBodySize = types.Int64PointerValue(resp.Config.MaxBodySize)
-		r.Config.MaxContainerDepth = types.Int64PointerValue(resp.Config.MaxContainerDepth)
-		r.Config.MaxObjectEntryCount = types.Int64PointerValue(resp.Config.MaxObjectEntryCount)
-		r.Config.MaxObjectEntryNameLength = types.Int64PointerValue(resp.Config.MaxObjectEntryNameLength)
-		r.Config.MaxStringValueLength = types.Int64PointerValue(resp.Config.MaxStringValueLength)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -33,5 +33,6 @@ func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(resp *shared.Key) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.X5t = types.StringPointerValue(resp.X5t)
 	}
 }

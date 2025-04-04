@@ -36,7 +36,7 @@ type GatewayPluginCorsResource struct {
 
 // GatewayPluginCorsResourceModel describes the resource data model.
 type GatewayPluginCorsResourceModel struct {
-	Config         tfTypes.CorsPluginConfig           `tfsdk:"config"`
+	Config         *tfTypes.CorsPluginConfig          `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginCors Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"credentials": schema.BoolAttribute{
 						Computed:    true,
@@ -116,6 +117,7 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -201,6 +203,7 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -248,7 +251,7 @@ func (r *GatewayPluginCorsResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	corsPlugin := *data.ToSharedCorsPluginInput()
+	corsPlugin := *data.ToSharedCorsPlugin()
 	request := operations.CreateCorsPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CorsPlugin:     corsPlugin,
@@ -358,7 +361,7 @@ func (r *GatewayPluginCorsResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	corsPlugin := *data.ToSharedCorsPluginInput()
+	corsPlugin := *data.ToSharedCorsPlugin()
 	request := operations.UpdateCorsPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

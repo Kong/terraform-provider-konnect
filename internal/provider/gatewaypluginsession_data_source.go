@@ -29,7 +29,7 @@ type GatewayPluginSessionDataSource struct {
 
 // GatewayPluginSessionDataSourceModel describes the data model.
 type GatewayPluginSessionDataSourceModel struct {
-	Config         tfTypes.SessionPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.SessionPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

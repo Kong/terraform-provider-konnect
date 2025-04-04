@@ -9,8 +9,8 @@ import (
 
 type CreateHttplogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	HTTPLogPlugin  shared.HTTPLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	HTTPLogPlugin  shared.HTTPLogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateHttplogPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateHttplogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateHttplogPluginRequest) GetHTTPLogPlugin() shared.HTTPLogPluginInput {
+func (o *CreateHttplogPluginRequest) GetHTTPLogPlugin() shared.HTTPLogPlugin {
 	if o == nil {
-		return shared.HTTPLogPluginInput{}
+		return shared.HTTPLogPlugin{}
 	}
 	return o.HTTPLogPlugin
 }

@@ -36,7 +36,7 @@ type GatewayPluginHmacAuthResource struct {
 
 // GatewayPluginHmacAuthResourceModel describes the resource data model.
 type GatewayPluginHmacAuthResourceModel struct {
-	Config         tfTypes.HmacAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.HmacAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginHmacAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"algorithms": schema.ListAttribute{
 						Computed:    true,
@@ -109,6 +110,7 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -194,6 +196,7 @@ func (r *GatewayPluginHmacAuthResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -241,7 +244,7 @@ func (r *GatewayPluginHmacAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	hmacAuthPlugin := *data.ToSharedHmacAuthPluginInput()
+	hmacAuthPlugin := *data.ToSharedHmacAuthPlugin()
 	request := operations.CreateHmacauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		HmacAuthPlugin: hmacAuthPlugin,
@@ -351,7 +354,7 @@ func (r *GatewayPluginHmacAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	hmacAuthPlugin := *data.ToSharedHmacAuthPluginInput()
+	hmacAuthPlugin := *data.ToSharedHmacAuthPlugin()
 	request := operations.UpdateHmacauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

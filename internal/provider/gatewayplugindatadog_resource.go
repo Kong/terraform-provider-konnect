@@ -41,7 +41,7 @@ type GatewayPluginDatadogResource struct {
 
 // GatewayPluginDatadogResourceModel describes the resource data model.
 type GatewayPluginDatadogResourceModel struct {
-	Config         tfTypes.DatadogPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.DatadogPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginDatadog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"consumer_tag": schema.StringAttribute{
 						Computed:    true,
@@ -263,6 +264,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -348,6 +350,7 @@ func (r *GatewayPluginDatadogResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -395,7 +398,7 @@ func (r *GatewayPluginDatadogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogPlugin := *data.ToSharedDatadogPluginInput()
+	datadogPlugin := *data.ToSharedDatadogPlugin()
 	request := operations.CreateDatadogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		DatadogPlugin:  datadogPlugin,
@@ -505,7 +508,7 @@ func (r *GatewayPluginDatadogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	datadogPlugin := *data.ToSharedDatadogPluginInput()
+	datadogPlugin := *data.ToSharedDatadogPlugin()
 	request := operations.UpdateDatadogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

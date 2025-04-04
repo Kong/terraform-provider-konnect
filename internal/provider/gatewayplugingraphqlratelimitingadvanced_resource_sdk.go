@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlRateLimitingAdvancedPluginInput() *shared.GraphqlRateLimitingAdvancedPluginInput {
+func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlRateLimitingAdvancedPlugin() *shared.GraphqlRateLimitingAdvancedPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,268 +65,277 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	costStrategy := new(shared.CostStrategy)
-	if !r.Config.CostStrategy.IsUnknown() && !r.Config.CostStrategy.IsNull() {
-		*costStrategy = shared.CostStrategy(r.Config.CostStrategy.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		costStrategy = nil
+		updatedAt = nil
 	}
-	dictionaryName := new(string)
-	if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
-		*dictionaryName = r.Config.DictionaryName.ValueString()
-	} else {
-		dictionaryName = nil
-	}
-	hideClientHeaders := new(bool)
-	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
-		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
-	} else {
-		hideClientHeaders = nil
-	}
-	identifier := new(shared.GraphqlRateLimitingAdvancedPluginIdentifier)
-	if !r.Config.Identifier.IsUnknown() && !r.Config.Identifier.IsNull() {
-		*identifier = shared.GraphqlRateLimitingAdvancedPluginIdentifier(r.Config.Identifier.ValueString())
-	} else {
-		identifier = nil
-	}
-	var limit []float64 = []float64{}
-	for _, limitItem := range r.Config.Limit {
-		limitTmp, _ := limitItem.ValueBigFloat().Float64()
-		limit = append(limit, limitTmp)
-	}
-	maxCost := new(float64)
-	if !r.Config.MaxCost.IsUnknown() && !r.Config.MaxCost.IsNull() {
-		*maxCost, _ = r.Config.MaxCost.ValueBigFloat().Float64()
-	} else {
-		maxCost = nil
-	}
-	namespace := new(string)
-	if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
-		*namespace = r.Config.Namespace.ValueString()
-	} else {
-		namespace = nil
-	}
-	var redis *shared.GraphqlRateLimitingAdvancedPluginRedis
-	if r.Config.Redis != nil {
-		clusterMaxRedirections := new(int64)
-		if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
-			*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
+	var config *shared.GraphqlRateLimitingAdvancedPluginConfig
+	if r.Config != nil {
+		costStrategy := new(shared.CostStrategy)
+		if !r.Config.CostStrategy.IsUnknown() && !r.Config.CostStrategy.IsNull() {
+			*costStrategy = shared.CostStrategy(r.Config.CostStrategy.ValueString())
 		} else {
-			clusterMaxRedirections = nil
+			costStrategy = nil
 		}
-		var clusterNodes []shared.GraphqlRateLimitingAdvancedPluginClusterNodes = []shared.GraphqlRateLimitingAdvancedPluginClusterNodes{}
-		for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
-			ip := new(string)
-			if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
-				*ip = clusterNodesItem.IP.ValueString()
+		dictionaryName := new(string)
+		if !r.Config.DictionaryName.IsUnknown() && !r.Config.DictionaryName.IsNull() {
+			*dictionaryName = r.Config.DictionaryName.ValueString()
+		} else {
+			dictionaryName = nil
+		}
+		hideClientHeaders := new(bool)
+		if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
+			*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
+		} else {
+			hideClientHeaders = nil
+		}
+		identifier := new(shared.GraphqlRateLimitingAdvancedPluginIdentifier)
+		if !r.Config.Identifier.IsUnknown() && !r.Config.Identifier.IsNull() {
+			*identifier = shared.GraphqlRateLimitingAdvancedPluginIdentifier(r.Config.Identifier.ValueString())
+		} else {
+			identifier = nil
+		}
+		var limit []float64 = []float64{}
+		for _, limitItem := range r.Config.Limit {
+			limitTmp, _ := limitItem.ValueBigFloat().Float64()
+			limit = append(limit, limitTmp)
+		}
+		maxCost := new(float64)
+		if !r.Config.MaxCost.IsUnknown() && !r.Config.MaxCost.IsNull() {
+			*maxCost, _ = r.Config.MaxCost.ValueBigFloat().Float64()
+		} else {
+			maxCost = nil
+		}
+		namespace := new(string)
+		if !r.Config.Namespace.IsUnknown() && !r.Config.Namespace.IsNull() {
+			*namespace = r.Config.Namespace.ValueString()
+		} else {
+			namespace = nil
+		}
+		var redis *shared.GraphqlRateLimitingAdvancedPluginRedis
+		if r.Config.Redis != nil {
+			clusterMaxRedirections := new(int64)
+			if !r.Config.Redis.ClusterMaxRedirections.IsUnknown() && !r.Config.Redis.ClusterMaxRedirections.IsNull() {
+				*clusterMaxRedirections = r.Config.Redis.ClusterMaxRedirections.ValueInt64()
 			} else {
-				ip = nil
+				clusterMaxRedirections = nil
 			}
-			port := new(int64)
-			if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
-				*port = clusterNodesItem.Port.ValueInt64()
+			var clusterNodes []shared.GraphqlRateLimitingAdvancedPluginClusterNodes = []shared.GraphqlRateLimitingAdvancedPluginClusterNodes{}
+			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
+				ip := new(string)
+				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
+					*ip = clusterNodesItem.IP.ValueString()
+				} else {
+					ip = nil
+				}
+				port := new(int64)
+				if !clusterNodesItem.Port.IsUnknown() && !clusterNodesItem.Port.IsNull() {
+					*port = clusterNodesItem.Port.ValueInt64()
+				} else {
+					port = nil
+				}
+				clusterNodes = append(clusterNodes, shared.GraphqlRateLimitingAdvancedPluginClusterNodes{
+					IP:   ip,
+					Port: port,
+				})
+			}
+			connectTimeout := new(int64)
+			if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
+				*connectTimeout = r.Config.Redis.ConnectTimeout.ValueInt64()
 			} else {
-				port = nil
+				connectTimeout = nil
 			}
-			clusterNodes = append(clusterNodes, shared.GraphqlRateLimitingAdvancedPluginClusterNodes{
-				IP:   ip,
-				Port: port,
-			})
-		}
-		connectTimeout := new(int64)
-		if !r.Config.Redis.ConnectTimeout.IsUnknown() && !r.Config.Redis.ConnectTimeout.IsNull() {
-			*connectTimeout = r.Config.Redis.ConnectTimeout.ValueInt64()
-		} else {
-			connectTimeout = nil
-		}
-		connectionIsProxied := new(bool)
-		if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
-			*connectionIsProxied = r.Config.Redis.ConnectionIsProxied.ValueBool()
-		} else {
-			connectionIsProxied = nil
-		}
-		database := new(int64)
-		if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
-			*database = r.Config.Redis.Database.ValueInt64()
-		} else {
-			database = nil
-		}
-		host := new(string)
-		if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
-			*host = r.Config.Redis.Host.ValueString()
-		} else {
-			host = nil
-		}
-		keepaliveBacklog := new(int64)
-		if !r.Config.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Redis.KeepaliveBacklog.IsNull() {
-			*keepaliveBacklog = r.Config.Redis.KeepaliveBacklog.ValueInt64()
-		} else {
-			keepaliveBacklog = nil
-		}
-		keepalivePoolSize := new(int64)
-		if !r.Config.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Redis.KeepalivePoolSize.IsNull() {
-			*keepalivePoolSize = r.Config.Redis.KeepalivePoolSize.ValueInt64()
-		} else {
-			keepalivePoolSize = nil
-		}
-		password := new(string)
-		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-			*password = r.Config.Redis.Password.ValueString()
-		} else {
-			password = nil
-		}
-		port1 := new(int64)
-		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port1 = r.Config.Redis.Port.ValueInt64()
-		} else {
-			port1 = nil
-		}
-		readTimeout := new(int64)
-		if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
-			*readTimeout = r.Config.Redis.ReadTimeout.ValueInt64()
-		} else {
-			readTimeout = nil
-		}
-		sendTimeout := new(int64)
-		if !r.Config.Redis.SendTimeout.IsUnknown() && !r.Config.Redis.SendTimeout.IsNull() {
-			*sendTimeout = r.Config.Redis.SendTimeout.ValueInt64()
-		} else {
-			sendTimeout = nil
-		}
-		sentinelMaster := new(string)
-		if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
-			*sentinelMaster = r.Config.Redis.SentinelMaster.ValueString()
-		} else {
-			sentinelMaster = nil
-		}
-		var sentinelNodes []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes = []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{}
-		for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
-			host1 := new(string)
-			if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
-				*host1 = sentinelNodesItem.Host.ValueString()
+			connectionIsProxied := new(bool)
+			if !r.Config.Redis.ConnectionIsProxied.IsUnknown() && !r.Config.Redis.ConnectionIsProxied.IsNull() {
+				*connectionIsProxied = r.Config.Redis.ConnectionIsProxied.ValueBool()
 			} else {
-				host1 = nil
+				connectionIsProxied = nil
 			}
-			port2 := new(int64)
-			if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
-				*port2 = sentinelNodesItem.Port.ValueInt64()
+			database := new(int64)
+			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
+				*database = r.Config.Redis.Database.ValueInt64()
 			} else {
-				port2 = nil
+				database = nil
 			}
-			sentinelNodes = append(sentinelNodes, shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{
-				Host: host1,
-				Port: port2,
-			})
+			host := new(string)
+			if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
+				*host = r.Config.Redis.Host.ValueString()
+			} else {
+				host = nil
+			}
+			keepaliveBacklog := new(int64)
+			if !r.Config.Redis.KeepaliveBacklog.IsUnknown() && !r.Config.Redis.KeepaliveBacklog.IsNull() {
+				*keepaliveBacklog = r.Config.Redis.KeepaliveBacklog.ValueInt64()
+			} else {
+				keepaliveBacklog = nil
+			}
+			keepalivePoolSize := new(int64)
+			if !r.Config.Redis.KeepalivePoolSize.IsUnknown() && !r.Config.Redis.KeepalivePoolSize.IsNull() {
+				*keepalivePoolSize = r.Config.Redis.KeepalivePoolSize.ValueInt64()
+			} else {
+				keepalivePoolSize = nil
+			}
+			password := new(string)
+			if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
+				*password = r.Config.Redis.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port1 := new(int64)
+			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
+				*port1 = r.Config.Redis.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			readTimeout := new(int64)
+			if !r.Config.Redis.ReadTimeout.IsUnknown() && !r.Config.Redis.ReadTimeout.IsNull() {
+				*readTimeout = r.Config.Redis.ReadTimeout.ValueInt64()
+			} else {
+				readTimeout = nil
+			}
+			sendTimeout := new(int64)
+			if !r.Config.Redis.SendTimeout.IsUnknown() && !r.Config.Redis.SendTimeout.IsNull() {
+				*sendTimeout = r.Config.Redis.SendTimeout.ValueInt64()
+			} else {
+				sendTimeout = nil
+			}
+			sentinelMaster := new(string)
+			if !r.Config.Redis.SentinelMaster.IsUnknown() && !r.Config.Redis.SentinelMaster.IsNull() {
+				*sentinelMaster = r.Config.Redis.SentinelMaster.ValueString()
+			} else {
+				sentinelMaster = nil
+			}
+			var sentinelNodes []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes = []shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{}
+			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
+				host1 := new(string)
+				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
+					*host1 = sentinelNodesItem.Host.ValueString()
+				} else {
+					host1 = nil
+				}
+				port2 := new(int64)
+				if !sentinelNodesItem.Port.IsUnknown() && !sentinelNodesItem.Port.IsNull() {
+					*port2 = sentinelNodesItem.Port.ValueInt64()
+				} else {
+					port2 = nil
+				}
+				sentinelNodes = append(sentinelNodes, shared.GraphqlRateLimitingAdvancedPluginSentinelNodes{
+					Host: host1,
+					Port: port2,
+				})
+			}
+			sentinelPassword := new(string)
+			if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
+				*sentinelPassword = r.Config.Redis.SentinelPassword.ValueString()
+			} else {
+				sentinelPassword = nil
+			}
+			sentinelRole := new(shared.GraphqlRateLimitingAdvancedPluginSentinelRole)
+			if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
+				*sentinelRole = shared.GraphqlRateLimitingAdvancedPluginSentinelRole(r.Config.Redis.SentinelRole.ValueString())
+			} else {
+				sentinelRole = nil
+			}
+			sentinelUsername := new(string)
+			if !r.Config.Redis.SentinelUsername.IsUnknown() && !r.Config.Redis.SentinelUsername.IsNull() {
+				*sentinelUsername = r.Config.Redis.SentinelUsername.ValueString()
+			} else {
+				sentinelUsername = nil
+			}
+			serverName := new(string)
+			if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
+				*serverName = r.Config.Redis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl := new(bool)
+			if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
+				*ssl = r.Config.Redis.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
+				*sslVerify = r.Config.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			username := new(string)
+			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
+				*username = r.Config.Redis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			redis = &shared.GraphqlRateLimitingAdvancedPluginRedis{
+				ClusterMaxRedirections: clusterMaxRedirections,
+				ClusterNodes:           clusterNodes,
+				ConnectTimeout:         connectTimeout,
+				ConnectionIsProxied:    connectionIsProxied,
+				Database:               database,
+				Host:                   host,
+				KeepaliveBacklog:       keepaliveBacklog,
+				KeepalivePoolSize:      keepalivePoolSize,
+				Password:               password,
+				Port:                   port1,
+				ReadTimeout:            readTimeout,
+				SendTimeout:            sendTimeout,
+				SentinelMaster:         sentinelMaster,
+				SentinelNodes:          sentinelNodes,
+				SentinelPassword:       sentinelPassword,
+				SentinelRole:           sentinelRole,
+				SentinelUsername:       sentinelUsername,
+				ServerName:             serverName,
+				Ssl:                    ssl,
+				SslVerify:              sslVerify,
+				Username:               username,
+			}
 		}
-		sentinelPassword := new(string)
-		if !r.Config.Redis.SentinelPassword.IsUnknown() && !r.Config.Redis.SentinelPassword.IsNull() {
-			*sentinelPassword = r.Config.Redis.SentinelPassword.ValueString()
+		scoreFactor := new(float64)
+		if !r.Config.ScoreFactor.IsUnknown() && !r.Config.ScoreFactor.IsNull() {
+			*scoreFactor, _ = r.Config.ScoreFactor.ValueBigFloat().Float64()
 		} else {
-			sentinelPassword = nil
+			scoreFactor = nil
 		}
-		sentinelRole := new(shared.GraphqlRateLimitingAdvancedPluginSentinelRole)
-		if !r.Config.Redis.SentinelRole.IsUnknown() && !r.Config.Redis.SentinelRole.IsNull() {
-			*sentinelRole = shared.GraphqlRateLimitingAdvancedPluginSentinelRole(r.Config.Redis.SentinelRole.ValueString())
+		strategy := new(shared.GraphqlRateLimitingAdvancedPluginStrategy)
+		if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
+			*strategy = shared.GraphqlRateLimitingAdvancedPluginStrategy(r.Config.Strategy.ValueString())
 		} else {
-			sentinelRole = nil
+			strategy = nil
 		}
-		sentinelUsername := new(string)
-		if !r.Config.Redis.SentinelUsername.IsUnknown() && !r.Config.Redis.SentinelUsername.IsNull() {
-			*sentinelUsername = r.Config.Redis.SentinelUsername.ValueString()
+		syncRate := new(float64)
+		if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
+			*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
 		} else {
-			sentinelUsername = nil
+			syncRate = nil
 		}
-		serverName := new(string)
-		if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
-			*serverName = r.Config.Redis.ServerName.ValueString()
+		var windowSize []float64 = []float64{}
+		for _, windowSizeItem := range r.Config.WindowSize {
+			windowSizeTmp, _ := windowSizeItem.ValueBigFloat().Float64()
+			windowSize = append(windowSize, windowSizeTmp)
+		}
+		windowType := new(shared.GraphqlRateLimitingAdvancedPluginWindowType)
+		if !r.Config.WindowType.IsUnknown() && !r.Config.WindowType.IsNull() {
+			*windowType = shared.GraphqlRateLimitingAdvancedPluginWindowType(r.Config.WindowType.ValueString())
 		} else {
-			serverName = nil
+			windowType = nil
 		}
-		ssl := new(bool)
-		if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
-			*ssl = r.Config.Redis.Ssl.ValueBool()
-		} else {
-			ssl = nil
+		config = &shared.GraphqlRateLimitingAdvancedPluginConfig{
+			CostStrategy:      costStrategy,
+			DictionaryName:    dictionaryName,
+			HideClientHeaders: hideClientHeaders,
+			Identifier:        identifier,
+			Limit:             limit,
+			MaxCost:           maxCost,
+			Namespace:         namespace,
+			Redis:             redis,
+			ScoreFactor:       scoreFactor,
+			Strategy:          strategy,
+			SyncRate:          syncRate,
+			WindowSize:        windowSize,
+			WindowType:        windowType,
 		}
-		sslVerify := new(bool)
-		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify = r.Config.Redis.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
-		}
-		username := new(string)
-		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-			*username = r.Config.Redis.Username.ValueString()
-		} else {
-			username = nil
-		}
-		redis = &shared.GraphqlRateLimitingAdvancedPluginRedis{
-			ClusterMaxRedirections: clusterMaxRedirections,
-			ClusterNodes:           clusterNodes,
-			ConnectTimeout:         connectTimeout,
-			ConnectionIsProxied:    connectionIsProxied,
-			Database:               database,
-			Host:                   host,
-			KeepaliveBacklog:       keepaliveBacklog,
-			KeepalivePoolSize:      keepalivePoolSize,
-			Password:               password,
-			Port:                   port1,
-			ReadTimeout:            readTimeout,
-			SendTimeout:            sendTimeout,
-			SentinelMaster:         sentinelMaster,
-			SentinelNodes:          sentinelNodes,
-			SentinelPassword:       sentinelPassword,
-			SentinelRole:           sentinelRole,
-			SentinelUsername:       sentinelUsername,
-			ServerName:             serverName,
-			Ssl:                    ssl,
-			SslVerify:              sslVerify,
-			Username:               username,
-		}
-	}
-	scoreFactor := new(float64)
-	if !r.Config.ScoreFactor.IsUnknown() && !r.Config.ScoreFactor.IsNull() {
-		*scoreFactor, _ = r.Config.ScoreFactor.ValueBigFloat().Float64()
-	} else {
-		scoreFactor = nil
-	}
-	strategy := new(shared.GraphqlRateLimitingAdvancedPluginStrategy)
-	if !r.Config.Strategy.IsUnknown() && !r.Config.Strategy.IsNull() {
-		*strategy = shared.GraphqlRateLimitingAdvancedPluginStrategy(r.Config.Strategy.ValueString())
-	} else {
-		strategy = nil
-	}
-	syncRate := new(float64)
-	if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
-		*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
-	} else {
-		syncRate = nil
-	}
-	var windowSize []float64 = []float64{}
-	for _, windowSizeItem := range r.Config.WindowSize {
-		windowSizeTmp, _ := windowSizeItem.ValueBigFloat().Float64()
-		windowSize = append(windowSize, windowSizeTmp)
-	}
-	windowType := new(shared.GraphqlRateLimitingAdvancedPluginWindowType)
-	if !r.Config.WindowType.IsUnknown() && !r.Config.WindowType.IsNull() {
-		*windowType = shared.GraphqlRateLimitingAdvancedPluginWindowType(r.Config.WindowType.ValueString())
-	} else {
-		windowType = nil
-	}
-	config := shared.GraphqlRateLimitingAdvancedPluginConfig{
-		CostStrategy:      costStrategy,
-		DictionaryName:    dictionaryName,
-		HideClientHeaders: hideClientHeaders,
-		Identifier:        identifier,
-		Limit:             limit,
-		MaxCost:           maxCost,
-		Namespace:         namespace,
-		Redis:             redis,
-		ScoreFactor:       scoreFactor,
-		Strategy:          strategy,
-		SyncRate:          syncRate,
-		WindowSize:        windowSize,
-		WindowType:        windowType,
 	}
 	var consumer *shared.GraphqlRateLimitingAdvancedPluginConsumer
 	if r.Consumer != nil {
@@ -362,12 +377,14 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 			ID: id3,
 		}
 	}
-	out := shared.GraphqlRateLimitingAdvancedPluginInput{
+	out := shared.GraphqlRateLimitingAdvancedPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -379,109 +396,114 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) ToSharedGraphqlR
 
 func (r *GatewayPluginGraphqlRateLimitingAdvancedResourceModel) RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(resp *shared.GraphqlRateLimitingAdvancedPlugin) {
 	if resp != nil {
-		if resp.Config.CostStrategy != nil {
-			r.Config.CostStrategy = types.StringValue(string(*resp.Config.CostStrategy))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.CostStrategy = types.StringNull()
-		}
-		r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
-		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-		if resp.Config.Identifier != nil {
-			r.Config.Identifier = types.StringValue(string(*resp.Config.Identifier))
-		} else {
-			r.Config.Identifier = types.StringNull()
-		}
-		r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
-		for _, v := range resp.Config.Limit {
-			r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
-		}
-		if resp.Config.MaxCost != nil {
-			r.Config.MaxCost = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxCost)))
-		} else {
-			r.Config.MaxCost = types.NumberNull()
-		}
-		r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
-		if resp.Config.Redis == nil {
-			r.Config.Redis = nil
-		} else {
-			r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
-			r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
-			r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
-			if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
-				r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
-			}
-			for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-				var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
-				clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-				clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
-				if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
-					r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
-				} else {
-					r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-					r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
-				}
-			}
-			r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
-			r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
-			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-			r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
-			r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
-			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-			r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
-			r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
-			r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
-			r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
-			if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
-				r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
-			}
-			for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-				var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
-				sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-				sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
-				if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
-					r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
-				} else {
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-					r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
-				}
-			}
-			r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
-			if resp.Config.Redis.SentinelRole != nil {
-				r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+			r.Config = &tfTypes.GraphqlRateLimitingAdvancedPluginConfig{}
+			if resp.Config.CostStrategy != nil {
+				r.Config.CostStrategy = types.StringValue(string(*resp.Config.CostStrategy))
 			} else {
-				r.Config.Redis.SentinelRole = types.StringNull()
+				r.Config.CostStrategy = types.StringNull()
 			}
-			r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
-			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
-		}
-		if resp.Config.ScoreFactor != nil {
-			r.Config.ScoreFactor = types.NumberValue(big.NewFloat(float64(*resp.Config.ScoreFactor)))
-		} else {
-			r.Config.ScoreFactor = types.NumberNull()
-		}
-		if resp.Config.Strategy != nil {
-			r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
-		} else {
-			r.Config.Strategy = types.StringNull()
-		}
-		if resp.Config.SyncRate != nil {
-			r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
-		} else {
-			r.Config.SyncRate = types.NumberNull()
-		}
-		r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
-		for _, v := range resp.Config.WindowSize {
-			r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
-		}
-		if resp.Config.WindowType != nil {
-			r.Config.WindowType = types.StringValue(string(*resp.Config.WindowType))
-		} else {
-			r.Config.WindowType = types.StringNull()
+			r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
+			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+			if resp.Config.Identifier != nil {
+				r.Config.Identifier = types.StringValue(string(*resp.Config.Identifier))
+			} else {
+				r.Config.Identifier = types.StringNull()
+			}
+			r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
+			for _, v := range resp.Config.Limit {
+				r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
+			}
+			if resp.Config.MaxCost != nil {
+				r.Config.MaxCost = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxCost)))
+			} else {
+				r.Config.MaxCost = types.NumberNull()
+			}
+			r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
+			if resp.Config.Redis == nil {
+				r.Config.Redis = nil
+			} else {
+				r.Config.Redis = &tfTypes.AiProxyAdvancedPluginRedis{}
+				r.Config.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Redis.ClusterMaxRedirections)
+				r.Config.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
+				if len(r.Config.Redis.ClusterNodes) > len(resp.Config.Redis.ClusterNodes) {
+					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
+				}
+				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
+					var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
+					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
+					} else {
+						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+					}
+				}
+				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
+				r.Config.Redis.ConnectionIsProxied = types.BoolPointerValue(resp.Config.Redis.ConnectionIsProxied)
+				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+				r.Config.Redis.KeepaliveBacklog = types.Int64PointerValue(resp.Config.Redis.KeepaliveBacklog)
+				r.Config.Redis.KeepalivePoolSize = types.Int64PointerValue(resp.Config.Redis.KeepalivePoolSize)
+				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.ReadTimeout = types.Int64PointerValue(resp.Config.Redis.ReadTimeout)
+				r.Config.Redis.SendTimeout = types.Int64PointerValue(resp.Config.Redis.SendTimeout)
+				r.Config.Redis.SentinelMaster = types.StringPointerValue(resp.Config.Redis.SentinelMaster)
+				r.Config.Redis.SentinelNodes = []tfTypes.AiProxyAdvancedPluginSentinelNodes{}
+				if len(r.Config.Redis.SentinelNodes) > len(resp.Config.Redis.SentinelNodes) {
+					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
+				}
+				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
+					var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
+					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+					} else {
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+					}
+				}
+				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
+				if resp.Config.Redis.SentinelRole != nil {
+					r.Config.Redis.SentinelRole = types.StringValue(string(*resp.Config.Redis.SentinelRole))
+				} else {
+					r.Config.Redis.SentinelRole = types.StringNull()
+				}
+				r.Config.Redis.SentinelUsername = types.StringPointerValue(resp.Config.Redis.SentinelUsername)
+				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			}
+			if resp.Config.ScoreFactor != nil {
+				r.Config.ScoreFactor = types.NumberValue(big.NewFloat(float64(*resp.Config.ScoreFactor)))
+			} else {
+				r.Config.ScoreFactor = types.NumberNull()
+			}
+			if resp.Config.Strategy != nil {
+				r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
+			} else {
+				r.Config.Strategy = types.StringNull()
+			}
+			if resp.Config.SyncRate != nil {
+				r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
+			} else {
+				r.Config.SyncRate = types.NumberNull()
+			}
+			r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
+			for _, v := range resp.Config.WindowSize {
+				r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
+			}
+			if resp.Config.WindowType != nil {
+				r.Config.WindowType = types.StringValue(string(*resp.Config.WindowType))
+			} else {
+				r.Config.WindowType = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

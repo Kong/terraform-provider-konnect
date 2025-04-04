@@ -21,6 +21,12 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
@@ -41,11 +47,12 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 	username = r.Username.ValueString()
 
 	out := shared.HMACAuthWithoutParents{
-		Consumer: consumer,
-		ID:       id1,
-		Secret:   secret,
-		Tags:     tags,
-		Username: username,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		ID:        id1,
+		Secret:    secret,
+		Tags:      tags,
+		Username:  username,
 	}
 	return &out
 }

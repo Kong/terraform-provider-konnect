@@ -11,7 +11,7 @@ type CreatePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Plugin for creation
-	Plugin shared.PluginInput `request:"mediaType=application/json"`
+	Plugin shared.Plugin `request:"mediaType=application/json"`
 }
 
 func (o *CreatePluginRequest) GetControlPlaneID() string {
@@ -21,9 +21,9 @@ func (o *CreatePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreatePluginRequest) GetPlugin() shared.PluginInput {
+func (o *CreatePluginRequest) GetPlugin() shared.Plugin {
 	if o == nil {
-		return shared.PluginInput{}
+		return shared.Plugin{}
 	}
 	return o.Plugin
 }

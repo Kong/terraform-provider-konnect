@@ -36,7 +36,7 @@ type GatewayPluginGrpcWebResource struct {
 
 // GatewayPluginGrpcWebResourceModel describes the resource data model.
 type GatewayPluginGrpcWebResourceModel struct {
-	Config         tfTypes.GrpcWebPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.GrpcWebPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginGrpcWeb Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_origin_header": schema.StringAttribute{
 						Computed:    true,
@@ -102,6 +103,7 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -187,6 +189,7 @@ func (r *GatewayPluginGrpcWebResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -234,7 +237,7 @@ func (r *GatewayPluginGrpcWebResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcWebPlugin := *data.ToSharedGrpcWebPluginInput()
+	grpcWebPlugin := *data.ToSharedGrpcWebPlugin()
 	request := operations.CreateGrpcwebPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		GrpcWebPlugin:  grpcWebPlugin,
@@ -344,7 +347,7 @@ func (r *GatewayPluginGrpcWebResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	grpcWebPlugin := *data.ToSharedGrpcWebPluginInput()
+	grpcWebPlugin := *data.ToSharedGrpcWebPlugin()
 	request := operations.UpdateGrpcwebPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

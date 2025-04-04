@@ -36,7 +36,7 @@ type GatewayPluginBotDetectionResource struct {
 
 // GatewayPluginBotDetectionResourceModel describes the resource data model.
 type GatewayPluginBotDetectionResourceModel struct {
-	Config         tfTypes.BotDetectionPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.BotDetectionPluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginBotDetection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow": schema.ListAttribute{
 						Computed:    true,
@@ -84,6 +85,7 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -169,6 +171,7 @@ func (r *GatewayPluginBotDetectionResource) Schema(ctx context.Context, req reso
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -216,7 +219,7 @@ func (r *GatewayPluginBotDetectionResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	botDetectionPlugin := *data.ToSharedBotDetectionPluginInput()
+	botDetectionPlugin := *data.ToSharedBotDetectionPlugin()
 	request := operations.CreateBotdetectionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		BotDetectionPlugin: botDetectionPlugin,
@@ -326,7 +329,7 @@ func (r *GatewayPluginBotDetectionResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	botDetectionPlugin := *data.ToSharedBotDetectionPluginInput()
+	botDetectionPlugin := *data.ToSharedBotDetectionPlugin()
 	request := operations.UpdateBotdetectionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

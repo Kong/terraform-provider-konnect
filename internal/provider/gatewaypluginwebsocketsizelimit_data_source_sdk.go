@@ -10,8 +10,13 @@ import (
 
 func (r *GatewayPluginWebsocketSizeLimitDataSourceModel) RefreshFromSharedWebsocketSizeLimitPlugin(resp *shared.WebsocketSizeLimitPlugin) {
 	if resp != nil {
-		r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
-		r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.WebsocketSizeLimitPluginConfig{}
+			r.Config.ClientMaxPayload = types.Int64PointerValue(resp.Config.ClientMaxPayload)
+			r.Config.UpstreamMaxPayload = types.Int64PointerValue(resp.Config.UpstreamMaxPayload)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

@@ -41,7 +41,7 @@ type GatewayPluginAcmeResource struct {
 
 // GatewayPluginAcmeResourceModel describes the resource data model.
 type GatewayPluginAcmeResourceModel struct {
-	Config         tfTypes.AcmePluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.AcmePluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String               `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                `tfsdk:"created_at"`
 	Enabled        types.Bool                 `tfsdk:"enabled"`
@@ -62,7 +62,8 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginAcme Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"account_email": schema.StringAttribute{
 						Computed:    true,
@@ -405,6 +406,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -462,6 +464,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -509,7 +512,7 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	acmePlugin := *data.ToSharedAcmePluginInput()
+	acmePlugin := *data.ToSharedAcmePlugin()
 	request := operations.CreateAcmePluginRequest{
 		ControlPlaneID: controlPlaneID,
 		AcmePlugin:     acmePlugin,
@@ -619,7 +622,7 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	acmePlugin := *data.ToSharedAcmePluginInput()
+	acmePlugin := *data.ToSharedAcmePlugin()
 	request := operations.UpdateAcmePluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

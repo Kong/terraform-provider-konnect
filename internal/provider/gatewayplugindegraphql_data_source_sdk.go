@@ -10,7 +10,12 @@ import (
 
 func (r *GatewayPluginDegraphqlDataSourceModel) RefreshFromSharedDegraphqlPlugin(resp *shared.DegraphqlPlugin) {
 	if resp != nil {
-		r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.DegraphqlPluginConfig{}
+			r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

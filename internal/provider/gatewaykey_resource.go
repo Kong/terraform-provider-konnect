@@ -46,6 +46,7 @@ type GatewayKeyResourceModel struct {
 	Set            *tfTypes.ACLWithoutParentsConsumer `tfsdk:"set"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	X5t            types.String                       `tfsdk:"x5t"`
 }
 
 func (r *GatewayKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,6 +66,7 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -122,7 +124,12 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"x5t": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 		},
 	}
@@ -169,7 +176,7 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	key := *data.ToSharedKeyInput()
+	key := *data.ToSharedKey()
 	request := operations.CreateKeyRequest{
 		ControlPlaneID: controlPlaneID,
 		Key:            key,
@@ -279,7 +286,7 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	key := *data.ToSharedKeyInput()
+	key := *data.ToSharedKey()
 	request := operations.UpsertKeyRequest{
 		KeyID:          keyID,
 		ControlPlaneID: controlPlaneID,

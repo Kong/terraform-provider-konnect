@@ -44,7 +44,7 @@ type GatewayPluginKafkaLogResource struct {
 
 // GatewayPluginKafkaLogResourceModel describes the resource data model.
 type GatewayPluginKafkaLogResourceModel struct {
-	Config         tfTypes.KafkaLogPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.KafkaLogPluginConfig      `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -68,7 +68,8 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginKafkaLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
@@ -261,6 +262,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -346,6 +348,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -393,7 +396,7 @@ func (r *GatewayPluginKafkaLogResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaLogPlugin := *data.ToSharedKafkaLogPluginInput()
+	kafkaLogPlugin := *data.ToSharedKafkaLogPlugin()
 	request := operations.CreateKafkalogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		KafkaLogPlugin: kafkaLogPlugin,
@@ -503,7 +506,7 @@ func (r *GatewayPluginKafkaLogResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaLogPlugin := *data.ToSharedKafkaLogPluginInput()
+	kafkaLogPlugin := *data.ToSharedKafkaLogPlugin()
 	request := operations.UpdateKafkalogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

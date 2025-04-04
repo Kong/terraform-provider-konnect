@@ -33,6 +33,12 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 			ID: id1,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id2 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id2 = r.ID.ValueString()
@@ -49,6 +55,7 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	out := shared.MTLSAuthWithoutParents{
 		CaCertificate: caCertificate,
 		Consumer:      consumer,
+		CreatedAt:     createdAt,
 		ID:            id2,
 		SubjectName:   subjectName,
 		Tags:          tags,

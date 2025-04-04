@@ -11,54 +11,59 @@ import (
 
 func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCertAuthPlugin(resp *shared.HeaderCertAuthPlugin) {
 	if resp != nil {
-		r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		if resp.Config.AuthenticatedGroupBy != nil {
-			r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.AuthenticatedGroupBy = types.StringNull()
+			r.Config = &tfTypes.HeaderCertAuthPluginConfig{}
+			r.Config.AllowPartialChain = types.BoolPointerValue(resp.Config.AllowPartialChain)
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			if resp.Config.AuthenticatedGroupBy != nil {
+				r.Config.AuthenticatedGroupBy = types.StringValue(string(*resp.Config.AuthenticatedGroupBy))
+			} else {
+				r.Config.AuthenticatedGroupBy = types.StringNull()
+			}
+			r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
+			for _, v := range resp.Config.CaCertificates {
+				r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
+			}
+			if resp.Config.CacheTTL != nil {
+				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+			} else {
+				r.Config.CacheTTL = types.NumberNull()
+			}
+			if resp.Config.CertCacheTTL != nil {
+				r.Config.CertCacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CertCacheTTL)))
+			} else {
+				r.Config.CertCacheTTL = types.NumberNull()
+			}
+			if resp.Config.CertificateHeaderFormat != nil {
+				r.Config.CertificateHeaderFormat = types.StringValue(string(*resp.Config.CertificateHeaderFormat))
+			} else {
+				r.Config.CertificateHeaderFormat = types.StringNull()
+			}
+			r.Config.CertificateHeaderName = types.StringPointerValue(resp.Config.CertificateHeaderName)
+			r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
+			for _, v := range resp.Config.ConsumerBy {
+				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
+			}
+			r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
+			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+			if resp.Config.HTTPTimeout != nil {
+				r.Config.HTTPTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPTimeout)))
+			} else {
+				r.Config.HTTPTimeout = types.NumberNull()
+			}
+			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+			if resp.Config.RevocationCheckMode != nil {
+				r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
+			} else {
+				r.Config.RevocationCheckMode = types.StringNull()
+			}
+			r.Config.SecureSource = types.BoolPointerValue(resp.Config.SecureSource)
+			r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
 		}
-		r.Config.CaCertificates = make([]types.String, 0, len(resp.Config.CaCertificates))
-		for _, v := range resp.Config.CaCertificates {
-			r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
-		}
-		if resp.Config.CacheTTL != nil {
-			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-		} else {
-			r.Config.CacheTTL = types.NumberNull()
-		}
-		if resp.Config.CertCacheTTL != nil {
-			r.Config.CertCacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CertCacheTTL)))
-		} else {
-			r.Config.CertCacheTTL = types.NumberNull()
-		}
-		if resp.Config.CertificateHeaderFormat != nil {
-			r.Config.CertificateHeaderFormat = types.StringValue(string(*resp.Config.CertificateHeaderFormat))
-		} else {
-			r.Config.CertificateHeaderFormat = types.StringNull()
-		}
-		r.Config.CertificateHeaderName = types.StringPointerValue(resp.Config.CertificateHeaderName)
-		r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
-		for _, v := range resp.Config.ConsumerBy {
-			r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
-		}
-		r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
-		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-		if resp.Config.HTTPTimeout != nil {
-			r.Config.HTTPTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPTimeout)))
-		} else {
-			r.Config.HTTPTimeout = types.NumberNull()
-		}
-		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-		if resp.Config.RevocationCheckMode != nil {
-			r.Config.RevocationCheckMode = types.StringValue(string(*resp.Config.RevocationCheckMode))
-		} else {
-			r.Config.RevocationCheckMode = types.StringNull()
-		}
-		r.Config.SecureSource = types.BoolPointerValue(resp.Config.SecureSource)
-		r.Config.SkipConsumerLookup = types.BoolPointerValue(resp.Config.SkipConsumerLookup)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

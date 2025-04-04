@@ -11,32 +11,37 @@ import (
 
 func (r *GatewayPluginLdapAuthDataSourceModel) RefreshFromSharedLdapAuthPlugin(resp *shared.LdapAuthPlugin) {
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
-		r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
-		if resp.Config.CacheTTL != nil {
-			r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.CacheTTL = types.NumberNull()
+			r.Config = &tfTypes.LdapAuthPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
+			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
+			if resp.Config.CacheTTL != nil {
+				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
+			} else {
+				r.Config.CacheTTL = types.NumberNull()
+			}
+			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			if resp.Config.Keepalive != nil {
+				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+			} else {
+				r.Config.Keepalive = types.NumberNull()
+			}
+			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
+			r.Config.LdapPort = types.Int64PointerValue(resp.Config.LdapPort)
+			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
+			if resp.Config.Timeout != nil {
+				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+			} else {
+				r.Config.Timeout = types.NumberNull()
+			}
+			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		}
-		r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
-		r.Config.LdapPort = types.Int64PointerValue(resp.Config.LdapPort)
-		r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -13,7 +13,7 @@ type UpsertSniRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the SNI
-	Sni shared.SNIInput `request:"mediaType=application/json"`
+	Sni shared.Sni `request:"mediaType=application/json"`
 }
 
 func (o *UpsertSniRequest) GetSNIID() string {
@@ -30,9 +30,9 @@ func (o *UpsertSniRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertSniRequest) GetSni() shared.SNIInput {
+func (o *UpsertSniRequest) GetSni() shared.Sni {
 	if o == nil {
-		return shared.SNIInput{}
+		return shared.Sni{}
 	}
 	return o.Sni
 }

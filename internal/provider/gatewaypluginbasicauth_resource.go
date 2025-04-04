@@ -36,7 +36,7 @@ type GatewayPluginBasicAuthResource struct {
 
 // GatewayPluginBasicAuthResourceModel describes the resource data model.
 type GatewayPluginBasicAuthResourceModel struct {
-	Config         tfTypes.BasicAuthPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.BasicAuthPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginBasicAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -87,6 +88,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -172,6 +174,7 @@ func (r *GatewayPluginBasicAuthResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -219,7 +222,7 @@ func (r *GatewayPluginBasicAuthResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	basicAuthPlugin := *data.ToSharedBasicAuthPluginInput()
+	basicAuthPlugin := *data.ToSharedBasicAuthPlugin()
 	request := operations.CreateBasicauthPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		BasicAuthPlugin: basicAuthPlugin,
@@ -329,7 +332,7 @@ func (r *GatewayPluginBasicAuthResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	basicAuthPlugin := *data.ToSharedBasicAuthPluginInput()
+	basicAuthPlugin := *data.ToSharedBasicAuthPlugin()
 	request := operations.UpdateBasicauthPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

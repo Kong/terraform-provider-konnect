@@ -9,7 +9,7 @@ import (
 	"math/big"
 )
 
-func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamInput {
+func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 	algorithm := new(shared.UpstreamAlgorithm)
 	if !r.Algorithm.IsUnknown() && !r.Algorithm.IsNull() {
 		*algorithm = shared.UpstreamAlgorithm(r.Algorithm.ValueString())
@@ -27,6 +27,12 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 		clientCertificate = &shared.UpstreamClientCertificate{
 			ID: id,
 		}
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	hashFallback := new(shared.HashFallback)
 	if !r.HashFallback.IsUnknown() && !r.HashFallback.IsNull() {
@@ -308,15 +314,22 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
 	useSrvName := new(bool)
 	if !r.UseSrvName.IsUnknown() && !r.UseSrvName.IsNull() {
 		*useSrvName = r.UseSrvName.ValueBool()
 	} else {
 		useSrvName = nil
 	}
-	out := shared.UpstreamInput{
+	out := shared.Upstream{
 		Algorithm:              algorithm,
 		ClientCertificate:      clientCertificate,
+		CreatedAt:              createdAt,
 		HashFallback:           hashFallback,
 		HashFallbackHeader:     hashFallbackHeader,
 		HashFallbackQueryArg:   hashFallbackQueryArg,
@@ -333,6 +346,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstreamInput() *shared.UpstreamI
 		Name:                   name,
 		Slots:                  slots,
 		Tags:                   tags,
+		UpdatedAt:              updatedAt,
 		UseSrvName:             useSrvName,
 	}
 	return &out

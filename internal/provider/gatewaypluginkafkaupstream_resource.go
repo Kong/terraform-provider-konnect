@@ -42,7 +42,7 @@ type GatewayPluginKafkaUpstreamResource struct {
 
 // GatewayPluginKafkaUpstreamResourceModel describes the resource data model.
 type GatewayPluginKafkaUpstreamResourceModel struct {
-	Config         tfTypes.KafkaUpstreamPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -66,7 +66,8 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
@@ -271,6 +272,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -356,6 +358,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -403,7 +406,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
 	request := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
@@ -513,7 +516,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
 	request := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

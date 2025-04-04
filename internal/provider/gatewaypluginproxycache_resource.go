@@ -38,7 +38,7 @@ type GatewayPluginProxyCacheResource struct {
 
 // GatewayPluginProxyCacheResourceModel describes the resource data model.
 type GatewayPluginProxyCacheResourceModel struct {
-	Config         tfTypes.ProxyCachePluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.ProxyCachePluginConfig    `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 		MarkdownDescription: "GatewayPluginProxyCache Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"cache_control": schema.BoolAttribute{
 						Computed:    true,
@@ -191,6 +192,7 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -276,6 +278,7 @@ func (r *GatewayPluginProxyCacheResource) Schema(ctx context.Context, req resour
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -323,7 +326,7 @@ func (r *GatewayPluginProxyCacheResource) Create(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	proxyCachePlugin := *data.ToSharedProxyCachePluginInput()
+	proxyCachePlugin := *data.ToSharedProxyCachePlugin()
 	request := operations.CreateProxycachePluginRequest{
 		ControlPlaneID:   controlPlaneID,
 		ProxyCachePlugin: proxyCachePlugin,
@@ -433,7 +436,7 @@ func (r *GatewayPluginProxyCacheResource) Update(ctx context.Context, req resour
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	proxyCachePlugin := *data.ToSharedProxyCachePluginInput()
+	proxyCachePlugin := *data.ToSharedProxyCachePlugin()
 	request := operations.UpdateProxycachePluginRequest{
 		PluginID:         pluginID,
 		ControlPlaneID:   controlPlaneID,

@@ -29,7 +29,7 @@ type GatewayPluginGrpcWebDataSource struct {
 
 // GatewayPluginGrpcWebDataSourceModel describes the data model.
 type GatewayPluginGrpcWebDataSourceModel struct {
-	Config         tfTypes.GrpcWebPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.GrpcWebPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

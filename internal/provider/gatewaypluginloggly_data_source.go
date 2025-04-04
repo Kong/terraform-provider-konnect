@@ -29,7 +29,7 @@ type GatewayPluginLogglyDataSource struct {
 
 // GatewayPluginLogglyDataSourceModel describes the data model.
 type GatewayPluginLogglyDataSourceModel struct {
-	Config         tfTypes.LogglyPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.LogglyPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

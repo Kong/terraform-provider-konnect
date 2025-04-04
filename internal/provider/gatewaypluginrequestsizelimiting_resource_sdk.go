@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimitingPluginInput() *shared.RequestSizeLimitingPluginInput {
+func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimitingPlugin() *shared.RequestSizeLimitingPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,28 +64,37 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	allowedPayloadSize := new(int64)
-	if !r.Config.AllowedPayloadSize.IsUnknown() && !r.Config.AllowedPayloadSize.IsNull() {
-		*allowedPayloadSize = r.Config.AllowedPayloadSize.ValueInt64()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		allowedPayloadSize = nil
+		updatedAt = nil
 	}
-	requireContentLength := new(bool)
-	if !r.Config.RequireContentLength.IsUnknown() && !r.Config.RequireContentLength.IsNull() {
-		*requireContentLength = r.Config.RequireContentLength.ValueBool()
-	} else {
-		requireContentLength = nil
-	}
-	sizeUnit := new(shared.SizeUnit)
-	if !r.Config.SizeUnit.IsUnknown() && !r.Config.SizeUnit.IsNull() {
-		*sizeUnit = shared.SizeUnit(r.Config.SizeUnit.ValueString())
-	} else {
-		sizeUnit = nil
-	}
-	config := shared.RequestSizeLimitingPluginConfig{
-		AllowedPayloadSize:   allowedPayloadSize,
-		RequireContentLength: requireContentLength,
-		SizeUnit:             sizeUnit,
+	var config *shared.RequestSizeLimitingPluginConfig
+	if r.Config != nil {
+		allowedPayloadSize := new(int64)
+		if !r.Config.AllowedPayloadSize.IsUnknown() && !r.Config.AllowedPayloadSize.IsNull() {
+			*allowedPayloadSize = r.Config.AllowedPayloadSize.ValueInt64()
+		} else {
+			allowedPayloadSize = nil
+		}
+		requireContentLength := new(bool)
+		if !r.Config.RequireContentLength.IsUnknown() && !r.Config.RequireContentLength.IsNull() {
+			*requireContentLength = r.Config.RequireContentLength.ValueBool()
+		} else {
+			requireContentLength = nil
+		}
+		sizeUnit := new(shared.SizeUnit)
+		if !r.Config.SizeUnit.IsUnknown() && !r.Config.SizeUnit.IsNull() {
+			*sizeUnit = shared.SizeUnit(r.Config.SizeUnit.ValueString())
+		} else {
+			sizeUnit = nil
+		}
+		config = &shared.RequestSizeLimitingPluginConfig{
+			AllowedPayloadSize:   allowedPayloadSize,
+			RequireContentLength: requireContentLength,
+			SizeUnit:             sizeUnit,
+		}
 	}
 	var consumer *shared.RequestSizeLimitingPluginConsumer
 	if r.Consumer != nil {
@@ -121,12 +136,14 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 			ID: id3,
 		}
 	}
-	out := shared.RequestSizeLimitingPluginInput{
+	out := shared.RequestSizeLimitingPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -138,12 +155,17 @@ func (r *GatewayPluginRequestSizeLimitingResourceModel) ToSharedRequestSizeLimit
 
 func (r *GatewayPluginRequestSizeLimitingResourceModel) RefreshFromSharedRequestSizeLimitingPlugin(resp *shared.RequestSizeLimitingPlugin) {
 	if resp != nil {
-		r.Config.AllowedPayloadSize = types.Int64PointerValue(resp.Config.AllowedPayloadSize)
-		r.Config.RequireContentLength = types.BoolPointerValue(resp.Config.RequireContentLength)
-		if resp.Config.SizeUnit != nil {
-			r.Config.SizeUnit = types.StringValue(string(*resp.Config.SizeUnit))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.SizeUnit = types.StringNull()
+			r.Config = &tfTypes.RequestSizeLimitingPluginConfig{}
+			r.Config.AllowedPayloadSize = types.Int64PointerValue(resp.Config.AllowedPayloadSize)
+			r.Config.RequireContentLength = types.BoolPointerValue(resp.Config.RequireContentLength)
+			if resp.Config.SizeUnit != nil {
+				r.Config.SizeUnit = types.StringValue(string(*resp.Config.SizeUnit))
+			} else {
+				r.Config.SizeUnit = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

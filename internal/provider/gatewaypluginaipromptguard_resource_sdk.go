@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPluginInput() *shared.AiPromptGuardPluginInput {
+func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() *shared.AiPromptGuardPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,38 +64,47 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPluginInp
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	allowAllConversationHistory := new(bool)
-	if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
-		*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		allowAllConversationHistory = nil
+		updatedAt = nil
 	}
-	var allowPatterns []string = []string{}
-	for _, allowPatternsItem := range r.Config.AllowPatterns {
-		allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
-	}
-	var denyPatterns []string = []string{}
-	for _, denyPatternsItem := range r.Config.DenyPatterns {
-		denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
-	}
-	matchAllRoles := new(bool)
-	if !r.Config.MatchAllRoles.IsUnknown() && !r.Config.MatchAllRoles.IsNull() {
-		*matchAllRoles = r.Config.MatchAllRoles.ValueBool()
-	} else {
-		matchAllRoles = nil
-	}
-	maxRequestBodySize := new(int64)
-	if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
-		*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
-	} else {
-		maxRequestBodySize = nil
-	}
-	config := shared.AiPromptGuardPluginConfig{
-		AllowAllConversationHistory: allowAllConversationHistory,
-		AllowPatterns:               allowPatterns,
-		DenyPatterns:                denyPatterns,
-		MatchAllRoles:               matchAllRoles,
-		MaxRequestBodySize:          maxRequestBodySize,
+	var config *shared.AiPromptGuardPluginConfig
+	if r.Config != nil {
+		allowAllConversationHistory := new(bool)
+		if !r.Config.AllowAllConversationHistory.IsUnknown() && !r.Config.AllowAllConversationHistory.IsNull() {
+			*allowAllConversationHistory = r.Config.AllowAllConversationHistory.ValueBool()
+		} else {
+			allowAllConversationHistory = nil
+		}
+		var allowPatterns []string = []string{}
+		for _, allowPatternsItem := range r.Config.AllowPatterns {
+			allowPatterns = append(allowPatterns, allowPatternsItem.ValueString())
+		}
+		var denyPatterns []string = []string{}
+		for _, denyPatternsItem := range r.Config.DenyPatterns {
+			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
+		}
+		matchAllRoles := new(bool)
+		if !r.Config.MatchAllRoles.IsUnknown() && !r.Config.MatchAllRoles.IsNull() {
+			*matchAllRoles = r.Config.MatchAllRoles.ValueBool()
+		} else {
+			matchAllRoles = nil
+		}
+		maxRequestBodySize := new(int64)
+		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
+			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
+		} else {
+			maxRequestBodySize = nil
+		}
+		config = &shared.AiPromptGuardPluginConfig{
+			AllowAllConversationHistory: allowAllConversationHistory,
+			AllowPatterns:               allowPatterns,
+			DenyPatterns:                denyPatterns,
+			MatchAllRoles:               matchAllRoles,
+			MaxRequestBodySize:          maxRequestBodySize,
+		}
 	}
 	var consumer *shared.AiPromptGuardPluginConsumer
 	if r.Consumer != nil {
@@ -143,12 +158,14 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPluginInp
 			ID: id4,
 		}
 	}
-	out := shared.AiPromptGuardPluginInput{
+	out := shared.AiPromptGuardPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
@@ -161,17 +178,22 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPluginInp
 
 func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuardPlugin(resp *shared.AiPromptGuardPlugin) {
 	if resp != nil {
-		r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
-		r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
-		for _, v := range resp.Config.AllowPatterns {
-			r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiPromptGuardPluginConfig{}
+			r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
+			r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
+			for _, v := range resp.Config.AllowPatterns {
+				r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+			}
+			r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
+			for _, v := range resp.Config.DenyPatterns {
+				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+			}
+			r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		}
-		r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
-		for _, v := range resp.Config.DenyPatterns {
-			r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
-		}
-		r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
-		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

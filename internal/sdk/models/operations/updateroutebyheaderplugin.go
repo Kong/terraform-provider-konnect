@@ -11,8 +11,8 @@ type UpdateRoutebyheaderPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RouteByHeaderPlugin shared.RouteByHeaderPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RouteByHeaderPlugin shared.RouteByHeaderPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRoutebyheaderPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateRoutebyheaderPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPluginInput {
+func (o *UpdateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPlugin {
 	if o == nil {
-		return shared.RouteByHeaderPluginInput{}
+		return shared.RouteByHeaderPlugin{}
 	}
 	return o.RouteByHeaderPlugin
 }
