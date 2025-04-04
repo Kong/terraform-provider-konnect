@@ -36,19 +36,19 @@ type GatewayPluginAzureFunctionsResource struct {
 
 // GatewayPluginAzureFunctionsResourceModel describes the resource data model.
 type GatewayPluginAzureFunctionsResourceModel struct {
-	Config         tfTypes.AzureFunctionsPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         *tfTypes.AzureFunctionsPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
+	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                         `tfsdk:"created_at"`
+	Enabled        types.Bool                          `tfsdk:"enabled"`
+	ID             types.String                        `tfsdk:"id"`
+	InstanceName   types.String                        `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Protocols      []types.String                      `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
+	Tags           []types.String                      `tfsdk:"tags"`
+	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAzureFunctionsResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +60,8 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginAzureFunctions Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"apikey": schema.StringAttribute{
 						Computed:    true,
@@ -137,6 +138,7 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -222,6 +224,7 @@ func (r *GatewayPluginAzureFunctionsResource) Schema(ctx context.Context, req re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -269,7 +272,7 @@ func (r *GatewayPluginAzureFunctionsResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPluginInput()
+	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPlugin()
 	request := operations.CreateAzurefunctionsPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		AzureFunctionsPlugin: azureFunctionsPlugin,
@@ -379,7 +382,7 @@ func (r *GatewayPluginAzureFunctionsResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPluginInput()
+	azureFunctionsPlugin := *data.ToSharedAzureFunctionsPlugin()
 	request := operations.UpdateAzurefunctionsPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,

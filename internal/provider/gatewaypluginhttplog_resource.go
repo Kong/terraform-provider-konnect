@@ -41,7 +41,7 @@ type GatewayPluginHTTPLogResource struct {
 
 // GatewayPluginHTTPLogResourceModel describes the resource data model.
 type GatewayPluginHTTPLogResourceModel struct {
-	Config         tfTypes.HTTPLogPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.HTTPLogPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginHTTPLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"content_type": schema.StringAttribute{
 						Computed:    true,
@@ -218,6 +219,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -303,6 +305,7 @@ func (r *GatewayPluginHTTPLogResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -350,7 +353,7 @@ func (r *GatewayPluginHTTPLogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	httpLogPlugin := *data.ToSharedHTTPLogPluginInput()
+	httpLogPlugin := *data.ToSharedHTTPLogPlugin()
 	request := operations.CreateHttplogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		HTTPLogPlugin:  httpLogPlugin,
@@ -460,7 +463,7 @@ func (r *GatewayPluginHTTPLogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	httpLogPlugin := *data.ToSharedHTTPLogPluginInput()
+	httpLogPlugin := *data.ToSharedHTTPLogPlugin()
 	request := operations.UpdateHttplogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

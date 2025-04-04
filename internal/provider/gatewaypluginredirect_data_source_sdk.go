@@ -10,9 +10,14 @@ import (
 
 func (r *GatewayPluginRedirectDataSourceModel) RefreshFromSharedRedirectPlugin(resp *shared.RedirectPlugin) {
 	if resp != nil {
-		r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
-		r.Config.Location = types.StringPointerValue(resp.Config.Location)
-		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RedirectPluginConfig{}
+			r.Config.KeepIncomingPath = types.BoolPointerValue(resp.Config.KeepIncomingPath)
+			r.Config.Location = types.StringPointerValue(resp.Config.Location)
+			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

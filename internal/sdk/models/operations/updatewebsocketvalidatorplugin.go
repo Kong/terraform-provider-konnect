@@ -11,8 +11,8 @@ type UpdateWebsocketvalidatorPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	WebsocketValidatorPlugin shared.WebsocketValidatorPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	WebsocketValidatorPlugin shared.WebsocketValidatorPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateWebsocketvalidatorPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateWebsocketvalidatorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() shared.WebsocketValidatorPluginInput {
+func (o *UpdateWebsocketvalidatorPluginRequest) GetWebsocketValidatorPlugin() shared.WebsocketValidatorPlugin {
 	if o == nil {
-		return shared.WebsocketValidatorPluginInput{}
+		return shared.WebsocketValidatorPlugin{}
 	}
 	return o.WebsocketValidatorPlugin
 }

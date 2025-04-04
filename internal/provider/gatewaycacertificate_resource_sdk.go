@@ -7,7 +7,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared.CACertificateInput {
+func (r *GatewayCACertificateResourceModel) ToSharedCACertificate() *shared.CACertificate {
 	var cert string
 	cert = r.Cert.ValueString()
 
@@ -16,6 +16,12 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared
 		*certDigest = r.CertDigest.ValueString()
 	} else {
 		certDigest = nil
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -27,11 +33,19 @@ func (r *GatewayCACertificateResourceModel) ToSharedCACertificateInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CACertificateInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.CACertificate{
 		Cert:       cert,
 		CertDigest: certDigest,
+		CreatedAt:  createdAt,
 		ID:         id,
 		Tags:       tags,
+		UpdatedAt:  updatedAt,
 	}
 	return &out
 }

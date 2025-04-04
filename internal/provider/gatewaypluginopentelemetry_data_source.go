@@ -29,7 +29,7 @@ type GatewayPluginOpentelemetryDataSource struct {
 
 // GatewayPluginOpentelemetryDataSourceModel describes the data model.
 type GatewayPluginOpentelemetryDataSourceModel struct {
-	Config         tfTypes.OpentelemetryPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OpentelemetryPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

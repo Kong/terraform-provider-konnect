@@ -15,6 +15,7 @@ GatewayRoute Resource
 ```terraform
 resource "konnect_gateway_route" "my_gatewayroute" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 8
   destinations = [
     {
       ip   = "...my_ip..."
@@ -62,6 +63,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
   tags = [
     "..."
   ]
+  updated_at = 6
 }
 ```
 
@@ -74,6 +76,7 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `destinations` (Attributes List) A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port". (see [below for nested schema](#nestedatt--destinations))
 - `headers` (Map of List of String) One or more lists of values indexed by header name that will cause this Route to match if present in the request. The `Host` header cannot be used with this attribute: hosts should be specified using the `hosts` attribute. When `headers` contains only one value and that value starts with the special prefix `~*`, the value is interpreted as a regular expression.
 - `hosts` (List of String) A list of domain names that match this Route. Note that the hosts value is case sensitive.
@@ -92,12 +95,11 @@ resource "konnect_gateway_route" "my_gatewayroute" {
 - `sources` (Attributes List) A list of IP sources of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port". (see [below for nested schema](#nestedatt--sources))
 - `strip_path` (Boolean) When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.
 - `tags` (List of String) An optional set of strings associated with the Route for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--destinations"></a>
 ### Nested Schema for `destinations`

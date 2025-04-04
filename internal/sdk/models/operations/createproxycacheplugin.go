@@ -9,8 +9,8 @@ import (
 
 type CreateProxycachePluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ProxyCachePlugin shared.ProxyCachePluginInput `request:"mediaType=application/json"`
+	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ProxyCachePlugin shared.ProxyCachePlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateProxycachePluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateProxycachePluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateProxycachePluginRequest) GetProxyCachePlugin() shared.ProxyCachePluginInput {
+func (o *CreateProxycachePluginRequest) GetProxyCachePlugin() shared.ProxyCachePlugin {
 	if o == nil {
-		return shared.ProxyCachePluginInput{}
+		return shared.ProxyCachePlugin{}
 	}
 	return o.ProxyCachePlugin
 }

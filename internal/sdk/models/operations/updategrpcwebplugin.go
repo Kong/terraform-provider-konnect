@@ -11,8 +11,8 @@ type UpdateGrpcwebPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	GrpcWebPlugin  shared.GrpcWebPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	GrpcWebPlugin  shared.GrpcWebPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateGrpcwebPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateGrpcwebPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateGrpcwebPluginRequest) GetGrpcWebPlugin() shared.GrpcWebPluginInput {
+func (o *UpdateGrpcwebPluginRequest) GetGrpcWebPlugin() shared.GrpcWebPlugin {
 	if o == nil {
-		return shared.GrpcWebPluginInput{}
+		return shared.GrpcWebPlugin{}
 	}
 	return o.GrpcWebPlugin
 }

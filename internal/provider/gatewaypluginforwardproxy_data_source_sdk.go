@@ -10,22 +10,27 @@ import (
 
 func (r *GatewayPluginForwardProxyDataSourceModel) RefreshFromSharedForwardProxyPlugin(resp *shared.ForwardProxyPlugin) {
 	if resp != nil {
-		r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
-		r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
-		r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
-		r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-		r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
-		r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
-		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-		if resp.Config.ProxyScheme != nil {
-			r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ProxyScheme = types.StringNull()
-		}
-		if resp.Config.XHeaders != nil {
-			r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
-		} else {
-			r.Config.XHeaders = types.StringNull()
+			r.Config = &tfTypes.ForwardProxyPluginConfig{}
+			r.Config.AuthPassword = types.StringPointerValue(resp.Config.AuthPassword)
+			r.Config.AuthUsername = types.StringPointerValue(resp.Config.AuthUsername)
+			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
+			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
+			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
+			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
+			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+			if resp.Config.ProxyScheme != nil {
+				r.Config.ProxyScheme = types.StringValue(string(*resp.Config.ProxyScheme))
+			} else {
+				r.Config.ProxyScheme = types.StringNull()
+			}
+			if resp.Config.XHeaders != nil {
+				r.Config.XHeaders = types.StringValue(string(*resp.Config.XHeaders))
+			} else {
+				r.Config.XHeaders = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

@@ -9,8 +9,8 @@ import (
 
 type CreateOpaPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	OpaPlugin      shared.OpaPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	OpaPlugin      shared.OpaPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateOpaPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateOpaPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateOpaPluginRequest) GetOpaPlugin() shared.OpaPluginInput {
+func (o *CreateOpaPluginRequest) GetOpaPlugin() shared.OpaPlugin {
 	if o == nil {
-		return shared.OpaPluginInput{}
+		return shared.OpaPlugin{}
 	}
 	return o.OpaPlugin
 }

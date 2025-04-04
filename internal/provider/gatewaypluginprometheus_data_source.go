@@ -29,7 +29,7 @@ type GatewayPluginPrometheusDataSource struct {
 
 // GatewayPluginPrometheusDataSourceModel describes the data model.
 type GatewayPluginPrometheusDataSourceModel struct {
-	Config         tfTypes.PrometheusPluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.PrometheusPluginConfig    `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

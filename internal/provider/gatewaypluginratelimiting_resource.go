@@ -39,7 +39,7 @@ type GatewayPluginRateLimitingResource struct {
 
 // GatewayPluginRateLimitingResourceModel describes the resource data model.
 type GatewayPluginRateLimitingResourceModel struct {
-	Config         tfTypes.RateLimitingPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.RateLimitingPluginConfig  `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -64,7 +64,8 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginRateLimiting Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"day": schema.NumberAttribute{
 						Computed:    true,
@@ -256,6 +257,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -341,6 +343,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -388,7 +391,7 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPlugin()
 	request := operations.CreateRatelimitingPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		RateLimitingPlugin: rateLimitingPlugin,
@@ -498,7 +501,7 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPlugin()
 	request := operations.UpdateRatelimitingPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

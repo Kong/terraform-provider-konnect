@@ -10,12 +10,17 @@ import (
 
 func (r *GatewayPluginTLSMetadataHeadersDataSourceModel) RefreshFromSharedTLSMetadataHeadersPlugin(resp *shared.TLSMetadataHeadersPlugin) {
 	if resp != nil {
-		r.Config.ClientCertFingerprintHeaderName = types.StringPointerValue(resp.Config.ClientCertFingerprintHeaderName)
-		r.Config.ClientCertHeaderName = types.StringPointerValue(resp.Config.ClientCertHeaderName)
-		r.Config.ClientCertIssuerDnHeaderName = types.StringPointerValue(resp.Config.ClientCertIssuerDnHeaderName)
-		r.Config.ClientCertSubjectDnHeaderName = types.StringPointerValue(resp.Config.ClientCertSubjectDnHeaderName)
-		r.Config.ClientSerialHeaderName = types.StringPointerValue(resp.Config.ClientSerialHeaderName)
-		r.Config.InjectClientCertDetails = types.BoolPointerValue(resp.Config.InjectClientCertDetails)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.TLSMetadataHeadersPluginConfig{}
+			r.Config.ClientCertFingerprintHeaderName = types.StringPointerValue(resp.Config.ClientCertFingerprintHeaderName)
+			r.Config.ClientCertHeaderName = types.StringPointerValue(resp.Config.ClientCertHeaderName)
+			r.Config.ClientCertIssuerDnHeaderName = types.StringPointerValue(resp.Config.ClientCertIssuerDnHeaderName)
+			r.Config.ClientCertSubjectDnHeaderName = types.StringPointerValue(resp.Config.ClientCertSubjectDnHeaderName)
+			r.Config.ClientSerialHeaderName = types.StringPointerValue(resp.Config.ClientSerialHeaderName)
+			r.Config.InjectClientCertDetails = types.BoolPointerValue(resp.Config.InjectClientCertDetails)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransformerAdvancedPluginInput() *shared.RouteTransformerAdvancedPluginInput {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransformerAdvancedPlugin() *shared.RouteTransformerAdvancedPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,35 +64,44 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	escapePath := new(bool)
-	if !r.Config.EscapePath.IsUnknown() && !r.Config.EscapePath.IsNull() {
-		*escapePath = r.Config.EscapePath.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		escapePath = nil
+		updatedAt = nil
 	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
-	} else {
-		host = nil
-	}
-	path := new(string)
-	if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
-		*path = r.Config.Path.ValueString()
-	} else {
-		path = nil
-	}
-	port := new(string)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueString()
-	} else {
-		port = nil
-	}
-	config := shared.RouteTransformerAdvancedPluginConfig{
-		EscapePath: escapePath,
-		Host:       host,
-		Path:       path,
-		Port:       port,
+	var config *shared.RouteTransformerAdvancedPluginConfig
+	if r.Config != nil {
+		escapePath := new(bool)
+		if !r.Config.EscapePath.IsUnknown() && !r.Config.EscapePath.IsNull() {
+			*escapePath = r.Config.EscapePath.ValueBool()
+		} else {
+			escapePath = nil
+		}
+		host := new(string)
+		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+			*host = r.Config.Host.ValueString()
+		} else {
+			host = nil
+		}
+		path := new(string)
+		if !r.Config.Path.IsUnknown() && !r.Config.Path.IsNull() {
+			*path = r.Config.Path.ValueString()
+		} else {
+			path = nil
+		}
+		port := new(string)
+		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+			*port = r.Config.Port.ValueString()
+		} else {
+			port = nil
+		}
+		config = &shared.RouteTransformerAdvancedPluginConfig{
+			EscapePath: escapePath,
+			Host:       host,
+			Path:       path,
+			Port:       port,
+		}
 	}
 	var consumer *shared.RouteTransformerAdvancedPluginConsumer
 	if r.Consumer != nil {
@@ -128,12 +143,14 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 			ID: id3,
 		}
 	}
-	out := shared.RouteTransformerAdvancedPluginInput{
+	out := shared.RouteTransformerAdvancedPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -145,10 +162,15 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 
 func (r *GatewayPluginRouteTransformerAdvancedResourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(resp *shared.RouteTransformerAdvancedPlugin) {
 	if resp != nil {
-		r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RouteTransformerAdvancedPluginConfig{}
+			r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

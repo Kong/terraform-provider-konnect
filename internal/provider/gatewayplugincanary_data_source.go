@@ -29,7 +29,7 @@ type GatewayPluginCanaryDataSource struct {
 
 // GatewayPluginCanaryDataSourceModel describes the data model.
 type GatewayPluginCanaryDataSourceModel struct {
-	Config         tfTypes.CanaryPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.CanaryPluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

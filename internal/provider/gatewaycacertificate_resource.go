@@ -68,6 +68,7 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -82,6 +83,7 @@ func (r *GatewayCACertificateResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -129,7 +131,7 @@ func (r *GatewayCACertificateResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	caCertificate := *data.ToSharedCACertificateInput()
+	caCertificate := *data.ToSharedCACertificate()
 	request := operations.CreateCaCertificateRequest{
 		ControlPlaneID: controlPlaneID,
 		CACertificate:  caCertificate,
@@ -239,7 +241,7 @@ func (r *GatewayCACertificateResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	caCertificate := *data.ToSharedCACertificateInput()
+	caCertificate := *data.ToSharedCACertificate()
 	request := operations.UpsertCaCertificateRequest{
 		CACertificateID: caCertificateID,
 		ControlPlaneID:  controlPlaneID,

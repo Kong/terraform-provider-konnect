@@ -11,8 +11,8 @@ type UpdateBotdetectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	BotDetectionPlugin shared.BotDetectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	BotDetectionPlugin shared.BotDetectionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateBotdetectionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateBotdetectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateBotdetectionPluginRequest) GetBotDetectionPlugin() shared.BotDetectionPluginInput {
+func (o *UpdateBotdetectionPluginRequest) GetBotDetectionPlugin() shared.BotDetectionPlugin {
 	if o == nil {
-		return shared.BotDetectionPluginInput{}
+		return shared.BotDetectionPlugin{}
 	}
 	return o.BotDetectionPlugin
 }

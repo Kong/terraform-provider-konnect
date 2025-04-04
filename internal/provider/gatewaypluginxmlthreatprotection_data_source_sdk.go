@@ -11,39 +11,44 @@ import (
 
 func (r *GatewayPluginXMLThreatProtectionDataSourceModel) RefreshFromSharedXMLThreatProtectionPlugin(resp *shared.XMLThreatProtectionPlugin) {
 	if resp != nil {
-		r.Config.AllowDtd = types.BoolPointerValue(resp.Config.AllowDtd)
-		r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
-		for _, v := range resp.Config.AllowedContentTypes {
-			r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
-		}
-		r.Config.Attribute = types.Int64PointerValue(resp.Config.Attribute)
-		if resp.Config.BlaMaxAmplification != nil {
-			r.Config.BlaMaxAmplification = types.NumberValue(big.NewFloat(float64(*resp.Config.BlaMaxAmplification)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.BlaMaxAmplification = types.NumberNull()
+			r.Config = &tfTypes.XMLThreatProtectionPluginConfig{}
+			r.Config.AllowDtd = types.BoolPointerValue(resp.Config.AllowDtd)
+			r.Config.AllowedContentTypes = make([]types.String, 0, len(resp.Config.AllowedContentTypes))
+			for _, v := range resp.Config.AllowedContentTypes {
+				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
+			}
+			r.Config.Attribute = types.Int64PointerValue(resp.Config.Attribute)
+			if resp.Config.BlaMaxAmplification != nil {
+				r.Config.BlaMaxAmplification = types.NumberValue(big.NewFloat(float64(*resp.Config.BlaMaxAmplification)))
+			} else {
+				r.Config.BlaMaxAmplification = types.NumberNull()
+			}
+			r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
+			r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
+			r.Config.CheckedContentTypes = make([]types.String, 0, len(resp.Config.CheckedContentTypes))
+			for _, v := range resp.Config.CheckedContentTypes {
+				r.Config.CheckedContentTypes = append(r.Config.CheckedContentTypes, types.StringValue(v))
+			}
+			r.Config.Comment = types.Int64PointerValue(resp.Config.Comment)
+			r.Config.Document = types.Int64PointerValue(resp.Config.Document)
+			r.Config.Entity = types.Int64PointerValue(resp.Config.Entity)
+			r.Config.Entityname = types.Int64PointerValue(resp.Config.Entityname)
+			r.Config.Entityproperty = types.Int64PointerValue(resp.Config.Entityproperty)
+			r.Config.Localname = types.Int64PointerValue(resp.Config.Localname)
+			r.Config.MaxAttributes = types.Int64PointerValue(resp.Config.MaxAttributes)
+			r.Config.MaxChildren = types.Int64PointerValue(resp.Config.MaxChildren)
+			r.Config.MaxDepth = types.Int64PointerValue(resp.Config.MaxDepth)
+			r.Config.MaxNamespaces = types.Int64PointerValue(resp.Config.MaxNamespaces)
+			r.Config.NamespaceAware = types.BoolPointerValue(resp.Config.NamespaceAware)
+			r.Config.Namespaceuri = types.Int64PointerValue(resp.Config.Namespaceuri)
+			r.Config.Pidata = types.Int64PointerValue(resp.Config.Pidata)
+			r.Config.Pitarget = types.Int64PointerValue(resp.Config.Pitarget)
+			r.Config.Prefix = types.Int64PointerValue(resp.Config.Prefix)
+			r.Config.Text = types.Int64PointerValue(resp.Config.Text)
 		}
-		r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
-		r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
-		r.Config.CheckedContentTypes = make([]types.String, 0, len(resp.Config.CheckedContentTypes))
-		for _, v := range resp.Config.CheckedContentTypes {
-			r.Config.CheckedContentTypes = append(r.Config.CheckedContentTypes, types.StringValue(v))
-		}
-		r.Config.Comment = types.Int64PointerValue(resp.Config.Comment)
-		r.Config.Document = types.Int64PointerValue(resp.Config.Document)
-		r.Config.Entity = types.Int64PointerValue(resp.Config.Entity)
-		r.Config.Entityname = types.Int64PointerValue(resp.Config.Entityname)
-		r.Config.Entityproperty = types.Int64PointerValue(resp.Config.Entityproperty)
-		r.Config.Localname = types.Int64PointerValue(resp.Config.Localname)
-		r.Config.MaxAttributes = types.Int64PointerValue(resp.Config.MaxAttributes)
-		r.Config.MaxChildren = types.Int64PointerValue(resp.Config.MaxChildren)
-		r.Config.MaxDepth = types.Int64PointerValue(resp.Config.MaxDepth)
-		r.Config.MaxNamespaces = types.Int64PointerValue(resp.Config.MaxNamespaces)
-		r.Config.NamespaceAware = types.BoolPointerValue(resp.Config.NamespaceAware)
-		r.Config.Namespaceuri = types.Int64PointerValue(resp.Config.Namespaceuri)
-		r.Config.Pidata = types.Int64PointerValue(resp.Config.Pidata)
-		r.Config.Pitarget = types.Int64PointerValue(resp.Config.Pitarget)
-		r.Config.Prefix = types.Int64PointerValue(resp.Config.Prefix)
-		r.Config.Text = types.Int64PointerValue(resp.Config.Text)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

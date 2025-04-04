@@ -11,8 +11,8 @@ type UpdateMockingPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	MockingPlugin  shared.MockingPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	MockingPlugin  shared.MockingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateMockingPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateMockingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateMockingPluginRequest) GetMockingPlugin() shared.MockingPluginInput {
+func (o *UpdateMockingPluginRequest) GetMockingPlugin() shared.MockingPlugin {
 	if o == nil {
-		return shared.MockingPluginInput{}
+		return shared.MockingPlugin{}
 	}
 	return o.MockingPlugin
 }

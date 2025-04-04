@@ -41,7 +41,7 @@ type GatewayPluginLogglyResource struct {
 
 // GatewayPluginLogglyResourceModel describes the resource data model.
 type GatewayPluginLogglyResourceModel struct {
-	Config         tfTypes.LogglyPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.LogglyPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginLoggly Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"client_errors_severity": schema.StringAttribute{
 						Computed:    true,
@@ -195,6 +196,7 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -280,6 +282,7 @@ func (r *GatewayPluginLogglyResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -327,7 +330,7 @@ func (r *GatewayPluginLogglyResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	logglyPlugin := *data.ToSharedLogglyPluginInput()
+	logglyPlugin := *data.ToSharedLogglyPlugin()
 	request := operations.CreateLogglyPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		LogglyPlugin:   logglyPlugin,
@@ -437,7 +440,7 @@ func (r *GatewayPluginLogglyResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	logglyPlugin := *data.ToSharedLogglyPluginInput()
+	logglyPlugin := *data.ToSharedLogglyPlugin()
 	request := operations.UpdateLogglyPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

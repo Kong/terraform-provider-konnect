@@ -9,8 +9,8 @@ import (
 
 type CreateAisemanticpromptguardPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID              string                                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiSemanticPromptGuardPlugin shared.AiSemanticPromptGuardPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID              string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiSemanticPromptGuardPlugin shared.AiSemanticPromptGuardPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateAisemanticpromptguardPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateAisemanticpromptguardPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateAisemanticpromptguardPluginRequest) GetAiSemanticPromptGuardPlugin() shared.AiSemanticPromptGuardPluginInput {
+func (o *CreateAisemanticpromptguardPluginRequest) GetAiSemanticPromptGuardPlugin() shared.AiSemanticPromptGuardPlugin {
 	if o == nil {
-		return shared.AiSemanticPromptGuardPluginInput{}
+		return shared.AiSemanticPromptGuardPlugin{}
 	}
 	return o.AiSemanticPromptGuardPlugin
 }

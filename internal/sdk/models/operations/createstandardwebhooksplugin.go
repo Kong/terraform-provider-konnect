@@ -9,8 +9,8 @@ import (
 
 type CreateStandardwebhooksPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	StandardWebhooksPlugin shared.StandardWebhooksPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	StandardWebhooksPlugin shared.StandardWebhooksPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateStandardwebhooksPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateStandardwebhooksPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPluginInput {
+func (o *CreateStandardwebhooksPluginRequest) GetStandardWebhooksPlugin() shared.StandardWebhooksPlugin {
 	if o == nil {
-		return shared.StandardWebhooksPluginInput{}
+		return shared.StandardWebhooksPlugin{}
 	}
 	return o.StandardWebhooksPlugin
 }

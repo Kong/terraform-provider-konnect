@@ -29,7 +29,7 @@ type GatewayPluginKafkaUpstreamDataSource struct {
 
 // GatewayPluginKafkaUpstreamDataSourceModel describes the data model.
 type GatewayPluginKafkaUpstreamDataSourceModel struct {
-	Config         tfTypes.KafkaUpstreamPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

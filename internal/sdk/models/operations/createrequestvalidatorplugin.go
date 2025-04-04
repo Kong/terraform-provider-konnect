@@ -9,8 +9,8 @@ import (
 
 type CreateRequestvalidatorPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestValidatorPlugin shared.RequestValidatorPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestValidatorPlugin shared.RequestValidatorPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequestvalidatorPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateRequestvalidatorPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequestvalidatorPluginRequest) GetRequestValidatorPlugin() shared.RequestValidatorPluginInput {
+func (o *CreateRequestvalidatorPluginRequest) GetRequestValidatorPlugin() shared.RequestValidatorPlugin {
 	if o == nil {
-		return shared.RequestValidatorPluginInput{}
+		return shared.RequestValidatorPlugin{}
 	}
 	return o.RequestValidatorPlugin
 }

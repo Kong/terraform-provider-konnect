@@ -11,8 +11,8 @@ type UpdateRequestterminationPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestTerminationPlugin shared.RequestTerminationPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestTerminationPlugin shared.RequestTerminationPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRequestterminationPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateRequestterminationPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRequestterminationPluginRequest) GetRequestTerminationPlugin() shared.RequestTerminationPluginInput {
+func (o *UpdateRequestterminationPluginRequest) GetRequestTerminationPlugin() shared.RequestTerminationPlugin {
 	if o == nil {
-		return shared.RequestTerminationPluginInput{}
+		return shared.RequestTerminationPlugin{}
 	}
 	return o.RequestTerminationPlugin
 }

@@ -11,19 +11,24 @@ import (
 
 func (r *GatewayPluginIPRestrictionDataSourceModel) RefreshFromSharedIPRestrictionPlugin(resp *shared.IPRestrictionPlugin) {
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		if resp.Config.Status != nil {
-			r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Status = types.NumberNull()
+			r.Config = &tfTypes.IPRestrictionPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			if resp.Config.Status != nil {
+				r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+			} else {
+				r.Config.Status = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

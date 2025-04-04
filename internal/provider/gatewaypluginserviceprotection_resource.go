@@ -40,17 +40,17 @@ type GatewayPluginServiceProtectionResource struct {
 
 // GatewayPluginServiceProtectionResourceModel describes the resource data model.
 type GatewayPluginServiceProtectionResourceModel struct {
-	Config         tfTypes.ServiceProtectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                           `tfsdk:"created_at"`
-	Enabled        types.Bool                            `tfsdk:"enabled"`
-	ID             types.String                          `tfsdk:"id"`
-	InstanceName   types.String                          `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
-	Protocols      []types.String                        `tfsdk:"protocols"`
-	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
-	Tags           []types.String                        `tfsdk:"tags"`
-	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
+	Config         *tfTypes.ServiceProtectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                            `tfsdk:"created_at"`
+	Enabled        types.Bool                             `tfsdk:"enabled"`
+	ID             types.String                           `tfsdk:"id"`
+	InstanceName   types.String                           `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
+	Protocols      []types.String                         `tfsdk:"protocols"`
+	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
+	Tags           []types.String                         `tfsdk:"tags"`
+	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginServiceProtectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -62,7 +62,8 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 		MarkdownDescription: "GatewayPluginServiceProtection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"dictionary_name": schema.StringAttribute{
 						Computed:    true,
@@ -331,6 +332,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -402,6 +404,7 @@ func (r *GatewayPluginServiceProtectionResource) Schema(ctx context.Context, req
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -449,7 +452,7 @@ func (r *GatewayPluginServiceProtectionResource) Create(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	serviceProtectionPlugin := *data.ToSharedServiceProtectionPluginInput()
+	serviceProtectionPlugin := *data.ToSharedServiceProtectionPlugin()
 	request := operations.CreateServiceprotectionPluginRequest{
 		ControlPlaneID:          controlPlaneID,
 		ServiceProtectionPlugin: serviceProtectionPlugin,
@@ -559,7 +562,7 @@ func (r *GatewayPluginServiceProtectionResource) Update(ctx context.Context, req
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	serviceProtectionPlugin := *data.ToSharedServiceProtectionPluginInput()
+	serviceProtectionPlugin := *data.ToSharedServiceProtectionPlugin()
 	request := operations.UpdateServiceprotectionPluginRequest{
 		PluginID:                pluginID,
 		ControlPlaneID:          controlPlaneID,

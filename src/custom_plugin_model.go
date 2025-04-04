@@ -27,7 +27,7 @@ type CustomPluginResourceModel struct {
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
 }
 
-func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, error) {
+func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.Plugin, error) {
 	config := r.Config.UnderlyingValue()
 
 	// Use .String() to convert the dynamic value to a string,
@@ -35,10 +35,10 @@ func (r *CustomPluginResourceModel) ToSharedPluginInput() (shared.PluginInput, e
 	var configJson map[string]any
 	err := json.Unmarshal([]byte(config.String()), &configJson)
 	if err != nil {
-		return shared.PluginInput{}, err
+		return shared.Plugin{}, err
 	}
 
-	pluginInput := shared.PluginInput{
+	pluginInput := shared.Plugin{
 		Name:   *sdk.String(r.Name.ValueString()),
 		Config: configJson,
 	}

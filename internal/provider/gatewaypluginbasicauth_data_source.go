@@ -29,7 +29,7 @@ type GatewayPluginBasicAuthDataSource struct {
 
 // GatewayPluginBasicAuthDataSourceModel describes the data model.
 type GatewayPluginBasicAuthDataSourceModel struct {
-	Config         tfTypes.BasicAuthPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.BasicAuthPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

@@ -39,7 +39,7 @@ type GatewayPluginAwsLambdaResource struct {
 
 // GatewayPluginAwsLambdaResourceModel describes the resource data model.
 type GatewayPluginAwsLambdaResourceModel struct {
-	Config         tfTypes.AwsLambdaPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.AwsLambdaPluginConfig     `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginAwsLambda Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"aws_assume_role_arn": schema.StringAttribute{
 						Computed:    true,
@@ -252,6 +253,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -337,6 +339,7 @@ func (r *GatewayPluginAwsLambdaResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -384,7 +387,7 @@ func (r *GatewayPluginAwsLambdaResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	awsLambdaPlugin := *data.ToSharedAwsLambdaPluginInput()
+	awsLambdaPlugin := *data.ToSharedAwsLambdaPlugin()
 	request := operations.CreateAwslambdaPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		AwsLambdaPlugin: awsLambdaPlugin,
@@ -494,7 +497,7 @@ func (r *GatewayPluginAwsLambdaResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	awsLambdaPlugin := *data.ToSharedAwsLambdaPluginInput()
+	awsLambdaPlugin := *data.ToSharedAwsLambdaPlugin()
 	request := operations.UpdateAwslambdaPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

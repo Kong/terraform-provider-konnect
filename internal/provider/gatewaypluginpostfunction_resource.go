@@ -36,7 +36,7 @@ type GatewayPluginPostFunctionResource struct {
 
 // GatewayPluginPostFunctionResourceModel describes the resource data model.
 type GatewayPluginPostFunctionResourceModel struct {
-	Config         tfTypes.PostFunctionPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.PostFunctionPluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginPostFunctionResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginPostFunction Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"access": schema.ListAttribute{
 						Computed:    true,
@@ -122,6 +123,7 @@ func (r *GatewayPluginPostFunctionResource) Schema(ctx context.Context, req reso
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -207,6 +209,7 @@ func (r *GatewayPluginPostFunctionResource) Schema(ctx context.Context, req reso
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -254,7 +257,7 @@ func (r *GatewayPluginPostFunctionResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	postFunctionPlugin := *data.ToSharedPostFunctionPluginInput()
+	postFunctionPlugin := *data.ToSharedPostFunctionPlugin()
 	request := operations.CreatePostfunctionPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		PostFunctionPlugin: postFunctionPlugin,
@@ -364,7 +367,7 @@ func (r *GatewayPluginPostFunctionResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	postFunctionPlugin := *data.ToSharedPostFunctionPluginInput()
+	postFunctionPlugin := *data.ToSharedPostFunctionPlugin()
 	request := operations.UpdatePostfunctionPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,

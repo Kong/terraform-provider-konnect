@@ -11,7 +11,7 @@ type CreateRouteRouteExpressionRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the new Route for creation
-	RouteExpression shared.RouteExpressionInput `request:"mediaType=application/json"`
+	RouteExpression shared.RouteExpression `request:"mediaType=application/json"`
 }
 
 func (o *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
@@ -21,9 +21,9 @@ func (o *CreateRouteRouteExpressionRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpressionInput {
+func (o *CreateRouteRouteExpressionRequest) GetRouteExpression() shared.RouteExpression {
 	if o == nil {
-		return shared.RouteExpressionInput{}
+		return shared.RouteExpression{}
 	}
 	return o.RouteExpression
 }

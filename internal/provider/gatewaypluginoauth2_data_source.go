@@ -29,7 +29,7 @@ type GatewayPluginOauth2DataSource struct {
 
 // GatewayPluginOauth2DataSourceModel describes the data model.
 type GatewayPluginOauth2DataSourceModel struct {
-	Config         tfTypes.Oauth2PluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.Oauth2PluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

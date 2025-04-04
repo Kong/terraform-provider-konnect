@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPluginInput() *shared.IPRestrictionPluginInput {
+func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() *shared.IPRestrictionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,31 +65,40 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPluginInp
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var allow []string = []string{}
-	for _, allowItem := range r.Config.Allow {
-		allow = append(allow, allowItem.ValueString())
-	}
-	var deny []string = []string{}
-	for _, denyItem := range r.Config.Deny {
-		deny = append(deny, denyItem.ValueString())
-	}
-	message := new(string)
-	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
-		*message = r.Config.Message.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		message = nil
+		updatedAt = nil
 	}
-	status := new(float64)
-	if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
-		*status, _ = r.Config.Status.ValueBigFloat().Float64()
-	} else {
-		status = nil
-	}
-	config := shared.IPRestrictionPluginConfig{
-		Allow:   allow,
-		Deny:    deny,
-		Message: message,
-		Status:  status,
+	var config *shared.IPRestrictionPluginConfig
+	if r.Config != nil {
+		var allow []string = []string{}
+		for _, allowItem := range r.Config.Allow {
+			allow = append(allow, allowItem.ValueString())
+		}
+		var deny []string = []string{}
+		for _, denyItem := range r.Config.Deny {
+			deny = append(deny, denyItem.ValueString())
+		}
+		message := new(string)
+		if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
+			*message = r.Config.Message.ValueString()
+		} else {
+			message = nil
+		}
+		status := new(float64)
+		if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
+			*status, _ = r.Config.Status.ValueBigFloat().Float64()
+		} else {
+			status = nil
+		}
+		config = &shared.IPRestrictionPluginConfig{
+			Allow:   allow,
+			Deny:    deny,
+			Message: message,
+			Status:  status,
+		}
 	}
 	var consumer *shared.IPRestrictionPluginConsumer
 	if r.Consumer != nil {
@@ -137,12 +152,14 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPluginInp
 			ID: id4,
 		}
 	}
-	out := shared.IPRestrictionPluginInput{
+	out := shared.IPRestrictionPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
@@ -155,19 +172,24 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPluginInp
 
 func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestrictionPlugin(resp *shared.IPRestrictionPlugin) {
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		if resp.Config.Status != nil {
-			r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Status = types.NumberNull()
+			r.Config = &tfTypes.IPRestrictionPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			if resp.Config.Status != nil {
+				r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
+			} else {
+				r.Config.Status = types.NumberNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

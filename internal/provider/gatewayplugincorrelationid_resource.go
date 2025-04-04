@@ -38,7 +38,7 @@ type GatewayPluginCorrelationIDResource struct {
 
 // GatewayPluginCorrelationIDResourceModel describes the resource data model.
 type GatewayPluginCorrelationIDResourceModel struct {
-	Config         tfTypes.CorrelationIDPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.CorrelationIDPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -62,7 +62,8 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginCorrelationID Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"echo_downstream": schema.BoolAttribute{
 						Computed:    true,
@@ -111,6 +112,7 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -196,6 +198,7 @@ func (r *GatewayPluginCorrelationIDResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -243,7 +246,7 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	correlationIDPlugin := *data.ToSharedCorrelationIDPluginInput()
+	correlationIDPlugin := *data.ToSharedCorrelationIDPlugin()
 	request := operations.CreateCorrelationidPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		CorrelationIDPlugin: correlationIDPlugin,
@@ -353,7 +356,7 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	correlationIDPlugin := *data.ToSharedCorrelationIDPluginInput()
+	correlationIDPlugin := *data.ToSharedCorrelationIDPlugin()
 	request := operations.UpdateCorrelationidPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

@@ -29,7 +29,7 @@ type GatewayPluginPreFunctionDataSource struct {
 
 // GatewayPluginPreFunctionDataSourceModel describes the data model.
 type GatewayPluginPreFunctionDataSourceModel struct {
-	Config         tfTypes.PostFunctionPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.PostFunctionPluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

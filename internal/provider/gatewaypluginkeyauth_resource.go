@@ -36,7 +36,7 @@ type GatewayPluginKeyAuthResource struct {
 
 // GatewayPluginKeyAuthResourceModel describes the resource data model.
 type GatewayPluginKeyAuthResourceModel struct {
-	Config         tfTypes.KeyAuthPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.KeyAuthPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginKeyAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -113,6 +114,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -198,6 +200,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -245,7 +248,7 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPlugin()
 	request := operations.CreateKeyauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		KeyAuthPlugin:  keyAuthPlugin,
@@ -355,7 +358,7 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPlugin()
 	request := operations.UpdateKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

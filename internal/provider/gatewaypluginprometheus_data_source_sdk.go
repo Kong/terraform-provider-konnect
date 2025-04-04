@@ -10,12 +10,17 @@ import (
 
 func (r *GatewayPluginPrometheusDataSourceModel) RefreshFromSharedPrometheusPlugin(resp *shared.PrometheusPlugin) {
 	if resp != nil {
-		r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
-		r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
-		r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
-		r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
-		r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
-		r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.PrometheusPluginConfig{}
+			r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
+			r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
+			r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
+			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
+			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
+			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

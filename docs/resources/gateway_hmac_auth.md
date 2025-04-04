@@ -19,6 +19,7 @@ resource "konnect_gateway_hmac_auth" "my_gatewayhmacauth" {
   }
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 9
   id               = "...my_id..."
   secret           = "...my_secret..."
   tags = [
@@ -40,13 +41,10 @@ resource "konnect_gateway_hmac_auth" "my_gatewayhmacauth" {
 ### Optional
 
 - `consumer` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--consumer))
+- `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `secret` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-
-### Read-Only
-
-- `created_at` (Number) Unix epoch when the resource was created.
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`

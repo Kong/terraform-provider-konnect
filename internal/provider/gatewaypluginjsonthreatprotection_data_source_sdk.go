@@ -10,19 +10,24 @@ import (
 
 func (r *GatewayPluginJSONThreatProtectionDataSourceModel) RefreshFromSharedJSONThreatProtectionPlugin(resp *shared.JSONThreatProtectionPlugin) {
 	if resp != nil {
-		if resp.Config.EnforcementMode != nil {
-			r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.EnforcementMode = types.StringNull()
+			r.Config = &tfTypes.JSONThreatProtectionPluginConfig{}
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
+			r.Config.MaxArrayElementCount = types.Int64PointerValue(resp.Config.MaxArrayElementCount)
+			r.Config.MaxBodySize = types.Int64PointerValue(resp.Config.MaxBodySize)
+			r.Config.MaxContainerDepth = types.Int64PointerValue(resp.Config.MaxContainerDepth)
+			r.Config.MaxObjectEntryCount = types.Int64PointerValue(resp.Config.MaxObjectEntryCount)
+			r.Config.MaxObjectEntryNameLength = types.Int64PointerValue(resp.Config.MaxObjectEntryNameLength)
+			r.Config.MaxStringValueLength = types.Int64PointerValue(resp.Config.MaxStringValueLength)
 		}
-		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-		r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-		r.Config.MaxArrayElementCount = types.Int64PointerValue(resp.Config.MaxArrayElementCount)
-		r.Config.MaxBodySize = types.Int64PointerValue(resp.Config.MaxBodySize)
-		r.Config.MaxContainerDepth = types.Int64PointerValue(resp.Config.MaxContainerDepth)
-		r.Config.MaxObjectEntryCount = types.Int64PointerValue(resp.Config.MaxObjectEntryCount)
-		r.Config.MaxObjectEntryNameLength = types.Int64PointerValue(resp.Config.MaxObjectEntryNameLength)
-		r.Config.MaxStringValueLength = types.Int64PointerValue(resp.Config.MaxStringValueLength)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

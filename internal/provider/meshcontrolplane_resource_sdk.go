@@ -108,30 +108,24 @@ func (r *MeshControlPlaneResourceModel) RefreshFromSharedMeshControlPlane(resp *
 	}
 }
 
-func (r *MeshControlPlaneResourceModel) ToSharedUpdateMeshControlPlaneRequest() *shared.UpdateMeshControlPlaneRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
+func (r *MeshControlPlaneResourceModel) ToSharedPutMeshControlPlaneRequest() *shared.PutMeshControlPlaneRequest {
+	var name string
+	name = r.Name.ValueString()
+
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
 	} else {
 		description = nil
 	}
-	labels := make(map[string]*string)
+	labels := make(map[string]string)
 	for labelsKey, labelsValue := range r.Labels {
-		labelsInst := new(string)
-		if !labelsValue.IsUnknown() && !labelsValue.IsNull() {
-			*labelsInst = labelsValue.ValueString()
-		} else {
-			labelsInst = nil
-		}
+		var labelsInst string
+		labelsInst = labelsValue.ValueString()
+
 		labels[labelsKey] = labelsInst
 	}
-	out := shared.UpdateMeshControlPlaneRequest{
+	out := shared.PutMeshControlPlaneRequest{
 		Name:        name,
 		Description: description,
 		Labels:      labels,

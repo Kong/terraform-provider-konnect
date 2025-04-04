@@ -11,8 +11,8 @@ type UpdateExittransformerPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID        string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	ExitTransformerPlugin shared.ExitTransformerPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID        string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	ExitTransformerPlugin shared.ExitTransformerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateExittransformerPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateExittransformerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateExittransformerPluginRequest) GetExitTransformerPlugin() shared.ExitTransformerPluginInput {
+func (o *UpdateExittransformerPluginRequest) GetExitTransformerPlugin() shared.ExitTransformerPlugin {
 	if o == nil {
-		return shared.ExitTransformerPluginInput{}
+		return shared.ExitTransformerPlugin{}
 	}
 	return o.ExitTransformerPlugin
 }

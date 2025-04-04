@@ -11,8 +11,8 @@ type UpdateAiratelimitingadvancedPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID               string                                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	AiRateLimitingAdvancedPlugin shared.AiRateLimitingAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID               string                              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	AiRateLimitingAdvancedPlugin shared.AiRateLimitingAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateAiratelimitingadvancedPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateAiratelimitingadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateAiratelimitingadvancedPluginRequest) GetAiRateLimitingAdvancedPlugin() shared.AiRateLimitingAdvancedPluginInput {
+func (o *UpdateAiratelimitingadvancedPluginRequest) GetAiRateLimitingAdvancedPlugin() shared.AiRateLimitingAdvancedPlugin {
 	if o == nil {
-		return shared.AiRateLimitingAdvancedPluginInput{}
+		return shared.AiRateLimitingAdvancedPlugin{}
 	}
 	return o.AiRateLimitingAdvancedPlugin
 }

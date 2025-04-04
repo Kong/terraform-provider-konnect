@@ -11,8 +11,8 @@ type UpdateGraphqlproxycacheadvancedPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID                  string                                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	GraphqlProxyCacheAdvancedPlugin shared.GraphqlProxyCacheAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID                  string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	GraphqlProxyCacheAdvancedPlugin shared.GraphqlProxyCacheAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateGraphqlproxycacheadvancedPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateGraphqlproxycacheadvancedPluginRequest) GetControlPlaneID() strin
 	return o.ControlPlaneID
 }
 
-func (o *UpdateGraphqlproxycacheadvancedPluginRequest) GetGraphqlProxyCacheAdvancedPlugin() shared.GraphqlProxyCacheAdvancedPluginInput {
+func (o *UpdateGraphqlproxycacheadvancedPluginRequest) GetGraphqlProxyCacheAdvancedPlugin() shared.GraphqlProxyCacheAdvancedPlugin {
 	if o == nil {
-		return shared.GraphqlProxyCacheAdvancedPluginInput{}
+		return shared.GraphqlProxyCacheAdvancedPlugin{}
 	}
 	return o.GraphqlProxyCacheAdvancedPlugin
 }

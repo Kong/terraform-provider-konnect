@@ -29,7 +29,7 @@ type GatewayPluginOasValidationDataSource struct {
 
 // GatewayPluginOasValidationDataSourceModel describes the data model.
 type GatewayPluginOasValidationDataSourceModel struct {
-	Config         tfTypes.OasValidationPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OasValidationPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

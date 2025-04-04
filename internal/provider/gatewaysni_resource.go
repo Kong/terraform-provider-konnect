@@ -76,6 +76,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -94,6 +95,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -141,7 +143,7 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sni := *data.ToSharedSNIInput()
+	sni := *data.ToSharedSni()
 	request := operations.CreateSniRequest{
 		ControlPlaneID: controlPlaneID,
 		Sni:            sni,
@@ -251,7 +253,7 @@ func (r *GatewaySNIResource) Update(ctx context.Context, req resource.UpdateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sni := *data.ToSharedSNIInput()
+	sni := *data.ToSharedSni()
 	request := operations.UpsertSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,

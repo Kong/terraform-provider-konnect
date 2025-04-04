@@ -29,7 +29,7 @@ type GatewayPluginBotDetectionDataSource struct {
 
 // GatewayPluginBotDetectionDataSourceModel describes the data model.
 type GatewayPluginBotDetectionDataSourceModel struct {
-	Config         tfTypes.BotDetectionPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.BotDetectionPluginConfig  `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

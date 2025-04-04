@@ -9,8 +9,8 @@ import (
 
 type CreateLdapauthadvancedPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID         string                             `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	LdapAuthAdvancedPlugin shared.LdapAuthAdvancedPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID         string                        `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LdapAuthAdvancedPlugin shared.LdapAuthAdvancedPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateLdapauthadvancedPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateLdapauthadvancedPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateLdapauthadvancedPluginRequest) GetLdapAuthAdvancedPlugin() shared.LdapAuthAdvancedPluginInput {
+func (o *CreateLdapauthadvancedPluginRequest) GetLdapAuthAdvancedPlugin() shared.LdapAuthAdvancedPlugin {
 	if o == nil {
-		return shared.LdapAuthAdvancedPluginInput{}
+		return shared.LdapAuthAdvancedPlugin{}
 	}
 	return o.LdapAuthAdvancedPlugin
 }

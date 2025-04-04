@@ -318,8 +318,8 @@ type Oauth2Plugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64             `json:"updated_at,omitempty"`
-	Config    Oauth2PluginConfig `json:"config"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    *Oauth2PluginConfig `json:"config,omitempty"`
 	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
 	Protocols []Oauth2PluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -392,9 +392,9 @@ func (o *Oauth2Plugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *Oauth2Plugin) GetConfig() Oauth2PluginConfig {
+func (o *Oauth2Plugin) GetConfig() *Oauth2PluginConfig {
 	if o == nil {
-		return Oauth2PluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -414,103 +414,6 @@ func (o *Oauth2Plugin) GetRoute() *Oauth2PluginRoute {
 }
 
 func (o *Oauth2Plugin) GetService() *Oauth2PluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// Oauth2PluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type Oauth2PluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"oauth2" json:"name"`
-	Ordering     *Oauth2PluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string           `json:"tags,omitempty"`
-	Config Oauth2PluginConfig `json:"config"`
-	// A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.
-	Protocols []Oauth2PluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *Oauth2PluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *Oauth2PluginService `json:"service"`
-}
-
-func (o Oauth2PluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *Oauth2PluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *Oauth2PluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *Oauth2PluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *Oauth2PluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *Oauth2PluginInput) GetName() string {
-	return "oauth2"
-}
-
-func (o *Oauth2PluginInput) GetOrdering() *Oauth2PluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *Oauth2PluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *Oauth2PluginInput) GetConfig() Oauth2PluginConfig {
-	if o == nil {
-		return Oauth2PluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *Oauth2PluginInput) GetProtocols() []Oauth2PluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *Oauth2PluginInput) GetRoute() *Oauth2PluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *Oauth2PluginInput) GetService() *Oauth2PluginService {
 	if o == nil {
 		return nil
 	}

@@ -9,8 +9,8 @@ import (
 
 type CreateHmacauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	HmacAuthPlugin shared.HmacAuthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	HmacAuthPlugin shared.HmacAuthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateHmacauthPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateHmacauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateHmacauthPluginRequest) GetHmacAuthPlugin() shared.HmacAuthPluginInput {
+func (o *CreateHmacauthPluginRequest) GetHmacAuthPlugin() shared.HmacAuthPlugin {
 	if o == nil {
-		return shared.HmacAuthPluginInput{}
+		return shared.HmacAuthPlugin{}
 	}
 	return o.HmacAuthPlugin
 }

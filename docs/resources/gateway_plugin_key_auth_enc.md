@@ -27,6 +27,7 @@ resource "konnect_gateway_plugin_key_auth_enc" "my_gatewaypluginkeyauthenc" {
     run_on_preflight = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 7
   enabled          = false
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -54,6 +55,7 @@ resource "konnect_gateway_plugin_key_auth_enc" "my_gatewaypluginkeyauthenc" {
   tags = [
     "..."
   ]
+  updated_at = 5
 }
 ```
 
@@ -62,11 +64,12 @@ resource "konnect_gateway_plugin_key_auth_enc" "my_gatewaypluginkeyauthenc" {
 
 ### Required
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
+- `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
@@ -74,12 +77,11 @@ resource "konnect_gateway_plugin_key_auth_enc" "my_gatewaypluginkeyauthenc" {
 - `route` (Attributes) If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used. (see [below for nested schema](#nestedatt--route))
 - `service` (Attributes) If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched. (see [below for nested schema](#nestedatt--service))
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`

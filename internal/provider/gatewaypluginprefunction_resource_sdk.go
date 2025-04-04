@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput() *shared.PreFunctionPluginInput {
+func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPlugin() *shared.PreFunctionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,57 +64,66 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var access2 []string = []string{}
-	for _, accessItem2 := range r.Config.Access {
-		access2 = append(access2, accessItem2.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
 	}
-	var bodyFilter []string = []string{}
-	for _, bodyFilterItem := range r.Config.BodyFilter {
-		bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
-	}
-	var certificate []string = []string{}
-	for _, certificateItem := range r.Config.Certificate {
-		certificate = append(certificate, certificateItem.ValueString())
-	}
-	var headerFilter []string = []string{}
-	for _, headerFilterItem := range r.Config.HeaderFilter {
-		headerFilter = append(headerFilter, headerFilterItem.ValueString())
-	}
-	var log []string = []string{}
-	for _, logItem := range r.Config.Log {
-		log = append(log, logItem.ValueString())
-	}
-	var rewrite []string = []string{}
-	for _, rewriteItem := range r.Config.Rewrite {
-		rewrite = append(rewrite, rewriteItem.ValueString())
-	}
-	var wsClientFrame []string = []string{}
-	for _, wsClientFrameItem := range r.Config.WsClientFrame {
-		wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
-	}
-	var wsClose []string = []string{}
-	for _, wsCloseItem := range r.Config.WsClose {
-		wsClose = append(wsClose, wsCloseItem.ValueString())
-	}
-	var wsHandshake []string = []string{}
-	for _, wsHandshakeItem := range r.Config.WsHandshake {
-		wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
-	}
-	var wsUpstreamFrame []string = []string{}
-	for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
-		wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
-	}
-	config := shared.PreFunctionPluginConfig{
-		Access:          access2,
-		BodyFilter:      bodyFilter,
-		Certificate:     certificate,
-		HeaderFilter:    headerFilter,
-		Log:             log,
-		Rewrite:         rewrite,
-		WsClientFrame:   wsClientFrame,
-		WsClose:         wsClose,
-		WsHandshake:     wsHandshake,
-		WsUpstreamFrame: wsUpstreamFrame,
+	var config *shared.PreFunctionPluginConfig
+	if r.Config != nil {
+		var access2 []string = []string{}
+		for _, accessItem2 := range r.Config.Access {
+			access2 = append(access2, accessItem2.ValueString())
+		}
+		var bodyFilter []string = []string{}
+		for _, bodyFilterItem := range r.Config.BodyFilter {
+			bodyFilter = append(bodyFilter, bodyFilterItem.ValueString())
+		}
+		var certificate []string = []string{}
+		for _, certificateItem := range r.Config.Certificate {
+			certificate = append(certificate, certificateItem.ValueString())
+		}
+		var headerFilter []string = []string{}
+		for _, headerFilterItem := range r.Config.HeaderFilter {
+			headerFilter = append(headerFilter, headerFilterItem.ValueString())
+		}
+		var log []string = []string{}
+		for _, logItem := range r.Config.Log {
+			log = append(log, logItem.ValueString())
+		}
+		var rewrite []string = []string{}
+		for _, rewriteItem := range r.Config.Rewrite {
+			rewrite = append(rewrite, rewriteItem.ValueString())
+		}
+		var wsClientFrame []string = []string{}
+		for _, wsClientFrameItem := range r.Config.WsClientFrame {
+			wsClientFrame = append(wsClientFrame, wsClientFrameItem.ValueString())
+		}
+		var wsClose []string = []string{}
+		for _, wsCloseItem := range r.Config.WsClose {
+			wsClose = append(wsClose, wsCloseItem.ValueString())
+		}
+		var wsHandshake []string = []string{}
+		for _, wsHandshakeItem := range r.Config.WsHandshake {
+			wsHandshake = append(wsHandshake, wsHandshakeItem.ValueString())
+		}
+		var wsUpstreamFrame []string = []string{}
+		for _, wsUpstreamFrameItem := range r.Config.WsUpstreamFrame {
+			wsUpstreamFrame = append(wsUpstreamFrame, wsUpstreamFrameItem.ValueString())
+		}
+		config = &shared.PreFunctionPluginConfig{
+			Access:          access2,
+			BodyFilter:      bodyFilter,
+			Certificate:     certificate,
+			HeaderFilter:    headerFilter,
+			Log:             log,
+			Rewrite:         rewrite,
+			WsClientFrame:   wsClientFrame,
+			WsClose:         wsClose,
+			WsHandshake:     wsHandshake,
+			WsUpstreamFrame: wsUpstreamFrame,
+		}
 	}
 	var protocols []shared.PreFunctionPluginProtocols = []shared.PreFunctionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -138,12 +153,14 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 			ID: id2,
 		}
 	}
-	out := shared.PreFunctionPluginInput{
+	out := shared.PreFunctionPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -154,45 +171,50 @@ func (r *GatewayPluginPreFunctionResourceModel) ToSharedPreFunctionPluginInput()
 
 func (r *GatewayPluginPreFunctionResourceModel) RefreshFromSharedPreFunctionPlugin(resp *shared.PreFunctionPlugin) {
 	if resp != nil {
-		r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
-		for _, v := range resp.Config.Access {
-			r.Config.Access = append(r.Config.Access, types.StringValue(v))
-		}
-		r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
-		for _, v := range resp.Config.BodyFilter {
-			r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
-		}
-		r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
-		for _, v := range resp.Config.Certificate {
-			r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
-		}
-		r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
-		for _, v := range resp.Config.HeaderFilter {
-			r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
-		}
-		r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
-		for _, v := range resp.Config.Log {
-			r.Config.Log = append(r.Config.Log, types.StringValue(v))
-		}
-		r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
-		for _, v := range resp.Config.Rewrite {
-			r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
-		}
-		r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
-		for _, v := range resp.Config.WsClientFrame {
-			r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
-		}
-		r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
-		for _, v := range resp.Config.WsClose {
-			r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
-		}
-		r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
-		for _, v := range resp.Config.WsHandshake {
-			r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
-		}
-		r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
-		for _, v := range resp.Config.WsUpstreamFrame {
-			r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.PostFunctionPluginConfig{}
+			r.Config.Access = make([]types.String, 0, len(resp.Config.Access))
+			for _, v := range resp.Config.Access {
+				r.Config.Access = append(r.Config.Access, types.StringValue(v))
+			}
+			r.Config.BodyFilter = make([]types.String, 0, len(resp.Config.BodyFilter))
+			for _, v := range resp.Config.BodyFilter {
+				r.Config.BodyFilter = append(r.Config.BodyFilter, types.StringValue(v))
+			}
+			r.Config.Certificate = make([]types.String, 0, len(resp.Config.Certificate))
+			for _, v := range resp.Config.Certificate {
+				r.Config.Certificate = append(r.Config.Certificate, types.StringValue(v))
+			}
+			r.Config.HeaderFilter = make([]types.String, 0, len(resp.Config.HeaderFilter))
+			for _, v := range resp.Config.HeaderFilter {
+				r.Config.HeaderFilter = append(r.Config.HeaderFilter, types.StringValue(v))
+			}
+			r.Config.Log = make([]types.String, 0, len(resp.Config.Log))
+			for _, v := range resp.Config.Log {
+				r.Config.Log = append(r.Config.Log, types.StringValue(v))
+			}
+			r.Config.Rewrite = make([]types.String, 0, len(resp.Config.Rewrite))
+			for _, v := range resp.Config.Rewrite {
+				r.Config.Rewrite = append(r.Config.Rewrite, types.StringValue(v))
+			}
+			r.Config.WsClientFrame = make([]types.String, 0, len(resp.Config.WsClientFrame))
+			for _, v := range resp.Config.WsClientFrame {
+				r.Config.WsClientFrame = append(r.Config.WsClientFrame, types.StringValue(v))
+			}
+			r.Config.WsClose = make([]types.String, 0, len(resp.Config.WsClose))
+			for _, v := range resp.Config.WsClose {
+				r.Config.WsClose = append(r.Config.WsClose, types.StringValue(v))
+			}
+			r.Config.WsHandshake = make([]types.String, 0, len(resp.Config.WsHandshake))
+			for _, v := range resp.Config.WsHandshake {
+				r.Config.WsHandshake = append(r.Config.WsHandshake, types.StringValue(v))
+			}
+			r.Config.WsUpstreamFrame = make([]types.String, 0, len(resp.Config.WsUpstreamFrame))
+			for _, v := range resp.Config.WsUpstreamFrame {
+				r.Config.WsUpstreamFrame = append(r.Config.WsUpstreamFrame, types.StringValue(v))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

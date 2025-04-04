@@ -36,7 +36,7 @@ type GatewayPluginOasValidationResource struct {
 
 // GatewayPluginOasValidationResourceModel describes the resource data model.
 type GatewayPluginOasValidationResourceModel struct {
-	Config         tfTypes.OasValidationPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OasValidationPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOasValidation Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allowed_header_parameters": schema.StringAttribute{
 						Computed:    true,
@@ -162,6 +163,7 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -247,6 +249,7 @@ func (r *GatewayPluginOasValidationResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -294,7 +297,7 @@ func (r *GatewayPluginOasValidationResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oasValidationPlugin := *data.ToSharedOasValidationPluginInput()
+	oasValidationPlugin := *data.ToSharedOasValidationPlugin()
 	request := operations.CreateOasvalidationPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OasValidationPlugin: oasValidationPlugin,
@@ -404,7 +407,7 @@ func (r *GatewayPluginOasValidationResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oasValidationPlugin := *data.ToSharedOasValidationPluginInput()
+	oasValidationPlugin := *data.ToSharedOasValidationPlugin()
 	request := operations.UpdateOasvalidationPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

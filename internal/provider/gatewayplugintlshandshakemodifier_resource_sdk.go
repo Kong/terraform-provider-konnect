@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeModifierPluginInput() *shared.TLSHandshakeModifierPluginInput {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeModifierPlugin() *shared.TLSHandshakeModifierPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,14 +64,23 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	tlsClientCertificate := new(shared.TLSClientCertificate)
-	if !r.Config.TLSClientCertificate.IsUnknown() && !r.Config.TLSClientCertificate.IsNull() {
-		*tlsClientCertificate = shared.TLSClientCertificate(r.Config.TLSClientCertificate.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		tlsClientCertificate = nil
+		updatedAt = nil
 	}
-	config := shared.TLSHandshakeModifierPluginConfig{
-		TLSClientCertificate: tlsClientCertificate,
+	var config *shared.TLSHandshakeModifierPluginConfig
+	if r.Config != nil {
+		tlsClientCertificate := new(shared.TLSClientCertificate)
+		if !r.Config.TLSClientCertificate.IsUnknown() && !r.Config.TLSClientCertificate.IsNull() {
+			*tlsClientCertificate = shared.TLSClientCertificate(r.Config.TLSClientCertificate.ValueString())
+		} else {
+			tlsClientCertificate = nil
+		}
+		config = &shared.TLSHandshakeModifierPluginConfig{
+			TLSClientCertificate: tlsClientCertificate,
+		}
 	}
 	var protocols []shared.TLSHandshakeModifierPluginProtocols = []shared.TLSHandshakeModifierPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -95,12 +110,14 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 			ID: id2,
 		}
 	}
-	out := shared.TLSHandshakeModifierPluginInput{
+	out := shared.TLSHandshakeModifierPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -111,10 +128,15 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 
 func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(resp *shared.TLSHandshakeModifierPlugin) {
 	if resp != nil {
-		if resp.Config.TLSClientCertificate != nil {
-			r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.TLSClientCertificate = types.StringNull()
+			r.Config = &tfTypes.TLSHandshakeModifierPluginConfig{}
+			if resp.Config.TLSClientCertificate != nil {
+				r.Config.TLSClientCertificate = types.StringValue(string(*resp.Config.TLSClientCertificate))
+			} else {
+				r.Config.TLSClientCertificate = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

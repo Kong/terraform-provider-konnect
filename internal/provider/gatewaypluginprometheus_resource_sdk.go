@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPluginInput() *shared.PrometheusPluginInput {
+func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *shared.PrometheusPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,49 +64,58 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPluginInput() *
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	aiMetrics := new(bool)
-	if !r.Config.AiMetrics.IsUnknown() && !r.Config.AiMetrics.IsNull() {
-		*aiMetrics = r.Config.AiMetrics.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		aiMetrics = nil
+		updatedAt = nil
 	}
-	bandwidthMetrics := new(bool)
-	if !r.Config.BandwidthMetrics.IsUnknown() && !r.Config.BandwidthMetrics.IsNull() {
-		*bandwidthMetrics = r.Config.BandwidthMetrics.ValueBool()
-	} else {
-		bandwidthMetrics = nil
-	}
-	latencyMetrics := new(bool)
-	if !r.Config.LatencyMetrics.IsUnknown() && !r.Config.LatencyMetrics.IsNull() {
-		*latencyMetrics = r.Config.LatencyMetrics.ValueBool()
-	} else {
-		latencyMetrics = nil
-	}
-	perConsumer := new(bool)
-	if !r.Config.PerConsumer.IsUnknown() && !r.Config.PerConsumer.IsNull() {
-		*perConsumer = r.Config.PerConsumer.ValueBool()
-	} else {
-		perConsumer = nil
-	}
-	statusCodeMetrics := new(bool)
-	if !r.Config.StatusCodeMetrics.IsUnknown() && !r.Config.StatusCodeMetrics.IsNull() {
-		*statusCodeMetrics = r.Config.StatusCodeMetrics.ValueBool()
-	} else {
-		statusCodeMetrics = nil
-	}
-	upstreamHealthMetrics := new(bool)
-	if !r.Config.UpstreamHealthMetrics.IsUnknown() && !r.Config.UpstreamHealthMetrics.IsNull() {
-		*upstreamHealthMetrics = r.Config.UpstreamHealthMetrics.ValueBool()
-	} else {
-		upstreamHealthMetrics = nil
-	}
-	config := shared.PrometheusPluginConfig{
-		AiMetrics:             aiMetrics,
-		BandwidthMetrics:      bandwidthMetrics,
-		LatencyMetrics:        latencyMetrics,
-		PerConsumer:           perConsumer,
-		StatusCodeMetrics:     statusCodeMetrics,
-		UpstreamHealthMetrics: upstreamHealthMetrics,
+	var config *shared.PrometheusPluginConfig
+	if r.Config != nil {
+		aiMetrics := new(bool)
+		if !r.Config.AiMetrics.IsUnknown() && !r.Config.AiMetrics.IsNull() {
+			*aiMetrics = r.Config.AiMetrics.ValueBool()
+		} else {
+			aiMetrics = nil
+		}
+		bandwidthMetrics := new(bool)
+		if !r.Config.BandwidthMetrics.IsUnknown() && !r.Config.BandwidthMetrics.IsNull() {
+			*bandwidthMetrics = r.Config.BandwidthMetrics.ValueBool()
+		} else {
+			bandwidthMetrics = nil
+		}
+		latencyMetrics := new(bool)
+		if !r.Config.LatencyMetrics.IsUnknown() && !r.Config.LatencyMetrics.IsNull() {
+			*latencyMetrics = r.Config.LatencyMetrics.ValueBool()
+		} else {
+			latencyMetrics = nil
+		}
+		perConsumer := new(bool)
+		if !r.Config.PerConsumer.IsUnknown() && !r.Config.PerConsumer.IsNull() {
+			*perConsumer = r.Config.PerConsumer.ValueBool()
+		} else {
+			perConsumer = nil
+		}
+		statusCodeMetrics := new(bool)
+		if !r.Config.StatusCodeMetrics.IsUnknown() && !r.Config.StatusCodeMetrics.IsNull() {
+			*statusCodeMetrics = r.Config.StatusCodeMetrics.ValueBool()
+		} else {
+			statusCodeMetrics = nil
+		}
+		upstreamHealthMetrics := new(bool)
+		if !r.Config.UpstreamHealthMetrics.IsUnknown() && !r.Config.UpstreamHealthMetrics.IsNull() {
+			*upstreamHealthMetrics = r.Config.UpstreamHealthMetrics.ValueBool()
+		} else {
+			upstreamHealthMetrics = nil
+		}
+		config = &shared.PrometheusPluginConfig{
+			AiMetrics:             aiMetrics,
+			BandwidthMetrics:      bandwidthMetrics,
+			LatencyMetrics:        latencyMetrics,
+			PerConsumer:           perConsumer,
+			StatusCodeMetrics:     statusCodeMetrics,
+			UpstreamHealthMetrics: upstreamHealthMetrics,
+		}
 	}
 	var consumer *shared.PrometheusPluginConsumer
 	if r.Consumer != nil {
@@ -142,12 +157,14 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPluginInput() *
 			ID: id3,
 		}
 	}
-	out := shared.PrometheusPluginInput{
+	out := shared.PrometheusPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -159,12 +176,17 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPluginInput() *
 
 func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin(resp *shared.PrometheusPlugin) {
 	if resp != nil {
-		r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
-		r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
-		r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
-		r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
-		r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
-		r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.PrometheusPluginConfig{}
+			r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
+			r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
+			r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
+			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
+			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
+			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {

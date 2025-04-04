@@ -29,7 +29,7 @@ type GatewayPluginSyslogDataSource struct {
 
 // GatewayPluginSyslogDataSourceModel describes the data model.
 type GatewayPluginSyslogDataSourceModel struct {
-	Config         tfTypes.SyslogPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.SyslogPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

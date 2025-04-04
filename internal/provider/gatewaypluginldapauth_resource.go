@@ -38,7 +38,7 @@ type GatewayPluginLdapAuthResource struct {
 
 // GatewayPluginLdapAuthResourceModel describes the resource data model.
 type GatewayPluginLdapAuthResourceModel struct {
-	Config         tfTypes.LdapAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.LdapAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,7 +61,8 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginLdapAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -147,6 +148,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -232,6 +234,7 @@ func (r *GatewayPluginLdapAuthResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -279,7 +282,7 @@ func (r *GatewayPluginLdapAuthResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthPlugin := *data.ToSharedLdapAuthPluginInput()
+	ldapAuthPlugin := *data.ToSharedLdapAuthPlugin()
 	request := operations.CreateLdapauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		LdapAuthPlugin: ldapAuthPlugin,
@@ -389,7 +392,7 @@ func (r *GatewayPluginLdapAuthResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	ldapAuthPlugin := *data.ToSharedLdapAuthPluginInput()
+	ldapAuthPlugin := *data.ToSharedLdapAuthPlugin()
 	request := operations.UpdateLdapauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

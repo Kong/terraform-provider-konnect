@@ -40,20 +40,20 @@ type GatewayPluginAiSemanticCacheResource struct {
 
 // GatewayPluginAiSemanticCacheResourceModel describes the resource data model.
 type GatewayPluginAiSemanticCacheResourceModel struct {
-	Config         tfTypes.AiSemanticCachePluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         *tfTypes.AiSemanticCachePluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiSemanticCacheResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +65,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 		MarkdownDescription: "GatewayPluginAiSemanticCache Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"cache_control": schema.BoolAttribute{
 						Computed:    true,
@@ -479,6 +480,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -564,6 +566,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -611,7 +614,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePluginInput()
+	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
 	request := operations.CreateAisemanticcachePluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		AiSemanticCachePlugin: aiSemanticCachePlugin,
@@ -721,7 +724,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePluginInput()
+	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
 	request := operations.UpdateAisemanticcachePluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,

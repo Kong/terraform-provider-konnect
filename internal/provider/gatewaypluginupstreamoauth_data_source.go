@@ -29,7 +29,7 @@ type GatewayPluginUpstreamOauthDataSource struct {
 
 // GatewayPluginUpstreamOauthDataSourceModel describes the data model.
 type GatewayPluginUpstreamOauthDataSourceModel struct {
-	Config         tfTypes.UpstreamOauthPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.UpstreamOauthPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

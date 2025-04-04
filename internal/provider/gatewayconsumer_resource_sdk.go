@@ -7,7 +7,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerInput {
+func (r *GatewayConsumerResourceModel) ToSharedConsumer() *shared.Consumer {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	customID := new(string)
 	if !r.CustomID.IsUnknown() && !r.CustomID.IsNull() {
 		*customID = r.CustomID.ValueString()
@@ -24,17 +30,25 @@ func (r *GatewayConsumerResourceModel) ToSharedConsumerInput() *shared.ConsumerI
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
 	username := new(string)
 	if !r.Username.IsUnknown() && !r.Username.IsNull() {
 		*username = r.Username.ValueString()
 	} else {
 		username = nil
 	}
-	out := shared.ConsumerInput{
-		CustomID: customID,
-		ID:       id,
-		Tags:     tags,
-		Username: username,
+	out := shared.Consumer{
+		CreatedAt: createdAt,
+		CustomID:  customID,
+		ID:        id,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
+		Username:  username,
 	}
 	return &out
 }

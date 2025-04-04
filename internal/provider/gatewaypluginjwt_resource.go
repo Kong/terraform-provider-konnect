@@ -36,7 +36,7 @@ type GatewayPluginJwtResource struct {
 
 // GatewayPluginJwtResourceModel describes the resource data model.
 type GatewayPluginJwtResourceModel struct {
-	Config         tfTypes.JwtPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.JwtPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayPluginJwt Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -126,6 +127,7 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -211,6 +213,7 @@ func (r *GatewayPluginJwtResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -258,7 +261,7 @@ func (r *GatewayPluginJwtResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtPlugin := *data.ToSharedJwtPluginInput()
+	jwtPlugin := *data.ToSharedJwtPlugin()
 	request := operations.CreateJwtPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		JwtPlugin:      jwtPlugin,
@@ -368,7 +371,7 @@ func (r *GatewayPluginJwtResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtPlugin := *data.ToSharedJwtPluginInput()
+	jwtPlugin := *data.ToSharedJwtPlugin()
 	request := operations.UpdateJwtPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

@@ -41,7 +41,7 @@ type GatewayPluginStatsdResource struct {
 
 // GatewayPluginStatsdResourceModel describes the resource data model.
 type GatewayPluginStatsdResourceModel struct {
-	Config         tfTypes.StatsdPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.StatsdPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginStatsd Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_status_codes": schema.ListAttribute{
 						Computed:    true,
@@ -338,6 +339,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -423,6 +425,7 @@ func (r *GatewayPluginStatsdResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -470,7 +473,7 @@ func (r *GatewayPluginStatsdResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdPlugin := *data.ToSharedStatsdPluginInput()
+	statsdPlugin := *data.ToSharedStatsdPlugin()
 	request := operations.CreateStatsdPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		StatsdPlugin:   statsdPlugin,
@@ -580,7 +583,7 @@ func (r *GatewayPluginStatsdResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdPlugin := *data.ToSharedStatsdPluginInput()
+	statsdPlugin := *data.ToSharedStatsdPlugin()
 	request := operations.UpdateStatsdPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

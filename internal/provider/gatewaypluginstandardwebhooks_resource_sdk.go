@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPluginInput() *shared.StandardWebhooksPluginInput {
+func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlugin() *shared.StandardWebhooksPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,21 +64,30 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	secretV1 := new(string)
-	if !r.Config.SecretV1.IsUnknown() && !r.Config.SecretV1.IsNull() {
-		*secretV1 = r.Config.SecretV1.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		secretV1 = nil
+		updatedAt = nil
 	}
-	toleranceSecond := new(int64)
-	if !r.Config.ToleranceSecond.IsUnknown() && !r.Config.ToleranceSecond.IsNull() {
-		*toleranceSecond = r.Config.ToleranceSecond.ValueInt64()
-	} else {
-		toleranceSecond = nil
-	}
-	config := shared.StandardWebhooksPluginConfig{
-		SecretV1:        secretV1,
-		ToleranceSecond: toleranceSecond,
+	var config *shared.StandardWebhooksPluginConfig
+	if r.Config != nil {
+		secretV1 := new(string)
+		if !r.Config.SecretV1.IsUnknown() && !r.Config.SecretV1.IsNull() {
+			*secretV1 = r.Config.SecretV1.ValueString()
+		} else {
+			secretV1 = nil
+		}
+		toleranceSecond := new(int64)
+		if !r.Config.ToleranceSecond.IsUnknown() && !r.Config.ToleranceSecond.IsNull() {
+			*toleranceSecond = r.Config.ToleranceSecond.ValueInt64()
+		} else {
+			toleranceSecond = nil
+		}
+		config = &shared.StandardWebhooksPluginConfig{
+			SecretV1:        secretV1,
+			ToleranceSecond: toleranceSecond,
+		}
 	}
 	var consumerGroup *shared.StandardWebhooksPluginConsumerGroup
 	if r.ConsumerGroup != nil {
@@ -114,12 +129,14 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 			ID: id3,
 		}
 	}
-	out := shared.StandardWebhooksPluginInput{
+	out := shared.StandardWebhooksPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		ConsumerGroup: consumerGroup,
 		Protocols:     protocols,
@@ -131,8 +148,13 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 
 func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWebhooksPlugin(resp *shared.StandardWebhooksPlugin) {
 	if resp != nil {
-		r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
-		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.StandardWebhooksPluginConfig{}
+			r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
+			r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {

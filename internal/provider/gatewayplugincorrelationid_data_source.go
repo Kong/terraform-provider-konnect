@@ -29,7 +29,7 @@ type GatewayPluginCorrelationIDDataSource struct {
 
 // GatewayPluginCorrelationIDDataSourceModel describes the data model.
 type GatewayPluginCorrelationIDDataSourceModel struct {
-	Config         tfTypes.CorrelationIDPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.CorrelationIDPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

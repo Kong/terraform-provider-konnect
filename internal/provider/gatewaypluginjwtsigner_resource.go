@@ -40,7 +40,7 @@ type GatewayPluginJwtSignerResource struct {
 
 // GatewayPluginJwtSignerResourceModel describes the resource data model.
 type GatewayPluginJwtSignerResourceModel struct {
-	Config         tfTypes.JwtSignerPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.JwtSignerPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginJwtSigner Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"access_token_consumer_by": schema.ListAttribute{
 						Computed:    true,
@@ -616,6 +617,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -701,6 +703,7 @@ func (r *GatewayPluginJwtSignerResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -748,7 +751,7 @@ func (r *GatewayPluginJwtSignerResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtSignerPlugin := *data.ToSharedJwtSignerPluginInput()
+	jwtSignerPlugin := *data.ToSharedJwtSignerPlugin()
 	request := operations.CreateJwtsignerPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		JwtSignerPlugin: jwtSignerPlugin,
@@ -858,7 +861,7 @@ func (r *GatewayPluginJwtSignerResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jwtSignerPlugin := *data.ToSharedJwtSignerPluginInput()
+	jwtSignerPlugin := *data.ToSharedJwtSignerPlugin()
 	request := operations.UpdateJwtsignerPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,

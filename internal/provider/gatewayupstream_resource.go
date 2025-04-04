@@ -106,6 +106,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"hash_fallback": schema.StringAttribute{
@@ -367,6 +368,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"use_srv_name": schema.BoolAttribute{
@@ -419,7 +421,7 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstream := *data.ToSharedUpstreamInput()
+	upstream := *data.ToSharedUpstream()
 	request := operations.CreateUpstreamRequest{
 		ControlPlaneID: controlPlaneID,
 		Upstream:       upstream,
@@ -529,7 +531,7 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstream := *data.ToSharedUpstreamInput()
+	upstream := *data.ToSharedUpstream()
 	request := operations.UpsertUpstreamRequest{
 		UpstreamID:     upstreamID,
 		ControlPlaneID: controlPlaneID,

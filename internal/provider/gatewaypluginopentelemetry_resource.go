@@ -42,7 +42,7 @@ type GatewayPluginOpentelemetryResource struct {
 
 // GatewayPluginOpentelemetryResourceModel describes the resource data model.
 type GatewayPluginOpentelemetryResourceModel struct {
-	Config         tfTypes.OpentelemetryPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OpentelemetryPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -66,7 +66,8 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOpentelemetry Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"batch_flush_delay": schema.Int64Attribute{
 						Computed:    true,
@@ -279,6 +280,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -364,6 +366,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -411,7 +414,7 @@ func (r *GatewayPluginOpentelemetryResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opentelemetryPlugin := *data.ToSharedOpentelemetryPluginInput()
+	opentelemetryPlugin := *data.ToSharedOpentelemetryPlugin()
 	request := operations.CreateOpentelemetryPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OpentelemetryPlugin: opentelemetryPlugin,
@@ -521,7 +524,7 @@ func (r *GatewayPluginOpentelemetryResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	opentelemetryPlugin := *data.ToSharedOpentelemetryPluginInput()
+	opentelemetryPlugin := *data.ToSharedOpentelemetryPlugin()
 	request := operations.UpdateOpentelemetryPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

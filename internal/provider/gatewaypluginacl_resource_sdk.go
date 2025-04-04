@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginACLResourceModel) ToSharedACLPluginInput() *shared.ACLPluginInput {
+func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,38 +64,47 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPluginInput() *shared.ACLPlug
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var allow []string = []string{}
-	for _, allowItem := range r.Config.Allow {
-		allow = append(allow, allowItem.ValueString())
-	}
-	alwaysUseAuthenticatedGroups := new(bool)
-	if !r.Config.AlwaysUseAuthenticatedGroups.IsUnknown() && !r.Config.AlwaysUseAuthenticatedGroups.IsNull() {
-		*alwaysUseAuthenticatedGroups = r.Config.AlwaysUseAuthenticatedGroups.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		alwaysUseAuthenticatedGroups = nil
+		updatedAt = nil
 	}
-	var deny []string = []string{}
-	for _, denyItem := range r.Config.Deny {
-		deny = append(deny, denyItem.ValueString())
-	}
-	hideGroupsHeader := new(bool)
-	if !r.Config.HideGroupsHeader.IsUnknown() && !r.Config.HideGroupsHeader.IsNull() {
-		*hideGroupsHeader = r.Config.HideGroupsHeader.ValueBool()
-	} else {
-		hideGroupsHeader = nil
-	}
-	includeConsumerGroups := new(bool)
-	if !r.Config.IncludeConsumerGroups.IsUnknown() && !r.Config.IncludeConsumerGroups.IsNull() {
-		*includeConsumerGroups = r.Config.IncludeConsumerGroups.ValueBool()
-	} else {
-		includeConsumerGroups = nil
-	}
-	config := shared.ACLPluginConfig{
-		Allow:                        allow,
-		AlwaysUseAuthenticatedGroups: alwaysUseAuthenticatedGroups,
-		Deny:                         deny,
-		HideGroupsHeader:             hideGroupsHeader,
-		IncludeConsumerGroups:        includeConsumerGroups,
+	var config *shared.ACLPluginConfig
+	if r.Config != nil {
+		var allow []string = []string{}
+		for _, allowItem := range r.Config.Allow {
+			allow = append(allow, allowItem.ValueString())
+		}
+		alwaysUseAuthenticatedGroups := new(bool)
+		if !r.Config.AlwaysUseAuthenticatedGroups.IsUnknown() && !r.Config.AlwaysUseAuthenticatedGroups.IsNull() {
+			*alwaysUseAuthenticatedGroups = r.Config.AlwaysUseAuthenticatedGroups.ValueBool()
+		} else {
+			alwaysUseAuthenticatedGroups = nil
+		}
+		var deny []string = []string{}
+		for _, denyItem := range r.Config.Deny {
+			deny = append(deny, denyItem.ValueString())
+		}
+		hideGroupsHeader := new(bool)
+		if !r.Config.HideGroupsHeader.IsUnknown() && !r.Config.HideGroupsHeader.IsNull() {
+			*hideGroupsHeader = r.Config.HideGroupsHeader.ValueBool()
+		} else {
+			hideGroupsHeader = nil
+		}
+		includeConsumerGroups := new(bool)
+		if !r.Config.IncludeConsumerGroups.IsUnknown() && !r.Config.IncludeConsumerGroups.IsNull() {
+			*includeConsumerGroups = r.Config.IncludeConsumerGroups.ValueBool()
+		} else {
+			includeConsumerGroups = nil
+		}
+		config = &shared.ACLPluginConfig{
+			Allow:                        allow,
+			AlwaysUseAuthenticatedGroups: alwaysUseAuthenticatedGroups,
+			Deny:                         deny,
+			HideGroupsHeader:             hideGroupsHeader,
+			IncludeConsumerGroups:        includeConsumerGroups,
+		}
 	}
 	var protocols []shared.ACLPluginProtocols = []shared.ACLPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -119,12 +134,14 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPluginInput() *shared.ACLPlug
 			ID: id2,
 		}
 	}
-	out := shared.ACLPluginInput{
+	out := shared.ACLPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -135,17 +152,22 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPluginInput() *shared.ACLPlug
 
 func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(resp *shared.ACLPlugin) {
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ACLPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
+			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		}
-		r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
-		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

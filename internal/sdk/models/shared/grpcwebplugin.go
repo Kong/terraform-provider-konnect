@@ -179,8 +179,8 @@ type GrpcWebPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    GrpcWebPluginConfig `json:"config"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    *GrpcWebPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *GrpcWebPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -255,9 +255,9 @@ func (o *GrpcWebPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *GrpcWebPlugin) GetConfig() GrpcWebPluginConfig {
+func (o *GrpcWebPlugin) GetConfig() *GrpcWebPluginConfig {
 	if o == nil {
-		return GrpcWebPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -284,112 +284,6 @@ func (o *GrpcWebPlugin) GetRoute() *GrpcWebPluginRoute {
 }
 
 func (o *GrpcWebPlugin) GetService() *GrpcWebPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// GrpcWebPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type GrpcWebPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"grpc-web" json:"name"`
-	Ordering     *GrpcWebPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string            `json:"tags,omitempty"`
-	Config GrpcWebPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *GrpcWebPluginConsumer `json:"consumer"`
-	// A set of strings representing protocols.
-	Protocols []GrpcWebPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *GrpcWebPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *GrpcWebPluginService `json:"service"`
-}
-
-func (g GrpcWebPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(g, "", false)
-}
-
-func (g *GrpcWebPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &g, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *GrpcWebPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *GrpcWebPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *GrpcWebPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *GrpcWebPluginInput) GetName() string {
-	return "grpc-web"
-}
-
-func (o *GrpcWebPluginInput) GetOrdering() *GrpcWebPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *GrpcWebPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *GrpcWebPluginInput) GetConfig() GrpcWebPluginConfig {
-	if o == nil {
-		return GrpcWebPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *GrpcWebPluginInput) GetConsumer() *GrpcWebPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *GrpcWebPluginInput) GetProtocols() []GrpcWebPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *GrpcWebPluginInput) GetRoute() *GrpcWebPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *GrpcWebPluginInput) GetService() *GrpcWebPluginService {
 	if o == nil {
 		return nil
 	}

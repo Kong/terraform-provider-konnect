@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPluginInput() *shared.DatadogTracingPluginInput {
+func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin() *shared.DatadogTracingPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,63 +64,72 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPluginI
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	batchFlushDelay := new(int64)
-	if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
-		*batchFlushDelay = r.Config.BatchFlushDelay.ValueInt64()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		batchFlushDelay = nil
+		updatedAt = nil
 	}
-	batchSpanCount := new(int64)
-	if !r.Config.BatchSpanCount.IsUnknown() && !r.Config.BatchSpanCount.IsNull() {
-		*batchSpanCount = r.Config.BatchSpanCount.ValueInt64()
-	} else {
-		batchSpanCount = nil
-	}
-	connectTimeout := new(int64)
-	if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
-		*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
-	} else {
-		connectTimeout = nil
-	}
-	endpoint := new(string)
-	if !r.Config.Endpoint.IsUnknown() && !r.Config.Endpoint.IsNull() {
-		*endpoint = r.Config.Endpoint.ValueString()
-	} else {
-		endpoint = nil
-	}
-	environment := new(string)
-	if !r.Config.Environment.IsUnknown() && !r.Config.Environment.IsNull() {
-		*environment = r.Config.Environment.ValueString()
-	} else {
-		environment = nil
-	}
-	readTimeout := new(int64)
-	if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
-		*readTimeout = r.Config.ReadTimeout.ValueInt64()
-	} else {
-		readTimeout = nil
-	}
-	sendTimeout := new(int64)
-	if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
-		*sendTimeout = r.Config.SendTimeout.ValueInt64()
-	} else {
-		sendTimeout = nil
-	}
-	serviceName := new(string)
-	if !r.Config.ServiceName.IsUnknown() && !r.Config.ServiceName.IsNull() {
-		*serviceName = r.Config.ServiceName.ValueString()
-	} else {
-		serviceName = nil
-	}
-	config := shared.DatadogTracingPluginConfig{
-		BatchFlushDelay: batchFlushDelay,
-		BatchSpanCount:  batchSpanCount,
-		ConnectTimeout:  connectTimeout,
-		Endpoint:        endpoint,
-		Environment:     environment,
-		ReadTimeout:     readTimeout,
-		SendTimeout:     sendTimeout,
-		ServiceName:     serviceName,
+	var config *shared.DatadogTracingPluginConfig
+	if r.Config != nil {
+		batchFlushDelay := new(int64)
+		if !r.Config.BatchFlushDelay.IsUnknown() && !r.Config.BatchFlushDelay.IsNull() {
+			*batchFlushDelay = r.Config.BatchFlushDelay.ValueInt64()
+		} else {
+			batchFlushDelay = nil
+		}
+		batchSpanCount := new(int64)
+		if !r.Config.BatchSpanCount.IsUnknown() && !r.Config.BatchSpanCount.IsNull() {
+			*batchSpanCount = r.Config.BatchSpanCount.ValueInt64()
+		} else {
+			batchSpanCount = nil
+		}
+		connectTimeout := new(int64)
+		if !r.Config.ConnectTimeout.IsUnknown() && !r.Config.ConnectTimeout.IsNull() {
+			*connectTimeout = r.Config.ConnectTimeout.ValueInt64()
+		} else {
+			connectTimeout = nil
+		}
+		endpoint := new(string)
+		if !r.Config.Endpoint.IsUnknown() && !r.Config.Endpoint.IsNull() {
+			*endpoint = r.Config.Endpoint.ValueString()
+		} else {
+			endpoint = nil
+		}
+		environment := new(string)
+		if !r.Config.Environment.IsUnknown() && !r.Config.Environment.IsNull() {
+			*environment = r.Config.Environment.ValueString()
+		} else {
+			environment = nil
+		}
+		readTimeout := new(int64)
+		if !r.Config.ReadTimeout.IsUnknown() && !r.Config.ReadTimeout.IsNull() {
+			*readTimeout = r.Config.ReadTimeout.ValueInt64()
+		} else {
+			readTimeout = nil
+		}
+		sendTimeout := new(int64)
+		if !r.Config.SendTimeout.IsUnknown() && !r.Config.SendTimeout.IsNull() {
+			*sendTimeout = r.Config.SendTimeout.ValueInt64()
+		} else {
+			sendTimeout = nil
+		}
+		serviceName := new(string)
+		if !r.Config.ServiceName.IsUnknown() && !r.Config.ServiceName.IsNull() {
+			*serviceName = r.Config.ServiceName.ValueString()
+		} else {
+			serviceName = nil
+		}
+		config = &shared.DatadogTracingPluginConfig{
+			BatchFlushDelay: batchFlushDelay,
+			BatchSpanCount:  batchSpanCount,
+			ConnectTimeout:  connectTimeout,
+			Endpoint:        endpoint,
+			Environment:     environment,
+			ReadTimeout:     readTimeout,
+			SendTimeout:     sendTimeout,
+			ServiceName:     serviceName,
+		}
 	}
 	var consumerGroup *shared.DatadogTracingPluginConsumerGroup
 	if r.ConsumerGroup != nil {
@@ -156,12 +171,14 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPluginI
 			ID: id3,
 		}
 	}
-	out := shared.DatadogTracingPluginInput{
+	out := shared.DatadogTracingPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		ConsumerGroup: consumerGroup,
 		Protocols:     protocols,
@@ -173,14 +190,19 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPluginI
 
 func (r *GatewayPluginDatadogTracingResourceModel) RefreshFromSharedDatadogTracingPlugin(resp *shared.DatadogTracingPlugin) {
 	if resp != nil {
-		r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
-		r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
-		r.Config.Environment = types.StringPointerValue(resp.Config.Environment)
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-		r.Config.ServiceName = types.StringPointerValue(resp.Config.ServiceName)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.DatadogTracingPluginConfig{}
+			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
+			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
+			r.Config.Environment = types.StringPointerValue(resp.Config.Environment)
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+			r.Config.ServiceName = types.StringPointerValue(resp.Config.ServiceName)
+		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {

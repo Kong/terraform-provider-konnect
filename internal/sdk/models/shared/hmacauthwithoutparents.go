@@ -15,10 +15,12 @@ func (o *HMACAuthWithoutParentsConsumer) GetID() *string {
 
 type HMACAuthWithoutParents struct {
 	Consumer *HMACAuthWithoutParentsConsumer `json:"consumer"`
-	ID       *string                         `json:"id,omitempty"`
-	Secret   *string                         `json:"secret,omitempty"`
-	Tags     []string                        `json:"tags,omitempty"`
-	Username string                          `json:"username"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	ID        *string  `json:"id,omitempty"`
+	Secret    *string  `json:"secret,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
+	Username  string   `json:"username"`
 }
 
 func (o *HMACAuthWithoutParents) GetConsumer() *HMACAuthWithoutParentsConsumer {
@@ -26,6 +28,13 @@ func (o *HMACAuthWithoutParents) GetConsumer() *HMACAuthWithoutParentsConsumer {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *HMACAuthWithoutParents) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *HMACAuthWithoutParents) GetID() *string {

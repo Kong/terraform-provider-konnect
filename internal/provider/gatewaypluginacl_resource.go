@@ -36,7 +36,7 @@ type GatewayPluginACLResource struct {
 
 // GatewayPluginACLResourceModel describes the resource data model.
 type GatewayPluginACLResourceModel struct {
-	Config         tfTypes.ACLPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.ACLPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 		MarkdownDescription: "GatewayPluginACL Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow": schema.ListAttribute{
 						Computed:    true,
@@ -99,6 +100,7 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -184,6 +186,7 @@ func (r *GatewayPluginACLResource) Schema(ctx context.Context, req resource.Sche
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -231,7 +234,7 @@ func (r *GatewayPluginACLResource) Create(ctx context.Context, req resource.Crea
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aclPlugin := *data.ToSharedACLPluginInput()
+	aclPlugin := *data.ToSharedACLPlugin()
 	request := operations.CreateACLPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		ACLPlugin:      aclPlugin,
@@ -341,7 +344,7 @@ func (r *GatewayPluginACLResource) Update(ctx context.Context, req resource.Upda
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aclPlugin := *data.ToSharedACLPluginInput()
+	aclPlugin := *data.ToSharedACLPlugin()
 	request := operations.UpdateACLPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

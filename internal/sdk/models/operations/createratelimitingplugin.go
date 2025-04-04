@@ -9,8 +9,8 @@ import (
 
 type CreateRatelimitingPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID     string                         `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RateLimitingPlugin shared.RateLimitingPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID     string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RateLimitingPlugin shared.RateLimitingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRatelimitingPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateRatelimitingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRatelimitingPluginRequest) GetRateLimitingPlugin() shared.RateLimitingPluginInput {
+func (o *CreateRatelimitingPluginRequest) GetRateLimitingPlugin() shared.RateLimitingPlugin {
 	if o == nil {
-		return shared.RateLimitingPluginInput{}
+		return shared.RateLimitingPlugin{}
 	}
 	return o.RateLimitingPlugin
 }

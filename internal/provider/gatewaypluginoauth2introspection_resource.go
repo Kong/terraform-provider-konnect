@@ -40,18 +40,18 @@ type GatewayPluginOauth2IntrospectionResource struct {
 
 // GatewayPluginOauth2IntrospectionResourceModel describes the resource data model.
 type GatewayPluginOauth2IntrospectionResourceModel struct {
-	Config         tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginOauth2IntrospectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -63,7 +63,8 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 		MarkdownDescription: "GatewayPluginOauth2Introspection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -152,6 +153,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -237,6 +239,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Schema(ctx context.Context, r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -284,7 +287,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPluginInput()
+	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPlugin()
 	request := operations.CreateOauth2introspectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		Oauth2IntrospectionPlugin: oauth2IntrospectionPlugin,
@@ -394,7 +397,7 @@ func (r *GatewayPluginOauth2IntrospectionResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPluginInput()
+	oauth2IntrospectionPlugin := *data.ToSharedOauth2IntrospectionPlugin()
 	request := operations.UpdateOauth2introspectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,

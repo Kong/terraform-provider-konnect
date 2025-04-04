@@ -21,6 +21,12 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
@@ -38,11 +44,12 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	username = r.Username.ValueString()
 
 	out := shared.BasicAuthWithoutParents{
-		Consumer: consumer,
-		ID:       id1,
-		Password: password,
-		Tags:     tags,
-		Username: username,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		ID:        id1,
+		Password:  password,
+		Tags:      tags,
+		Username:  username,
 	}
 	return &out
 }

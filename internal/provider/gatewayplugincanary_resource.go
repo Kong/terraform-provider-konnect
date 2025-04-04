@@ -39,7 +39,7 @@ type GatewayPluginCanaryResource struct {
 
 // GatewayPluginCanaryResourceModel describes the resource data model.
 type GatewayPluginCanaryResourceModel struct {
-	Config         tfTypes.CanaryPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.CanaryPluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -62,7 +62,8 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginCanary Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"canary_by_header_name": schema.StringAttribute{
 						Computed:    true,
@@ -160,6 +161,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -245,6 +247,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -292,7 +295,7 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := *data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPlugin()
 	request := operations.CreateCanaryPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CanaryPlugin:   canaryPlugin,
@@ -402,7 +405,7 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := *data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPlugin()
 	request := operations.UpdateCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

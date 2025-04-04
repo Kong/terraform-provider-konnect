@@ -22,6 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -40,7 +41,7 @@ type GatewayPluginOpenidConnectResource struct {
 
 // GatewayPluginOpenidConnectResourceModel describes the resource data model.
 type GatewayPluginOpenidConnectResourceModel struct {
-	Config         tfTypes.OpenidConnectPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.OpenidConnectPluginConfig `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -63,7 +64,8 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginOpenidConnect Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -1395,9 +1397,13 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Description: `Specifies whether to run this plugin on pre-flight (` + "`" + `OPTIONS` + "`" + `) requests.`,
 					},
 					"scopes": schema.ListAttribute{
-						Required:    true,
+						Computed:    true,
+						Optional:    true,
 						ElementType: types.StringType,
-						Description: `The scopes passed to the authorization and token endpoints.`,
+						Description: `The scopes passed to the authorization and token endpoints. Not Null`,
+						Validators: []validator.List{
+							speakeasy_listvalidators.NotNull(),
+						},
 					},
 					"scopes_claim": schema.ListAttribute{
 						Computed:    true,
@@ -1843,6 +1849,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -1928,6 +1935,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -1975,7 +1983,7 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	openidConnectPlugin := *data.ToSharedOpenidConnectPluginInput()
+	openidConnectPlugin := *data.ToSharedOpenidConnectPlugin()
 	request := operations.CreateOpenidconnectPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		OpenidConnectPlugin: openidConnectPlugin,
@@ -2085,7 +2093,7 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	openidConnectPlugin := *data.ToSharedOpenidConnectPluginInput()
+	openidConnectPlugin := *data.ToSharedOpenidConnectPlugin()
 	request := operations.UpdateOpenidconnectPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

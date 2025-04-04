@@ -39,20 +39,20 @@ type GatewayPluginAiPromptTemplateResource struct {
 
 // GatewayPluginAiPromptTemplateResourceModel describes the resource data model.
 type GatewayPluginAiPromptTemplateResourceModel struct {
-	Config         tfTypes.AiPromptTemplatePluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         *tfTypes.AiPromptTemplatePluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiPromptTemplateResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 		MarkdownDescription: "GatewayPluginAiPromptTemplate Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_untemplated_requests": schema.BoolAttribute{
 						Computed:    true,
@@ -148,6 +149,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -233,6 +235,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Schema(ctx context.Context, req 
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -280,7 +283,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Create(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePluginInput()
+	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePlugin()
 	request := operations.CreateAiprompttemplatePluginRequest{
 		ControlPlaneID:         controlPlaneID,
 		AiPromptTemplatePlugin: aiPromptTemplatePlugin,
@@ -390,7 +393,7 @@ func (r *GatewayPluginAiPromptTemplateResource) Update(ctx context.Context, req 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePluginInput()
+	aiPromptTemplatePlugin := *data.ToSharedAiPromptTemplatePlugin()
 	request := operations.UpdateAiprompttemplatePluginRequest{
 		PluginID:               pluginID,
 		ControlPlaneID:         controlPlaneID,

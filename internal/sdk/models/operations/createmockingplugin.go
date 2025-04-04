@@ -9,8 +9,8 @@ import (
 
 type CreateMockingPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	MockingPlugin  shared.MockingPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	MockingPlugin  shared.MockingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateMockingPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateMockingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateMockingPluginRequest) GetMockingPlugin() shared.MockingPluginInput {
+func (o *CreateMockingPluginRequest) GetMockingPlugin() shared.MockingPlugin {
 	if o == nil {
-		return shared.MockingPluginInput{}
+		return shared.MockingPlugin{}
 	}
 	return o.MockingPlugin
 }

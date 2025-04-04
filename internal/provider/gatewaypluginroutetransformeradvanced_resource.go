@@ -36,19 +36,19 @@ type GatewayPluginRouteTransformerAdvancedResource struct {
 
 // GatewayPluginRouteTransformerAdvancedResourceModel describes the resource data model.
 type GatewayPluginRouteTransformerAdvancedResourceModel struct {
-	Config         tfTypes.RouteTransformerAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer           `tfsdk:"consumer"`
-	ControlPlaneID types.String                                 `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                  `tfsdk:"created_at"`
-	Enabled        types.Bool                                   `tfsdk:"enabled"`
-	ID             types.String                                 `tfsdk:"id"`
-	InstanceName   types.String                                 `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                   `tfsdk:"ordering"`
-	Protocols      []types.String                               `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer           `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer           `tfsdk:"service"`
-	Tags           []types.String                               `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                  `tfsdk:"updated_at"`
+	Config         *tfTypes.RouteTransformerAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"consumer"`
+	ControlPlaneID types.String                                  `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                   `tfsdk:"created_at"`
+	Enabled        types.Bool                                    `tfsdk:"enabled"`
+	ID             types.String                                  `tfsdk:"id"`
+	InstanceName   types.String                                  `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                    `tfsdk:"ordering"`
+	Protocols      []types.String                                `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer            `tfsdk:"service"`
+	Tags           []types.String                                `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                   `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRouteTransformerAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -60,7 +60,8 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Schema(ctx context.Conte
 		MarkdownDescription: "GatewayPluginRouteTransformerAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"escape_path": schema.BoolAttribute{
 						Computed: true,
@@ -103,6 +104,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Schema(ctx context.Conte
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -188,6 +190,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Schema(ctx context.Conte
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -235,7 +238,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Create(ctx context.Conte
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPluginInput()
+	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPlugin()
 	request := operations.CreateRoutetransformeradvancedPluginRequest{
 		ControlPlaneID:                 controlPlaneID,
 		RouteTransformerAdvancedPlugin: routeTransformerAdvancedPlugin,
@@ -345,7 +348,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Update(ctx context.Conte
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPluginInput()
+	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPlugin()
 	request := operations.UpdateRoutetransformeradvancedPluginRequest{
 		PluginID:                       pluginID,
 		ControlPlaneID:                 controlPlaneID,

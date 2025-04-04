@@ -74,6 +74,7 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"expression": schema.StringAttribute{
@@ -164,6 +165,7 @@ func (r *GatewayRouteExpressionResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -211,7 +213,7 @@ func (r *GatewayRouteExpressionResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeExpression := *data.ToSharedRouteExpressionInput()
+	routeExpression := *data.ToSharedRouteExpression()
 	request := operations.CreateRouteRouteExpressionRequest{
 		ControlPlaneID:  controlPlaneID,
 		RouteExpression: routeExpression,
@@ -321,7 +323,7 @@ func (r *GatewayRouteExpressionResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeExpression := *data.ToSharedRouteExpressionInput()
+	routeExpression := *data.ToSharedRouteExpression()
 	request := operations.UpsertRouteRouteExpressionRequest{
 		RouteID:         routeID,
 		ControlPlaneID:  controlPlaneID,

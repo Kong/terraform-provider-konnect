@@ -41,7 +41,7 @@ type GatewayPluginSamlResource struct {
 
 // GatewayPluginSamlResourceModel describes the resource data model.
 type GatewayPluginSamlResourceModel struct {
-	Config         tfTypes.SamlPluginConfig           `tfsdk:"config"`
+	Config         *tfTypes.SamlPluginConfig          `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -64,7 +64,8 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 		MarkdownDescription: "GatewayPluginSaml Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -520,6 +521,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -605,6 +607,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -652,7 +655,7 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	samlPlugin := *data.ToSharedSamlPluginInput()
+	samlPlugin := *data.ToSharedSamlPlugin()
 	request := operations.CreateSamlPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SamlPlugin:     samlPlugin,
@@ -762,7 +765,7 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	samlPlugin := *data.ToSharedSamlPluginInput()
+	samlPlugin := *data.ToSharedSamlPlugin()
 	request := operations.UpdateSamlPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,

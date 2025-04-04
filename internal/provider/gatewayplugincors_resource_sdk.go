@@ -9,7 +9,13 @@ import (
 	"math/big"
 )
 
-func (r *GatewayPluginCorsResourceModel) ToSharedCorsPluginInput() *shared.CorsPluginInput {
+func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,55 +65,64 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPluginInput() *shared.CorsP
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	credentials := new(bool)
-	if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
-		*credentials = r.Config.Credentials.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		credentials = nil
+		updatedAt = nil
 	}
-	var exposedHeaders []string = []string{}
-	for _, exposedHeadersItem := range r.Config.ExposedHeaders {
-		exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
-	}
-	var headers []string = []string{}
-	for _, headersItem := range r.Config.Headers {
-		headers = append(headers, headersItem.ValueString())
-	}
-	maxAge := new(float64)
-	if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
-		*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
-	} else {
-		maxAge = nil
-	}
-	var methods []shared.Methods = []shared.Methods{}
-	for _, methodsItem := range r.Config.Methods {
-		methods = append(methods, shared.Methods(methodsItem.ValueString()))
-	}
-	var origins []string = []string{}
-	for _, originsItem := range r.Config.Origins {
-		origins = append(origins, originsItem.ValueString())
-	}
-	preflightContinue := new(bool)
-	if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {
-		*preflightContinue = r.Config.PreflightContinue.ValueBool()
-	} else {
-		preflightContinue = nil
-	}
-	privateNetwork := new(bool)
-	if !r.Config.PrivateNetwork.IsUnknown() && !r.Config.PrivateNetwork.IsNull() {
-		*privateNetwork = r.Config.PrivateNetwork.ValueBool()
-	} else {
-		privateNetwork = nil
-	}
-	config := shared.CorsPluginConfig{
-		Credentials:       credentials,
-		ExposedHeaders:    exposedHeaders,
-		Headers:           headers,
-		MaxAge:            maxAge,
-		Methods:           methods,
-		Origins:           origins,
-		PreflightContinue: preflightContinue,
-		PrivateNetwork:    privateNetwork,
+	var config *shared.CorsPluginConfig
+	if r.Config != nil {
+		credentials := new(bool)
+		if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
+			*credentials = r.Config.Credentials.ValueBool()
+		} else {
+			credentials = nil
+		}
+		var exposedHeaders []string = []string{}
+		for _, exposedHeadersItem := range r.Config.ExposedHeaders {
+			exposedHeaders = append(exposedHeaders, exposedHeadersItem.ValueString())
+		}
+		var headers []string = []string{}
+		for _, headersItem := range r.Config.Headers {
+			headers = append(headers, headersItem.ValueString())
+		}
+		maxAge := new(float64)
+		if !r.Config.MaxAge.IsUnknown() && !r.Config.MaxAge.IsNull() {
+			*maxAge, _ = r.Config.MaxAge.ValueBigFloat().Float64()
+		} else {
+			maxAge = nil
+		}
+		var methods []shared.Methods = []shared.Methods{}
+		for _, methodsItem := range r.Config.Methods {
+			methods = append(methods, shared.Methods(methodsItem.ValueString()))
+		}
+		var origins []string = []string{}
+		for _, originsItem := range r.Config.Origins {
+			origins = append(origins, originsItem.ValueString())
+		}
+		preflightContinue := new(bool)
+		if !r.Config.PreflightContinue.IsUnknown() && !r.Config.PreflightContinue.IsNull() {
+			*preflightContinue = r.Config.PreflightContinue.ValueBool()
+		} else {
+			preflightContinue = nil
+		}
+		privateNetwork := new(bool)
+		if !r.Config.PrivateNetwork.IsUnknown() && !r.Config.PrivateNetwork.IsNull() {
+			*privateNetwork = r.Config.PrivateNetwork.ValueBool()
+		} else {
+			privateNetwork = nil
+		}
+		config = &shared.CorsPluginConfig{
+			Credentials:       credentials,
+			ExposedHeaders:    exposedHeaders,
+			Headers:           headers,
+			MaxAge:            maxAge,
+			Methods:           methods,
+			Origins:           origins,
+			PreflightContinue: preflightContinue,
+			PrivateNetwork:    privateNetwork,
+		}
 	}
 	var protocols []shared.CorsPluginProtocols = []shared.CorsPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -137,12 +152,14 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPluginInput() *shared.CorsP
 			ID: id2,
 		}
 	}
-	out := shared.CorsPluginInput{
+	out := shared.CorsPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -153,30 +170,35 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPluginInput() *shared.CorsP
 
 func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(resp *shared.CorsPlugin) {
 	if resp != nil {
-		r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
-		r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
-		for _, v := range resp.Config.ExposedHeaders {
-			r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
-		}
-		r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
-		for _, v := range resp.Config.Headers {
-			r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
-		}
-		if resp.Config.MaxAge != nil {
-			r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.MaxAge = types.NumberNull()
+			r.Config = &tfTypes.CorsPluginConfig{}
+			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
+			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
+			for _, v := range resp.Config.ExposedHeaders {
+				r.Config.ExposedHeaders = append(r.Config.ExposedHeaders, types.StringValue(v))
+			}
+			r.Config.Headers = make([]types.String, 0, len(resp.Config.Headers))
+			for _, v := range resp.Config.Headers {
+				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
+			}
+			if resp.Config.MaxAge != nil {
+				r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
+			} else {
+				r.Config.MaxAge = types.NumberNull()
+			}
+			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
+			for _, v := range resp.Config.Methods {
+				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
+			}
+			r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
+			for _, v := range resp.Config.Origins {
+				r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
+			}
+			r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
+			r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		}
-		r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
-		for _, v := range resp.Config.Methods {
-			r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
-		}
-		r.Config.Origins = make([]types.String, 0, len(resp.Config.Origins))
-		for _, v := range resp.Config.Origins {
-			r.Config.Origins = append(r.Config.Origins, types.StringValue(v))
-		}
-		r.Config.PreflightContinue = types.BoolPointerValue(resp.Config.PreflightContinue)
-		r.Config.PrivateNetwork = types.BoolPointerValue(resp.Config.PrivateNetwork)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)

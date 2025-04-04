@@ -42,7 +42,7 @@ type GatewayPluginUpstreamOauthResource struct {
 
 // GatewayPluginUpstreamOauthResourceModel describes the resource data model.
 type GatewayPluginUpstreamOauthResourceModel struct {
-	Config         tfTypes.UpstreamOauthPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.UpstreamOauthPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -67,7 +67,8 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginUpstreamOauth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"behavior": schema.SingleNestedAttribute{
 						Computed: true,
@@ -512,6 +513,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -597,6 +599,7 @@ func (r *GatewayPluginUpstreamOauthResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -644,7 +647,7 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPluginInput()
+	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPlugin()
 	request := operations.CreateUpstreamoauthPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		UpstreamOauthPlugin: upstreamOauthPlugin,
@@ -754,7 +757,7 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPluginInput()
+	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPlugin()
 	request := operations.UpdateUpstreamoauthPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,

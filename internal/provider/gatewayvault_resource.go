@@ -70,6 +70,7 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"description": schema.StringAttribute{
@@ -97,6 +98,7 @@ func (r *GatewayVaultResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -144,7 +146,7 @@ func (r *GatewayVaultResource) Create(ctx context.Context, req resource.CreateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vault := *data.ToSharedVaultInput()
+	vault := *data.ToSharedVault()
 	request := operations.CreateVaultRequest{
 		ControlPlaneID: controlPlaneID,
 		Vault:          vault,
@@ -254,7 +256,7 @@ func (r *GatewayVaultResource) Update(ctx context.Context, req resource.UpdateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	vault := *data.ToSharedVaultInput()
+	vault := *data.ToSharedVault()
 	request := operations.UpsertVaultRequest{
 		VaultID:        vaultID,
 		ControlPlaneID: controlPlaneID,

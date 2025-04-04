@@ -11,8 +11,8 @@ type UpdateDatadogtracingPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID       string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	DatadogTracingPlugin shared.DatadogTracingPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID       string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	DatadogTracingPlugin shared.DatadogTracingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateDatadogtracingPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateDatadogtracingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateDatadogtracingPluginRequest) GetDatadogTracingPlugin() shared.DatadogTracingPluginInput {
+func (o *UpdateDatadogtracingPluginRequest) GetDatadogTracingPlugin() shared.DatadogTracingPlugin {
 	if o == nil {
-		return shared.DatadogTracingPluginInput{}
+		return shared.DatadogTracingPlugin{}
 	}
 	return o.DatadogTracingPlugin
 }

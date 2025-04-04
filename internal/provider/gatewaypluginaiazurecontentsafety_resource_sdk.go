@@ -8,7 +8,13 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPluginInput() *shared.AiAzureContentSafetyPluginInput {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPlugin() *shared.AiAzureContentSafetyPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,103 +64,112 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	azureAPIVersion := new(string)
-	if !r.Config.AzureAPIVersion.IsUnknown() && !r.Config.AzureAPIVersion.IsNull() {
-		*azureAPIVersion = r.Config.AzureAPIVersion.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		azureAPIVersion = nil
+		updatedAt = nil
 	}
-	azureClientID := new(string)
-	if !r.Config.AzureClientID.IsUnknown() && !r.Config.AzureClientID.IsNull() {
-		*azureClientID = r.Config.AzureClientID.ValueString()
-	} else {
-		azureClientID = nil
-	}
-	azureClientSecret := new(string)
-	if !r.Config.AzureClientSecret.IsUnknown() && !r.Config.AzureClientSecret.IsNull() {
-		*azureClientSecret = r.Config.AzureClientSecret.ValueString()
-	} else {
-		azureClientSecret = nil
-	}
-	azureTenantID := new(string)
-	if !r.Config.AzureTenantID.IsUnknown() && !r.Config.AzureTenantID.IsNull() {
-		*azureTenantID = r.Config.AzureTenantID.ValueString()
-	} else {
-		azureTenantID = nil
-	}
-	azureUseManagedIdentity := new(bool)
-	if !r.Config.AzureUseManagedIdentity.IsUnknown() && !r.Config.AzureUseManagedIdentity.IsNull() {
-		*azureUseManagedIdentity = r.Config.AzureUseManagedIdentity.ValueBool()
-	} else {
-		azureUseManagedIdentity = nil
-	}
-	var blocklistNames []string = []string{}
-	for _, blocklistNamesItem := range r.Config.BlocklistNames {
-		blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
-	}
-	var categories []shared.Categories = []shared.Categories{}
-	for _, categoriesItem := range r.Config.Categories {
-		var name string
-		name = categoriesItem.Name.ValueString()
+	var config *shared.AiAzureContentSafetyPluginConfig
+	if r.Config != nil {
+		azureAPIVersion := new(string)
+		if !r.Config.AzureAPIVersion.IsUnknown() && !r.Config.AzureAPIVersion.IsNull() {
+			*azureAPIVersion = r.Config.AzureAPIVersion.ValueString()
+		} else {
+			azureAPIVersion = nil
+		}
+		azureClientID := new(string)
+		if !r.Config.AzureClientID.IsUnknown() && !r.Config.AzureClientID.IsNull() {
+			*azureClientID = r.Config.AzureClientID.ValueString()
+		} else {
+			azureClientID = nil
+		}
+		azureClientSecret := new(string)
+		if !r.Config.AzureClientSecret.IsUnknown() && !r.Config.AzureClientSecret.IsNull() {
+			*azureClientSecret = r.Config.AzureClientSecret.ValueString()
+		} else {
+			azureClientSecret = nil
+		}
+		azureTenantID := new(string)
+		if !r.Config.AzureTenantID.IsUnknown() && !r.Config.AzureTenantID.IsNull() {
+			*azureTenantID = r.Config.AzureTenantID.ValueString()
+		} else {
+			azureTenantID = nil
+		}
+		azureUseManagedIdentity := new(bool)
+		if !r.Config.AzureUseManagedIdentity.IsUnknown() && !r.Config.AzureUseManagedIdentity.IsNull() {
+			*azureUseManagedIdentity = r.Config.AzureUseManagedIdentity.ValueBool()
+		} else {
+			azureUseManagedIdentity = nil
+		}
+		var blocklistNames []string = []string{}
+		for _, blocklistNamesItem := range r.Config.BlocklistNames {
+			blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
+		}
+		var categories []shared.Categories = []shared.Categories{}
+		for _, categoriesItem := range r.Config.Categories {
+			var name string
+			name = categoriesItem.Name.ValueString()
 
-		var rejectionLevel int64
-		rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
+			var rejectionLevel int64
+			rejectionLevel = categoriesItem.RejectionLevel.ValueInt64()
 
-		categories = append(categories, shared.Categories{
-			Name:           name,
-			RejectionLevel: rejectionLevel,
-		})
-	}
-	contentSafetyKey := new(string)
-	if !r.Config.ContentSafetyKey.IsUnknown() && !r.Config.ContentSafetyKey.IsNull() {
-		*contentSafetyKey = r.Config.ContentSafetyKey.ValueString()
-	} else {
-		contentSafetyKey = nil
-	}
-	contentSafetyURL := new(string)
-	if !r.Config.ContentSafetyURL.IsUnknown() && !r.Config.ContentSafetyURL.IsNull() {
-		*contentSafetyURL = r.Config.ContentSafetyURL.ValueString()
-	} else {
-		contentSafetyURL = nil
-	}
-	haltOnBlocklistHit := new(bool)
-	if !r.Config.HaltOnBlocklistHit.IsUnknown() && !r.Config.HaltOnBlocklistHit.IsNull() {
-		*haltOnBlocklistHit = r.Config.HaltOnBlocklistHit.ValueBool()
-	} else {
-		haltOnBlocklistHit = nil
-	}
-	outputType := new(shared.OutputType)
-	if !r.Config.OutputType.IsUnknown() && !r.Config.OutputType.IsNull() {
-		*outputType = shared.OutputType(r.Config.OutputType.ValueString())
-	} else {
-		outputType = nil
-	}
-	revealFailureReason := new(bool)
-	if !r.Config.RevealFailureReason.IsUnknown() && !r.Config.RevealFailureReason.IsNull() {
-		*revealFailureReason = r.Config.RevealFailureReason.ValueBool()
-	} else {
-		revealFailureReason = nil
-	}
-	textSource := new(shared.TextSource)
-	if !r.Config.TextSource.IsUnknown() && !r.Config.TextSource.IsNull() {
-		*textSource = shared.TextSource(r.Config.TextSource.ValueString())
-	} else {
-		textSource = nil
-	}
-	config := shared.AiAzureContentSafetyPluginConfig{
-		AzureAPIVersion:         azureAPIVersion,
-		AzureClientID:           azureClientID,
-		AzureClientSecret:       azureClientSecret,
-		AzureTenantID:           azureTenantID,
-		AzureUseManagedIdentity: azureUseManagedIdentity,
-		BlocklistNames:          blocklistNames,
-		Categories:              categories,
-		ContentSafetyKey:        contentSafetyKey,
-		ContentSafetyURL:        contentSafetyURL,
-		HaltOnBlocklistHit:      haltOnBlocklistHit,
-		OutputType:              outputType,
-		RevealFailureReason:     revealFailureReason,
-		TextSource:              textSource,
+			categories = append(categories, shared.Categories{
+				Name:           name,
+				RejectionLevel: rejectionLevel,
+			})
+		}
+		contentSafetyKey := new(string)
+		if !r.Config.ContentSafetyKey.IsUnknown() && !r.Config.ContentSafetyKey.IsNull() {
+			*contentSafetyKey = r.Config.ContentSafetyKey.ValueString()
+		} else {
+			contentSafetyKey = nil
+		}
+		contentSafetyURL := new(string)
+		if !r.Config.ContentSafetyURL.IsUnknown() && !r.Config.ContentSafetyURL.IsNull() {
+			*contentSafetyURL = r.Config.ContentSafetyURL.ValueString()
+		} else {
+			contentSafetyURL = nil
+		}
+		haltOnBlocklistHit := new(bool)
+		if !r.Config.HaltOnBlocklistHit.IsUnknown() && !r.Config.HaltOnBlocklistHit.IsNull() {
+			*haltOnBlocklistHit = r.Config.HaltOnBlocklistHit.ValueBool()
+		} else {
+			haltOnBlocklistHit = nil
+		}
+		outputType := new(shared.OutputType)
+		if !r.Config.OutputType.IsUnknown() && !r.Config.OutputType.IsNull() {
+			*outputType = shared.OutputType(r.Config.OutputType.ValueString())
+		} else {
+			outputType = nil
+		}
+		revealFailureReason := new(bool)
+		if !r.Config.RevealFailureReason.IsUnknown() && !r.Config.RevealFailureReason.IsNull() {
+			*revealFailureReason = r.Config.RevealFailureReason.ValueBool()
+		} else {
+			revealFailureReason = nil
+		}
+		textSource := new(shared.TextSource)
+		if !r.Config.TextSource.IsUnknown() && !r.Config.TextSource.IsNull() {
+			*textSource = shared.TextSource(r.Config.TextSource.ValueString())
+		} else {
+			textSource = nil
+		}
+		config = &shared.AiAzureContentSafetyPluginConfig{
+			AzureAPIVersion:         azureAPIVersion,
+			AzureClientID:           azureClientID,
+			AzureClientSecret:       azureClientSecret,
+			AzureTenantID:           azureTenantID,
+			AzureUseManagedIdentity: azureUseManagedIdentity,
+			BlocklistNames:          blocklistNames,
+			Categories:              categories,
+			ContentSafetyKey:        contentSafetyKey,
+			ContentSafetyURL:        contentSafetyURL,
+			HaltOnBlocklistHit:      haltOnBlocklistHit,
+			OutputType:              outputType,
+			RevealFailureReason:     revealFailureReason,
+			TextSource:              textSource,
+		}
 	}
 	var protocols []shared.AiAzureContentSafetyPluginProtocols = []shared.AiAzureContentSafetyPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -184,12 +199,14 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 			ID: id2,
 		}
 	}
-	out := shared.AiAzureContentSafetyPluginInput{
+	out := shared.AiAzureContentSafetyPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -200,43 +217,48 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 
 func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(resp *shared.AiAzureContentSafetyPlugin) {
 	if resp != nil {
-		r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
-		r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
-		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
-		r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
-		r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-		r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
-		for _, v := range resp.Config.BlocklistNames {
-			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
-		}
-		r.Config.Categories = []tfTypes.Categories{}
-		if len(r.Config.Categories) > len(resp.Config.Categories) {
-			r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
-		}
-		for categoriesCount, categoriesItem := range resp.Config.Categories {
-			var categories1 tfTypes.Categories
-			categories1.Name = types.StringValue(categoriesItem.Name)
-			categories1.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
-			if categoriesCount+1 > len(r.Config.Categories) {
-				r.Config.Categories = append(r.Config.Categories, categories1)
-			} else {
-				r.Config.Categories[categoriesCount].Name = categories1.Name
-				r.Config.Categories[categoriesCount].RejectionLevel = categories1.RejectionLevel
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
+			r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
+			r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
+			r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
+			r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
+			r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
+			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
+			for _, v := range resp.Config.BlocklistNames {
+				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
 			}
-		}
-		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
-		r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
-		r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
-		if resp.Config.OutputType != nil {
-			r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
-		} else {
-			r.Config.OutputType = types.StringNull()
-		}
-		r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
-		if resp.Config.TextSource != nil {
-			r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
-		} else {
-			r.Config.TextSource = types.StringNull()
+			r.Config.Categories = []tfTypes.Categories{}
+			if len(r.Config.Categories) > len(resp.Config.Categories) {
+				r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
+			}
+			for categoriesCount, categoriesItem := range resp.Config.Categories {
+				var categories1 tfTypes.Categories
+				categories1.Name = types.StringValue(categoriesItem.Name)
+				categories1.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
+				if categoriesCount+1 > len(r.Config.Categories) {
+					r.Config.Categories = append(r.Config.Categories, categories1)
+				} else {
+					r.Config.Categories[categoriesCount].Name = categories1.Name
+					r.Config.Categories[categoriesCount].RejectionLevel = categories1.RejectionLevel
+				}
+			}
+			r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
+			r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
+			r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
+			if resp.Config.OutputType != nil {
+				r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
+			} else {
+				r.Config.OutputType = types.StringNull()
+			}
+			r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
+			if resp.Config.TextSource != nil {
+				r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
+			} else {
+				r.Config.TextSource = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

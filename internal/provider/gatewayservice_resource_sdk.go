@@ -8,7 +8,7 @@ import (
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInput {
+func (r *GatewayServiceResourceModel) ToSharedService() *shared.Service {
 	var caCertificates []string = []string{}
 	for _, caCertificatesItem := range r.CaCertificates {
 		caCertificates = append(caCertificates, caCertificatesItem.ValueString())
@@ -30,6 +30,12 @@ func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInpu
 		*connectTimeout = r.ConnectTimeout.ValueInt64()
 	} else {
 		connectTimeout = nil
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
@@ -58,10 +64,18 @@ func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInpu
 	} else {
 		path = nil
 	}
-	var port int64
-	port = r.Port.ValueInt64()
-
-	protocol := shared.Protocol(r.Protocol.ValueString())
+	port := new(int64)
+	if !r.Port.IsUnknown() && !r.Port.IsNull() {
+		*port = r.Port.ValueInt64()
+	} else {
+		port = nil
+	}
+	protocol := new(shared.Protocol)
+	if !r.Protocol.IsUnknown() && !r.Protocol.IsNull() {
+		*protocol = shared.Protocol(r.Protocol.ValueString())
+	} else {
+		protocol = nil
+	}
 	readTimeout := new(int64)
 	if !r.ReadTimeout.IsUnknown() && !r.ReadTimeout.IsNull() {
 		*readTimeout = r.ReadTimeout.ValueInt64()
@@ -90,16 +104,23 @@ func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInpu
 	} else {
 		tlsVerifyDepth = nil
 	}
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
 	writeTimeout := new(int64)
 	if !r.WriteTimeout.IsUnknown() && !r.WriteTimeout.IsNull() {
 		*writeTimeout = r.WriteTimeout.ValueInt64()
 	} else {
 		writeTimeout = nil
 	}
-	out := shared.ServiceInput{
+	out := shared.Service{
 		CaCertificates:    caCertificates,
 		ClientCertificate: clientCertificate,
 		ConnectTimeout:    connectTimeout,
+		CreatedAt:         createdAt,
 		Enabled:           enabled,
 		Host:              host,
 		ID:                id1,
@@ -112,6 +133,7 @@ func (r *GatewayServiceResourceModel) ToSharedServiceInput() *shared.ServiceInpu
 		Tags:              tags,
 		TLSVerify:         tlsVerify,
 		TLSVerifyDepth:    tlsVerifyDepth,
+		UpdatedAt:         updatedAt,
 		WriteTimeout:      writeTimeout,
 	}
 	return &out
@@ -138,8 +160,12 @@ func (r *GatewayServiceResourceModel) RefreshFromSharedService(resp *shared.Serv
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
 		r.Path = types.StringPointerValue(resp.Path)
-		r.Port = types.Int64Value(resp.Port)
-		r.Protocol = types.StringValue(string(resp.Protocol))
+		r.Port = types.Int64PointerValue(resp.Port)
+		if resp.Protocol != nil {
+			r.Protocol = types.StringValue(string(*resp.Protocol))
+		} else {
+			r.Protocol = types.StringNull()
+		}
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
 		r.Tags = make([]types.String, 0, len(resp.Tags))

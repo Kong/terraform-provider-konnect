@@ -21,6 +21,12 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	var group string
 	group = r.Group.ValueString()
 
@@ -35,10 +41,11 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ACLWithoutParents{
-		Consumer: consumer,
-		Group:    group,
-		ID:       id1,
-		Tags:     tags,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		Group:     group,
+		ID:        id1,
+		Tags:      tags,
 	}
 	return &out
 }

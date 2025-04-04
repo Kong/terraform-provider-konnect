@@ -29,7 +29,7 @@ type GatewayPluginAiPromptGuardDataSource struct {
 
 // GatewayPluginAiPromptGuardDataSourceModel describes the data model.
 type GatewayPluginAiPromptGuardDataSourceModel struct {
-	Config         tfTypes.AiPromptGuardPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.AiPromptGuardPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`

@@ -10,8 +10,13 @@ import (
 
 func (r *GatewayPluginStandardWebhooksDataSourceModel) RefreshFromSharedStandardWebhooksPlugin(resp *shared.StandardWebhooksPlugin) {
 	if resp != nil {
-		r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
-		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.StandardWebhooksPluginConfig{}
+			r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
+			r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {

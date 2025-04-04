@@ -13,7 +13,7 @@ type UpsertRouteRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the Route
-	RouteJSON shared.RouteJSONInput `request:"mediaType=application/json"`
+	RouteJSON shared.RouteJSON `request:"mediaType=application/json"`
 }
 
 func (o *UpsertRouteRequest) GetRouteID() string {
@@ -30,9 +30,9 @@ func (o *UpsertRouteRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertRouteRequest) GetRouteJSON() shared.RouteJSONInput {
+func (o *UpsertRouteRequest) GetRouteJSON() shared.RouteJSON {
 	if o == nil {
-		return shared.RouteJSONInput{}
+		return shared.RouteJSON{}
 	}
 	return o.RouteJSON
 }

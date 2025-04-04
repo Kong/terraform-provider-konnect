@@ -29,7 +29,7 @@ type GatewayPluginJqDataSource struct {
 
 // GatewayPluginJqDataSourceModel describes the data model.
 type GatewayPluginJqDataSourceModel struct {
-	Config         tfTypes.JqPluginConfig             `tfsdk:"config"`
+	Config         *tfTypes.JqPluginConfig            `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`

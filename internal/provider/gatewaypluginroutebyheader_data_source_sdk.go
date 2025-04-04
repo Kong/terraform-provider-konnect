@@ -11,25 +11,30 @@ import (
 
 func (r *GatewayPluginRouteByHeaderDataSourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
 	if resp != nil {
-		r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
-		if len(r.Config.Rules) > len(resp.Config.Rules) {
-			r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
-		}
-		for rulesCount, rulesItem := range resp.Config.Rules {
-			var rules1 tfTypes.RouteByHeaderPluginRules
-			if len(rulesItem.Condition) > 0 {
-				rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
-				for key, value := range rulesItem.Condition {
-					result, _ := json.Marshal(value)
-					rules1.Condition[key] = types.StringValue(string(result))
-				}
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RouteByHeaderPluginConfig{}
+			r.Config.Rules = []tfTypes.RouteByHeaderPluginRules{}
+			if len(r.Config.Rules) > len(resp.Config.Rules) {
+				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 			}
-			rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
-			if rulesCount+1 > len(r.Config.Rules) {
-				r.Config.Rules = append(r.Config.Rules, rules1)
-			} else {
-				r.Config.Rules[rulesCount].Condition = rules1.Condition
-				r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
+			for rulesCount, rulesItem := range resp.Config.Rules {
+				var rules1 tfTypes.RouteByHeaderPluginRules
+				if len(rulesItem.Condition) > 0 {
+					rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
+					for key, value := range rulesItem.Condition {
+						result, _ := json.Marshal(value)
+						rules1.Condition[key] = types.StringValue(string(result))
+					}
+				}
+				rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
+				if rulesCount+1 > len(r.Config.Rules) {
+					r.Config.Rules = append(r.Config.Rules, rules1)
+				} else {
+					r.Config.Rules[rulesCount].Condition = rules1.Condition
+					r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
+				}
 			}
 		}
 		if resp.Consumer == nil {
