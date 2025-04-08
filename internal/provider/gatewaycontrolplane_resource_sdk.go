@@ -20,9 +20,9 @@ func (r *GatewayControlPlaneResourceModel) ToSharedCreateControlPlaneRequest() *
 	} else {
 		description = nil
 	}
-	clusterType := new(shared.ClusterType)
+	clusterType := new(shared.CreateControlPlaneRequestClusterType)
 	if !r.ClusterType.IsUnknown() && !r.ClusterType.IsNull() {
-		*clusterType = shared.ClusterType(r.ClusterType.ValueString())
+		*clusterType = shared.CreateControlPlaneRequestClusterType(r.ClusterType.ValueString())
 	} else {
 		clusterType = nil
 	}
