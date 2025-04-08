@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse struct {
+type AppAuthStrategyOpenIDConnectResponse struct {
 	Active       types.Bool                                 `tfsdk:"active"`
 	Configs      AppAuthStrategyOpenIDConnectRequestConfigs `tfsdk:"configs"`
 	CreatedAt    types.String                               `tfsdk:"created_at"`

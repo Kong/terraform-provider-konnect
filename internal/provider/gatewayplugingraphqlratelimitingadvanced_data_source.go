@@ -76,10 +76,10 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedDataSource) Schema(ctx context.
 					},
 					"limit": schema.ListAttribute{
 						Computed:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply.`,
 					},
-					"max_cost": schema.NumberAttribute{
+					"max_cost": schema.Float64Attribute{
 						Computed:    true,
 						Description: `A defined maximum cost per query. 0 means unlimited.`,
 					},
@@ -200,7 +200,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedDataSource) Schema(ctx context.
 							},
 						},
 					},
-					"score_factor": schema.NumberAttribute{
+					"score_factor": schema.Float64Attribute{
 						Computed:    true,
 						Description: `A scoring factor to multiply (or divide) the cost. The ` + "`" + `score_factor` + "`" + ` must always be greater than 0.`,
 					},
@@ -208,13 +208,13 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedDataSource) Schema(ctx context.
 						Computed:    true,
 						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits.`,
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.`,
 					},
 					"window_size": schema.ListAttribute{
 						Computed:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds).`,
 					},
 					"window_type": schema.StringAttribute{
@@ -381,7 +381,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedDataSource) Read(ctx context.Co
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(res.GraphqlRateLimitingAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(ctx, res.GraphqlRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.HmacAuthPlugin {
@@ -85,7 +86,7 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 		}
 		clockSkew := new(float64)
 		if !r.Config.ClockSkew.IsUnknown() && !r.Config.ClockSkew.IsNull() {
-			*clockSkew, _ = r.Config.ClockSkew.ValueBigFloat().Float64()
+			*clockSkew = r.Config.ClockSkew.ValueFloat64()
 		} else {
 			clockSkew = nil
 		}
@@ -165,7 +166,9 @@ func (r *GatewayPluginHmacAuthResourceModel) ToSharedHmacAuthPlugin() *shared.Hm
 	return &out
 }
 
-func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(resp *shared.HmacAuthPlugin) {
+func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(ctx context.Context, resp *shared.HmacAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -176,11 +179,7 @@ func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(res
 				r.Config.Algorithms = append(r.Config.Algorithms, types.StringValue(string(v)))
 			}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-			if resp.Config.ClockSkew != nil {
-				r.Config.ClockSkew = types.NumberValue(big.NewFloat(float64(*resp.Config.ClockSkew)))
-			} else {
-				r.Config.ClockSkew = types.NumberNull()
-			}
+			r.Config.ClockSkew = types.Float64PointerValue(resp.Config.ClockSkew)
 			r.Config.EnforceHeaders = make([]types.String, 0, len(resp.Config.EnforceHeaders))
 			for _, v := range resp.Config.EnforceHeaders {
 				r.Config.EnforceHeaders = append(r.Config.EnforceHeaders, types.StringValue(v))
@@ -238,4 +237,6 @@ func (r *GatewayPluginHmacAuthResourceModel) RefreshFromSharedHmacAuthPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -251,7 +251,11 @@ func (r *GatewayPluginOpaDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOpaPlugin(res.OpaPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOpaPlugin(ctx, res.OpaPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

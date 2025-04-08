@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
@@ -99,7 +100,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 		}
 		maximumExpiration := new(float64)
 		if !r.Config.MaximumExpiration.IsUnknown() && !r.Config.MaximumExpiration.IsNull() {
-			*maximumExpiration, _ = r.Config.MaximumExpiration.ValueBigFloat().Float64()
+			*maximumExpiration = r.Config.MaximumExpiration.ValueFloat64()
 		} else {
 			maximumExpiration = nil
 		}
@@ -182,7 +183,9 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 	return &out
 }
 
-func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
+func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.Context, resp *shared.JwtPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -202,11 +205,7 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(resp *shared.
 				r.Config.HeaderNames = append(r.Config.HeaderNames, types.StringValue(v))
 			}
 			r.Config.KeyClaimName = types.StringPointerValue(resp.Config.KeyClaimName)
-			if resp.Config.MaximumExpiration != nil {
-				r.Config.MaximumExpiration = types.NumberValue(big.NewFloat(float64(*resp.Config.MaximumExpiration)))
-			} else {
-				r.Config.MaximumExpiration = types.NumberNull()
-			}
+			r.Config.MaximumExpiration = types.Float64PointerValue(resp.Config.MaximumExpiration)
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 			r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
@@ -264,4 +263,6 @@ func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(resp *shared.
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

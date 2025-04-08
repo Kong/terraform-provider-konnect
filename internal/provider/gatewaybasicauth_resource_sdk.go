@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -54,7 +56,9 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	return &out
 }
 
-func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.BasicAuth) {
+func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.Context, resp *shared.BasicAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -71,4 +75,6 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.
 		}
 		r.Username = types.StringValue(resp.Username)
 	}
+
+	return diags
 }

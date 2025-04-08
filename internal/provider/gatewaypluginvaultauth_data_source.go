@@ -236,7 +236,11 @@ func (r *GatewayPluginVaultAuthDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedVaultAuthPlugin(res.VaultAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedVaultAuthPlugin(ctx, res.VaultAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

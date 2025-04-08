@@ -73,7 +73,7 @@ func (r *GatewayPluginIPRestrictionDataSource) Schema(ctx context.Context, req d
 						Computed:    true,
 						Description: `The message to send as a response body to rejected requests.`,
 					},
-					"status": schema.NumberAttribute{
+					"status": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The HTTP status of the requests that will be rejected by the plugin.`,
 					},
@@ -246,7 +246,11 @@ func (r *GatewayPluginIPRestrictionDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedIPRestrictionPlugin(res.IPRestrictionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedIPRestrictionPlugin(ctx, res.IPRestrictionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

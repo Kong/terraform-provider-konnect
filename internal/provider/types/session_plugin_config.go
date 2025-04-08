@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type SessionPluginConfig struct {
-	AbsoluteTimeout         types.Number   `tfsdk:"absolute_timeout"`
+	AbsoluteTimeout         types.Float64  `tfsdk:"absolute_timeout"`
 	Audience                types.String   `tfsdk:"audience"`
 	CookieDomain            types.String   `tfsdk:"cookie_domain"`
 	CookieHTTPOnly          types.Bool     `tfsdk:"cookie_http_only"`
@@ -13,19 +13,19 @@ type SessionPluginConfig struct {
 	CookiePath              types.String   `tfsdk:"cookie_path"`
 	CookieSameSite          types.String   `tfsdk:"cookie_same_site"`
 	CookieSecure            types.Bool     `tfsdk:"cookie_secure"`
-	IdlingTimeout           types.Number   `tfsdk:"idling_timeout"`
+	IdlingTimeout           types.Float64  `tfsdk:"idling_timeout"`
 	LogoutMethods           []types.String `tfsdk:"logout_methods"`
 	LogoutPostArg           types.String   `tfsdk:"logout_post_arg"`
 	LogoutQueryArg          types.String   `tfsdk:"logout_query_arg"`
 	ReadBodyForLogout       types.Bool     `tfsdk:"read_body_for_logout"`
 	Remember                types.Bool     `tfsdk:"remember"`
-	RememberAbsoluteTimeout types.Number   `tfsdk:"remember_absolute_timeout"`
+	RememberAbsoluteTimeout types.Float64  `tfsdk:"remember_absolute_timeout"`
 	RememberCookieName      types.String   `tfsdk:"remember_cookie_name"`
-	RememberRollingTimeout  types.Number   `tfsdk:"remember_rolling_timeout"`
+	RememberRollingTimeout  types.Float64  `tfsdk:"remember_rolling_timeout"`
 	RequestHeaders          []types.String `tfsdk:"request_headers"`
 	ResponseHeaders         []types.String `tfsdk:"response_headers"`
-	RollingTimeout          types.Number   `tfsdk:"rolling_timeout"`
+	RollingTimeout          types.Float64  `tfsdk:"rolling_timeout"`
 	Secret                  types.String   `tfsdk:"secret"`
-	StaleTTL                types.Number   `tfsdk:"stale_ttl"`
+	StaleTTL                types.Float64  `tfsdk:"stale_ttl"`
 	Storage                 types.String   `tfsdk:"storage"`
 }

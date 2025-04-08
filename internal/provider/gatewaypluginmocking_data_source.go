@@ -79,11 +79,11 @@ func (r *GatewayPluginMockingDataSource) Schema(ctx context.Context, req datasou
 						ElementType: types.Int64Type,
 						Description: `A global list of the HTTP status codes that can only be selected and returned.`,
 					},
-					"max_delay_time": schema.NumberAttribute{
+					"max_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The maximum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be greater than the ` + "`" + `min_delay_time` + "`" + `.`,
 					},
-					"min_delay_time": schema.NumberAttribute{
+					"min_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `.`,
 					},
@@ -259,7 +259,11 @@ func (r *GatewayPluginMockingDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMockingPlugin(res.MockingPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedMockingPlugin(ctx, res.MockingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

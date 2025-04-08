@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlugin() *shared.LdapAuthAdvancedPlugin {
@@ -99,7 +100,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 		cacheTTL := new(float64)
 		if !r.Config.CacheTTL.IsUnknown() && !r.Config.CacheTTL.IsNull() {
-			*cacheTTL, _ = r.Config.CacheTTL.ValueBigFloat().Float64()
+			*cacheTTL = r.Config.CacheTTL.ValueFloat64()
 		} else {
 			cacheTTL = nil
 		}
@@ -149,7 +150,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 		keepalive := new(float64)
 		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+			*keepalive = r.Config.Keepalive.ValueFloat64()
 		} else {
 			keepalive = nil
 		}
@@ -167,7 +168,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 		ldapPort := new(float64)
 		if !r.Config.LdapPort.IsUnknown() && !r.Config.LdapPort.IsNull() {
-			*ldapPort, _ = r.Config.LdapPort.ValueBigFloat().Float64()
+			*ldapPort = r.Config.LdapPort.ValueFloat64()
 		} else {
 			ldapPort = nil
 		}
@@ -197,7 +198,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 		}
 		timeout := new(float64)
 		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+			*timeout = r.Config.Timeout.ValueFloat64()
 		} else {
 			timeout = nil
 		}
@@ -277,7 +278,9 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) ToSharedLdapAuthAdvancedPlu
 	return &out
 }
 
-func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAdvancedPlugin(resp *shared.LdapAuthAdvancedPlugin) {
+func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAdvancedPlugin(ctx context.Context, resp *shared.LdapAuthAdvancedPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -287,11 +290,7 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 			r.Config.Attribute = types.StringPointerValue(resp.Config.Attribute)
 			r.Config.BaseDn = types.StringPointerValue(resp.Config.BaseDn)
 			r.Config.BindDn = types.StringPointerValue(resp.Config.BindDn)
-			if resp.Config.CacheTTL != nil {
-				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-			} else {
-				r.Config.CacheTTL = types.NumberNull()
-			}
+			r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
 			r.Config.ConsumerBy = make([]types.String, 0, len(resp.Config.ConsumerBy))
 			for _, v := range resp.Config.ConsumerBy {
 				r.Config.ConsumerBy = append(r.Config.ConsumerBy, types.StringValue(string(v)))
@@ -306,27 +305,15 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 			}
 			r.Config.HeaderType = types.StringPointerValue(resp.Config.HeaderType)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 			r.Config.LdapHost = types.StringPointerValue(resp.Config.LdapHost)
 			r.Config.LdapPassword = types.StringPointerValue(resp.Config.LdapPassword)
-			if resp.Config.LdapPort != nil {
-				r.Config.LdapPort = types.NumberValue(big.NewFloat(float64(*resp.Config.LdapPort)))
-			} else {
-				r.Config.LdapPort = types.NumberNull()
-			}
+			r.Config.LdapPort = types.Float64PointerValue(resp.Config.LdapPort)
 			r.Config.Ldaps = types.BoolPointerValue(resp.Config.Ldaps)
 			r.Config.LogSearchResults = types.BoolPointerValue(resp.Config.LogSearchResults)
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.StartTLS = types.BoolPointerValue(resp.Config.StartTLS)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 			r.Config.VerifyLdapHost = types.BoolPointerValue(resp.Config.VerifyLdapHost)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
@@ -378,4 +365,6 @@ func (r *GatewayPluginLdapAuthAdvancedResourceModel) RefreshFromSharedLdapAuthAd
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

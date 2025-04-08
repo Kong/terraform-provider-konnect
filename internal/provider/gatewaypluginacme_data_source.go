@@ -102,7 +102,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.`,
 					},
-					"fail_backoff_minutes": schema.NumberAttribute{
+					"fail_backoff_minutes": schema.Float64Attribute{
 						Computed: true,
 						MarkdownDescription: `Minutes to wait for each domain that fails to create a certificate. This applies to both a` + "\n" +
 							`new certificate and a renewal certificate.`,
@@ -111,7 +111,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `A string value that specifies the preferred certificate chain to use when generating certificates.`,
 					},
-					"renew_threshold_days": schema.NumberAttribute{
+					"renew_threshold_days": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Days remaining to renew the certificate before it expires.`,
 					},
@@ -145,7 +145,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 										Computed:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 									},
-									"timeout": schema.NumberAttribute{
+									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Description: `Timeout in milliseconds.`,
 									},
@@ -173,7 +173,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 												Computed:    true,
 												Description: `A namespace to prepend to all keys stored in Redis.`,
 											},
-											"scan_count": schema.NumberAttribute{
+											"scan_count": schema.Float64Attribute{
 												Computed:    true,
 												Description: `The number of keys to return in Redis SCAN calls.`,
 											},
@@ -258,7 +258,7 @@ func (r *GatewayPluginAcmeDataSource) Schema(ctx context.Context, req datasource
 										Computed:    true,
 										Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 									},
-									"timeout": schema.NumberAttribute{
+									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Description: `Timeout in milliseconds.`,
 									},
@@ -415,7 +415,11 @@ func (r *GatewayPluginAcmeDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAcmePlugin(res.AcmePlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAcmePlugin(ctx, res.AcmePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

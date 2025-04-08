@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginOauth2DataSourceModel) RefreshFromSharedOauth2Plugin(resp *shared.Oauth2Plugin) {
+func (r *GatewayPluginOauth2DataSourceModel) RefreshFromSharedOauth2Plugin(ctx context.Context, resp *shared.Oauth2Plugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -33,21 +36,13 @@ func (r *GatewayPluginOauth2DataSourceModel) RefreshFromSharedOauth2Plugin(resp 
 			}
 			r.Config.ProvisionKey = types.StringPointerValue(resp.Config.ProvisionKey)
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-			if resp.Config.RefreshTokenTTL != nil {
-				r.Config.RefreshTokenTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.RefreshTokenTTL)))
-			} else {
-				r.Config.RefreshTokenTTL = types.NumberNull()
-			}
+			r.Config.RefreshTokenTTL = types.Float64PointerValue(resp.Config.RefreshTokenTTL)
 			r.Config.ReuseRefreshToken = types.BoolPointerValue(resp.Config.ReuseRefreshToken)
 			r.Config.Scopes = make([]types.String, 0, len(resp.Config.Scopes))
 			for _, v := range resp.Config.Scopes {
 				r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
 			}
-			if resp.Config.TokenExpiration != nil {
-				r.Config.TokenExpiration = types.NumberValue(big.NewFloat(float64(*resp.Config.TokenExpiration)))
-			} else {
-				r.Config.TokenExpiration = types.NumberNull()
-			}
+			r.Config.TokenExpiration = types.Float64PointerValue(resp.Config.TokenExpiration)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -98,4 +93,6 @@ func (r *GatewayPluginOauth2DataSourceModel) RefreshFromSharedOauth2Plugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

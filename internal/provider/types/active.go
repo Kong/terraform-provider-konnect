@@ -11,7 +11,7 @@ type Active struct {
 	HTTPPath               types.String            `tfsdk:"http_path"`
 	HTTPSSni               types.String            `tfsdk:"https_sni"`
 	HTTPSVerifyCertificate types.Bool              `tfsdk:"https_verify_certificate"`
-	Timeout                types.Number            `tfsdk:"timeout"`
+	Timeout                types.Float64           `tfsdk:"timeout"`
 	Type                   types.String            `tfsdk:"type"`
 	Unhealthy              *Unhealthy              `tfsdk:"unhealthy"`
 }

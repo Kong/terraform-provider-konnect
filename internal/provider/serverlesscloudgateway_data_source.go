@@ -151,7 +151,11 @@ func (r *ServerlessCloudGatewayDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedServerlessCloudGateway(res.ServerlessCloudGateway)
+	resp.Diagnostics.Append(data.RefreshFromSharedServerlessCloudGateway(ctx, res.ServerlessCloudGateway)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

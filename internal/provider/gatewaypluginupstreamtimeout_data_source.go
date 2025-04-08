@@ -230,7 +230,11 @@ func (r *GatewayPluginUpstreamTimeoutDataSource) Read(ctx context.Context, req d
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstreamTimeoutPlugin(res.UpstreamTimeoutPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstreamTimeoutPlugin(ctx, res.UpstreamTimeoutPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

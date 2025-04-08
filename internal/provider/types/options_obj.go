@@ -5,21 +5,21 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type OptionsObj struct {
-	AnthropicVersion  types.String `tfsdk:"anthropic_version"`
-	AzureAPIVersion   types.String `tfsdk:"azure_api_version"`
-	AzureDeploymentID types.String `tfsdk:"azure_deployment_id"`
-	AzureInstance     types.String `tfsdk:"azure_instance"`
-	Bedrock           *Bedrock     `tfsdk:"bedrock"`
-	Gemini            *Gemini      `tfsdk:"gemini"`
-	Huggingface       *Huggingface `tfsdk:"huggingface"`
-	InputCost         types.Number `tfsdk:"input_cost"`
-	Llama2Format      types.String `tfsdk:"llama2_format"`
-	MaxTokens         types.Int64  `tfsdk:"max_tokens"`
-	MistralFormat     types.String `tfsdk:"mistral_format"`
-	OutputCost        types.Number `tfsdk:"output_cost"`
-	Temperature       types.Number `tfsdk:"temperature"`
-	TopK              types.Int64  `tfsdk:"top_k"`
-	TopP              types.Number `tfsdk:"top_p"`
-	UpstreamPath      types.String `tfsdk:"upstream_path"`
-	UpstreamURL       types.String `tfsdk:"upstream_url"`
+	AnthropicVersion  types.String  `tfsdk:"anthropic_version"`
+	AzureAPIVersion   types.String  `tfsdk:"azure_api_version"`
+	AzureDeploymentID types.String  `tfsdk:"azure_deployment_id"`
+	AzureInstance     types.String  `tfsdk:"azure_instance"`
+	Bedrock           *Bedrock      `tfsdk:"bedrock"`
+	Gemini            *Gemini       `tfsdk:"gemini"`
+	Huggingface       *Huggingface  `tfsdk:"huggingface"`
+	InputCost         types.Float64 `tfsdk:"input_cost"`
+	Llama2Format      types.String  `tfsdk:"llama2_format"`
+	MaxTokens         types.Int64   `tfsdk:"max_tokens"`
+	MistralFormat     types.String  `tfsdk:"mistral_format"`
+	OutputCost        types.Float64 `tfsdk:"output_cost"`
+	Temperature       types.Float64 `tfsdk:"temperature"`
+	TopK              types.Int64   `tfsdk:"top_k"`
+	TopP              types.Float64 `tfsdk:"top_p"`
+	UpstreamPath      types.String  `tfsdk:"upstream_path"`
+	UpstreamURL       types.String  `tfsdk:"upstream_url"`
 }

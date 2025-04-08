@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin(resp *shared.AwsLambdaPlugin) {
+func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin(ctx context.Context, resp *shared.AwsLambdaPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -46,11 +49,7 @@ func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin
 				r.Config.InvocationType = types.StringNull()
 			}
 			r.Config.IsProxyIntegration = types.BoolPointerValue(resp.Config.IsProxyIntegration)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 			if resp.Config.LogType != nil {
 				r.Config.LogType = types.StringValue(string(*resp.Config.LogType))
 			} else {
@@ -60,11 +59,7 @@ func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin
 			r.Config.ProxyURL = types.StringPointerValue(resp.Config.ProxyURL)
 			r.Config.Qualifier = types.StringPointerValue(resp.Config.Qualifier)
 			r.Config.SkipLargeBodies = types.BoolPointerValue(resp.Config.SkipLargeBodies)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 			r.Config.UnhandledStatus = types.Int64PointerValue(resp.Config.UnhandledStatus)
 		}
 		if resp.Consumer == nil {
@@ -122,4 +117,6 @@ func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

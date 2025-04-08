@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -146,7 +148,9 @@ func (r *GatewayPluginStandardWebhooksResourceModel) ToSharedStandardWebhooksPlu
 	return &out
 }
 
-func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWebhooksPlugin(resp *shared.StandardWebhooksPlugin) {
+func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWebhooksPlugin(ctx context.Context, resp *shared.StandardWebhooksPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -210,4 +214,6 @@ func (r *GatewayPluginStandardWebhooksResourceModel) RefreshFromSharedStandardWe
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

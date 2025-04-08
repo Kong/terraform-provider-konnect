@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -57,7 +59,9 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 	return &out
 }
 
-func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(resp *shared.HMACAuth) {
+func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(ctx context.Context, resp *shared.HMACAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -74,4 +78,6 @@ func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(resp *shared.HM
 		}
 		r.Username = types.StringValue(resp.Username)
 	}
+
+	return diags
 }

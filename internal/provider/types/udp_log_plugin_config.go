@@ -8,5 +8,5 @@ type UDPLogPluginConfig struct {
 	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
 	Host              types.String            `tfsdk:"host"`
 	Port              types.Int64             `tfsdk:"port"`
-	Timeout           types.Number            `tfsdk:"timeout"`
+	Timeout           types.Float64           `tfsdk:"timeout"`
 }

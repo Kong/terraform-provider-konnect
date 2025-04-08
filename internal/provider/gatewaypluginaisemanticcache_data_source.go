@@ -172,7 +172,7 @@ func (r *GatewayPluginAiSemanticCacheDataSource) Schema(ctx context.Context, req
 						Computed:    true,
 						Description: `Ignore and discard any tool prompts when Vectorizing the request`,
 					},
-					"message_countback": schema.NumberAttribute{
+					"message_countback": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Number of messages in the chat history to Vectorize/Cache`,
 					},
@@ -308,7 +308,7 @@ func (r *GatewayPluginAiSemanticCacheDataSource) Schema(ctx context.Context, req
 								Computed:    true,
 								Description: `which vector database driver to use`,
 							},
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Description: `the default similarity threshold for accepting semantic search results (float)`,
 							},
@@ -483,7 +483,11 @@ func (r *GatewayPluginAiSemanticCacheDataSource) Read(ctx context.Context, req d
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticCachePlugin(res.AiSemanticCachePlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticCachePlugin(ctx, res.AiSemanticCachePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

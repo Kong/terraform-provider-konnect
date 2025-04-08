@@ -51,7 +51,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed: true,
 				NestedObject: schema.NestedAttributeObject{
 					Attributes: map[string]schema.Attribute{
-						"application_count": schema.NumberAttribute{
+						"application_count": schema.Float64Attribute{
 							Computed:    true,
 							Description: `Number of applications created in the portal.`,
 						},
@@ -87,7 +87,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `The description of the portal.`,
 						},
-						"developer_count": schema.NumberAttribute{
+						"developer_count": schema.Float64Attribute{
 							Computed:    true,
 							Description: `Number of developers using the portal.`,
 						},
@@ -114,7 +114,7 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `The name of the portal, used to distinguish it from other portals. Name must be unique.`,
 						},
-						"published_product_count": schema.NumberAttribute{
+						"published_product_count": schema.Float64Attribute{
 							Computed:    true,
 							Description: `Number of api products published to the portal`,
 						},
@@ -135,13 +135,13 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 					"page": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"number": schema.NumberAttribute{
+							"number": schema.Float64Attribute{
 								Computed: true,
 							},
-							"size": schema.NumberAttribute{
+							"size": schema.Float64Attribute{
 								Computed: true,
 							},
-							"total": schema.NumberAttribute{
+							"total": schema.Float64Attribute{
 								Computed: true,
 							},
 						},
@@ -262,7 +262,11 @@ func (r *PortalListDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedListPortalsResponse(res.ListPortalsResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedListPortalsResponse(ctx, res.ListPortalsResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(resp *shared.AiProxyPlugin) {
+func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(ctx context.Context, resp *shared.AiProxyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -80,11 +83,7 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(res
 						r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
 						r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
 					}
-					if resp.Config.Model.Options.InputCost != nil {
-						r.Config.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.InputCost)))
-					} else {
-						r.Config.Model.Options.InputCost = types.NumberNull()
-					}
+					r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
 					if resp.Config.Model.Options.Llama2Format != nil {
 						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
 					} else {
@@ -96,22 +95,10 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(res
 					} else {
 						r.Config.Model.Options.MistralFormat = types.StringNull()
 					}
-					if resp.Config.Model.Options.OutputCost != nil {
-						r.Config.Model.Options.OutputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.OutputCost)))
-					} else {
-						r.Config.Model.Options.OutputCost = types.NumberNull()
-					}
-					if resp.Config.Model.Options.Temperature != nil {
-						r.Config.Model.Options.Temperature = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.Temperature)))
-					} else {
-						r.Config.Model.Options.Temperature = types.NumberNull()
-					}
+					r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
+					r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
 					r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
-					if resp.Config.Model.Options.TopP != nil {
-						r.Config.Model.Options.TopP = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.TopP)))
-					} else {
-						r.Config.Model.Options.TopP = types.NumberNull()
-					}
+					r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
 					r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
 					r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
 				}
@@ -194,4 +181,6 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

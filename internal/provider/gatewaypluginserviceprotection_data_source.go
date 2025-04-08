@@ -64,7 +64,7 @@ func (r *GatewayPluginServiceProtectionDataSource) Schema(ctx context.Context, r
 						Computed:    true,
 						Description: `If set to ` + "`" + `true` + "`" + `, this doesn't count denied requests (status = ` + "`" + `429` + "`" + `). If set to ` + "`" + `false` + "`" + `, all requests, including denied ones, are counted. This parameter only affects the ` + "`" + `sliding` + "`" + ` window_type.`,
 					},
-					"error_code": schema.NumberAttribute{
+					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Set a custom error code to return when the rate limit is exceeded.`,
 					},
@@ -78,7 +78,7 @@ func (r *GatewayPluginServiceProtectionDataSource) Schema(ctx context.Context, r
 					},
 					"limit": schema.ListAttribute{
 						Computed:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.`,
 					},
 					"lock_dictionary_name": schema.StringAttribute{
@@ -202,7 +202,7 @@ func (r *GatewayPluginServiceProtectionDataSource) Schema(ctx context.Context, r
 							},
 						},
 					},
-					"retry_after_jitter_max": schema.NumberAttribute{
+					"retry_after_jitter_max": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The upper bound of a jitter (random delay) in seconds to be added to the ` + "`" + `Retry-After` + "`" + ` header of denied requests (status = ` + "`" + `429` + "`" + `) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is ` + "`" + `0` + "`" + `; in this case, the ` + "`" + `Retry-After` + "`" + ` header is equal to the ` + "`" + `RateLimit-Reset` + "`" + ` header.`,
 					},
@@ -210,13 +210,13 @@ func (r *GatewayPluginServiceProtectionDataSource) Schema(ctx context.Context, r
 						Computed:    true,
 						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `.`,
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
 					"window_size": schema.ListAttribute{
 						Computed:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.`,
 					},
 					"window_type": schema.StringAttribute{
@@ -365,7 +365,11 @@ func (r *GatewayPluginServiceProtectionDataSource) Read(ctx context.Context, req
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedServiceProtectionPlugin(res.ServiceProtectionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedServiceProtectionPlugin(ctx, res.ServiceProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

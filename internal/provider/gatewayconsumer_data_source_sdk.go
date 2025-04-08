@@ -3,11 +3,15 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayConsumerDataSourceModel) RefreshFromSharedConsumer(resp *shared.Consumer) {
+func (r *GatewayConsumerDataSourceModel) RefreshFromSharedConsumer(ctx context.Context, resp *shared.Consumer) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.CustomID = types.StringPointerValue(resp.CustomID)
@@ -19,4 +23,6 @@ func (r *GatewayConsumerDataSourceModel) RefreshFromSharedConsumer(resp *shared.
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.Username = types.StringPointerValue(resp.Username)
 	}
+
+	return diags
 }

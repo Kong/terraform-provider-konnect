@@ -3,55 +3,50 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginDatadogDataSourceModel) RefreshFromSharedDatadogPlugin(resp *shared.DatadogPlugin) {
+func (r *GatewayPluginDatadogDataSourceModel) RefreshFromSharedDatadogPlugin(ctx context.Context, resp *shared.DatadogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.DatadogPluginConfig{}
 			r.Config.ConsumerTag = types.StringPointerValue(resp.Config.ConsumerTag)
-			if resp.Config.FlushTimeout != nil {
-				r.Config.FlushTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.FlushTimeout)))
-			} else {
-				r.Config.FlushTimeout = types.NumberNull()
-			}
+			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.Metrics = []tfTypes.Metrics{}
 			if len(r.Config.Metrics) > len(resp.Config.Metrics) {
 				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 			}
 			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics1 tfTypes.Metrics
+				var metrics tfTypes.Metrics
 				if metricsItem.ConsumerIdentifier != nil {
-					metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 				} else {
-					metrics1.ConsumerIdentifier = types.StringNull()
+					metrics.ConsumerIdentifier = types.StringNull()
 				}
-				metrics1.Name = types.StringValue(string(metricsItem.Name))
-				if metricsItem.SampleRate != nil {
-					metrics1.SampleRate = types.NumberValue(big.NewFloat(float64(*metricsItem.SampleRate)))
-				} else {
-					metrics1.SampleRate = types.NumberNull()
-				}
-				metrics1.StatType = types.StringValue(string(metricsItem.StatType))
-				metrics1.Tags = make([]types.String, 0, len(metricsItem.Tags))
+				metrics.Name = types.StringValue(string(metricsItem.Name))
+				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
+				metrics.StatType = types.StringValue(string(metricsItem.StatType))
+				metrics.Tags = make([]types.String, 0, len(metricsItem.Tags))
 				for _, v := range metricsItem.Tags {
-					metrics1.Tags = append(metrics1.Tags, types.StringValue(v))
+					metrics.Tags = append(metrics.Tags, types.StringValue(v))
 				}
 				if metricsCount+1 > len(r.Config.Metrics) {
-					r.Config.Metrics = append(r.Config.Metrics, metrics1)
+					r.Config.Metrics = append(r.Config.Metrics, metrics)
 				} else {
-					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics1.ConsumerIdentifier
-					r.Config.Metrics[metricsCount].Name = metrics1.Name
-					r.Config.Metrics[metricsCount].SampleRate = metrics1.SampleRate
-					r.Config.Metrics[metricsCount].StatType = metrics1.StatType
-					r.Config.Metrics[metricsCount].Tags = metrics1.Tags
+					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics.ConsumerIdentifier
+					r.Config.Metrics[metricsCount].Name = metrics.Name
+					r.Config.Metrics[metricsCount].SampleRate = metrics.SampleRate
+					r.Config.Metrics[metricsCount].StatType = metrics.StatType
+					r.Config.Metrics[metricsCount].Tags = metrics.Tags
 				}
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
@@ -65,29 +60,13 @@ func (r *GatewayPluginDatadogDataSourceModel) RefreshFromSharedDatadogPlugin(res
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
 				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
 			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
@@ -149,4 +128,6 @@ func (r *GatewayPluginDatadogDataSourceModel) RefreshFromSharedDatadogPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

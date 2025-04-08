@@ -22,7 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	speakeasy_numbervalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/numbervalidators"
+	speakeasy_float64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/float64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -80,7 +80,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Optional:    true,
 						Description: `If set to ` + "`" + `true` + "`" + `, this doesn't count denied requests (status = ` + "`" + `429` + "`" + `). If set to ` + "`" + `false` + "`" + `, all requests, including denied ones, are counted. This parameter only affects the ` + "`" + `sliding` + "`" + ` window_type and the request prompt provider.`,
 					},
-					"error_code": schema.NumberAttribute{
+					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Set a custom error code to return when the rate limit is exceeded.`,
@@ -129,12 +129,12 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"limit": schema.NumberAttribute{
+								"limit": schema.Float64Attribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter. Not Null`,
-									Validators: []validator.Number{
-										speakeasy_numbervalidators.NotNull(),
+									Validators: []validator.Float64{
+										speakeasy_float64validators.NotNull(),
 									},
 								},
 								"name": schema.StringAttribute{
@@ -157,12 +157,12 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 										),
 									},
 								},
-								"window_size": schema.NumberAttribute{
+								"window_size": schema.Float64Attribute{
 									Computed:    true,
 									Optional:    true,
 									Description: `The window size to apply a limit (defined in seconds). Not Null`,
-									Validators: []validator.Number{
-										speakeasy_numbervalidators.NotNull(),
+									Validators: []validator.Float64{
+										speakeasy_float64validators.NotNull(),
 									},
 								},
 							},
@@ -355,7 +355,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 						Optional:    true,
 						Description: `If defined, it use custom function to count requests for the request prompt provider`,
 					},
-					"retry_after_jitter_max": schema.NumberAttribute{
+					"retry_after_jitter_max": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The upper bound of a jitter (random delay) in seconds to be added to the ` + "`" + `Retry-After` + "`" + ` header of denied requests (status = ` + "`" + `429` + "`" + `) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is ` + "`" + `0` + "`" + `; in this case, the ` + "`" + `Retry-After` + "`" + ` header is equal to the ` + "`" + `RateLimit-Reset` + "`" + ` header.`,
@@ -372,7 +372,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 							),
 						},
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
@@ -599,8 +599,17 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Create(ctx context.Context
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiRateLimitingAdvancedPlugin(res.AiRateLimitingAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiRateLimitingAdvancedPlugin(ctx, res.AiRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -658,7 +667,11 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Read(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiRateLimitingAdvancedPlugin(res.AiRateLimitingAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiRateLimitingAdvancedPlugin(ctx, res.AiRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -710,8 +723,17 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Update(ctx context.Context
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiRateLimitingAdvancedPlugin(res.AiRateLimitingAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiRateLimitingAdvancedPlugin(ctx, res.AiRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -773,7 +795,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) ImportState(ctx context.Co
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

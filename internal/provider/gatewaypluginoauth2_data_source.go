@@ -112,7 +112,7 @@ func (r *GatewayPluginOauth2DataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
-					"refresh_token_ttl": schema.NumberAttribute{
+					"refresh_token_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Time-to-live value for data`,
 					},
@@ -125,7 +125,7 @@ func (r *GatewayPluginOauth2DataSource) Schema(ctx context.Context, req datasour
 						ElementType: types.StringType,
 						Description: `Describes an array of scope names that will be available to the end user. If ` + "`" + `mandatory_scope` + "`" + ` is set to ` + "`" + `true` + "`" + `, then ` + "`" + `scopes` + "`" + ` are required.`,
 					},
-					"token_expiration": schema.NumberAttribute{
+					"token_expiration": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to ` + "`" + `0` + "`" + ` to disable the expiration.`,
 					},
@@ -280,7 +280,11 @@ func (r *GatewayPluginOauth2DataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOauth2Plugin(ctx, res.Oauth2Plugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.StatsdPlugin {
@@ -85,7 +86,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 		}
 		flushTimeout := new(float64)
 		if !r.Config.FlushTimeout.IsUnknown() && !r.Config.FlushTimeout.IsNull() {
-			*flushTimeout, _ = r.Config.FlushTimeout.ValueBigFloat().Float64()
+			*flushTimeout = r.Config.FlushTimeout.ValueFloat64()
 		} else {
 			flushTimeout = nil
 		}
@@ -112,7 +113,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			name := shared.StatsdPluginName(metricsItem.Name.ValueString())
 			sampleRate := new(float64)
 			if !metricsItem.SampleRate.IsUnknown() && !metricsItem.SampleRate.IsNull() {
-				*sampleRate, _ = metricsItem.SampleRate.ValueBigFloat().Float64()
+				*sampleRate = metricsItem.SampleRate.ValueFloat64()
 			} else {
 				sampleRate = nil
 			}
@@ -160,7 +161,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			}
 			initialRetryDelay := new(float64)
 			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
+				*initialRetryDelay = r.Config.Queue.InitialRetryDelay.ValueFloat64()
 			} else {
 				initialRetryDelay = nil
 			}
@@ -178,7 +179,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			}
 			maxCoalescingDelay := new(float64)
 			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-				*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
+				*maxCoalescingDelay = r.Config.Queue.MaxCoalescingDelay.ValueFloat64()
 			} else {
 				maxCoalescingDelay = nil
 			}
@@ -190,13 +191,13 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 			}
 			maxRetryDelay := new(float64)
 			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-				*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
+				*maxRetryDelay = r.Config.Queue.MaxRetryDelay.ValueFloat64()
 			} else {
 				maxRetryDelay = nil
 			}
 			maxRetryTime := new(float64)
 			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-				*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
+				*maxRetryTime = r.Config.Queue.MaxRetryTime.ValueFloat64()
 			} else {
 				maxRetryTime = nil
 			}
@@ -237,7 +238,7 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 		}
 		udpPacketSize := new(float64)
 		if !r.Config.UDPPacketSize.IsUnknown() && !r.Config.UDPPacketSize.IsNull() {
-			*udpPacketSize, _ = r.Config.UDPPacketSize.ValueBigFloat().Float64()
+			*udpPacketSize = r.Config.UDPPacketSize.ValueFloat64()
 		} else {
 			udpPacketSize = nil
 		}
@@ -329,7 +330,9 @@ func (r *GatewayPluginStatsdResourceModel) ToSharedStatsdPlugin() *shared.Statsd
 	return &out
 }
 
-func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *shared.StatsdPlugin) {
+func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(ctx context.Context, resp *shared.StatsdPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -344,11 +347,7 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 			} else {
 				r.Config.ConsumerIdentifierDefault = types.StringNull()
 			}
-			if resp.Config.FlushTimeout != nil {
-				r.Config.FlushTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.FlushTimeout)))
-			} else {
-				r.Config.FlushTimeout = types.NumberNull()
-			}
+			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.HostnameInPrefix = types.BoolPointerValue(resp.Config.HostnameInPrefix)
 			r.Config.Metrics = []tfTypes.StatsdPluginMetrics{}
@@ -356,38 +355,34 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 				r.Config.Metrics = r.Config.Metrics[:len(resp.Config.Metrics)]
 			}
 			for metricsCount, metricsItem := range resp.Config.Metrics {
-				var metrics1 tfTypes.StatsdPluginMetrics
+				var metrics tfTypes.StatsdPluginMetrics
 				if metricsItem.ConsumerIdentifier != nil {
-					metrics1.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
+					metrics.ConsumerIdentifier = types.StringValue(string(*metricsItem.ConsumerIdentifier))
 				} else {
-					metrics1.ConsumerIdentifier = types.StringNull()
+					metrics.ConsumerIdentifier = types.StringNull()
 				}
-				metrics1.Name = types.StringValue(string(metricsItem.Name))
-				if metricsItem.SampleRate != nil {
-					metrics1.SampleRate = types.NumberValue(big.NewFloat(float64(*metricsItem.SampleRate)))
-				} else {
-					metrics1.SampleRate = types.NumberNull()
-				}
+				metrics.Name = types.StringValue(string(metricsItem.Name))
+				metrics.SampleRate = types.Float64PointerValue(metricsItem.SampleRate)
 				if metricsItem.ServiceIdentifier != nil {
-					metrics1.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
+					metrics.ServiceIdentifier = types.StringValue(string(*metricsItem.ServiceIdentifier))
 				} else {
-					metrics1.ServiceIdentifier = types.StringNull()
+					metrics.ServiceIdentifier = types.StringNull()
 				}
-				metrics1.StatType = types.StringValue(string(metricsItem.StatType))
+				metrics.StatType = types.StringValue(string(metricsItem.StatType))
 				if metricsItem.WorkspaceIdentifier != nil {
-					metrics1.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
+					metrics.WorkspaceIdentifier = types.StringValue(string(*metricsItem.WorkspaceIdentifier))
 				} else {
-					metrics1.WorkspaceIdentifier = types.StringNull()
+					metrics.WorkspaceIdentifier = types.StringNull()
 				}
 				if metricsCount+1 > len(r.Config.Metrics) {
-					r.Config.Metrics = append(r.Config.Metrics, metrics1)
+					r.Config.Metrics = append(r.Config.Metrics, metrics)
 				} else {
-					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics1.ConsumerIdentifier
-					r.Config.Metrics[metricsCount].Name = metrics1.Name
-					r.Config.Metrics[metricsCount].SampleRate = metrics1.SampleRate
-					r.Config.Metrics[metricsCount].ServiceIdentifier = metrics1.ServiceIdentifier
-					r.Config.Metrics[metricsCount].StatType = metrics1.StatType
-					r.Config.Metrics[metricsCount].WorkspaceIdentifier = metrics1.WorkspaceIdentifier
+					r.Config.Metrics[metricsCount].ConsumerIdentifier = metrics.ConsumerIdentifier
+					r.Config.Metrics[metricsCount].Name = metrics.Name
+					r.Config.Metrics[metricsCount].SampleRate = metrics.SampleRate
+					r.Config.Metrics[metricsCount].ServiceIdentifier = metrics.ServiceIdentifier
+					r.Config.Metrics[metricsCount].StatType = metrics.StatType
+					r.Config.Metrics[metricsCount].WorkspaceIdentifier = metrics.WorkspaceIdentifier
 				}
 			}
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
@@ -401,29 +396,13 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
 				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
 			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
@@ -437,11 +416,7 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 			} else {
 				r.Config.TagStyle = types.StringNull()
 			}
-			if resp.Config.UDPPacketSize != nil {
-				r.Config.UDPPacketSize = types.NumberValue(big.NewFloat(float64(*resp.Config.UDPPacketSize)))
-			} else {
-				r.Config.UDPPacketSize = types.NumberNull()
-			}
+			r.Config.UDPPacketSize = types.Float64PointerValue(resp.Config.UDPPacketSize)
 			r.Config.UseTCP = types.BoolPointerValue(resp.Config.UseTCP)
 			if resp.Config.WorkspaceIdentifierDefault != nil {
 				r.Config.WorkspaceIdentifierDefault = types.StringValue(string(*resp.Config.WorkspaceIdentifierDefault))
@@ -504,4 +479,6 @@ func (r *GatewayPluginStatsdResourceModel) RefreshFromSharedStatsdPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

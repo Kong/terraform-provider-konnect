@@ -3,14 +3,17 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginUDPLogDataSourceModel) RefreshFromSharedUDPLogPlugin(resp *shared.UDPLogPlugin) {
+func (r *GatewayPluginUDPLogDataSourceModel) RefreshFromSharedUDPLogPlugin(ctx context.Context, resp *shared.UDPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -25,11 +28,7 @@ func (r *GatewayPluginUDPLogDataSourceModel) RefreshFromSharedUDPLogPlugin(resp 
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -86,4 +85,6 @@ func (r *GatewayPluginUDPLogDataSourceModel) RefreshFromSharedUDPLogPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

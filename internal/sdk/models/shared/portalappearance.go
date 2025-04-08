@@ -2,8 +2,8 @@
 
 package shared
 
-// UpdatePortalAppearanceRequest - Update a portal's appearance settings
-type UpdatePortalAppearanceRequest struct {
+// PortalAppearance - Update a portal's appearance settings
+type PortalAppearance struct {
 	// Select a pre-existing default theme or specify 'custom' to use custom_theme variables.
 	ThemeName *PortalTheme `json:"theme_name,omitempty"`
 	// Groups of variables for configuring visual details of the portal user interface. Set theme_name to 'custom' to use custom values for theme variables.
@@ -18,42 +18,42 @@ type UpdatePortalAppearanceRequest struct {
 	Images *AppearanceImages `json:"images,omitempty"`
 }
 
-func (o *UpdatePortalAppearanceRequest) GetThemeName() *PortalTheme {
+func (o *PortalAppearance) GetThemeName() *PortalTheme {
 	if o == nil {
 		return nil
 	}
 	return o.ThemeName
 }
 
-func (o *UpdatePortalAppearanceRequest) GetCustomTheme() *NullableAppearanceThemeVariables {
+func (o *PortalAppearance) GetCustomTheme() *NullableAppearanceThemeVariables {
 	if o == nil {
 		return nil
 	}
 	return o.CustomTheme
 }
 
-func (o *UpdatePortalAppearanceRequest) GetCustomFonts() *NullableAppearanceFonts {
+func (o *PortalAppearance) GetCustomFonts() *NullableAppearanceFonts {
 	if o == nil {
 		return nil
 	}
 	return o.CustomFonts
 }
 
-func (o *UpdatePortalAppearanceRequest) GetUseCustomFonts() *bool {
+func (o *PortalAppearance) GetUseCustomFonts() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.UseCustomFonts
 }
 
-func (o *UpdatePortalAppearanceRequest) GetText() *NullableAppearanceTextVariables {
+func (o *PortalAppearance) GetText() *NullableAppearanceTextVariables {
 	if o == nil {
 		return nil
 	}
 	return o.Text
 }
 
-func (o *UpdatePortalAppearanceRequest) GetImages() *AppearanceImages {
+func (o *PortalAppearance) GetImages() *AppearanceImages {
 	if o == nil {
 		return nil
 	}

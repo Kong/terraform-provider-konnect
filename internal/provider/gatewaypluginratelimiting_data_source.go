@@ -59,11 +59,11 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"day": schema.NumberAttribute{
+					"day": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per day.`,
 					},
-					"error_code": schema.NumberAttribute{
+					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Set a custom error code to return when the rate limit is exceeded.`,
 					},
@@ -83,7 +83,7 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 						Computed:    true,
 						Description: `Optionally hide informative response headers.`,
 					},
-					"hour": schema.NumberAttribute{
+					"hour": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per hour.`,
 					},
@@ -91,11 +91,11 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 						Computed:    true,
 						Description: `The entity that is used when aggregating the limits.`,
 					},
-					"minute": schema.NumberAttribute{
+					"minute": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per minute.`,
 					},
-					"month": schema.NumberAttribute{
+					"month": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per month.`,
 					},
@@ -149,15 +149,15 @@ func (r *GatewayPluginRateLimitingDataSource) Schema(ctx context.Context, req da
 						},
 						Description: `Redis configuration`,
 					},
-					"second": schema.NumberAttribute{
+					"second": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per second.`,
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Description: `How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.`,
 					},
-					"year": schema.NumberAttribute{
+					"year": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of HTTP requests that can be made per year.`,
 					},
@@ -330,7 +330,11 @@ func (r *GatewayPluginRateLimitingDataSource) Read(ctx context.Context, req data
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRateLimitingPlugin(res.RateLimitingPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRateLimitingPlugin(ctx, res.RateLimitingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

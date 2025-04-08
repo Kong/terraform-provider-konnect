@@ -32,7 +32,7 @@ type PortalResource struct {
 
 // PortalResourceModel describes the resource data model.
 type PortalResourceModel struct {
-	ApplicationCount                 types.Number            `tfsdk:"application_count"`
+	ApplicationCount                 types.Float64           `tfsdk:"application_count"`
 	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
 	CreatedAt                        types.String            `tfsdk:"created_at"`
@@ -41,14 +41,14 @@ type PortalResourceModel struct {
 	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
 	DefaultDomain                    types.String            `tfsdk:"default_domain"`
 	Description                      types.String            `tfsdk:"description"`
-	DeveloperCount                   types.Number            `tfsdk:"developer_count"`
+	DeveloperCount                   types.Float64           `tfsdk:"developer_count"`
 	DisplayName                      types.String            `tfsdk:"display_name"`
 	Force                            types.String            `queryParam:"style=form,explode=true,name=force" tfsdk:"force"`
 	ID                               types.String            `tfsdk:"id"`
 	IsPublic                         types.Bool              `tfsdk:"is_public"`
 	Labels                           map[string]types.String `tfsdk:"labels"`
 	Name                             types.String            `tfsdk:"name"`
-	PublishedProductCount            types.Number            `tfsdk:"published_product_count"`
+	PublishedProductCount            types.Float64           `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
 	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
@@ -61,7 +61,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Portal Resource",
 		Attributes: map[string]schema.Attribute{
-			"application_count": schema.NumberAttribute{
+			"application_count": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Number of applications created in the portal.`,
 			},
@@ -115,7 +115,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.UTF8LengthAtMost(512),
 				},
 			},
-			"developer_count": schema.NumberAttribute{
+			"developer_count": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Number of developers using the portal.`,
 			},
@@ -163,7 +163,7 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringvalidator.UTF8LengthBetween(1, 255),
 				},
 			},
-			"published_product_count": schema.NumberAttribute{
+			"published_product_count": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Number of api products published to the portal`,
 			},
@@ -242,8 +242,17 @@ func (r *PortalResource) Create(ctx context.Context, req resource.CreateRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCreatePortalResponse(res.CreatePortalResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreatePortalResponse(ctx, res.CreatePortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -311,12 +320,21 @@ func (r *PortalResource) Update(ctx context.Context, req resource.UpdateRequest,
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.UpdatePortalResponse != nil) {
+	if !(res.CreatePortalResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpdatePortalResponse(res.UpdatePortalResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreatePortalResponse(ctx, res.CreatePortalResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

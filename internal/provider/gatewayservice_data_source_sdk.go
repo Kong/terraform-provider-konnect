@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Service) {
+func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(ctx context.Context, resp *shared.Service) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CaCertificates != nil {
 			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
@@ -46,4 +50,6 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.WriteTimeout = types.Int64PointerValue(resp.WriteTimeout)
 	}
+
+	return diags
 }

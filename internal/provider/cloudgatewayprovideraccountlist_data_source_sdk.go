@@ -3,38 +3,43 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
-	"time"
 )
 
-func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListProviderAccountsResponse(resp *shared.ListProviderAccountsResponse) {
+func (r *CloudGatewayProviderAccountListDataSourceModel) RefreshFromSharedListProviderAccountsResponse(ctx context.Context, resp *shared.ListProviderAccountsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Data = []tfTypes.ProviderAccount{}
 		if len(r.Data) > len(resp.Data) {
 			r.Data = r.Data[:len(resp.Data)]
 		}
 		for dataCount, dataItem := range resp.Data {
-			var data1 tfTypes.ProviderAccount
-			data1.CreatedAt = types.StringValue(dataItem.CreatedAt.Format(time.RFC3339Nano))
-			data1.ID = types.StringValue(dataItem.ID)
-			data1.Provider = types.StringValue(string(dataItem.Provider))
-			data1.ProviderAccountID = types.StringValue(dataItem.ProviderAccountID)
-			data1.UpdatedAt = types.StringValue(dataItem.UpdatedAt.Format(time.RFC3339Nano))
+			var data tfTypes.ProviderAccount
+			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
+			data.ID = types.StringValue(dataItem.ID)
+			data.Provider = types.StringValue(string(dataItem.Provider))
+			data.ProviderAccountID = types.StringValue(dataItem.ProviderAccountID)
+			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
 			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data1)
+				r.Data = append(r.Data, data)
 			} else {
-				r.Data[dataCount].CreatedAt = data1.CreatedAt
-				r.Data[dataCount].ID = data1.ID
-				r.Data[dataCount].Provider = data1.Provider
-				r.Data[dataCount].ProviderAccountID = data1.ProviderAccountID
-				r.Data[dataCount].UpdatedAt = data1.UpdatedAt
+				r.Data[dataCount].CreatedAt = data.CreatedAt
+				r.Data[dataCount].ID = data.ID
+				r.Data[dataCount].Provider = data.Provider
+				r.Data[dataCount].ProviderAccountID = data.ProviderAccountID
+				r.Data[dataCount].UpdatedAt = data.UpdatedAt
 			}
 		}
-		r.Meta.Page.Number = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Number)))
-		r.Meta.Page.Size = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Size)))
-		r.Meta.Page.Total = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Total)))
+		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
+		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
+		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
 	}
+
+	return diags
 }

@@ -135,7 +135,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						Description: `A boolean value that controls whether to include the IPv4 address in the common name field of generated certificates.`,
 					},
-					"fail_backoff_minutes": schema.NumberAttribute{
+					"fail_backoff_minutes": schema.Float64Attribute{
 						Computed: true,
 						Optional: true,
 						MarkdownDescription: `Minutes to wait for each domain that fails to create a certificate. This applies to both a` + "\n" +
@@ -146,7 +146,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						Description: `A string value that specifies the preferred certificate chain to use when generating certificates.`,
 					},
-					"renew_threshold_days": schema.NumberAttribute{
+					"renew_threshold_days": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Days remaining to renew the certificate before it expires.`,
@@ -208,7 +208,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 											int64validator.AtMost(65535),
 										},
 									},
-									"timeout": schema.NumberAttribute{
+									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
@@ -246,7 +246,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 												Optional:    true,
 												Description: `A namespace to prepend to all keys stored in Redis.`,
 											},
-											"scan_count": schema.NumberAttribute{
+											"scan_count": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `The number of keys to return in Redis SCAN calls.`,
@@ -366,7 +366,7 @@ func (r *GatewayPluginAcmeResource) Schema(ctx context.Context, req resource.Sch
 											int64validator.AtMost(65535),
 										},
 									},
-									"timeout": schema.NumberAttribute{
+									"timeout": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Timeout in milliseconds.`,
@@ -537,8 +537,17 @@ func (r *GatewayPluginAcmeResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAcmePlugin(res.AcmePlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAcmePlugin(ctx, res.AcmePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -596,7 +605,11 @@ func (r *GatewayPluginAcmeResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAcmePlugin(res.AcmePlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAcmePlugin(ctx, res.AcmePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -648,8 +661,17 @@ func (r *GatewayPluginAcmeResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAcmePlugin(res.AcmePlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAcmePlugin(ctx, res.AcmePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -711,7 +733,7 @@ func (r *GatewayPluginAcmeResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

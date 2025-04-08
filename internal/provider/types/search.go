@@ -5,5 +5,5 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Search struct {
-	Threshold types.Number `tfsdk:"threshold"`
+	Threshold types.Float64 `tfsdk:"threshold"`
 }

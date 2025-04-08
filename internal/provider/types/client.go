@@ -5,15 +5,15 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Client struct {
-	AuthMethod              types.String `tfsdk:"auth_method"`
-	ClientSecretJwtAlg      types.String `tfsdk:"client_secret_jwt_alg"`
-	HTTPProxy               types.String `tfsdk:"http_proxy"`
-	HTTPProxyAuthorization  types.String `tfsdk:"http_proxy_authorization"`
-	HTTPVersion             types.Number `tfsdk:"http_version"`
-	HTTPSProxy              types.String `tfsdk:"https_proxy"`
-	HTTPSProxyAuthorization types.String `tfsdk:"https_proxy_authorization"`
-	KeepAlive               types.Bool   `tfsdk:"keep_alive"`
-	NoProxy                 types.String `tfsdk:"no_proxy"`
-	SslVerify               types.Bool   `tfsdk:"ssl_verify"`
-	Timeout                 types.Int64  `tfsdk:"timeout"`
+	AuthMethod              types.String  `tfsdk:"auth_method"`
+	ClientSecretJwtAlg      types.String  `tfsdk:"client_secret_jwt_alg"`
+	HTTPProxy               types.String  `tfsdk:"http_proxy"`
+	HTTPProxyAuthorization  types.String  `tfsdk:"http_proxy_authorization"`
+	HTTPVersion             types.Float64 `tfsdk:"http_version"`
+	HTTPSProxy              types.String  `tfsdk:"https_proxy"`
+	HTTPSProxyAuthorization types.String  `tfsdk:"https_proxy_authorization"`
+	KeepAlive               types.Bool    `tfsdk:"keep_alive"`
+	NoProxy                 types.String  `tfsdk:"no_proxy"`
+	SslVerify               types.Bool    `tfsdk:"ssl_verify"`
+	Timeout                 types.Int64   `tfsdk:"timeout"`
 }

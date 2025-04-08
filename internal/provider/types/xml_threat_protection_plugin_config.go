@@ -8,7 +8,7 @@ type XMLThreatProtectionPluginConfig struct {
 	AllowDtd            types.Bool     `tfsdk:"allow_dtd"`
 	AllowedContentTypes []types.String `tfsdk:"allowed_content_types"`
 	Attribute           types.Int64    `tfsdk:"attribute"`
-	BlaMaxAmplification types.Number   `tfsdk:"bla_max_amplification"`
+	BlaMaxAmplification types.Float64  `tfsdk:"bla_max_amplification"`
 	BlaThreshold        types.Int64    `tfsdk:"bla_threshold"`
 	Buffer              types.Int64    `tfsdk:"buffer"`
 	CheckedContentTypes []types.String `tfsdk:"checked_content_types"`

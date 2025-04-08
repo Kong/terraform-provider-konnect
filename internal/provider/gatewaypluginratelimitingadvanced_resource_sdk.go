@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdvancedPlugin() *shared.RateLimitingAdvancedPlugin {
@@ -101,7 +102,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		}
 		errorCode := new(float64)
 		if !r.Config.ErrorCode.IsUnknown() && !r.Config.ErrorCode.IsNull() {
-			*errorCode, _ = r.Config.ErrorCode.ValueBigFloat().Float64()
+			*errorCode = r.Config.ErrorCode.ValueFloat64()
 		} else {
 			errorCode = nil
 		}
@@ -131,8 +132,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		}
 		var limit []float64 = []float64{}
 		for _, limitItem := range r.Config.Limit {
-			limitTmp, _ := limitItem.ValueBigFloat().Float64()
-			limit = append(limit, limitTmp)
+			limit = append(limit, limitItem.ValueFloat64())
 		}
 		lockDictionaryName := new(string)
 		if !r.Config.LockDictionaryName.IsUnknown() && !r.Config.LockDictionaryName.IsNull() {
@@ -339,7 +339,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		}
 		retryAfterJitterMax := new(float64)
 		if !r.Config.RetryAfterJitterMax.IsUnknown() && !r.Config.RetryAfterJitterMax.IsNull() {
-			*retryAfterJitterMax, _ = r.Config.RetryAfterJitterMax.ValueBigFloat().Float64()
+			*retryAfterJitterMax = r.Config.RetryAfterJitterMax.ValueFloat64()
 		} else {
 			retryAfterJitterMax = nil
 		}
@@ -351,14 +351,13 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 		}
 		syncRate := new(float64)
 		if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
-			*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
+			*syncRate = r.Config.SyncRate.ValueFloat64()
 		} else {
 			syncRate = nil
 		}
 		var windowSize []float64 = []float64{}
 		for _, windowSizeItem := range r.Config.WindowSize {
-			windowSizeTmp, _ := windowSizeItem.ValueBigFloat().Float64()
-			windowSize = append(windowSize, windowSizeTmp)
+			windowSize = append(windowSize, windowSizeItem.ValueFloat64())
 		}
 		windowType := new(shared.RateLimitingAdvancedPluginWindowType)
 		if !r.Config.WindowType.IsUnknown() && !r.Config.WindowType.IsNull() {
@@ -459,7 +458,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) ToSharedRateLimitingAdv
 	return &out
 }
 
-func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLimitingAdvancedPlugin(resp *shared.RateLimitingAdvancedPlugin) {
+func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLimitingAdvancedPlugin(ctx context.Context, resp *shared.RateLimitingAdvancedPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -476,11 +477,7 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			r.Config.DictionaryName = types.StringPointerValue(resp.Config.DictionaryName)
 			r.Config.DisablePenalty = types.BoolPointerValue(resp.Config.DisablePenalty)
 			r.Config.EnforceConsumerGroups = types.BoolPointerValue(resp.Config.EnforceConsumerGroups)
-			if resp.Config.ErrorCode != nil {
-				r.Config.ErrorCode = types.NumberValue(big.NewFloat(float64(*resp.Config.ErrorCode)))
-			} else {
-				r.Config.ErrorCode = types.NumberNull()
-			}
+			r.Config.ErrorCode = types.Float64PointerValue(resp.Config.ErrorCode)
 			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
 			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
@@ -489,9 +486,9 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 			} else {
 				r.Config.Identifier = types.StringNull()
 			}
-			r.Config.Limit = make([]types.Number, 0, len(resp.Config.Limit))
+			r.Config.Limit = make([]types.Float64, 0, len(resp.Config.Limit))
 			for _, v := range resp.Config.Limit {
-				r.Config.Limit = append(r.Config.Limit, types.NumberValue(big.NewFloat(float64(v))))
+				r.Config.Limit = append(r.Config.Limit, types.Float64Value(v))
 			}
 			r.Config.LockDictionaryName = types.StringPointerValue(resp.Config.LockDictionaryName)
 			r.Config.Namespace = types.StringPointerValue(resp.Config.Namespace)
@@ -506,14 +503,14 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 					r.Config.Redis.ClusterNodes = r.Config.Redis.ClusterNodes[:len(resp.Config.Redis.ClusterNodes)]
 				}
 				for clusterNodesCount, clusterNodesItem := range resp.Config.Redis.ClusterNodes {
-					var clusterNodes1 tfTypes.AiProxyAdvancedPluginClusterNodes
-					clusterNodes1.IP = types.StringPointerValue(clusterNodesItem.IP)
-					clusterNodes1.Port = types.Int64PointerValue(clusterNodesItem.Port)
+					var clusterNodes tfTypes.AiProxyAdvancedPluginClusterNodes
+					clusterNodes.IP = types.StringPointerValue(clusterNodesItem.IP)
+					clusterNodes.Port = types.Int64PointerValue(clusterNodesItem.Port)
 					if clusterNodesCount+1 > len(r.Config.Redis.ClusterNodes) {
-						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes1)
+						r.Config.Redis.ClusterNodes = append(r.Config.Redis.ClusterNodes, clusterNodes)
 					} else {
-						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes1.IP
-						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes1.Port
+						r.Config.Redis.ClusterNodes[clusterNodesCount].IP = clusterNodes.IP
+						r.Config.Redis.ClusterNodes[clusterNodesCount].Port = clusterNodes.Port
 					}
 				}
 				r.Config.Redis.ConnectTimeout = types.Int64PointerValue(resp.Config.Redis.ConnectTimeout)
@@ -537,14 +534,14 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 					r.Config.Redis.SentinelNodes = r.Config.Redis.SentinelNodes[:len(resp.Config.Redis.SentinelNodes)]
 				}
 				for sentinelNodesCount, sentinelNodesItem := range resp.Config.Redis.SentinelNodes {
-					var sentinelNodes1 tfTypes.AiProxyAdvancedPluginSentinelNodes
-					sentinelNodes1.Host = types.StringPointerValue(sentinelNodesItem.Host)
-					sentinelNodes1.Port = types.Int64PointerValue(sentinelNodesItem.Port)
+					var sentinelNodes tfTypes.AiProxyAdvancedPluginSentinelNodes
+					sentinelNodes.Host = types.StringPointerValue(sentinelNodesItem.Host)
+					sentinelNodes.Port = types.Int64PointerValue(sentinelNodesItem.Port)
 					if sentinelNodesCount+1 > len(r.Config.Redis.SentinelNodes) {
-						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes1)
+						r.Config.Redis.SentinelNodes = append(r.Config.Redis.SentinelNodes, sentinelNodes)
 					} else {
-						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes1.Host
-						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes1.Port
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Host = sentinelNodes.Host
+						r.Config.Redis.SentinelNodes[sentinelNodesCount].Port = sentinelNodes.Port
 					}
 				}
 				r.Config.Redis.SentinelPassword = types.StringPointerValue(resp.Config.Redis.SentinelPassword)
@@ -559,24 +556,16 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
 				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 			}
-			if resp.Config.RetryAfterJitterMax != nil {
-				r.Config.RetryAfterJitterMax = types.NumberValue(big.NewFloat(float64(*resp.Config.RetryAfterJitterMax)))
-			} else {
-				r.Config.RetryAfterJitterMax = types.NumberNull()
-			}
+			r.Config.RetryAfterJitterMax = types.Float64PointerValue(resp.Config.RetryAfterJitterMax)
 			if resp.Config.Strategy != nil {
 				r.Config.Strategy = types.StringValue(string(*resp.Config.Strategy))
 			} else {
 				r.Config.Strategy = types.StringNull()
 			}
-			if resp.Config.SyncRate != nil {
-				r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
-			} else {
-				r.Config.SyncRate = types.NumberNull()
-			}
-			r.Config.WindowSize = make([]types.Number, 0, len(resp.Config.WindowSize))
+			r.Config.SyncRate = types.Float64PointerValue(resp.Config.SyncRate)
+			r.Config.WindowSize = make([]types.Float64, 0, len(resp.Config.WindowSize))
 			for _, v := range resp.Config.WindowSize {
-				r.Config.WindowSize = append(r.Config.WindowSize, types.NumberValue(big.NewFloat(float64(v))))
+				r.Config.WindowSize = append(r.Config.WindowSize, types.Float64Value(v))
 			}
 			if resp.Config.WindowType != nil {
 				r.Config.WindowType = types.StringValue(string(*resp.Config.WindowType))
@@ -645,4 +634,6 @@ func (r *GatewayPluginRateLimitingAdvancedResourceModel) RefreshFromSharedRateLi
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

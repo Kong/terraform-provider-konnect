@@ -19,8 +19,8 @@ type Oauth2PluginConfig struct {
 	Pkce                          types.String   `tfsdk:"pkce"`
 	ProvisionKey                  types.String   `tfsdk:"provision_key"`
 	Realm                         types.String   `tfsdk:"realm"`
-	RefreshTokenTTL               types.Number   `tfsdk:"refresh_token_ttl"`
+	RefreshTokenTTL               types.Float64  `tfsdk:"refresh_token_ttl"`
 	ReuseRefreshToken             types.Bool     `tfsdk:"reuse_refresh_token"`
 	Scopes                        []types.String `tfsdk:"scopes"`
-	TokenExpiration               types.Number   `tfsdk:"token_expiration"`
+	TokenExpiration               types.Float64  `tfsdk:"token_expiration"`
 }

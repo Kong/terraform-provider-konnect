@@ -3,13 +3,17 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVersion(resp *shared.PortalProductVersion) {
+func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVersion(ctx context.Context, resp *shared.PortalProductVersion) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.ApplicationRegistrationEnabled = types.BoolValue(resp.ApplicationRegistrationEnabled)
 		r.AuthStrategies = []tfTypes.AuthStrategy{}
@@ -17,44 +21,46 @@ func (r *PortalProductVersionDataSourceModel) RefreshFromSharedPortalProductVers
 			r.AuthStrategies = r.AuthStrategies[:len(resp.AuthStrategies)]
 		}
 		for authStrategiesCount, authStrategiesItem := range resp.AuthStrategies {
-			var authStrategies1 tfTypes.AuthStrategy
+			var authStrategies tfTypes.AuthStrategy
 			if authStrategiesItem.AuthStrategyClientCredentials != nil {
-				authStrategies1.ClientCredentials = &tfTypes.AuthStrategyClientCredentials{}
-				authStrategies1.ClientCredentials.AuthMethods = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AuthMethods))
+				authStrategies.ClientCredentials = &tfTypes.AuthStrategyClientCredentials{}
+				authStrategies.ClientCredentials.AuthMethods = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AuthMethods))
 				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AuthMethods {
-					authStrategies1.ClientCredentials.AuthMethods = append(authStrategies1.ClientCredentials.AuthMethods, types.StringValue(v))
+					authStrategies.ClientCredentials.AuthMethods = append(authStrategies.ClientCredentials.AuthMethods, types.StringValue(v))
 				}
-				authStrategies1.ClientCredentials.AvailableScopes = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes))
+				authStrategies.ClientCredentials.AvailableScopes = make([]types.String, 0, len(authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes))
 				for _, v := range authStrategiesItem.AuthStrategyClientCredentials.AvailableScopes {
-					authStrategies1.ClientCredentials.AvailableScopes = append(authStrategies1.ClientCredentials.AvailableScopes, types.StringValue(v))
+					authStrategies.ClientCredentials.AvailableScopes = append(authStrategies.ClientCredentials.AvailableScopes, types.StringValue(v))
 				}
-				authStrategies1.ClientCredentials.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyClientCredentials.CredentialType))
-				authStrategies1.ClientCredentials.ID = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.ID)
-				authStrategies1.ClientCredentials.Name = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.Name)
+				authStrategies.ClientCredentials.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyClientCredentials.CredentialType))
+				authStrategies.ClientCredentials.ID = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.ID)
+				authStrategies.ClientCredentials.Name = types.StringValue(authStrategiesItem.AuthStrategyClientCredentials.Name)
 			}
 			if authStrategiesItem.AuthStrategyKeyAuth != nil {
-				authStrategies1.KeyAuth = &tfTypes.AuthStrategyKeyAuth{}
-				authStrategies1.KeyAuth.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyKeyAuth.CredentialType))
-				authStrategies1.KeyAuth.ID = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.ID)
-				authStrategies1.KeyAuth.KeyNames = make([]types.String, 0, len(authStrategiesItem.AuthStrategyKeyAuth.KeyNames))
+				authStrategies.KeyAuth = &tfTypes.AuthStrategyKeyAuth{}
+				authStrategies.KeyAuth.CredentialType = types.StringValue(string(authStrategiesItem.AuthStrategyKeyAuth.CredentialType))
+				authStrategies.KeyAuth.ID = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.ID)
+				authStrategies.KeyAuth.KeyNames = make([]types.String, 0, len(authStrategiesItem.AuthStrategyKeyAuth.KeyNames))
 				for _, v := range authStrategiesItem.AuthStrategyKeyAuth.KeyNames {
-					authStrategies1.KeyAuth.KeyNames = append(authStrategies1.KeyAuth.KeyNames, types.StringValue(v))
+					authStrategies.KeyAuth.KeyNames = append(authStrategies.KeyAuth.KeyNames, types.StringValue(v))
 				}
-				authStrategies1.KeyAuth.Name = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
+				authStrategies.KeyAuth.Name = types.StringValue(authStrategiesItem.AuthStrategyKeyAuth.Name)
 			}
 			if authStrategiesCount+1 > len(r.AuthStrategies) {
-				r.AuthStrategies = append(r.AuthStrategies, authStrategies1)
+				r.AuthStrategies = append(r.AuthStrategies, authStrategies)
 			} else {
-				r.AuthStrategies[authStrategiesCount].ClientCredentials = authStrategies1.ClientCredentials
-				r.AuthStrategies[authStrategiesCount].KeyAuth = authStrategies1.KeyAuth
+				r.AuthStrategies[authStrategiesCount].ClientCredentials = authStrategies.ClientCredentials
+				r.AuthStrategies[authStrategiesCount].KeyAuth = authStrategies.KeyAuth
 			}
 		}
 		r.AutoApproveRegistration = types.BoolValue(resp.AutoApproveRegistration)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Deprecated = types.BoolValue(resp.Deprecated)
 		r.ID = types.StringValue(resp.ID)
 		r.ProductVersionID = types.StringValue(resp.ProductVersionID)
 		r.PublishStatus = types.StringValue(string(resp.PublishStatus))
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

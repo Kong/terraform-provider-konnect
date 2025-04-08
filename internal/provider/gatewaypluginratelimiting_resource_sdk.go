@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *shared.RateLimitingPlugin {
@@ -75,13 +76,13 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 	if r.Config != nil {
 		day := new(float64)
 		if !r.Config.Day.IsUnknown() && !r.Config.Day.IsNull() {
-			*day, _ = r.Config.Day.ValueBigFloat().Float64()
+			*day = r.Config.Day.ValueFloat64()
 		} else {
 			day = nil
 		}
 		errorCode := new(float64)
 		if !r.Config.ErrorCode.IsUnknown() && !r.Config.ErrorCode.IsNull() {
-			*errorCode, _ = r.Config.ErrorCode.ValueBigFloat().Float64()
+			*errorCode = r.Config.ErrorCode.ValueFloat64()
 		} else {
 			errorCode = nil
 		}
@@ -111,7 +112,7 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 		}
 		hour := new(float64)
 		if !r.Config.Hour.IsUnknown() && !r.Config.Hour.IsNull() {
-			*hour, _ = r.Config.Hour.ValueBigFloat().Float64()
+			*hour = r.Config.Hour.ValueFloat64()
 		} else {
 			hour = nil
 		}
@@ -123,13 +124,13 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 		}
 		minute := new(float64)
 		if !r.Config.Minute.IsUnknown() && !r.Config.Minute.IsNull() {
-			*minute, _ = r.Config.Minute.ValueBigFloat().Float64()
+			*minute = r.Config.Minute.ValueFloat64()
 		} else {
 			minute = nil
 		}
 		month := new(float64)
 		if !r.Config.Month.IsUnknown() && !r.Config.Month.IsNull() {
-			*month, _ = r.Config.Month.ValueBigFloat().Float64()
+			*month = r.Config.Month.ValueFloat64()
 		} else {
 			month = nil
 		}
@@ -215,19 +216,19 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 		}
 		second := new(float64)
 		if !r.Config.Second.IsUnknown() && !r.Config.Second.IsNull() {
-			*second, _ = r.Config.Second.ValueBigFloat().Float64()
+			*second = r.Config.Second.ValueFloat64()
 		} else {
 			second = nil
 		}
 		syncRate := new(float64)
 		if !r.Config.SyncRate.IsUnknown() && !r.Config.SyncRate.IsNull() {
-			*syncRate, _ = r.Config.SyncRate.ValueBigFloat().Float64()
+			*syncRate = r.Config.SyncRate.ValueFloat64()
 		} else {
 			syncRate = nil
 		}
 		year := new(float64)
 		if !r.Config.Year.IsUnknown() && !r.Config.Year.IsNull() {
-			*year, _ = r.Config.Year.ValueBigFloat().Float64()
+			*year = r.Config.Year.ValueFloat64()
 		} else {
 			year = nil
 		}
@@ -320,46 +321,28 @@ func (r *GatewayPluginRateLimitingResourceModel) ToSharedRateLimitingPlugin() *s
 	return &out
 }
 
-func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPlugin(resp *shared.RateLimitingPlugin) {
+func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPlugin(ctx context.Context, resp *shared.RateLimitingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.RateLimitingPluginConfig{}
-			if resp.Config.Day != nil {
-				r.Config.Day = types.NumberValue(big.NewFloat(float64(*resp.Config.Day)))
-			} else {
-				r.Config.Day = types.NumberNull()
-			}
-			if resp.Config.ErrorCode != nil {
-				r.Config.ErrorCode = types.NumberValue(big.NewFloat(float64(*resp.Config.ErrorCode)))
-			} else {
-				r.Config.ErrorCode = types.NumberNull()
-			}
+			r.Config.Day = types.Float64PointerValue(resp.Config.Day)
+			r.Config.ErrorCode = types.Float64PointerValue(resp.Config.ErrorCode)
 			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
 			r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
 			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-			if resp.Config.Hour != nil {
-				r.Config.Hour = types.NumberValue(big.NewFloat(float64(*resp.Config.Hour)))
-			} else {
-				r.Config.Hour = types.NumberNull()
-			}
+			r.Config.Hour = types.Float64PointerValue(resp.Config.Hour)
 			if resp.Config.LimitBy != nil {
 				r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
 			} else {
 				r.Config.LimitBy = types.StringNull()
 			}
-			if resp.Config.Minute != nil {
-				r.Config.Minute = types.NumberValue(big.NewFloat(float64(*resp.Config.Minute)))
-			} else {
-				r.Config.Minute = types.NumberNull()
-			}
-			if resp.Config.Month != nil {
-				r.Config.Month = types.NumberValue(big.NewFloat(float64(*resp.Config.Month)))
-			} else {
-				r.Config.Month = types.NumberNull()
-			}
+			r.Config.Minute = types.Float64PointerValue(resp.Config.Minute)
+			r.Config.Month = types.Float64PointerValue(resp.Config.Month)
 			r.Config.Path = types.StringPointerValue(resp.Config.Path)
 			if resp.Config.Policy != nil {
 				r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
@@ -380,21 +363,9 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
 				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
 			}
-			if resp.Config.Second != nil {
-				r.Config.Second = types.NumberValue(big.NewFloat(float64(*resp.Config.Second)))
-			} else {
-				r.Config.Second = types.NumberNull()
-			}
-			if resp.Config.SyncRate != nil {
-				r.Config.SyncRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SyncRate)))
-			} else {
-				r.Config.SyncRate = types.NumberNull()
-			}
-			if resp.Config.Year != nil {
-				r.Config.Year = types.NumberValue(big.NewFloat(float64(*resp.Config.Year)))
-			} else {
-				r.Config.Year = types.NumberNull()
-			}
+			r.Config.Second = types.Float64PointerValue(resp.Config.Second)
+			r.Config.SyncRate = types.Float64PointerValue(resp.Config.SyncRate)
+			r.Config.Year = types.Float64PointerValue(resp.Config.Year)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -457,4 +428,6 @@ func (r *GatewayPluginRateLimitingResourceModel) RefreshFromSharedRateLimitingPl
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

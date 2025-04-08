@@ -3,11 +3,12 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
-	"time"
 )
 
 func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAPIProductDTO {
@@ -51,9 +52,11 @@ func (r *APIProductResourceModel) ToSharedCreateAPIProductDTO() *shared.CreateAP
 	return &out
 }
 
-func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIProduct) {
+func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(ctx context.Context, resp *shared.APIProduct) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
@@ -72,14 +75,14 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 			r.Portals = r.Portals[:len(resp.Portals)]
 		}
 		for portalsCount, portalsItem := range resp.Portals {
-			var portals1 tfTypes.APIProductPortal
-			portals1.PortalID = types.StringValue(portalsItem.PortalID)
-			portals1.PortalName = types.StringValue(portalsItem.PortalName)
+			var portals tfTypes.APIProductPortal
+			portals.PortalID = types.StringValue(portalsItem.PortalID)
+			portals.PortalName = types.StringValue(portalsItem.PortalName)
 			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals1)
+				r.Portals = append(r.Portals, portals)
 			} else {
-				r.Portals[portalsCount].PortalID = portals1.PortalID
-				r.Portals[portalsCount].PortalName = portals1.PortalName
+				r.Portals[portalsCount].PortalID = portals.PortalID
+				r.Portals[portalsCount].PortalName = portals.PortalName
 			}
 		}
 		if len(resp.PublicLabels) > 0 {
@@ -88,9 +91,11 @@ func (r *APIProductResourceModel) RefreshFromSharedAPIProduct(resp *shared.APIPr
 				r.PublicLabels[key1] = types.StringValue(value1)
 			}
 		}
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		r.VersionCount = types.NumberValue(big.NewFloat(float64(resp.VersionCount)))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+		r.VersionCount = types.Float64Value(resp.VersionCount)
 	}
+
+	return diags
 }
 
 func (r *APIProductResourceModel) ToSharedUpdateAPIProductDTO() *shared.UpdateAPIProductDTO {

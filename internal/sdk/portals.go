@@ -547,12 +547,12 @@ func (s *Portals) UpdatePortal(ctx context.Context, request operations.UpdatePor
 				return nil, err
 			}
 
-			var out shared.UpdatePortalResponse
+			var out shared.CreatePortalResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UpdatePortalResponse = &out
+			res.CreatePortalResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

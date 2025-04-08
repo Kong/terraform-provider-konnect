@@ -6,13 +6,13 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type CanaryPluginConfig struct {
 	CanaryByHeaderName types.String   `tfsdk:"canary_by_header_name"`
-	Duration           types.Number   `tfsdk:"duration"`
+	Duration           types.Float64  `tfsdk:"duration"`
 	Groups             []types.String `tfsdk:"groups"`
 	Hash               types.String   `tfsdk:"hash"`
 	HashHeader         types.String   `tfsdk:"hash_header"`
-	Percentage         types.Number   `tfsdk:"percentage"`
-	Start              types.Number   `tfsdk:"start"`
-	Steps              types.Number   `tfsdk:"steps"`
+	Percentage         types.Float64  `tfsdk:"percentage"`
+	Start              types.Float64  `tfsdk:"start"`
+	Steps              types.Float64  `tfsdk:"steps"`
 	UpstreamFallback   types.Bool     `tfsdk:"upstream_fallback"`
 	UpstreamHost       types.String   `tfsdk:"upstream_host"`
 	UpstreamPort       types.Int64    `tfsdk:"upstream_port"`
