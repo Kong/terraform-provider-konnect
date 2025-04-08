@@ -163,7 +163,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `Extra query argument values passed to the authorization endpoint.`,
 					},
-					"authorization_rolling_timeout": schema.NumberAttribute{
+					"authorization_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies how long the session used for the authorization code flow can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.`,
@@ -204,27 +204,27 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Salt used for generating the cache key that is used for caching the token endpoint requests.`,
 					},
-					"cache_ttl": schema.NumberAttribute{
+					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The default cache ttl in seconds that is used in case the cached object does not specify the expiry.`,
 					},
-					"cache_ttl_max": schema.NumberAttribute{
+					"cache_ttl_max": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The maximum cache ttl in seconds (enforced).`,
 					},
-					"cache_ttl_min": schema.NumberAttribute{
+					"cache_ttl_min": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The minimum cache ttl in seconds (enforced).`,
 					},
-					"cache_ttl_neg": schema.NumberAttribute{
+					"cache_ttl_neg": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The negative cache ttl in seconds.`,
 					},
-					"cache_ttl_resurrect": schema.NumberAttribute{
+					"cache_ttl_resurrect": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The resurrection ttl in seconds.`,
@@ -690,7 +690,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The downstream user info JWT header (in case the user info returns a JWT response).`,
 					},
-					"dpop_proof_lifetime": schema.NumberAttribute{
+					"dpop_proof_lifetime": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies the lifetime in seconds of the DPoP proof. It determines how long the same proof can be used after creation. The creation time is determined by the nonce creation time if a nonce is used, and the iat claim otherwise.`,
@@ -764,7 +764,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The HTTP proxy authorization.`,
 					},
-					"http_version": schema.NumberAttribute{
+					"http_version": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The HTTP version used for the requests by this plugin: - ` + "`" + `1.1` + "`" + `: HTTP 1.1 (the default) - ` + "`" + `1.0` + "`" + `: HTTP 1.0.`,
@@ -917,7 +917,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Use keepalive with the HTTP client.`,
 					},
-					"leeway": schema.NumberAttribute{
+					"leeway": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Defines leeway time (in seconds) for ` + "`" + `auth_time` + "`" + `, ` + "`" + `exp` + "`" + `, ` + "`" + `iat` + "`" + `, and ` + "`" + `nbf` + "`" + ` claims`,
@@ -1007,7 +1007,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `The request URI suffix that activates the logout.`,
 					},
-					"max_age": schema.NumberAttribute{
+					"max_age": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The maximum age (in seconds) compared to the ` + "`" + `auth_time` + "`" + ` claim.`,
@@ -1285,7 +1285,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 							},
 						},
 					},
-					"rediscovery_lifetime": schema.NumberAttribute{
+					"rediscovery_lifetime": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies how long (in seconds) the plugin waits between discovery attempts. Discovery is still triggered on an as-needed basis.`,
@@ -1422,7 +1422,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.`,
 					},
-					"session_absolute_timeout": schema.NumberAttribute{
+					"session_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Limits how long the session can be renewed in seconds, until re-authentication is required. 0 disables the checks.`,
@@ -1485,7 +1485,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled.`,
 					},
-					"session_idling_timeout": schema.NumberAttribute{
+					"session_idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies how long the session can be inactive until it is considered invalid in seconds. 0 disables the checks and touching.`,
@@ -1518,7 +1518,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Enables or disables persistent sessions.`,
 					},
-					"session_remember_absolute_timeout": schema.NumberAttribute{
+					"session_remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Limits how long the persistent session can be renewed in seconds, until re-authentication is required. 0 disables the checks.`,
@@ -1528,7 +1528,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter.`,
 					},
-					"session_remember_rolling_timeout": schema.NumberAttribute{
+					"session_remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies how long the persistent session is considered valid in seconds. 0 disables the checks and rolling.`,
@@ -1545,7 +1545,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						ElementType: types.StringType,
 						Description: `Set of headers to send to downstream, use id, audience, subject, timeout, idling-timeout, rolling-timeout, absolute-timeout. E.g. ` + "`" + `[ "id", "timeout" ]` + "`" + ` will set Session-Id and Session-Timeout response headers.`,
 					},
-					"session_rolling_timeout": schema.NumberAttribute{
+					"session_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Specifies how long the session can be used in seconds until it needs to be renewed. 0 disables the checks and rolling.`,
@@ -1578,7 +1578,7 @@ func (r *GatewayPluginOpenidConnectResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						Description: `Verify identity provider server certificate. If set to ` + "`" + `true` + "`" + `, the plugin uses the CA certificate set in the ` + "`" + `kong.conf` + "`" + ` config parameter ` + "`" + `lua_ssl_trusted_certificate` + "`" + `.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Network IO timeout in milliseconds.`,
@@ -2008,8 +2008,17 @@ func (r *GatewayPluginOpenidConnectResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedOpenidConnectPlugin(ctx, res.OpenidConnectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -2067,7 +2076,11 @@ func (r *GatewayPluginOpenidConnectResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOpenidConnectPlugin(ctx, res.OpenidConnectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -2119,8 +2132,17 @@ func (r *GatewayPluginOpenidConnectResource) Update(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOpenidConnectPlugin(res.OpenidConnectPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedOpenidConnectPlugin(ctx, res.OpenidConnectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -2182,7 +2204,7 @@ func (r *GatewayPluginOpenidConnectResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

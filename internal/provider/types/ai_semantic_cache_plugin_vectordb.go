@@ -9,5 +9,5 @@ type AiSemanticCachePluginVectordb struct {
 	DistanceMetric types.String                `tfsdk:"distance_metric"`
 	Redis          *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
 	Strategy       types.String                `tfsdk:"strategy"`
-	Threshold      types.Number                `tfsdk:"threshold"`
+	Threshold      types.Float64               `tfsdk:"threshold"`
 }

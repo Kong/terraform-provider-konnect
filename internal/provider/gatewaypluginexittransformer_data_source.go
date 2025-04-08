@@ -230,7 +230,11 @@ func (r *GatewayPluginExitTransformerDataSource) Read(ctx context.Context, req d
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedExitTransformerPlugin(res.ExitTransformerPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedExitTransformerPlugin(ctx, res.ExitTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

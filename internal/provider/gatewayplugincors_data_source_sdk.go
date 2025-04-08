@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(resp *shared.CorsPlugin) {
+func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(ctx context.Context, resp *shared.CorsPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -24,11 +27,7 @@ func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(resp *sha
 			for _, v := range resp.Config.Headers {
 				r.Config.Headers = append(r.Config.Headers, types.StringValue(v))
 			}
-			if resp.Config.MaxAge != nil {
-				r.Config.MaxAge = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxAge)))
-			} else {
-				r.Config.MaxAge = types.NumberNull()
-			}
+			r.Config.MaxAge = types.Float64PointerValue(resp.Config.MaxAge)
 			r.Config.Methods = make([]types.String, 0, len(resp.Config.Methods))
 			for _, v := range resp.Config.Methods {
 				r.Config.Methods = append(r.Config.Methods, types.StringValue(string(v)))
@@ -89,4 +88,6 @@ func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(resp *sha
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

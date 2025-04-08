@@ -152,7 +152,11 @@ func (r *SystemAccountAccessTokenDataSource) Read(ctx context.Context, req datas
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSystemAccountAccessToken(res.SystemAccountAccessToken)
+	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessToken(ctx, res.SystemAccountAccessToken)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

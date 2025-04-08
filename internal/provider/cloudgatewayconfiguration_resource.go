@@ -46,7 +46,7 @@ type CloudGatewayConfigurationResourceModel struct {
 	CreatedAt            types.String                                `tfsdk:"created_at"`
 	DataplaneGroupConfig []tfTypes.ConfigurationDataPlaneGroupConfig `tfsdk:"dataplane_group_config"`
 	DataplaneGroups      []tfTypes.ConfigurationDataPlaneGroup       `tfsdk:"dataplane_groups"`
-	EntityVersion        types.Number                                `tfsdk:"entity_version"`
+	EntityVersion        types.Float64                               `tfsdk:"entity_version"`
 	ID                   types.String                                `tfsdk:"id"`
 	UpdatedAt            types.String                                `tfsdk:"updated_at"`
 	Version              types.String                                `tfsdk:"version"`
@@ -413,7 +413,7 @@ func (r *CloudGatewayConfigurationResource) Schema(ctx context.Context, req reso
 				},
 				Description: `List of data-plane groups that describe where to deploy instances, along with how many instances.`,
 			},
-			"entity_version": schema.NumberAttribute{
+			"entity_version": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Positive, monotonically increasing version integer, to serialize configuration changes.`,
 			},
@@ -494,8 +494,17 @@ func (r *CloudGatewayConfigurationResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConfigurationManifest(res.ConfigurationManifest)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigurationManifest(ctx, res.ConfigurationManifest)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -549,7 +558,11 @@ func (r *CloudGatewayConfigurationResource) Read(ctx context.Context, req resour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConfigurationManifest(res.ConfigurationManifest)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigurationManifest(ctx, res.ConfigurationManifest)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -590,8 +603,17 @@ func (r *CloudGatewayConfigurationResource) Update(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConfigurationManifest(res.ConfigurationManifest)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigurationManifest(ctx, res.ConfigurationManifest)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -5,20 +5,20 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type RateLimitingPluginConfig struct {
-	Day               types.Number             `tfsdk:"day"`
-	ErrorCode         types.Number             `tfsdk:"error_code"`
+	Day               types.Float64            `tfsdk:"day"`
+	ErrorCode         types.Float64            `tfsdk:"error_code"`
 	ErrorMessage      types.String             `tfsdk:"error_message"`
 	FaultTolerant     types.Bool               `tfsdk:"fault_tolerant"`
 	HeaderName        types.String             `tfsdk:"header_name"`
 	HideClientHeaders types.Bool               `tfsdk:"hide_client_headers"`
-	Hour              types.Number             `tfsdk:"hour"`
+	Hour              types.Float64            `tfsdk:"hour"`
 	LimitBy           types.String             `tfsdk:"limit_by"`
-	Minute            types.Number             `tfsdk:"minute"`
-	Month             types.Number             `tfsdk:"month"`
+	Minute            types.Float64            `tfsdk:"minute"`
+	Month             types.Float64            `tfsdk:"month"`
 	Path              types.String             `tfsdk:"path"`
 	Policy            types.String             `tfsdk:"policy"`
 	Redis             *RateLimitingPluginRedis `tfsdk:"redis"`
-	Second            types.Number             `tfsdk:"second"`
-	SyncRate          types.Number             `tfsdk:"sync_rate"`
-	Year              types.Number             `tfsdk:"year"`
+	Second            types.Float64            `tfsdk:"second"`
+	SyncRate          types.Float64            `tfsdk:"sync_rate"`
+	Year              types.Float64            `tfsdk:"year"`
 }

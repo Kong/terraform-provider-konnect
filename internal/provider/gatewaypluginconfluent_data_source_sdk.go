@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin(resp *shared.ConfluentPlugin) {
+func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin(ctx context.Context, resp *shared.ConfluentPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -19,14 +23,14 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
 			}
 			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-				var bootstrapServers1 tfTypes.BootstrapServers
-				bootstrapServers1.Host = types.StringValue(bootstrapServersItem.Host)
-				bootstrapServers1.Port = types.Int64Value(bootstrapServersItem.Port)
+				var bootstrapServers tfTypes.BootstrapServers
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
 				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers1)
+					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
 				} else {
-					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers1.Host
-					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers1.Port
+					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
 				}
 			}
 			r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
@@ -111,4 +115,6 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

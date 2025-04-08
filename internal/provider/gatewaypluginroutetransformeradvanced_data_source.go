@@ -230,7 +230,11 @@ func (r *GatewayPluginRouteTransformerAdvancedDataSource) Read(ctx context.Conte
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteTransformerAdvancedPlugin(res.RouteTransformerAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRouteTransformerAdvancedPlugin(ctx, res.RouteTransformerAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

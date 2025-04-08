@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin() *shared.AzureFunctionsPlugin {
@@ -117,7 +118,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 		}
 		keepalive := new(float64)
 		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+			*keepalive = r.Config.Keepalive.ValueFloat64()
 		} else {
 			keepalive = nil
 		}
@@ -129,7 +130,7 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 		}
 		timeout := new(float64)
 		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+			*timeout = r.Config.Timeout.ValueFloat64()
 		} else {
 			timeout = nil
 		}
@@ -203,7 +204,9 @@ func (r *GatewayPluginAzureFunctionsResourceModel) ToSharedAzureFunctionsPlugin(
 	return &out
 }
 
-func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctionsPlugin(resp *shared.AzureFunctionsPlugin) {
+func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctionsPlugin(ctx context.Context, resp *shared.AzureFunctionsPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -216,17 +219,9 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 			r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
 			r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
 			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 			r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -283,4 +278,6 @@ func (r *GatewayPluginAzureFunctionsResourceModel) RefreshFromSharedAzureFunctio
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

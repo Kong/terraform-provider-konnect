@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Healthchecks struct {
-	Active    *Active      `tfsdk:"active"`
-	Passive   *Passive     `tfsdk:"passive"`
-	Threshold types.Number `tfsdk:"threshold"`
+	Active    *Active       `tfsdk:"active"`
+	Passive   *Passive      `tfsdk:"passive"`
+	Threshold types.Float64 `tfsdk:"threshold"`
 }

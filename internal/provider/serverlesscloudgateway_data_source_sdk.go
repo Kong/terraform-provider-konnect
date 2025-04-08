@@ -3,17 +3,21 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *ServerlessCloudGatewayDataSourceModel) RefreshFromSharedServerlessCloudGateway(resp *shared.ServerlessCloudGateway) {
+func (r *ServerlessCloudGatewayDataSourceModel) RefreshFromSharedServerlessCloudGateway(ctx context.Context, resp *shared.ServerlessCloudGateway) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.ControlPlane.ID = types.StringValue(resp.ControlPlane.ID)
 		r.ControlPlane.Prefix = types.StringValue(resp.ControlPlane.Prefix)
 		r.ControlPlane.Region = types.StringValue(string(resp.ControlPlane.Region))
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.GatewayEndpoint = types.StringValue(resp.GatewayEndpoint)
 		if len(resp.Labels) > 0 {
 			r.Labels = make(map[string]types.String, len(resp.Labels))
@@ -21,6 +25,8 @@ func (r *ServerlessCloudGatewayDataSourceModel) RefreshFromSharedServerlessCloud
 				r.Labels[key] = types.StringValue(value)
 			}
 		}
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

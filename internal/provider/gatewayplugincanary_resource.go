@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -70,7 +71,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"duration": schema.NumberAttribute{
+					"duration": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The duration of the canary release in seconds.`,
@@ -109,20 +110,26 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"percentage": schema.NumberAttribute{
+					"percentage": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The percentage of traffic to be routed to the canary release.`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(100),
+						},
 					},
-					"start": schema.NumberAttribute{
+					"start": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Future time in seconds since epoch, when the canary release will start. Ignored when ` + "`" + `percentage` + "`" + ` is set, or when using ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + ` in ` + "`" + `hash` + "`" + `.`,
 					},
-					"steps": schema.NumberAttribute{
+					"steps": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of steps for the canary release.`,
+						Validators: []validator.Float64{
+							float64validator.AtLeast(1),
+						},
 					},
 					"upstream_fallback": schema.BoolAttribute{
 						Computed:    true,
@@ -320,8 +327,17 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -379,7 +395,11 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -431,8 +451,17 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -494,7 +523,7 @@ func (r *GatewayPluginCanaryResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

@@ -62,7 +62,7 @@ func (r *GatewayPluginDatadogDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `String to be attached as tag of the consumer.`,
 					},
-					"flush_timeout": schema.NumberAttribute{
+					"flush_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
@@ -82,7 +82,7 @@ func (r *GatewayPluginDatadogDataSource) Schema(ctx context.Context, req datasou
 									Computed:    true,
 									Description: `Datadog metric’s name`,
 								},
-								"sample_rate": schema.NumberAttribute{
+								"sample_rate": schema.Float64Attribute{
 									Computed:    true,
 									Description: `Sampling rate`,
 								},
@@ -114,7 +114,7 @@ func (r *GatewayPluginDatadogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited.`,
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 							},
@@ -126,7 +126,7 @@ func (r *GatewayPluginDatadogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
 							},
@@ -134,11 +134,11 @@ func (r *GatewayPluginDatadogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
 							},
@@ -320,7 +320,11 @@ func (r *GatewayPluginDatadogDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedDatadogPlugin(res.DatadogPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedDatadogPlugin(ctx, res.DatadogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

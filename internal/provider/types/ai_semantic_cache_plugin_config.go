@@ -12,7 +12,7 @@ type AiSemanticCachePluginConfig struct {
 	IgnoreAssistantPrompts types.Bool                       `tfsdk:"ignore_assistant_prompts"`
 	IgnoreSystemPrompts    types.Bool                       `tfsdk:"ignore_system_prompts"`
 	IgnoreToolPrompts      types.Bool                       `tfsdk:"ignore_tool_prompts"`
-	MessageCountback       types.Number                     `tfsdk:"message_countback"`
+	MessageCountback       types.Float64                    `tfsdk:"message_countback"`
 	StopOnFailure          types.Bool                       `tfsdk:"stop_on_failure"`
 	Vectordb               *AiSemanticCachePluginVectordb   `tfsdk:"vectordb"`
 }

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -151,7 +153,9 @@ func (r *GatewayPluginExitTransformerResourceModel) ToSharedExitTransformerPlugi
 	return &out
 }
 
-func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransformerPlugin(resp *shared.ExitTransformerPlugin) {
+func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransformerPlugin(ctx context.Context, resp *shared.ExitTransformerPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -219,4 +223,6 @@ func (r *GatewayPluginExitTransformerResourceModel) RefreshFromSharedExitTransfo
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -14,29 +14,29 @@ type JwtSignerPluginConfig struct {
 	AccessTokenIntrospectionEndpoint        types.String            `tfsdk:"access_token_introspection_endpoint"`
 	AccessTokenIntrospectionHint            types.String            `tfsdk:"access_token_introspection_hint"`
 	AccessTokenIntrospectionJwtClaim        []types.String          `tfsdk:"access_token_introspection_jwt_claim"`
-	AccessTokenIntrospectionLeeway          types.Number            `tfsdk:"access_token_introspection_leeway"`
+	AccessTokenIntrospectionLeeway          types.Float64           `tfsdk:"access_token_introspection_leeway"`
 	AccessTokenIntrospectionScopesClaim     []types.String          `tfsdk:"access_token_introspection_scopes_claim"`
 	AccessTokenIntrospectionScopesRequired  []types.String          `tfsdk:"access_token_introspection_scopes_required"`
-	AccessTokenIntrospectionTimeout         types.Number            `tfsdk:"access_token_introspection_timeout"`
+	AccessTokenIntrospectionTimeout         types.Float64           `tfsdk:"access_token_introspection_timeout"`
 	AccessTokenIssuer                       types.String            `tfsdk:"access_token_issuer"`
 	AccessTokenJwksURI                      types.String            `tfsdk:"access_token_jwks_uri"`
 	AccessTokenJwksURIClientCertificate     types.String            `tfsdk:"access_token_jwks_uri_client_certificate"`
 	AccessTokenJwksURIClientPassword        types.String            `tfsdk:"access_token_jwks_uri_client_password"`
 	AccessTokenJwksURIClientUsername        types.String            `tfsdk:"access_token_jwks_uri_client_username"`
-	AccessTokenJwksURIRotatePeriod          types.Number            `tfsdk:"access_token_jwks_uri_rotate_period"`
+	AccessTokenJwksURIRotatePeriod          types.Float64           `tfsdk:"access_token_jwks_uri_rotate_period"`
 	AccessTokenKeyset                       types.String            `tfsdk:"access_token_keyset"`
 	AccessTokenKeysetClientCertificate      types.String            `tfsdk:"access_token_keyset_client_certificate"`
 	AccessTokenKeysetClientPassword         types.String            `tfsdk:"access_token_keyset_client_password"`
 	AccessTokenKeysetClientUsername         types.String            `tfsdk:"access_token_keyset_client_username"`
-	AccessTokenKeysetRotatePeriod           types.Number            `tfsdk:"access_token_keyset_rotate_period"`
-	AccessTokenLeeway                       types.Number            `tfsdk:"access_token_leeway"`
+	AccessTokenKeysetRotatePeriod           types.Float64           `tfsdk:"access_token_keyset_rotate_period"`
+	AccessTokenLeeway                       types.Float64           `tfsdk:"access_token_leeway"`
 	AccessTokenOptional                     types.Bool              `tfsdk:"access_token_optional"`
 	AccessTokenRequestHeader                types.String            `tfsdk:"access_token_request_header"`
 	AccessTokenScopesClaim                  []types.String          `tfsdk:"access_token_scopes_claim"`
 	AccessTokenScopesRequired               []types.String          `tfsdk:"access_token_scopes_required"`
 	AccessTokenSigningAlgorithm             types.String            `tfsdk:"access_token_signing_algorithm"`
 	AccessTokenUpstreamHeader               types.String            `tfsdk:"access_token_upstream_header"`
-	AccessTokenUpstreamLeeway               types.Number            `tfsdk:"access_token_upstream_leeway"`
+	AccessTokenUpstreamLeeway               types.Float64           `tfsdk:"access_token_upstream_leeway"`
 	AddAccessTokenClaims                    map[string]types.String `tfsdk:"add_access_token_claims"`
 	AddChannelTokenClaims                   map[string]types.String `tfsdk:"add_channel_token_claims"`
 	AddClaims                               map[string]types.String `tfsdk:"add_claims"`
@@ -51,29 +51,29 @@ type JwtSignerPluginConfig struct {
 	ChannelTokenIntrospectionEndpoint       types.String            `tfsdk:"channel_token_introspection_endpoint"`
 	ChannelTokenIntrospectionHint           types.String            `tfsdk:"channel_token_introspection_hint"`
 	ChannelTokenIntrospectionJwtClaim       []types.String          `tfsdk:"channel_token_introspection_jwt_claim"`
-	ChannelTokenIntrospectionLeeway         types.Number            `tfsdk:"channel_token_introspection_leeway"`
+	ChannelTokenIntrospectionLeeway         types.Float64           `tfsdk:"channel_token_introspection_leeway"`
 	ChannelTokenIntrospectionScopesClaim    []types.String          `tfsdk:"channel_token_introspection_scopes_claim"`
 	ChannelTokenIntrospectionScopesRequired []types.String          `tfsdk:"channel_token_introspection_scopes_required"`
-	ChannelTokenIntrospectionTimeout        types.Number            `tfsdk:"channel_token_introspection_timeout"`
+	ChannelTokenIntrospectionTimeout        types.Float64           `tfsdk:"channel_token_introspection_timeout"`
 	ChannelTokenIssuer                      types.String            `tfsdk:"channel_token_issuer"`
 	ChannelTokenJwksURI                     types.String            `tfsdk:"channel_token_jwks_uri"`
 	ChannelTokenJwksURIClientCertificate    types.String            `tfsdk:"channel_token_jwks_uri_client_certificate"`
 	ChannelTokenJwksURIClientPassword       types.String            `tfsdk:"channel_token_jwks_uri_client_password"`
 	ChannelTokenJwksURIClientUsername       types.String            `tfsdk:"channel_token_jwks_uri_client_username"`
-	ChannelTokenJwksURIRotatePeriod         types.Number            `tfsdk:"channel_token_jwks_uri_rotate_period"`
+	ChannelTokenJwksURIRotatePeriod         types.Float64           `tfsdk:"channel_token_jwks_uri_rotate_period"`
 	ChannelTokenKeyset                      types.String            `tfsdk:"channel_token_keyset"`
 	ChannelTokenKeysetClientCertificate     types.String            `tfsdk:"channel_token_keyset_client_certificate"`
 	ChannelTokenKeysetClientPassword        types.String            `tfsdk:"channel_token_keyset_client_password"`
 	ChannelTokenKeysetClientUsername        types.String            `tfsdk:"channel_token_keyset_client_username"`
-	ChannelTokenKeysetRotatePeriod          types.Number            `tfsdk:"channel_token_keyset_rotate_period"`
-	ChannelTokenLeeway                      types.Number            `tfsdk:"channel_token_leeway"`
+	ChannelTokenKeysetRotatePeriod          types.Float64           `tfsdk:"channel_token_keyset_rotate_period"`
+	ChannelTokenLeeway                      types.Float64           `tfsdk:"channel_token_leeway"`
 	ChannelTokenOptional                    types.Bool              `tfsdk:"channel_token_optional"`
 	ChannelTokenRequestHeader               types.String            `tfsdk:"channel_token_request_header"`
 	ChannelTokenScopesClaim                 []types.String          `tfsdk:"channel_token_scopes_claim"`
 	ChannelTokenScopesRequired              []types.String          `tfsdk:"channel_token_scopes_required"`
 	ChannelTokenSigningAlgorithm            types.String            `tfsdk:"channel_token_signing_algorithm"`
 	ChannelTokenUpstreamHeader              types.String            `tfsdk:"channel_token_upstream_header"`
-	ChannelTokenUpstreamLeeway              types.Number            `tfsdk:"channel_token_upstream_leeway"`
+	ChannelTokenUpstreamLeeway              types.Float64           `tfsdk:"channel_token_upstream_leeway"`
 	EnableAccessTokenIntrospection          types.Bool              `tfsdk:"enable_access_token_introspection"`
 	EnableChannelTokenIntrospection         types.Bool              `tfsdk:"enable_channel_token_introspection"`
 	EnableHsSignatures                      types.Bool              `tfsdk:"enable_hs_signatures"`

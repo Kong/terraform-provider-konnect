@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransformerPlugin() *shared.AiRequestTransformerPlugin {
@@ -326,7 +327,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 					}
 					inputCost := new(float64)
 					if !r.Config.Llm.Model.Options.InputCost.IsUnknown() && !r.Config.Llm.Model.Options.InputCost.IsNull() {
-						*inputCost, _ = r.Config.Llm.Model.Options.InputCost.ValueBigFloat().Float64()
+						*inputCost = r.Config.Llm.Model.Options.InputCost.ValueFloat64()
 					} else {
 						inputCost = nil
 					}
@@ -350,13 +351,13 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 					}
 					outputCost := new(float64)
 					if !r.Config.Llm.Model.Options.OutputCost.IsUnknown() && !r.Config.Llm.Model.Options.OutputCost.IsNull() {
-						*outputCost, _ = r.Config.Llm.Model.Options.OutputCost.ValueBigFloat().Float64()
+						*outputCost = r.Config.Llm.Model.Options.OutputCost.ValueFloat64()
 					} else {
 						outputCost = nil
 					}
 					temperature := new(float64)
 					if !r.Config.Llm.Model.Options.Temperature.IsUnknown() && !r.Config.Llm.Model.Options.Temperature.IsNull() {
-						*temperature, _ = r.Config.Llm.Model.Options.Temperature.ValueBigFloat().Float64()
+						*temperature = r.Config.Llm.Model.Options.Temperature.ValueFloat64()
 					} else {
 						temperature = nil
 					}
@@ -368,7 +369,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 					}
 					topP := new(float64)
 					if !r.Config.Llm.Model.Options.TopP.IsUnknown() && !r.Config.Llm.Model.Options.TopP.IsNull() {
-						*topP, _ = r.Config.Llm.Model.Options.TopP.ValueBigFloat().Float64()
+						*topP = r.Config.Llm.Model.Options.TopP.ValueFloat64()
 					} else {
 						topP = nil
 					}
@@ -517,7 +518,9 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 	return &out
 }
 
-func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequestTransformerPlugin(resp *shared.AiRequestTransformerPlugin) {
+func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequestTransformerPlugin(ctx context.Context, resp *shared.AiRequestTransformerPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -597,11 +600,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 							r.Config.Llm.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.UseCache)
 							r.Config.Llm.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Llm.Model.Options.Huggingface.WaitForModel)
 						}
-						if resp.Config.Llm.Model.Options.InputCost != nil {
-							r.Config.Llm.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.InputCost)))
-						} else {
-							r.Config.Llm.Model.Options.InputCost = types.NumberNull()
-						}
+						r.Config.Llm.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.InputCost)
 						if resp.Config.Llm.Model.Options.Llama2Format != nil {
 							r.Config.Llm.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Llm.Model.Options.Llama2Format))
 						} else {
@@ -613,22 +612,10 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 						} else {
 							r.Config.Llm.Model.Options.MistralFormat = types.StringNull()
 						}
-						if resp.Config.Llm.Model.Options.OutputCost != nil {
-							r.Config.Llm.Model.Options.OutputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.OutputCost)))
-						} else {
-							r.Config.Llm.Model.Options.OutputCost = types.NumberNull()
-						}
-						if resp.Config.Llm.Model.Options.Temperature != nil {
-							r.Config.Llm.Model.Options.Temperature = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.Temperature)))
-						} else {
-							r.Config.Llm.Model.Options.Temperature = types.NumberNull()
-						}
+						r.Config.Llm.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Llm.Model.Options.OutputCost)
+						r.Config.Llm.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Llm.Model.Options.Temperature)
 						r.Config.Llm.Model.Options.TopK = types.Int64PointerValue(resp.Config.Llm.Model.Options.TopK)
-						if resp.Config.Llm.Model.Options.TopP != nil {
-							r.Config.Llm.Model.Options.TopP = types.NumberValue(big.NewFloat(float64(*resp.Config.Llm.Model.Options.TopP)))
-						} else {
-							r.Config.Llm.Model.Options.TopP = types.NumberNull()
-						}
+						r.Config.Llm.Model.Options.TopP = types.Float64PointerValue(resp.Config.Llm.Model.Options.TopP)
 						r.Config.Llm.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Llm.Model.Options.UpstreamPath)
 						r.Config.Llm.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Llm.Model.Options.UpstreamURL)
 					}
@@ -703,4 +690,6 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

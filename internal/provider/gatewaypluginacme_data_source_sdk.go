@@ -3,14 +3,17 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *shared.AcmePlugin) {
+func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(ctx context.Context, resp *shared.AcmePlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -38,17 +41,9 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 			r.Config.EabHmacKey = types.StringPointerValue(resp.Config.EabHmacKey)
 			r.Config.EabKid = types.StringPointerValue(resp.Config.EabKid)
 			r.Config.EnableIpv4CommonName = types.BoolPointerValue(resp.Config.EnableIpv4CommonName)
-			if resp.Config.FailBackoffMinutes != nil {
-				r.Config.FailBackoffMinutes = types.NumberValue(big.NewFloat(float64(*resp.Config.FailBackoffMinutes)))
-			} else {
-				r.Config.FailBackoffMinutes = types.NumberNull()
-			}
+			r.Config.FailBackoffMinutes = types.Float64PointerValue(resp.Config.FailBackoffMinutes)
 			r.Config.PreferredChain = types.StringPointerValue(resp.Config.PreferredChain)
-			if resp.Config.RenewThresholdDays != nil {
-				r.Config.RenewThresholdDays = types.NumberValue(big.NewFloat(float64(*resp.Config.RenewThresholdDays)))
-			} else {
-				r.Config.RenewThresholdDays = types.NumberNull()
-			}
+			r.Config.RenewThresholdDays = types.Float64PointerValue(resp.Config.RenewThresholdDays)
 			if resp.Config.RsaKeySize != nil {
 				r.Config.RsaKeySize = types.Int64Value(int64(*resp.Config.RsaKeySize))
 			} else {
@@ -71,11 +66,7 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 					r.Config.StorageConfig.Consul.HTTPS = types.BoolPointerValue(resp.Config.StorageConfig.Consul.HTTPS)
 					r.Config.StorageConfig.Consul.KvPath = types.StringPointerValue(resp.Config.StorageConfig.Consul.KvPath)
 					r.Config.StorageConfig.Consul.Port = types.Int64PointerValue(resp.Config.StorageConfig.Consul.Port)
-					if resp.Config.StorageConfig.Consul.Timeout != nil {
-						r.Config.StorageConfig.Consul.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.StorageConfig.Consul.Timeout)))
-					} else {
-						r.Config.StorageConfig.Consul.Timeout = types.NumberNull()
-					}
+					r.Config.StorageConfig.Consul.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Consul.Timeout)
 					r.Config.StorageConfig.Consul.Token = types.StringPointerValue(resp.Config.StorageConfig.Consul.Token)
 				}
 				if len(resp.Config.StorageConfig.Kong) > 0 {
@@ -95,11 +86,7 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 					} else {
 						r.Config.StorageConfig.Redis.ExtraOptions = &tfTypes.ExtraOptions{}
 						r.Config.StorageConfig.Redis.ExtraOptions.Namespace = types.StringPointerValue(resp.Config.StorageConfig.Redis.ExtraOptions.Namespace)
-						if resp.Config.StorageConfig.Redis.ExtraOptions.ScanCount != nil {
-							r.Config.StorageConfig.Redis.ExtraOptions.ScanCount = types.NumberValue(big.NewFloat(float64(*resp.Config.StorageConfig.Redis.ExtraOptions.ScanCount)))
-						} else {
-							r.Config.StorageConfig.Redis.ExtraOptions.ScanCount = types.NumberNull()
-						}
+						r.Config.StorageConfig.Redis.ExtraOptions.ScanCount = types.Float64PointerValue(resp.Config.StorageConfig.Redis.ExtraOptions.ScanCount)
 					}
 					r.Config.StorageConfig.Redis.Host = types.StringPointerValue(resp.Config.StorageConfig.Redis.Host)
 					r.Config.StorageConfig.Redis.Password = types.StringPointerValue(resp.Config.StorageConfig.Redis.Password)
@@ -132,11 +119,7 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 					r.Config.StorageConfig.Vault.JwtPath = types.StringPointerValue(resp.Config.StorageConfig.Vault.JwtPath)
 					r.Config.StorageConfig.Vault.KvPath = types.StringPointerValue(resp.Config.StorageConfig.Vault.KvPath)
 					r.Config.StorageConfig.Vault.Port = types.Int64PointerValue(resp.Config.StorageConfig.Vault.Port)
-					if resp.Config.StorageConfig.Vault.Timeout != nil {
-						r.Config.StorageConfig.Vault.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.StorageConfig.Vault.Timeout)))
-					} else {
-						r.Config.StorageConfig.Vault.Timeout = types.NumberNull()
-					}
+					r.Config.StorageConfig.Vault.Timeout = types.Float64PointerValue(resp.Config.StorageConfig.Vault.Timeout)
 					r.Config.StorageConfig.Vault.TLSServerName = types.StringPointerValue(resp.Config.StorageConfig.Vault.TLSServerName)
 					r.Config.StorageConfig.Vault.TLSVerify = types.BoolPointerValue(resp.Config.StorageConfig.Vault.TLSVerify)
 					r.Config.StorageConfig.Vault.Token = types.StringPointerValue(resp.Config.StorageConfig.Vault.Token)
@@ -181,4 +164,6 @@ func (r *GatewayPluginAcmeDataSourceModel) RefreshFromSharedAcmePlugin(resp *sha
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

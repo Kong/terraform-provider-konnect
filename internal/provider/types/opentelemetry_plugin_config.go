@@ -16,7 +16,7 @@ type OpentelemetryPluginConfig struct {
 	Queue                        *Queue                  `tfsdk:"queue"`
 	ReadTimeout                  types.Int64             `tfsdk:"read_timeout"`
 	ResourceAttributes           map[string]types.String `tfsdk:"resource_attributes"`
-	SamplingRate                 types.Number            `tfsdk:"sampling_rate"`
+	SamplingRate                 types.Float64           `tfsdk:"sampling_rate"`
 	SendTimeout                  types.Int64             `tfsdk:"send_timeout"`
 	TracesEndpoint               types.String            `tfsdk:"traces_endpoint"`
 }

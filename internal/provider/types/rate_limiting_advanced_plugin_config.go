@@ -10,19 +10,19 @@ type RateLimitingAdvancedPluginConfig struct {
 	DictionaryName        types.String                     `tfsdk:"dictionary_name"`
 	DisablePenalty        types.Bool                       `tfsdk:"disable_penalty"`
 	EnforceConsumerGroups types.Bool                       `tfsdk:"enforce_consumer_groups"`
-	ErrorCode             types.Number                     `tfsdk:"error_code"`
+	ErrorCode             types.Float64                    `tfsdk:"error_code"`
 	ErrorMessage          types.String                     `tfsdk:"error_message"`
 	HeaderName            types.String                     `tfsdk:"header_name"`
 	HideClientHeaders     types.Bool                       `tfsdk:"hide_client_headers"`
 	Identifier            types.String                     `tfsdk:"identifier"`
-	Limit                 []types.Number                   `tfsdk:"limit"`
+	Limit                 []types.Float64                  `tfsdk:"limit"`
 	LockDictionaryName    types.String                     `tfsdk:"lock_dictionary_name"`
 	Namespace             types.String                     `tfsdk:"namespace"`
 	Path                  types.String                     `tfsdk:"path"`
 	Redis                 *RateLimitingAdvancedPluginRedis `tfsdk:"redis"`
-	RetryAfterJitterMax   types.Number                     `tfsdk:"retry_after_jitter_max"`
+	RetryAfterJitterMax   types.Float64                    `tfsdk:"retry_after_jitter_max"`
 	Strategy              types.String                     `tfsdk:"strategy"`
-	SyncRate              types.Number                     `tfsdk:"sync_rate"`
-	WindowSize            []types.Number                   `tfsdk:"window_size"`
+	SyncRate              types.Float64                    `tfsdk:"sync_rate"`
+	WindowSize            []types.Float64                  `tfsdk:"window_size"`
 	WindowType            types.String                     `tfsdk:"window_type"`
 }

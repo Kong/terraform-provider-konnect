@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.SessionPlugin {
@@ -75,7 +76,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 	if r.Config != nil {
 		absoluteTimeout := new(float64)
 		if !r.Config.AbsoluteTimeout.IsUnknown() && !r.Config.AbsoluteTimeout.IsNull() {
-			*absoluteTimeout, _ = r.Config.AbsoluteTimeout.ValueBigFloat().Float64()
+			*absoluteTimeout = r.Config.AbsoluteTimeout.ValueFloat64()
 		} else {
 			absoluteTimeout = nil
 		}
@@ -123,7 +124,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		idlingTimeout := new(float64)
 		if !r.Config.IdlingTimeout.IsUnknown() && !r.Config.IdlingTimeout.IsNull() {
-			*idlingTimeout, _ = r.Config.IdlingTimeout.ValueBigFloat().Float64()
+			*idlingTimeout = r.Config.IdlingTimeout.ValueFloat64()
 		} else {
 			idlingTimeout = nil
 		}
@@ -157,7 +158,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		rememberAbsoluteTimeout := new(float64)
 		if !r.Config.RememberAbsoluteTimeout.IsUnknown() && !r.Config.RememberAbsoluteTimeout.IsNull() {
-			*rememberAbsoluteTimeout, _ = r.Config.RememberAbsoluteTimeout.ValueBigFloat().Float64()
+			*rememberAbsoluteTimeout = r.Config.RememberAbsoluteTimeout.ValueFloat64()
 		} else {
 			rememberAbsoluteTimeout = nil
 		}
@@ -169,7 +170,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		rememberRollingTimeout := new(float64)
 		if !r.Config.RememberRollingTimeout.IsUnknown() && !r.Config.RememberRollingTimeout.IsNull() {
-			*rememberRollingTimeout, _ = r.Config.RememberRollingTimeout.ValueBigFloat().Float64()
+			*rememberRollingTimeout = r.Config.RememberRollingTimeout.ValueFloat64()
 		} else {
 			rememberRollingTimeout = nil
 		}
@@ -183,7 +184,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		rollingTimeout := new(float64)
 		if !r.Config.RollingTimeout.IsUnknown() && !r.Config.RollingTimeout.IsNull() {
-			*rollingTimeout, _ = r.Config.RollingTimeout.ValueBigFloat().Float64()
+			*rollingTimeout = r.Config.RollingTimeout.ValueFloat64()
 		} else {
 			rollingTimeout = nil
 		}
@@ -195,7 +196,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		}
 		staleTTL := new(float64)
 		if !r.Config.StaleTTL.IsUnknown() && !r.Config.StaleTTL.IsNull() {
-			*staleTTL, _ = r.Config.StaleTTL.ValueBigFloat().Float64()
+			*staleTTL = r.Config.StaleTTL.ValueFloat64()
 		} else {
 			staleTTL = nil
 		}
@@ -275,17 +276,15 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 	return &out
 }
 
-func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp *shared.SessionPlugin) {
+func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx context.Context, resp *shared.SessionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.SessionPluginConfig{}
-			if resp.Config.AbsoluteTimeout != nil {
-				r.Config.AbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.AbsoluteTimeout)))
-			} else {
-				r.Config.AbsoluteTimeout = types.NumberNull()
-			}
+			r.Config.AbsoluteTimeout = types.Float64PointerValue(resp.Config.AbsoluteTimeout)
 			r.Config.Audience = types.StringPointerValue(resp.Config.Audience)
 			r.Config.CookieDomain = types.StringPointerValue(resp.Config.CookieDomain)
 			r.Config.CookieHTTPOnly = types.BoolPointerValue(resp.Config.CookieHTTPOnly)
@@ -297,11 +296,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 				r.Config.CookieSameSite = types.StringNull()
 			}
 			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
-			if resp.Config.IdlingTimeout != nil {
-				r.Config.IdlingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.IdlingTimeout)))
-			} else {
-				r.Config.IdlingTimeout = types.NumberNull()
-			}
+			r.Config.IdlingTimeout = types.Float64PointerValue(resp.Config.IdlingTimeout)
 			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
 			for _, v := range resp.Config.LogoutMethods {
 				r.Config.LogoutMethods = append(r.Config.LogoutMethods, types.StringValue(string(v)))
@@ -310,17 +305,9 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 			r.Config.LogoutQueryArg = types.StringPointerValue(resp.Config.LogoutQueryArg)
 			r.Config.ReadBodyForLogout = types.BoolPointerValue(resp.Config.ReadBodyForLogout)
 			r.Config.Remember = types.BoolPointerValue(resp.Config.Remember)
-			if resp.Config.RememberAbsoluteTimeout != nil {
-				r.Config.RememberAbsoluteTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberAbsoluteTimeout)))
-			} else {
-				r.Config.RememberAbsoluteTimeout = types.NumberNull()
-			}
+			r.Config.RememberAbsoluteTimeout = types.Float64PointerValue(resp.Config.RememberAbsoluteTimeout)
 			r.Config.RememberCookieName = types.StringPointerValue(resp.Config.RememberCookieName)
-			if resp.Config.RememberRollingTimeout != nil {
-				r.Config.RememberRollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RememberRollingTimeout)))
-			} else {
-				r.Config.RememberRollingTimeout = types.NumberNull()
-			}
+			r.Config.RememberRollingTimeout = types.Float64PointerValue(resp.Config.RememberRollingTimeout)
 			r.Config.RequestHeaders = make([]types.String, 0, len(resp.Config.RequestHeaders))
 			for _, v := range resp.Config.RequestHeaders {
 				r.Config.RequestHeaders = append(r.Config.RequestHeaders, types.StringValue(string(v)))
@@ -329,17 +316,9 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 			for _, v := range resp.Config.ResponseHeaders {
 				r.Config.ResponseHeaders = append(r.Config.ResponseHeaders, types.StringValue(string(v)))
 			}
-			if resp.Config.RollingTimeout != nil {
-				r.Config.RollingTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.RollingTimeout)))
-			} else {
-				r.Config.RollingTimeout = types.NumberNull()
-			}
+			r.Config.RollingTimeout = types.Float64PointerValue(resp.Config.RollingTimeout)
 			r.Config.Secret = types.StringPointerValue(resp.Config.Secret)
-			if resp.Config.StaleTTL != nil {
-				r.Config.StaleTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.StaleTTL)))
-			} else {
-				r.Config.StaleTTL = types.NumberNull()
-			}
+			r.Config.StaleTTL = types.Float64PointerValue(resp.Config.StaleTTL)
 			if resp.Config.Storage != nil {
 				r.Config.Storage = types.StringValue(string(*resp.Config.Storage))
 			} else {
@@ -395,4 +374,6 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

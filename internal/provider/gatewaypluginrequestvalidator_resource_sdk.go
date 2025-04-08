@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -202,7 +204,9 @@ func (r *GatewayPluginRequestValidatorResourceModel) ToSharedRequestValidatorPlu
 	return &out
 }
 
-func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(resp *shared.RequestValidatorPlugin) {
+func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestValidatorPlugin(ctx context.Context, resp *shared.RequestValidatorPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -219,26 +223,26 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 				r.Config.ParameterSchema = r.Config.ParameterSchema[:len(resp.Config.ParameterSchema)]
 			}
 			for parameterSchemaCount, parameterSchemaItem := range resp.Config.ParameterSchema {
-				var parameterSchema1 tfTypes.ParameterSchema
-				parameterSchema1.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
-				parameterSchema1.In = types.StringValue(string(parameterSchemaItem.In))
-				parameterSchema1.Name = types.StringValue(parameterSchemaItem.Name)
-				parameterSchema1.Required = types.BoolValue(parameterSchemaItem.Required)
-				parameterSchema1.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
+				var parameterSchema tfTypes.ParameterSchema
+				parameterSchema.Explode = types.BoolPointerValue(parameterSchemaItem.Explode)
+				parameterSchema.In = types.StringValue(string(parameterSchemaItem.In))
+				parameterSchema.Name = types.StringValue(parameterSchemaItem.Name)
+				parameterSchema.Required = types.BoolValue(parameterSchemaItem.Required)
+				parameterSchema.Schema = types.StringPointerValue(parameterSchemaItem.Schema)
 				if parameterSchemaItem.Style != nil {
-					parameterSchema1.Style = types.StringValue(string(*parameterSchemaItem.Style))
+					parameterSchema.Style = types.StringValue(string(*parameterSchemaItem.Style))
 				} else {
-					parameterSchema1.Style = types.StringNull()
+					parameterSchema.Style = types.StringNull()
 				}
 				if parameterSchemaCount+1 > len(r.Config.ParameterSchema) {
-					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema1)
+					r.Config.ParameterSchema = append(r.Config.ParameterSchema, parameterSchema)
 				} else {
-					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema1.Explode
-					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema1.In
-					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema1.Name
-					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema1.Required
-					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema1.Schema
-					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema1.Style
+					r.Config.ParameterSchema[parameterSchemaCount].Explode = parameterSchema.Explode
+					r.Config.ParameterSchema[parameterSchemaCount].In = parameterSchema.In
+					r.Config.ParameterSchema[parameterSchemaCount].Name = parameterSchema.Name
+					r.Config.ParameterSchema[parameterSchemaCount].Required = parameterSchema.Required
+					r.Config.ParameterSchema[parameterSchemaCount].Schema = parameterSchema.Schema
+					r.Config.ParameterSchema[parameterSchemaCount].Style = parameterSchema.Style
 				}
 			}
 			r.Config.VerboseResponse = types.BoolPointerValue(resp.Config.VerboseResponse)
@@ -303,4 +307,6 @@ func (r *GatewayPluginRequestValidatorResourceModel) RefreshFromSharedRequestVal
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

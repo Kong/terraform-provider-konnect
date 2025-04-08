@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
-	"time"
 )
 
 func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortalRequest {
@@ -93,18 +94,20 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortal
 	return &out
 }
 
-func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(resp *shared.CreatePortalResponse) {
+func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.Context, resp *shared.CreatePortalResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.ApplicationCount = types.NumberValue(big.NewFloat(float64(resp.ApplicationCount)))
+		r.ApplicationCount = types.Float64Value(resp.ApplicationCount)
 		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
 		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
 		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
 		r.Description = types.StringPointerValue(resp.Description)
-		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
+		r.DeveloperCount = types.Float64Value(resp.DeveloperCount)
 		r.DisplayName = types.StringValue(resp.DisplayName)
 		r.ID = types.StringValue(resp.ID)
 		r.IsPublic = types.BoolValue(resp.IsPublic)
@@ -115,10 +118,12 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(resp *shared
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.PublishedProductCount = types.NumberValue(big.NewFloat(float64(resp.PublishedProductCount)))
+		r.PublishedProductCount = types.Float64Value(resp.PublishedProductCount)
 		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortalRequest {
@@ -206,32 +211,4 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 		Labels:                           labels,
 	}
 	return &out
-}
-
-func (r *PortalResourceModel) RefreshFromSharedUpdatePortalResponse(resp *shared.UpdatePortalResponse) {
-	if resp != nil {
-		r.ApplicationCount = types.NumberValue(big.NewFloat(float64(resp.ApplicationCount)))
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
-		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
-		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
-		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DeveloperCount = types.NumberValue(big.NewFloat(float64(resp.DeveloperCount)))
-		r.DisplayName = types.StringValue(resp.DisplayName)
-		r.ID = types.StringValue(resp.ID)
-		r.IsPublic = types.BoolValue(resp.IsPublic)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.PublishedProductCount = types.NumberValue(big.NewFloat(float64(resp.PublishedProductCount)))
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-	}
 }

@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Cache struct {
-	DefaultTTL    types.Number                `tfsdk:"default_ttl"`
+	DefaultTTL    types.Float64               `tfsdk:"default_ttl"`
 	EagerlyExpire types.Int64                 `tfsdk:"eagerly_expire"`
 	Memory        *Memory                     `tfsdk:"memory"`
 	Redis         *AiProxyAdvancedPluginRedis `tfsdk:"redis"`

@@ -3,34 +3,24 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *SystemAccountAccessTokenDataSourceModel) RefreshFromSharedSystemAccountAccessToken(resp *shared.SystemAccountAccessToken) {
+func (r *SystemAccountAccessTokenDataSourceModel) RefreshFromSharedSystemAccountAccessToken(ctx context.Context, resp *shared.SystemAccountAccessToken) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
-		if resp.ExpiresAt != nil {
-			r.ExpiresAt = types.StringValue(resp.ExpiresAt.Format(time.RFC3339Nano))
-		} else {
-			r.ExpiresAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.ExpiresAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.ExpiresAt))
 		r.ID = types.StringPointerValue(resp.ID)
-		if resp.LastUsedAt != nil {
-			r.LastUsedAt = types.StringValue(resp.LastUsedAt.Format(time.RFC3339Nano))
-		} else {
-			r.LastUsedAt = types.StringNull()
-		}
+		r.LastUsedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.LastUsedAt))
 		r.Name = types.StringPointerValue(resp.Name)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }

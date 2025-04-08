@@ -67,7 +67,7 @@ func (r *GatewayPluginTCPLogDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `The IP address or host name to send data to.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
 					},
@@ -75,7 +75,7 @@ func (r *GatewayPluginTCPLogDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `The port to send data to on the upstream server.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
 					},
@@ -247,7 +247,11 @@ func (r *GatewayPluginTCPLogDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTCPLogPlugin(res.TCPLogPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedTCPLogPlugin(ctx, res.TCPLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

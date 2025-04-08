@@ -3,15 +3,21 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCustomPluginSchemaDataSourceModel) RefreshFromSharedItem(resp *shared.Item) {
+func (r *GatewayCustomPluginSchemaDataSourceModel) RefreshFromSharedItem(ctx context.Context, resp *shared.Item) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.LuaSchema = types.StringPointerValue(resp.LuaSchema)
 		r.Name = types.StringPointerValue(resp.Name)
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

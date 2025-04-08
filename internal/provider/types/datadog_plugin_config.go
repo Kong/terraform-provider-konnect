@@ -5,15 +5,15 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type DatadogPluginConfig struct {
-	ConsumerTag    types.String `tfsdk:"consumer_tag"`
-	FlushTimeout   types.Number `tfsdk:"flush_timeout"`
-	Host           types.String `tfsdk:"host"`
-	Metrics        []Metrics    `tfsdk:"metrics"`
-	Port           types.Int64  `tfsdk:"port"`
-	Prefix         types.String `tfsdk:"prefix"`
-	Queue          *Queue       `tfsdk:"queue"`
-	QueueSize      types.Int64  `tfsdk:"queue_size"`
-	RetryCount     types.Int64  `tfsdk:"retry_count"`
-	ServiceNameTag types.String `tfsdk:"service_name_tag"`
-	StatusTag      types.String `tfsdk:"status_tag"`
+	ConsumerTag    types.String  `tfsdk:"consumer_tag"`
+	FlushTimeout   types.Float64 `tfsdk:"flush_timeout"`
+	Host           types.String  `tfsdk:"host"`
+	Metrics        []Metrics     `tfsdk:"metrics"`
+	Port           types.Int64   `tfsdk:"port"`
+	Prefix         types.String  `tfsdk:"prefix"`
+	Queue          *Queue        `tfsdk:"queue"`
+	QueueSize      types.Int64   `tfsdk:"queue_size"`
+	RetryCount     types.Int64   `tfsdk:"retry_count"`
+	ServiceNameTag types.String  `tfsdk:"service_name_tag"`
+	StatusTag      types.String  `tfsdk:"status_tag"`
 }

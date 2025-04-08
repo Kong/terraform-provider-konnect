@@ -21,7 +21,7 @@ type OpenidConnectPluginConfig struct {
 	AuthorizationQueryArgsClient                 []types.String              `tfsdk:"authorization_query_args_client"`
 	AuthorizationQueryArgsNames                  []types.String              `tfsdk:"authorization_query_args_names"`
 	AuthorizationQueryArgsValues                 []types.String              `tfsdk:"authorization_query_args_values"`
-	AuthorizationRollingTimeout                  types.Number                `tfsdk:"authorization_rolling_timeout"`
+	AuthorizationRollingTimeout                  types.Float64               `tfsdk:"authorization_rolling_timeout"`
 	BearerTokenCookieName                        types.String                `tfsdk:"bearer_token_cookie_name"`
 	BearerTokenParamType                         []types.String              `tfsdk:"bearer_token_param_type"`
 	ByUsernameIgnoreCase                         types.Bool                  `tfsdk:"by_username_ignore_case"`
@@ -29,11 +29,11 @@ type OpenidConnectPluginConfig struct {
 	CacheTokenExchange                           types.Bool                  `tfsdk:"cache_token_exchange"`
 	CacheTokens                                  types.Bool                  `tfsdk:"cache_tokens"`
 	CacheTokensSalt                              types.String                `tfsdk:"cache_tokens_salt"`
-	CacheTTL                                     types.Number                `tfsdk:"cache_ttl"`
-	CacheTTLMax                                  types.Number                `tfsdk:"cache_ttl_max"`
-	CacheTTLMin                                  types.Number                `tfsdk:"cache_ttl_min"`
-	CacheTTLNeg                                  types.Number                `tfsdk:"cache_ttl_neg"`
-	CacheTTLResurrect                            types.Number                `tfsdk:"cache_ttl_resurrect"`
+	CacheTTL                                     types.Float64               `tfsdk:"cache_ttl"`
+	CacheTTLMax                                  types.Float64               `tfsdk:"cache_ttl_max"`
+	CacheTTLMin                                  types.Float64               `tfsdk:"cache_ttl_min"`
+	CacheTTLNeg                                  types.Float64               `tfsdk:"cache_ttl_neg"`
+	CacheTTLResurrect                            types.Float64               `tfsdk:"cache_ttl_resurrect"`
 	CacheUserInfo                                types.Bool                  `tfsdk:"cache_user_info"`
 	ClaimsForbidden                              []types.String              `tfsdk:"claims_forbidden"`
 	ClientAlg                                    []types.String              `tfsdk:"client_alg"`
@@ -66,7 +66,7 @@ type OpenidConnectPluginConfig struct {
 	DownstreamSessionIDHeader                    types.String                `tfsdk:"downstream_session_id_header"`
 	DownstreamUserInfoHeader                     types.String                `tfsdk:"downstream_user_info_header"`
 	DownstreamUserInfoJwtHeader                  types.String                `tfsdk:"downstream_user_info_jwt_header"`
-	DpopProofLifetime                            types.Number                `tfsdk:"dpop_proof_lifetime"`
+	DpopProofLifetime                            types.Float64               `tfsdk:"dpop_proof_lifetime"`
 	DpopUseNonce                                 types.Bool                  `tfsdk:"dpop_use_nonce"`
 	EnableHsSignatures                           types.Bool                  `tfsdk:"enable_hs_signatures"`
 	EndSessionEndpoint                           types.String                `tfsdk:"end_session_endpoint"`
@@ -80,7 +80,7 @@ type OpenidConnectPluginConfig struct {
 	HideCredentials                              types.Bool                  `tfsdk:"hide_credentials"`
 	HTTPProxy                                    types.String                `tfsdk:"http_proxy"`
 	HTTPProxyAuthorization                       types.String                `tfsdk:"http_proxy_authorization"`
-	HTTPVersion                                  types.Number                `tfsdk:"http_version"`
+	HTTPVersion                                  types.Float64               `tfsdk:"http_version"`
 	HTTPSProxy                                   types.String                `tfsdk:"https_proxy"`
 	HTTPSProxyAuthorization                      types.String                `tfsdk:"https_proxy_authorization"`
 	IDTokenParamName                             types.String                `tfsdk:"id_token_param_name"`
@@ -105,7 +105,7 @@ type OpenidConnectPluginConfig struct {
 	JwtSessionClaim                              types.String                `tfsdk:"jwt_session_claim"`
 	JwtSessionCookie                             types.String                `tfsdk:"jwt_session_cookie"`
 	Keepalive                                    types.Bool                  `tfsdk:"keepalive"`
-	Leeway                                       types.Number                `tfsdk:"leeway"`
+	Leeway                                       types.Float64               `tfsdk:"leeway"`
 	LoginAction                                  types.String                `tfsdk:"login_action"`
 	LoginMethods                                 []types.String              `tfsdk:"login_methods"`
 	LoginRedirectMode                            types.String                `tfsdk:"login_redirect_mode"`
@@ -119,7 +119,7 @@ type OpenidConnectPluginConfig struct {
 	LogoutRevokeAccessToken                      types.Bool                  `tfsdk:"logout_revoke_access_token"`
 	LogoutRevokeRefreshToken                     types.Bool                  `tfsdk:"logout_revoke_refresh_token"`
 	LogoutURISuffix                              types.String                `tfsdk:"logout_uri_suffix"`
-	MaxAge                                       types.Number                `tfsdk:"max_age"`
+	MaxAge                                       types.Float64               `tfsdk:"max_age"`
 	MtlsIntrospectionEndpoint                    types.String                `tfsdk:"mtls_introspection_endpoint"`
 	MtlsRevocationEndpoint                       types.String                `tfsdk:"mtls_revocation_endpoint"`
 	MtlsTokenEndpoint                            types.String                `tfsdk:"mtls_token_endpoint"`
@@ -133,7 +133,7 @@ type OpenidConnectPluginConfig struct {
 	PushedAuthorizationRequestEndpointAuthMethod types.String                `tfsdk:"pushed_authorization_request_endpoint_auth_method"`
 	RedirectURI                                  []types.String              `tfsdk:"redirect_uri"`
 	Redis                                        *OpenidConnectPluginRedis   `tfsdk:"redis"`
-	RediscoveryLifetime                          types.Number                `tfsdk:"rediscovery_lifetime"`
+	RediscoveryLifetime                          types.Float64               `tfsdk:"rediscovery_lifetime"`
 	RefreshTokenParamName                        types.String                `tfsdk:"refresh_token_param_name"`
 	RefreshTokenParamType                        []types.String              `tfsdk:"refresh_token_param_type"`
 	RefreshTokens                                types.Bool                  `tfsdk:"refresh_tokens"`
@@ -154,7 +154,7 @@ type OpenidConnectPluginConfig struct {
 	ScopesClaim                                  []types.String              `tfsdk:"scopes_claim"`
 	ScopesRequired                               []types.String              `tfsdk:"scopes_required"`
 	SearchUserInfo                               types.Bool                  `tfsdk:"search_user_info"`
-	SessionAbsoluteTimeout                       types.Number                `tfsdk:"session_absolute_timeout"`
+	SessionAbsoluteTimeout                       types.Float64               `tfsdk:"session_absolute_timeout"`
 	SessionAudience                              types.String                `tfsdk:"session_audience"`
 	SessionCookieDomain                          types.String                `tfsdk:"session_cookie_domain"`
 	SessionCookieHTTPOnly                        types.Bool                  `tfsdk:"session_cookie_http_only"`
@@ -165,23 +165,23 @@ type OpenidConnectPluginConfig struct {
 	SessionEnforceSameSubject                    types.Bool                  `tfsdk:"session_enforce_same_subject"`
 	SessionHashStorageKey                        types.Bool                  `tfsdk:"session_hash_storage_key"`
 	SessionHashSubject                           types.Bool                  `tfsdk:"session_hash_subject"`
-	SessionIdlingTimeout                         types.Number                `tfsdk:"session_idling_timeout"`
+	SessionIdlingTimeout                         types.Float64               `tfsdk:"session_idling_timeout"`
 	SessionMemcachedHost                         types.String                `tfsdk:"session_memcached_host"`
 	SessionMemcachedPort                         types.Int64                 `tfsdk:"session_memcached_port"`
 	SessionMemcachedPrefix                       types.String                `tfsdk:"session_memcached_prefix"`
 	SessionMemcachedSocket                       types.String                `tfsdk:"session_memcached_socket"`
 	SessionRemember                              types.Bool                  `tfsdk:"session_remember"`
-	SessionRememberAbsoluteTimeout               types.Number                `tfsdk:"session_remember_absolute_timeout"`
+	SessionRememberAbsoluteTimeout               types.Float64               `tfsdk:"session_remember_absolute_timeout"`
 	SessionRememberCookieName                    types.String                `tfsdk:"session_remember_cookie_name"`
-	SessionRememberRollingTimeout                types.Number                `tfsdk:"session_remember_rolling_timeout"`
+	SessionRememberRollingTimeout                types.Float64               `tfsdk:"session_remember_rolling_timeout"`
 	SessionRequestHeaders                        []types.String              `tfsdk:"session_request_headers"`
 	SessionResponseHeaders                       []types.String              `tfsdk:"session_response_headers"`
-	SessionRollingTimeout                        types.Number                `tfsdk:"session_rolling_timeout"`
+	SessionRollingTimeout                        types.Float64               `tfsdk:"session_rolling_timeout"`
 	SessionSecret                                types.String                `tfsdk:"session_secret"`
 	SessionStorage                               types.String                `tfsdk:"session_storage"`
 	SessionStoreMetadata                         types.Bool                  `tfsdk:"session_store_metadata"`
 	SslVerify                                    types.Bool                  `tfsdk:"ssl_verify"`
-	Timeout                                      types.Number                `tfsdk:"timeout"`
+	Timeout                                      types.Float64               `tfsdk:"timeout"`
 	TLSClientAuthCertID                          types.String                `tfsdk:"tls_client_auth_cert_id"`
 	TLSClientAuthSslVerify                       types.Bool                  `tfsdk:"tls_client_auth_ssl_verify"`
 	TokenCacheKeyIncludeScope                    types.Bool                  `tfsdk:"token_cache_key_include_scope"`

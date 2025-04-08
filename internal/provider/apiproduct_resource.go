@@ -43,7 +43,7 @@ type APIProductResourceModel struct {
 	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
 	PublicLabels map[string]types.String    `tfsdk:"public_labels"`
 	UpdatedAt    types.String               `tfsdk:"updated_at"`
-	VersionCount types.Number               `tfsdk:"version_count"`
+	VersionCount types.Float64              `tfsdk:"version_count"`
 }
 
 func (r *APIProductResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -124,7 +124,7 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 					validators.IsRFC3339(),
 				},
 			},
-			"version_count": schema.NumberAttribute{
+			"version_count": schema.Float64Attribute{
 				Computed:    true,
 				Description: `The number of product versions attached to this API product`,
 			},
@@ -191,8 +191,17 @@ func (r *APIProductResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProduct(res.APIProduct)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProduct(ctx, res.APIProduct)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -246,7 +255,11 @@ func (r *APIProductResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProduct(res.APIProduct)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProduct(ctx, res.APIProduct)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -294,8 +307,17 @@ func (r *APIProductResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProduct(res.APIProduct)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProduct(ctx, res.APIProduct)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

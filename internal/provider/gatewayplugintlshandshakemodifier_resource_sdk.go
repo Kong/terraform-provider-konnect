@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -126,7 +128,9 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 	return &out
 }
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(resp *shared.TLSHandshakeModifierPlugin) {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(ctx context.Context, resp *shared.TLSHandshakeModifierPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -187,4 +191,6 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHan
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -169,7 +171,9 @@ func (r *GatewayPluginPostFunctionResourceModel) ToSharedPostFunctionPlugin() *s
 	return &out
 }
 
-func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPlugin(resp *shared.PostFunctionPlugin) {
+func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPlugin(ctx context.Context, resp *shared.PostFunctionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -265,4 +269,6 @@ func (r *GatewayPluginPostFunctionResourceModel) RefreshFromSharedPostFunctionPl
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

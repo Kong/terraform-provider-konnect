@@ -341,12 +341,12 @@ func (s *AppAuthStrategies) GetAppAuthStrategy(ctx context.Context, request oper
 				return nil, err
 			}
 
-			var out shared.GetAppAuthStrategyResponse
+			var out shared.CreateAppAuthStrategyResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.GetAppAuthStrategyResponse = &out
+			res.CreateAppAuthStrategyResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {
@@ -545,12 +545,12 @@ func (s *AppAuthStrategies) UpdateAppAuthStrategy(ctx context.Context, request o
 				return nil, err
 			}
 
-			var out shared.UpdateAppAuthStrategyResponse
+			var out shared.CreateAppAuthStrategyResponse
 			if err := utils.UnmarshalJsonFromResponseBody(bytes.NewBuffer(rawBody), &out, ""); err != nil {
 				return nil, err
 			}
 
-			res.UpdateAppAuthStrategyResponse = &out
+			res.CreateAppAuthStrategyResponse = &out
 		default:
 			rawBody, err := utils.ConsumeRawBody(httpRes)
 			if err != nil {

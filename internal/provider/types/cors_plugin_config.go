@@ -8,7 +8,7 @@ type CorsPluginConfig struct {
 	Credentials       types.Bool     `tfsdk:"credentials"`
 	ExposedHeaders    []types.String `tfsdk:"exposed_headers"`
 	Headers           []types.String `tfsdk:"headers"`
-	MaxAge            types.Number   `tfsdk:"max_age"`
+	MaxAge            types.Float64  `tfsdk:"max_age"`
 	Methods           []types.String `tfsdk:"methods"`
 	Origins           []types.String `tfsdk:"origins"`
 	PreflightContinue types.Bool     `tfsdk:"preflight_continue"`

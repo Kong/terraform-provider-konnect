@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -150,7 +152,9 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 	return &out
 }
 
-func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(resp *shared.RouteByHeaderPlugin) {
+func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(ctx context.Context, resp *shared.RouteByHeaderPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -161,20 +165,20 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 				r.Config.Rules = r.Config.Rules[:len(resp.Config.Rules)]
 			}
 			for rulesCount, rulesItem := range resp.Config.Rules {
-				var rules1 tfTypes.RouteByHeaderPluginRules
+				var rules tfTypes.RouteByHeaderPluginRules
 				if len(rulesItem.Condition) > 0 {
-					rules1.Condition = make(map[string]types.String, len(rulesItem.Condition))
+					rules.Condition = make(map[string]types.String, len(rulesItem.Condition))
 					for key, value := range rulesItem.Condition {
 						result, _ := json.Marshal(value)
-						rules1.Condition[key] = types.StringValue(string(result))
+						rules.Condition[key] = types.StringValue(string(result))
 					}
 				}
-				rules1.UpstreamName = types.StringValue(rulesItem.UpstreamName)
+				rules.UpstreamName = types.StringValue(rulesItem.UpstreamName)
 				if rulesCount+1 > len(r.Config.Rules) {
-					r.Config.Rules = append(r.Config.Rules, rules1)
+					r.Config.Rules = append(r.Config.Rules, rules)
 				} else {
-					r.Config.Rules[rulesCount].Condition = rules1.Condition
-					r.Config.Rules[rulesCount].UpstreamName = rules1.UpstreamName
+					r.Config.Rules[rulesCount].Condition = rules.Condition
+					r.Config.Rules[rulesCount].UpstreamName = rules.UpstreamName
 				}
 			}
 		}
@@ -233,4 +237,6 @@ func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeader
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -145,7 +145,11 @@ func (r *GatewayKeySetDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeySet(res.KeySet)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeySet(ctx, res.KeySet)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

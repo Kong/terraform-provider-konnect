@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainRequest() *shared.CreateCustomDomainRequest {
@@ -24,12 +26,14 @@ func (r *CloudGatewayCustomDomainResourceModel) ToSharedCreateCustomDomainReques
 	return &out
 }
 
-func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(resp *shared.CustomDomain) {
+func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(ctx context.Context, resp *shared.CustomDomain) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CertificateID = types.StringPointerValue(resp.CertificateID)
 		r.ControlPlaneGeo = types.StringValue(string(resp.ControlPlaneGeo))
 		r.ControlPlaneID = types.StringValue(resp.ControlPlaneID)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Domain = types.StringValue(resp.Domain)
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
@@ -37,6 +41,8 @@ func (r *CloudGatewayCustomDomainResourceModel) RefreshFromSharedCustomDomain(re
 		r.State = types.StringValue(string(resp.State))
 		r.StateMetadata.Reason = types.StringPointerValue(resp.StateMetadata.Reason)
 		r.StateMetadata.ReportedStatus = types.StringPointerValue(resp.StateMetadata.ReportedStatus)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

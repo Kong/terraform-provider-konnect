@@ -3,10 +3,12 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *shared.CreateAPIProductVersionDTO {
@@ -51,9 +53,11 @@ func (r *APIProductVersionResourceModel) ToSharedCreateAPIProductVersionDTO() *s
 	return &out
 }
 
-func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp *shared.APIProductVersion) {
+func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx context.Context, resp *shared.APIProductVersion) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Deprecated = types.BoolValue(resp.Deprecated)
 		if resp.GatewayService == nil {
 			r.GatewayService = nil
@@ -76,41 +80,43 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(resp
 			r.Portals = r.Portals[:len(resp.Portals)]
 		}
 		for portalsCount, portalsItem := range resp.Portals {
-			var portals1 tfTypes.APIProductVersionPortal
-			portals1.ApplicationRegistrationEnabled = types.BoolValue(portalsItem.ApplicationRegistrationEnabled)
-			portals1.AuthStrategies = []tfTypes.APIProductVersionAuthStrategy{}
+			var portals tfTypes.APIProductVersionPortal
+			portals.ApplicationRegistrationEnabled = types.BoolValue(portalsItem.ApplicationRegistrationEnabled)
+			portals.AuthStrategies = []tfTypes.APIProductVersionAuthStrategy{}
 			for authStrategiesCount, authStrategiesItem := range portalsItem.AuthStrategies {
-				var authStrategies1 tfTypes.APIProductVersionAuthStrategy
-				authStrategies1.ID = types.StringValue(authStrategiesItem.ID)
-				authStrategies1.Name = types.StringValue(authStrategiesItem.Name)
-				if authStrategiesCount+1 > len(portals1.AuthStrategies) {
-					portals1.AuthStrategies = append(portals1.AuthStrategies, authStrategies1)
+				var authStrategies tfTypes.APIProductVersionAuthStrategy
+				authStrategies.ID = types.StringValue(authStrategiesItem.ID)
+				authStrategies.Name = types.StringValue(authStrategiesItem.Name)
+				if authStrategiesCount+1 > len(portals.AuthStrategies) {
+					portals.AuthStrategies = append(portals.AuthStrategies, authStrategies)
 				} else {
-					portals1.AuthStrategies[authStrategiesCount].ID = authStrategies1.ID
-					portals1.AuthStrategies[authStrategiesCount].Name = authStrategies1.Name
+					portals.AuthStrategies[authStrategiesCount].ID = authStrategies.ID
+					portals.AuthStrategies[authStrategiesCount].Name = authStrategies.Name
 				}
 			}
-			portals1.AutoApproveRegistration = types.BoolValue(portalsItem.AutoApproveRegistration)
-			portals1.Deprecated = types.BoolValue(portalsItem.Deprecated)
-			portals1.PortalID = types.StringValue(portalsItem.PortalID)
-			portals1.PortalName = types.StringValue(portalsItem.PortalName)
-			portals1.PortalProductVersionID = types.StringValue(portalsItem.PortalProductVersionID)
-			portals1.PublishStatus = types.StringValue(string(portalsItem.PublishStatus))
+			portals.AutoApproveRegistration = types.BoolValue(portalsItem.AutoApproveRegistration)
+			portals.Deprecated = types.BoolValue(portalsItem.Deprecated)
+			portals.PortalID = types.StringValue(portalsItem.PortalID)
+			portals.PortalName = types.StringValue(portalsItem.PortalName)
+			portals.PortalProductVersionID = types.StringValue(portalsItem.PortalProductVersionID)
+			portals.PublishStatus = types.StringValue(string(portalsItem.PublishStatus))
 			if portalsCount+1 > len(r.Portals) {
-				r.Portals = append(r.Portals, portals1)
+				r.Portals = append(r.Portals, portals)
 			} else {
-				r.Portals[portalsCount].ApplicationRegistrationEnabled = portals1.ApplicationRegistrationEnabled
-				r.Portals[portalsCount].AuthStrategies = portals1.AuthStrategies
-				r.Portals[portalsCount].AutoApproveRegistration = portals1.AutoApproveRegistration
-				r.Portals[portalsCount].Deprecated = portals1.Deprecated
-				r.Portals[portalsCount].PortalID = portals1.PortalID
-				r.Portals[portalsCount].PortalName = portals1.PortalName
-				r.Portals[portalsCount].PortalProductVersionID = portals1.PortalProductVersionID
-				r.Portals[portalsCount].PublishStatus = portals1.PublishStatus
+				r.Portals[portalsCount].ApplicationRegistrationEnabled = portals.ApplicationRegistrationEnabled
+				r.Portals[portalsCount].AuthStrategies = portals.AuthStrategies
+				r.Portals[portalsCount].AutoApproveRegistration = portals.AutoApproveRegistration
+				r.Portals[portalsCount].Deprecated = portals.Deprecated
+				r.Portals[portalsCount].PortalID = portals.PortalID
+				r.Portals[portalsCount].PortalName = portals.PortalName
+				r.Portals[portalsCount].PortalProductVersionID = portals.PortalProductVersionID
+				r.Portals[portalsCount].PublishStatus = portals.PublishStatus
 			}
 		}
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *APIProductVersionResourceModel) ToSharedUpdateAPIProductVersionDTO() *shared.UpdateAPIProductVersionDTO {

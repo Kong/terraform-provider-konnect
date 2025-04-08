@@ -163,7 +163,11 @@ func (r *APIProductDocumentDataSource) Read(ctx context.Context, req datasource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductDocument(res.APIProductDocument)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductDocument(ctx, res.APIProductDocument)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

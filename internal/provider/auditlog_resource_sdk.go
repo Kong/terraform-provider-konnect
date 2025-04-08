@@ -3,10 +3,12 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook() *shared.UpdateAuditLogWebhook {
@@ -50,7 +52,9 @@ func (r *AuditLogResourceModel) ToSharedUpdateAuditLogWebhook() *shared.UpdateAu
 	return &out
 }
 
-func (r *AuditLogResourceModel) RefreshFromSharedAuditLogWebhook(resp *shared.AuditLogWebhook) {
+func (r *AuditLogResourceModel) RefreshFromSharedAuditLogWebhook(ctx context.Context, resp *shared.AuditLogWebhook) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.Endpoint = types.StringPointerValue(resp.Endpoint)
@@ -60,12 +64,10 @@ func (r *AuditLogResourceModel) RefreshFromSharedAuditLogWebhook(resp *shared.Au
 			r.LogFormat = types.StringNull()
 		}
 		r.SkipSslVerification = types.BoolPointerValue(resp.SkipSslVerification)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *AuditLogResourceModel) ToOperationsDeleteAuditLogWebhookRequestBody() *operations.DeleteAuditLogWebhookRequestBody {

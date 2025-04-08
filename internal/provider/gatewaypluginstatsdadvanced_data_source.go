@@ -85,7 +85,7 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 								"name": schema.StringAttribute{
 									Computed: true,
 								},
-								"sample_rate": schema.NumberAttribute{
+								"sample_rate": schema.Float64Attribute{
 									Computed: true,
 								},
 								"service_identifier": schema.StringAttribute{
@@ -116,7 +116,7 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 								Computed:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited.`,
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 							},
@@ -128,7 +128,7 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 								Computed:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
 							},
@@ -136,11 +136,11 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 								Computed:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
 							},
@@ -150,7 +150,7 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Description: `The default service identifier for metrics. This will take effect when a metric's service identifier is omitted. Allowed values are ` + "`" + `service_name_or_host` + "`" + `, ` + "`" + `service_id` + "`" + `, ` + "`" + `service_name` + "`" + `, ` + "`" + `service_host` + "`" + `.`,
 					},
-					"udp_packet_size": schema.NumberAttribute{
+					"udp_packet_size": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).`,
 					},
@@ -322,7 +322,11 @@ func (r *GatewayPluginStatsdAdvancedDataSource) Read(ctx context.Context, req da
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedStatsdAdvancedPlugin(res.StatsdAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedStatsdAdvancedPlugin(ctx, res.StatsdAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

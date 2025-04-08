@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -166,7 +168,9 @@ func (r *GatewayPluginRedirectResourceModel) ToSharedRedirectPlugin() *shared.Re
 	return &out
 }
 
-func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(resp *shared.RedirectPlugin) {
+func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(ctx context.Context, resp *shared.RedirectPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -237,4 +241,6 @@ func (r *GatewayPluginRedirectResourceModel) RefreshFromSharedRedirectPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

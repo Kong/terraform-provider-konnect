@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -240,7 +242,9 @@ func (r *GatewayPluginResponseTransformerResourceModel) ToSharedResponseTransfor
 	return &out
 }
 
-func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedResponseTransformerPlugin(resp *shared.ResponseTransformerPlugin) {
+func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedResponseTransformerPlugin(ctx context.Context, resp *shared.ResponseTransformerPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -385,4 +389,6 @@ func (r *GatewayPluginResponseTransformerResourceModel) RefreshFromSharedRespons
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

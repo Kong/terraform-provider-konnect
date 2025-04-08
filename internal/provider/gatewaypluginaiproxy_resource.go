@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -251,7 +252,7 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											},
 										},
 									},
-									"input_cost": schema.NumberAttribute{
+									"input_cost": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Defines the cost per 1M tokens in your prompt.`,
@@ -284,15 +285,18 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											),
 										},
 									},
-									"output_cost": schema.NumberAttribute{
+									"output_cost": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Defines the cost per 1M tokens in the output of the AI.`,
 									},
-									"temperature": schema.NumberAttribute{
+									"temperature": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Defines the matching temperature, if using chat or completion models.`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(5),
+										},
 									},
 									"top_k": schema.Int64Attribute{
 										Computed:    true,
@@ -302,10 +306,13 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 											int64validator.AtMost(500),
 										},
 									},
-									"top_p": schema.NumberAttribute{
+									"top_p": schema.Float64Attribute{
 										Computed:    true,
 										Optional:    true,
 										Description: `Defines the top-p probability mass, if supported.`,
+										Validators: []validator.Float64{
+											float64validator.AtMost(1),
+										},
 									},
 									"upstream_path": schema.StringAttribute{
 										Computed:    true,
@@ -567,8 +574,17 @@ func (r *GatewayPluginAiProxyResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiProxyPlugin(ctx, res.AiProxyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -626,7 +642,11 @@ func (r *GatewayPluginAiProxyResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiProxyPlugin(ctx, res.AiProxyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -678,8 +698,17 @@ func (r *GatewayPluginAiProxyResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiProxyPlugin(res.AiProxyPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiProxyPlugin(ctx, res.AiProxyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -741,7 +770,7 @@ func (r *GatewayPluginAiProxyResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

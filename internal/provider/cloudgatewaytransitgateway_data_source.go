@@ -375,7 +375,11 @@ func (r *CloudGatewayTransitGatewayDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedTransitGatewayResponse(ctx, res.TransitGatewayResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

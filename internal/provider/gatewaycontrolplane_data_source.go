@@ -184,7 +184,11 @@ func (r *GatewayControlPlaneDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedControlPlane(res.ControlPlane)
+	resp.Diagnostics.Append(data.RefreshFromSharedControlPlane(ctx, res.ControlPlane)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

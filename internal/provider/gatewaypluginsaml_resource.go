@@ -352,7 +352,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 							),
 						},
 					},
-					"session_absolute_timeout": schema.NumberAttribute{
+					"session_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
@@ -415,7 +415,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled.`,
 					},
-					"session_idling_timeout": schema.NumberAttribute{
+					"session_idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie idle time in seconds.`,
@@ -448,7 +448,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						Description: `Enables or disables persistent sessions`,
 					},
-					"session_remember_absolute_timeout": schema.NumberAttribute{
+					"session_remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Persistent session absolute timeout in seconds.`,
@@ -458,7 +458,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						Description: `Persistent session cookie name`,
 					},
-					"session_remember_rolling_timeout": schema.NumberAttribute{
+					"session_remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Persistent session rolling timeout in seconds.`,
@@ -473,7 +473,7 @@ func (r *GatewayPluginSamlResource) Schema(ctx context.Context, req resource.Sch
 						Optional:    true,
 						ElementType: types.StringType,
 					},
-					"session_rolling_timeout": schema.NumberAttribute{
+					"session_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
@@ -680,8 +680,17 @@ func (r *GatewayPluginSamlResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSamlPlugin(ctx, res.SamlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -739,7 +748,11 @@ func (r *GatewayPluginSamlResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedSamlPlugin(ctx, res.SamlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -791,8 +804,17 @@ func (r *GatewayPluginSamlResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSamlPlugin(ctx, res.SamlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -854,7 +876,7 @@ func (r *GatewayPluginSamlResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

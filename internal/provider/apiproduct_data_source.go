@@ -38,7 +38,7 @@ type APIProductDataSourceModel struct {
 	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
 	PublicLabels map[string]types.String    `tfsdk:"public_labels"`
 	UpdatedAt    types.String               `tfsdk:"updated_at"`
-	VersionCount types.Number               `tfsdk:"version_count"`
+	VersionCount types.Float64              `tfsdk:"version_count"`
 }
 
 // Metadata returns the data source type name.
@@ -109,7 +109,7 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 				Computed:    true,
 				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
-			"version_count": schema.NumberAttribute{
+			"version_count": schema.Float64Attribute{
 				Computed:    true,
 				Description: `The number of product versions attached to this API product`,
 			},
@@ -185,7 +185,11 @@ func (r *APIProductDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProduct(res.APIProduct)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProduct(ctx, res.APIProduct)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

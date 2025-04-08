@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiProxyPlugin {
@@ -294,7 +295,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 				}
 				inputCost := new(float64)
 				if !r.Config.Model.Options.InputCost.IsUnknown() && !r.Config.Model.Options.InputCost.IsNull() {
-					*inputCost, _ = r.Config.Model.Options.InputCost.ValueBigFloat().Float64()
+					*inputCost = r.Config.Model.Options.InputCost.ValueFloat64()
 				} else {
 					inputCost = nil
 				}
@@ -318,13 +319,13 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 				}
 				outputCost := new(float64)
 				if !r.Config.Model.Options.OutputCost.IsUnknown() && !r.Config.Model.Options.OutputCost.IsNull() {
-					*outputCost, _ = r.Config.Model.Options.OutputCost.ValueBigFloat().Float64()
+					*outputCost = r.Config.Model.Options.OutputCost.ValueFloat64()
 				} else {
 					outputCost = nil
 				}
 				temperature := new(float64)
 				if !r.Config.Model.Options.Temperature.IsUnknown() && !r.Config.Model.Options.Temperature.IsNull() {
-					*temperature, _ = r.Config.Model.Options.Temperature.ValueBigFloat().Float64()
+					*temperature = r.Config.Model.Options.Temperature.ValueFloat64()
 				} else {
 					temperature = nil
 				}
@@ -336,7 +337,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 				}
 				topP := new(float64)
 				if !r.Config.Model.Options.TopP.IsUnknown() && !r.Config.Model.Options.TopP.IsNull() {
-					*topP, _ = r.Config.Model.Options.TopP.ValueBigFloat().Float64()
+					*topP = r.Config.Model.Options.TopP.ValueFloat64()
 				} else {
 					topP = nil
 				}
@@ -482,7 +483,9 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 	return &out
 }
 
-func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp *shared.AiProxyPlugin) {
+func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx context.Context, resp *shared.AiProxyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -553,11 +556,7 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp 
 						r.Config.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.UseCache)
 						r.Config.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Model.Options.Huggingface.WaitForModel)
 					}
-					if resp.Config.Model.Options.InputCost != nil {
-						r.Config.Model.Options.InputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.InputCost)))
-					} else {
-						r.Config.Model.Options.InputCost = types.NumberNull()
-					}
+					r.Config.Model.Options.InputCost = types.Float64PointerValue(resp.Config.Model.Options.InputCost)
 					if resp.Config.Model.Options.Llama2Format != nil {
 						r.Config.Model.Options.Llama2Format = types.StringValue(string(*resp.Config.Model.Options.Llama2Format))
 					} else {
@@ -569,22 +568,10 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp 
 					} else {
 						r.Config.Model.Options.MistralFormat = types.StringNull()
 					}
-					if resp.Config.Model.Options.OutputCost != nil {
-						r.Config.Model.Options.OutputCost = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.OutputCost)))
-					} else {
-						r.Config.Model.Options.OutputCost = types.NumberNull()
-					}
-					if resp.Config.Model.Options.Temperature != nil {
-						r.Config.Model.Options.Temperature = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.Temperature)))
-					} else {
-						r.Config.Model.Options.Temperature = types.NumberNull()
-					}
+					r.Config.Model.Options.OutputCost = types.Float64PointerValue(resp.Config.Model.Options.OutputCost)
+					r.Config.Model.Options.Temperature = types.Float64PointerValue(resp.Config.Model.Options.Temperature)
 					r.Config.Model.Options.TopK = types.Int64PointerValue(resp.Config.Model.Options.TopK)
-					if resp.Config.Model.Options.TopP != nil {
-						r.Config.Model.Options.TopP = types.NumberValue(big.NewFloat(float64(*resp.Config.Model.Options.TopP)))
-					} else {
-						r.Config.Model.Options.TopP = types.NumberNull()
-					}
+					r.Config.Model.Options.TopP = types.Float64PointerValue(resp.Config.Model.Options.TopP)
 					r.Config.Model.Options.UpstreamPath = types.StringPointerValue(resp.Config.Model.Options.UpstreamPath)
 					r.Config.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Model.Options.UpstreamURL)
 				}
@@ -667,4 +654,6 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginZipkinDataSourceModel) RefreshFromSharedZipkinPlugin(resp *shared.ZipkinPlugin) {
+func (r *GatewayPluginZipkinDataSourceModel) RefreshFromSharedZipkinPlugin(ctx context.Context, resp *shared.ZipkinPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -68,50 +71,30 @@ func (r *GatewayPluginZipkinDataSourceModel) RefreshFromSharedZipkinPlugin(resp 
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
 				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-			if resp.Config.SampleRatio != nil {
-				r.Config.SampleRatio = types.NumberValue(big.NewFloat(float64(*resp.Config.SampleRatio)))
-			} else {
-				r.Config.SampleRatio = types.NumberNull()
-			}
+			r.Config.SampleRatio = types.Float64PointerValue(resp.Config.SampleRatio)
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 			r.Config.StaticTags = []tfTypes.ConfigurationDataPlaneGroupEnvironmentField{}
 			if len(r.Config.StaticTags) > len(resp.Config.StaticTags) {
 				r.Config.StaticTags = r.Config.StaticTags[:len(resp.Config.StaticTags)]
 			}
 			for staticTagsCount, staticTagsItem := range resp.Config.StaticTags {
-				var staticTags1 tfTypes.ConfigurationDataPlaneGroupEnvironmentField
-				staticTags1.Name = types.StringValue(staticTagsItem.Name)
-				staticTags1.Value = types.StringValue(staticTagsItem.Value)
+				var staticTags tfTypes.ConfigurationDataPlaneGroupEnvironmentField
+				staticTags.Name = types.StringValue(staticTagsItem.Name)
+				staticTags.Value = types.StringValue(staticTagsItem.Value)
 				if staticTagsCount+1 > len(r.Config.StaticTags) {
-					r.Config.StaticTags = append(r.Config.StaticTags, staticTags1)
+					r.Config.StaticTags = append(r.Config.StaticTags, staticTags)
 				} else {
-					r.Config.StaticTags[staticTagsCount].Name = staticTags1.Name
-					r.Config.StaticTags[staticTagsCount].Value = staticTags1.Value
+					r.Config.StaticTags[staticTagsCount].Name = staticTags.Name
+					r.Config.StaticTags[staticTagsCount].Value = staticTags.Value
 				}
 			}
 			r.Config.TagsHeader = types.StringPointerValue(resp.Config.TagsHeader)
@@ -176,4 +159,6 @@ func (r *GatewayPluginZipkinDataSourceModel) RefreshFromSharedZipkinPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

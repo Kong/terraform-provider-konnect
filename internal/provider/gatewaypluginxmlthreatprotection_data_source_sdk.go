@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginXMLThreatProtectionDataSourceModel) RefreshFromSharedXMLThreatProtectionPlugin(resp *shared.XMLThreatProtectionPlugin) {
+func (r *GatewayPluginXMLThreatProtectionDataSourceModel) RefreshFromSharedXMLThreatProtectionPlugin(ctx context.Context, resp *shared.XMLThreatProtectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -21,11 +24,7 @@ func (r *GatewayPluginXMLThreatProtectionDataSourceModel) RefreshFromSharedXMLTh
 				r.Config.AllowedContentTypes = append(r.Config.AllowedContentTypes, types.StringValue(v))
 			}
 			r.Config.Attribute = types.Int64PointerValue(resp.Config.Attribute)
-			if resp.Config.BlaMaxAmplification != nil {
-				r.Config.BlaMaxAmplification = types.NumberValue(big.NewFloat(float64(*resp.Config.BlaMaxAmplification)))
-			} else {
-				r.Config.BlaMaxAmplification = types.NumberNull()
-			}
+			r.Config.BlaMaxAmplification = types.Float64PointerValue(resp.Config.BlaMaxAmplification)
 			r.Config.BlaThreshold = types.Int64PointerValue(resp.Config.BlaThreshold)
 			r.Config.Buffer = types.Int64PointerValue(resp.Config.Buffer)
 			r.Config.CheckedContentTypes = make([]types.String, 0, len(resp.Config.CheckedContentTypes))
@@ -104,4 +103,6 @@ func (r *GatewayPluginXMLThreatProtectionDataSourceModel) RefreshFromSharedXMLTh
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

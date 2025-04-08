@@ -3,14 +3,17 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth2IntrospectionPlugin(resp *shared.Oauth2IntrospectionPlugin) {
+func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -41,11 +44,7 @@ func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 			r.Config.TokenTypeHint = types.StringPointerValue(resp.Config.TokenTypeHint)
-			if resp.Config.TTL != nil {
-				r.Config.TTL = types.NumberValue(big.NewFloat(float64(*resp.Config.TTL)))
-			} else {
-				r.Config.TTL = types.NumberNull()
-			}
+			r.Config.TTL = types.Float64PointerValue(resp.Config.TTL)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -96,4 +95,6 @@ func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

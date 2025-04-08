@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault) {
+func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(ctx context.Context, resp *shared.Vault) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		configResult, _ := json.Marshal(resp.Config)
 		r.Config = types.StringValue(string(configResult))
@@ -23,4 +27,6 @@ func (r *GatewayVaultDataSourceModel) RefreshFromSharedVault(resp *shared.Vault)
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

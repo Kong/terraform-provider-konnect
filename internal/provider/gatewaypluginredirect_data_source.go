@@ -240,7 +240,11 @@ func (r *GatewayPluginRedirectDataSource) Read(ctx context.Context, req datasour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRedirectPlugin(res.RedirectPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRedirectPlugin(ctx, res.RedirectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

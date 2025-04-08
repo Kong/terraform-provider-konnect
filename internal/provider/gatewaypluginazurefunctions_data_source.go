@@ -86,7 +86,7 @@ func (r *GatewayPluginAzureFunctionsDataSource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Description: `Set to ` + "`" + `true` + "`" + ` to authenticate the Azure Functions server.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Time in milliseconds during which an idle connection to the Azure Functions server lives before being closed.`,
 					},
@@ -94,7 +94,7 @@ func (r *GatewayPluginAzureFunctionsDataSource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Description: `Route prefix to use.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Timeout in milliseconds before closing a connection to the Azure Functions server.`,
 					},
@@ -258,7 +258,11 @@ func (r *GatewayPluginAzureFunctionsDataSource) Read(ctx context.Context, req da
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAzureFunctionsPlugin(res.AzureFunctionsPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAzureFunctionsPlugin(ctx, res.AzureFunctionsPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
