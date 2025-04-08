@@ -23,7 +23,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#create
       operationId: create-serverless-cloud-gateway
       summary: Create a new serverless cloud gateway
-      description: Create a new serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create a new serverless cloud gateway
       requestBody:
         required: true
         content:
@@ -58,7 +62,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#read
       operationId: get-serverless-cloud-gateway
       summary: Get the serverless cloud gateway
-      description: Get the serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get the serverless cloud gateway
       responses:
         '200':
           $ref: '#/components/responses/RetrieveServerlessCloudGatewayResponse'
@@ -76,7 +84,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#delete
       operationId: delete-serverless-cloud-gateway
       summary: Delete the serverless cloud gateway
-      description: Delete the serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Delete the serverless cloud gateway
       responses:
         '204':
           description: No Content
@@ -13150,6 +13162,8 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/TransitGatewayId'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
         entity_version:
