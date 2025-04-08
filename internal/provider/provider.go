@@ -301,6 +301,7 @@ func (p *KonnectProvider) DataSources(ctx context.Context) []func() datasource.D
 		NewGatewayConsumerDataSource,
 		NewGatewayConsumerGroupDataSource,
 		NewGatewayControlPlaneDataSource,
+		NewGatewayControlPlaneListDataSource,
 		NewGatewayCustomPluginSchemaDataSource,
 		NewGatewayDataPlaneClientCertificateDataSource,
 		NewGatewayHMACAuthDataSource,
