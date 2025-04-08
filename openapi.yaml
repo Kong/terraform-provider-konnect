@@ -1239,6 +1239,32 @@ paths:
         - Provider Accounts
       x-speakeasy-group: CloudGateways
   /v2/control-planes:
+    get:
+      x-speakeasy-entity-operation: GatewayControlPlaneList#read
+      operationId: list-control-planes
+      summary: List Control Planes
+      description: Returns an array of control plane objects containing information about the Konnect Control Planes.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ControlPlaneFilter'
+        - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/ControlPlaneSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListControlPlanesResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
     parameters: []
     post:
       x-speakeasy-entity-operation: GatewayControlPlane#create
@@ -11686,6 +11712,23 @@ components:
       schema:
         type: string
       x-speakeasy-name-override: consumer_id
+    ControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control-planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ControlPlaneFilterParameters'
+      style: deepObject
+    ControlPlaneSort:
+      name: sort
+      description: |
+        Sorts a collection of control-planes. Supported sort attributes are:
+          - created_at
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SortQuery'
     CustomDomainId:
       name: customDomainId
       description: ID of the custom domain to operate on.
@@ -11701,6 +11744,14 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    FilterByLabels:
+      name: labels
+      description: Filter control planes in the response by associated labels.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'key:value,existCheck'
     HMACAuthId:
       description: ID of the HMAC-auth credential to lookup
       example: 70e7b00b-72f2-471b-a5ce-9c4171775360
@@ -12149,6 +12200,60 @@ components:
           port: 443
           protocol: https
       title: ProxyURLs
+    ControlPlaneFilterParameters:
+      type: object
+      properties:
+        id:
+          description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            oeq:
+              type: string
+        name:
+          description: Filters on the given string field value by exact match inequality.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            contains:
+              type: string
+            neq:
+              type: string
+            oeq:
+              type: string
+        cluster_type:
+          description: Filters on the given string field value by exact match inequality.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            neq:
+              type: string
+            oeq:
+              type: string
+        cloud_gateway:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+      additionalProperties: false
+      title: ControlPlaneFilterParameters
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+    SortQuery:
+      description: |
+        The `asc` suffix is optional as the default sort order is ascending.
+        The `desc` suffix is used to specify a descending order.
+        Multiple sort attributes may be provided via a comma separated list.
+        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
+      type: string
+      example: name desc
+      title: SortQuery
     PageMeta:
       description: Contains pagination query parameters and the total number of objects returned.
       type: object
@@ -32663,6 +32768,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ControlPlane'
+    ListControlPlanesResponse:
+      description: A paginated list response for a collection of control planes.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlPlane'
+            additionalProperties: false
+            required:
+              - meta
+              - data
+            title: ListControlPlanesResponse
     ControlPlanesBadRequest:
       description: Bad Request
       content:
