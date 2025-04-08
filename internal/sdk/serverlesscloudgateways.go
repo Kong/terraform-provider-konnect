@@ -26,6 +26,9 @@ func newServerlessCloudGateways(sdkConfig sdkConfiguration) *ServerlessCloudGate
 }
 
 // CreateServerlessCloudGateway - Create a new serverless cloud gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Create a new serverless cloud gateway
 func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Context, request shared.CreateServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.CreateServerlessCloudGatewayResponse, error) {
 	o := operations.Options{}
@@ -229,6 +232,9 @@ func (s *ServerlessCloudGateways) CreateServerlessCloudGateway(ctx context.Conte
 }
 
 // GetServerlessCloudGateway - Get the serverless cloud gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Get the serverless cloud gateway
 func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context, request operations.GetServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.GetServerlessCloudGatewayResponse, error) {
 	o := operations.Options{}
@@ -425,6 +431,9 @@ func (s *ServerlessCloudGateways) GetServerlessCloudGateway(ctx context.Context,
 }
 
 // DeleteServerlessCloudGateway - Delete the serverless cloud gateway
+// **Pre-release Endpoint**
+// This endpoint is currently in beta and is subject to change.
+//
 // Delete the serverless cloud gateway
 func (s *ServerlessCloudGateways) DeleteServerlessCloudGateway(ctx context.Context, request operations.DeleteServerlessCloudGatewayRequest, opts ...operations.Option) (*operations.DeleteServerlessCloudGatewayResponse, error) {
 	o := operations.Options{}
