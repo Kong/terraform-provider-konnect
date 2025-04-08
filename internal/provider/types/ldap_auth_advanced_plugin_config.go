@@ -9,7 +9,7 @@ type LdapAuthAdvancedPluginConfig struct {
 	Attribute            types.String   `tfsdk:"attribute"`
 	BaseDn               types.String   `tfsdk:"base_dn"`
 	BindDn               types.String   `tfsdk:"bind_dn"`
-	CacheTTL             types.Number   `tfsdk:"cache_ttl"`
+	CacheTTL             types.Float64  `tfsdk:"cache_ttl"`
 	ConsumerBy           []types.String `tfsdk:"consumer_by"`
 	ConsumerOptional     types.Bool     `tfsdk:"consumer_optional"`
 	GroupBaseDn          types.String   `tfsdk:"group_base_dn"`
@@ -18,14 +18,14 @@ type LdapAuthAdvancedPluginConfig struct {
 	GroupsRequired       []types.String `tfsdk:"groups_required"`
 	HeaderType           types.String   `tfsdk:"header_type"`
 	HideCredentials      types.Bool     `tfsdk:"hide_credentials"`
-	Keepalive            types.Number   `tfsdk:"keepalive"`
+	Keepalive            types.Float64  `tfsdk:"keepalive"`
 	LdapHost             types.String   `tfsdk:"ldap_host"`
 	LdapPassword         types.String   `tfsdk:"ldap_password"`
-	LdapPort             types.Number   `tfsdk:"ldap_port"`
+	LdapPort             types.Float64  `tfsdk:"ldap_port"`
 	Ldaps                types.Bool     `tfsdk:"ldaps"`
 	LogSearchResults     types.Bool     `tfsdk:"log_search_results"`
 	Realm                types.String   `tfsdk:"realm"`
 	StartTLS             types.Bool     `tfsdk:"start_tls"`
-	Timeout              types.Number   `tfsdk:"timeout"`
+	Timeout              types.Float64  `tfsdk:"timeout"`
 	VerifyLdapHost       types.Bool     `tfsdk:"verify_ldap_host"`
 }

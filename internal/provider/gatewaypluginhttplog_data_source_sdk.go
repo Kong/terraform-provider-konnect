@@ -3,14 +3,17 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(resp *shared.HTTPLogPlugin) {
+func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(ctx context.Context, resp *shared.HTTPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -28,11 +31,7 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
 				}
 			}
-			if resp.Config.FlushTimeout != nil {
-				r.Config.FlushTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.FlushTimeout)))
-			} else {
-				r.Config.FlushTimeout = types.NumberNull()
-			}
+			r.Config.FlushTimeout = types.Float64PointerValue(resp.Config.FlushTimeout)
 			if len(resp.Config.Headers) > 0 {
 				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
 				for key1, value1 := range resp.Config.Headers {
@@ -41,11 +40,7 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 				}
 			}
 			r.Config.HTTPEndpoint = types.StringPointerValue(resp.Config.HTTPEndpoint)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 			if resp.Config.Method != nil {
 				r.Config.Method = types.StringValue(string(*resp.Config.Method))
 			} else {
@@ -60,37 +55,17 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
 				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.QueueSize = types.Int64PointerValue(resp.Config.QueueSize)
 			r.Config.RetryCount = types.Int64PointerValue(resp.Config.RetryCount)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -147,4 +122,6 @@ func (r *GatewayPluginHTTPLogDataSourceModel) RefreshFromSharedHTTPLogPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

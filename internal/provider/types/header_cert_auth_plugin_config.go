@@ -9,15 +9,15 @@ type HeaderCertAuthPluginConfig struct {
 	Anonymous               types.String   `tfsdk:"anonymous"`
 	AuthenticatedGroupBy    types.String   `tfsdk:"authenticated_group_by"`
 	CaCertificates          []types.String `tfsdk:"ca_certificates"`
-	CacheTTL                types.Number   `tfsdk:"cache_ttl"`
-	CertCacheTTL            types.Number   `tfsdk:"cert_cache_ttl"`
+	CacheTTL                types.Float64  `tfsdk:"cache_ttl"`
+	CertCacheTTL            types.Float64  `tfsdk:"cert_cache_ttl"`
 	CertificateHeaderFormat types.String   `tfsdk:"certificate_header_format"`
 	CertificateHeaderName   types.String   `tfsdk:"certificate_header_name"`
 	ConsumerBy              []types.String `tfsdk:"consumer_by"`
 	DefaultConsumer         types.String   `tfsdk:"default_consumer"`
 	HTTPProxyHost           types.String   `tfsdk:"http_proxy_host"`
 	HTTPProxyPort           types.Int64    `tfsdk:"http_proxy_port"`
-	HTTPTimeout             types.Number   `tfsdk:"http_timeout"`
+	HTTPTimeout             types.Float64  `tfsdk:"http_timeout"`
 	HTTPSProxyHost          types.String   `tfsdk:"https_proxy_host"`
 	HTTPSProxyPort          types.Int64    `tfsdk:"https_proxy_port"`
 	RevocationCheckMode     types.String   `tfsdk:"revocation_check_mode"`

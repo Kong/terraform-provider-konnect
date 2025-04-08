@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(resp *shared.ControlPlane) {
+func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Config.AuthType = types.StringValue(string(resp.Config.AuthType))
 		r.Config.CloudGateway = types.BoolValue(resp.Config.CloudGateway)
@@ -19,16 +23,16 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(resp 
 			r.Config.ProxyUrls = r.Config.ProxyUrls[:len(resp.Config.ProxyUrls)]
 		}
 		for proxyUrlsCount, proxyUrlsItem := range resp.Config.ProxyUrls {
-			var proxyUrls1 tfTypes.ProxyURL
-			proxyUrls1.Host = types.StringValue(proxyUrlsItem.Host)
-			proxyUrls1.Port = types.Int64Value(proxyUrlsItem.Port)
-			proxyUrls1.Protocol = types.StringValue(proxyUrlsItem.Protocol)
+			var proxyUrls tfTypes.ProxyURL
+			proxyUrls.Host = types.StringValue(proxyUrlsItem.Host)
+			proxyUrls.Port = types.Int64Value(proxyUrlsItem.Port)
+			proxyUrls.Protocol = types.StringValue(proxyUrlsItem.Protocol)
 			if proxyUrlsCount+1 > len(r.Config.ProxyUrls) {
-				r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls1)
+				r.Config.ProxyUrls = append(r.Config.ProxyUrls, proxyUrls)
 			} else {
-				r.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls1.Host
-				r.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls1.Port
-				r.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls1.Protocol
+				r.Config.ProxyUrls[proxyUrlsCount].Host = proxyUrls.Host
+				r.Config.ProxyUrls[proxyUrlsCount].Port = proxyUrls.Port
+				r.Config.ProxyUrls[proxyUrlsCount].Protocol = proxyUrls.Protocol
 			}
 		}
 		r.Config.TelemetryEndpoint = types.StringValue(resp.Config.TelemetryEndpoint)
@@ -42,4 +46,6 @@ func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(resp 
 		}
 		r.Name = types.StringValue(resp.Name)
 	}
+
+	return diags
 }

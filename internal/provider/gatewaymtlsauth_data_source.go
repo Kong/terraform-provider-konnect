@@ -168,7 +168,11 @@ func (r *GatewayMTLSAuthDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMTLSAuth(res.MTLSAuth)
+	resp.Diagnostics.Append(data.RefreshFromSharedMTLSAuth(ctx, res.MTLSAuth)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -414,7 +414,11 @@ func (r *GatewayPluginProxyCacheAdvancedDataSource) Read(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedProxyCacheAdvancedPlugin(res.ProxyCacheAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedProxyCacheAdvancedPlugin(ctx, res.ProxyCacheAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

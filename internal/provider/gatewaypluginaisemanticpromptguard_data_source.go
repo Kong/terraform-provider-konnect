@@ -178,7 +178,7 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Schema(ctx context.Contex
 					"search": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Threshold for the similarity score to be considered a match.`,
 							},
@@ -312,7 +312,7 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Schema(ctx context.Contex
 								Computed:    true,
 								Description: `which vector database driver to use`,
 							},
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Description: `the default similarity threshold for accepting semantic search results (float)`,
 							},
@@ -487,7 +487,11 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Read(ctx context.Context,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticPromptGuardPlugin(res.AiSemanticPromptGuardPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticPromptGuardPlugin(ctx, res.AiSemanticPromptGuardPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

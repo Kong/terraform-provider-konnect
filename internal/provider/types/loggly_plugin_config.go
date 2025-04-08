@@ -14,5 +14,5 @@ type LogglyPluginConfig struct {
 	ServerErrorsSeverity types.String            `tfsdk:"server_errors_severity"`
 	SuccessfulSeverity   types.String            `tfsdk:"successful_severity"`
 	Tags                 []types.String          `tfsdk:"tags"`
-	Timeout              types.Number            `tfsdk:"timeout"`
+	Timeout              types.Float64           `tfsdk:"timeout"`
 }

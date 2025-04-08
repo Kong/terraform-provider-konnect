@@ -35,7 +35,7 @@ type UpdateAppAuthStrategyResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single updated application auth strategy object.
-	UpdateAppAuthStrategyResponse *shared.UpdateAppAuthStrategyResponse
+	CreateAppAuthStrategyResponse *shared.CreateAppAuthStrategyResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -67,23 +67,23 @@ func (o *UpdateAppAuthStrategyResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetUpdateAppAuthStrategyResponse() *shared.UpdateAppAuthStrategyResponse {
+func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponse() *shared.CreateAppAuthStrategyResponse {
 	if o == nil {
 		return nil
 	}
-	return o.UpdateAppAuthStrategyResponse
+	return o.CreateAppAuthStrategyResponse
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetUpdateAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse {
-	if v := o.GetUpdateAppAuthStrategyResponse(); v != nil {
-		return v.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse
+func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponse {
+	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+		return v.AppAuthStrategyKeyAuthResponse
 	}
 	return nil
 }
 
-func (o *UpdateAppAuthStrategyResponse) GetUpdateAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse {
-	if v := o.GetUpdateAppAuthStrategyResponse(); v != nil {
-		return v.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse
+func (o *UpdateAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponse {
+	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+		return v.AppAuthStrategyOpenIDConnectResponse
 	}
 	return nil
 }

@@ -36,7 +36,7 @@ type UpdatePortalResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// Details about the portal being updated.
-	UpdatePortalResponse *shared.UpdatePortalResponse
+	CreatePortalResponse *shared.CreatePortalResponse
 	// Bad Request
 	BadRequestError *shared.BadRequestError
 	// Unauthorized
@@ -70,11 +70,11 @@ func (o *UpdatePortalResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *UpdatePortalResponse) GetUpdatePortalResponse() *shared.UpdatePortalResponse {
+func (o *UpdatePortalResponse) GetCreatePortalResponse() *shared.CreatePortalResponse {
 	if o == nil {
 		return nil
 	}
-	return o.UpdatePortalResponse
+	return o.CreatePortalResponse
 }
 
 func (o *UpdatePortalResponse) GetBadRequestError() *shared.BadRequestError {

@@ -169,7 +169,11 @@ func (r *MeshControlPlaneDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMeshControlPlane(res.MeshControlPlane)
+	resp.Diagnostics.Append(data.RefreshFromSharedMeshControlPlane(ctx, res.MeshControlPlane)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

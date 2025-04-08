@@ -3,30 +3,25 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Target) {
+func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(ctx context.Context, resp *shared.Target) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.NumberValue(big.NewFloat(float64(*resp.CreatedAt)))
-		} else {
-			r.CreatedAt = types.NumberNull()
-		}
+		r.CreatedAt = types.Float64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Tags = make([]types.String, 0, len(resp.Tags))
 		for _, v := range resp.Tags {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.Target = types.StringPointerValue(resp.Target)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.NumberValue(big.NewFloat(float64(*resp.UpdatedAt)))
-		} else {
-			r.UpdatedAt = types.NumberNull()
-		}
+		r.UpdatedAt = types.Float64PointerValue(resp.UpdatedAt)
 		if resp.Upstream == nil {
 			r.Upstream = nil
 		} else {
@@ -35,4 +30,6 @@ func (r *GatewayTargetDataSourceModel) RefreshFromSharedTarget(resp *shared.Targ
 		}
 		r.Weight = types.Int64PointerValue(resp.Weight)
 	}
+
+	return diags
 }

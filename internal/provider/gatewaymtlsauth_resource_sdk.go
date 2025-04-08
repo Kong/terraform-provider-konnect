@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -63,7 +65,9 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	return &out
 }
 
-func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(resp *shared.MTLSAuth) {
+func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CaCertificate == nil {
 			r.CaCertificate = nil
@@ -85,4 +89,6 @@ func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(resp *shared.MT
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

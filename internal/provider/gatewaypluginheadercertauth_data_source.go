@@ -74,11 +74,11 @@ func (r *GatewayPluginHeaderCertAuthDataSource) Schema(ctx context.Context, req 
 						ElementType: types.StringType,
 						Description: `List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (` + "`" + `id` + "`" + `).`,
 					},
-					"cache_ttl": schema.NumberAttribute{
+					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Cache expiry time in seconds.`,
 					},
-					"cert_cache_ttl": schema.NumberAttribute{
+					"cert_cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The length of time in milliseconds between refreshes of the revocation check status cache.`,
 					},
@@ -107,7 +107,7 @@ func (r *GatewayPluginHeaderCertAuthDataSource) Schema(ctx context.Context, req 
 						Computed:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 					},
-					"http_timeout": schema.NumberAttribute{
+					"http_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.`,
 					},
@@ -282,7 +282,11 @@ func (r *GatewayPluginHeaderCertAuthDataSource) Read(ctx context.Context, req da
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHeaderCertAuthPlugin(res.HeaderCertAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedHeaderCertAuthPlugin(ctx, res.HeaderCertAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

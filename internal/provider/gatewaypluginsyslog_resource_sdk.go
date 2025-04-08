@@ -3,7 +3,9 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -175,7 +177,9 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 	return &out
 }
 
-func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *shared.SyslogPlugin) {
+func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(ctx context.Context, resp *shared.SyslogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -269,4 +273,6 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shared.Network) {
+func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.AvailabilityZones = make([]types.String, 0, len(resp.AvailabilityZones))
 		for _, v := range resp.AvailabilityZones {
@@ -17,7 +21,7 @@ func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shar
 		r.CidrBlock = types.StringValue(resp.CidrBlock)
 		r.CloudGatewayProviderAccountID = types.StringValue(resp.CloudGatewayProviderAccountID)
 		r.ConfigurationReferenceCount = types.Int64Value(resp.ConfigurationReferenceCount)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Default = types.BoolValue(resp.Default)
 		r.EntityVersion = types.Int64Value(resp.EntityVersion)
 		r.ID = types.StringValue(resp.ID)
@@ -29,6 +33,8 @@ func (r *CloudGatewayNetworkDataSourceModel) RefreshFromSharedNetwork(resp *shar
 		r.ProviderMetadata.VpcID = types.StringPointerValue(resp.ProviderMetadata.VpcID)
 		r.Region = types.StringValue(resp.Region)
 		r.TransitGatewayCount = types.Int64Value(resp.TransitGatewayCount)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

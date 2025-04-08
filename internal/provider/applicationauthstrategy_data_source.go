@@ -29,12 +29,12 @@ type ApplicationAuthStrategyDataSource struct {
 
 // ApplicationAuthStrategyDataSourceModel describes the data model.
 type ApplicationAuthStrategyDataSourceModel struct {
-	Active        types.Bool                                                                        `tfsdk:"active"`
-	DisplayName   types.String                                                                      `tfsdk:"display_name"`
-	ID            types.String                                                                      `tfsdk:"id"`
-	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse             `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
-	Name          types.String                                                                      `tfsdk:"name"`
-	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse `queryParam:"inline" tfsdk:"openid_connect" tfPlanOnly:"true"`
+	Active        types.Bool                                    `tfsdk:"active"`
+	DisplayName   types.String                                  `tfsdk:"display_name"`
+	ID            types.String                                  `tfsdk:"id"`
+	KeyAuth       *tfTypes.AppAuthStrategyKeyAuthResponse       `queryParam:"inline" tfsdk:"key_auth" tfPlanOnly:"true"`
+	Name          types.String                                  `tfsdk:"name"`
+	OpenidConnect *tfTypes.AppAuthStrategyOpenIDConnectResponse `queryParam:"inline" tfsdk:"openid_connect" tfPlanOnly:"true"`
 }
 
 // Metadata returns the data source type name.
@@ -312,11 +312,15 @@ func (r *ApplicationAuthStrategyDataSource) Read(ctx context.Context, req dataso
 		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
 		return
 	}
-	if !(res.GetAppAuthStrategyResponse != nil) {
+	if !(res.CreateAppAuthStrategyResponse != nil) {
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGetAppAuthStrategyResponse(res.GetAppAuthStrategyResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedCreateAppAuthStrategyResponse(ctx, res.CreateAppAuthStrategyResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -10,8 +10,8 @@ type MockingPluginConfig struct {
 	CustomBasePath           types.String  `tfsdk:"custom_base_path"`
 	IncludeBasePath          types.Bool    `tfsdk:"include_base_path"`
 	IncludedStatusCodes      []types.Int64 `tfsdk:"included_status_codes"`
-	MaxDelayTime             types.Number  `tfsdk:"max_delay_time"`
-	MinDelayTime             types.Number  `tfsdk:"min_delay_time"`
+	MaxDelayTime             types.Float64 `tfsdk:"max_delay_time"`
+	MinDelayTime             types.Float64 `tfsdk:"min_delay_time"`
 	RandomDelay              types.Bool    `tfsdk:"random_delay"`
 	RandomExamples           types.Bool    `tfsdk:"random_examples"`
 	RandomStatusCode         types.Bool    `tfsdk:"random_status_code"`

@@ -3,69 +3,74 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
-	"time"
 )
 
-func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(resp *shared.ListPortalsResponse) {
+func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context.Context, resp *shared.ListPortalsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Data = []tfTypes.Portal{}
 		if len(r.Data) > len(resp.Data) {
 			r.Data = r.Data[:len(resp.Data)]
 		}
 		for dataCount, dataItem := range resp.Data {
-			var data1 tfTypes.Portal
-			data1.ApplicationCount = types.NumberValue(big.NewFloat(float64(dataItem.ApplicationCount)))
-			data1.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
-			data1.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
-			data1.CreatedAt = types.StringValue(dataItem.CreatedAt.Format(time.RFC3339Nano))
-			data1.CustomClientDomain = types.StringPointerValue(dataItem.CustomClientDomain)
-			data1.CustomDomain = types.StringPointerValue(dataItem.CustomDomain)
-			data1.DefaultApplicationAuthStrategyID = types.StringPointerValue(dataItem.DefaultApplicationAuthStrategyID)
-			data1.DefaultDomain = types.StringValue(dataItem.DefaultDomain)
-			data1.Description = types.StringPointerValue(dataItem.Description)
-			data1.DeveloperCount = types.NumberValue(big.NewFloat(float64(dataItem.DeveloperCount)))
-			data1.DisplayName = types.StringValue(dataItem.DisplayName)
-			data1.ID = types.StringValue(dataItem.ID)
-			data1.IsPublic = types.BoolValue(dataItem.IsPublic)
+			var data tfTypes.Portal
+			data.ApplicationCount = types.Float64Value(dataItem.ApplicationCount)
+			data.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
+			data.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
+			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
+			data.CustomClientDomain = types.StringPointerValue(dataItem.CustomClientDomain)
+			data.CustomDomain = types.StringPointerValue(dataItem.CustomDomain)
+			data.DefaultApplicationAuthStrategyID = types.StringPointerValue(dataItem.DefaultApplicationAuthStrategyID)
+			data.DefaultDomain = types.StringValue(dataItem.DefaultDomain)
+			data.Description = types.StringPointerValue(dataItem.Description)
+			data.DeveloperCount = types.Float64Value(dataItem.DeveloperCount)
+			data.DisplayName = types.StringValue(dataItem.DisplayName)
+			data.ID = types.StringValue(dataItem.ID)
+			data.IsPublic = types.BoolValue(dataItem.IsPublic)
 			if len(dataItem.Labels) > 0 {
-				data1.Labels = make(map[string]types.String, len(dataItem.Labels))
+				data.Labels = make(map[string]types.String, len(dataItem.Labels))
 				for key, value := range dataItem.Labels {
-					data1.Labels[key] = types.StringPointerValue(value)
+					data.Labels[key] = types.StringPointerValue(value)
 				}
 			}
-			data1.Name = types.StringValue(dataItem.Name)
-			data1.PublishedProductCount = types.NumberValue(big.NewFloat(float64(dataItem.PublishedProductCount)))
-			data1.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
-			data1.UpdatedAt = types.StringValue(dataItem.UpdatedAt.Format(time.RFC3339Nano))
+			data.Name = types.StringValue(dataItem.Name)
+			data.PublishedProductCount = types.Float64Value(dataItem.PublishedProductCount)
+			data.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
+			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
 			if dataCount+1 > len(r.Data) {
-				r.Data = append(r.Data, data1)
+				r.Data = append(r.Data, data)
 			} else {
-				r.Data[dataCount].ApplicationCount = data1.ApplicationCount
-				r.Data[dataCount].AutoApproveApplications = data1.AutoApproveApplications
-				r.Data[dataCount].AutoApproveDevelopers = data1.AutoApproveDevelopers
-				r.Data[dataCount].CreatedAt = data1.CreatedAt
-				r.Data[dataCount].CustomClientDomain = data1.CustomClientDomain
-				r.Data[dataCount].CustomDomain = data1.CustomDomain
-				r.Data[dataCount].DefaultApplicationAuthStrategyID = data1.DefaultApplicationAuthStrategyID
-				r.Data[dataCount].DefaultDomain = data1.DefaultDomain
-				r.Data[dataCount].Description = data1.Description
-				r.Data[dataCount].DeveloperCount = data1.DeveloperCount
-				r.Data[dataCount].DisplayName = data1.DisplayName
-				r.Data[dataCount].ID = data1.ID
-				r.Data[dataCount].IsPublic = data1.IsPublic
-				r.Data[dataCount].Labels = data1.Labels
-				r.Data[dataCount].Name = data1.Name
-				r.Data[dataCount].PublishedProductCount = data1.PublishedProductCount
-				r.Data[dataCount].RbacEnabled = data1.RbacEnabled
-				r.Data[dataCount].UpdatedAt = data1.UpdatedAt
+				r.Data[dataCount].ApplicationCount = data.ApplicationCount
+				r.Data[dataCount].AutoApproveApplications = data.AutoApproveApplications
+				r.Data[dataCount].AutoApproveDevelopers = data.AutoApproveDevelopers
+				r.Data[dataCount].CreatedAt = data.CreatedAt
+				r.Data[dataCount].CustomClientDomain = data.CustomClientDomain
+				r.Data[dataCount].CustomDomain = data.CustomDomain
+				r.Data[dataCount].DefaultApplicationAuthStrategyID = data.DefaultApplicationAuthStrategyID
+				r.Data[dataCount].DefaultDomain = data.DefaultDomain
+				r.Data[dataCount].Description = data.Description
+				r.Data[dataCount].DeveloperCount = data.DeveloperCount
+				r.Data[dataCount].DisplayName = data.DisplayName
+				r.Data[dataCount].ID = data.ID
+				r.Data[dataCount].IsPublic = data.IsPublic
+				r.Data[dataCount].Labels = data.Labels
+				r.Data[dataCount].Name = data.Name
+				r.Data[dataCount].PublishedProductCount = data.PublishedProductCount
+				r.Data[dataCount].RbacEnabled = data.RbacEnabled
+				r.Data[dataCount].UpdatedAt = data.UpdatedAt
 			}
 		}
-		r.Meta.Page.Number = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Number)))
-		r.Meta.Page.Size = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Size)))
-		r.Meta.Page.Total = types.NumberValue(big.NewFloat(float64(resp.Meta.Page.Total)))
+		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
+		r.Meta.Page.Size = types.Float64Value(resp.Meta.Page.Size)
+		r.Meta.Page.Total = types.Float64Value(resp.Meta.Page.Total)
 	}
+
+	return diags
 }

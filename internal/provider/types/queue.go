@@ -5,12 +5,12 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Queue struct {
-	ConcurrencyLimit   types.Int64  `tfsdk:"concurrency_limit"`
-	InitialRetryDelay  types.Number `tfsdk:"initial_retry_delay"`
-	MaxBatchSize       types.Int64  `tfsdk:"max_batch_size"`
-	MaxBytes           types.Int64  `tfsdk:"max_bytes"`
-	MaxCoalescingDelay types.Number `tfsdk:"max_coalescing_delay"`
-	MaxEntries         types.Int64  `tfsdk:"max_entries"`
-	MaxRetryDelay      types.Number `tfsdk:"max_retry_delay"`
-	MaxRetryTime       types.Number `tfsdk:"max_retry_time"`
+	ConcurrencyLimit   types.Int64   `tfsdk:"concurrency_limit"`
+	InitialRetryDelay  types.Float64 `tfsdk:"initial_retry_delay"`
+	MaxBatchSize       types.Int64   `tfsdk:"max_batch_size"`
+	MaxBytes           types.Int64   `tfsdk:"max_bytes"`
+	MaxCoalescingDelay types.Float64 `tfsdk:"max_coalescing_delay"`
+	MaxEntries         types.Int64   `tfsdk:"max_entries"`
+	MaxRetryDelay      types.Float64 `tfsdk:"max_retry_delay"`
+	MaxRetryTime       types.Float64 `tfsdk:"max_retry_time"`
 }

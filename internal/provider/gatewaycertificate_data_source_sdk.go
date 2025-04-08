@@ -3,11 +3,15 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCertificateDataSourceModel) RefreshFromSharedCertificate(resp *shared.Certificate) {
+func (r *GatewayCertificateDataSourceModel) RefreshFromSharedCertificate(ctx context.Context, resp *shared.Certificate) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Cert = types.StringValue(resp.Cert)
 		r.CertAlt = types.StringPointerValue(resp.CertAlt)
@@ -27,4 +31,6 @@ func (r *GatewayCertificateDataSourceModel) RefreshFromSharedCertificate(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

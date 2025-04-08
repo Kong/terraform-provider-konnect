@@ -14,9 +14,9 @@ type AcmePluginConfig struct {
 	EabHmacKey           types.String   `tfsdk:"eab_hmac_key"`
 	EabKid               types.String   `tfsdk:"eab_kid"`
 	EnableIpv4CommonName types.Bool     `tfsdk:"enable_ipv4_common_name"`
-	FailBackoffMinutes   types.Number   `tfsdk:"fail_backoff_minutes"`
+	FailBackoffMinutes   types.Float64  `tfsdk:"fail_backoff_minutes"`
 	PreferredChain       types.String   `tfsdk:"preferred_chain"`
-	RenewThresholdDays   types.Number   `tfsdk:"renew_threshold_days"`
+	RenewThresholdDays   types.Float64  `tfsdk:"renew_threshold_days"`
 	RsaKeySize           types.Int64    `tfsdk:"rsa_key_size"`
 	Storage              types.String   `tfsdk:"storage"`
 	StorageConfig        *StorageConfig `tfsdk:"storage_config"`

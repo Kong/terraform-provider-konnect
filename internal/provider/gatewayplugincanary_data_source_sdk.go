@@ -3,24 +3,23 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginCanaryDataSourceModel) RefreshFromSharedCanaryPlugin(resp *shared.CanaryPlugin) {
+func (r *GatewayPluginCanaryDataSourceModel) RefreshFromSharedCanaryPlugin(ctx context.Context, resp *shared.CanaryPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.CanaryPluginConfig{}
 			r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
-			if resp.Config.Duration != nil {
-				r.Config.Duration = types.NumberValue(big.NewFloat(float64(*resp.Config.Duration)))
-			} else {
-				r.Config.Duration = types.NumberNull()
-			}
+			r.Config.Duration = types.Float64PointerValue(resp.Config.Duration)
 			r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
 			for _, v := range resp.Config.Groups {
 				r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
@@ -31,21 +30,9 @@ func (r *GatewayPluginCanaryDataSourceModel) RefreshFromSharedCanaryPlugin(resp 
 				r.Config.Hash = types.StringNull()
 			}
 			r.Config.HashHeader = types.StringPointerValue(resp.Config.HashHeader)
-			if resp.Config.Percentage != nil {
-				r.Config.Percentage = types.NumberValue(big.NewFloat(float64(*resp.Config.Percentage)))
-			} else {
-				r.Config.Percentage = types.NumberNull()
-			}
-			if resp.Config.Start != nil {
-				r.Config.Start = types.NumberValue(big.NewFloat(float64(*resp.Config.Start)))
-			} else {
-				r.Config.Start = types.NumberNull()
-			}
-			if resp.Config.Steps != nil {
-				r.Config.Steps = types.NumberValue(big.NewFloat(float64(*resp.Config.Steps)))
-			} else {
-				r.Config.Steps = types.NumberNull()
-			}
+			r.Config.Percentage = types.Float64PointerValue(resp.Config.Percentage)
+			r.Config.Start = types.Float64PointerValue(resp.Config.Start)
+			r.Config.Steps = types.Float64PointerValue(resp.Config.Steps)
 			r.Config.UpstreamFallback = types.BoolPointerValue(resp.Config.UpstreamFallback)
 			r.Config.UpstreamHost = types.StringPointerValue(resp.Config.UpstreamHost)
 			r.Config.UpstreamPort = types.Int64PointerValue(resp.Config.UpstreamPort)
@@ -100,4 +87,6 @@ func (r *GatewayPluginCanaryDataSourceModel) RefreshFromSharedCanaryPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

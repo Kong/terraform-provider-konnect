@@ -225,7 +225,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 													},
 												},
 											},
-											"input_cost": schema.NumberAttribute{
+											"input_cost": schema.Float64Attribute{
 												Computed:    true,
 												Description: `Defines the cost per 1M tokens in your prompt.`,
 											},
@@ -241,11 +241,11 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 												Computed:    true,
 												Description: `If using mistral provider, select the upstream message format.`,
 											},
-											"output_cost": schema.NumberAttribute{
+											"output_cost": schema.Float64Attribute{
 												Computed:    true,
 												Description: `Defines the cost per 1M tokens in the output of the AI.`,
 											},
-											"temperature": schema.NumberAttribute{
+											"temperature": schema.Float64Attribute{
 												Computed:    true,
 												Description: `Defines the matching temperature, if using chat or completion models.`,
 											},
@@ -253,7 +253,7 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Schema(ctx context.Contex
 												Computed:    true,
 												Description: `Defines the top-k most likely tokens, if supported.`,
 											},
-											"top_p": schema.NumberAttribute{
+											"top_p": schema.Float64Attribute{
 												Computed:    true,
 												Description: `Defines the top-p probability mass, if supported.`,
 											},
@@ -465,7 +465,11 @@ func (r *GatewayPluginAiResponseTransformerDataSource) Read(ctx context.Context,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiResponseTransformerPlugin(res.AiResponseTransformerPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiResponseTransformerPlugin(ctx, res.AiResponseTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -103,10 +103,10 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"limit": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more requests-per-window limits to apply.`,
 					},
-					"max_cost": schema.NumberAttribute{
+					"max_cost": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `A defined maximum cost per query. 0 means unlimited.`,
@@ -292,7 +292,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							},
 						},
 					},
-					"score_factor": schema.NumberAttribute{
+					"score_factor": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `A scoring factor to multiply (or divide) the cost. The ` + "`" + `score_factor` + "`" + ` must always be greater than 0.`,
@@ -308,7 +308,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 							),
 						},
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 syncs the counters in that many number of seconds.`,
@@ -316,7 +316,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Schema(ctx context.Co
 					"window_size": schema.ListAttribute{
 						Computed:    true,
 						Optional:    true,
-						ElementType: types.NumberType,
+						ElementType: types.Float64Type,
 						Description: `One or more window sizes to apply a limit to (defined in seconds).`,
 					},
 					"window_type": schema.StringAttribute{
@@ -514,8 +514,17 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Create(ctx context.Co
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(res.GraphqlRateLimitingAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(ctx, res.GraphqlRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -573,7 +582,11 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Read(ctx context.Cont
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(res.GraphqlRateLimitingAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(ctx, res.GraphqlRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -625,8 +638,17 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) Update(ctx context.Co
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(res.GraphqlRateLimitingAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedGraphqlRateLimitingAdvancedPlugin(ctx, res.GraphqlRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -688,7 +710,7 @@ func (r *GatewayPluginGraphqlRateLimitingAdvancedResource) ImportState(ctx conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

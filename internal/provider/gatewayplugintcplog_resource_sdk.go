@@ -3,11 +3,12 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLogPlugin {
@@ -88,7 +89,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 		}
 		keepalive := new(float64)
 		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-			*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
+			*keepalive = r.Config.Keepalive.ValueFloat64()
 		} else {
 			keepalive = nil
 		}
@@ -100,7 +101,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 		}
 		timeout := new(float64)
 		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+			*timeout = r.Config.Timeout.ValueFloat64()
 		} else {
 			timeout = nil
 		}
@@ -183,7 +184,9 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 	return &out
 }
 
-func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *shared.TCPLogPlugin) {
+func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx context.Context, resp *shared.TCPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -197,17 +200,9 @@ func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *s
 				}
 			}
 			r.Config.Host = types.StringPointerValue(resp.Config.Host)
-			if resp.Config.Keepalive != nil {
-				r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-			} else {
-				r.Config.Keepalive = types.NumberNull()
-			}
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
 			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 			r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
 			r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		}
@@ -266,4 +261,6 @@ func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -8,5 +8,5 @@ type IPRestrictionPluginConfig struct {
 	Allow   []types.String `tfsdk:"allow"`
 	Deny    []types.String `tfsdk:"deny"`
 	Message types.String   `tfsdk:"message"`
-	Status  types.Number   `tfsdk:"status"`
+	Status  types.Float64  `tfsdk:"status"`
 }

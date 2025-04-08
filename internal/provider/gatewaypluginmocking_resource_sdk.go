@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.MockingPlugin {
@@ -103,13 +104,13 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 		}
 		maxDelayTime := new(float64)
 		if !r.Config.MaxDelayTime.IsUnknown() && !r.Config.MaxDelayTime.IsNull() {
-			*maxDelayTime, _ = r.Config.MaxDelayTime.ValueBigFloat().Float64()
+			*maxDelayTime = r.Config.MaxDelayTime.ValueFloat64()
 		} else {
 			maxDelayTime = nil
 		}
 		minDelayTime := new(float64)
 		if !r.Config.MinDelayTime.IsUnknown() && !r.Config.MinDelayTime.IsNull() {
-			*minDelayTime, _ = r.Config.MinDelayTime.ValueBigFloat().Float64()
+			*minDelayTime = r.Config.MinDelayTime.ValueFloat64()
 		} else {
 			minDelayTime = nil
 		}
@@ -201,7 +202,9 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.Mock
 	return &out
 }
 
-func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(resp *shared.MockingPlugin) {
+func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx context.Context, resp *shared.MockingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -215,16 +218,8 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(resp 
 			for _, v := range resp.Config.IncludedStatusCodes {
 				r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
 			}
-			if resp.Config.MaxDelayTime != nil {
-				r.Config.MaxDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxDelayTime)))
-			} else {
-				r.Config.MaxDelayTime = types.NumberNull()
-			}
-			if resp.Config.MinDelayTime != nil {
-				r.Config.MinDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MinDelayTime)))
-			} else {
-				r.Config.MinDelayTime = types.NumberNull()
-			}
+			r.Config.MaxDelayTime = types.Float64PointerValue(resp.Config.MaxDelayTime)
+			r.Config.MinDelayTime = types.Float64PointerValue(resp.Config.MinDelayTime)
 			r.Config.RandomDelay = types.BoolPointerValue(resp.Config.RandomDelay)
 			r.Config.RandomExamples = types.BoolPointerValue(resp.Config.RandomExamples)
 			r.Config.RandomStatusCode = types.BoolPointerValue(resp.Config.RandomStatusCode)
@@ -284,4 +279,6 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

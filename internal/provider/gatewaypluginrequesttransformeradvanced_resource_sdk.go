@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -297,7 +299,9 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 	return &out
 }
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromSharedRequestTransformerAdvancedPlugin(resp *shared.RequestTransformerAdvancedPlugin) {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromSharedRequestTransformerAdvancedPlugin(ctx context.Context, resp *shared.RequestTransformerAdvancedPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -474,4 +478,6 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromShared
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

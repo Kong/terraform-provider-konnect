@@ -142,7 +142,11 @@ func (r *GatewayConfigStoreDataSource) Read(ctx context.Context, req datasource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConfigStore(res.ConfigStore)
+	resp.Diagnostics.Append(data.RefreshFromSharedConfigStore(ctx, res.ConfigStore)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

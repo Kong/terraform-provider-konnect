@@ -89,12 +89,12 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 						ElementType: types.StringType,
 						Description: `List of CA Certificates strings to use as Certificate Authorities (CA) when validating a client certificate. At least one is required but you can specify as many as needed. The value of this array is comprised of primary keys (` + "`" + `id` + "`" + `).`,
 					},
-					"cache_ttl": schema.NumberAttribute{
+					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Cache expiry time in seconds.`,
 					},
-					"cert_cache_ttl": schema.NumberAttribute{
+					"cert_cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The length of time in milliseconds between refreshes of the revocation check status cache.`,
@@ -139,7 +139,7 @@ func (r *GatewayPluginHeaderCertAuthResource) Schema(ctx context.Context, req re
 							int64validator.AtMost(65535),
 						},
 					},
-					"http_timeout": schema.NumberAttribute{
+					"http_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `HTTP timeout threshold in milliseconds when communicating with the OCSP server or downloading CRL.`,
@@ -349,8 +349,17 @@ func (r *GatewayPluginHeaderCertAuthResource) Create(ctx context.Context, req re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHeaderCertAuthPlugin(res.HeaderCertAuthPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedHeaderCertAuthPlugin(ctx, res.HeaderCertAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -408,7 +417,11 @@ func (r *GatewayPluginHeaderCertAuthResource) Read(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHeaderCertAuthPlugin(res.HeaderCertAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedHeaderCertAuthPlugin(ctx, res.HeaderCertAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -460,8 +473,17 @@ func (r *GatewayPluginHeaderCertAuthResource) Update(ctx context.Context, req re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHeaderCertAuthPlugin(res.HeaderCertAuthPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedHeaderCertAuthPlugin(ctx, res.HeaderCertAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -523,7 +545,7 @@ func (r *GatewayPluginHeaderCertAuthResource) ImportState(ctx context.Context, r
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

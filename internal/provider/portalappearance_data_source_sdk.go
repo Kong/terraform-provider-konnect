@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalAppearanceDataSourceModel) RefreshFromSharedGetPortalAppearanceResponse(resp *shared.GetPortalAppearanceResponse) {
+func (r *PortalAppearanceDataSourceModel) RefreshFromSharedGetPortalAppearanceResponse(ctx context.Context, resp *shared.GetPortalAppearanceResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
@@ -93,4 +97,6 @@ func (r *PortalAppearanceDataSourceModel) RefreshFromSharedGetPortalAppearanceRe
 		r.ThemeName = types.StringValue(string(resp.ThemeName))
 		r.UseCustomFonts = types.BoolValue(resp.UseCustomFonts)
 	}
+
+	return diags
 }

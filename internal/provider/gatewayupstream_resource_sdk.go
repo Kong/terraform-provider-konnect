@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
@@ -119,7 +120,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 				}
 				interval := new(float64)
 				if !r.Healthchecks.Active.Healthy.Interval.IsUnknown() && !r.Healthchecks.Active.Healthy.Interval.IsNull() {
-					*interval, _ = r.Healthchecks.Active.Healthy.Interval.ValueBigFloat().Float64()
+					*interval = r.Healthchecks.Active.Healthy.Interval.ValueFloat64()
 				} else {
 					interval = nil
 				}
@@ -155,7 +156,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 			}
 			timeout := new(float64)
 			if !r.Healthchecks.Active.Timeout.IsUnknown() && !r.Healthchecks.Active.Timeout.IsNull() {
-				*timeout, _ = r.Healthchecks.Active.Timeout.ValueBigFloat().Float64()
+				*timeout = r.Healthchecks.Active.Timeout.ValueFloat64()
 			} else {
 				timeout = nil
 			}
@@ -179,7 +180,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 				}
 				interval1 := new(float64)
 				if !r.Healthchecks.Active.Unhealthy.Interval.IsUnknown() && !r.Healthchecks.Active.Unhealthy.Interval.IsNull() {
-					*interval1, _ = r.Healthchecks.Active.Unhealthy.Interval.ValueBigFloat().Float64()
+					*interval1 = r.Healthchecks.Active.Unhealthy.Interval.ValueFloat64()
 				} else {
 					interval1 = nil
 				}
@@ -279,7 +280,7 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 		}
 		threshold := new(float64)
 		if !r.Healthchecks.Threshold.IsUnknown() && !r.Healthchecks.Threshold.IsNull() {
-			*threshold, _ = r.Healthchecks.Threshold.ValueBigFloat().Float64()
+			*threshold = r.Healthchecks.Threshold.ValueFloat64()
 		} else {
 			threshold = nil
 		}
@@ -352,7 +353,9 @@ func (r *GatewayUpstreamResourceModel) ToSharedUpstream() *shared.Upstream {
 	return &out
 }
 
-func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Upstream) {
+func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(ctx context.Context, resp *shared.Upstream) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Algorithm != nil {
 			r.Algorithm = types.StringValue(string(*resp.Algorithm))
@@ -407,21 +410,13 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 					for _, v := range resp.Healthchecks.Active.Healthy.HTTPStatuses {
 						r.Healthchecks.Active.Healthy.HTTPStatuses = append(r.Healthchecks.Active.Healthy.HTTPStatuses, types.Int64Value(v))
 					}
-					if resp.Healthchecks.Active.Healthy.Interval != nil {
-						r.Healthchecks.Active.Healthy.Interval = types.NumberValue(big.NewFloat(float64(*resp.Healthchecks.Active.Healthy.Interval)))
-					} else {
-						r.Healthchecks.Active.Healthy.Interval = types.NumberNull()
-					}
+					r.Healthchecks.Active.Healthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Healthy.Interval)
 					r.Healthchecks.Active.Healthy.Successes = types.Int64PointerValue(resp.Healthchecks.Active.Healthy.Successes)
 				}
 				r.Healthchecks.Active.HTTPPath = types.StringPointerValue(resp.Healthchecks.Active.HTTPPath)
 				r.Healthchecks.Active.HTTPSSni = types.StringPointerValue(resp.Healthchecks.Active.HTTPSSni)
 				r.Healthchecks.Active.HTTPSVerifyCertificate = types.BoolPointerValue(resp.Healthchecks.Active.HTTPSVerifyCertificate)
-				if resp.Healthchecks.Active.Timeout != nil {
-					r.Healthchecks.Active.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Healthchecks.Active.Timeout)))
-				} else {
-					r.Healthchecks.Active.Timeout = types.NumberNull()
-				}
+				r.Healthchecks.Active.Timeout = types.Float64PointerValue(resp.Healthchecks.Active.Timeout)
 				if resp.Healthchecks.Active.Type != nil {
 					r.Healthchecks.Active.Type = types.StringValue(string(*resp.Healthchecks.Active.Type))
 				} else {
@@ -436,11 +431,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 					for _, v := range resp.Healthchecks.Active.Unhealthy.HTTPStatuses {
 						r.Healthchecks.Active.Unhealthy.HTTPStatuses = append(r.Healthchecks.Active.Unhealthy.HTTPStatuses, types.Int64Value(v))
 					}
-					if resp.Healthchecks.Active.Unhealthy.Interval != nil {
-						r.Healthchecks.Active.Unhealthy.Interval = types.NumberValue(big.NewFloat(float64(*resp.Healthchecks.Active.Unhealthy.Interval)))
-					} else {
-						r.Healthchecks.Active.Unhealthy.Interval = types.NumberNull()
-					}
+					r.Healthchecks.Active.Unhealthy.Interval = types.Float64PointerValue(resp.Healthchecks.Active.Unhealthy.Interval)
 					r.Healthchecks.Active.Unhealthy.TCPFailures = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.TCPFailures)
 					r.Healthchecks.Active.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Active.Unhealthy.Timeouts)
 				}
@@ -477,11 +468,7 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 					r.Healthchecks.Passive.Unhealthy.Timeouts = types.Int64PointerValue(resp.Healthchecks.Passive.Unhealthy.Timeouts)
 				}
 			}
-			if resp.Healthchecks.Threshold != nil {
-				r.Healthchecks.Threshold = types.NumberValue(big.NewFloat(float64(*resp.Healthchecks.Threshold)))
-			} else {
-				r.Healthchecks.Threshold = types.NumberNull()
-			}
+			r.Healthchecks.Threshold = types.Float64PointerValue(resp.Healthchecks.Threshold)
 		}
 		r.HostHeader = types.StringPointerValue(resp.HostHeader)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -494,4 +481,6 @@ func (r *GatewayUpstreamResourceModel) RefreshFromSharedUpstream(resp *shared.Up
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.UseSrvName = types.BoolPointerValue(resp.UseSrvName)
 	}
+
+	return diags
 }

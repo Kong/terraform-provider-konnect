@@ -3,11 +3,13 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequest() *shared.CreateAppAuthStrategyRequest {
@@ -136,7 +138,9 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 	return &out
 }
 
-func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStrategyResponse(resp *shared.CreateAppAuthStrategyResponse) {
+func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStrategyResponse(ctx context.Context, resp *shared.CreateAppAuthStrategyResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp == nil {
 	} else {
 		if resp.AppAuthStrategyKeyAuthResponse != nil {
@@ -147,7 +151,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
 			}
-			r.KeyAuth.CreatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.CreatedAt.Format(time.RFC3339Nano))
+			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
 				r.KeyAuth.DcrProvider = nil
 			} else {
@@ -170,7 +174,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
-			r.KeyAuth.UpdatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.UpdatedAt.Format(time.RFC3339Nano))
+			r.KeyAuth.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.UpdatedAt))
 		}
 		if resp.AppAuthStrategyOpenIDConnectResponse != nil {
 			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectRequest{}
@@ -201,7 +205,7 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
 			}
-			r.OpenidConnect.CreatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt.Format(time.RFC3339Nano))
+			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt))
 			if resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
 				r.OpenidConnect.DcrProvider = nil
 			} else {
@@ -224,102 +228,11 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
-			r.OpenidConnect.UpdatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.UpdatedAt.Format(time.RFC3339Nano))
+			r.OpenidConnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.UpdatedAt))
 		}
 	}
-}
 
-func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedGetAppAuthStrategyResponse(resp *shared.GetAppAuthStrategyResponse) {
-	if resp == nil {
-	} else {
-		if resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse != nil {
-			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
-			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Active)
-			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
-			for _, v := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
-				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
-			}
-			r.KeyAuth.CreatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.CreatedAt.Format(time.RFC3339Nano))
-			if resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DcrProvider == nil {
-				r.KeyAuth.DcrProvider = nil
-			} else {
-				r.KeyAuth.DcrProvider = &tfTypes.DcrProvider{}
-				r.KeyAuth.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DcrProvider.DisplayName)
-				r.KeyAuth.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DcrProvider.ID)
-				r.KeyAuth.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DcrProvider.Name)
-				r.KeyAuth.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DcrProvider.ProviderType))
-			}
-			r.KeyAuth.DisplayName = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.DisplayName)
-			r.DisplayName = r.KeyAuth.DisplayName
-			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.ID)
-			r.ID = r.KeyAuth.ID
-			if len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
-				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels))
-				for key, value := range resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.Name)
-			r.Name = r.KeyAuth.Name
-			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.StrategyType))
-			r.KeyAuth.UpdatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse.UpdatedAt.Format(time.RFC3339Nano))
-		}
-		if resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse != nil {
-			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectRequest{}
-			r.OpenidConnect.Active = types.BoolValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Active)
-			r.Active = r.OpenidConnect.Active
-			if resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties == nil {
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringNull()
-			} else {
-				additionalPropertiesResult, _ := json.Marshal(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties)
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.AuthMethods = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods {
-				r.OpenidConnect.Configs.OpenidConnect.AuthMethods = append(r.OpenidConnect.Configs.OpenidConnect.AuthMethods, types.StringValue(v))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim {
-				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
-			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
-				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels))
-				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
-					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
-				}
-			}
-			r.OpenidConnect.Configs.OpenidConnect.Scopes = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
-				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
-			}
-			r.OpenidConnect.CreatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.CreatedAt.Format(time.RFC3339Nano))
-			if resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
-				r.OpenidConnect.DcrProvider = nil
-			} else {
-				r.OpenidConnect.DcrProvider = &tfTypes.DcrProvider{}
-				r.OpenidConnect.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.DisplayName)
-				r.OpenidConnect.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.ID)
-				r.OpenidConnect.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.Name)
-				r.OpenidConnect.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.ProviderType))
-			}
-			r.OpenidConnect.DisplayName = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.DisplayName)
-			r.DisplayName = r.OpenidConnect.DisplayName
-			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.ID)
-			r.ID = r.OpenidConnect.ID
-			if len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
-				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels))
-				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key2] = types.StringPointerValue(value2)
-				}
-			}
-			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.Name)
-			r.Name = r.OpenidConnect.Name
-			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.StrategyType))
-			r.OpenidConnect.UpdatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse.UpdatedAt.Format(time.RFC3339Nano))
-		}
-	}
+	return diags
 }
 
 func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest() *shared.UpdateAppAuthStrategyRequest {
@@ -340,97 +253,4 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequ
 		DisplayName: displayName,
 	}
 	return &out
-}
-
-func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedUpdateAppAuthStrategyResponse(resp *shared.UpdateAppAuthStrategyResponse) {
-	if resp == nil {
-	} else {
-		if resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse != nil {
-			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
-			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Active)
-			r.Active = r.KeyAuth.Active
-			r.KeyAuth.Configs.KeyAuth.KeyNames = make([]types.String, 0, len(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames))
-			for _, v := range resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
-				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
-			}
-			r.KeyAuth.CreatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.CreatedAt.Format(time.RFC3339Nano))
-			if resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DcrProvider == nil {
-				r.KeyAuth.DcrProvider = nil
-			} else {
-				r.KeyAuth.DcrProvider = &tfTypes.DcrProvider{}
-				r.KeyAuth.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DcrProvider.DisplayName)
-				r.KeyAuth.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DcrProvider.ID)
-				r.KeyAuth.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DcrProvider.Name)
-				r.KeyAuth.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DcrProvider.ProviderType))
-			}
-			r.KeyAuth.DisplayName = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.DisplayName)
-			r.DisplayName = r.KeyAuth.DisplayName
-			r.KeyAuth.ID = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.ID)
-			r.ID = r.KeyAuth.ID
-			if len(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Labels) > 0 {
-				r.KeyAuth.Labels = make(map[string]types.String, len(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Labels))
-				for key, value := range resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Labels {
-					r.KeyAuth.Labels[key] = types.StringPointerValue(value)
-				}
-			}
-			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.Name)
-			r.Name = r.KeyAuth.Name
-			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.StrategyType))
-			r.KeyAuth.UpdatedAt = types.StringValue(resp.AppAuthStrategyKeyAuthResponseUpdateAppAuthStrategyResponseAppAuthStrategyKeyAuthResponse.UpdatedAt.Format(time.RFC3339Nano))
-		}
-		if resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse != nil {
-			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectRequest{}
-			r.OpenidConnect.Active = types.BoolValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Active)
-			r.Active = r.OpenidConnect.Active
-			if resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties == nil {
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringNull()
-			} else {
-				additionalPropertiesResult, _ := json.Marshal(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AdditionalProperties)
-				r.OpenidConnect.Configs.OpenidConnect.AdditionalProperties = types.StringValue(string(additionalPropertiesResult))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.AuthMethods = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.AuthMethods {
-				r.OpenidConnect.Configs.OpenidConnect.AuthMethods = append(r.OpenidConnect.Configs.OpenidConnect.AuthMethods, types.StringValue(v))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.CredentialClaim {
-				r.OpenidConnect.Configs.OpenidConnect.CredentialClaim = append(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim, types.StringValue(v))
-			}
-			r.OpenidConnect.Configs.OpenidConnect.Issuer = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Issuer)
-			if len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels) > 0 {
-				r.OpenidConnect.Configs.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels))
-				for key1, value1 := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Labels {
-					r.OpenidConnect.Configs.OpenidConnect.Labels[key1] = types.StringPointerValue(value1)
-				}
-			}
-			r.OpenidConnect.Configs.OpenidConnect.Scopes = make([]types.String, 0, len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes))
-			for _, v := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
-				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
-			}
-			r.OpenidConnect.CreatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.CreatedAt.Format(time.RFC3339Nano))
-			if resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
-				r.OpenidConnect.DcrProvider = nil
-			} else {
-				r.OpenidConnect.DcrProvider = &tfTypes.DcrProvider{}
-				r.OpenidConnect.DcrProvider.DisplayName = types.StringPointerValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.DisplayName)
-				r.OpenidConnect.DcrProvider.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.ID)
-				r.OpenidConnect.DcrProvider.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.Name)
-				r.OpenidConnect.DcrProvider.ProviderType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DcrProvider.ProviderType))
-			}
-			r.OpenidConnect.DisplayName = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.DisplayName)
-			r.DisplayName = r.OpenidConnect.DisplayName
-			r.OpenidConnect.ID = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.ID)
-			r.ID = r.OpenidConnect.ID
-			if len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Labels) > 0 {
-				r.OpenidConnect.Labels = make(map[string]types.String, len(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Labels))
-				for key2, value2 := range resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Labels {
-					r.OpenidConnect.Labels[key2] = types.StringPointerValue(value2)
-				}
-			}
-			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.Name)
-			r.Name = r.OpenidConnect.Name
-			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.StrategyType))
-			r.OpenidConnect.UpdatedAt = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponseUpdateAppAuthStrategyResponseAppAuthStrategyOpenIDConnectResponse.UpdatedAt.Format(time.RFC3339Nano))
-		}
-	}
 }

@@ -3,11 +3,12 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() *shared.OpentelemetryPlugin {
@@ -148,7 +149,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() 
 			}
 			initialRetryDelay := new(float64)
 			if !r.Config.Queue.InitialRetryDelay.IsUnknown() && !r.Config.Queue.InitialRetryDelay.IsNull() {
-				*initialRetryDelay, _ = r.Config.Queue.InitialRetryDelay.ValueBigFloat().Float64()
+				*initialRetryDelay = r.Config.Queue.InitialRetryDelay.ValueFloat64()
 			} else {
 				initialRetryDelay = nil
 			}
@@ -166,7 +167,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() 
 			}
 			maxCoalescingDelay := new(float64)
 			if !r.Config.Queue.MaxCoalescingDelay.IsUnknown() && !r.Config.Queue.MaxCoalescingDelay.IsNull() {
-				*maxCoalescingDelay, _ = r.Config.Queue.MaxCoalescingDelay.ValueBigFloat().Float64()
+				*maxCoalescingDelay = r.Config.Queue.MaxCoalescingDelay.ValueFloat64()
 			} else {
 				maxCoalescingDelay = nil
 			}
@@ -178,13 +179,13 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() 
 			}
 			maxRetryDelay := new(float64)
 			if !r.Config.Queue.MaxRetryDelay.IsUnknown() && !r.Config.Queue.MaxRetryDelay.IsNull() {
-				*maxRetryDelay, _ = r.Config.Queue.MaxRetryDelay.ValueBigFloat().Float64()
+				*maxRetryDelay = r.Config.Queue.MaxRetryDelay.ValueFloat64()
 			} else {
 				maxRetryDelay = nil
 			}
 			maxRetryTime := new(float64)
 			if !r.Config.Queue.MaxRetryTime.IsUnknown() && !r.Config.Queue.MaxRetryTime.IsNull() {
-				*maxRetryTime, _ = r.Config.Queue.MaxRetryTime.ValueBigFloat().Float64()
+				*maxRetryTime = r.Config.Queue.MaxRetryTime.ValueFloat64()
 			} else {
 				maxRetryTime = nil
 			}
@@ -213,7 +214,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() 
 		}
 		samplingRate := new(float64)
 		if !r.Config.SamplingRate.IsUnknown() && !r.Config.SamplingRate.IsNull() {
-			*samplingRate, _ = r.Config.SamplingRate.ValueBigFloat().Float64()
+			*samplingRate = r.Config.SamplingRate.ValueFloat64()
 		} else {
 			samplingRate = nil
 		}
@@ -303,7 +304,9 @@ func (r *GatewayPluginOpentelemetryResourceModel) ToSharedOpentelemetryPlugin() 
 	return &out
 }
 
-func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetryPlugin(resp *shared.OpentelemetryPlugin) {
+func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetryPlugin(ctx context.Context, resp *shared.OpentelemetryPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -353,29 +356,13 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 				} else {
 					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
 				}
-				if resp.Config.Queue.InitialRetryDelay != nil {
-					r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
-				} else {
-					r.Config.Queue.InitialRetryDelay = types.NumberNull()
-				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
 				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
 				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-				if resp.Config.Queue.MaxCoalescingDelay != nil {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
-				} else {
-					r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
-				}
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
 				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-				if resp.Config.Queue.MaxRetryDelay != nil {
-					r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-				} else {
-					r.Config.Queue.MaxRetryDelay = types.NumberNull()
-				}
-				if resp.Config.Queue.MaxRetryTime != nil {
-					r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-				} else {
-					r.Config.Queue.MaxRetryTime = types.NumberNull()
-				}
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
 			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
 			if len(resp.Config.ResourceAttributes) > 0 {
@@ -385,11 +372,7 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 					r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
 				}
 			}
-			if resp.Config.SamplingRate != nil {
-				r.Config.SamplingRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SamplingRate)))
-			} else {
-				r.Config.SamplingRate = types.NumberNull()
-			}
+			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
 			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
 			r.Config.TracesEndpoint = types.StringPointerValue(resp.Config.TracesEndpoint)
 		}
@@ -448,4 +431,6 @@ func (r *GatewayPluginOpentelemetryResourceModel) RefreshFromSharedOpentelemetry
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

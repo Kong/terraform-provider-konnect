@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -74,7 +76,9 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	return &out
 }
 
-func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
+func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp *shared.Jwt) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Algorithm != nil {
 			r.Algorithm = types.StringValue(string(*resp.Algorithm))
@@ -97,4 +101,6 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

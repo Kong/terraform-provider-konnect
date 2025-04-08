@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCertAuthPlugin(resp *shared.HeaderCertAuthPlugin) {
+func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCertAuthPlugin(ctx context.Context, resp *shared.HeaderCertAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -26,16 +29,8 @@ func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCert
 			for _, v := range resp.Config.CaCertificates {
 				r.Config.CaCertificates = append(r.Config.CaCertificates, types.StringValue(v))
 			}
-			if resp.Config.CacheTTL != nil {
-				r.Config.CacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CacheTTL)))
-			} else {
-				r.Config.CacheTTL = types.NumberNull()
-			}
-			if resp.Config.CertCacheTTL != nil {
-				r.Config.CertCacheTTL = types.NumberValue(big.NewFloat(float64(*resp.Config.CertCacheTTL)))
-			} else {
-				r.Config.CertCacheTTL = types.NumberNull()
-			}
+			r.Config.CacheTTL = types.Float64PointerValue(resp.Config.CacheTTL)
+			r.Config.CertCacheTTL = types.Float64PointerValue(resp.Config.CertCacheTTL)
 			if resp.Config.CertificateHeaderFormat != nil {
 				r.Config.CertificateHeaderFormat = types.StringValue(string(*resp.Config.CertificateHeaderFormat))
 			} else {
@@ -49,11 +44,7 @@ func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCert
 			r.Config.DefaultConsumer = types.StringPointerValue(resp.Config.DefaultConsumer)
 			r.Config.HTTPProxyHost = types.StringPointerValue(resp.Config.HTTPProxyHost)
 			r.Config.HTTPProxyPort = types.Int64PointerValue(resp.Config.HTTPProxyPort)
-			if resp.Config.HTTPTimeout != nil {
-				r.Config.HTTPTimeout = types.NumberValue(big.NewFloat(float64(*resp.Config.HTTPTimeout)))
-			} else {
-				r.Config.HTTPTimeout = types.NumberNull()
-			}
+			r.Config.HTTPTimeout = types.Float64PointerValue(resp.Config.HTTPTimeout)
 			r.Config.HTTPSProxyHost = types.StringPointerValue(resp.Config.HTTPSProxyHost)
 			r.Config.HTTPSProxyPort = types.Int64PointerValue(resp.Config.HTTPSProxyPort)
 			if resp.Config.RevocationCheckMode != nil {
@@ -113,4 +104,6 @@ func (r *GatewayPluginHeaderCertAuthDataSourceModel) RefreshFromSharedHeaderCert
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

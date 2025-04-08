@@ -3,13 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
+func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(ctx context.Context, resp *shared.JwtPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -29,11 +32,7 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 				r.Config.HeaderNames = append(r.Config.HeaderNames, types.StringValue(v))
 			}
 			r.Config.KeyClaimName = types.StringPointerValue(resp.Config.KeyClaimName)
-			if resp.Config.MaximumExpiration != nil {
-				r.Config.MaximumExpiration = types.NumberValue(big.NewFloat(float64(*resp.Config.MaximumExpiration)))
-			} else {
-				r.Config.MaximumExpiration = types.NumberNull()
-			}
+			r.Config.MaximumExpiration = types.Float64PointerValue(resp.Config.MaximumExpiration)
 			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 			r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
@@ -91,4 +90,6 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -164,7 +166,9 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	return &out
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(resp *shared.InjectionProtectionPlugin) {
+func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -175,14 +179,14 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
 			}
 			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
-				var customInjections1 tfTypes.CustomInjections
-				customInjections1.Name = types.StringValue(customInjectionsItem.Name)
-				customInjections1.Regex = types.StringValue(customInjectionsItem.Regex)
+				var customInjections tfTypes.CustomInjections
+				customInjections.Name = types.StringValue(customInjectionsItem.Name)
+				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
 				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
-					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections1)
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
 				} else {
-					r.Config.CustomInjections[customInjectionsCount].Name = customInjections1.Name
-					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections1.Regex
+					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
+					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
 				}
 			}
 			if resp.Config.EnforcementMode != nil {
@@ -250,4 +254,6 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

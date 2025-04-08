@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -176,7 +178,9 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 	return &out
 }
 
-func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuardPlugin(resp *shared.AiPromptGuardPlugin) {
+func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuardPlugin(ctx context.Context, resp *shared.AiPromptGuardPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -255,4 +259,6 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

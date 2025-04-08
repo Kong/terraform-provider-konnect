@@ -3,8 +3,8 @@ id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
   docChecksum: b89b0d537cdef4d7100070bf8d09b24a
   docVersion: 2.0.0
-  speakeasyVersion: 1.517.3
-  generationVersion: 2.548.6
+  speakeasyVersion: 1.531.0
+  generationVersion: 2.568.2
   releaseVersion: 2.4.1
   configChecksum: 2088bc487a15cd7bdfefdbd33015f9d6
 features:
@@ -12,7 +12,7 @@ features:
     additionalDependencies: 0.1.0
     additionalProperties: 0.1.2
     constsAndDefaults: 0.2.1
-    core: 3.36.1
+    core: 3.39.2
     deprecations: 2.82.0
     envVarSecurityUsage: 0.1.0
     globalSecurity: 2.81.10
@@ -20,7 +20,7 @@ features:
     groups: 2.81.2
     ignores: 2.81.1
     methodServerURLs: 2.82.1
-    nameOverrides: 2.81.2
+    nameOverrides: 2.81.3
     nullables: 0.0.0
     retries: 2.81.2
     sets: 0.1.2
@@ -1031,6 +1031,9 @@ generatedFiles:
   - internal/provider/teamrole_resource_sdk.go
   - internal/provider/teamuser_resource.go
   - internal/provider/teamuser_resource_sdk.go
+  - internal/provider/typeconvert/date.go
+  - internal/provider/typeconvert/datetime.go
+  - internal/provider/typeconvert/int32.go
   - internal/provider/types/account_key.go
   - internal/provider/types/acl_plugin_after.go
   - internal/provider/types/acl_plugin_config.go
@@ -1070,10 +1073,10 @@ generatedFiles:
   - internal/provider/types/app_auth_strategy_config_open_id_connect.go
   - internal/provider/types/app_auth_strategy_key_auth_request.go
   - internal/provider/types/app_auth_strategy_key_auth_request_configs.go
-  - internal/provider/types/app_auth_strategy_key_auth_response_app_auth_strategy_key_auth_response.go
+  - internal/provider/types/app_auth_strategy_key_auth_response.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request.go
   - internal/provider/types/app_auth_strategy_open_id_connect_request_configs.go
-  - internal/provider/types/app_auth_strategy_open_id_connect_response_app_auth_strategy_open_id_connect_response.go
+  - internal/provider/types/app_auth_strategy_open_id_connect_response.go
   - internal/provider/types/appearance_color_variable.go
   - internal/provider/types/appearance_image.go
   - internal/provider/types/appearance_images.go
@@ -1282,6 +1285,7 @@ generatedFiles:
   - internal/sdk/controlplanegroups.go
   - internal/sdk/controlplanes.go
   - internal/sdk/custompluginschemas.go
+  - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
   - internal/sdk/hmacauthcredentials.go
   - internal/sdk/internal/hooks/hooks.go
@@ -1960,7 +1964,6 @@ generatedFiles:
   - internal/sdk/models/shared/forwardproxyplugin.go
   - internal/sdk/models/shared/gatewayservicepayload.go
   - internal/sdk/models/shared/gatewayunauthorizederror.go
-  - internal/sdk/models/shared/getappauthstrategyresponse.go
   - internal/sdk/models/shared/getportalappearanceresponse.go
   - internal/sdk/models/shared/graphqlproxycacheadvancedplugin.go
   - internal/sdk/models/shared/graphqlratelimitingadvancedplugin.go
@@ -2032,6 +2035,7 @@ generatedFiles:
   - internal/sdk/models/shared/plugin.go
   - internal/sdk/models/shared/pluginschemas.go
   - internal/sdk/models/shared/portal.go
+  - internal/sdk/models/shared/portalappearance.go
   - internal/sdk/models/shared/portalauthenticationsettingsresponse.go
   - internal/sdk/models/shared/portalauthenticationsettingsupdaterequest.go
   - internal/sdk/models/shared/portalclaimmappings.go
@@ -2102,15 +2106,12 @@ generatedFiles:
   - internal/sdk/models/shared/updateapiproductversiondto.go
   - internal/sdk/models/shared/updateapiproductversionspecdto.go
   - internal/sdk/models/shared/updateappauthstrategyrequest.go
-  - internal/sdk/models/shared/updateappauthstrategyresponse.go
   - internal/sdk/models/shared/updateauditlogdestination.go
   - internal/sdk/models/shared/updateauditlogwebhook.go
   - internal/sdk/models/shared/updateconfigstore.go
   - internal/sdk/models/shared/updatecontrolplanerequest.go
-  - internal/sdk/models/shared/updateportalappearancerequest.go
   - internal/sdk/models/shared/updateportalappearanceresponse.go
   - internal/sdk/models/shared/updateportalrequest.go
-  - internal/sdk/models/shared/updateportalresponse.go
   - internal/sdk/models/shared/updatesystemaccount.go
   - internal/sdk/models/shared/updatesystemaccountaccesstoken.go
   - internal/sdk/models/shared/updateteam.go
@@ -2247,7 +2248,7 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-  update-mesh-control-plane:
+  update-cp:
     "":
       parameters:
         path:
@@ -2258,7 +2259,7 @@ examples:
         "200":
           application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
         "400":
-          application/problem+json: {"status": 300219, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+          application/problem+json: {"status": 443687, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}]}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2555,7 +2556,7 @@ examples:
         application/json: {"name": "<value>", "display_name": "Salvador71", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://possible-custom.name/", "credential_claim": [], "scopes": [], "auth_methods": ["<value>", "<value>", "<value>"], "labels": {"env": "test"}}}, "labels": {"env": "test"}}
       responses:
         "201":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Lizzie.Durgan", "strategy_type": "openid_connect", "configs": {"openid-connect": {"0": "<", "1": "v", "2": "a", "3": "l", "4": "u", "5": "e", "6": ">", "issuer": "https://tepid-tapioca.net/", "credential_claim": ["<value>"], "scopes": ["<value>"], "auth_methods": [], "labels": {"env": "test"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Lizzie.Durgan", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://tepid-tapioca.net/", "credential_claim": ["<value>"], "scopes": ["<value>"], "auth_methods": [], "labels": {"env": "test"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "azureAd"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 482668, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}]}
         "401":
@@ -2569,7 +2570,7 @@ examples:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Jermain_Barrows54", "strategy_type": "openid_connect", "configs": {"openid-connect": {"0": "<", "1": "v", "2": "a", "3": "l", "4": "u", "5": "e", "6": ">", "issuer": "https://separate-sermon.org", "credential_claim": ["<value>"], "scopes": ["<value>", "<value>"], "auth_methods": ["<value>", "<value>"], "labels": {"env": "test"}}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "auth0"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Jermain_Barrows54", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://separate-sermon.org", "credential_claim": ["<value>"], "scopes": ["<value>", "<value>"], "auth_methods": ["<value>", "<value>"], "labels": {"env": "test"}}}, "active": true, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "auth0"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
         "403":
@@ -2585,7 +2586,7 @@ examples:
         application/json: {"labels": {"env": "test"}}
       responses:
         "200":
-          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Noemi.Schuster", "strategy_type": "openid_connect", "configs": {"openid-connect": {"0": "<", "1": "v", "2": "a", "3": "l", "4": "u", "5": "e", "6": ">", "issuer": "https://internal-bell.org", "credential_claim": ["<value>", "<value>"], "scopes": [], "auth_methods": ["<value>", "<value>", "<value>"], "labels": {"env": "test"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "auth0"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "display_name": "Noemi.Schuster", "strategy_type": "openid_connect", "configs": {"openid-connect": {"issuer": "https://internal-bell.org", "credential_claim": ["<value>", "<value>"], "scopes": [], "auth_methods": ["<value>", "<value>", "<value>"], "labels": {"env": "test"}}}, "active": false, "dcr_provider": {"id": "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7", "name": "<value>", "provider_type": "auth0"}, "labels": {"env": "test"}, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 784152, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "401":
@@ -2599,6 +2600,65 @@ examples:
       parameters:
         path:
           authStrategyId: "5f9fd312-a987-4628-b4c5-bb4f4fddd5f7"
+      responses:
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "409":
+          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
+  create-audit-log-destination:
+    speakeasy-default-create-audit-log-destination:
+      requestBody:
+        application/json: {"name": "My Destination", "endpoint": "https://example.com/audit-logs", "authorization": "Bearer sometoken", "log_format": "cef", "skip_ssl_verification": false}
+      responses:
+        "201":
+          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
+        "400":
+          application/problem+json: {"status": 292740, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  get-audit-log-destination:
+    speakeasy-default-get-audit-log-destination:
+      parameters:
+        path:
+          auditLogDestinationId: "1a10ed0c-4737-4010-ae6e-5772970cd74a"
+      responses:
+        "200":
+          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  update-audit-log-destination:
+    speakeasy-default-update-audit-log-destination:
+      parameters:
+        path:
+          auditLogDestinationId: "637f3077-69fb-4fe1-9539-e71b3587fda4"
+      requestBody:
+        application/json: {"name": "My Destination", "endpoint": "https://example.com/audit-logs", "authorization": "Bearer sometoken", "log_format": "cef", "skip_ssl_verification": false}
+      responses:
+        "200":
+          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
+        "400":
+          application/problem+json: {"status": 353084, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+  delete-audit-log-destination:
+    speakeasy-default-delete-audit-log-destination:
+      parameters:
+        path:
+          auditLogDestinationId: "90acd7aa-bdfd-4e03-96a0-4e4b8f964dce"
       responses:
         "401":
           application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
@@ -2786,10 +2846,10 @@ examples:
         path:
           networkId: "36ae63d3-efd1-4bec-b246-62aa5d3f5695"
       requestBody:
-        application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}}
+        application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}, {"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-vpc-peering-attachment", "peer_account_id": "<id>", "peer_vpc_id": "<id>", "peer_vpc_region": "<value>"}}
       responses:
         "201":
-          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-transit-gateway-attachment", "transit_gateway_id": "<id>", "ram_share_arn": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "ready", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+          application/json: {"name": "us-east-2 transit gateway", "dns_config": [{"remote_dns_server_ip_addresses": ["10.0.0.2"], "domain_proxy_list": ["foobar.com"]}], "cidr_blocks": ["10.0.0.0/8", "100.64.0.0/10", "172.16.0.0/12"], "transit_gateway_attachment_config": {"kind": "aws-vpc-peering-attachment", "peer_account_id": "<id>", "peer_vpc_id": "<id>", "peer_vpc_region": "<value>"}, "id": "0850820b-d153-4a2a-b9be-7d2204779139", "state": "pending-acceptance", "entity_version": 1, "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
         "400":
           application/problem+json: {"status": 430402, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}]}
         "401":
@@ -2880,10 +2940,10 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 192784, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
-        "500":
-          application/problem+json: {"status": 95128, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   update-control-plane:
     speakeasy-default-update-control-plane:
       parameters:
@@ -2924,6 +2984,72 @@ examples:
           application/problem+json: {"status": 500, "title": "Internal Server Error", "instance": "konnect:trace:2287285207635123011", "detail": "Could not propagate control plane changes to control plane cluster service."}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+  create-config-store:
+    speakeasy-default-create-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"name": "Config Store"}
+      responses:
+        "201":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 264934, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}]}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  get-config-store:
+    speakeasy-default-get-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      responses:
+        "200":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+  update-config-store:
+    speakeasy-default-update-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+      requestBody:
+        application/json: {"name": "Config Store"}
+      responses:
+        "200":
+          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
+        "400":
+          application/problem+json: {"status": 188203, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
+        "404":
+          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "415":
+          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
+  delete-config-store:
+    speakeasy-default-delete-config-store:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
+        query: {}
+      responses:
+        "400":
+          application/problem+json: {"status": 632538, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
+        "401":
+          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
+        "403":
+          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
   create-ca_certificate:
     speakeasy-default-create-ca-certificate:
       parameters:
@@ -3044,7 +3170,6 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 945866}
-        "200": {}
   upsert-consumer_group:
     "":
       parameters:
@@ -4969,39 +5094,6 @@ examples:
           application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 176157}
-  delete-konnectapplicationauth-plugin:
-    "":
-      parameters:
-        path:
-          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      responses:
-        "401":
-          application/json: {"message": "<value>", "status": 644196}
-  get-konnectapplicationauth-plugin:
-    "":
-      parameters:
-        path:
-          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      responses:
-        "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"key_names": ["apikey"]}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 869866}
-  update-konnectapplicationauth-plugin:
-    "":
-      parameters:
-        path:
-          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"key_names": ["apikey"]}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
-      responses:
-        "200":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"key_names": ["apikey"]}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 310218}
   delete-ldapauth-plugin:
     "":
       parameters:
@@ -7093,18 +7185,6 @@ examples:
           application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"anonymous": "<value>", "hide_credentials": false, "key_in_body": false, "key_in_header": true, "key_in_query": true, "key_names": ["apikey"], "run_on_preflight": true}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
         "401":
           application/json: {"message": "<value>", "status": 252781}
-  create-konnectapplicationauth-plugin:
-    speakeasy-default-create-konnectapplicationauth-plugin:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      requestBody:
-        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"key_names": ["apikey"]}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
-      responses:
-        "201":
-          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {"key_names": ["apikey"]}, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 803992}
   create-ldapauth-plugin:
     speakeasy-default-create-ldapauth-plugin:
       parameters:
@@ -7723,6 +7803,51 @@ examples:
           application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 298474}
+  delete-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 654994}
+  get-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 419229}
+  upsert-route-RouteExpression:
+    "":
+      parameters:
+        path:
+          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"service": null}
+      responses:
+        "200":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 578176}
+  create-route-RouteExpression:
+    speakeasy-default-create-route-route-expression:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"service": null}
+      responses:
+        "201":
+          application/json: {"service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 468015}
   create-service:
     speakeasy-default-create-service:
       parameters:
@@ -7968,10 +8093,10 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 404918, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
-        "500":
-          application/problem+json: {"status": 436362, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   post-control-planes-id-group-memberships-remove:
     speakeasy-default-post-control-planes-id-group-memberships-remove:
       parameters:
@@ -7986,10 +8111,10 @@ examples:
           application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
+        "500":
+          application/problem+json: {"status": 190151, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
-        "500":
-          application/problem+json: {"status": 753975, "title": "<value>", "instance": "<value>", "detail": "<value>"}
   list-portals:
     speakeasy-default-list-portals:
       parameters:
@@ -8481,193 +8606,5 @@ examples:
           application/problem+json: {"status": 237077, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
         "404":
           application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-  create-audit-log-destination:
-    speakeasy-default-create-audit-log-destination:
-      requestBody:
-        application/json: {"name": "My Destination", "endpoint": "https://example.com/audit-logs", "authorization": "Bearer sometoken", "log_format": "cef", "skip_ssl_verification": false}
-      responses:
-        "201":
-          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
-        "400":
-          application/problem+json: {"status": 292740, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "dependent_fields", "reason": "is a required field", "dependents": ["<value>"], "source": "body"}]}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-  get-audit-log-destination:
-    speakeasy-default-get-audit-log-destination:
-      parameters:
-        path:
-          auditLogDestinationId: "1a10ed0c-4737-4010-ae6e-5772970cd74a"
-      responses:
-        "200":
-          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-  update-audit-log-destination:
-    speakeasy-default-update-audit-log-destination:
-      parameters:
-        path:
-          auditLogDestinationId: "637f3077-69fb-4fe1-9539-e71b3587fda4"
-      requestBody:
-        application/json: {"name": "My Destination", "endpoint": "https://example.com/audit-logs", "authorization": "Bearer sometoken", "log_format": "cef", "skip_ssl_verification": false}
-      responses:
-        "200":
-          application/json: {"endpoint": "https://example.com/audit-logs", "log_format": "cef", "skip_ssl_verification": false}
-        "400":
-          application/problem+json: {"status": 353084, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "min_length", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}]}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-  delete-audit-log-destination:
-    speakeasy-default-delete-audit-log-destination:
-      parameters:
-        path:
-          auditLogDestinationId: "90acd7aa-bdfd-4e03-96a0-4e4b8f964dce"
-      responses:
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-        "409":
-          application/problem+json: {"status": 409, "title": "Conflict", "type": "https://httpstatuses.com/409", "instance": "kong:trace:1234567890", "detail": "Conflict"}
-  create-config-store:
-    speakeasy-default-create-config-store:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      requestBody:
-        application/json: {"name": "Config Store"}
-      responses:
-        "201":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
-        "400":
-          application/problem+json: {"status": 264934, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>", "<value>"], "source": "body"}]}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "415":
-          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
-  get-config-store:
-    speakeasy-default-get-config-store:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-      responses:
-        "200":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-  update-config-store:
-    speakeasy-default-update-config-store:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-      requestBody:
-        application/json: {"name": "Config Store"}
-      responses:
-        "200":
-          application/json: {"id": "b9e81174-b5bb-4638-a3c3-8afe61a0abf8", "name": "My Name", "created_at": "2022-11-04T20:10:06.927Z", "updated_at": "2022-11-04T20:10:06.927Z"}
-        "400":
-          application/problem+json: {"status": 188203, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-        "415":
-          application/problem+json: {"status": 415, "title": "UnsupportedMediaType", "type": "https://httpstatuses.com/415", "instance": "kong:trace:1234567890", "detail": "UnsupportedMediaType"}
-  delete-config-store:
-    speakeasy-default-delete-config-store:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-          configStoreId: "d32d905a-ed33-46a3-a093-d8f536af9a8a"
-        query: {}
-      responses:
-        "400":
-          application/problem+json: {"status": 632538, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": []}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-  delete-route-RouteExpression:
-    "":
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
-      responses:
-        "401":
-          application/json: {"message": "<value>", "status": 654994}
-  get-route-RouteExpression:
-    "":
-      parameters:
-        path:
-          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      responses:
-        "200":
-          application/json: {"service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 419229}
-  upsert-route-RouteExpression:
-    "":
-      parameters:
-        path:
-          RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      requestBody:
-        application/json: {"service": null}
-      responses:
-        "200":
-          application/json: {"service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 578176}
-  create-route-RouteExpression:
-    speakeasy-default-create-route-route-expression:
-      parameters:
-        path:
-          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
-      requestBody:
-        application/json: {"service": null}
-      responses:
-        "201":
-          application/json: {"service": null}
-        "401":
-          application/json: {"message": "<value>", "status": 468015}
-  update-cp:
-    "":
-      parameters:
-        path:
-          cpId: "bf138ba2-c9b1-4229-b268-04d9d8a6410b"
-      requestBody:
-        application/json: {"name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}}
-      responses:
-        "200":
-          application/json: {"id": "d32d905a-ed33-46a3-a093-d8f536af9a8a", "name": "Test control plane", "description": "A control plane to handle traffic on development environment.", "labels": {"test": "true"}, "created_at": "2023-01-11T02:30:42.227Z", "updated_at": "2023-01-11T02:30:42.227Z"}
-        "400":
-          application/problem+json: {"status": 443687, "title": "<value>", "instance": "<value>", "detail": "<value>", "invalid_parameters": [{"field": "name", "source": "body", "reason": "is a required field"}, {"field": "name", "rule": "min_lowercase", "minimum": 8, "source": "body", "reason": "must have at least 8 characters"}, {"field": "name", "rule": "enum", "reason": "is a required field", "choices": ["<value>"], "source": "body"}]}
-        "401":
-          application/problem+json: {"status": 401, "title": "Unauthorized", "type": "https://httpstatuses.com/401", "instance": "kong:trace:1234567890", "detail": "Invalid credentials"}
-        "403":
-          application/problem+json: {"status": 403, "title": "Forbidden", "type": "https://httpstatuses.com/403", "instance": "kong:trace:1234567890", "detail": "Forbidden"}
-        "404":
-          application/problem+json: {"status": 404, "title": "Not Found", "type": "https://httpstatuses.com/404", "instance": "kong:trace:1234567890", "detail": "Not found"}
-examplesVersion: 1.0.0
+examplesVersion: 1.0.1
 generatedTests: {}

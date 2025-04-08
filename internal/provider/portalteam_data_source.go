@@ -142,7 +142,11 @@ func (r *PortalTeamDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedPortalTeamResponse(res.PortalTeamResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedPortalTeamResponse(ctx, res.PortalTeamResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

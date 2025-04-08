@@ -3,10 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() *shared.IPRestrictionPlugin {
@@ -89,7 +90,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 		}
 		status := new(float64)
 		if !r.Config.Status.IsUnknown() && !r.Config.Status.IsNull() {
-			*status, _ = r.Config.Status.ValueBigFloat().Float64()
+			*status = r.Config.Status.ValueFloat64()
 		} else {
 			status = nil
 		}
@@ -170,7 +171,9 @@ func (r *GatewayPluginIPRestrictionResourceModel) ToSharedIPRestrictionPlugin() 
 	return &out
 }
 
-func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestrictionPlugin(resp *shared.IPRestrictionPlugin) {
+func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestrictionPlugin(ctx context.Context, resp *shared.IPRestrictionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -185,11 +188,7 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
 			}
 			r.Config.Message = types.StringPointerValue(resp.Config.Message)
-			if resp.Config.Status != nil {
-				r.Config.Status = types.NumberValue(big.NewFloat(float64(*resp.Config.Status)))
-			} else {
-				r.Config.Status = types.NumberNull()
-			}
+			r.Config.Status = types.Float64PointerValue(resp.Config.Status)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -252,4 +251,6 @@ func (r *GatewayPluginIPRestrictionResourceModel) RefreshFromSharedIPRestriction
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -50,7 +52,9 @@ func (r *GatewayKeyAuthResourceModel) ToSharedKeyAuthWithoutParents() *shared.Ke
 	return &out
 }
 
-func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(resp *shared.KeyAuth) {
+func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(ctx context.Context, resp *shared.KeyAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -66,4 +70,6 @@ func (r *GatewayKeyAuthResourceModel) RefreshFromSharedKeyAuth(resp *shared.KeyA
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

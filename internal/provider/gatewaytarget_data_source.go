@@ -30,11 +30,11 @@ type GatewayTargetDataSource struct {
 // GatewayTargetDataSourceModel describes the data model.
 type GatewayTargetDataSourceModel struct {
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Number                       `tfsdk:"created_at"`
+	CreatedAt      types.Float64                      `tfsdk:"created_at"`
 	ID             types.String                       `tfsdk:"id"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	Target         types.String                       `tfsdk:"target"`
-	UpdatedAt      types.Number                       `tfsdk:"updated_at"`
+	UpdatedAt      types.Float64                      `tfsdk:"updated_at"`
 	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
 	UpstreamID     types.String                       `tfsdk:"upstream_id"`
 	Weight         types.Int64                        `tfsdk:"weight"`
@@ -55,7 +55,7 @@ func (r *GatewayTargetDataSource) Schema(ctx context.Context, req datasource.Sch
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
-			"created_at": schema.NumberAttribute{
+			"created_at": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
@@ -71,7 +71,7 @@ func (r *GatewayTargetDataSource) Schema(ctx context.Context, req datasource.Sch
 				Computed:    true,
 				Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record.`,
 			},
-			"updated_at": schema.NumberAttribute{
+			"updated_at": schema.Float64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
@@ -171,7 +171,11 @@ func (r *GatewayTargetDataSource) Read(ctx context.Context, req datasource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTarget(res.Target)
+	resp.Diagnostics.Append(data.RefreshFromSharedTarget(ctx, res.Target)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

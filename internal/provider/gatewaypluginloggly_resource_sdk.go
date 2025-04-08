@@ -3,11 +3,12 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
 func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.LogglyPlugin {
@@ -128,7 +129,7 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 		}
 		timeout := new(float64)
 		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-			*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
+			*timeout = r.Config.Timeout.ValueFloat64()
 		} else {
 			timeout = nil
 		}
@@ -202,7 +203,9 @@ func (r *GatewayPluginLogglyResourceModel) ToSharedLogglyPlugin() *shared.Loggly
 	return &out
 }
 
-func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(resp *shared.LogglyPlugin) {
+func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(ctx context.Context, resp *shared.LogglyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Config == nil {
 			r.Config = nil
@@ -242,11 +245,7 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(resp *s
 			for _, v := range resp.Config.Tags {
 				r.Config.Tags = append(r.Config.Tags, types.StringValue(v))
 			}
-			if resp.Config.Timeout != nil {
-				r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-			} else {
-				r.Config.Timeout = types.NumberNull()
-			}
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -303,4 +302,6 @@ func (r *GatewayPluginLogglyResourceModel) RefreshFromSharedLogglyPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

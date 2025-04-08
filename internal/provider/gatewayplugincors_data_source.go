@@ -71,7 +71,7 @@ func (r *GatewayPluginCorsDataSource) Schema(ctx context.Context, req datasource
 						ElementType: types.StringType,
 						Description: `Value for the ` + "`" + `Access-Control-Allow-Headers` + "`" + ` header.`,
 					},
-					"max_age": schema.NumberAttribute{
+					"max_age": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Indicates how long the results of the preflight request can be cached, in ` + "`" + `seconds` + "`" + `.`,
 					},
@@ -244,7 +244,11 @@ func (r *GatewayPluginCorsDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCorsPlugin(res.CorsPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedCorsPlugin(ctx, res.CorsPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
