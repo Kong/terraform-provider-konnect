@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: b89b0d537cdef4d7100070bf8d09b24a
+  docChecksum: 709d0cf5a703783a4fcb5418f3bc7922
   docVersion: 2.0.0
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
@@ -1892,11 +1892,14 @@ generatedFiles:
   - internal/sdk/models/shared/authstrategykeyauth.go
   - internal/sdk/models/shared/authstrategysyncerror.go
   - internal/sdk/models/shared/awslambdaplugin.go
+  - internal/sdk/models/shared/awstransitgateway.go
   - internal/sdk/models/shared/awstransitgatewayattachmentconfig.go
   - internal/sdk/models/shared/awstransitgatewayresponse.go
+  - internal/sdk/models/shared/awsvpcpeeringgateway.go
   - internal/sdk/models/shared/awsvpcpeeringgatewayattachmentconfig.go
   - internal/sdk/models/shared/awsvpcpeeringgatewayresponse.go
   - internal/sdk/models/shared/azurefunctionsplugin.go
+  - internal/sdk/models/shared/azuretransitgateway.go
   - internal/sdk/models/shared/azuretransitgatewayresponse.go
   - internal/sdk/models/shared/azurevnetpeeringattachmentconfig.go
   - internal/sdk/models/shared/badrequesterror.go
@@ -1957,7 +1960,6 @@ generatedFiles:
   - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
-  - internal/sdk/models/shared/entityregion.go
   - internal/sdk/models/shared/exittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
@@ -3170,6 +3172,7 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 945866}
+        "200": {}
   upsert-consumer_group:
     "":
       parameters:

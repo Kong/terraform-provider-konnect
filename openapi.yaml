@@ -13148,22 +13148,19 @@ components:
         - 100.64.0.0/10
         - 172.16.0.0/12
       title: Transit Gateway CIDR Blocks
-    BaseTransitGateway:
+    AwsTransitGatewayResponse:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/TransitGatewayName'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
-      required:
-        - name
-    BaseTransitGatewayResponse:
-      type: object
-      properties:
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
-        dns_config:
-          $ref: '#/components/schemas/TransitGatewayDnsConfig'
         state:
           $ref: '#/components/schemas/TransitGatewayState'
         entity_version:
@@ -13186,93 +13183,156 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
       required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+        - dns_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Transit Gateway
+    AwsVpcPeeringGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+        - dns_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Vpc Peering Gateway
+    AzureTransitGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - transit_gateway_attachment_config
         - id
         - dns_config
         - state
         - entity_version
         - created_at
         - updated_at
-    AwsTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: AWS Transit Gateway
-          type: object
-          properties:
-            cidr_blocks:
-              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
-          required:
-            - cidr_blocks
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AwsTransitGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AwsTransitGateway'
-        - required:
-            - dns_config
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
-    AwsVpcPeeringGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: AWS Vpc Peering Gateway
-          type: object
-          properties:
-            cidr_blocks:
-              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
-          required:
-            - cidr_blocks
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AwsVpcPeeringGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
-        - required:
-            - dns_config
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
-    AzureTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: Azure Transit Gateway
-          type: object
-          properties:
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
-          required:
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AzureTransitGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AzureTransitGateway'
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
+      title: Azure Transit Gateway
     TransitGatewayResponse:
       oneOf:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
     CreateAwsTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/AwsTransitGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+      title: AWS Transit Gateway
+      x-speakeasy-name-override: AWSTransitGateway
     CreateAwsVpcPeeringGateway:
-      allOf:
-        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+      title: AWS Vpc Peering Gateway
+      x-speakeasy-name-override: AWSVpcPeeringGateway
     CreateAzureTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/AzureTransitGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+      title: Azure Transit Gateway
+      x-speakeasy-name-override: AzureTransitGateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
@@ -15564,16 +15624,6 @@ components:
       pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: ImageDataUri
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
-    EntityRegion:
-      type: string
-      example: eu
-      enum:
-        - us
-        - eu
-        - au
-        - me
-        - in
-        - '*'
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
       type: string
@@ -16022,10 +16072,16 @@ components:
           type: string
           example: Control Planes
         entity_region:
-          allOf:
-            - $ref: '#/components/schemas/EntityRegion'
-            - description: Region of the entity.
-          x-flatten-allOf: true
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
@@ -32359,10 +32415,16 @@ components:
                   - Portals
                   - Service Hub
               entity_region:
-                allOf:
-                  - $ref: '#/components/schemas/EntityRegion'
-                  - description: Region of the team.
-                x-flatten-allOf: true
+                description: Region of the team.
+                type: string
+                example: eu
+                enum:
+                  - us
+                  - eu
+                  - au
+                  - me
+                  - in
+                  - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:
       content:
