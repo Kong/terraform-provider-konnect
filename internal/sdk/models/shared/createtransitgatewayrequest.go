@@ -11,67 +11,67 @@ import (
 type CreateTransitGatewayRequestType string
 
 const (
-	CreateTransitGatewayRequestTypeCreateAwsTransitGateway    CreateTransitGatewayRequestType = "CreateAwsTransitGateway"
-	CreateTransitGatewayRequestTypeCreateAwsVpcPeeringGateway CreateTransitGatewayRequestType = "CreateAwsVpcPeeringGateway"
-	CreateTransitGatewayRequestTypeCreateAzureTransitGateway  CreateTransitGatewayRequestType = "CreateAzureTransitGateway"
+	CreateTransitGatewayRequestTypeAWSTransitGateway    CreateTransitGatewayRequestType = "AWSTransitGateway"
+	CreateTransitGatewayRequestTypeAWSVpcPeeringGateway CreateTransitGatewayRequestType = "AWSVpcPeeringGateway"
+	CreateTransitGatewayRequestTypeAzureTransitGateway  CreateTransitGatewayRequestType = "AzureTransitGateway"
 )
 
 // CreateTransitGatewayRequest - Request schema for creating a transit gateway.
 type CreateTransitGatewayRequest struct {
-	CreateAwsTransitGateway    *CreateAwsTransitGateway    `queryParam:"inline"`
-	CreateAwsVpcPeeringGateway *CreateAwsVpcPeeringGateway `queryParam:"inline"`
-	CreateAzureTransitGateway  *CreateAzureTransitGateway  `queryParam:"inline"`
+	AWSTransitGateway    *AWSTransitGateway    `queryParam:"inline"`
+	AWSVpcPeeringGateway *AWSVpcPeeringGateway `queryParam:"inline"`
+	AzureTransitGateway  *AzureTransitGateway  `queryParam:"inline"`
 
 	Type CreateTransitGatewayRequestType
 }
 
-func CreateCreateTransitGatewayRequestCreateAwsTransitGateway(createAwsTransitGateway CreateAwsTransitGateway) CreateTransitGatewayRequest {
-	typ := CreateTransitGatewayRequestTypeCreateAwsTransitGateway
+func CreateCreateTransitGatewayRequestAWSTransitGateway(awsTransitGateway AWSTransitGateway) CreateTransitGatewayRequest {
+	typ := CreateTransitGatewayRequestTypeAWSTransitGateway
 
 	return CreateTransitGatewayRequest{
-		CreateAwsTransitGateway: &createAwsTransitGateway,
-		Type:                    typ,
+		AWSTransitGateway: &awsTransitGateway,
+		Type:              typ,
 	}
 }
 
-func CreateCreateTransitGatewayRequestCreateAwsVpcPeeringGateway(createAwsVpcPeeringGateway CreateAwsVpcPeeringGateway) CreateTransitGatewayRequest {
-	typ := CreateTransitGatewayRequestTypeCreateAwsVpcPeeringGateway
+func CreateCreateTransitGatewayRequestAWSVpcPeeringGateway(awsVpcPeeringGateway AWSVpcPeeringGateway) CreateTransitGatewayRequest {
+	typ := CreateTransitGatewayRequestTypeAWSVpcPeeringGateway
 
 	return CreateTransitGatewayRequest{
-		CreateAwsVpcPeeringGateway: &createAwsVpcPeeringGateway,
-		Type:                       typ,
+		AWSVpcPeeringGateway: &awsVpcPeeringGateway,
+		Type:                 typ,
 	}
 }
 
-func CreateCreateTransitGatewayRequestCreateAzureTransitGateway(createAzureTransitGateway CreateAzureTransitGateway) CreateTransitGatewayRequest {
-	typ := CreateTransitGatewayRequestTypeCreateAzureTransitGateway
+func CreateCreateTransitGatewayRequestAzureTransitGateway(azureTransitGateway AzureTransitGateway) CreateTransitGatewayRequest {
+	typ := CreateTransitGatewayRequestTypeAzureTransitGateway
 
 	return CreateTransitGatewayRequest{
-		CreateAzureTransitGateway: &createAzureTransitGateway,
-		Type:                      typ,
+		AzureTransitGateway: &azureTransitGateway,
+		Type:                typ,
 	}
 }
 
 func (u *CreateTransitGatewayRequest) UnmarshalJSON(data []byte) error {
 
-	var createAzureTransitGateway CreateAzureTransitGateway = CreateAzureTransitGateway{}
-	if err := utils.UnmarshalJSON(data, &createAzureTransitGateway, "", true, true); err == nil {
-		u.CreateAzureTransitGateway = &createAzureTransitGateway
-		u.Type = CreateTransitGatewayRequestTypeCreateAzureTransitGateway
+	var azureTransitGateway AzureTransitGateway = AzureTransitGateway{}
+	if err := utils.UnmarshalJSON(data, &azureTransitGateway, "", true, true); err == nil {
+		u.AzureTransitGateway = &azureTransitGateway
+		u.Type = CreateTransitGatewayRequestTypeAzureTransitGateway
 		return nil
 	}
 
-	var createAwsTransitGateway CreateAwsTransitGateway = CreateAwsTransitGateway{}
-	if err := utils.UnmarshalJSON(data, &createAwsTransitGateway, "", true, true); err == nil {
-		u.CreateAwsTransitGateway = &createAwsTransitGateway
-		u.Type = CreateTransitGatewayRequestTypeCreateAwsTransitGateway
+	var awsTransitGateway AWSTransitGateway = AWSTransitGateway{}
+	if err := utils.UnmarshalJSON(data, &awsTransitGateway, "", true, true); err == nil {
+		u.AWSTransitGateway = &awsTransitGateway
+		u.Type = CreateTransitGatewayRequestTypeAWSTransitGateway
 		return nil
 	}
 
-	var createAwsVpcPeeringGateway CreateAwsVpcPeeringGateway = CreateAwsVpcPeeringGateway{}
-	if err := utils.UnmarshalJSON(data, &createAwsVpcPeeringGateway, "", true, true); err == nil {
-		u.CreateAwsVpcPeeringGateway = &createAwsVpcPeeringGateway
-		u.Type = CreateTransitGatewayRequestTypeCreateAwsVpcPeeringGateway
+	var awsVpcPeeringGateway AWSVpcPeeringGateway = AWSVpcPeeringGateway{}
+	if err := utils.UnmarshalJSON(data, &awsVpcPeeringGateway, "", true, true); err == nil {
+		u.AWSVpcPeeringGateway = &awsVpcPeeringGateway
+		u.Type = CreateTransitGatewayRequestTypeAWSVpcPeeringGateway
 		return nil
 	}
 
@@ -79,16 +79,16 @@ func (u *CreateTransitGatewayRequest) UnmarshalJSON(data []byte) error {
 }
 
 func (u CreateTransitGatewayRequest) MarshalJSON() ([]byte, error) {
-	if u.CreateAwsTransitGateway != nil {
-		return utils.MarshalJSON(u.CreateAwsTransitGateway, "", true)
+	if u.AWSTransitGateway != nil {
+		return utils.MarshalJSON(u.AWSTransitGateway, "", true)
 	}
 
-	if u.CreateAwsVpcPeeringGateway != nil {
-		return utils.MarshalJSON(u.CreateAwsVpcPeeringGateway, "", true)
+	if u.AWSVpcPeeringGateway != nil {
+		return utils.MarshalJSON(u.AWSVpcPeeringGateway, "", true)
 	}
 
-	if u.CreateAzureTransitGateway != nil {
-		return utils.MarshalJSON(u.CreateAzureTransitGateway, "", true)
+	if u.AzureTransitGateway != nil {
+		return utils.MarshalJSON(u.AzureTransitGateway, "", true)
 	}
 
 	return nil, errors.New("could not marshal union type CreateTransitGatewayRequest: all fields are null")

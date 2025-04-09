@@ -14,7 +14,7 @@ CloudGatewayTransitGateway Resource
 
 ```terraform
 resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway" {
-  create_aws_transit_gateway = {
+  aws_transit_gateway = {
     cidr_blocks = [
       "..."
     ]
@@ -35,7 +35,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
       transit_gateway_id = "...my_transit_gateway_id..."
     }
   }
-  create_aws_vpc_peering_gateway = {
+  aws_vpc_peering_gateway = {
     cidr_blocks = [
       "..."
     ]
@@ -57,7 +57,7 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
       peer_vpc_region = "...my_peer_vpc_region..."
     }
   }
-  create_azure_transit_gateway = {
+  azure_transit_gateway = {
     dns_config = [
       {
         domain_proxy_list = [
@@ -90,9 +90,9 @@ resource "konnect_cloud_gateway_transit_gateway" "my_cloudgatewaytransitgateway"
 
 ### Optional
 
-- `create_aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_transit_gateway))
-- `create_aws_vpc_peering_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_vpc_peering_gateway))
-- `create_azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_azure_transit_gateway))
+- `aws_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway))
+- `aws_vpc_peering_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway))
+- `azure_transit_gateway` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway))
 
 ### Read-Only
 
@@ -104,8 +104,8 @@ transit gateway.
 - `id` (String) The ID of this resource.
 - `name` (String) Human-readable name of the transit gateway.
 
-<a id="nestedatt--create_aws_transit_gateway"></a>
-### Nested Schema for `create_aws_transit_gateway`
+<a id="nestedatt--aws_transit_gateway"></a>
+### Nested Schema for `aws_transit_gateway`
 
 Required:
 
@@ -113,16 +113,16 @@ Required:
 network.
 Requires replacement if changed.
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
-- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_transit_gateway--transit_gateway_attachment_config))
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway--transit_gateway_attachment_config))
 
 Optional:
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_transit_gateway--dns_config))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_transit_gateway--dns_config))
 
-<a id="nestedatt--create_aws_transit_gateway--transit_gateway_attachment_config"></a>
-### Nested Schema for `create_aws_transit_gateway.transit_gateway_attachment_config`
+<a id="nestedatt--aws_transit_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_transit_gateway.transit_gateway_attachment_config`
 
 Required:
 
@@ -131,8 +131,8 @@ Required:
 - `transit_gateway_id` (String) AWS Transit Gateway ID to create attachment to. Requires replacement if changed.
 
 
-<a id="nestedatt--create_aws_transit_gateway--dns_config"></a>
-### Nested Schema for `create_aws_transit_gateway.dns_config`
+<a id="nestedatt--aws_transit_gateway--dns_config"></a>
+### Nested Schema for `aws_transit_gateway.dns_config`
 
 Required:
 
@@ -143,8 +143,8 @@ Requires replacement if changed.
 
 
 
-<a id="nestedatt--create_aws_vpc_peering_gateway"></a>
-### Nested Schema for `create_aws_vpc_peering_gateway`
+<a id="nestedatt--aws_vpc_peering_gateway"></a>
+### Nested Schema for `aws_vpc_peering_gateway`
 
 Required:
 
@@ -152,16 +152,16 @@ Required:
 network.
 Requires replacement if changed.
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
-- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_vpc_peering_gateway--transit_gateway_attachment_config))
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway--transit_gateway_attachment_config))
 
 Optional:
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--create_aws_vpc_peering_gateway--dns_config))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--aws_vpc_peering_gateway--dns_config))
 
-<a id="nestedatt--create_aws_vpc_peering_gateway--transit_gateway_attachment_config"></a>
-### Nested Schema for `create_aws_vpc_peering_gateway.transit_gateway_attachment_config`
+<a id="nestedatt--aws_vpc_peering_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `aws_vpc_peering_gateway.transit_gateway_attachment_config`
 
 Required:
 
@@ -171,8 +171,8 @@ Required:
 - `peer_vpc_region` (String) Requires replacement if changed.
 
 
-<a id="nestedatt--create_aws_vpc_peering_gateway--dns_config"></a>
-### Nested Schema for `create_aws_vpc_peering_gateway.dns_config`
+<a id="nestedatt--aws_vpc_peering_gateway--dns_config"></a>
+### Nested Schema for `aws_vpc_peering_gateway.dns_config`
 
 Required:
 
@@ -183,22 +183,22 @@ Requires replacement if changed.
 
 
 
-<a id="nestedatt--create_azure_transit_gateway"></a>
-### Nested Schema for `create_azure_transit_gateway`
+<a id="nestedatt--azure_transit_gateway"></a>
+### Nested Schema for `azure_transit_gateway`
 
 Required:
 
 - `name` (String) Human-readable name of the transit gateway. Requires replacement if changed.
-- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--create_azure_transit_gateway--transit_gateway_attachment_config))
+- `transit_gateway_attachment_config` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway--transit_gateway_attachment_config))
 
 Optional:
 
 - `dns_config` (Attributes List) List of mappings from remote DNS server IP address sets to proxied internal domains, for a transit gateway
 attachment.
-Requires replacement if changed. (see [below for nested schema](#nestedatt--create_azure_transit_gateway--dns_config))
+Requires replacement if changed. (see [below for nested schema](#nestedatt--azure_transit_gateway--dns_config))
 
-<a id="nestedatt--create_azure_transit_gateway--transit_gateway_attachment_config"></a>
-### Nested Schema for `create_azure_transit_gateway.transit_gateway_attachment_config`
+<a id="nestedatt--azure_transit_gateway--transit_gateway_attachment_config"></a>
+### Nested Schema for `azure_transit_gateway.transit_gateway_attachment_config`
 
 Required:
 
@@ -209,8 +209,8 @@ Required:
 - `vnet_name` (String) VNET Name for the Azure VNET Peering attachment. Requires replacement if changed.
 
 
-<a id="nestedatt--create_azure_transit_gateway--dns_config"></a>
-### Nested Schema for `create_azure_transit_gateway.dns_config`
+<a id="nestedatt--azure_transit_gateway--dns_config"></a>
+### Nested Schema for `azure_transit_gateway.dns_config`
 
 Required:
 

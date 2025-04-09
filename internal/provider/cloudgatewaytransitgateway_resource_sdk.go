@@ -13,13 +13,13 @@ import (
 
 func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRequest() *shared.CreateTransitGatewayRequest {
 	var out shared.CreateTransitGatewayRequest
-	var createAwsTransitGateway *shared.CreateAwsTransitGateway
-	if r.CreateAwsTransitGateway != nil {
+	var awsTransitGateway *shared.AWSTransitGateway
+	if r.AWSTransitGateway != nil {
 		var name string
-		name = r.CreateAwsTransitGateway.Name.ValueString()
+		name = r.AWSTransitGateway.Name.ValueString()
 
 		var dnsConfig []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
-		for _, dnsConfigItem := range r.CreateAwsTransitGateway.DNSConfig {
+		for _, dnsConfigItem := range r.AWSTransitGateway.DNSConfig {
 			var remoteDNSServerIPAddresses []string = []string{}
 			for _, remoteDNSServerIPAddressesItem := range dnsConfigItem.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses = append(remoteDNSServerIPAddresses, remoteDNSServerIPAddressesItem.ValueString())
@@ -34,40 +34,40 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			})
 		}
 		var cidrBlocks []string = []string{}
-		for _, cidrBlocksItem := range r.CreateAwsTransitGateway.CidrBlocks {
+		for _, cidrBlocksItem := range r.AWSTransitGateway.CidrBlocks {
 			cidrBlocks = append(cidrBlocks, cidrBlocksItem.ValueString())
 		}
-		kind := shared.AWSTransitGatewayAttachmentType(r.CreateAwsTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		kind := shared.AWSTransitGatewayAttachmentType(r.AWSTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var transitGatewayID string
-		transitGatewayID = r.CreateAwsTransitGateway.TransitGatewayAttachmentConfig.TransitGatewayID.ValueString()
+		transitGatewayID = r.AWSTransitGateway.TransitGatewayAttachmentConfig.TransitGatewayID.ValueString()
 
 		var ramShareArn string
-		ramShareArn = r.CreateAwsTransitGateway.TransitGatewayAttachmentConfig.RAMShareArn.ValueString()
+		ramShareArn = r.AWSTransitGateway.TransitGatewayAttachmentConfig.RAMShareArn.ValueString()
 
 		transitGatewayAttachmentConfig := shared.AwsTransitGatewayAttachmentConfig{
 			Kind:             kind,
 			TransitGatewayID: transitGatewayID,
 			RAMShareArn:      ramShareArn,
 		}
-		createAwsTransitGateway = &shared.CreateAwsTransitGateway{
+		awsTransitGateway = &shared.AWSTransitGateway{
 			Name:                           name,
 			DNSConfig:                      dnsConfig,
 			CidrBlocks:                     cidrBlocks,
 			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig,
 		}
 	}
-	if createAwsTransitGateway != nil {
+	if awsTransitGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
-			CreateAwsTransitGateway: createAwsTransitGateway,
+			AWSTransitGateway: awsTransitGateway,
 		}
 	}
-	var createAwsVpcPeeringGateway *shared.CreateAwsVpcPeeringGateway
-	if r.CreateAwsVpcPeeringGateway != nil {
+	var awsVpcPeeringGateway *shared.AWSVpcPeeringGateway
+	if r.AWSVpcPeeringGateway != nil {
 		var name1 string
-		name1 = r.CreateAwsVpcPeeringGateway.Name.ValueString()
+		name1 = r.AWSVpcPeeringGateway.Name.ValueString()
 
 		var dnsConfig1 []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
-		for _, dnsConfigItem1 := range r.CreateAwsVpcPeeringGateway.DNSConfig {
+		for _, dnsConfigItem1 := range r.AWSVpcPeeringGateway.DNSConfig {
 			var remoteDNSServerIPAddresses1 []string = []string{}
 			for _, remoteDNSServerIPAddressesItem1 := range dnsConfigItem1.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses1 = append(remoteDNSServerIPAddresses1, remoteDNSServerIPAddressesItem1.ValueString())
@@ -82,18 +82,18 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			})
 		}
 		var cidrBlocks1 []string = []string{}
-		for _, cidrBlocksItem1 := range r.CreateAwsVpcPeeringGateway.CidrBlocks {
+		for _, cidrBlocksItem1 := range r.AWSVpcPeeringGateway.CidrBlocks {
 			cidrBlocks1 = append(cidrBlocks1, cidrBlocksItem1.ValueString())
 		}
-		kind1 := shared.AWSVPCPeeringAttachmentConfig(r.CreateAwsVpcPeeringGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		kind1 := shared.AWSVPCPeeringAttachmentConfig(r.AWSVpcPeeringGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var peerAccountID string
-		peerAccountID = r.CreateAwsVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerAccountID.ValueString()
+		peerAccountID = r.AWSVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerAccountID.ValueString()
 
 		var peerVpcID string
-		peerVpcID = r.CreateAwsVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerVpcID.ValueString()
+		peerVpcID = r.AWSVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerVpcID.ValueString()
 
 		var peerVpcRegion string
-		peerVpcRegion = r.CreateAwsVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerVpcRegion.ValueString()
+		peerVpcRegion = r.AWSVpcPeeringGateway.TransitGatewayAttachmentConfig.PeerVpcRegion.ValueString()
 
 		transitGatewayAttachmentConfig1 := shared.AwsVpcPeeringGatewayAttachmentConfig{
 			Kind:          kind1,
@@ -101,25 +101,25 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			PeerVpcID:     peerVpcID,
 			PeerVpcRegion: peerVpcRegion,
 		}
-		createAwsVpcPeeringGateway = &shared.CreateAwsVpcPeeringGateway{
+		awsVpcPeeringGateway = &shared.AWSVpcPeeringGateway{
 			Name:                           name1,
 			DNSConfig:                      dnsConfig1,
 			CidrBlocks:                     cidrBlocks1,
 			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig1,
 		}
 	}
-	if createAwsVpcPeeringGateway != nil {
+	if awsVpcPeeringGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
-			CreateAwsVpcPeeringGateway: createAwsVpcPeeringGateway,
+			AWSVpcPeeringGateway: awsVpcPeeringGateway,
 		}
 	}
-	var createAzureTransitGateway *shared.CreateAzureTransitGateway
-	if r.CreateAzureTransitGateway != nil {
+	var azureTransitGateway *shared.AzureTransitGateway
+	if r.AzureTransitGateway != nil {
 		var name2 string
-		name2 = r.CreateAzureTransitGateway.Name.ValueString()
+		name2 = r.AzureTransitGateway.Name.ValueString()
 
 		var dnsConfig2 []shared.TransitGatewayDNSConfig = []shared.TransitGatewayDNSConfig{}
-		for _, dnsConfigItem2 := range r.CreateAzureTransitGateway.DNSConfig {
+		for _, dnsConfigItem2 := range r.AzureTransitGateway.DNSConfig {
 			var remoteDNSServerIPAddresses2 []string = []string{}
 			for _, remoteDNSServerIPAddressesItem2 := range dnsConfigItem2.RemoteDNSServerIPAddresses {
 				remoteDNSServerIPAddresses2 = append(remoteDNSServerIPAddresses2, remoteDNSServerIPAddressesItem2.ValueString())
@@ -133,18 +133,18 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 				DomainProxyList:            domainProxyList2,
 			})
 		}
-		kind2 := shared.AzureVNETPeeringAttachmentType(r.CreateAzureTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
+		kind2 := shared.AzureVNETPeeringAttachmentType(r.AzureTransitGateway.TransitGatewayAttachmentConfig.Kind.ValueString())
 		var tenantID string
-		tenantID = r.CreateAzureTransitGateway.TransitGatewayAttachmentConfig.TenantID.ValueString()
+		tenantID = r.AzureTransitGateway.TransitGatewayAttachmentConfig.TenantID.ValueString()
 
 		var subscriptionID string
-		subscriptionID = r.CreateAzureTransitGateway.TransitGatewayAttachmentConfig.SubscriptionID.ValueString()
+		subscriptionID = r.AzureTransitGateway.TransitGatewayAttachmentConfig.SubscriptionID.ValueString()
 
 		var resourceGroupName string
-		resourceGroupName = r.CreateAzureTransitGateway.TransitGatewayAttachmentConfig.ResourceGroupName.ValueString()
+		resourceGroupName = r.AzureTransitGateway.TransitGatewayAttachmentConfig.ResourceGroupName.ValueString()
 
 		var vnetName string
-		vnetName = r.CreateAzureTransitGateway.TransitGatewayAttachmentConfig.VnetName.ValueString()
+		vnetName = r.AzureTransitGateway.TransitGatewayAttachmentConfig.VnetName.ValueString()
 
 		transitGatewayAttachmentConfig2 := shared.AzureVNETPeeringAttachmentConfig{
 			Kind:              kind2,
@@ -153,15 +153,15 @@ func (r *CloudGatewayTransitGatewayResourceModel) ToSharedCreateTransitGatewayRe
 			ResourceGroupName: resourceGroupName,
 			VnetName:          vnetName,
 		}
-		createAzureTransitGateway = &shared.CreateAzureTransitGateway{
+		azureTransitGateway = &shared.AzureTransitGateway{
 			Name:                           name2,
 			DNSConfig:                      dnsConfig2,
 			TransitGatewayAttachmentConfig: transitGatewayAttachmentConfig2,
 		}
 	}
-	if createAzureTransitGateway != nil {
+	if azureTransitGateway != nil {
 		out = shared.CreateTransitGatewayRequest{
-			CreateAzureTransitGateway: createAzureTransitGateway,
+			AzureTransitGateway: azureTransitGateway,
 		}
 	}
 	return &out
