@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AzureTransitGateway struct {
+type CreateAzureTransitGateway struct {
 	DNSConfig                      []TransitGatewayDNSConfig        `tfsdk:"dns_config"`
 	Name                           types.String                     `tfsdk:"name"`
 	TransitGatewayAttachmentConfig AzureVNETPeeringAttachmentConfig `tfsdk:"transit_gateway_attachment_config"`

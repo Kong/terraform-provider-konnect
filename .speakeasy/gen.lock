@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: b89b0d537cdef4d7100070bf8d09b24a
+  docChecksum: da3aa3e5e9737fba4d5b79bb3cb506ec
   docVersion: 2.0.0
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
@@ -1087,14 +1087,11 @@ generatedFiles:
   - internal/provider/types/auth_strategy_key_auth.go
   - internal/provider/types/authentication.go
   - internal/provider/types/aws_lambda_plugin_config.go
-  - internal/provider/types/aws_transit_gateway.go
   - internal/provider/types/aws_transit_gateway_attachment_config.go
   - internal/provider/types/aws_transit_gateway_response.go
-  - internal/provider/types/aws_vpc_peering_gateway.go
   - internal/provider/types/aws_vpc_peering_gateway_attachment_config.go
   - internal/provider/types/aws_vpc_peering_gateway_response.go
   - internal/provider/types/azure_functions_plugin_config.go
-  - internal/provider/types/azure_transit_gateway.go
   - internal/provider/types/azure_transit_gateway_response.go
   - internal/provider/types/azure_vnet_peering_attachment_config.go
   - internal/provider/types/balancer.go
@@ -1122,6 +1119,9 @@ generatedFiles:
   - internal/provider/types/consul.go
   - internal/provider/types/correlation_id_plugin_config.go
   - internal/provider/types/cors_plugin_config.go
+  - internal/provider/types/create_aws_transit_gateway.go
+  - internal/provider/types/create_aws_vpc_peering_gateway.go
+  - internal/provider/types/create_azure_transit_gateway.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
   - internal/provider/types/datadog_plugin_config.go
@@ -1933,6 +1933,9 @@ generatedFiles:
   - internal/sdk/models/shared/createappauthstrategyrequest.go
   - internal/sdk/models/shared/createappauthstrategyresponse.go
   - internal/sdk/models/shared/createauditlogdestination.go
+  - internal/sdk/models/shared/createawstransitgateway.go
+  - internal/sdk/models/shared/createawsvpcpeeringgateway.go
+  - internal/sdk/models/shared/createazuretransitgateway.go
   - internal/sdk/models/shared/createconfigstore.go
   - internal/sdk/models/shared/createconfigurationdataplanegroup.go
   - internal/sdk/models/shared/createconfigurationrequest.go
@@ -1957,7 +1960,6 @@ generatedFiles:
   - internal/sdk/models/shared/dataplaneclientcertificateresponse.go
   - internal/sdk/models/shared/dcrprovidertype.go
   - internal/sdk/models/shared/degraphqlplugin.go
-  - internal/sdk/models/shared/entityregion.go
   - internal/sdk/models/shared/exittransformerplugin.go
   - internal/sdk/models/shared/filelogplugin.go
   - internal/sdk/models/shared/forbiddenerror.go
@@ -3170,6 +3172,7 @@ examples:
       responses:
         "401":
           application/json: {"message": "<value>", "status": 945866}
+        "200": {}
   upsert-consumer_group:
     "":
       parameters:

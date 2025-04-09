@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AWSTransitGateway struct {
+type CreateAwsTransitGateway struct {
 	CidrBlocks                     []types.String                    `tfsdk:"cidr_blocks"`
 	DNSConfig                      []TransitGatewayDNSConfig         `tfsdk:"dns_config"`
 	Name                           types.String                      `tfsdk:"name"`
