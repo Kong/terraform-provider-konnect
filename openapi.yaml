@@ -13301,6 +13301,7 @@ components:
         - cidr_blocks
         - transit_gateway_attachment_config
       title: AWS Transit Gateway
+      x-speakeasy-name-override: AWSTransitGateway
     CreateAwsVpcPeeringGateway:
       type: object
       properties:
@@ -13317,6 +13318,7 @@ components:
         - cidr_blocks
         - transit_gateway_attachment_config
       title: AWS Vpc Peering Gateway
+      x-speakeasy-name-override: AWSVpcPeeringGateway
     CreateAzureTransitGateway:
       type: object
       properties:
@@ -13330,6 +13332,7 @@ components:
         - name
         - transit_gateway_attachment_config
       title: Azure Transit Gateway
+      x-speakeasy-name-override: AzureTransitGateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
