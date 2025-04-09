@@ -2,6 +2,50 @@
 
 package shared
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// AssignedRoleEntityRegion - Region of the entity.
+type AssignedRoleEntityRegion string
+
+const (
+	AssignedRoleEntityRegionUs       AssignedRoleEntityRegion = "us"
+	AssignedRoleEntityRegionEu       AssignedRoleEntityRegion = "eu"
+	AssignedRoleEntityRegionAu       AssignedRoleEntityRegion = "au"
+	AssignedRoleEntityRegionMe       AssignedRoleEntityRegion = "me"
+	AssignedRoleEntityRegionIn       AssignedRoleEntityRegion = "in"
+	AssignedRoleEntityRegionWildcard AssignedRoleEntityRegion = "*"
+)
+
+func (e AssignedRoleEntityRegion) ToPointer() *AssignedRoleEntityRegion {
+	return &e
+}
+func (e *AssignedRoleEntityRegion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "us":
+		fallthrough
+	case "eu":
+		fallthrough
+	case "au":
+		fallthrough
+	case "me":
+		fallthrough
+	case "in":
+		fallthrough
+	case "*":
+		*e = AssignedRoleEntityRegion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AssignedRoleEntityRegion: %v", v)
+	}
+}
+
 // AssignedRole - An assigned role is a role that has been assigned to a user or team.
 type AssignedRole struct {
 	// The ID of the role assignment.
@@ -11,8 +55,9 @@ type AssignedRole struct {
 	// A RBAC entity ID.
 	EntityID *string `json:"entity_id,omitempty"`
 	// Name of the entity type the role is being assigned to.
-	EntityTypeName *string       `json:"entity_type_name,omitempty"`
-	EntityRegion   *EntityRegion `json:"entity_region,omitempty"`
+	EntityTypeName *string `json:"entity_type_name,omitempty"`
+	// Region of the entity.
+	EntityRegion *AssignedRoleEntityRegion `json:"entity_region,omitempty"`
 }
 
 func (o *AssignedRole) GetID() *string {
@@ -43,7 +88,7 @@ func (o *AssignedRole) GetEntityTypeName() *string {
 	return o.EntityTypeName
 }
 
-func (o *AssignedRole) GetEntityRegion() *EntityRegion {
+func (o *AssignedRole) GetEntityRegion() *AssignedRoleEntityRegion {
 	if o == nil {
 		return nil
 	}

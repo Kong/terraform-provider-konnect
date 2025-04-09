@@ -156,8 +156,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
@@ -487,8 +487,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -595,8 +595,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -706,8 +706,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 					}...),
