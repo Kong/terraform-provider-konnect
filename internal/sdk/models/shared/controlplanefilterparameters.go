@@ -27,7 +27,6 @@ type Name struct {
 	Eq       *string `queryParam:"name=eq"`
 	Contains *string `queryParam:"name=contains"`
 	Neq      *string `queryParam:"name=neq"`
-	Oeq      *string `queryParam:"name=oeq"`
 }
 
 func (o *Name) GetEq() *string {
@@ -51,18 +50,10 @@ func (o *Name) GetNeq() *string {
 	return o.Neq
 }
 
-func (o *Name) GetOeq() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Oeq
-}
-
 // ClusterType - Filters on the given string field value by exact match inequality.
 type ClusterType struct {
 	Eq  *string `queryParam:"name=eq"`
 	Neq *string `queryParam:"name=neq"`
-	Oeq *string `queryParam:"name=oeq"`
 }
 
 func (o *ClusterType) GetEq() *string {
@@ -77,13 +68,6 @@ func (o *ClusterType) GetNeq() *string {
 		return nil
 	}
 	return o.Neq
-}
-
-func (o *ClusterType) GetOeq() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Oeq
 }
 
 type ControlPlaneFilterParameters struct {

@@ -138,9 +138,6 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 							"neq": schema.StringAttribute{
 								Optional: true,
 							},
-							"oeq": schema.StringAttribute{
-								Optional: true,
-							},
 						},
 						Description: `Filters on the given string field value by exact match inequality.`,
 					},
@@ -166,9 +163,6 @@ func (r *GatewayControlPlaneListDataSource) Schema(ctx context.Context, req data
 								Optional: true,
 							},
 							"neq": schema.StringAttribute{
-								Optional: true,
-							},
-							"oeq": schema.StringAttribute{
 								Optional: true,
 							},
 						},
@@ -310,17 +304,10 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 			} else {
 				neq = nil
 			}
-			oeq1 := new(string)
-			if !data.Filter.Name.Oeq.IsUnknown() && !data.Filter.Name.Oeq.IsNull() {
-				*oeq1 = data.Filter.Name.Oeq.ValueString()
-			} else {
-				oeq1 = nil
-			}
 			name = &shared.Name{
 				Eq:       eq1,
 				Contains: contains,
 				Neq:      neq,
-				Oeq:      oeq1,
 			}
 		}
 		var clusterType *shared.ClusterType
@@ -337,16 +324,9 @@ func (r *GatewayControlPlaneListDataSource) Read(ctx context.Context, req dataso
 			} else {
 				neq1 = nil
 			}
-			oeq2 := new(string)
-			if !data.Filter.ClusterType.Oeq.IsUnknown() && !data.Filter.ClusterType.Oeq.IsNull() {
-				*oeq2 = data.Filter.ClusterType.Oeq.ValueString()
-			} else {
-				oeq2 = nil
-			}
 			clusterType = &shared.ClusterType{
 				Eq:  eq2,
 				Neq: neq1,
-				Oeq: oeq2,
 			}
 		}
 		cloudGateway := new(bool)

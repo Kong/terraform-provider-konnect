@@ -19,7 +19,6 @@ data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
     cluster_type = {
       eq  = "...my_eq..."
       neq = "...my_neq..."
-      oeq = "...my_oeq..."
     }
     id = {
       eq  = "...my_eq..."
@@ -29,13 +28,12 @@ data "konnect_gateway_control_plane_list" "my_gatewaycontrolplanelist" {
       contains = "...my_contains..."
       eq       = "...my_eq..."
       neq      = "...my_neq..."
-      oeq      = "...my_oeq..."
     }
   }
   labels      = "key:value,existCheck"
   page_number = 1
   page_size   = 10
-  sort        = "name desc"
+  sort        = "created_at desc"
 }
 ```
 
@@ -73,7 +71,6 @@ Optional:
 
 - `eq` (String)
 - `neq` (String)
-- `oeq` (String)
 
 
 <a id="nestedatt--filter--id"></a>
@@ -93,7 +90,6 @@ Optional:
 - `contains` (String)
 - `eq` (String)
 - `neq` (String)
-- `oeq` (String)
 
 
 
