@@ -49,6 +49,7 @@ type GatewayKeyAuthResourceModel struct {
 	ID             types.String                       `tfsdk:"id"`
 	Key            types.String                       `tfsdk:"key"`
 	Tags           []types.String                     `tfsdk:"tags"`
+	TTL            types.Int64                        `tfsdk:"ttl"`
 }
 
 func (r *GatewayKeyAuthResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -130,6 +131,15 @@ func (r *GatewayKeyAuthResource) Schema(ctx context.Context, req resource.Schema
 				},
 				ElementType: types.StringType,
 				Description: `Requires replacement if changed.`,
+			},
+			"ttl": schema.Int64Attribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Int64{
+					int64planmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_int64planmodifier.SuppressDiff(speakeasy_int64planmodifier.ExplicitSuppress),
+				},
+				Description: `key-auth ttl in seconds. Requires replacement if changed.`,
 			},
 		},
 	}

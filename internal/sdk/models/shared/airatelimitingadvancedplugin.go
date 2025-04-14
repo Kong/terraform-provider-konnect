@@ -91,26 +91,26 @@ func (e *Identifier) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// Name - The LLM provider to which the rate limit applies.
-type Name string
+// AiRateLimitingAdvancedPluginName - The LLM provider to which the rate limit applies.
+type AiRateLimitingAdvancedPluginName string
 
 const (
-	NameAnthropic     Name = "anthropic"
-	NameAzure         Name = "azure"
-	NameBedrock       Name = "bedrock"
-	NameCohere        Name = "cohere"
-	NameGemini        Name = "gemini"
-	NameHuggingface   Name = "huggingface"
-	NameLlama2        Name = "llama2"
-	NameMistral       Name = "mistral"
-	NameOpenai        Name = "openai"
-	NameRequestPrompt Name = "requestPrompt"
+	AiRateLimitingAdvancedPluginNameAnthropic     AiRateLimitingAdvancedPluginName = "anthropic"
+	AiRateLimitingAdvancedPluginNameAzure         AiRateLimitingAdvancedPluginName = "azure"
+	AiRateLimitingAdvancedPluginNameBedrock       AiRateLimitingAdvancedPluginName = "bedrock"
+	AiRateLimitingAdvancedPluginNameCohere        AiRateLimitingAdvancedPluginName = "cohere"
+	AiRateLimitingAdvancedPluginNameGemini        AiRateLimitingAdvancedPluginName = "gemini"
+	AiRateLimitingAdvancedPluginNameHuggingface   AiRateLimitingAdvancedPluginName = "huggingface"
+	AiRateLimitingAdvancedPluginNameLlama2        AiRateLimitingAdvancedPluginName = "llama2"
+	AiRateLimitingAdvancedPluginNameMistral       AiRateLimitingAdvancedPluginName = "mistral"
+	AiRateLimitingAdvancedPluginNameOpenai        AiRateLimitingAdvancedPluginName = "openai"
+	AiRateLimitingAdvancedPluginNameRequestPrompt AiRateLimitingAdvancedPluginName = "requestPrompt"
 )
 
-func (e Name) ToPointer() *Name {
+func (e AiRateLimitingAdvancedPluginName) ToPointer() *AiRateLimitingAdvancedPluginName {
 	return &e
 }
-func (e *Name) UnmarshalJSON(data []byte) error {
+func (e *AiRateLimitingAdvancedPluginName) UnmarshalJSON(data []byte) error {
 	var v string
 	if err := json.Unmarshal(data, &v); err != nil {
 		return err
@@ -135,10 +135,10 @@ func (e *Name) UnmarshalJSON(data []byte) error {
 	case "openai":
 		fallthrough
 	case "requestPrompt":
-		*e = Name(v)
+		*e = AiRateLimitingAdvancedPluginName(v)
 		return nil
 	default:
-		return fmt.Errorf("invalid value for Name: %v", v)
+		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginName: %v", v)
 	}
 }
 
@@ -146,7 +146,7 @@ type LlmProviders struct {
 	// The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter.
 	Limit float64 `json:"limit"`
 	// The LLM provider to which the rate limit applies.
-	Name Name `json:"name"`
+	Name AiRateLimitingAdvancedPluginName `json:"name"`
 	// The window size to apply a limit (defined in seconds).
 	WindowSize float64 `json:"window_size"`
 }
@@ -158,9 +158,9 @@ func (o *LlmProviders) GetLimit() float64 {
 	return o.Limit
 }
 
-func (o *LlmProviders) GetName() Name {
+func (o *LlmProviders) GetName() AiRateLimitingAdvancedPluginName {
 	if o == nil {
-		return Name("")
+		return AiRateLimitingAdvancedPluginName("")
 	}
 	return o.Name
 }

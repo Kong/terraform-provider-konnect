@@ -20,6 +20,8 @@ type KeyAuthWithoutParents struct {
 	ID        *string  `json:"id,omitempty"`
 	Key       string   `json:"key"`
 	Tags      []string `json:"tags,omitempty"`
+	// key-auth ttl in seconds
+	TTL *int64 `json:"ttl,omitempty"`
 }
 
 func (o *KeyAuthWithoutParents) GetConsumer() *KeyAuthWithoutParentsConsumer {
@@ -55,4 +57,11 @@ func (o *KeyAuthWithoutParents) GetTags() []string {
 		return nil
 	}
 	return o.Tags
+}
+
+func (o *KeyAuthWithoutParents) GetTTL() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.TTL
 }
