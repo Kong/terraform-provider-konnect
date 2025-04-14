@@ -25,6 +25,7 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
   tags = [
     "..."
   ]
+  ttl = 5
 }
 ```
 
@@ -43,6 +44,7 @@ resource "konnect_gateway_key_auth" "my_gatewaykeyauth" {
 - `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
+- `ttl` (Number) key-auth ttl in seconds. Requires replacement if changed.
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`

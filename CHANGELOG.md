@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.0
+> Released on ?
+
+### Features
+
+* Add support for `konnect_gateway_control_plane_list`  data source
+
 ## 2.4.1
 > Released on 2025/03/13
 

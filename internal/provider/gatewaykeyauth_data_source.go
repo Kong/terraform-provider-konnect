@@ -36,6 +36,7 @@ type GatewayKeyAuthDataSourceModel struct {
 	ID             types.String                       `tfsdk:"id"`
 	Key            types.String                       `tfsdk:"key"`
 	Tags           []types.String                     `tfsdk:"tags"`
+	TTL            types.Int64                        `tfsdk:"ttl"`
 }
 
 // Metadata returns the data source type name.
@@ -78,6 +79,10 @@ func (r *GatewayKeyAuthDataSource) Schema(ctx context.Context, req datasource.Sc
 			"tags": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
+			},
+			"ttl": schema.Int64Attribute{
+				Computed:    true,
+				Description: `key-auth ttl in seconds`,
 			},
 		},
 	}

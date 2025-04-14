@@ -127,7 +127,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			var limit float64
 			limit = llmProvidersItem.Limit.ValueFloat64()
 
-			name := shared.Name(llmProvidersItem.Name.ValueString())
+			name := shared.AiRateLimitingAdvancedPluginName(llmProvidersItem.Name.ValueString())
 			var windowSize float64
 			windowSize = llmProvidersItem.WindowSize.ValueFloat64()
 
