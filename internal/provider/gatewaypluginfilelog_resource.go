@@ -41,7 +41,7 @@ type GatewayPluginFileLogResource struct {
 
 // GatewayPluginFileLogResourceModel describes the resource data model.
 type GatewayPluginFileLogResourceModel struct {
-	Config         tfTypes.FileLogPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.FileLogPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +65,8 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginFileLog Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_fields_by_lua": schema.MapAttribute{
 						Computed:    true,
@@ -114,6 +115,7 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -199,6 +201,7 @@ func (r *GatewayPluginFileLogResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -246,7 +249,7 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	fileLogPlugin := *data.ToSharedFileLogPluginInput()
+	fileLogPlugin := *data.ToSharedFileLogPlugin()
 	request := operations.CreateFilelogPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		FileLogPlugin:  fileLogPlugin,
@@ -271,8 +274,17 @@ func (r *GatewayPluginFileLogResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedFileLogPlugin(res.FileLogPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedFileLogPlugin(ctx, res.FileLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -330,7 +342,11 @@ func (r *GatewayPluginFileLogResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedFileLogPlugin(res.FileLogPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedFileLogPlugin(ctx, res.FileLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -356,7 +372,7 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	fileLogPlugin := *data.ToSharedFileLogPluginInput()
+	fileLogPlugin := *data.ToSharedFileLogPlugin()
 	request := operations.UpdateFilelogPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -382,8 +398,17 @@ func (r *GatewayPluginFileLogResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedFileLogPlugin(res.FileLogPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedFileLogPlugin(ctx, res.FileLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -445,7 +470,7 @@ func (r *GatewayPluginFileLogResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

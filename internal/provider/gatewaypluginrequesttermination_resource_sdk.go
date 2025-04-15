@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminationPluginInput() *shared.RequestTerminationPluginInput {
+func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminationPlugin() *shared.RequestTerminationPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,49 +66,58 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	body := new(string)
-	if !r.Config.Body.IsUnknown() && !r.Config.Body.IsNull() {
-		*body = r.Config.Body.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		body = nil
+		updatedAt = nil
 	}
-	contentType := new(string)
-	if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
-		*contentType = r.Config.ContentType.ValueString()
-	} else {
-		contentType = nil
-	}
-	echo := new(bool)
-	if !r.Config.Echo.IsUnknown() && !r.Config.Echo.IsNull() {
-		*echo = r.Config.Echo.ValueBool()
-	} else {
-		echo = nil
-	}
-	message := new(string)
-	if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
-		*message = r.Config.Message.ValueString()
-	} else {
-		message = nil
-	}
-	statusCode := new(int64)
-	if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
-		*statusCode = r.Config.StatusCode.ValueInt64()
-	} else {
-		statusCode = nil
-	}
-	trigger := new(string)
-	if !r.Config.Trigger.IsUnknown() && !r.Config.Trigger.IsNull() {
-		*trigger = r.Config.Trigger.ValueString()
-	} else {
-		trigger = nil
-	}
-	config := shared.RequestTerminationPluginConfig{
-		Body:        body,
-		ContentType: contentType,
-		Echo:        echo,
-		Message:     message,
-		StatusCode:  statusCode,
-		Trigger:     trigger,
+	var config *shared.RequestTerminationPluginConfig
+	if r.Config != nil {
+		body := new(string)
+		if !r.Config.Body.IsUnknown() && !r.Config.Body.IsNull() {
+			*body = r.Config.Body.ValueString()
+		} else {
+			body = nil
+		}
+		contentType := new(string)
+		if !r.Config.ContentType.IsUnknown() && !r.Config.ContentType.IsNull() {
+			*contentType = r.Config.ContentType.ValueString()
+		} else {
+			contentType = nil
+		}
+		echo := new(bool)
+		if !r.Config.Echo.IsUnknown() && !r.Config.Echo.IsNull() {
+			*echo = r.Config.Echo.ValueBool()
+		} else {
+			echo = nil
+		}
+		message := new(string)
+		if !r.Config.Message.IsUnknown() && !r.Config.Message.IsNull() {
+			*message = r.Config.Message.ValueString()
+		} else {
+			message = nil
+		}
+		statusCode := new(int64)
+		if !r.Config.StatusCode.IsUnknown() && !r.Config.StatusCode.IsNull() {
+			*statusCode = r.Config.StatusCode.ValueInt64()
+		} else {
+			statusCode = nil
+		}
+		trigger := new(string)
+		if !r.Config.Trigger.IsUnknown() && !r.Config.Trigger.IsNull() {
+			*trigger = r.Config.Trigger.ValueString()
+		} else {
+			trigger = nil
+		}
+		config = &shared.RequestTerminationPluginConfig{
+			Body:        body,
+			ContentType: contentType,
+			Echo:        echo,
+			Message:     message,
+			StatusCode:  statusCode,
+			Trigger:     trigger,
+		}
 	}
 	var consumer *shared.RequestTerminationPluginConsumer
 	if r.Consumer != nil {
@@ -154,12 +171,14 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 			ID: id4,
 		}
 	}
-	out := shared.RequestTerminationPluginInput{
+	out := shared.RequestTerminationPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
@@ -170,14 +189,21 @@ func (r *GatewayPluginRequestTerminationResourceModel) ToSharedRequestTerminatio
 	return &out
 }
 
-func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestTerminationPlugin(resp *shared.RequestTerminationPlugin) {
+func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestTerminationPlugin(ctx context.Context, resp *shared.RequestTerminationPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Body = types.StringPointerValue(resp.Config.Body)
-		r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
-		r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
-		r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RequestTerminationPluginConfig{}
+			r.Config.Body = types.StringPointerValue(resp.Config.Body)
+			r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
+			r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+			r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -239,4 +265,6 @@ func (r *GatewayPluginRequestTerminationResourceModel) RefreshFromSharedRequestT
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

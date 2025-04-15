@@ -29,18 +29,18 @@ type GatewayPluginOauth2IntrospectionDataSource struct {
 
 // GatewayPluginOauth2IntrospectionDataSourceModel describes the data model.
 type GatewayPluginOauth2IntrospectionDataSourceModel struct {
-	Config         tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.Oauth2IntrospectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -107,7 +107,7 @@ func (r *GatewayPluginOauth2IntrospectionDataSource) Schema(ctx context.Context,
 						Computed:    true,
 						Description: `The ` + "`" + `token_type_hint` + "`" + ` value to associate to introspection requests.`,
 					},
-					"ttl": schema.NumberAttribute{
+					"ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The TTL in seconds for the introspection response. Set to 0 to disable the expiration.`,
 					},
@@ -262,7 +262,11 @@ func (r *GatewayPluginOauth2IntrospectionDataSource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOauth2IntrospectionPlugin(res.Oauth2IntrospectionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOauth2IntrospectionPlugin(ctx, res.Oauth2IntrospectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

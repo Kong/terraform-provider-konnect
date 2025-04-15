@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -39,20 +40,20 @@ type GatewayPluginAiResponseTransformerResource struct {
 
 // GatewayPluginAiResponseTransformerResourceModel describes the resource data model.
 type GatewayPluginAiResponseTransformerResourceModel struct {
-	Config         tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         *tfTypes.AiResponseTransformerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                `tfsdk:"created_at"`
+	Enabled        types.Bool                                 `tfsdk:"enabled"`
+	ID             types.String                               `tfsdk:"id"`
+	InstanceName   types.String                               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
+	Protocols      []types.String                             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"service"`
+	Tags           []types.String                             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiResponseTransformerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +65,8 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 		MarkdownDescription: "GatewayPluginAiResponseTransformer Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"http_proxy_host": schema.StringAttribute{
 						Computed:    true,
@@ -285,7 +287,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 													},
 												},
 											},
-											"input_cost": schema.NumberAttribute{
+											"input_cost": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `Defines the cost per 1M tokens in your prompt.`,
@@ -318,15 +320,18 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 													),
 												},
 											},
-											"output_cost": schema.NumberAttribute{
+											"output_cost": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `Defines the cost per 1M tokens in the output of the AI.`,
 											},
-											"temperature": schema.NumberAttribute{
+											"temperature": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `Defines the matching temperature, if using chat or completion models.`,
+												Validators: []validator.Float64{
+													float64validator.AtMost(5),
+												},
 											},
 											"top_k": schema.Int64Attribute{
 												Computed:    true,
@@ -336,10 +341,13 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 													int64validator.AtMost(500),
 												},
 											},
-											"top_p": schema.NumberAttribute{
+											"top_p": schema.Float64Attribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `Defines the top-p probability mass, if supported.`,
+												Validators: []validator.Float64{
+													float64validator.AtMost(1),
+												},
 											},
 											"upstream_path": schema.StringAttribute{
 												Computed:    true,
@@ -447,6 +455,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -532,6 +541,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Schema(ctx context.Context,
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -579,7 +589,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Create(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPluginInput()
+	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPlugin()
 	request := operations.CreateAiresponsetransformerPluginRequest{
 		ControlPlaneID:              controlPlaneID,
 		AiResponseTransformerPlugin: aiResponseTransformerPlugin,
@@ -604,8 +614,17 @@ func (r *GatewayPluginAiResponseTransformerResource) Create(ctx context.Context,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiResponseTransformerPlugin(res.AiResponseTransformerPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiResponseTransformerPlugin(ctx, res.AiResponseTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -663,7 +682,11 @@ func (r *GatewayPluginAiResponseTransformerResource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiResponseTransformerPlugin(res.AiResponseTransformerPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiResponseTransformerPlugin(ctx, res.AiResponseTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -689,7 +712,7 @@ func (r *GatewayPluginAiResponseTransformerResource) Update(ctx context.Context,
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPluginInput()
+	aiResponseTransformerPlugin := *data.ToSharedAiResponseTransformerPlugin()
 	request := operations.UpdateAiresponsetransformerPluginRequest{
 		PluginID:                    pluginID,
 		ControlPlaneID:              controlPlaneID,
@@ -715,8 +738,17 @@ func (r *GatewayPluginAiResponseTransformerResource) Update(ctx context.Context,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiResponseTransformerPlugin(res.AiResponseTransformerPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiResponseTransformerPlugin(ctx, res.AiResponseTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -778,7 +810,7 @@ func (r *GatewayPluginAiResponseTransformerResource) ImportState(ctx context.Con
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

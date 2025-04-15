@@ -9,8 +9,8 @@ import (
 
 type CreateRoutebyheaderPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RouteByHeaderPlugin shared.RouteByHeaderPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RouteByHeaderPlugin shared.RouteByHeaderPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateRoutebyheaderPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPluginInput {
+func (o *CreateRoutebyheaderPluginRequest) GetRouteByHeaderPlugin() shared.RouteByHeaderPlugin {
 	if o == nil {
-		return shared.RouteByHeaderPluginInput{}
+		return shared.RouteByHeaderPlugin{}
 	}
 	return o.RouteByHeaderPlugin
 }

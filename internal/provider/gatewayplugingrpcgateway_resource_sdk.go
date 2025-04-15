@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPluginInput() *shared.GrpcGatewayPluginInput {
+func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPlugin() *shared.GrpcGatewayPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,14 +66,23 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPluginInput()
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	proto := new(string)
-	if !r.Config.Proto.IsUnknown() && !r.Config.Proto.IsNull() {
-		*proto = r.Config.Proto.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		proto = nil
+		updatedAt = nil
 	}
-	config := shared.GrpcGatewayPluginConfig{
-		Proto: proto,
+	var config *shared.GrpcGatewayPluginConfig
+	if r.Config != nil {
+		proto := new(string)
+		if !r.Config.Proto.IsUnknown() && !r.Config.Proto.IsNull() {
+			*proto = r.Config.Proto.ValueString()
+		} else {
+			proto = nil
+		}
+		config = &shared.GrpcGatewayPluginConfig{
+			Proto: proto,
+		}
 	}
 	var consumer *shared.GrpcGatewayPluginConsumer
 	if r.Consumer != nil {
@@ -107,12 +124,14 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPluginInput()
 			ID: id3,
 		}
 	}
-	out := shared.GrpcGatewayPluginInput{
+	out := shared.GrpcGatewayPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -122,9 +141,16 @@ func (r *GatewayPluginGrpcGatewayResourceModel) ToSharedGrpcGatewayPluginInput()
 	return &out
 }
 
-func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlugin(resp *shared.GrpcGatewayPlugin) {
+func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlugin(ctx context.Context, resp *shared.GrpcGatewayPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.GrpcGatewayPluginConfig{}
+			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -180,4 +206,6 @@ func (r *GatewayPluginGrpcGatewayResourceModel) RefreshFromSharedGrpcGatewayPlug
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

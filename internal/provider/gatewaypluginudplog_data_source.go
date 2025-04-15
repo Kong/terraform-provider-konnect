@@ -29,7 +29,7 @@ type GatewayPluginUDPLogDataSource struct {
 
 // GatewayPluginUDPLogDataSourceModel describes the data model.
 type GatewayPluginUDPLogDataSourceModel struct {
-	Config         tfTypes.UDPLogPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.UDPLogPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -71,7 +71,7 @@ func (r *GatewayPluginUDPLogDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `An integer representing a port number between 0 and 65535, inclusive.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
 					},
@@ -235,7 +235,11 @@ func (r *GatewayPluginUDPLogDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUDPLogPlugin(res.UDPLogPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedUDPLogPlugin(ctx, res.UDPLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

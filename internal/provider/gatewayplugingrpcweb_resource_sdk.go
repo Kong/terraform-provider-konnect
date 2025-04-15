@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPluginInput() *shared.GrpcWebPluginInput {
+func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPlugin() *shared.GrpcWebPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,28 +66,37 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPluginInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	allowOriginHeader := new(string)
-	if !r.Config.AllowOriginHeader.IsUnknown() && !r.Config.AllowOriginHeader.IsNull() {
-		*allowOriginHeader = r.Config.AllowOriginHeader.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		allowOriginHeader = nil
+		updatedAt = nil
 	}
-	passStrippedPath := new(bool)
-	if !r.Config.PassStrippedPath.IsUnknown() && !r.Config.PassStrippedPath.IsNull() {
-		*passStrippedPath = r.Config.PassStrippedPath.ValueBool()
-	} else {
-		passStrippedPath = nil
-	}
-	proto := new(string)
-	if !r.Config.Proto.IsUnknown() && !r.Config.Proto.IsNull() {
-		*proto = r.Config.Proto.ValueString()
-	} else {
-		proto = nil
-	}
-	config := shared.GrpcWebPluginConfig{
-		AllowOriginHeader: allowOriginHeader,
-		PassStrippedPath:  passStrippedPath,
-		Proto:             proto,
+	var config *shared.GrpcWebPluginConfig
+	if r.Config != nil {
+		allowOriginHeader := new(string)
+		if !r.Config.AllowOriginHeader.IsUnknown() && !r.Config.AllowOriginHeader.IsNull() {
+			*allowOriginHeader = r.Config.AllowOriginHeader.ValueString()
+		} else {
+			allowOriginHeader = nil
+		}
+		passStrippedPath := new(bool)
+		if !r.Config.PassStrippedPath.IsUnknown() && !r.Config.PassStrippedPath.IsNull() {
+			*passStrippedPath = r.Config.PassStrippedPath.ValueBool()
+		} else {
+			passStrippedPath = nil
+		}
+		proto := new(string)
+		if !r.Config.Proto.IsUnknown() && !r.Config.Proto.IsNull() {
+			*proto = r.Config.Proto.ValueString()
+		} else {
+			proto = nil
+		}
+		config = &shared.GrpcWebPluginConfig{
+			AllowOriginHeader: allowOriginHeader,
+			PassStrippedPath:  passStrippedPath,
+			Proto:             proto,
+		}
 	}
 	var consumer *shared.GrpcWebPluginConsumer
 	if r.Consumer != nil {
@@ -121,12 +138,14 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPluginInput() *shared
 			ID: id3,
 		}
 	}
-	out := shared.GrpcWebPluginInput{
+	out := shared.GrpcWebPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -136,11 +155,18 @@ func (r *GatewayPluginGrpcWebResourceModel) ToSharedGrpcWebPluginInput() *shared
 	return &out
 }
 
-func (r *GatewayPluginGrpcWebResourceModel) RefreshFromSharedGrpcWebPlugin(resp *shared.GrpcWebPlugin) {
+func (r *GatewayPluginGrpcWebResourceModel) RefreshFromSharedGrpcWebPlugin(ctx context.Context, resp *shared.GrpcWebPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AllowOriginHeader = types.StringPointerValue(resp.Config.AllowOriginHeader)
-		r.Config.PassStrippedPath = types.BoolPointerValue(resp.Config.PassStrippedPath)
-		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.GrpcWebPluginConfig{}
+			r.Config.AllowOriginHeader = types.StringPointerValue(resp.Config.AllowOriginHeader)
+			r.Config.PassStrippedPath = types.BoolPointerValue(resp.Config.PassStrippedPath)
+			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -196,4 +222,6 @@ func (r *GatewayPluginGrpcWebResourceModel) RefreshFromSharedGrpcWebPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

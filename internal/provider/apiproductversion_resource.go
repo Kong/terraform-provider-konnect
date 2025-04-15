@@ -70,7 +70,7 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 				Computed:           true,
 				Optional:           true,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.`,
+				Description:        `Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,
@@ -244,8 +244,17 @@ func (r *APIProductVersionResource) Create(ctx context.Context, req resource.Cre
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductVersion(res.APIProductVersion)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersion(ctx, res.APIProductVersion)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -303,7 +312,11 @@ func (r *APIProductVersionResource) Read(ctx context.Context, req resource.ReadR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductVersion(res.APIProductVersion)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersion(ctx, res.APIProductVersion)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -355,8 +368,17 @@ func (r *APIProductVersionResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductVersion(res.APIProductVersion)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersion(ctx, res.APIProductVersion)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var apiProductId1 string
 	apiProductId1 = data.APIProductID.ValueString()
 
@@ -387,8 +409,17 @@ func (r *APIProductVersionResource) Update(ctx context.Context, req resource.Upd
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductVersion(res1.APIProductVersion)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersion(ctx, res1.APIProductVersion)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -450,7 +481,7 @@ func (r *APIProductVersionResource) ImportState(ctx context.Context, req resourc
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "9f5061ce-78f6-4452-9108-ad7c02821fd5"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "api_product_id": "d32d905a-ed33-46a3-a093-d8f536af9a8a",  "id": "9f5061ce-78f6-4452-9108-ad7c02821fd5"}': `+err.Error())
 		return
 	}
 

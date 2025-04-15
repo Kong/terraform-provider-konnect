@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPluginInput() *shared.JweDecryptPluginInput {
+func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPlugin() *shared.JweDecryptPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,33 +66,42 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPluginInput() *
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	forwardHeaderName := new(string)
-	if !r.Config.ForwardHeaderName.IsUnknown() && !r.Config.ForwardHeaderName.IsNull() {
-		*forwardHeaderName = r.Config.ForwardHeaderName.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		forwardHeaderName = nil
+		updatedAt = nil
 	}
-	var keySets []string = []string{}
-	for _, keySetsItem := range r.Config.KeySets {
-		keySets = append(keySets, keySetsItem.ValueString())
-	}
-	lookupHeaderName := new(string)
-	if !r.Config.LookupHeaderName.IsUnknown() && !r.Config.LookupHeaderName.IsNull() {
-		*lookupHeaderName = r.Config.LookupHeaderName.ValueString()
-	} else {
-		lookupHeaderName = nil
-	}
-	strict := new(bool)
-	if !r.Config.Strict.IsUnknown() && !r.Config.Strict.IsNull() {
-		*strict = r.Config.Strict.ValueBool()
-	} else {
-		strict = nil
-	}
-	config := shared.JweDecryptPluginConfig{
-		ForwardHeaderName: forwardHeaderName,
-		KeySets:           keySets,
-		LookupHeaderName:  lookupHeaderName,
-		Strict:            strict,
+	var config *shared.JweDecryptPluginConfig
+	if r.Config != nil {
+		forwardHeaderName := new(string)
+		if !r.Config.ForwardHeaderName.IsUnknown() && !r.Config.ForwardHeaderName.IsNull() {
+			*forwardHeaderName = r.Config.ForwardHeaderName.ValueString()
+		} else {
+			forwardHeaderName = nil
+		}
+		var keySets []string = []string{}
+		for _, keySetsItem := range r.Config.KeySets {
+			keySets = append(keySets, keySetsItem.ValueString())
+		}
+		lookupHeaderName := new(string)
+		if !r.Config.LookupHeaderName.IsUnknown() && !r.Config.LookupHeaderName.IsNull() {
+			*lookupHeaderName = r.Config.LookupHeaderName.ValueString()
+		} else {
+			lookupHeaderName = nil
+		}
+		strict := new(bool)
+		if !r.Config.Strict.IsUnknown() && !r.Config.Strict.IsNull() {
+			*strict = r.Config.Strict.ValueBool()
+		} else {
+			strict = nil
+		}
+		config = &shared.JweDecryptPluginConfig{
+			ForwardHeaderName: forwardHeaderName,
+			KeySets:           keySets,
+			LookupHeaderName:  lookupHeaderName,
+			Strict:            strict,
+		}
 	}
 	var protocols []shared.JweDecryptPluginProtocols = []shared.JweDecryptPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -114,12 +131,14 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPluginInput() *
 			ID: id2,
 		}
 	}
-	out := shared.JweDecryptPluginInput{
+	out := shared.JweDecryptPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -128,15 +147,22 @@ func (r *GatewayPluginJweDecryptResourceModel) ToSharedJweDecryptPluginInput() *
 	return &out
 }
 
-func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin(resp *shared.JweDecryptPlugin) {
+func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin(ctx context.Context, resp *shared.JweDecryptPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
-		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
-		for _, v := range resp.Config.KeySets {
-			r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.JweDecryptPluginConfig{}
+			r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
+			r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
+			for _, v := range resp.Config.KeySets {
+				r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+			}
+			r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
+			r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		}
-		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
-		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -186,4 +212,6 @@ func (r *GatewayPluginJweDecryptResourceModel) RefreshFromSharedJweDecryptPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

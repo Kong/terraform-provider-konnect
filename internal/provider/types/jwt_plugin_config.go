@@ -10,7 +10,7 @@ type JwtPluginConfig struct {
 	CookieNames       []types.String `tfsdk:"cookie_names"`
 	HeaderNames       []types.String `tfsdk:"header_names"`
 	KeyClaimName      types.String   `tfsdk:"key_claim_name"`
-	MaximumExpiration types.Number   `tfsdk:"maximum_expiration"`
+	MaximumExpiration types.Float64  `tfsdk:"maximum_expiration"`
 	Realm             types.String   `tfsdk:"realm"`
 	RunOnPreflight    types.Bool     `tfsdk:"run_on_preflight"`
 	SecretIsBase64    types.Bool     `tfsdk:"secret_is_base64"`

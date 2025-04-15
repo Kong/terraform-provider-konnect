@@ -29,7 +29,7 @@ type GatewayPluginLogglyDataSource struct {
 
 // GatewayPluginLogglyDataSourceModel describes the data model.
 type GatewayPluginLogglyDataSourceModel struct {
-	Config         tfTypes.LogglyPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.LogglyPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -90,7 +90,7 @@ func (r *GatewayPluginLogglyDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						ElementType: types.StringType,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed: true,
 					},
 				},
@@ -253,7 +253,11 @@ func (r *GatewayPluginLogglyDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedLogglyPlugin(res.LogglyPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedLogglyPlugin(ctx, res.LogglyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,17 +3,23 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *APIProductSpecificationDataSourceModel) RefreshFromSharedAPIProductVersionSpec(resp *shared.APIProductVersionSpec) {
+func (r *APIProductSpecificationDataSourceModel) RefreshFromSharedAPIProductVersionSpec(ctx context.Context, resp *shared.APIProductVersionSpec) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

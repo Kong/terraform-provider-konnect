@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -40,20 +41,20 @@ type GatewayPluginAiSemanticCacheResource struct {
 
 // GatewayPluginAiSemanticCacheResourceModel describes the resource data model.
 type GatewayPluginAiSemanticCacheResourceModel struct {
-	Config         tfTypes.AiSemanticCachePluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                         `tfsdk:"created_at"`
-	Enabled        types.Bool                          `tfsdk:"enabled"`
-	ID             types.String                        `tfsdk:"id"`
-	InstanceName   types.String                        `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
-	Protocols      []types.String                      `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
-	Tags           []types.String                      `tfsdk:"tags"`
-	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
+	Config         *tfTypes.AiSemanticCachePluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                          `tfsdk:"created_at"`
+	Enabled        types.Bool                           `tfsdk:"enabled"`
+	ID             types.String                         `tfsdk:"id"`
+	InstanceName   types.String                         `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
+	Protocols      []types.String                       `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
+	Tags           []types.String                       `tfsdk:"tags"`
+	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiSemanticCacheResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +66,8 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 		MarkdownDescription: "GatewayPluginAiSemanticCache Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"cache_control": schema.BoolAttribute{
 						Computed:    true,
@@ -219,10 +221,13 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 						Optional:    true,
 						Description: `Ignore and discard any tool prompts when Vectorizing the request`,
 					},
-					"message_countback": schema.NumberAttribute{
+					"message_countback": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Number of messages in the chat history to Vectorize/Cache`,
+						Validators: []validator.Float64{
+							float64validator.Between(1, 1000),
+						},
 					},
 					"stop_on_failure": schema.BoolAttribute{
 						Computed:    true,
@@ -433,7 +438,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 									stringvalidator.OneOf("redis"),
 								},
 							},
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `the default similarity threshold for accepting semantic search results (float)`,
@@ -479,6 +484,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -564,6 +570,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Schema(ctx context.Context, req r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -611,7 +618,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePluginInput()
+	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
 	request := operations.CreateAisemanticcachePluginRequest{
 		ControlPlaneID:        controlPlaneID,
 		AiSemanticCachePlugin: aiSemanticCachePlugin,
@@ -636,8 +643,17 @@ func (r *GatewayPluginAiSemanticCacheResource) Create(ctx context.Context, req r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticCachePlugin(res.AiSemanticCachePlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticCachePlugin(ctx, res.AiSemanticCachePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -695,7 +711,11 @@ func (r *GatewayPluginAiSemanticCacheResource) Read(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticCachePlugin(res.AiSemanticCachePlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticCachePlugin(ctx, res.AiSemanticCachePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -721,7 +741,7 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePluginInput()
+	aiSemanticCachePlugin := *data.ToSharedAiSemanticCachePlugin()
 	request := operations.UpdateAisemanticcachePluginRequest{
 		PluginID:              pluginID,
 		ControlPlaneID:        controlPlaneID,
@@ -747,8 +767,17 @@ func (r *GatewayPluginAiSemanticCacheResource) Update(ctx context.Context, req r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticCachePlugin(res.AiSemanticCachePlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticCachePlugin(ctx, res.AiSemanticCachePlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -810,7 +839,7 @@ func (r *GatewayPluginAiSemanticCacheResource) ImportState(ctx context.Context, 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

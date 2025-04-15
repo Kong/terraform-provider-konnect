@@ -19,6 +19,7 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
   }
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 5
   id               = "...my_id..."
   password         = "...my_password..."
   tags = [
@@ -41,12 +42,9 @@ resource "konnect_gateway_basic_auth" "my_gatewaybasicauth" {
 ### Optional
 
 - `consumer` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--consumer))
+- `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-
-### Read-Only
-
-- `created_at` (Number) Unix epoch when the resource was created.
 
 <a id="nestedatt--consumer"></a>
 ### Nested Schema for `consumer`
@@ -60,5 +58,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_basic_auth.my_konnect_gateway_basic_auth "{ \"basic_auth_id\": \"80db1b58-ca7c-4d21-b92a-64eb07725872\",  \"consumer_id\": \"f28acbfa-c866-4587-b688-0208ac24df21\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
+terraform import konnect_gateway_basic_auth.my_konnect_gateway_basic_auth "{ \"id\": \"80db1b58-ca7c-4d21-b92a-64eb07725872\",  \"consumer_id\": \"f28acbfa-c866-4587-b688-0208ac24df21\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
 ```

@@ -58,6 +58,7 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -75,6 +76,7 @@ func (r *GatewayKeySetResource) Schema(ctx context.Context, req resource.SchemaR
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -122,7 +124,7 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keySet := *data.ToSharedKeySetInput()
+	keySet := *data.ToSharedKeySet()
 	request := operations.CreateKeySetRequest{
 		ControlPlaneID: controlPlaneID,
 		KeySet:         keySet,
@@ -147,8 +149,17 @@ func (r *GatewayKeySetResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeySet(res.KeySet)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeySet(ctx, res.KeySet)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -206,7 +217,11 @@ func (r *GatewayKeySetResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeySet(res.KeySet)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeySet(ctx, res.KeySet)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -232,7 +247,7 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keySet := *data.ToSharedKeySetInput()
+	keySet := *data.ToSharedKeySet()
 	request := operations.UpsertKeySetRequest{
 		KeySetID:       keySetID,
 		ControlPlaneID: controlPlaneID,
@@ -258,8 +273,17 @@ func (r *GatewayKeySetResource) Update(ctx context.Context, req resource.UpdateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeySet(res.KeySet)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeySet(ctx, res.KeySet)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -321,7 +345,7 @@ func (r *GatewayKeySetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "key_set_id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "6cc34248-50b4-4a81-9201-3bdf7a83f712"}': `+err.Error())
 		return
 	}
 

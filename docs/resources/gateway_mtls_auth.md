@@ -22,6 +22,7 @@ resource "konnect_gateway_mtls_auth" "my_gatewaymtlsauth" {
   }
   consumer_id      = "f28acbfa-c866-4587-b688-0208ac24df21"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 6
   id               = "...my_id..."
   subject_name     = "...my_subject_name..."
   tags = [
@@ -43,12 +44,9 @@ resource "konnect_gateway_mtls_auth" "my_gatewaymtlsauth" {
 
 - `ca_certificate` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--ca_certificate))
 - `consumer` (Attributes) Requires replacement if changed. (see [below for nested schema](#nestedatt--consumer))
+- `created_at` (Number) Unix epoch when the resource was created. Requires replacement if changed.
 - `id` (String) Requires replacement if changed.
 - `tags` (List of String) Requires replacement if changed.
-
-### Read-Only
-
-- `created_at` (Number) Unix epoch when the resource was created.
 
 <a id="nestedatt--ca_certificate"></a>
 ### Nested Schema for `ca_certificate`
@@ -70,5 +68,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_mtls_auth.my_konnect_gateway_mtls_auth "{ \"consumer_id\": \"f28acbfa-c866-4587-b688-0208ac24df21\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"mtls_auth_id\": \"\"}"
+terraform import konnect_gateway_mtls_auth.my_konnect_gateway_mtls_auth "{ \"consumer_id\": \"f28acbfa-c866-4587-b688-0208ac24df21\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"\"}"
 ```

@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONInput {
+func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	var destinations []shared.Destinations = []shared.Destinations{}
 	for _, destinationsItem := range r.Destinations {
 		ip := new(string)
@@ -145,7 +153,14 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONIn
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.RouteJSONInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.RouteJSON{
+		CreatedAt:               createdAt,
 		Destinations:            destinations,
 		Headers:                 headers,
 		Hosts:                   hosts,
@@ -165,11 +180,14 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSONInput() *shared.RouteJSONIn
 		Sources:                 sources,
 		StripPath:               stripPath,
 		Tags:                    tags,
+		UpdatedAt:               updatedAt,
 	}
 	return &out
 }
 
-func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.RouteJSON) {
+func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Context, resp *shared.RouteJSON) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		if resp.Destinations != nil {
@@ -178,14 +196,14 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.Rout
 				r.Destinations = r.Destinations[:len(resp.Destinations)]
 			}
 			for destinationsCount, destinationsItem := range resp.Destinations {
-				var destinations1 tfTypes.AiProxyAdvancedPluginClusterNodes
-				destinations1.IP = types.StringPointerValue(destinationsItem.IP)
-				destinations1.Port = types.Int64PointerValue(destinationsItem.Port)
+				var destinations tfTypes.AiProxyAdvancedPluginClusterNodes
+				destinations.IP = types.StringPointerValue(destinationsItem.IP)
+				destinations.Port = types.Int64PointerValue(destinationsItem.Port)
 				if destinationsCount+1 > len(r.Destinations) {
-					r.Destinations = append(r.Destinations, destinations1)
+					r.Destinations = append(r.Destinations, destinations)
 				} else {
-					r.Destinations[destinationsCount].IP = destinations1.IP
-					r.Destinations[destinationsCount].Port = destinations1.Port
+					r.Destinations[destinationsCount].IP = destinations.IP
+					r.Destinations[destinationsCount].Port = destinations.Port
 				}
 			}
 		}
@@ -259,14 +277,14 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.Rout
 				r.Sources = r.Sources[:len(resp.Sources)]
 			}
 			for sourcesCount, sourcesItem := range resp.Sources {
-				var sources1 tfTypes.AiProxyAdvancedPluginClusterNodes
-				sources1.IP = types.StringPointerValue(sourcesItem.IP)
-				sources1.Port = types.Int64PointerValue(sourcesItem.Port)
+				var sources tfTypes.AiProxyAdvancedPluginClusterNodes
+				sources.IP = types.StringPointerValue(sourcesItem.IP)
+				sources.Port = types.Int64PointerValue(sourcesItem.Port)
 				if sourcesCount+1 > len(r.Sources) {
-					r.Sources = append(r.Sources, sources1)
+					r.Sources = append(r.Sources, sources)
 				} else {
-					r.Sources[sourcesCount].IP = sources1.IP
-					r.Sources[sourcesCount].Port = sources1.Port
+					r.Sources[sourcesCount].IP = sources.IP
+					r.Sources[sourcesCount].Port = sources.Port
 				}
 			}
 		}
@@ -277,4 +295,6 @@ func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(resp *shared.Rout
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

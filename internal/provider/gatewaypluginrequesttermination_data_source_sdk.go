@@ -3,19 +3,28 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedRequestTerminationPlugin(resp *shared.RequestTerminationPlugin) {
+func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedRequestTerminationPlugin(ctx context.Context, resp *shared.RequestTerminationPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Body = types.StringPointerValue(resp.Config.Body)
-		r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
-		r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
-		r.Config.Message = types.StringPointerValue(resp.Config.Message)
-		r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
-		r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RequestTerminationPluginConfig{}
+			r.Config.Body = types.StringPointerValue(resp.Config.Body)
+			r.Config.ContentType = types.StringPointerValue(resp.Config.ContentType)
+			r.Config.Echo = types.BoolPointerValue(resp.Config.Echo)
+			r.Config.Message = types.StringPointerValue(resp.Config.Message)
+			r.Config.StatusCode = types.Int64PointerValue(resp.Config.StatusCode)
+			r.Config.Trigger = types.StringPointerValue(resp.Config.Trigger)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -77,4 +86,6 @@ func (r *GatewayPluginRequestTerminationDataSourceModel) RefreshFromSharedReques
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

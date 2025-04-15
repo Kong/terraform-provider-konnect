@@ -36,7 +36,7 @@ type GatewayPluginMockingResource struct {
 
 // GatewayPluginMockingResourceModel describes the resource data model.
 type GatewayPluginMockingResourceModel struct {
-	Config         tfTypes.MockingPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.MockingPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginMocking Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"api_specification": schema.StringAttribute{
 						Computed:    true,
@@ -88,12 +89,12 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 						ElementType: types.Int64Type,
 						Description: `A global list of the HTTP status codes that can only be selected and returned.`,
 					},
-					"max_delay_time": schema.NumberAttribute{
+					"max_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The maximum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be greater than the ` + "`" + `min_delay_time` + "`" + `.`,
 					},
-					"min_delay_time": schema.NumberAttribute{
+					"min_delay_time": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The minimum value in seconds of delay time. Set this value when ` + "`" + `random_delay` + "`" + ` is enabled and you want to adjust the default. The value must be less than the ` + "`" + `max_delay_time` + "`" + `.`,
@@ -138,6 +139,7 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -223,6 +225,7 @@ func (r *GatewayPluginMockingResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -270,7 +273,7 @@ func (r *GatewayPluginMockingResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := *data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPlugin()
 	request := operations.CreateMockingPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		MockingPlugin:  mockingPlugin,
@@ -295,8 +298,17 @@ func (r *GatewayPluginMockingResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMockingPlugin(res.MockingPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMockingPlugin(ctx, res.MockingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -354,7 +366,11 @@ func (r *GatewayPluginMockingResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMockingPlugin(res.MockingPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedMockingPlugin(ctx, res.MockingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -380,7 +396,7 @@ func (r *GatewayPluginMockingResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	mockingPlugin := *data.ToSharedMockingPluginInput()
+	mockingPlugin := *data.ToSharedMockingPlugin()
 	request := operations.UpdateMockingPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -406,8 +422,17 @@ func (r *GatewayPluginMockingResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedMockingPlugin(res.MockingPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedMockingPlugin(ctx, res.MockingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -469,7 +494,7 @@ func (r *GatewayPluginMockingResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -109,7 +111,9 @@ func (r *PortalAuthResourceModel) ToSharedPortalAuthenticationSettingsUpdateRequ
 	return &out
 }
 
-func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(resp *shared.PortalAuthenticationSettingsResponse) {
+func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.BasicAuthEnabled = types.BoolValue(resp.BasicAuthEnabled)
 		r.IdpMappingEnabled = types.BoolPointerValue(resp.IdpMappingEnabled)
@@ -137,4 +141,6 @@ func (r *PortalAuthResourceModel) RefreshFromSharedPortalAuthenticationSettingsR
 		r.OidcTeamMappingEnabled = types.BoolValue(resp.OidcTeamMappingEnabled)
 		r.SamlAuthEnabled = types.BoolPointerValue(resp.SamlAuthEnabled)
 	}
+
+	return diags
 }

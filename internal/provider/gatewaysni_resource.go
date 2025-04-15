@@ -76,6 +76,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -94,6 +95,7 @@ func (r *GatewaySNIResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -141,7 +143,7 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sni := *data.ToSharedSNIInput()
+	sni := *data.ToSharedSni()
 	request := operations.CreateSniRequest{
 		ControlPlaneID: controlPlaneID,
 		Sni:            sni,
@@ -166,8 +168,17 @@ func (r *GatewaySNIResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSni(res.Sni)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSni(ctx, res.Sni)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -225,7 +236,11 @@ func (r *GatewaySNIResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSni(res.Sni)
+	resp.Diagnostics.Append(data.RefreshFromSharedSni(ctx, res.Sni)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -251,7 +266,7 @@ func (r *GatewaySNIResource) Update(ctx context.Context, req resource.UpdateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sni := *data.ToSharedSNIInput()
+	sni := *data.ToSharedSni()
 	request := operations.UpsertSniRequest{
 		SNIID:          sniID,
 		ControlPlaneID: controlPlaneID,
@@ -277,8 +292,17 @@ func (r *GatewaySNIResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSni(res.Sni)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSni(ctx, res.Sni)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -340,7 +364,7 @@ func (r *GatewaySNIResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "sniid": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "64c17a1a-b7d7-4a65-a5a4-42e4a7016e7f"}': `+err.Error())
 		return
 	}
 

@@ -3,31 +3,35 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(resp *shared.HmacAuthPlugin) {
+func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(ctx context.Context, resp *shared.HmacAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Algorithms = make([]types.String, 0, len(resp.Config.Algorithms))
-		for _, v := range resp.Config.Algorithms {
-			r.Config.Algorithms = append(r.Config.Algorithms, types.StringValue(string(v)))
-		}
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		if resp.Config.ClockSkew != nil {
-			r.Config.ClockSkew = types.NumberValue(big.NewFloat(float64(*resp.Config.ClockSkew)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ClockSkew = types.NumberNull()
+			r.Config = &tfTypes.HmacAuthPluginConfig{}
+			r.Config.Algorithms = make([]types.String, 0, len(resp.Config.Algorithms))
+			for _, v := range resp.Config.Algorithms {
+				r.Config.Algorithms = append(r.Config.Algorithms, types.StringValue(string(v)))
+			}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.ClockSkew = types.Float64PointerValue(resp.Config.ClockSkew)
+			r.Config.EnforceHeaders = make([]types.String, 0, len(resp.Config.EnforceHeaders))
+			for _, v := range resp.Config.EnforceHeaders {
+				r.Config.EnforceHeaders = append(r.Config.EnforceHeaders, types.StringValue(v))
+			}
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.ValidateRequestBody = types.BoolPointerValue(resp.Config.ValidateRequestBody)
 		}
-		r.Config.EnforceHeaders = make([]types.String, 0, len(resp.Config.EnforceHeaders))
-		for _, v := range resp.Config.EnforceHeaders {
-			r.Config.EnforceHeaders = append(r.Config.EnforceHeaders, types.StringValue(v))
-		}
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.ValidateRequestBody = types.BoolPointerValue(resp.Config.ValidateRequestBody)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -77,4 +81,6 @@ func (r *GatewayPluginHmacAuthDataSourceModel) RefreshFromSharedHmacAuthPlugin(r
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

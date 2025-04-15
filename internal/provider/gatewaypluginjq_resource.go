@@ -36,7 +36,7 @@ type GatewayPluginJqResource struct {
 
 // GatewayPluginJqResourceModel describes the resource data model.
 type GatewayPluginJqResourceModel struct {
-	Config         tfTypes.JqPluginConfig             `tfsdk:"config"`
+	Config         *tfTypes.JqPluginConfig            `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -60,7 +60,8 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 		MarkdownDescription: "GatewayPluginJq Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"request_if_media_type": schema.ListAttribute{
 						Computed:    true,
@@ -162,6 +163,7 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -247,6 +249,7 @@ func (r *GatewayPluginJqResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -294,7 +297,7 @@ func (r *GatewayPluginJqResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jqPlugin := *data.ToSharedJqPluginInput()
+	jqPlugin := *data.ToSharedJqPlugin()
 	request := operations.CreateJqPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		JqPlugin:       jqPlugin,
@@ -319,8 +322,17 @@ func (r *GatewayPluginJqResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJqPlugin(res.JqPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedJqPlugin(ctx, res.JqPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -378,7 +390,11 @@ func (r *GatewayPluginJqResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJqPlugin(res.JqPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedJqPlugin(ctx, res.JqPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -404,7 +420,7 @@ func (r *GatewayPluginJqResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	jqPlugin := *data.ToSharedJqPluginInput()
+	jqPlugin := *data.ToSharedJqPlugin()
 	request := operations.UpdateJqPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -430,8 +446,17 @@ func (r *GatewayPluginJqResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJqPlugin(res.JqPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedJqPlugin(ctx, res.JqPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -493,7 +518,7 @@ func (r *GatewayPluginJqResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

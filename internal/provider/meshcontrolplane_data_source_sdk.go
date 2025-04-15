@@ -3,41 +3,45 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
-func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(resp *shared.MeshControlPlane) {
+func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(ctx context.Context, resp *shared.MeshControlPlane) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.Features = []tfTypes.MeshControlPlaneFeature{}
 		if len(r.Features) > len(resp.Features) {
 			r.Features = r.Features[:len(resp.Features)]
 		}
 		for featuresCount, featuresItem := range resp.Features {
-			var features1 tfTypes.MeshControlPlaneFeature
+			var features tfTypes.MeshControlPlaneFeature
 			if featuresItem.HostnameGeneratorCreation == nil {
-				features1.HostnameGeneratorCreation = nil
+				features.HostnameGeneratorCreation = nil
 			} else {
-				features1.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-				features1.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
+				features.HostnameGeneratorCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features.HostnameGeneratorCreation.Enabled = types.BoolValue(featuresItem.HostnameGeneratorCreation.Enabled)
 			}
 			if featuresItem.MeshCreation == nil {
-				features1.MeshCreation = nil
+				features.MeshCreation = nil
 			} else {
-				features1.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
-				features1.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
+				features.MeshCreation = &tfTypes.MeshControlPlaneFeatureHostnameGenerationCreation{}
+				features.MeshCreation.Enabled = types.BoolValue(featuresItem.MeshCreation.Enabled)
 			}
-			features1.Type = types.StringValue(string(featuresItem.Type))
+			features.Type = types.StringValue(string(featuresItem.Type))
 			if featuresCount+1 > len(r.Features) {
-				r.Features = append(r.Features, features1)
+				r.Features = append(r.Features, features)
 			} else {
-				r.Features[featuresCount].HostnameGeneratorCreation = features1.HostnameGeneratorCreation
-				r.Features[featuresCount].MeshCreation = features1.MeshCreation
-				r.Features[featuresCount].Type = features1.Type
+				r.Features[featuresCount].HostnameGeneratorCreation = features.HostnameGeneratorCreation
+				r.Features[featuresCount].MeshCreation = features.MeshCreation
+				r.Features[featuresCount].Type = features.Type
 			}
 		}
 		r.ID = types.StringValue(resp.ID)
@@ -48,6 +52,8 @@ func (r *MeshControlPlaneDataSourceModel) RefreshFromSharedMeshControlPlane(resp
 			}
 		}
 		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }

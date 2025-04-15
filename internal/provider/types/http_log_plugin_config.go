@@ -7,13 +7,13 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type HTTPLogPluginConfig struct {
 	ContentType       types.String            `tfsdk:"content_type"`
 	CustomFieldsByLua map[string]types.String `tfsdk:"custom_fields_by_lua"`
-	FlushTimeout      types.Number            `tfsdk:"flush_timeout"`
+	FlushTimeout      types.Float64           `tfsdk:"flush_timeout"`
 	Headers           map[string]types.String `tfsdk:"headers"`
 	HTTPEndpoint      types.String            `tfsdk:"http_endpoint"`
-	Keepalive         types.Number            `tfsdk:"keepalive"`
+	Keepalive         types.Float64           `tfsdk:"keepalive"`
 	Method            types.String            `tfsdk:"method"`
 	Queue             *Queue                  `tfsdk:"queue"`
 	QueueSize         types.Int64             `tfsdk:"queue_size"`
 	RetryCount        types.Int64             `tfsdk:"retry_count"`
-	Timeout           types.Number            `tfsdk:"timeout"`
+	Timeout           types.Float64           `tfsdk:"timeout"`
 }

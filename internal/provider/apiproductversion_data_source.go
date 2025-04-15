@@ -62,7 +62,7 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 			"deprecated": schema.BoolAttribute{
 				Computed:           true,
 				DeprecationMessage: `This will be removed in a future release, please migrate away from it as soon as possible`,
-				Description:        `Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead`,
+				Description:        `Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead`,
 			},
 			"gateway_service": schema.SingleNestedAttribute{
 				Computed: true,
@@ -219,7 +219,11 @@ func (r *APIProductVersionDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAPIProductVersion(res.APIProductVersion)
+	resp.Diagnostics.Append(data.RefreshFromSharedAPIProductVersion(ctx, res.APIProductVersion)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,13 +3,21 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPluginInput() *shared.SyslogPluginInput {
+func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.SyslogPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,49 +67,58 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPluginInput() *shared.S
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	clientErrorsSeverity := new(shared.SyslogPluginClientErrorsSeverity)
-	if !r.Config.ClientErrorsSeverity.IsUnknown() && !r.Config.ClientErrorsSeverity.IsNull() {
-		*clientErrorsSeverity = shared.SyslogPluginClientErrorsSeverity(r.Config.ClientErrorsSeverity.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		clientErrorsSeverity = nil
+		updatedAt = nil
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
-	facility := new(shared.Facility)
-	if !r.Config.Facility.IsUnknown() && !r.Config.Facility.IsNull() {
-		*facility = shared.Facility(r.Config.Facility.ValueString())
-	} else {
-		facility = nil
-	}
-	logLevel := new(shared.SyslogPluginLogLevel)
-	if !r.Config.LogLevel.IsUnknown() && !r.Config.LogLevel.IsNull() {
-		*logLevel = shared.SyslogPluginLogLevel(r.Config.LogLevel.ValueString())
-	} else {
-		logLevel = nil
-	}
-	serverErrorsSeverity := new(shared.SyslogPluginServerErrorsSeverity)
-	if !r.Config.ServerErrorsSeverity.IsUnknown() && !r.Config.ServerErrorsSeverity.IsNull() {
-		*serverErrorsSeverity = shared.SyslogPluginServerErrorsSeverity(r.Config.ServerErrorsSeverity.ValueString())
-	} else {
-		serverErrorsSeverity = nil
-	}
-	successfulSeverity := new(shared.SyslogPluginSuccessfulSeverity)
-	if !r.Config.SuccessfulSeverity.IsUnknown() && !r.Config.SuccessfulSeverity.IsNull() {
-		*successfulSeverity = shared.SyslogPluginSuccessfulSeverity(r.Config.SuccessfulSeverity.ValueString())
-	} else {
-		successfulSeverity = nil
-	}
-	config := shared.SyslogPluginConfig{
-		ClientErrorsSeverity: clientErrorsSeverity,
-		CustomFieldsByLua:    customFieldsByLua,
-		Facility:             facility,
-		LogLevel:             logLevel,
-		ServerErrorsSeverity: serverErrorsSeverity,
-		SuccessfulSeverity:   successfulSeverity,
+	var config *shared.SyslogPluginConfig
+	if r.Config != nil {
+		clientErrorsSeverity := new(shared.SyslogPluginClientErrorsSeverity)
+		if !r.Config.ClientErrorsSeverity.IsUnknown() && !r.Config.ClientErrorsSeverity.IsNull() {
+			*clientErrorsSeverity = shared.SyslogPluginClientErrorsSeverity(r.Config.ClientErrorsSeverity.ValueString())
+		} else {
+			clientErrorsSeverity = nil
+		}
+		customFieldsByLua := make(map[string]interface{})
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst interface{}
+			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
+		facility := new(shared.Facility)
+		if !r.Config.Facility.IsUnknown() && !r.Config.Facility.IsNull() {
+			*facility = shared.Facility(r.Config.Facility.ValueString())
+		} else {
+			facility = nil
+		}
+		logLevel := new(shared.SyslogPluginLogLevel)
+		if !r.Config.LogLevel.IsUnknown() && !r.Config.LogLevel.IsNull() {
+			*logLevel = shared.SyslogPluginLogLevel(r.Config.LogLevel.ValueString())
+		} else {
+			logLevel = nil
+		}
+		serverErrorsSeverity := new(shared.SyslogPluginServerErrorsSeverity)
+		if !r.Config.ServerErrorsSeverity.IsUnknown() && !r.Config.ServerErrorsSeverity.IsNull() {
+			*serverErrorsSeverity = shared.SyslogPluginServerErrorsSeverity(r.Config.ServerErrorsSeverity.ValueString())
+		} else {
+			serverErrorsSeverity = nil
+		}
+		successfulSeverity := new(shared.SyslogPluginSuccessfulSeverity)
+		if !r.Config.SuccessfulSeverity.IsUnknown() && !r.Config.SuccessfulSeverity.IsNull() {
+			*successfulSeverity = shared.SyslogPluginSuccessfulSeverity(r.Config.SuccessfulSeverity.ValueString())
+		} else {
+			successfulSeverity = nil
+		}
+		config = &shared.SyslogPluginConfig{
+			ClientErrorsSeverity: clientErrorsSeverity,
+			CustomFieldsByLua:    customFieldsByLua,
+			Facility:             facility,
+			LogLevel:             logLevel,
+			ServerErrorsSeverity: serverErrorsSeverity,
+			SuccessfulSeverity:   successfulSeverity,
+		}
 	}
 	var consumer *shared.SyslogPluginConsumer
 	if r.Consumer != nil {
@@ -143,12 +160,14 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPluginInput() *shared.S
 			ID: id3,
 		}
 	}
-	out := shared.SyslogPluginInput{
+	out := shared.SyslogPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -158,39 +177,46 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPluginInput() *shared.S
 	return &out
 }
 
-func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *shared.SyslogPlugin) {
+func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(ctx context.Context, resp *shared.SyslogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.Config.ClientErrorsSeverity != nil {
-			r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ClientErrorsSeverity = types.StringNull()
-		}
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+			r.Config = &tfTypes.SyslogPluginConfig{}
+			if resp.Config.ClientErrorsSeverity != nil {
+				r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
+			} else {
+				r.Config.ClientErrorsSeverity = types.StringNull()
 			}
-		}
-		if resp.Config.Facility != nil {
-			r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
-		} else {
-			r.Config.Facility = types.StringNull()
-		}
-		if resp.Config.LogLevel != nil {
-			r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
-		} else {
-			r.Config.LogLevel = types.StringNull()
-		}
-		if resp.Config.ServerErrorsSeverity != nil {
-			r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
-		} else {
-			r.Config.ServerErrorsSeverity = types.StringNull()
-		}
-		if resp.Config.SuccessfulSeverity != nil {
-			r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
-		} else {
-			r.Config.SuccessfulSeverity = types.StringNull()
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
+			}
+			if resp.Config.Facility != nil {
+				r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
+			} else {
+				r.Config.Facility = types.StringNull()
+			}
+			if resp.Config.LogLevel != nil {
+				r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
+			} else {
+				r.Config.LogLevel = types.StringNull()
+			}
+			if resp.Config.ServerErrorsSeverity != nil {
+				r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
+			} else {
+				r.Config.ServerErrorsSeverity = types.StringNull()
+			}
+			if resp.Config.SuccessfulSeverity != nil {
+				r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
+			} else {
+				r.Config.SuccessfulSeverity = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -247,4 +273,6 @@ func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

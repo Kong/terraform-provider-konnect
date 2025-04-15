@@ -3,13 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPluginInput() *shared.CanaryPluginInput {
+func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPlugin() *shared.CanaryPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,89 +66,98 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPluginInput() *shared.C
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	canaryByHeaderName := new(string)
-	if !r.Config.CanaryByHeaderName.IsUnknown() && !r.Config.CanaryByHeaderName.IsNull() {
-		*canaryByHeaderName = r.Config.CanaryByHeaderName.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		canaryByHeaderName = nil
+		updatedAt = nil
 	}
-	duration := new(float64)
-	if !r.Config.Duration.IsUnknown() && !r.Config.Duration.IsNull() {
-		*duration, _ = r.Config.Duration.ValueBigFloat().Float64()
-	} else {
-		duration = nil
-	}
-	var groups []string = []string{}
-	for _, groupsItem := range r.Config.Groups {
-		groups = append(groups, groupsItem.ValueString())
-	}
-	hash := new(shared.Hash)
-	if !r.Config.Hash.IsUnknown() && !r.Config.Hash.IsNull() {
-		*hash = shared.Hash(r.Config.Hash.ValueString())
-	} else {
-		hash = nil
-	}
-	hashHeader := new(string)
-	if !r.Config.HashHeader.IsUnknown() && !r.Config.HashHeader.IsNull() {
-		*hashHeader = r.Config.HashHeader.ValueString()
-	} else {
-		hashHeader = nil
-	}
-	percentage := new(float64)
-	if !r.Config.Percentage.IsUnknown() && !r.Config.Percentage.IsNull() {
-		*percentage, _ = r.Config.Percentage.ValueBigFloat().Float64()
-	} else {
-		percentage = nil
-	}
-	start := new(float64)
-	if !r.Config.Start.IsUnknown() && !r.Config.Start.IsNull() {
-		*start, _ = r.Config.Start.ValueBigFloat().Float64()
-	} else {
-		start = nil
-	}
-	steps := new(float64)
-	if !r.Config.Steps.IsUnknown() && !r.Config.Steps.IsNull() {
-		*steps, _ = r.Config.Steps.ValueBigFloat().Float64()
-	} else {
-		steps = nil
-	}
-	upstreamFallback := new(bool)
-	if !r.Config.UpstreamFallback.IsUnknown() && !r.Config.UpstreamFallback.IsNull() {
-		*upstreamFallback = r.Config.UpstreamFallback.ValueBool()
-	} else {
-		upstreamFallback = nil
-	}
-	upstreamHost := new(string)
-	if !r.Config.UpstreamHost.IsUnknown() && !r.Config.UpstreamHost.IsNull() {
-		*upstreamHost = r.Config.UpstreamHost.ValueString()
-	} else {
-		upstreamHost = nil
-	}
-	upstreamPort := new(int64)
-	if !r.Config.UpstreamPort.IsUnknown() && !r.Config.UpstreamPort.IsNull() {
-		*upstreamPort = r.Config.UpstreamPort.ValueInt64()
-	} else {
-		upstreamPort = nil
-	}
-	upstreamURI := new(string)
-	if !r.Config.UpstreamURI.IsUnknown() && !r.Config.UpstreamURI.IsNull() {
-		*upstreamURI = r.Config.UpstreamURI.ValueString()
-	} else {
-		upstreamURI = nil
-	}
-	config := shared.CanaryPluginConfig{
-		CanaryByHeaderName: canaryByHeaderName,
-		Duration:           duration,
-		Groups:             groups,
-		Hash:               hash,
-		HashHeader:         hashHeader,
-		Percentage:         percentage,
-		Start:              start,
-		Steps:              steps,
-		UpstreamFallback:   upstreamFallback,
-		UpstreamHost:       upstreamHost,
-		UpstreamPort:       upstreamPort,
-		UpstreamURI:        upstreamURI,
+	var config *shared.CanaryPluginConfig
+	if r.Config != nil {
+		canaryByHeaderName := new(string)
+		if !r.Config.CanaryByHeaderName.IsUnknown() && !r.Config.CanaryByHeaderName.IsNull() {
+			*canaryByHeaderName = r.Config.CanaryByHeaderName.ValueString()
+		} else {
+			canaryByHeaderName = nil
+		}
+		duration := new(float64)
+		if !r.Config.Duration.IsUnknown() && !r.Config.Duration.IsNull() {
+			*duration = r.Config.Duration.ValueFloat64()
+		} else {
+			duration = nil
+		}
+		var groups []string = []string{}
+		for _, groupsItem := range r.Config.Groups {
+			groups = append(groups, groupsItem.ValueString())
+		}
+		hash := new(shared.Hash)
+		if !r.Config.Hash.IsUnknown() && !r.Config.Hash.IsNull() {
+			*hash = shared.Hash(r.Config.Hash.ValueString())
+		} else {
+			hash = nil
+		}
+		hashHeader := new(string)
+		if !r.Config.HashHeader.IsUnknown() && !r.Config.HashHeader.IsNull() {
+			*hashHeader = r.Config.HashHeader.ValueString()
+		} else {
+			hashHeader = nil
+		}
+		percentage := new(float64)
+		if !r.Config.Percentage.IsUnknown() && !r.Config.Percentage.IsNull() {
+			*percentage = r.Config.Percentage.ValueFloat64()
+		} else {
+			percentage = nil
+		}
+		start := new(float64)
+		if !r.Config.Start.IsUnknown() && !r.Config.Start.IsNull() {
+			*start = r.Config.Start.ValueFloat64()
+		} else {
+			start = nil
+		}
+		steps := new(float64)
+		if !r.Config.Steps.IsUnknown() && !r.Config.Steps.IsNull() {
+			*steps = r.Config.Steps.ValueFloat64()
+		} else {
+			steps = nil
+		}
+		upstreamFallback := new(bool)
+		if !r.Config.UpstreamFallback.IsUnknown() && !r.Config.UpstreamFallback.IsNull() {
+			*upstreamFallback = r.Config.UpstreamFallback.ValueBool()
+		} else {
+			upstreamFallback = nil
+		}
+		upstreamHost := new(string)
+		if !r.Config.UpstreamHost.IsUnknown() && !r.Config.UpstreamHost.IsNull() {
+			*upstreamHost = r.Config.UpstreamHost.ValueString()
+		} else {
+			upstreamHost = nil
+		}
+		upstreamPort := new(int64)
+		if !r.Config.UpstreamPort.IsUnknown() && !r.Config.UpstreamPort.IsNull() {
+			*upstreamPort = r.Config.UpstreamPort.ValueInt64()
+		} else {
+			upstreamPort = nil
+		}
+		upstreamURI := new(string)
+		if !r.Config.UpstreamURI.IsUnknown() && !r.Config.UpstreamURI.IsNull() {
+			*upstreamURI = r.Config.UpstreamURI.ValueString()
+		} else {
+			upstreamURI = nil
+		}
+		config = &shared.CanaryPluginConfig{
+			CanaryByHeaderName: canaryByHeaderName,
+			Duration:           duration,
+			Groups:             groups,
+			Hash:               hash,
+			HashHeader:         hashHeader,
+			Percentage:         percentage,
+			Start:              start,
+			Steps:              steps,
+			UpstreamFallback:   upstreamFallback,
+			UpstreamHost:       upstreamHost,
+			UpstreamPort:       upstreamPort,
+			UpstreamURI:        upstreamURI,
+		}
 	}
 	var protocols []shared.CanaryPluginProtocols = []shared.CanaryPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -171,12 +187,14 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPluginInput() *shared.C
 			ID: id2,
 		}
 	}
-	out := shared.CanaryPluginInput{
+	out := shared.CanaryPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -185,43 +203,34 @@ func (r *GatewayPluginCanaryResourceModel) ToSharedCanaryPluginInput() *shared.C
 	return &out
 }
 
-func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(resp *shared.CanaryPlugin) {
+func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(ctx context.Context, resp *shared.CanaryPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
-		if resp.Config.Duration != nil {
-			r.Config.Duration = types.NumberValue(big.NewFloat(float64(*resp.Config.Duration)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Duration = types.NumberNull()
+			r.Config = &tfTypes.CanaryPluginConfig{}
+			r.Config.CanaryByHeaderName = types.StringPointerValue(resp.Config.CanaryByHeaderName)
+			r.Config.Duration = types.Float64PointerValue(resp.Config.Duration)
+			r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
+			for _, v := range resp.Config.Groups {
+				r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
+			}
+			if resp.Config.Hash != nil {
+				r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
+			} else {
+				r.Config.Hash = types.StringNull()
+			}
+			r.Config.HashHeader = types.StringPointerValue(resp.Config.HashHeader)
+			r.Config.Percentage = types.Float64PointerValue(resp.Config.Percentage)
+			r.Config.Start = types.Float64PointerValue(resp.Config.Start)
+			r.Config.Steps = types.Float64PointerValue(resp.Config.Steps)
+			r.Config.UpstreamFallback = types.BoolPointerValue(resp.Config.UpstreamFallback)
+			r.Config.UpstreamHost = types.StringPointerValue(resp.Config.UpstreamHost)
+			r.Config.UpstreamPort = types.Int64PointerValue(resp.Config.UpstreamPort)
+			r.Config.UpstreamURI = types.StringPointerValue(resp.Config.UpstreamURI)
 		}
-		r.Config.Groups = make([]types.String, 0, len(resp.Config.Groups))
-		for _, v := range resp.Config.Groups {
-			r.Config.Groups = append(r.Config.Groups, types.StringValue(v))
-		}
-		if resp.Config.Hash != nil {
-			r.Config.Hash = types.StringValue(string(*resp.Config.Hash))
-		} else {
-			r.Config.Hash = types.StringNull()
-		}
-		r.Config.HashHeader = types.StringPointerValue(resp.Config.HashHeader)
-		if resp.Config.Percentage != nil {
-			r.Config.Percentage = types.NumberValue(big.NewFloat(float64(*resp.Config.Percentage)))
-		} else {
-			r.Config.Percentage = types.NumberNull()
-		}
-		if resp.Config.Start != nil {
-			r.Config.Start = types.NumberValue(big.NewFloat(float64(*resp.Config.Start)))
-		} else {
-			r.Config.Start = types.NumberNull()
-		}
-		if resp.Config.Steps != nil {
-			r.Config.Steps = types.NumberValue(big.NewFloat(float64(*resp.Config.Steps)))
-		} else {
-			r.Config.Steps = types.NumberNull()
-		}
-		r.Config.UpstreamFallback = types.BoolPointerValue(resp.Config.UpstreamFallback)
-		r.Config.UpstreamHost = types.StringPointerValue(resp.Config.UpstreamHost)
-		r.Config.UpstreamPort = types.Int64PointerValue(resp.Config.UpstreamPort)
-		r.Config.UpstreamURI = types.StringPointerValue(resp.Config.UpstreamURI)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -271,4 +280,6 @@ func (r *GatewayPluginCanaryResourceModel) RefreshFromSharedCanaryPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

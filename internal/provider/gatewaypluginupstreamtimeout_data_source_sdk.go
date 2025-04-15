@@ -3,16 +3,25 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginUpstreamTimeoutDataSourceModel) RefreshFromSharedUpstreamTimeoutPlugin(resp *shared.UpstreamTimeoutPlugin) {
+func (r *GatewayPluginUpstreamTimeoutDataSourceModel) RefreshFromSharedUpstreamTimeoutPlugin(ctx context.Context, resp *shared.UpstreamTimeoutPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.UpstreamTimeoutPluginConfig{}
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -68,4 +77,6 @@ func (r *GatewayPluginUpstreamTimeoutDataSourceModel) RefreshFromSharedUpstreamT
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

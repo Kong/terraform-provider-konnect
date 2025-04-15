@@ -81,6 +81,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"destinations": schema.ListNestedAttribute{
@@ -239,6 +240,7 @@ func (r *GatewayRouteResource) Schema(ctx context.Context, req resource.SchemaRe
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -286,7 +288,7 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
+	routeJSON := *data.ToSharedRouteJSON()
 	request := operations.CreateRouteRequest{
 		ControlPlaneID: controlPlaneID,
 		RouteJSON:      routeJSON,
@@ -311,8 +313,17 @@ func (r *GatewayRouteResource) Create(ctx context.Context, req resource.CreateRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRouteJSON(ctx, res.RouteJSON)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -370,7 +381,11 @@ func (r *GatewayRouteResource) Read(ctx context.Context, req resource.ReadReques
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
+	resp.Diagnostics.Append(data.RefreshFromSharedRouteJSON(ctx, res.RouteJSON)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -396,7 +411,7 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	routeJSON := *data.ToSharedRouteJSONInput()
+	routeJSON := *data.ToSharedRouteJSON()
 	request := operations.UpsertRouteRequest{
 		RouteID:        routeID,
 		ControlPlaneID: controlPlaneID,
@@ -422,8 +437,17 @@ func (r *GatewayRouteResource) Update(ctx context.Context, req resource.UpdateRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRouteJSON(res.RouteJSON)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRouteJSON(ctx, res.RouteJSON)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -485,7 +509,7 @@ func (r *GatewayRouteResource) ImportState(ctx context.Context, req resource.Imp
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "route_id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"}': `+err.Error())
 		return
 	}
 

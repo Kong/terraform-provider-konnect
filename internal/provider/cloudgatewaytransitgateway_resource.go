@@ -156,8 +156,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Description: `Requires replacement if changed.`,
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
@@ -213,12 +213,20 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"created",
 								"initializing",
+								"pending-acceptance",
 								"ready",
 								"terminating",
 								"terminated",
@@ -425,12 +433,20 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"created",
 								"initializing",
+								"pending-acceptance",
 								"ready",
 								"terminating",
 								"terminated",
@@ -471,8 +487,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -579,8 +595,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway_response"),
 					}...),
@@ -629,12 +645,20 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 						Description: `Human-readable name of the transit gateway.`,
 					},
 					"state": schema.StringAttribute{
-						Computed:    true,
-						Description: `State of the transit gateway. must be one of ["created", "initializing", "ready", "terminating", "terminated"]`,
+						Computed: true,
+						MarkdownDescription: `The current state of the Transit Gateway. Possible values:` + "\n" +
+							`- ` + "`" + `created` + "`" + ` - The attachment has been created but is not attached to transit gateway.` + "\n" +
+							`- ` + "`" + `initializing` + "`" + ` - The attachment is in the process of being initialized and is setting up necessary resources.` + "\n" +
+							`- ` + "`" + `pending` + "`" + ` - acceptance The attachment request is awaiting acceptance in customer VPC.` + "\n" +
+							`- ` + "`" + `ready` + "`" + ` - The transit gateway attachment is fully operational and can route traffic as configured.` + "\n" +
+							`- ` + "`" + `terminating` + "`" + ` - The attachment is in the process of being deleted and is no longer accepting new traffic.` + "\n" +
+							`- ` + "`" + `terminated` + "`" + ` - The attachment has been fully deleted and is no longer available.` + "\n" +
+							`must be one of ["created", "initializing", "pending-acceptance", "ready", "terminating", "terminated"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"created",
 								"initializing",
+								"pending-acceptance",
 								"ready",
 								"terminating",
 								"terminated",
@@ -682,8 +706,8 @@ func (r *CloudGatewayTransitGatewayResource) Schema(ctx context.Context, req res
 				Validators: []validator.Object{
 					objectvalidator.ConflictsWith(path.Expressions{
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway"),
-						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_transit_gateway_response"),
+						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway"),
 						path.MatchRelative().AtParent().AtName("aws_vpc_peering_gateway_response"),
 						path.MatchRelative().AtParent().AtName("azure_transit_gateway"),
 					}...),
@@ -778,8 +802,17 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedTransitGatewayResponse(ctx, res.TransitGatewayResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -837,7 +870,11 @@ func (r *CloudGatewayTransitGatewayResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTransitGatewayResponse(res.TransitGatewayResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedTransitGatewayResponse(ctx, res.TransitGatewayResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -919,7 +956,7 @@ func (r *CloudGatewayTransitGatewayResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695",  "transit_gateway_id": "0850820b-d153-4a2a-b9be-7d2204779139"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "network_id": "36ae63d3-efd1-4bec-b246-62aa5d3f5695",  "id": "0850820b-d153-4a2a-b9be-7d2204779139"}': `+err.Error())
 		return
 	}
 

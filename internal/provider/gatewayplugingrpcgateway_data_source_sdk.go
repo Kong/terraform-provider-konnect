@@ -3,14 +3,23 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPlugin(resp *shared.GrpcGatewayPlugin) {
+func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPlugin(ctx context.Context, resp *shared.GrpcGatewayPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.GrpcGatewayPluginConfig{}
+			r.Config.Proto = types.StringPointerValue(resp.Config.Proto)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -66,4 +75,6 @@ func (r *GatewayPluginGrpcGatewayDataSourceModel) RefreshFromSharedGrpcGatewayPl
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

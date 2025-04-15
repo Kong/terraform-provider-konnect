@@ -3,24 +3,33 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptGuardDataSourceModel) RefreshFromSharedAiPromptGuardPlugin(resp *shared.AiPromptGuardPlugin) {
+func (r *GatewayPluginAiPromptGuardDataSourceModel) RefreshFromSharedAiPromptGuardPlugin(ctx context.Context, resp *shared.AiPromptGuardPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
-		r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
-		for _, v := range resp.Config.AllowPatterns {
-			r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiPromptGuardPluginConfig{}
+			r.Config.AllowAllConversationHistory = types.BoolPointerValue(resp.Config.AllowAllConversationHistory)
+			r.Config.AllowPatterns = make([]types.String, 0, len(resp.Config.AllowPatterns))
+			for _, v := range resp.Config.AllowPatterns {
+				r.Config.AllowPatterns = append(r.Config.AllowPatterns, types.StringValue(v))
+			}
+			r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
+			for _, v := range resp.Config.DenyPatterns {
+				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+			}
+			r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		}
-		r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
-		for _, v := range resp.Config.DenyPatterns {
-			r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
-		}
-		r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
-		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -82,4 +91,6 @@ func (r *GatewayPluginAiPromptGuardDataSourceModel) RefreshFromSharedAiPromptGua
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

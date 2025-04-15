@@ -3,54 +3,63 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin(resp *shared.ConfluentPlugin) {
+func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin(ctx context.Context, resp *shared.ConfluentPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
-		if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
-			r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
-		}
-		for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
-			var bootstrapServers1 tfTypes.BootstrapServers
-			bootstrapServers1.Host = types.StringValue(bootstrapServersItem.Host)
-			bootstrapServers1.Port = types.Int64Value(bootstrapServersItem.Port)
-			if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
-				r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers1)
-			} else {
-				r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers1.Host
-				r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers1.Port
-			}
-		}
-		r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
-		r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
-		r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
-		r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
-		r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
-		r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
-		r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
-		r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
-		r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
-		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-		r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
-		r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
-		r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
-		r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
-		if resp.Config.ProducerRequestAcks != nil {
-			r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ProducerRequestAcks = types.Int64Null()
+			r.Config = &tfTypes.ConfluentPluginConfig{}
+			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
+			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
+				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
+			}
+			for bootstrapServersCount, bootstrapServersItem := range resp.Config.BootstrapServers {
+				var bootstrapServers tfTypes.BootstrapServers
+				bootstrapServers.Host = types.StringValue(bootstrapServersItem.Host)
+				bootstrapServers.Port = types.Int64Value(bootstrapServersItem.Port)
+				if bootstrapServersCount+1 > len(r.Config.BootstrapServers) {
+					r.Config.BootstrapServers = append(r.Config.BootstrapServers, bootstrapServers)
+				} else {
+					r.Config.BootstrapServers[bootstrapServersCount].Host = bootstrapServers.Host
+					r.Config.BootstrapServers[bootstrapServersCount].Port = bootstrapServers.Port
+				}
+			}
+			r.Config.ClusterAPIKey = types.StringPointerValue(resp.Config.ClusterAPIKey)
+			r.Config.ClusterAPISecret = types.StringPointerValue(resp.Config.ClusterAPISecret)
+			r.Config.ClusterName = types.StringPointerValue(resp.Config.ClusterName)
+			r.Config.ConfluentCloudAPIKey = types.StringPointerValue(resp.Config.ConfluentCloudAPIKey)
+			r.Config.ConfluentCloudAPISecret = types.StringPointerValue(resp.Config.ConfluentCloudAPISecret)
+			r.Config.ForwardBody = types.BoolPointerValue(resp.Config.ForwardBody)
+			r.Config.ForwardHeaders = types.BoolPointerValue(resp.Config.ForwardHeaders)
+			r.Config.ForwardMethod = types.BoolPointerValue(resp.Config.ForwardMethod)
+			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
+			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
+			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
+			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
+			if resp.Config.ProducerRequestAcks != nil {
+				r.Config.ProducerRequestAcks = types.Int64Value(int64(*resp.Config.ProducerRequestAcks))
+			} else {
+				r.Config.ProducerRequestAcks = types.Int64Null()
+			}
+			r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
+			r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
+			r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
+			r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
+			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
+			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
 		}
-		r.Config.ProducerRequestLimitsBytesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsBytesPerRequest)
-		r.Config.ProducerRequestLimitsMessagesPerRequest = types.Int64PointerValue(resp.Config.ProducerRequestLimitsMessagesPerRequest)
-		r.Config.ProducerRequestRetriesBackoffTimeout = types.Int64PointerValue(resp.Config.ProducerRequestRetriesBackoffTimeout)
-		r.Config.ProducerRequestRetriesMaxAttempts = types.Int64PointerValue(resp.Config.ProducerRequestRetriesMaxAttempts)
-		r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
-		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-		r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -106,4 +115,6 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

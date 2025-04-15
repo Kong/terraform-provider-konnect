@@ -29,7 +29,7 @@ type GatewayPluginLdapAuthDataSource struct {
 
 // GatewayPluginLdapAuthDataSourceModel describes the data model.
 type GatewayPluginLdapAuthDataSourceModel struct {
-	Config         tfTypes.LdapAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.LdapAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -69,7 +69,7 @@ func (r *GatewayPluginLdapAuthDataSource) Schema(ctx context.Context, req dataso
 						Computed:    true,
 						Description: `Base DN as the starting point for the search; e.g., dc=example,dc=com`,
 					},
-					"cache_ttl": schema.NumberAttribute{
+					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Cache expiry time in seconds.`,
 					},
@@ -81,7 +81,7 @@ func (r *GatewayPluginLdapAuthDataSource) Schema(ctx context.Context, req dataso
 						Computed:    true,
 						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
 					},
@@ -105,7 +105,7 @@ func (r *GatewayPluginLdapAuthDataSource) Schema(ctx context.Context, req dataso
 						Computed:    true,
 						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server.`,
 					},
@@ -264,7 +264,11 @@ func (r *GatewayPluginLdapAuthDataSource) Read(ctx context.Context, req datasour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedLdapAuthPlugin(res.LdapAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedLdapAuthPlugin(ctx, res.LdapAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

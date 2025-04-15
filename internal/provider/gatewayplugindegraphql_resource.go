@@ -36,7 +36,7 @@ type GatewayPluginDegraphqlResource struct {
 
 // GatewayPluginDegraphqlResourceModel describes the resource data model.
 type GatewayPluginDegraphqlResourceModel struct {
-	Config         tfTypes.DegraphqlPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.DegraphqlPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 		MarkdownDescription: "GatewayPluginDegraphql Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"graphql_server_path": schema.StringAttribute{
 						Computed:    true,
@@ -77,6 +78,7 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -162,6 +164,7 @@ func (r *GatewayPluginDegraphqlResource) Schema(ctx context.Context, req resourc
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -209,7 +212,7 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	degraphqlPlugin := *data.ToSharedDegraphqlPluginInput()
+	degraphqlPlugin := *data.ToSharedDegraphqlPlugin()
 	request := operations.CreateDegraphqlPluginRequest{
 		ControlPlaneID:  controlPlaneID,
 		DegraphqlPlugin: degraphqlPlugin,
@@ -234,8 +237,17 @@ func (r *GatewayPluginDegraphqlResource) Create(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedDegraphqlPlugin(res.DegraphqlPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedDegraphqlPlugin(ctx, res.DegraphqlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -293,7 +305,11 @@ func (r *GatewayPluginDegraphqlResource) Read(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedDegraphqlPlugin(res.DegraphqlPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedDegraphqlPlugin(ctx, res.DegraphqlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -319,7 +335,7 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	degraphqlPlugin := *data.ToSharedDegraphqlPluginInput()
+	degraphqlPlugin := *data.ToSharedDegraphqlPlugin()
 	request := operations.UpdateDegraphqlPluginRequest{
 		PluginID:        pluginID,
 		ControlPlaneID:  controlPlaneID,
@@ -345,8 +361,17 @@ func (r *GatewayPluginDegraphqlResource) Update(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedDegraphqlPlugin(res.DegraphqlPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedDegraphqlPlugin(ctx, res.DegraphqlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -408,7 +433,7 @@ func (r *GatewayPluginDegraphqlResource) ImportState(ctx context.Context, req re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

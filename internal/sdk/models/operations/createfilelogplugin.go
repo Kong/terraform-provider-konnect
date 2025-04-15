@@ -9,8 +9,8 @@ import (
 
 type CreateFilelogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	FileLogPlugin  shared.FileLogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	FileLogPlugin  shared.FileLogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateFilelogPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateFilelogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateFilelogPluginRequest) GetFileLogPlugin() shared.FileLogPluginInput {
+func (o *CreateFilelogPluginRequest) GetFileLogPlugin() shared.FileLogPlugin {
 	if o == nil {
-		return shared.FileLogPluginInput{}
+		return shared.FileLogPlugin{}
 	}
 	return o.FileLogPlugin
 }

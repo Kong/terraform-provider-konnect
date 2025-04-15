@@ -59,6 +59,7 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"custom_id": schema.StringAttribute{
@@ -78,6 +79,7 @@ func (r *GatewayConsumerResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"username": schema.StringAttribute{
@@ -130,7 +132,7 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	consumer := *data.ToSharedConsumerInput()
+	consumer := *data.ToSharedConsumer()
 	request := operations.CreateConsumerRequest{
 		ControlPlaneID: controlPlaneID,
 		Consumer:       consumer,
@@ -155,8 +157,17 @@ func (r *GatewayConsumerResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConsumer(res.Consumer)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumer(ctx, res.Consumer)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -214,7 +225,11 @@ func (r *GatewayConsumerResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConsumer(res.Consumer)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumer(ctx, res.Consumer)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -240,7 +255,7 @@ func (r *GatewayConsumerResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	consumer := *data.ToSharedConsumerInput()
+	consumer := *data.ToSharedConsumer()
 	request := operations.UpsertConsumerRequest{
 		ConsumerID:     consumerID,
 		ControlPlaneID: controlPlaneID,
@@ -266,8 +281,17 @@ func (r *GatewayConsumerResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedConsumer(res.Consumer)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedConsumer(ctx, res.Consumer)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -329,7 +353,7 @@ func (r *GatewayConsumerResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "consumer_id": "c1059869-6fa7-4329-a5f5-5946d14ca2c5",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "id": "c1059869-6fa7-4329-a5f5-5946d14ca2c5",  "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458"}': `+err.Error())
 		return
 	}
 

@@ -3,21 +3,30 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDatadogTracingDataSourceModel) RefreshFromSharedDatadogTracingPlugin(resp *shared.DatadogTracingPlugin) {
+func (r *GatewayPluginDatadogTracingDataSourceModel) RefreshFromSharedDatadogTracingPlugin(ctx context.Context, resp *shared.DatadogTracingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
-		r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
-		r.Config.Environment = types.StringPointerValue(resp.Config.Environment)
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-		r.Config.ServiceName = types.StringPointerValue(resp.Config.ServiceName)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.DatadogTracingPluginConfig{}
+			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
+			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			r.Config.Endpoint = types.StringPointerValue(resp.Config.Endpoint)
+			r.Config.Environment = types.StringPointerValue(resp.Config.Environment)
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+			r.Config.ServiceName = types.StringPointerValue(resp.Config.ServiceName)
+		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
@@ -73,4 +82,6 @@ func (r *GatewayPluginDatadogTracingDataSourceModel) RefreshFromSharedDatadogTra
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

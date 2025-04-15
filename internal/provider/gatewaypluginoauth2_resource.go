@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -38,7 +39,7 @@ type GatewayPluginOauth2Resource struct {
 
 // GatewayPluginOauth2ResourceModel describes the resource data model.
 type GatewayPluginOauth2ResourceModel struct {
-	Config         tfTypes.Oauth2PluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.Oauth2PluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,7 +62,8 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginOauth2 Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"accept_http_if_already_terminated": schema.BoolAttribute{
 						Computed:    true,
@@ -139,10 +141,13 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `When authentication fails the plugin sends ` + "`" + `WWW-Authenticate` + "`" + ` header with ` + "`" + `realm` + "`" + ` attribute value.`,
 					},
-					"refresh_token_ttl": schema.NumberAttribute{
+					"refresh_token_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Time-to-live value for data`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(100000000),
+						},
 					},
 					"reuse_refresh_token": schema.BoolAttribute{
 						Computed:    true,
@@ -155,7 +160,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 						ElementType: types.StringType,
 						Description: `Describes an array of scope names that will be available to the end user. If ` + "`" + `mandatory_scope` + "`" + ` is set to ` + "`" + `true` + "`" + `, then ` + "`" + `scopes` + "`" + ` are required.`,
 					},
-					"token_expiration": schema.NumberAttribute{
+					"token_expiration": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `An optional integer value telling the plugin how many seconds a token should last, after which the client will need to refresh the token. Set to ` + "`" + `0` + "`" + ` to disable the expiration.`,
@@ -171,6 +176,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -256,6 +262,7 @@ func (r *GatewayPluginOauth2Resource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -303,7 +310,7 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := *data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2Plugin()
 	request := operations.CreateOauth2PluginRequest{
 		ControlPlaneID: controlPlaneID,
 		Oauth2Plugin:   oauth2Plugin,
@@ -328,8 +335,17 @@ func (r *GatewayPluginOauth2Resource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedOauth2Plugin(ctx, res.Oauth2Plugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -387,7 +403,11 @@ func (r *GatewayPluginOauth2Resource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOauth2Plugin(ctx, res.Oauth2Plugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -413,7 +433,7 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	oauth2Plugin := *data.ToSharedOauth2PluginInput()
+	oauth2Plugin := *data.ToSharedOauth2Plugin()
 	request := operations.UpdateOauth2PluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -439,8 +459,17 @@ func (r *GatewayPluginOauth2Resource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOauth2Plugin(res.Oauth2Plugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedOauth2Plugin(ctx, res.Oauth2Plugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -502,7 +531,7 @@ func (r *GatewayPluginOauth2Resource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

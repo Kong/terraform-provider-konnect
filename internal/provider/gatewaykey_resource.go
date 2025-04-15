@@ -46,6 +46,7 @@ type GatewayKeyResourceModel struct {
 	Set            *tfTypes.ACLWithoutParentsConsumer `tfsdk:"set"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	X5t            types.String                       `tfsdk:"x5t"`
 }
 
 func (r *GatewayKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,6 +66,7 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"id": schema.StringAttribute{
@@ -122,7 +124,12 @@ func (r *GatewayKeyResource) Schema(ctx context.Context, req resource.SchemaRequ
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"x5t": schema.StringAttribute{
+				Computed: true,
+				Optional: true,
 			},
 		},
 	}
@@ -169,7 +176,7 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	key := *data.ToSharedKeyInput()
+	key := *data.ToSharedKey()
 	request := operations.CreateKeyRequest{
 		ControlPlaneID: controlPlaneID,
 		Key:            key,
@@ -194,8 +201,17 @@ func (r *GatewayKeyResource) Create(ctx context.Context, req resource.CreateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKey(res.Key)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKey(ctx, res.Key)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -253,7 +269,11 @@ func (r *GatewayKeyResource) Read(ctx context.Context, req resource.ReadRequest,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKey(res.Key)
+	resp.Diagnostics.Append(data.RefreshFromSharedKey(ctx, res.Key)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -279,7 +299,7 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	key := *data.ToSharedKeyInput()
+	key := *data.ToSharedKey()
 	request := operations.UpsertKeyRequest{
 		KeyID:          keyID,
 		ControlPlaneID: controlPlaneID,
@@ -305,8 +325,17 @@ func (r *GatewayKeyResource) Update(ctx context.Context, req resource.UpdateRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKey(res.Key)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKey(ctx, res.Key)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -368,7 +397,7 @@ func (r *GatewayKeyResource) ImportState(ctx context.Context, req resource.Impor
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "key_id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "bba22c06-a632-42be-a018-1b9ff357b5b9"}': `+err.Error())
 		return
 	}
 

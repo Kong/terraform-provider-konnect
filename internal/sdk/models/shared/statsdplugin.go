@@ -758,8 +758,8 @@ type StatsdPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64             `json:"updated_at,omitempty"`
-	Config    StatsdPluginConfig `json:"config"`
+	UpdatedAt *int64              `json:"updated_at,omitempty"`
+	Config    *StatsdPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *StatsdPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -834,9 +834,9 @@ func (o *StatsdPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *StatsdPlugin) GetConfig() StatsdPluginConfig {
+func (o *StatsdPlugin) GetConfig() *StatsdPluginConfig {
 	if o == nil {
-		return StatsdPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -863,112 +863,6 @@ func (o *StatsdPlugin) GetRoute() *StatsdPluginRoute {
 }
 
 func (o *StatsdPlugin) GetService() *StatsdPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// StatsdPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type StatsdPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                 `json:"enabled,omitempty"`
-	ID           *string               `json:"id,omitempty"`
-	InstanceName *string               `json:"instance_name,omitempty"`
-	name         string                `const:"statsd" json:"name"`
-	Ordering     *StatsdPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string           `json:"tags,omitempty"`
-	Config StatsdPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *StatsdPluginConsumer `json:"consumer"`
-	// A set of strings representing protocols.
-	Protocols []StatsdPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *StatsdPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *StatsdPluginService `json:"service"`
-}
-
-func (s StatsdPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(s, "", false)
-}
-
-func (s *StatsdPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &s, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *StatsdPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *StatsdPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *StatsdPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *StatsdPluginInput) GetName() string {
-	return "statsd"
-}
-
-func (o *StatsdPluginInput) GetOrdering() *StatsdPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *StatsdPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *StatsdPluginInput) GetConfig() StatsdPluginConfig {
-	if o == nil {
-		return StatsdPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *StatsdPluginInput) GetConsumer() *StatsdPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *StatsdPluginInput) GetProtocols() []StatsdPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *StatsdPluginInput) GetRoute() *StatsdPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *StatsdPluginInput) GetService() *StatsdPluginService {
 	if o == nil {
 		return nil
 	}

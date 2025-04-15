@@ -3,20 +3,29 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelationIDPlugin(resp *shared.CorrelationIDPlugin) {
+func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelationIDPlugin(ctx context.Context, resp *shared.CorrelationIDPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
-		if resp.Config.Generator != nil {
-			r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Generator = types.StringNull()
+			r.Config = &tfTypes.CorrelationIDPluginConfig{}
+			r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
+			if resp.Config.Generator != nil {
+				r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+			} else {
+				r.Config.Generator = types.StringNull()
+			}
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		}
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -72,4 +81,6 @@ func (r *GatewayPluginCorrelationIDDataSourceModel) RefreshFromSharedCorrelation
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

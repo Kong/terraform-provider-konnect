@@ -11,8 +11,8 @@ type UpdateRequestsizelimitingPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID            string                                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestSizeLimitingPlugin shared.RequestSizeLimitingPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID            string                           `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestSizeLimitingPlugin shared.RequestSizeLimitingPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRequestsizelimitingPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateRequestsizelimitingPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRequestsizelimitingPluginRequest) GetRequestSizeLimitingPlugin() shared.RequestSizeLimitingPluginInput {
+func (o *UpdateRequestsizelimitingPluginRequest) GetRequestSizeLimitingPlugin() shared.RequestSizeLimitingPlugin {
 	if o == nil {
-		return shared.RequestSizeLimitingPluginInput{}
+		return shared.RequestSizeLimitingPlugin{}
 	}
 	return o.RequestSizeLimitingPlugin
 }

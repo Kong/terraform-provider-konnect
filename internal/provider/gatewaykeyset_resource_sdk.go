@@ -3,11 +3,19 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeySetResourceModel) ToSharedKeySetInput() *shared.KeySetInput {
+func (r *GatewayKeySetResourceModel) ToSharedKeySet() *shared.KeySet {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -24,15 +32,25 @@ func (r *GatewayKeySetResourceModel) ToSharedKeySetInput() *shared.KeySetInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.KeySetInput{
-		ID:   id,
-		Name: name,
-		Tags: tags,
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.KeySet{
+		CreatedAt: createdAt,
+		ID:        id,
+		Name:      name,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
 	}
 	return &out
 }
 
-func (r *GatewayKeySetResourceModel) RefreshFromSharedKeySet(resp *shared.KeySet) {
+func (r *GatewayKeySetResourceModel) RefreshFromSharedKeySet(ctx context.Context, resp *shared.KeySet) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -43,4 +61,6 @@ func (r *GatewayKeySetResourceModel) RefreshFromSharedKeySet(resp *shared.KeySet
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

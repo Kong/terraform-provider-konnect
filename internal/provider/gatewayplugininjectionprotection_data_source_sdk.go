@@ -3,42 +3,51 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginInjectionProtectionDataSourceModel) RefreshFromSharedInjectionProtectionPlugin(resp *shared.InjectionProtectionPlugin) {
+func (r *GatewayPluginInjectionProtectionDataSourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.CustomInjections = []tfTypes.CustomInjections{}
-		if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
-			r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
-		}
-		for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
-			var customInjections1 tfTypes.CustomInjections
-			customInjections1.Name = types.StringValue(customInjectionsItem.Name)
-			customInjections1.Regex = types.StringValue(customInjectionsItem.Regex)
-			if customInjectionsCount+1 > len(r.Config.CustomInjections) {
-				r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections1)
-			} else {
-				r.Config.CustomInjections[customInjectionsCount].Name = customInjections1.Name
-				r.Config.CustomInjections[customInjectionsCount].Regex = customInjections1.Regex
-			}
-		}
-		if resp.Config.EnforcementMode != nil {
-			r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.EnforcementMode = types.StringNull()
-		}
-		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-		r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-		r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
-		for _, v := range resp.Config.InjectionTypes {
-			r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
-		}
-		r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
-		for _, v := range resp.Config.Locations {
-			r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
+			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
+			r.Config.CustomInjections = []tfTypes.CustomInjections{}
+			if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
+				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
+			}
+			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
+				var customInjections tfTypes.CustomInjections
+				customInjections.Name = types.StringValue(customInjectionsItem.Name)
+				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
+				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+				} else {
+					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
+					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
+				}
+			}
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
+			r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
+			for _, v := range resp.Config.InjectionTypes {
+				r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
+			}
+			r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
+			for _, v := range resp.Config.Locations {
+				r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -89,4 +98,6 @@ func (r *GatewayPluginInjectionProtectionDataSourceModel) RefreshFromSharedInjec
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

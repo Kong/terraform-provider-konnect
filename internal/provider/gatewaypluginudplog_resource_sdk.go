@@ -3,14 +3,21 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPluginInput() *shared.UDPLogPluginInput {
+func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPlugin() *shared.UDPLogPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -60,35 +67,44 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPluginInput() *shared.U
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		host = nil
+		updatedAt = nil
 	}
-	port := new(int64)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueInt64()
-	} else {
-		port = nil
-	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
-	} else {
-		timeout = nil
-	}
-	config := shared.UDPLogPluginConfig{
-		CustomFieldsByLua: customFieldsByLua,
-		Host:              host,
-		Port:              port,
-		Timeout:           timeout,
+	var config *shared.UDPLogPluginConfig
+	if r.Config != nil {
+		customFieldsByLua := make(map[string]interface{})
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst interface{}
+			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
+		host := new(string)
+		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+			*host = r.Config.Host.ValueString()
+		} else {
+			host = nil
+		}
+		port := new(int64)
+		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+			*port = r.Config.Port.ValueInt64()
+		} else {
+			port = nil
+		}
+		timeout := new(float64)
+		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+			*timeout = r.Config.Timeout.ValueFloat64()
+		} else {
+			timeout = nil
+		}
+		config = &shared.UDPLogPluginConfig{
+			CustomFieldsByLua: customFieldsByLua,
+			Host:              host,
+			Port:              port,
+			Timeout:           timeout,
+		}
 	}
 	var consumer *shared.UDPLogPluginConsumer
 	if r.Consumer != nil {
@@ -130,12 +146,14 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPluginInput() *shared.U
 			ID: id3,
 		}
 	}
-	out := shared.UDPLogPluginInput{
+	out := shared.UDPLogPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -145,21 +163,24 @@ func (r *GatewayPluginUDPLogResourceModel) ToSharedUDPLogPluginInput() *shared.U
 	return &out
 }
 
-func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(resp *shared.UDPLogPlugin) {
+func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(ctx context.Context, resp *shared.UDPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
-			}
-		}
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Timeout = types.NumberNull()
+			r.Config = &tfTypes.UDPLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -216,4 +237,6 @@ func (r *GatewayPluginUDPLogResourceModel) RefreshFromSharedUDPLogPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

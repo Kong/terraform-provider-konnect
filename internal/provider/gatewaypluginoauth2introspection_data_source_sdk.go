@@ -3,44 +3,48 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth2IntrospectionPlugin(resp *shared.Oauth2IntrospectionPlugin) {
+func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth2IntrospectionPlugin(ctx context.Context, resp *shared.Oauth2IntrospectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.AuthorizationValue = types.StringPointerValue(resp.Config.AuthorizationValue)
-		if resp.Config.ConsumerBy != nil {
-			r.Config.ConsumerBy = types.StringValue(string(*resp.Config.ConsumerBy))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ConsumerBy = types.StringNull()
-		}
-		r.Config.CustomClaimsForward = make([]types.String, 0, len(resp.Config.CustomClaimsForward))
-		for _, v := range resp.Config.CustomClaimsForward {
-			r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
-		}
-		if len(resp.Config.CustomIntrospectionHeaders) > 0 {
-			r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
-			for key, value := range resp.Config.CustomIntrospectionHeaders {
-				result, _ := json.Marshal(value)
-				r.Config.CustomIntrospectionHeaders[key] = types.StringValue(string(result))
+			r.Config = &tfTypes.Oauth2IntrospectionPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.AuthorizationValue = types.StringPointerValue(resp.Config.AuthorizationValue)
+			if resp.Config.ConsumerBy != nil {
+				r.Config.ConsumerBy = types.StringValue(string(*resp.Config.ConsumerBy))
+			} else {
+				r.Config.ConsumerBy = types.StringNull()
 			}
-		}
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.IntrospectRequest = types.BoolPointerValue(resp.Config.IntrospectRequest)
-		r.Config.IntrospectionURL = types.StringPointerValue(resp.Config.IntrospectionURL)
-		r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
-		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-		r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
-		r.Config.TokenTypeHint = types.StringPointerValue(resp.Config.TokenTypeHint)
-		if resp.Config.TTL != nil {
-			r.Config.TTL = types.NumberValue(big.NewFloat(float64(*resp.Config.TTL)))
-		} else {
-			r.Config.TTL = types.NumberNull()
+			r.Config.CustomClaimsForward = make([]types.String, 0, len(resp.Config.CustomClaimsForward))
+			for _, v := range resp.Config.CustomClaimsForward {
+				r.Config.CustomClaimsForward = append(r.Config.CustomClaimsForward, types.StringValue(v))
+			}
+			if len(resp.Config.CustomIntrospectionHeaders) > 0 {
+				r.Config.CustomIntrospectionHeaders = make(map[string]types.String, len(resp.Config.CustomIntrospectionHeaders))
+				for key, value := range resp.Config.CustomIntrospectionHeaders {
+					result, _ := json.Marshal(value)
+					r.Config.CustomIntrospectionHeaders[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.IntrospectRequest = types.BoolPointerValue(resp.Config.IntrospectRequest)
+			r.Config.IntrospectionURL = types.StringPointerValue(resp.Config.IntrospectionURL)
+			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
+			r.Config.TokenTypeHint = types.StringPointerValue(resp.Config.TokenTypeHint)
+			r.Config.TTL = types.Float64PointerValue(resp.Config.TTL)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -91,4 +95,6 @@ func (r *GatewayPluginOauth2IntrospectionDataSourceModel) RefreshFromSharedOauth
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

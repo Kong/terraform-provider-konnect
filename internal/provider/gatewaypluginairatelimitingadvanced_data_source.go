@@ -29,20 +29,20 @@ type GatewayPluginAiRateLimitingAdvancedDataSource struct {
 
 // GatewayPluginAiRateLimitingAdvancedDataSourceModel describes the data model.
 type GatewayPluginAiRateLimitingAdvancedDataSourceModel struct {
-	Config         tfTypes.AiRateLimitingAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                                `tfsdk:"created_at"`
-	Enabled        types.Bool                                 `tfsdk:"enabled"`
-	ID             types.String                               `tfsdk:"id"`
-	InstanceName   types.String                               `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
-	Protocols      []types.String                             `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"service"`
-	Tags           []types.String                             `tfsdk:"tags"`
-	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
+	Config         *tfTypes.AiRateLimitingAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                                `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                 `tfsdk:"created_at"`
+	Enabled        types.Bool                                  `tfsdk:"enabled"`
+	ID             types.String                                `tfsdk:"id"`
+	InstanceName   types.String                                `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                  `tfsdk:"ordering"`
+	Protocols      []types.String                              `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer          `tfsdk:"service"`
+	Tags           []types.String                              `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                 `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -67,7 +67,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 						Computed:    true,
 						Description: `If set to ` + "`" + `true` + "`" + `, this doesn't count denied requests (status = ` + "`" + `429` + "`" + `). If set to ` + "`" + `false` + "`" + `, all requests, including denied ones, are counted. This parameter only affects the ` + "`" + `sliding` + "`" + ` window_type and the request prompt provider.`,
 					},
-					"error_code": schema.NumberAttribute{
+					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Set a custom error code to return when the rate limit is exceeded.`,
 					},
@@ -95,7 +95,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"limit": schema.NumberAttribute{
+								"limit": schema.Float64Attribute{
 									Computed:    true,
 									Description: `The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter.`,
 								},
@@ -103,7 +103,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 									Computed:    true,
 									Description: `The LLM provider to which the rate limit applies.`,
 								},
-								"window_size": schema.NumberAttribute{
+								"window_size": schema.Float64Attribute{
 									Computed:    true,
 									Description: `The window size to apply a limit (defined in seconds).`,
 								},
@@ -232,7 +232,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 						Computed:    true,
 						Description: `If defined, it use custom function to count requests for the request prompt provider`,
 					},
-					"retry_after_jitter_max": schema.NumberAttribute{
+					"retry_after_jitter_max": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The upper bound of a jitter (random delay) in seconds to be added to the ` + "`" + `Retry-After` + "`" + ` header of denied requests (status = ` + "`" + `429` + "`" + `) in order to prevent all the clients from coming back at the same time. The lower bound of the jitter is ` + "`" + `0` + "`" + `; in this case, the ` + "`" + `Retry-After` + "`" + ` header is equal to the ` + "`" + `RateLimit-Reset` + "`" + ` header.`,
 					},
@@ -240,7 +240,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 						Computed:    true,
 						Description: `The rate-limiting strategy to use for retrieving and incrementing the limits. Available values are: ` + "`" + `local` + "`" + ` and ` + "`" + `cluster` + "`" + `.`,
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Description: `How often to sync counter data to the central data store. A value of 0 results in synchronous behavior; a value of -1 ignores sync behavior entirely and only stores counters in node memory. A value greater than 0 will sync the counters in the specified number of seconds. The minimum allowed interval is 0.02 seconds (20ms).`,
 					},
@@ -421,7 +421,11 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Read(ctx context.Context
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiRateLimitingAdvancedPlugin(res.AiRateLimitingAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiRateLimitingAdvancedPlugin(ctx, res.AiRateLimitingAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,14 +3,21 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPluginInput() *shared.TCPLogPluginInput {
+func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLogPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -60,56 +67,65 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPluginInput() *shared.T
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	customFieldsByLua := make(map[string]interface{})
-	for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
-		var customFieldsByLuaInst interface{}
-		_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
-		customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
-	}
-	host := new(string)
-	if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
-		*host = r.Config.Host.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		host = nil
+		updatedAt = nil
 	}
-	keepalive := new(float64)
-	if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
-		*keepalive, _ = r.Config.Keepalive.ValueBigFloat().Float64()
-	} else {
-		keepalive = nil
-	}
-	port := new(int64)
-	if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
-		*port = r.Config.Port.ValueInt64()
-	} else {
-		port = nil
-	}
-	timeout := new(float64)
-	if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
-		*timeout, _ = r.Config.Timeout.ValueBigFloat().Float64()
-	} else {
-		timeout = nil
-	}
-	tls := new(bool)
-	if !r.Config.TLS.IsUnknown() && !r.Config.TLS.IsNull() {
-		*tls = r.Config.TLS.ValueBool()
-	} else {
-		tls = nil
-	}
-	tlsSni := new(string)
-	if !r.Config.TLSSni.IsUnknown() && !r.Config.TLSSni.IsNull() {
-		*tlsSni = r.Config.TLSSni.ValueString()
-	} else {
-		tlsSni = nil
-	}
-	config := shared.TCPLogPluginConfig{
-		CustomFieldsByLua: customFieldsByLua,
-		Host:              host,
-		Keepalive:         keepalive,
-		Port:              port,
-		Timeout:           timeout,
-		TLS:               tls,
-		TLSSni:            tlsSni,
+	var config *shared.TCPLogPluginConfig
+	if r.Config != nil {
+		customFieldsByLua := make(map[string]interface{})
+		for customFieldsByLuaKey, customFieldsByLuaValue := range r.Config.CustomFieldsByLua {
+			var customFieldsByLuaInst interface{}
+			_ = json.Unmarshal([]byte(customFieldsByLuaValue.ValueString()), &customFieldsByLuaInst)
+			customFieldsByLua[customFieldsByLuaKey] = customFieldsByLuaInst
+		}
+		host := new(string)
+		if !r.Config.Host.IsUnknown() && !r.Config.Host.IsNull() {
+			*host = r.Config.Host.ValueString()
+		} else {
+			host = nil
+		}
+		keepalive := new(float64)
+		if !r.Config.Keepalive.IsUnknown() && !r.Config.Keepalive.IsNull() {
+			*keepalive = r.Config.Keepalive.ValueFloat64()
+		} else {
+			keepalive = nil
+		}
+		port := new(int64)
+		if !r.Config.Port.IsUnknown() && !r.Config.Port.IsNull() {
+			*port = r.Config.Port.ValueInt64()
+		} else {
+			port = nil
+		}
+		timeout := new(float64)
+		if !r.Config.Timeout.IsUnknown() && !r.Config.Timeout.IsNull() {
+			*timeout = r.Config.Timeout.ValueFloat64()
+		} else {
+			timeout = nil
+		}
+		tls := new(bool)
+		if !r.Config.TLS.IsUnknown() && !r.Config.TLS.IsNull() {
+			*tls = r.Config.TLS.ValueBool()
+		} else {
+			tls = nil
+		}
+		tlsSni := new(string)
+		if !r.Config.TLSSni.IsUnknown() && !r.Config.TLSSni.IsNull() {
+			*tlsSni = r.Config.TLSSni.ValueString()
+		} else {
+			tlsSni = nil
+		}
+		config = &shared.TCPLogPluginConfig{
+			CustomFieldsByLua: customFieldsByLua,
+			Host:              host,
+			Keepalive:         keepalive,
+			Port:              port,
+			Timeout:           timeout,
+			TLS:               tls,
+			TLSSni:            tlsSni,
+		}
 	}
 	var consumer *shared.TCPLogPluginConsumer
 	if r.Consumer != nil {
@@ -151,12 +167,14 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPluginInput() *shared.T
 			ID: id3,
 		}
 	}
-	out := shared.TCPLogPluginInput{
+	out := shared.TCPLogPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -166,29 +184,28 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPluginInput() *shared.T
 	return &out
 }
 
-func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *shared.TCPLogPlugin) {
+func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx context.Context, resp *shared.TCPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.TCPLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+			r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
+			r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		}
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
-		r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -244,4 +261,6 @@ func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(resp *s
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

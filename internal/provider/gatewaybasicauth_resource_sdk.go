@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -21,6 +23,12 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id1 = r.ID.ValueString()
@@ -38,16 +46,19 @@ func (r *GatewayBasicAuthResourceModel) ToSharedBasicAuthWithoutParents() *share
 	username = r.Username.ValueString()
 
 	out := shared.BasicAuthWithoutParents{
-		Consumer: consumer,
-		ID:       id1,
-		Password: password,
-		Tags:     tags,
-		Username: username,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		ID:        id1,
+		Password:  password,
+		Tags:      tags,
+		Username:  username,
 	}
 	return &out
 }
 
-func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.BasicAuth) {
+func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(ctx context.Context, resp *shared.BasicAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -64,4 +75,6 @@ func (r *GatewayBasicAuthResourceModel) RefreshFromSharedBasicAuth(resp *shared.
 		}
 		r.Username = types.StringValue(resp.Username)
 	}
+
+	return diags
 }

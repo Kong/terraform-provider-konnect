@@ -3,65 +3,65 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin(resp *shared.AwsLambdaPlugin) {
+func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin(ctx context.Context, resp *shared.AwsLambdaPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
-		if resp.Config.AwsImdsProtocolVersion != nil {
-			r.Config.AwsImdsProtocolVersion = types.StringValue(string(*resp.Config.AwsImdsProtocolVersion))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.AwsImdsProtocolVersion = types.StringNull()
+			r.Config = &tfTypes.AwsLambdaPluginConfig{}
+			r.Config.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.AwsAssumeRoleArn)
+			if resp.Config.AwsImdsProtocolVersion != nil {
+				r.Config.AwsImdsProtocolVersion = types.StringValue(string(*resp.Config.AwsImdsProtocolVersion))
+			} else {
+				r.Config.AwsImdsProtocolVersion = types.StringNull()
+			}
+			r.Config.AwsKey = types.StringPointerValue(resp.Config.AwsKey)
+			r.Config.AwsRegion = types.StringPointerValue(resp.Config.AwsRegion)
+			r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
+			r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
+			r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
+			r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
+			r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
+			r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
+			if resp.Config.EmptyArraysMode != nil {
+				r.Config.EmptyArraysMode = types.StringValue(string(*resp.Config.EmptyArraysMode))
+			} else {
+				r.Config.EmptyArraysMode = types.StringNull()
+			}
+			r.Config.ForwardRequestBody = types.BoolPointerValue(resp.Config.ForwardRequestBody)
+			r.Config.ForwardRequestHeaders = types.BoolPointerValue(resp.Config.ForwardRequestHeaders)
+			r.Config.ForwardRequestMethod = types.BoolPointerValue(resp.Config.ForwardRequestMethod)
+			r.Config.ForwardRequestURI = types.BoolPointerValue(resp.Config.ForwardRequestURI)
+			r.Config.FunctionName = types.StringPointerValue(resp.Config.FunctionName)
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			if resp.Config.InvocationType != nil {
+				r.Config.InvocationType = types.StringValue(string(*resp.Config.InvocationType))
+			} else {
+				r.Config.InvocationType = types.StringNull()
+			}
+			r.Config.IsProxyIntegration = types.BoolPointerValue(resp.Config.IsProxyIntegration)
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+			if resp.Config.LogType != nil {
+				r.Config.LogType = types.StringValue(string(*resp.Config.LogType))
+			} else {
+				r.Config.LogType = types.StringNull()
+			}
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			r.Config.ProxyURL = types.StringPointerValue(resp.Config.ProxyURL)
+			r.Config.Qualifier = types.StringPointerValue(resp.Config.Qualifier)
+			r.Config.SkipLargeBodies = types.BoolPointerValue(resp.Config.SkipLargeBodies)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+			r.Config.UnhandledStatus = types.Int64PointerValue(resp.Config.UnhandledStatus)
 		}
-		r.Config.AwsKey = types.StringPointerValue(resp.Config.AwsKey)
-		r.Config.AwsRegion = types.StringPointerValue(resp.Config.AwsRegion)
-		r.Config.AwsRoleSessionName = types.StringPointerValue(resp.Config.AwsRoleSessionName)
-		r.Config.AwsSecret = types.StringPointerValue(resp.Config.AwsSecret)
-		r.Config.AwsStsEndpointURL = types.StringPointerValue(resp.Config.AwsStsEndpointURL)
-		r.Config.AwsgatewayCompatible = types.BoolPointerValue(resp.Config.AwsgatewayCompatible)
-		r.Config.Base64EncodeBody = types.BoolPointerValue(resp.Config.Base64EncodeBody)
-		r.Config.DisableHTTPS = types.BoolPointerValue(resp.Config.DisableHTTPS)
-		if resp.Config.EmptyArraysMode != nil {
-			r.Config.EmptyArraysMode = types.StringValue(string(*resp.Config.EmptyArraysMode))
-		} else {
-			r.Config.EmptyArraysMode = types.StringNull()
-		}
-		r.Config.ForwardRequestBody = types.BoolPointerValue(resp.Config.ForwardRequestBody)
-		r.Config.ForwardRequestHeaders = types.BoolPointerValue(resp.Config.ForwardRequestHeaders)
-		r.Config.ForwardRequestMethod = types.BoolPointerValue(resp.Config.ForwardRequestMethod)
-		r.Config.ForwardRequestURI = types.BoolPointerValue(resp.Config.ForwardRequestURI)
-		r.Config.FunctionName = types.StringPointerValue(resp.Config.FunctionName)
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		if resp.Config.InvocationType != nil {
-			r.Config.InvocationType = types.StringValue(string(*resp.Config.InvocationType))
-		} else {
-			r.Config.InvocationType = types.StringNull()
-		}
-		r.Config.IsProxyIntegration = types.BoolPointerValue(resp.Config.IsProxyIntegration)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		if resp.Config.LogType != nil {
-			r.Config.LogType = types.StringValue(string(*resp.Config.LogType))
-		} else {
-			r.Config.LogType = types.StringNull()
-		}
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		r.Config.ProxyURL = types.StringPointerValue(resp.Config.ProxyURL)
-		r.Config.Qualifier = types.StringPointerValue(resp.Config.Qualifier)
-		r.Config.SkipLargeBodies = types.BoolPointerValue(resp.Config.SkipLargeBodies)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.UnhandledStatus = types.Int64PointerValue(resp.Config.UnhandledStatus)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -117,4 +117,6 @@ func (r *GatewayPluginAwsLambdaDataSourceModel) RefreshFromSharedAwsLambdaPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

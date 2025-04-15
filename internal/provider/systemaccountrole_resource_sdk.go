@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -41,7 +43,9 @@ func (r *SystemAccountRoleResourceModel) ToSharedAssignRole() *shared.AssignRole
 	return &out
 }
 
-func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(resp *shared.AssignedRole) {
+func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(ctx context.Context, resp *shared.AssignedRole) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.EntityID = types.StringPointerValue(resp.EntityID)
 		if resp.EntityRegion != nil {
@@ -61,4 +65,6 @@ func (r *SystemAccountRoleResourceModel) RefreshFromSharedAssignedRole(resp *sha
 			r.RoleName = types.StringNull()
 		}
 	}
+
+	return diags
 }

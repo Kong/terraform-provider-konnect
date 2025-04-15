@@ -9,19 +9,21 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/hashicorp/go-uuid"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
-	tfReflect "github.com/kong/terraform-provider-konnect/v2/internal/provider/reflect"
 	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/textproto"
 	"reflect"
 	"strings"
+
+	"github.com/hashicorp/go-uuid"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+
+	tfReflect "github.com/kong/terraform-provider-konnect/v2/internal/provider/reflect"
 )
 
 func debugResponse(response *http.Response) string {
@@ -83,21 +85,29 @@ func merge(ctx context.Context, req resource.UpdateRequest, resp *resource.Updat
 		return
 	}
 
-	refreshPlan(ctx, plan, target, resp.Diagnostics)
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, target)...)
 }
 
-func refreshPlan(ctx context.Context, plan types.Object, target interface{}, diagnostics diag.Diagnostics) {
+func refreshPlan(ctx context.Context, plan types.Object, target any) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	obj := types.ObjectType{AttrTypes: plan.AttributeTypes(ctx)}
 	val, err := plan.ToTerraformValue(ctx)
 	if err != nil {
-		diagnostics.Append(diag.NewErrorDiagnostic("Object Conversion Error", "An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error()))
-		return
+		diags.AddError(
+			"Object Conversion Error",
+			"An unexpected error was encountered trying to convert object. This is always an error in the provider. Please report the following to the provider developer:\n\n"+err.Error(),
+		)
+		return diags
 	}
-	diagnostics.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
+
+	diags.Append(tfReflect.Into(ctx, obj, val, target, tfReflect.Options{
 		UnhandledNullAsEmpty:    true,
 		UnhandledUnknownAsEmpty: true,
 		SourceType:              tfReflect.SourceTypePlan,
 	}, path.Empty())...)
+
+	return diags
 }
 
 // Configurable options for the provider HTTP transport.

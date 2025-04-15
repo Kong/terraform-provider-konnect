@@ -17,10 +17,12 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
   cert             = "...my_cert..."
   cert_digest      = "...my_cert_digest..."
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 7
   id               = "...my_id..."
   tags = [
     "..."
   ]
+  updated_at = 6
 }
 ```
 
@@ -35,18 +37,18 @@ resource "konnect_gateway_ca_certificate" "my_gatewaycacertificate" {
 ### Optional
 
 - `cert_digest` (String) SHA256 hex digest of the public certificate. This field is read-only and it cannot be set by the caller, the value is automatically computed.
+- `created_at` (Number) Unix epoch when the resource was created.
 - `tags` (List of String) An optional set of strings associated with the Certificate for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_ca_certificate.my_konnect_gateway_ca_certificate "{ \"ca_certificate_id\": \"3c31f18a-f27a-4f9b-8cd4-bf841554612f\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
+terraform import konnect_gateway_ca_certificate.my_konnect_gateway_ca_certificate "{ \"id\": \"3c31f18a-f27a-4f9b-8cd4-bf841554612f\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
 ```

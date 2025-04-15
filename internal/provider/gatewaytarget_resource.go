@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/float64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
@@ -19,6 +20,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	speakeasy_float64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/float64planmodifier"
 	speakeasy_int64planmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/int64planmodifier"
 	speakeasy_listplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/listplanmodifier"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
@@ -43,11 +45,11 @@ type GatewayTargetResource struct {
 // GatewayTargetResourceModel describes the resource data model.
 type GatewayTargetResourceModel struct {
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Number                       `tfsdk:"created_at"`
+	CreatedAt      types.Float64                      `tfsdk:"created_at"`
 	ID             types.String                       `tfsdk:"id"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	Target         types.String                       `tfsdk:"target"`
-	UpdatedAt      types.Number                       `tfsdk:"updated_at"`
+	UpdatedAt      types.Float64                      `tfsdk:"updated_at"`
 	Upstream       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"upstream"`
 	UpstreamID     types.String                       `tfsdk:"upstream_id"`
 	Weight         types.Int64                        `tfsdk:"weight"`
@@ -68,9 +70,14 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
-			"created_at": schema.NumberAttribute{
-				Computed:    true,
-				Description: `Unix epoch when the resource was created.`,
+			"created_at": schema.Float64Attribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Float64{
+					float64planmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_float64planmodifier.SuppressDiff(speakeasy_float64planmodifier.ExplicitSuppress),
+				},
+				Description: `Unix epoch when the resource was created. Requires replacement if changed.`,
 			},
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -100,9 +107,14 @@ func (r *GatewayTargetResource) Schema(ctx context.Context, req resource.SchemaR
 				},
 				Description: `The target address (ip or hostname) and port. If the hostname resolves to an SRV record, the ` + "`" + `port` + "`" + ` value will be overridden by the value from the DNS record. Requires replacement if changed.`,
 			},
-			"updated_at": schema.NumberAttribute{
-				Computed:    true,
-				Description: `Unix epoch when the resource was last updated.`,
+			"updated_at": schema.Float64Attribute{
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.Float64{
+					float64planmodifier.RequiresReplaceIfConfigured(),
+					speakeasy_float64planmodifier.SuppressDiff(speakeasy_float64planmodifier.ExplicitSuppress),
+				},
+				Description: `Unix epoch when the resource was last updated. Requires replacement if changed.`,
 			},
 			"upstream": schema.SingleNestedAttribute{
 				Computed: true,
@@ -216,8 +228,17 @@ func (r *GatewayTargetResource) Create(ctx context.Context, req resource.CreateR
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTarget(res.Target)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedTarget(ctx, res.Target)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -279,7 +300,11 @@ func (r *GatewayTargetResource) Read(ctx context.Context, req resource.ReadReque
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedTarget(res.Target)
+	resp.Diagnostics.Append(data.RefreshFromSharedTarget(ctx, res.Target)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -366,7 +391,7 @@ func (r *GatewayTargetResource) ImportState(ctx context.Context, req resource.Im
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "target_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8",  "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "5a078780-5d4c-4aae-984a-bdc6f52113d8",  "upstream_id": "5a078780-5d4c-4aae-984a-bdc6f52113d8"}': `+err.Error())
 		return
 	}
 

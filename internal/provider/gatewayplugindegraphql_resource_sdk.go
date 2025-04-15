@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPluginInput() *shared.DegraphqlPluginInput {
+func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPlugin() *shared.DegraphqlPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,14 +66,23 @@ func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPluginInput() *sh
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	graphqlServerPath := new(string)
-	if !r.Config.GraphqlServerPath.IsUnknown() && !r.Config.GraphqlServerPath.IsNull() {
-		*graphqlServerPath = r.Config.GraphqlServerPath.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		graphqlServerPath = nil
+		updatedAt = nil
 	}
-	config := shared.DegraphqlPluginConfig{
-		GraphqlServerPath: graphqlServerPath,
+	var config *shared.DegraphqlPluginConfig
+	if r.Config != nil {
+		graphqlServerPath := new(string)
+		if !r.Config.GraphqlServerPath.IsUnknown() && !r.Config.GraphqlServerPath.IsNull() {
+			*graphqlServerPath = r.Config.GraphqlServerPath.ValueString()
+		} else {
+			graphqlServerPath = nil
+		}
+		config = &shared.DegraphqlPluginConfig{
+			GraphqlServerPath: graphqlServerPath,
+		}
 	}
 	var protocols []shared.DegraphqlPluginProtocols = []shared.DegraphqlPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -95,12 +112,14 @@ func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPluginInput() *sh
 			ID: id2,
 		}
 	}
-	out := shared.DegraphqlPluginInput{
+	out := shared.DegraphqlPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -109,9 +128,16 @@ func (r *GatewayPluginDegraphqlResourceModel) ToSharedDegraphqlPluginInput() *sh
 	return &out
 }
 
-func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(resp *shared.DegraphqlPlugin) {
+func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(ctx context.Context, resp *shared.DegraphqlPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.DegraphqlPluginConfig{}
+			r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -161,4 +187,6 @@ func (r *GatewayPluginDegraphqlResourceModel) RefreshFromSharedDegraphqlPlugin(r
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

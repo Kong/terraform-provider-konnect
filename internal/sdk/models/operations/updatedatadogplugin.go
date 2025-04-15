@@ -11,8 +11,8 @@ type UpdateDatadogPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                    `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	DatadogPlugin  shared.DatadogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	DatadogPlugin  shared.DatadogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateDatadogPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateDatadogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateDatadogPluginRequest) GetDatadogPlugin() shared.DatadogPluginInput {
+func (o *UpdateDatadogPluginRequest) GetDatadogPlugin() shared.DatadogPlugin {
 	if o == nil {
-		return shared.DatadogPluginInput{}
+		return shared.DatadogPlugin{}
 	}
 	return o.DatadogPlugin
 }

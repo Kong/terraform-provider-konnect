@@ -3,15 +3,24 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginStandardWebhooksDataSourceModel) RefreshFromSharedStandardWebhooksPlugin(resp *shared.StandardWebhooksPlugin) {
+func (r *GatewayPluginStandardWebhooksDataSourceModel) RefreshFromSharedStandardWebhooksPlugin(ctx context.Context, resp *shared.StandardWebhooksPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
-		r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.StandardWebhooksPluginConfig{}
+			r.Config.SecretV1 = types.StringPointerValue(resp.Config.SecretV1)
+			r.Config.ToleranceSecond = types.Int64PointerValue(resp.Config.ToleranceSecond)
+		}
 		if resp.ConsumerGroup == nil {
 			r.ConsumerGroup = nil
 		} else {
@@ -67,4 +76,6 @@ func (r *GatewayPluginStandardWebhooksDataSourceModel) RefreshFromSharedStandard
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

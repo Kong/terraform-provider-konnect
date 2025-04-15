@@ -3,19 +3,28 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginExitTransformerDataSourceModel) RefreshFromSharedExitTransformerPlugin(resp *shared.ExitTransformerPlugin) {
+func (r *GatewayPluginExitTransformerDataSourceModel) RefreshFromSharedExitTransformerPlugin(ctx context.Context, resp *shared.ExitTransformerPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
-		for _, v := range resp.Config.Functions {
-			r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ExitTransformerPluginConfig{}
+			r.Config.Functions = make([]types.String, 0, len(resp.Config.Functions))
+			for _, v := range resp.Config.Functions {
+				r.Config.Functions = append(r.Config.Functions, types.StringValue(v))
+			}
+			r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
+			r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		}
-		r.Config.HandleUnexpected = types.BoolPointerValue(resp.Config.HandleUnexpected)
-		r.Config.HandleUnknown = types.BoolPointerValue(resp.Config.HandleUnknown)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -71,4 +80,6 @@ func (r *GatewayPluginExitTransformerDataSourceModel) RefreshFromSharedExitTrans
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

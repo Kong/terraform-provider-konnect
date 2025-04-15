@@ -15,6 +15,7 @@ GatewayRouteExpression Resource
 ```terraform
 resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
   control_plane_id           = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at                 = 4
   expression                 = "...my_expression..."
   https_redirect_status_code = 307
   id                         = "...my_id..."
@@ -34,6 +35,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
   tags = [
     "..."
   ]
+  updated_at = 8
 }
 ```
 
@@ -46,6 +48,7 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `expression` (String) Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. must be one of ["426", "301", "302", "307", "308"]
 - `name` (String) The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
@@ -58,12 +61,11 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 - `service` (Attributes) The Service this Route is associated to. This is where the Route proxies traffic to. (see [below for nested schema](#nestedatt--service))
 - `strip_path` (Boolean) When matching a Route via one of the `paths`, strip the matching prefix from the upstream request URL.
 - `tags` (List of String) An optional set of strings associated with the Route for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--service"></a>
 ### Nested Schema for `service`
@@ -77,5 +79,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_route_expression.my_konnect_gateway_route_expression "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"route_id\": \"a4326a41-aa12-44e3-93e4-6b6e58bfb9d7\"}"
+terraform import konnect_gateway_route_expression.my_konnect_gateway_route_expression "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"a4326a41-aa12-44e3-93e4-6b6e58bfb9d7\"}"
 ```

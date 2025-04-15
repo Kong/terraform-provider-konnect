@@ -82,6 +82,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
     tos_accepted = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 0
   enabled          = true
   id               = "...my_id..."
   instance_name    = "...my_instance_name..."
@@ -103,6 +104,7 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
   tags = [
     "..."
   ]
+  updated_at = 9
 }
 ```
 
@@ -111,22 +113,22 @@ resource "konnect_gateway_plugin_acme" "my_gatewaypluginacme" {
 
 ### Required
 
-- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
 - `control_plane_id` (String) The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.
 
 ### Optional
 
+- `config` (Attributes) (see [below for nested schema](#nestedatt--config))
+- `created_at` (Number) Unix epoch when the resource was created.
 - `enabled` (Boolean) Whether the plugin is applied.
 - `instance_name` (String)
 - `ordering` (Attributes) (see [below for nested schema](#nestedatt--ordering))
 - `protocols` (List of String) A set of strings representing HTTP protocols.
 - `tags` (List of String) An optional set of strings associated with the Plugin for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 <a id="nestedatt--config"></a>
 ### Nested Schema for `config`
@@ -267,5 +269,5 @@ Optional:
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_plugin_acme.my_konnect_gateway_plugin_acme "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"plugin_id\": \"3473c251-5b6c-4f45-b1ff-7ede735a366d\"}"
+terraform import konnect_gateway_plugin_acme.my_konnect_gateway_plugin_acme "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"3473c251-5b6c-4f45-b1ff-7ede735a366d\"}"
 ```

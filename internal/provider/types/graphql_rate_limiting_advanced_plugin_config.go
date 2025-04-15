@@ -9,13 +9,13 @@ type GraphqlRateLimitingAdvancedPluginConfig struct {
 	DictionaryName    types.String                `tfsdk:"dictionary_name"`
 	HideClientHeaders types.Bool                  `tfsdk:"hide_client_headers"`
 	Identifier        types.String                `tfsdk:"identifier"`
-	Limit             []types.Number              `tfsdk:"limit"`
-	MaxCost           types.Number                `tfsdk:"max_cost"`
+	Limit             []types.Float64             `tfsdk:"limit"`
+	MaxCost           types.Float64               `tfsdk:"max_cost"`
 	Namespace         types.String                `tfsdk:"namespace"`
 	Redis             *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
-	ScoreFactor       types.Number                `tfsdk:"score_factor"`
+	ScoreFactor       types.Float64               `tfsdk:"score_factor"`
 	Strategy          types.String                `tfsdk:"strategy"`
-	SyncRate          types.Number                `tfsdk:"sync_rate"`
-	WindowSize        []types.Number              `tfsdk:"window_size"`
+	SyncRate          types.Float64               `tfsdk:"sync_rate"`
+	WindowSize        []types.Float64             `tfsdk:"window_size"`
 	WindowType        types.String                `tfsdk:"window_type"`
 }

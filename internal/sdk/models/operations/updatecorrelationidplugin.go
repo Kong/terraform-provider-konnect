@@ -11,8 +11,8 @@ type UpdateCorrelationidPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	CorrelationIDPlugin shared.CorrelationIDPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	CorrelationIDPlugin shared.CorrelationIDPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateCorrelationidPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateCorrelationidPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateCorrelationidPluginRequest) GetCorrelationIDPlugin() shared.CorrelationIDPluginInput {
+func (o *UpdateCorrelationidPluginRequest) GetCorrelationIDPlugin() shared.CorrelationIDPlugin {
 	if o == nil {
-		return shared.CorrelationIDPluginInput{}
+		return shared.CorrelationIDPlugin{}
 	}
 	return o.CorrelationIDPlugin
 }

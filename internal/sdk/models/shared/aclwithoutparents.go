@@ -15,9 +15,11 @@ func (o *ACLWithoutParentsConsumer) GetID() *string {
 
 type ACLWithoutParents struct {
 	Consumer *ACLWithoutParentsConsumer `json:"consumer"`
-	Group    string                     `json:"group"`
-	ID       *string                    `json:"id,omitempty"`
-	Tags     []string                   `json:"tags,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt *int64   `json:"created_at,omitempty"`
+	Group     string   `json:"group"`
+	ID        *string  `json:"id,omitempty"`
+	Tags      []string `json:"tags,omitempty"`
 }
 
 func (o *ACLWithoutParents) GetConsumer() *ACLWithoutParentsConsumer {
@@ -25,6 +27,13 @@ func (o *ACLWithoutParents) GetConsumer() *ACLWithoutParentsConsumer {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *ACLWithoutParents) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *ACLWithoutParents) GetGroup() string {

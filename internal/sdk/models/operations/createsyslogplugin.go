@@ -9,8 +9,8 @@ import (
 
 type CreateSyslogPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	SyslogPlugin   shared.SyslogPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	SyslogPlugin   shared.SyslogPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateSyslogPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateSyslogPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateSyslogPluginRequest) GetSyslogPlugin() shared.SyslogPluginInput {
+func (o *CreateSyslogPluginRequest) GetSyslogPlugin() shared.SyslogPlugin {
 	if o == nil {
-		return shared.SyslogPluginInput{}
+		return shared.SyslogPlugin{}
 	}
 	return o.SyslogPlugin
 }

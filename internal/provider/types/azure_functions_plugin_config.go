@@ -5,14 +5,14 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AzureFunctionsPluginConfig struct {
-	Apikey       types.String `tfsdk:"apikey"`
-	Appname      types.String `tfsdk:"appname"`
-	Clientid     types.String `tfsdk:"clientid"`
-	Functionname types.String `tfsdk:"functionname"`
-	Hostdomain   types.String `tfsdk:"hostdomain"`
-	HTTPS        types.Bool   `tfsdk:"https"`
-	HTTPSVerify  types.Bool   `tfsdk:"https_verify"`
-	Keepalive    types.Number `tfsdk:"keepalive"`
-	Routeprefix  types.String `tfsdk:"routeprefix"`
-	Timeout      types.Number `tfsdk:"timeout"`
+	Apikey       types.String  `tfsdk:"apikey"`
+	Appname      types.String  `tfsdk:"appname"`
+	Clientid     types.String  `tfsdk:"clientid"`
+	Functionname types.String  `tfsdk:"functionname"`
+	Hostdomain   types.String  `tfsdk:"hostdomain"`
+	HTTPS        types.Bool    `tfsdk:"https"`
+	HTTPSVerify  types.Bool    `tfsdk:"https_verify"`
+	Keepalive    types.Float64 `tfsdk:"keepalive"`
+	Routeprefix  types.String  `tfsdk:"routeprefix"`
+	Timeout      types.Float64 `tfsdk:"timeout"`
 }

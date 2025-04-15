@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidatorPluginInput() *shared.WebsocketValidatorPluginInput {
+func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidatorPlugin() *shared.WebsocketValidatorPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,67 +66,76 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var client *shared.WebsocketValidatorPluginClient
-	if r.Config.Client != nil {
-		var binary *shared.Binary
-		if r.Config.Client.Binary != nil {
-			var schema string
-			schema = r.Config.Client.Binary.Schema.ValueString()
-
-			typeVar := shared.WebsocketValidatorPluginType(r.Config.Client.Binary.Type.ValueString())
-			binary = &shared.Binary{
-				Schema: schema,
-				Type:   typeVar,
-			}
-		}
-		var text *shared.WebsocketValidatorPluginConfigText
-		if r.Config.Client.Text != nil {
-			var schema1 string
-			schema1 = r.Config.Client.Text.Schema.ValueString()
-
-			typeVar1 := shared.WebsocketValidatorPluginConfigType(r.Config.Client.Text.Type.ValueString())
-			text = &shared.WebsocketValidatorPluginConfigText{
-				Schema: schema1,
-				Type:   typeVar1,
-			}
-		}
-		client = &shared.WebsocketValidatorPluginClient{
-			Binary: binary,
-			Text:   text,
-		}
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
 	}
-	var upstream *shared.WebsocketValidatorPluginUpstream
-	if r.Config.Upstream != nil {
-		var binary1 *shared.WebsocketValidatorPluginBinary
-		if r.Config.Upstream.Binary != nil {
-			var schema2 string
-			schema2 = r.Config.Upstream.Binary.Schema.ValueString()
+	var config *shared.WebsocketValidatorPluginConfig
+	if r.Config != nil {
+		var client *shared.WebsocketValidatorPluginClient
+		if r.Config.Client != nil {
+			var binary *shared.Binary
+			if r.Config.Client.Binary != nil {
+				var schema string
+				schema = r.Config.Client.Binary.Schema.ValueString()
 
-			typeVar2 := shared.WebsocketValidatorPluginConfigUpstreamType(r.Config.Upstream.Binary.Type.ValueString())
-			binary1 = &shared.WebsocketValidatorPluginBinary{
-				Schema: schema2,
-				Type:   typeVar2,
+				typeVar := shared.WebsocketValidatorPluginType(r.Config.Client.Binary.Type.ValueString())
+				binary = &shared.Binary{
+					Schema: schema,
+					Type:   typeVar,
+				}
+			}
+			var text *shared.WebsocketValidatorPluginConfigText
+			if r.Config.Client.Text != nil {
+				var schema1 string
+				schema1 = r.Config.Client.Text.Schema.ValueString()
+
+				typeVar1 := shared.WebsocketValidatorPluginConfigType(r.Config.Client.Text.Type.ValueString())
+				text = &shared.WebsocketValidatorPluginConfigText{
+					Schema: schema1,
+					Type:   typeVar1,
+				}
+			}
+			client = &shared.WebsocketValidatorPluginClient{
+				Binary: binary,
+				Text:   text,
 			}
 		}
-		var text1 *shared.WebsocketValidatorPluginText
-		if r.Config.Upstream.Text != nil {
-			var schema3 string
-			schema3 = r.Config.Upstream.Text.Schema.ValueString()
+		var upstream *shared.WebsocketValidatorPluginUpstream
+		if r.Config.Upstream != nil {
+			var binary1 *shared.WebsocketValidatorPluginBinary
+			if r.Config.Upstream.Binary != nil {
+				var schema2 string
+				schema2 = r.Config.Upstream.Binary.Schema.ValueString()
 
-			typeVar3 := shared.WebsocketValidatorPluginConfigUpstreamTextType(r.Config.Upstream.Text.Type.ValueString())
-			text1 = &shared.WebsocketValidatorPluginText{
-				Schema: schema3,
-				Type:   typeVar3,
+				typeVar2 := shared.WebsocketValidatorPluginConfigUpstreamType(r.Config.Upstream.Binary.Type.ValueString())
+				binary1 = &shared.WebsocketValidatorPluginBinary{
+					Schema: schema2,
+					Type:   typeVar2,
+				}
+			}
+			var text1 *shared.WebsocketValidatorPluginText
+			if r.Config.Upstream.Text != nil {
+				var schema3 string
+				schema3 = r.Config.Upstream.Text.Schema.ValueString()
+
+				typeVar3 := shared.WebsocketValidatorPluginConfigUpstreamTextType(r.Config.Upstream.Text.Type.ValueString())
+				text1 = &shared.WebsocketValidatorPluginText{
+					Schema: schema3,
+					Type:   typeVar3,
+				}
+			}
+			upstream = &shared.WebsocketValidatorPluginUpstream{
+				Binary: binary1,
+				Text:   text1,
 			}
 		}
-		upstream = &shared.WebsocketValidatorPluginUpstream{
-			Binary: binary1,
-			Text:   text1,
+		config = &shared.WebsocketValidatorPluginConfig{
+			Client:   client,
+			Upstream: upstream,
 		}
-	}
-	config := shared.WebsocketValidatorPluginConfig{
-		Client:   client,
-		Upstream: upstream,
 	}
 	var consumer *shared.WebsocketValidatorPluginConsumer
 	if r.Consumer != nil {
@@ -160,12 +177,14 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 			ID: id3,
 		}
 	}
-	out := shared.WebsocketValidatorPluginInput{
+	out := shared.WebsocketValidatorPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -175,44 +194,51 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) ToSharedWebsocketValidato
 	return &out
 }
 
-func (r *GatewayPluginWebsocketValidatorResourceModel) RefreshFromSharedWebsocketValidatorPlugin(resp *shared.WebsocketValidatorPlugin) {
+func (r *GatewayPluginWebsocketValidatorResourceModel) RefreshFromSharedWebsocketValidatorPlugin(ctx context.Context, resp *shared.WebsocketValidatorPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.Config.Client == nil {
-			r.Config.Client = nil
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Client = &tfTypes.WebsocketValidatorPluginClient{}
-			if resp.Config.Client.Binary == nil {
-				r.Config.Client.Binary = nil
+			r.Config = &tfTypes.WebsocketValidatorPluginConfig{}
+			if resp.Config.Client == nil {
+				r.Config.Client = nil
 			} else {
-				r.Config.Client.Binary = &tfTypes.Binary{}
-				r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
-				r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
+				r.Config.Client = &tfTypes.WebsocketValidatorPluginClient{}
+				if resp.Config.Client.Binary == nil {
+					r.Config.Client.Binary = nil
+				} else {
+					r.Config.Client.Binary = &tfTypes.Binary{}
+					r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
+					r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
+				}
+				if resp.Config.Client.Text == nil {
+					r.Config.Client.Text = nil
+				} else {
+					r.Config.Client.Text = &tfTypes.Binary{}
+					r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
+					r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
+				}
 			}
-			if resp.Config.Client.Text == nil {
-				r.Config.Client.Text = nil
+			if resp.Config.Upstream == nil {
+				r.Config.Upstream = nil
 			} else {
-				r.Config.Client.Text = &tfTypes.Binary{}
-				r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
-				r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
-			}
-		}
-		if resp.Config.Upstream == nil {
-			r.Config.Upstream = nil
-		} else {
-			r.Config.Upstream = &tfTypes.WebsocketValidatorPluginClient{}
-			if resp.Config.Upstream.Binary == nil {
-				r.Config.Upstream.Binary = nil
-			} else {
-				r.Config.Upstream.Binary = &tfTypes.Binary{}
-				r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
-				r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
-			}
-			if resp.Config.Upstream.Text == nil {
-				r.Config.Upstream.Text = nil
-			} else {
-				r.Config.Upstream.Text = &tfTypes.Binary{}
-				r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
-				r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
+				r.Config.Upstream = &tfTypes.WebsocketValidatorPluginClient{}
+				if resp.Config.Upstream.Binary == nil {
+					r.Config.Upstream.Binary = nil
+				} else {
+					r.Config.Upstream.Binary = &tfTypes.Binary{}
+					r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
+					r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
+				}
+				if resp.Config.Upstream.Text == nil {
+					r.Config.Upstream.Text = nil
+				} else {
+					r.Config.Upstream.Text = &tfTypes.Binary{}
+					r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
+					r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
+				}
 			}
 		}
 		if resp.Consumer == nil {
@@ -270,4 +296,6 @@ func (r *GatewayPluginWebsocketValidatorResourceModel) RefreshFromSharedWebsocke
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

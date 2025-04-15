@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCorrelationIDPluginInput() *shared.CorrelationIDPluginInput {
+func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCorrelationIDPlugin() *shared.CorrelationIDPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,28 +66,37 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCorrelationIDPluginInp
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	echoDownstream := new(bool)
-	if !r.Config.EchoDownstream.IsUnknown() && !r.Config.EchoDownstream.IsNull() {
-		*echoDownstream = r.Config.EchoDownstream.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		echoDownstream = nil
+		updatedAt = nil
 	}
-	generator := new(shared.Generator)
-	if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
-		*generator = shared.Generator(r.Config.Generator.ValueString())
-	} else {
-		generator = nil
-	}
-	headerName := new(string)
-	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-		*headerName = r.Config.HeaderName.ValueString()
-	} else {
-		headerName = nil
-	}
-	config := shared.CorrelationIDPluginConfig{
-		EchoDownstream: echoDownstream,
-		Generator:      generator,
-		HeaderName:     headerName,
+	var config *shared.CorrelationIDPluginConfig
+	if r.Config != nil {
+		echoDownstream := new(bool)
+		if !r.Config.EchoDownstream.IsUnknown() && !r.Config.EchoDownstream.IsNull() {
+			*echoDownstream = r.Config.EchoDownstream.ValueBool()
+		} else {
+			echoDownstream = nil
+		}
+		generator := new(shared.Generator)
+		if !r.Config.Generator.IsUnknown() && !r.Config.Generator.IsNull() {
+			*generator = shared.Generator(r.Config.Generator.ValueString())
+		} else {
+			generator = nil
+		}
+		headerName := new(string)
+		if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+			*headerName = r.Config.HeaderName.ValueString()
+		} else {
+			headerName = nil
+		}
+		config = &shared.CorrelationIDPluginConfig{
+			EchoDownstream: echoDownstream,
+			Generator:      generator,
+			HeaderName:     headerName,
+		}
 	}
 	var consumer *shared.CorrelationIDPluginConsumer
 	if r.Consumer != nil {
@@ -121,12 +138,14 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCorrelationIDPluginInp
 			ID: id3,
 		}
 	}
-	out := shared.CorrelationIDPluginInput{
+	out := shared.CorrelationIDPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -136,15 +155,22 @@ func (r *GatewayPluginCorrelationIDResourceModel) ToSharedCorrelationIDPluginInp
 	return &out
 }
 
-func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationIDPlugin(resp *shared.CorrelationIDPlugin) {
+func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationIDPlugin(ctx context.Context, resp *shared.CorrelationIDPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
-		if resp.Config.Generator != nil {
-			r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Generator = types.StringNull()
+			r.Config = &tfTypes.CorrelationIDPluginConfig{}
+			r.Config.EchoDownstream = types.BoolPointerValue(resp.Config.EchoDownstream)
+			if resp.Config.Generator != nil {
+				r.Config.Generator = types.StringValue(string(*resp.Config.Generator))
+			} else {
+				r.Config.Generator = types.StringNull()
+			}
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		}
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -200,4 +226,6 @@ func (r *GatewayPluginCorrelationIDResourceModel) RefreshFromSharedCorrelationID
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

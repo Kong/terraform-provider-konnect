@@ -11,8 +11,8 @@ type UpdateRedirectPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RedirectPlugin shared.RedirectPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string                `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RedirectPlugin shared.RedirectPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateRedirectPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateRedirectPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPluginInput {
+func (o *UpdateRedirectPluginRequest) GetRedirectPlugin() shared.RedirectPlugin {
 	if o == nil {
-		return shared.RedirectPluginInput{}
+		return shared.RedirectPlugin{}
 	}
 	return o.RedirectPlugin
 }

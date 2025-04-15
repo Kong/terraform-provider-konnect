@@ -3,24 +3,33 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(resp *shared.ACLPlugin) {
+func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(ctx context.Context, resp *shared.ACLPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.ACLPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
+			r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
+			r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		}
-		r.Config.AlwaysUseAuthenticatedGroups = types.BoolPointerValue(resp.Config.AlwaysUseAuthenticatedGroups)
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
-		}
-		r.Config.HideGroupsHeader = types.BoolPointerValue(resp.Config.HideGroupsHeader)
-		r.Config.IncludeConsumerGroups = types.BoolPointerValue(resp.Config.IncludeConsumerGroups)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -70,4 +79,6 @@ func (r *GatewayPluginACLDataSourceModel) RefreshFromSharedACLPlugin(resp *share
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -9,8 +9,8 @@ import (
 
 type CreateUpstreamoauthPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID      string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	UpstreamOauthPlugin shared.UpstreamOauthPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID      string                     `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	UpstreamOauthPlugin shared.UpstreamOauthPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateUpstreamoauthPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateUpstreamoauthPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPluginInput {
+func (o *CreateUpstreamoauthPluginRequest) GetUpstreamOauthPlugin() shared.UpstreamOauthPlugin {
 	if o == nil {
-		return shared.UpstreamOauthPluginInput{}
+		return shared.UpstreamOauthPlugin{}
 	}
 	return o.UpstreamOauthPlugin
 }

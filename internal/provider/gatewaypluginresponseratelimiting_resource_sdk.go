@@ -3,13 +3,21 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPluginInput() *shared.ResponseRatelimitingPluginInput {
+func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelimitingPlugin() *shared.ResponseRatelimitingPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,125 +67,134 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	blockOnFirstViolation := new(bool)
-	if !r.Config.BlockOnFirstViolation.IsUnknown() && !r.Config.BlockOnFirstViolation.IsNull() {
-		*blockOnFirstViolation = r.Config.BlockOnFirstViolation.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		blockOnFirstViolation = nil
+		updatedAt = nil
 	}
-	faultTolerant := new(bool)
-	if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
-		*faultTolerant = r.Config.FaultTolerant.ValueBool()
-	} else {
-		faultTolerant = nil
-	}
-	headerName := new(string)
-	if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
-		*headerName = r.Config.HeaderName.ValueString()
-	} else {
-		headerName = nil
-	}
-	hideClientHeaders := new(bool)
-	if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
-		*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
-	} else {
-		hideClientHeaders = nil
-	}
-	limitBy := new(shared.ResponseRatelimitingPluginLimitBy)
-	if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
-		*limitBy = shared.ResponseRatelimitingPluginLimitBy(r.Config.LimitBy.ValueString())
-	} else {
-		limitBy = nil
-	}
-	limits := make(map[string]interface{})
-	for limitsKey, limitsValue := range r.Config.Limits {
-		var limitsInst interface{}
-		_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
-		limits[limitsKey] = limitsInst
-	}
-	policy := new(shared.ResponseRatelimitingPluginPolicy)
-	if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
-		*policy = shared.ResponseRatelimitingPluginPolicy(r.Config.Policy.ValueString())
-	} else {
-		policy = nil
-	}
-	var redis *shared.ResponseRatelimitingPluginRedis
-	if r.Config.Redis != nil {
-		database := new(int64)
-		if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
-			*database = r.Config.Redis.Database.ValueInt64()
+	var config *shared.ResponseRatelimitingPluginConfig
+	if r.Config != nil {
+		blockOnFirstViolation := new(bool)
+		if !r.Config.BlockOnFirstViolation.IsUnknown() && !r.Config.BlockOnFirstViolation.IsNull() {
+			*blockOnFirstViolation = r.Config.BlockOnFirstViolation.ValueBool()
 		} else {
-			database = nil
+			blockOnFirstViolation = nil
 		}
-		host := new(string)
-		if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
-			*host = r.Config.Redis.Host.ValueString()
+		faultTolerant := new(bool)
+		if !r.Config.FaultTolerant.IsUnknown() && !r.Config.FaultTolerant.IsNull() {
+			*faultTolerant = r.Config.FaultTolerant.ValueBool()
 		} else {
-			host = nil
+			faultTolerant = nil
 		}
-		password := new(string)
-		if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
-			*password = r.Config.Redis.Password.ValueString()
+		headerName := new(string)
+		if !r.Config.HeaderName.IsUnknown() && !r.Config.HeaderName.IsNull() {
+			*headerName = r.Config.HeaderName.ValueString()
 		} else {
-			password = nil
+			headerName = nil
 		}
-		port := new(int64)
-		if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
-			*port = r.Config.Redis.Port.ValueInt64()
+		hideClientHeaders := new(bool)
+		if !r.Config.HideClientHeaders.IsUnknown() && !r.Config.HideClientHeaders.IsNull() {
+			*hideClientHeaders = r.Config.HideClientHeaders.ValueBool()
 		} else {
-			port = nil
+			hideClientHeaders = nil
 		}
-		serverName := new(string)
-		if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
-			*serverName = r.Config.Redis.ServerName.ValueString()
+		limitBy := new(shared.ResponseRatelimitingPluginLimitBy)
+		if !r.Config.LimitBy.IsUnknown() && !r.Config.LimitBy.IsNull() {
+			*limitBy = shared.ResponseRatelimitingPluginLimitBy(r.Config.LimitBy.ValueString())
 		} else {
-			serverName = nil
+			limitBy = nil
 		}
-		ssl := new(bool)
-		if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
-			*ssl = r.Config.Redis.Ssl.ValueBool()
+		limits := make(map[string]interface{})
+		for limitsKey, limitsValue := range r.Config.Limits {
+			var limitsInst interface{}
+			_ = json.Unmarshal([]byte(limitsValue.ValueString()), &limitsInst)
+			limits[limitsKey] = limitsInst
+		}
+		policy := new(shared.ResponseRatelimitingPluginPolicy)
+		if !r.Config.Policy.IsUnknown() && !r.Config.Policy.IsNull() {
+			*policy = shared.ResponseRatelimitingPluginPolicy(r.Config.Policy.ValueString())
 		} else {
-			ssl = nil
+			policy = nil
 		}
-		sslVerify := new(bool)
-		if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
-			*sslVerify = r.Config.Redis.SslVerify.ValueBool()
-		} else {
-			sslVerify = nil
+		var redis *shared.ResponseRatelimitingPluginRedis
+		if r.Config.Redis != nil {
+			database := new(int64)
+			if !r.Config.Redis.Database.IsUnknown() && !r.Config.Redis.Database.IsNull() {
+				*database = r.Config.Redis.Database.ValueInt64()
+			} else {
+				database = nil
+			}
+			host := new(string)
+			if !r.Config.Redis.Host.IsUnknown() && !r.Config.Redis.Host.IsNull() {
+				*host = r.Config.Redis.Host.ValueString()
+			} else {
+				host = nil
+			}
+			password := new(string)
+			if !r.Config.Redis.Password.IsUnknown() && !r.Config.Redis.Password.IsNull() {
+				*password = r.Config.Redis.Password.ValueString()
+			} else {
+				password = nil
+			}
+			port := new(int64)
+			if !r.Config.Redis.Port.IsUnknown() && !r.Config.Redis.Port.IsNull() {
+				*port = r.Config.Redis.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			serverName := new(string)
+			if !r.Config.Redis.ServerName.IsUnknown() && !r.Config.Redis.ServerName.IsNull() {
+				*serverName = r.Config.Redis.ServerName.ValueString()
+			} else {
+				serverName = nil
+			}
+			ssl := new(bool)
+			if !r.Config.Redis.Ssl.IsUnknown() && !r.Config.Redis.Ssl.IsNull() {
+				*ssl = r.Config.Redis.Ssl.ValueBool()
+			} else {
+				ssl = nil
+			}
+			sslVerify := new(bool)
+			if !r.Config.Redis.SslVerify.IsUnknown() && !r.Config.Redis.SslVerify.IsNull() {
+				*sslVerify = r.Config.Redis.SslVerify.ValueBool()
+			} else {
+				sslVerify = nil
+			}
+			timeout := new(int64)
+			if !r.Config.Redis.Timeout.IsUnknown() && !r.Config.Redis.Timeout.IsNull() {
+				*timeout = r.Config.Redis.Timeout.ValueInt64()
+			} else {
+				timeout = nil
+			}
+			username := new(string)
+			if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
+				*username = r.Config.Redis.Username.ValueString()
+			} else {
+				username = nil
+			}
+			redis = &shared.ResponseRatelimitingPluginRedis{
+				Database:   database,
+				Host:       host,
+				Password:   password,
+				Port:       port,
+				ServerName: serverName,
+				Ssl:        ssl,
+				SslVerify:  sslVerify,
+				Timeout:    timeout,
+				Username:   username,
+			}
 		}
-		timeout := new(int64)
-		if !r.Config.Redis.Timeout.IsUnknown() && !r.Config.Redis.Timeout.IsNull() {
-			*timeout = r.Config.Redis.Timeout.ValueInt64()
-		} else {
-			timeout = nil
+		config = &shared.ResponseRatelimitingPluginConfig{
+			BlockOnFirstViolation: blockOnFirstViolation,
+			FaultTolerant:         faultTolerant,
+			HeaderName:            headerName,
+			HideClientHeaders:     hideClientHeaders,
+			LimitBy:               limitBy,
+			Limits:                limits,
+			Policy:                policy,
+			Redis:                 redis,
 		}
-		username := new(string)
-		if !r.Config.Redis.Username.IsUnknown() && !r.Config.Redis.Username.IsNull() {
-			*username = r.Config.Redis.Username.ValueString()
-		} else {
-			username = nil
-		}
-		redis = &shared.ResponseRatelimitingPluginRedis{
-			Database:   database,
-			Host:       host,
-			Password:   password,
-			Port:       port,
-			ServerName: serverName,
-			Ssl:        ssl,
-			SslVerify:  sslVerify,
-			Timeout:    timeout,
-			Username:   username,
-		}
-	}
-	config := shared.ResponseRatelimitingPluginConfig{
-		BlockOnFirstViolation: blockOnFirstViolation,
-		FaultTolerant:         faultTolerant,
-		HeaderName:            headerName,
-		HideClientHeaders:     hideClientHeaders,
-		LimitBy:               limitBy,
-		Limits:                limits,
-		Policy:                policy,
-		Redis:                 redis,
 	}
 	var consumer *shared.ResponseRatelimitingPluginConsumer
 	if r.Consumer != nil {
@@ -219,12 +236,14 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 			ID: id3,
 		}
 	}
-	out := shared.ResponseRatelimitingPluginInput{
+	out := shared.ResponseRatelimitingPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -234,42 +253,49 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) ToSharedResponseRatelim
 	return &out
 }
 
-func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedResponseRatelimitingPlugin(resp *shared.ResponseRatelimitingPlugin) {
+func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedResponseRatelimitingPlugin(ctx context.Context, resp *shared.ResponseRatelimitingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
-		r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
-		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-		if resp.Config.LimitBy != nil {
-			r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.LimitBy = types.StringNull()
-		}
-		if len(resp.Config.Limits) > 0 {
-			r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
-			for key, value := range resp.Config.Limits {
-				result, _ := json.Marshal(value)
-				r.Config.Limits[key] = types.StringValue(string(result))
+			r.Config = &tfTypes.ResponseRatelimitingPluginConfig{}
+			r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
+			r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
+			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+			if resp.Config.LimitBy != nil {
+				r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
+			} else {
+				r.Config.LimitBy = types.StringNull()
 			}
-		}
-		if resp.Config.Policy != nil {
-			r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
-		} else {
-			r.Config.Policy = types.StringNull()
-		}
-		if resp.Config.Redis == nil {
-			r.Config.Redis = nil
-		} else {
-			r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
-			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-			r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
-			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			if len(resp.Config.Limits) > 0 {
+				r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
+				for key, value := range resp.Config.Limits {
+					result, _ := json.Marshal(value)
+					r.Config.Limits[key] = types.StringValue(string(result))
+				}
+			}
+			if resp.Config.Policy != nil {
+				r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
+			} else {
+				r.Config.Policy = types.StringNull()
+			}
+			if resp.Config.Redis == nil {
+				r.Config.Redis = nil
+			} else {
+				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
+				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -326,4 +352,6 @@ func (r *GatewayPluginResponseRatelimitingResourceModel) RefreshFromSharedRespon
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

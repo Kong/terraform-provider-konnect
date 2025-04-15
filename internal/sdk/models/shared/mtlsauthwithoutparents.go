@@ -27,9 +27,11 @@ func (o *MTLSAuthWithoutParentsConsumer) GetID() *string {
 type MTLSAuthWithoutParents struct {
 	CaCertificate *MTLSAuthWithoutParentsCaCertificate `json:"ca_certificate"`
 	Consumer      *MTLSAuthWithoutParentsConsumer      `json:"consumer"`
-	ID            *string                              `json:"id,omitempty"`
-	SubjectName   string                               `json:"subject_name"`
-	Tags          []string                             `json:"tags,omitempty"`
+	// Unix epoch when the resource was created.
+	CreatedAt   *int64   `json:"created_at,omitempty"`
+	ID          *string  `json:"id,omitempty"`
+	SubjectName string   `json:"subject_name"`
+	Tags        []string `json:"tags,omitempty"`
 }
 
 func (o *MTLSAuthWithoutParents) GetCaCertificate() *MTLSAuthWithoutParentsCaCertificate {
@@ -44,6 +46,13 @@ func (o *MTLSAuthWithoutParents) GetConsumer() *MTLSAuthWithoutParentsConsumer {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *MTLSAuthWithoutParents) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *MTLSAuthWithoutParents) GetID() *string {

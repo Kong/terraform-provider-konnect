@@ -39,7 +39,7 @@ type GatewayPluginRateLimitingResource struct {
 
 // GatewayPluginRateLimitingResourceModel describes the resource data model.
 type GatewayPluginRateLimitingResourceModel struct {
-	Config         tfTypes.RateLimitingPluginConfig   `tfsdk:"config"`
+	Config         *tfTypes.RateLimitingPluginConfig  `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -64,14 +64,15 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 		MarkdownDescription: "GatewayPluginRateLimiting Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"day": schema.NumberAttribute{
+					"day": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per day.`,
 					},
-					"error_code": schema.NumberAttribute{
+					"error_code": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Set a custom error code to return when the rate limit is exceeded.`,
@@ -96,7 +97,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						Optional:    true,
 						Description: `Optionally hide informative response headers.`,
 					},
-					"hour": schema.NumberAttribute{
+					"hour": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per hour.`,
@@ -117,12 +118,12 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 							),
 						},
 					},
-					"minute": schema.NumberAttribute{
+					"minute": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per minute.`,
 					},
-					"month": schema.NumberAttribute{
+					"month": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per month.`,
@@ -202,17 +203,17 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 						},
 						Description: `Redis configuration`,
 					},
-					"second": schema.NumberAttribute{
+					"second": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per second.`,
 					},
-					"sync_rate": schema.NumberAttribute{
+					"sync_rate": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `How often to sync counter data to the central data store. A value of -1 results in synchronous behavior.`,
 					},
-					"year": schema.NumberAttribute{
+					"year": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of HTTP requests that can be made per year.`,
@@ -256,6 +257,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -341,6 +343,7 @@ func (r *GatewayPluginRateLimitingResource) Schema(ctx context.Context, req reso
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -388,7 +391,7 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPlugin()
 	request := operations.CreateRatelimitingPluginRequest{
 		ControlPlaneID:     controlPlaneID,
 		RateLimitingPlugin: rateLimitingPlugin,
@@ -413,8 +416,17 @@ func (r *GatewayPluginRateLimitingResource) Create(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRateLimitingPlugin(res.RateLimitingPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRateLimitingPlugin(ctx, res.RateLimitingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -472,7 +484,11 @@ func (r *GatewayPluginRateLimitingResource) Read(ctx context.Context, req resour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRateLimitingPlugin(res.RateLimitingPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRateLimitingPlugin(ctx, res.RateLimitingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -498,7 +514,7 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	rateLimitingPlugin := *data.ToSharedRateLimitingPluginInput()
+	rateLimitingPlugin := *data.ToSharedRateLimitingPlugin()
 	request := operations.UpdateRatelimitingPluginRequest{
 		PluginID:           pluginID,
 		ControlPlaneID:     controlPlaneID,
@@ -524,8 +540,17 @@ func (r *GatewayPluginRateLimitingResource) Update(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRateLimitingPlugin(res.RateLimitingPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRateLimitingPlugin(ctx, res.RateLimitingPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -587,7 +612,7 @@ func (r *GatewayPluginRateLimitingResource) ImportState(ctx context.Context, req
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

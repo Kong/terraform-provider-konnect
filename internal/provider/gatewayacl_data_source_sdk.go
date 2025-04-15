@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayACLDataSourceModel) RefreshFromSharedACL(resp *shared.ACL) {
+func (r *GatewayACLDataSourceModel) RefreshFromSharedACL(ctx context.Context, resp *shared.ACL) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -24,4 +28,6 @@ func (r *GatewayACLDataSourceModel) RefreshFromSharedACL(resp *shared.ACL) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

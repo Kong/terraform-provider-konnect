@@ -13,7 +13,7 @@ type UpsertServiceRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
 	ControlPlaneID string `pathParam:"style=simple,explode=false,name=controlPlaneId"`
 	// Description of the Service
-	Service shared.ServiceInput `request:"mediaType=application/json"`
+	Service shared.Service `request:"mediaType=application/json"`
 }
 
 func (o *UpsertServiceRequest) GetServiceID() string {
@@ -30,9 +30,9 @@ func (o *UpsertServiceRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpsertServiceRequest) GetService() shared.ServiceInput {
+func (o *UpsertServiceRequest) GetService() shared.Service {
 	if o == nil {
-		return shared.ServiceInput{}
+		return shared.Service{}
 	}
 	return o.Service
 }

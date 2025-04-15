@@ -29,7 +29,7 @@ type GatewayPluginOpaDataSource struct {
 
 // GatewayPluginOpaDataSourceModel describes the data model.
 type GatewayPluginOpaDataSourceModel struct {
-	Config         tfTypes.OpaPluginConfig            `tfsdk:"config"`
+	Config         *tfTypes.OpaPluginConfig           `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -251,7 +251,11 @@ func (r *GatewayPluginOpaDataSource) Read(ctx context.Context, req datasource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedOpaPlugin(res.OpaPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedOpaPlugin(ctx, res.OpaPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

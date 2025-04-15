@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -33,6 +35,12 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 			ID: id1,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id2 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id2 = r.ID.ValueString()
@@ -49,6 +57,7 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	out := shared.MTLSAuthWithoutParents{
 		CaCertificate: caCertificate,
 		Consumer:      consumer,
+		CreatedAt:     createdAt,
 		ID:            id2,
 		SubjectName:   subjectName,
 		Tags:          tags,
@@ -56,7 +65,9 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	return &out
 }
 
-func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(resp *shared.MTLSAuth) {
+func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CaCertificate == nil {
 			r.CaCertificate = nil
@@ -78,4 +89,6 @@ func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(resp *shared.MT
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

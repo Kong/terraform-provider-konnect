@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPluginInput() *shared.KeyAuthPluginInput {
+func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyAuthPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,61 +66,70 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPluginInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	anonymous := new(string)
-	if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
-		*anonymous = r.Config.Anonymous.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		anonymous = nil
+		updatedAt = nil
 	}
-	hideCredentials := new(bool)
-	if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
-		*hideCredentials = r.Config.HideCredentials.ValueBool()
-	} else {
-		hideCredentials = nil
-	}
-	keyInBody := new(bool)
-	if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
-		*keyInBody = r.Config.KeyInBody.ValueBool()
-	} else {
-		keyInBody = nil
-	}
-	keyInHeader := new(bool)
-	if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
-		*keyInHeader = r.Config.KeyInHeader.ValueBool()
-	} else {
-		keyInHeader = nil
-	}
-	keyInQuery := new(bool)
-	if !r.Config.KeyInQuery.IsUnknown() && !r.Config.KeyInQuery.IsNull() {
-		*keyInQuery = r.Config.KeyInQuery.ValueBool()
-	} else {
-		keyInQuery = nil
-	}
-	var keyNames []string = []string{}
-	for _, keyNamesItem := range r.Config.KeyNames {
-		keyNames = append(keyNames, keyNamesItem.ValueString())
-	}
-	realm := new(string)
-	if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
-		*realm = r.Config.Realm.ValueString()
-	} else {
-		realm = nil
-	}
-	runOnPreflight := new(bool)
-	if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
-		*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
-	} else {
-		runOnPreflight = nil
-	}
-	config := shared.KeyAuthPluginConfig{
-		Anonymous:       anonymous,
-		HideCredentials: hideCredentials,
-		KeyInBody:       keyInBody,
-		KeyInHeader:     keyInHeader,
-		KeyInQuery:      keyInQuery,
-		KeyNames:        keyNames,
-		Realm:           realm,
-		RunOnPreflight:  runOnPreflight,
+	var config *shared.KeyAuthPluginConfig
+	if r.Config != nil {
+		anonymous := new(string)
+		if !r.Config.Anonymous.IsUnknown() && !r.Config.Anonymous.IsNull() {
+			*anonymous = r.Config.Anonymous.ValueString()
+		} else {
+			anonymous = nil
+		}
+		hideCredentials := new(bool)
+		if !r.Config.HideCredentials.IsUnknown() && !r.Config.HideCredentials.IsNull() {
+			*hideCredentials = r.Config.HideCredentials.ValueBool()
+		} else {
+			hideCredentials = nil
+		}
+		keyInBody := new(bool)
+		if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
+			*keyInBody = r.Config.KeyInBody.ValueBool()
+		} else {
+			keyInBody = nil
+		}
+		keyInHeader := new(bool)
+		if !r.Config.KeyInHeader.IsUnknown() && !r.Config.KeyInHeader.IsNull() {
+			*keyInHeader = r.Config.KeyInHeader.ValueBool()
+		} else {
+			keyInHeader = nil
+		}
+		keyInQuery := new(bool)
+		if !r.Config.KeyInQuery.IsUnknown() && !r.Config.KeyInQuery.IsNull() {
+			*keyInQuery = r.Config.KeyInQuery.ValueBool()
+		} else {
+			keyInQuery = nil
+		}
+		var keyNames []string = []string{}
+		for _, keyNamesItem := range r.Config.KeyNames {
+			keyNames = append(keyNames, keyNamesItem.ValueString())
+		}
+		realm := new(string)
+		if !r.Config.Realm.IsUnknown() && !r.Config.Realm.IsNull() {
+			*realm = r.Config.Realm.ValueString()
+		} else {
+			realm = nil
+		}
+		runOnPreflight := new(bool)
+		if !r.Config.RunOnPreflight.IsUnknown() && !r.Config.RunOnPreflight.IsNull() {
+			*runOnPreflight = r.Config.RunOnPreflight.ValueBool()
+		} else {
+			runOnPreflight = nil
+		}
+		config = &shared.KeyAuthPluginConfig{
+			Anonymous:       anonymous,
+			HideCredentials: hideCredentials,
+			KeyInBody:       keyInBody,
+			KeyInHeader:     keyInHeader,
+			KeyInQuery:      keyInQuery,
+			KeyNames:        keyNames,
+			Realm:           realm,
+			RunOnPreflight:  runOnPreflight,
+		}
 	}
 	var protocols []shared.KeyAuthPluginProtocols = []shared.KeyAuthPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -142,12 +159,14 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPluginInput() *shared
 			ID: id2,
 		}
 	}
-	out := shared.KeyAuthPluginInput{
+	out := shared.KeyAuthPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -156,19 +175,26 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPluginInput() *shared
 	return &out
 }
 
-func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(resp *shared.KeyAuthPlugin) {
+func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx context.Context, resp *shared.KeyAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
-		r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
-		r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
-		r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
-		for _, v := range resp.Config.KeyNames {
-			r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.KeyAuthPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
+			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
+			r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)
+			r.Config.KeyNames = make([]types.String, 0, len(resp.Config.KeyNames))
+			for _, v := range resp.Config.KeyNames {
+				r.Config.KeyNames = append(r.Config.KeyNames, types.StringValue(v))
+			}
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		}
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -218,4 +244,6 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

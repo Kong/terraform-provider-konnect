@@ -3,36 +3,36 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginTCPLogDataSourceModel) RefreshFromSharedTCPLogPlugin(resp *shared.TCPLogPlugin) {
+func (r *GatewayPluginTCPLogDataSourceModel) RefreshFromSharedTCPLogPlugin(ctx context.Context, resp *shared.TCPLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.TCPLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+			r.Config.Port = types.Int64PointerValue(resp.Config.Port)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
+			r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
+			r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		}
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
-		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.Port = types.Int64PointerValue(resp.Config.Port)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
-		}
-		r.Config.TLS = types.BoolPointerValue(resp.Config.TLS)
-		r.Config.TLSSni = types.StringPointerValue(resp.Config.TLSSni)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -88,4 +88,6 @@ func (r *GatewayPluginTCPLogDataSourceModel) RefreshFromSharedTCPLogPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

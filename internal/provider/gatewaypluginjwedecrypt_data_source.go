@@ -29,7 +29,7 @@ type GatewayPluginJweDecryptDataSource struct {
 
 // GatewayPluginJweDecryptDataSourceModel describes the data model.
 type GatewayPluginJweDecryptDataSourceModel struct {
-	Config         tfTypes.JweDecryptPluginConfig     `tfsdk:"config"`
+	Config         *tfTypes.JweDecryptPluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -225,7 +225,11 @@ func (r *GatewayPluginJweDecryptDataSource) Read(ctx context.Context, req dataso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedJweDecryptPlugin(res.JweDecryptPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedJweDecryptPlugin(ctx, res.JweDecryptPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

@@ -3,48 +3,57 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResponseRatelimitingPlugin(resp *shared.ResponseRatelimitingPlugin) {
+func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResponseRatelimitingPlugin(ctx context.Context, resp *shared.ResponseRatelimitingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
-		r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
-		r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
-		r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
-		if resp.Config.LimitBy != nil {
-			r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.LimitBy = types.StringNull()
-		}
-		if len(resp.Config.Limits) > 0 {
-			r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
-			for key, value := range resp.Config.Limits {
-				result, _ := json.Marshal(value)
-				r.Config.Limits[key] = types.StringValue(string(result))
+			r.Config = &tfTypes.ResponseRatelimitingPluginConfig{}
+			r.Config.BlockOnFirstViolation = types.BoolPointerValue(resp.Config.BlockOnFirstViolation)
+			r.Config.FaultTolerant = types.BoolPointerValue(resp.Config.FaultTolerant)
+			r.Config.HeaderName = types.StringPointerValue(resp.Config.HeaderName)
+			r.Config.HideClientHeaders = types.BoolPointerValue(resp.Config.HideClientHeaders)
+			if resp.Config.LimitBy != nil {
+				r.Config.LimitBy = types.StringValue(string(*resp.Config.LimitBy))
+			} else {
+				r.Config.LimitBy = types.StringNull()
 			}
-		}
-		if resp.Config.Policy != nil {
-			r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
-		} else {
-			r.Config.Policy = types.StringNull()
-		}
-		if resp.Config.Redis == nil {
-			r.Config.Redis = nil
-		} else {
-			r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
-			r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
-			r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
-			r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
-			r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
-			r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
-			r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
-			r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
-			r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
-			r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			if len(resp.Config.Limits) > 0 {
+				r.Config.Limits = make(map[string]types.String, len(resp.Config.Limits))
+				for key, value := range resp.Config.Limits {
+					result, _ := json.Marshal(value)
+					r.Config.Limits[key] = types.StringValue(string(result))
+				}
+			}
+			if resp.Config.Policy != nil {
+				r.Config.Policy = types.StringValue(string(*resp.Config.Policy))
+			} else {
+				r.Config.Policy = types.StringNull()
+			}
+			if resp.Config.Redis == nil {
+				r.Config.Redis = nil
+			} else {
+				r.Config.Redis = &tfTypes.RateLimitingPluginRedis{}
+				r.Config.Redis.Database = types.Int64PointerValue(resp.Config.Redis.Database)
+				r.Config.Redis.Host = types.StringPointerValue(resp.Config.Redis.Host)
+				r.Config.Redis.Password = types.StringPointerValue(resp.Config.Redis.Password)
+				r.Config.Redis.Port = types.Int64PointerValue(resp.Config.Redis.Port)
+				r.Config.Redis.ServerName = types.StringPointerValue(resp.Config.Redis.ServerName)
+				r.Config.Redis.Ssl = types.BoolPointerValue(resp.Config.Redis.Ssl)
+				r.Config.Redis.SslVerify = types.BoolPointerValue(resp.Config.Redis.SslVerify)
+				r.Config.Redis.Timeout = types.Int64PointerValue(resp.Config.Redis.Timeout)
+				r.Config.Redis.Username = types.StringPointerValue(resp.Config.Redis.Username)
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -101,4 +110,6 @@ func (r *GatewayPluginResponseRatelimitingDataSourceModel) RefreshFromSharedResp
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

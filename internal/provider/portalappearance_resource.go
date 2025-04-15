@@ -809,10 +809,10 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 	var portalID string
 	portalID = data.PortalID.ValueString()
 
-	updatePortalAppearanceRequest := *data.ToSharedUpdatePortalAppearanceRequest()
+	portalAppearance := *data.ToSharedPortalAppearance()
 	request := operations.UpdatePortalAppearanceRequest{
-		PortalID:                      portalID,
-		UpdatePortalAppearanceRequest: updatePortalAppearanceRequest,
+		PortalID:         portalID,
+		PortalAppearance: portalAppearance,
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, request)
 	if err != nil {
@@ -834,8 +834,17 @@ func (r *PortalAppearanceResource) Create(ctx context.Context, req resource.Crea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpdatePortalAppearanceResponse(res.UpdatePortalAppearanceResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdatePortalAppearanceResponse(ctx, res.UpdatePortalAppearanceResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -889,7 +898,11 @@ func (r *PortalAppearanceResource) Read(ctx context.Context, req resource.ReadRe
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGetPortalAppearanceResponse(res.GetPortalAppearanceResponse)
+	resp.Diagnostics.Append(data.RefreshFromSharedGetPortalAppearanceResponse(ctx, res.GetPortalAppearanceResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -912,10 +925,10 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 	var portalID string
 	portalID = data.PortalID.ValueString()
 
-	updatePortalAppearanceRequest := *data.ToSharedUpdatePortalAppearanceRequest()
+	portalAppearance := *data.ToSharedPortalAppearance()
 	request := operations.UpdatePortalAppearanceRequest{
-		PortalID:                      portalID,
-		UpdatePortalAppearanceRequest: updatePortalAppearanceRequest,
+		PortalID:         portalID,
+		PortalAppearance: portalAppearance,
 	}
 	res, err := r.client.PortalAppearance.UpdatePortalAppearance(ctx, request)
 	if err != nil {
@@ -937,8 +950,17 @@ func (r *PortalAppearanceResource) Update(ctx context.Context, req resource.Upda
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpdatePortalAppearanceResponse(res.UpdatePortalAppearanceResponse)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpdatePortalAppearanceResponse(ctx, res.UpdatePortalAppearanceResponse)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

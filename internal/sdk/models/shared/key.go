@@ -52,7 +52,8 @@ type Key struct {
 	// An optional set of strings associated with the Key for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64 `json:"updated_at,omitempty"`
+	UpdatedAt *int64  `json:"updated_at,omitempty"`
+	X5t       *string `json:"x5t,omitempty"`
 }
 
 func (o *Key) GetCreatedAt() *int64 {
@@ -118,68 +119,9 @@ func (o *Key) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-// KeyInput - A Key object holds a representation of asymmetric keys in various formats. When Kong or a Kong plugin requires a specific public or private key to perform certain operations, it can use this entity.
-type KeyInput struct {
-	ID *string `json:"id,omitempty"`
-	// A JSON Web Key represented as a string.
-	Jwk *string `json:"jwk,omitempty"`
-	// A unique identifier for a key.
-	Kid string `json:"kid"`
-	// The name to associate with the given keys.
-	Name *string `json:"name,omitempty"`
-	// A keypair in PEM format.
-	Pem *Pem `json:"pem,omitempty"`
-	// The id (an UUID) of the key-set with which to associate the key.
-	Set *Set `json:"set"`
-	// An optional set of strings associated with the Key for grouping and filtering.
-	Tags []string `json:"tags,omitempty"`
-}
-
-func (o *KeyInput) GetID() *string {
+func (o *Key) GetX5t() *string {
 	if o == nil {
 		return nil
 	}
-	return o.ID
-}
-
-func (o *KeyInput) GetJwk() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Jwk
-}
-
-func (o *KeyInput) GetKid() string {
-	if o == nil {
-		return ""
-	}
-	return o.Kid
-}
-
-func (o *KeyInput) GetName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.Name
-}
-
-func (o *KeyInput) GetPem() *Pem {
-	if o == nil {
-		return nil
-	}
-	return o.Pem
-}
-
-func (o *KeyInput) GetSet() *Set {
-	if o == nil {
-		return nil
-	}
-	return o.Set
-}
-
-func (o *KeyInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
+	return o.X5t
 }

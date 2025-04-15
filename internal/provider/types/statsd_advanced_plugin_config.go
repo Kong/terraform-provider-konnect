@@ -14,7 +14,7 @@ type StatsdAdvancedPluginConfig struct {
 	Prefix                     types.String          `tfsdk:"prefix"`
 	Queue                      *Queue                `tfsdk:"queue"`
 	ServiceIdentifierDefault   types.String          `tfsdk:"service_identifier_default"`
-	UDPPacketSize              types.Number          `tfsdk:"udp_packet_size"`
+	UDPPacketSize              types.Float64         `tfsdk:"udp_packet_size"`
 	UseTCP                     types.Bool            `tfsdk:"use_tcp"`
 	WorkspaceIdentifierDefault types.String          `tfsdk:"workspace_identifier_default"`
 }

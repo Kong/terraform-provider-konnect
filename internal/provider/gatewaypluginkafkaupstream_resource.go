@@ -42,7 +42,7 @@ type GatewayPluginKafkaUpstreamResource struct {
 
 // GatewayPluginKafkaUpstreamResourceModel describes the resource data model.
 type GatewayPluginKafkaUpstreamResourceModel struct {
-	Config         tfTypes.KafkaUpstreamPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.KafkaUpstreamPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -66,7 +66,8 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 		MarkdownDescription: "GatewayPluginKafkaUpstream Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"authentication": schema.SingleNestedAttribute{
 						Computed: true,
@@ -271,6 +272,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -356,6 +358,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Schema(ctx context.Context, req res
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -403,7 +406,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
 	request := operations.CreateKafkaupstreamPluginRequest{
 		ControlPlaneID:      controlPlaneID,
 		KafkaUpstreamPlugin: kafkaUpstreamPlugin,
@@ -428,8 +431,17 @@ func (r *GatewayPluginKafkaUpstreamResource) Create(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKafkaUpstreamPlugin(res.KafkaUpstreamPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKafkaUpstreamPlugin(ctx, res.KafkaUpstreamPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -487,7 +499,11 @@ func (r *GatewayPluginKafkaUpstreamResource) Read(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKafkaUpstreamPlugin(res.KafkaUpstreamPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedKafkaUpstreamPlugin(ctx, res.KafkaUpstreamPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -513,7 +529,7 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPluginInput()
+	kafkaUpstreamPlugin := *data.ToSharedKafkaUpstreamPlugin()
 	request := operations.UpdateKafkaupstreamPluginRequest{
 		PluginID:            pluginID,
 		ControlPlaneID:      controlPlaneID,
@@ -539,8 +555,17 @@ func (r *GatewayPluginKafkaUpstreamResource) Update(ctx context.Context, req res
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKafkaUpstreamPlugin(res.KafkaUpstreamPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKafkaUpstreamPlugin(ctx, res.KafkaUpstreamPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -602,7 +627,7 @@ func (r *GatewayPluginKafkaUpstreamResource) ImportState(ctx context.Context, re
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

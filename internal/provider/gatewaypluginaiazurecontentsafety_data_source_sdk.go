@@ -3,50 +3,59 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(resp *shared.AiAzureContentSafetyPlugin) {
+func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(ctx context.Context, resp *shared.AiAzureContentSafetyPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
-		r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
-		r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
-		r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
-		r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
-		r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
-		for _, v := range resp.Config.BlocklistNames {
-			r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
-		}
-		r.Config.Categories = []tfTypes.Categories{}
-		if len(r.Config.Categories) > len(resp.Config.Categories) {
-			r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
-		}
-		for categoriesCount, categoriesItem := range resp.Config.Categories {
-			var categories1 tfTypes.Categories
-			categories1.Name = types.StringValue(categoriesItem.Name)
-			categories1.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
-			if categoriesCount+1 > len(r.Config.Categories) {
-				r.Config.Categories = append(r.Config.Categories, categories1)
-			} else {
-				r.Config.Categories[categoriesCount].Name = categories1.Name
-				r.Config.Categories[categoriesCount].RejectionLevel = categories1.RejectionLevel
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiAzureContentSafetyPluginConfig{}
+			r.Config.AzureAPIVersion = types.StringPointerValue(resp.Config.AzureAPIVersion)
+			r.Config.AzureClientID = types.StringPointerValue(resp.Config.AzureClientID)
+			r.Config.AzureClientSecret = types.StringPointerValue(resp.Config.AzureClientSecret)
+			r.Config.AzureTenantID = types.StringPointerValue(resp.Config.AzureTenantID)
+			r.Config.AzureUseManagedIdentity = types.BoolPointerValue(resp.Config.AzureUseManagedIdentity)
+			r.Config.BlocklistNames = make([]types.String, 0, len(resp.Config.BlocklistNames))
+			for _, v := range resp.Config.BlocklistNames {
+				r.Config.BlocklistNames = append(r.Config.BlocklistNames, types.StringValue(v))
 			}
-		}
-		r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
-		r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
-		r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
-		if resp.Config.OutputType != nil {
-			r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
-		} else {
-			r.Config.OutputType = types.StringNull()
-		}
-		r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
-		if resp.Config.TextSource != nil {
-			r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
-		} else {
-			r.Config.TextSource = types.StringNull()
+			r.Config.Categories = []tfTypes.Categories{}
+			if len(r.Config.Categories) > len(resp.Config.Categories) {
+				r.Config.Categories = r.Config.Categories[:len(resp.Config.Categories)]
+			}
+			for categoriesCount, categoriesItem := range resp.Config.Categories {
+				var categories tfTypes.Categories
+				categories.Name = types.StringValue(categoriesItem.Name)
+				categories.RejectionLevel = types.Int64Value(categoriesItem.RejectionLevel)
+				if categoriesCount+1 > len(r.Config.Categories) {
+					r.Config.Categories = append(r.Config.Categories, categories)
+				} else {
+					r.Config.Categories[categoriesCount].Name = categories.Name
+					r.Config.Categories[categoriesCount].RejectionLevel = categories.RejectionLevel
+				}
+			}
+			r.Config.ContentSafetyKey = types.StringPointerValue(resp.Config.ContentSafetyKey)
+			r.Config.ContentSafetyURL = types.StringPointerValue(resp.Config.ContentSafetyURL)
+			r.Config.HaltOnBlocklistHit = types.BoolPointerValue(resp.Config.HaltOnBlocklistHit)
+			if resp.Config.OutputType != nil {
+				r.Config.OutputType = types.StringValue(string(*resp.Config.OutputType))
+			} else {
+				r.Config.OutputType = types.StringNull()
+			}
+			r.Config.RevealFailureReason = types.BoolPointerValue(resp.Config.RevealFailureReason)
+			if resp.Config.TextSource != nil {
+				r.Config.TextSource = types.StringValue(string(*resp.Config.TextSource))
+			} else {
+				r.Config.TextSource = types.StringNull()
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -97,4 +106,6 @@ func (r *GatewayPluginAiAzureContentSafetyDataSourceModel) RefreshFromSharedAiAz
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,20 +3,29 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlugin(resp *shared.JweDecryptPlugin) {
+func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlugin(ctx context.Context, resp *shared.JweDecryptPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
-		r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
-		for _, v := range resp.Config.KeySets {
-			r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.JweDecryptPluginConfig{}
+			r.Config.ForwardHeaderName = types.StringPointerValue(resp.Config.ForwardHeaderName)
+			r.Config.KeySets = make([]types.String, 0, len(resp.Config.KeySets))
+			for _, v := range resp.Config.KeySets {
+				r.Config.KeySets = append(r.Config.KeySets, types.StringValue(v))
+			}
+			r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
+			r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		}
-		r.Config.LookupHeaderName = types.StringPointerValue(resp.Config.LookupHeaderName)
-		r.Config.Strict = types.BoolPointerValue(resp.Config.Strict)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -66,4 +75,6 @@ func (r *GatewayPluginJweDecryptDataSourceModel) RefreshFromSharedJweDecryptPlug
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

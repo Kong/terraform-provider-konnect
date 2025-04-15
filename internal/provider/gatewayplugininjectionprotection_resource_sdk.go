@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtectionPluginInput() *shared.InjectionProtectionPluginInput {
+func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtectionPlugin() *shared.InjectionProtectionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,52 +66,61 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var customInjections []shared.CustomInjections = []shared.CustomInjections{}
-	for _, customInjectionsItem := range r.Config.CustomInjections {
-		var name string
-		name = customInjectionsItem.Name.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	var config *shared.InjectionProtectionPluginConfig
+	if r.Config != nil {
+		var customInjections []shared.CustomInjections = []shared.CustomInjections{}
+		for _, customInjectionsItem := range r.Config.CustomInjections {
+			var name string
+			name = customInjectionsItem.Name.ValueString()
 
-		var regex string
-		regex = customInjectionsItem.Regex.ValueString()
+			var regex string
+			regex = customInjectionsItem.Regex.ValueString()
 
-		customInjections = append(customInjections, shared.CustomInjections{
-			Name:  name,
-			Regex: regex,
-		})
-	}
-	enforcementMode := new(shared.EnforcementMode)
-	if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
-		*enforcementMode = shared.EnforcementMode(r.Config.EnforcementMode.ValueString())
-	} else {
-		enforcementMode = nil
-	}
-	errorMessage := new(string)
-	if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
-		*errorMessage = r.Config.ErrorMessage.ValueString()
-	} else {
-		errorMessage = nil
-	}
-	errorStatusCode := new(int64)
-	if !r.Config.ErrorStatusCode.IsUnknown() && !r.Config.ErrorStatusCode.IsNull() {
-		*errorStatusCode = r.Config.ErrorStatusCode.ValueInt64()
-	} else {
-		errorStatusCode = nil
-	}
-	var injectionTypes []shared.InjectionTypes = []shared.InjectionTypes{}
-	for _, injectionTypesItem := range r.Config.InjectionTypes {
-		injectionTypes = append(injectionTypes, shared.InjectionTypes(injectionTypesItem.ValueString()))
-	}
-	var locations []shared.Locations = []shared.Locations{}
-	for _, locationsItem := range r.Config.Locations {
-		locations = append(locations, shared.Locations(locationsItem.ValueString()))
-	}
-	config := shared.InjectionProtectionPluginConfig{
-		CustomInjections: customInjections,
-		EnforcementMode:  enforcementMode,
-		ErrorMessage:     errorMessage,
-		ErrorStatusCode:  errorStatusCode,
-		InjectionTypes:   injectionTypes,
-		Locations:        locations,
+			customInjections = append(customInjections, shared.CustomInjections{
+				Name:  name,
+				Regex: regex,
+			})
+		}
+		enforcementMode := new(shared.EnforcementMode)
+		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
+			*enforcementMode = shared.EnforcementMode(r.Config.EnforcementMode.ValueString())
+		} else {
+			enforcementMode = nil
+		}
+		errorMessage := new(string)
+		if !r.Config.ErrorMessage.IsUnknown() && !r.Config.ErrorMessage.IsNull() {
+			*errorMessage = r.Config.ErrorMessage.ValueString()
+		} else {
+			errorMessage = nil
+		}
+		errorStatusCode := new(int64)
+		if !r.Config.ErrorStatusCode.IsUnknown() && !r.Config.ErrorStatusCode.IsNull() {
+			*errorStatusCode = r.Config.ErrorStatusCode.ValueInt64()
+		} else {
+			errorStatusCode = nil
+		}
+		var injectionTypes []shared.InjectionTypes = []shared.InjectionTypes{}
+		for _, injectionTypesItem := range r.Config.InjectionTypes {
+			injectionTypes = append(injectionTypes, shared.InjectionTypes(injectionTypesItem.ValueString()))
+		}
+		var locations []shared.Locations = []shared.Locations{}
+		for _, locationsItem := range r.Config.Locations {
+			locations = append(locations, shared.Locations(locationsItem.ValueString()))
+		}
+		config = &shared.InjectionProtectionPluginConfig{
+			CustomInjections: customInjections,
+			EnforcementMode:  enforcementMode,
+			ErrorMessage:     errorMessage,
+			ErrorStatusCode:  errorStatusCode,
+			InjectionTypes:   injectionTypes,
+			Locations:        locations,
+		}
 	}
 	var protocols []shared.InjectionProtectionPluginProtocols = []shared.InjectionProtectionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -133,12 +150,14 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 			ID: id2,
 		}
 	}
-	out := shared.InjectionProtectionPluginInput{
+	out := shared.InjectionProtectionPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -147,37 +166,44 @@ func (r *GatewayPluginInjectionProtectionResourceModel) ToSharedInjectionProtect
 	return &out
 }
 
-func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(resp *shared.InjectionProtectionPlugin) {
+func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjectionProtectionPlugin(ctx context.Context, resp *shared.InjectionProtectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.CustomInjections = []tfTypes.CustomInjections{}
-		if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
-			r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
-		}
-		for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
-			var customInjections1 tfTypes.CustomInjections
-			customInjections1.Name = types.StringValue(customInjectionsItem.Name)
-			customInjections1.Regex = types.StringValue(customInjectionsItem.Regex)
-			if customInjectionsCount+1 > len(r.Config.CustomInjections) {
-				r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections1)
-			} else {
-				r.Config.CustomInjections[customInjectionsCount].Name = customInjections1.Name
-				r.Config.CustomInjections[customInjectionsCount].Regex = customInjections1.Regex
-			}
-		}
-		if resp.Config.EnforcementMode != nil {
-			r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.EnforcementMode = types.StringNull()
-		}
-		r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
-		r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
-		r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
-		for _, v := range resp.Config.InjectionTypes {
-			r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
-		}
-		r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
-		for _, v := range resp.Config.Locations {
-			r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
+			r.Config = &tfTypes.InjectionProtectionPluginConfig{}
+			r.Config.CustomInjections = []tfTypes.CustomInjections{}
+			if len(r.Config.CustomInjections) > len(resp.Config.CustomInjections) {
+				r.Config.CustomInjections = r.Config.CustomInjections[:len(resp.Config.CustomInjections)]
+			}
+			for customInjectionsCount, customInjectionsItem := range resp.Config.CustomInjections {
+				var customInjections tfTypes.CustomInjections
+				customInjections.Name = types.StringValue(customInjectionsItem.Name)
+				customInjections.Regex = types.StringValue(customInjectionsItem.Regex)
+				if customInjectionsCount+1 > len(r.Config.CustomInjections) {
+					r.Config.CustomInjections = append(r.Config.CustomInjections, customInjections)
+				} else {
+					r.Config.CustomInjections[customInjectionsCount].Name = customInjections.Name
+					r.Config.CustomInjections[customInjectionsCount].Regex = customInjections.Regex
+				}
+			}
+			if resp.Config.EnforcementMode != nil {
+				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
+			} else {
+				r.Config.EnforcementMode = types.StringNull()
+			}
+			r.Config.ErrorMessage = types.StringPointerValue(resp.Config.ErrorMessage)
+			r.Config.ErrorStatusCode = types.Int64PointerValue(resp.Config.ErrorStatusCode)
+			r.Config.InjectionTypes = make([]types.String, 0, len(resp.Config.InjectionTypes))
+			for _, v := range resp.Config.InjectionTypes {
+				r.Config.InjectionTypes = append(r.Config.InjectionTypes, types.StringValue(string(v)))
+			}
+			r.Config.Locations = make([]types.String, 0, len(resp.Config.Locations))
+			for _, v := range resp.Config.Locations {
+				r.Config.Locations = append(r.Config.Locations, types.StringValue(string(v)))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -228,4 +254,6 @@ func (r *GatewayPluginInjectionProtectionResourceModel) RefreshFromSharedInjecti
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

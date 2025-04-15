@@ -3,23 +3,32 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginFileLogDataSourceModel) RefreshFromSharedFileLogPlugin(resp *shared.FileLogPlugin) {
+func (r *GatewayPluginFileLogDataSourceModel) RefreshFromSharedFileLogPlugin(ctx context.Context, resp *shared.FileLogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.FileLogPluginConfig{}
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
 			}
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		}
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Reopen = types.BoolPointerValue(resp.Config.Reopen)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -75,4 +84,6 @@ func (r *GatewayPluginFileLogDataSourceModel) RefreshFromSharedFileLogPlugin(res
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

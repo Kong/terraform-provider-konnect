@@ -9,8 +9,8 @@ import (
 
 type CreateJqPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JqPlugin       shared.JqPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JqPlugin       shared.JqPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateJqPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateJqPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateJqPluginRequest) GetJqPlugin() shared.JqPluginInput {
+func (o *CreateJqPluginRequest) GetJqPlugin() shared.JqPlugin {
 	if o == nil {
-		return shared.JqPluginInput{}
+		return shared.JqPlugin{}
 	}
 	return o.JqPlugin
 }

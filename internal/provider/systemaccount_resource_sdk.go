@@ -3,9 +3,11 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.CreateSystemAccount {
@@ -29,23 +31,19 @@ func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.Creat
 	return &out
 }
 
-func (r *SystemAccountResourceModel) RefreshFromSharedSystemAccount(resp *shared.SystemAccount) {
+func (r *SystemAccountResourceModel) RefreshFromSharedSystemAccount(ctx context.Context, resp *shared.SystemAccount) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.CreatedAt != nil {
-			r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.CreatedAt = types.StringNull()
-		}
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringPointerValue(resp.ID)
 		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
 		r.Name = types.StringPointerValue(resp.Name)
-		if resp.UpdatedAt != nil {
-			r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
-		} else {
-			r.UpdatedAt = types.StringNull()
-		}
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *SystemAccountResourceModel) ToSharedUpdateSystemAccount() *shared.UpdateSystemAccount {

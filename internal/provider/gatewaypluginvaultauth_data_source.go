@@ -29,7 +29,7 @@ type GatewayPluginVaultAuthDataSource struct {
 
 // GatewayPluginVaultAuthDataSourceModel describes the data model.
 type GatewayPluginVaultAuthDataSourceModel struct {
-	Config         tfTypes.VaultAuthPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.VaultAuthPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -236,7 +236,11 @@ func (r *GatewayPluginVaultAuthDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedVaultAuthPlugin(res.VaultAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedVaultAuthPlugin(ctx, res.VaultAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

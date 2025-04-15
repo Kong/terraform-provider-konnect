@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(resp *shared.Key) {
+func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(ctx context.Context, resp *shared.Key) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -33,5 +37,8 @@ func (r *GatewayKeyDataSourceModel) RefreshFromSharedKey(resp *shared.Key) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.X5t = types.StringPointerValue(resp.X5t)
 	}
+
+	return diags
 }

@@ -29,18 +29,18 @@ type GatewayPluginLdapAuthAdvancedDataSource struct {
 
 // GatewayPluginLdapAuthAdvancedDataSourceModel describes the data model.
 type GatewayPluginLdapAuthAdvancedDataSourceModel struct {
-	Config         tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         *tfTypes.LdapAuthAdvancedPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -73,7 +73,7 @@ func (r *GatewayPluginLdapAuthAdvancedDataSource) Schema(ctx context.Context, re
 						Computed:    true,
 						Description: `The DN to bind to. Used to perform LDAP search of user. This ` + "`" + `bind_dn` + "`" + ` should have permissions to search for the user being authenticated.`,
 					},
-					"cache_ttl": schema.NumberAttribute{
+					"cache_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Cache expiry time in seconds.`,
 					},
@@ -111,7 +111,7 @@ func (r *GatewayPluginLdapAuthAdvancedDataSource) Schema(ctx context.Context, re
 						Computed:    true,
 						Description: `An optional boolean value telling the plugin to hide the credential to the upstream server. It will be removed by Kong before proxying the request.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional value in milliseconds that defines how long an idle connection to LDAP server will live before being closed.`,
 					},
@@ -123,7 +123,7 @@ func (r *GatewayPluginLdapAuthAdvancedDataSource) Schema(ctx context.Context, re
 						Computed:    true,
 						Description: `The password to the LDAP server.`,
 					},
-					"ldap_port": schema.NumberAttribute{
+					"ldap_port": schema.Float64Attribute{
 						Computed:    true,
 						Description: `TCP port where the LDAP server is listening. 389 is the default port for non-SSL LDAP and AD. 636 is the port required for SSL LDAP and AD. If ` + "`" + `ldaps` + "`" + ` is configured, you must use port 636.`,
 					},
@@ -143,7 +143,7 @@ func (r *GatewayPluginLdapAuthAdvancedDataSource) Schema(ctx context.Context, re
 						Computed:    true,
 						Description: `Set it to ` + "`" + `true` + "`" + ` to issue StartTLS (Transport Layer Security) extended operation over ` + "`" + `ldap` + "`" + ` connection. If the ` + "`" + `start_tls` + "`" + ` setting is enabled, ensure the ` + "`" + `ldaps` + "`" + ` setting is disabled.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when waiting for connection with LDAP server.`,
 					},
@@ -302,7 +302,11 @@ func (r *GatewayPluginLdapAuthAdvancedDataSource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedLdapAuthAdvancedPlugin(res.LdapAuthAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedLdapAuthAdvancedPlugin(ctx, res.LdapAuthAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

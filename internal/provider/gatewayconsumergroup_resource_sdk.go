@@ -3,11 +3,19 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroupInput() *shared.ConsumerGroupInput {
+func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroup() *shared.ConsumerGroup {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -21,15 +29,25 @@ func (r *GatewayConsumerGroupResourceModel) ToSharedConsumerGroupInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.ConsumerGroupInput{
-		ID:   id,
-		Name: name,
-		Tags: tags,
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.ConsumerGroup{
+		CreatedAt: createdAt,
+		ID:        id,
+		Name:      name,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
 	}
 	return &out
 }
 
-func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(resp *shared.ConsumerGroup) {
+func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(ctx context.Context, resp *shared.ConsumerGroup) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -40,4 +58,6 @@ func (r *GatewayConsumerGroupResourceModel) RefreshFromSharedConsumerGroup(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

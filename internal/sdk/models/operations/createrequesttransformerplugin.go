@@ -9,8 +9,8 @@ import (
 
 type CreateRequesttransformerPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID           string                               `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	RequestTransformerPlugin shared.RequestTransformerPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID           string                          `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	RequestTransformerPlugin shared.RequestTransformerPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateRequesttransformerPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateRequesttransformerPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateRequesttransformerPluginRequest) GetRequestTransformerPlugin() shared.RequestTransformerPluginInput {
+func (o *CreateRequesttransformerPluginRequest) GetRequestTransformerPlugin() shared.RequestTransformerPlugin {
 	if o == nil {
-		return shared.RequestTransformerPluginInput{}
+		return shared.RequestTransformerPlugin{}
 	}
 	return o.RequestTransformerPlugin
 }

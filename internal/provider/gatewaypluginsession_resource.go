@@ -38,7 +38,7 @@ type GatewayPluginSessionResource struct {
 
 // GatewayPluginSessionResourceModel describes the resource data model.
 type GatewayPluginSessionResourceModel struct {
-	Config         tfTypes.SessionPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.SessionPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,9 +61,10 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginSession Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
-					"absolute_timeout": schema.NumberAttribute{
+					"absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid.`,
@@ -111,7 +112,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Description: `Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.`,
 					},
-					"idling_timeout": schema.NumberAttribute{
+					"idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie idle time, in seconds.`,
@@ -141,7 +142,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Description: `Enables or disables persistent sessions.`,
 					},
-					"remember_absolute_timeout": schema.NumberAttribute{
+					"remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The persistent session absolute timeout limit, in seconds.`,
@@ -151,7 +152,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter.`,
 					},
-					"remember_rolling_timeout": schema.NumberAttribute{
+					"remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The persistent session rolling timeout window, in seconds.`,
@@ -168,7 +169,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						ElementType: types.StringType,
 						Description: `List of information to include, as headers, in the response to the downstream.`,
 					},
-					"rolling_timeout": schema.NumberAttribute{
+					"rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.`,
@@ -178,7 +179,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 						Optional:    true,
 						Description: `The secret that is used in keyed HMAC generation.`,
 					},
-					"stale_ttl": schema.NumberAttribute{
+					"stale_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.`,
@@ -205,6 +206,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -290,6 +292,7 @@ func (r *GatewayPluginSessionResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -337,7 +340,7 @@ func (r *GatewayPluginSessionResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := *data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPlugin()
 	request := operations.CreateSessionPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		SessionPlugin:  sessionPlugin,
@@ -362,8 +365,17 @@ func (r *GatewayPluginSessionResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSessionPlugin(res.SessionPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSessionPlugin(ctx, res.SessionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -421,7 +433,11 @@ func (r *GatewayPluginSessionResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSessionPlugin(res.SessionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedSessionPlugin(ctx, res.SessionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -447,7 +463,7 @@ func (r *GatewayPluginSessionResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	sessionPlugin := *data.ToSharedSessionPluginInput()
+	sessionPlugin := *data.ToSharedSessionPlugin()
 	request := operations.UpdateSessionPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -473,8 +489,17 @@ func (r *GatewayPluginSessionResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSessionPlugin(res.SessionPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSessionPlugin(ctx, res.SessionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -536,7 +561,7 @@ func (r *GatewayPluginSessionResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

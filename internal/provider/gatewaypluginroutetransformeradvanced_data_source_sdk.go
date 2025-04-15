@@ -3,17 +3,26 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(resp *shared.RouteTransformerAdvancedPlugin) {
+func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(ctx context.Context, resp *shared.RouteTransformerAdvancedPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
-		r.Config.Host = types.StringPointerValue(resp.Config.Host)
-		r.Config.Path = types.StringPointerValue(resp.Config.Path)
-		r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.RouteTransformerAdvancedPluginConfig{}
+			r.Config.EscapePath = types.BoolPointerValue(resp.Config.EscapePath)
+			r.Config.Host = types.StringPointerValue(resp.Config.Host)
+			r.Config.Path = types.StringPointerValue(resp.Config.Path)
+			r.Config.Port = types.StringPointerValue(resp.Config.Port)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -69,4 +78,6 @@ func (r *GatewayPluginRouteTransformerAdvancedDataSourceModel) RefreshFromShared
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

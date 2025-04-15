@@ -3,98 +3,86 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemetryPlugin(resp *shared.OpentelemetryPlugin) {
+func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemetryPlugin(ctx context.Context, resp *shared.OpentelemetryPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
-		r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
-		r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
-		if resp.Config.HeaderType != nil {
-			r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.HeaderType = types.StringNull()
-		}
-		if len(resp.Config.Headers) > 0 {
-			r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
-			for key, value := range resp.Config.Headers {
-				result, _ := json.Marshal(value)
-				r.Config.Headers[key] = types.StringValue(string(result))
-			}
-		}
-		r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
-		r.Config.LogsEndpoint = types.StringPointerValue(resp.Config.LogsEndpoint)
-		if resp.Config.Propagation == nil {
-			r.Config.Propagation = nil
-		} else {
-			r.Config.Propagation = &tfTypes.Propagation{}
-			r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
-			for _, v := range resp.Config.Propagation.Clear {
-				r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
-			}
-			r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
-			r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
-			for _, v := range resp.Config.Propagation.Extract {
-				r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
-			}
-			r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
-			for _, v := range resp.Config.Propagation.Inject {
-				r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
-			}
-		}
-		if resp.Config.Queue == nil {
-			r.Config.Queue = nil
-		} else {
-			r.Config.Queue = &tfTypes.Queue{}
-			if resp.Config.Queue.ConcurrencyLimit != nil {
-				r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+			r.Config = &tfTypes.OpentelemetryPluginConfig{}
+			r.Config.BatchFlushDelay = types.Int64PointerValue(resp.Config.BatchFlushDelay)
+			r.Config.BatchSpanCount = types.Int64PointerValue(resp.Config.BatchSpanCount)
+			r.Config.ConnectTimeout = types.Int64PointerValue(resp.Config.ConnectTimeout)
+			if resp.Config.HeaderType != nil {
+				r.Config.HeaderType = types.StringValue(string(*resp.Config.HeaderType))
 			} else {
-				r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+				r.Config.HeaderType = types.StringNull()
 			}
-			if resp.Config.Queue.InitialRetryDelay != nil {
-				r.Config.Queue.InitialRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.InitialRetryDelay)))
+			if len(resp.Config.Headers) > 0 {
+				r.Config.Headers = make(map[string]types.String, len(resp.Config.Headers))
+				for key, value := range resp.Config.Headers {
+					result, _ := json.Marshal(value)
+					r.Config.Headers[key] = types.StringValue(string(result))
+				}
+			}
+			r.Config.HTTPResponseHeaderForTraceid = types.StringPointerValue(resp.Config.HTTPResponseHeaderForTraceid)
+			r.Config.LogsEndpoint = types.StringPointerValue(resp.Config.LogsEndpoint)
+			if resp.Config.Propagation == nil {
+				r.Config.Propagation = nil
 			} else {
-				r.Config.Queue.InitialRetryDelay = types.NumberNull()
+				r.Config.Propagation = &tfTypes.Propagation{}
+				r.Config.Propagation.Clear = make([]types.String, 0, len(resp.Config.Propagation.Clear))
+				for _, v := range resp.Config.Propagation.Clear {
+					r.Config.Propagation.Clear = append(r.Config.Propagation.Clear, types.StringValue(v))
+				}
+				r.Config.Propagation.DefaultFormat = types.StringValue(string(resp.Config.Propagation.DefaultFormat))
+				r.Config.Propagation.Extract = make([]types.String, 0, len(resp.Config.Propagation.Extract))
+				for _, v := range resp.Config.Propagation.Extract {
+					r.Config.Propagation.Extract = append(r.Config.Propagation.Extract, types.StringValue(string(v)))
+				}
+				r.Config.Propagation.Inject = make([]types.String, 0, len(resp.Config.Propagation.Inject))
+				for _, v := range resp.Config.Propagation.Inject {
+					r.Config.Propagation.Inject = append(r.Config.Propagation.Inject, types.StringValue(string(v)))
+				}
 			}
-			r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
-			r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
-			if resp.Config.Queue.MaxCoalescingDelay != nil {
-				r.Config.Queue.MaxCoalescingDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxCoalescingDelay)))
+			if resp.Config.Queue == nil {
+				r.Config.Queue = nil
 			} else {
-				r.Config.Queue.MaxCoalescingDelay = types.NumberNull()
+				r.Config.Queue = &tfTypes.Queue{}
+				if resp.Config.Queue.ConcurrencyLimit != nil {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Value(int64(*resp.Config.Queue.ConcurrencyLimit))
+				} else {
+					r.Config.Queue.ConcurrencyLimit = types.Int64Null()
+				}
+				r.Config.Queue.InitialRetryDelay = types.Float64PointerValue(resp.Config.Queue.InitialRetryDelay)
+				r.Config.Queue.MaxBatchSize = types.Int64PointerValue(resp.Config.Queue.MaxBatchSize)
+				r.Config.Queue.MaxBytes = types.Int64PointerValue(resp.Config.Queue.MaxBytes)
+				r.Config.Queue.MaxCoalescingDelay = types.Float64PointerValue(resp.Config.Queue.MaxCoalescingDelay)
+				r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
+				r.Config.Queue.MaxRetryDelay = types.Float64PointerValue(resp.Config.Queue.MaxRetryDelay)
+				r.Config.Queue.MaxRetryTime = types.Float64PointerValue(resp.Config.Queue.MaxRetryTime)
 			}
-			r.Config.Queue.MaxEntries = types.Int64PointerValue(resp.Config.Queue.MaxEntries)
-			if resp.Config.Queue.MaxRetryDelay != nil {
-				r.Config.Queue.MaxRetryDelay = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryDelay)))
-			} else {
-				r.Config.Queue.MaxRetryDelay = types.NumberNull()
+			r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
+			if len(resp.Config.ResourceAttributes) > 0 {
+				r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
+				for key1, value1 := range resp.Config.ResourceAttributes {
+					result1, _ := json.Marshal(value1)
+					r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
+				}
 			}
-			if resp.Config.Queue.MaxRetryTime != nil {
-				r.Config.Queue.MaxRetryTime = types.NumberValue(big.NewFloat(float64(*resp.Config.Queue.MaxRetryTime)))
-			} else {
-				r.Config.Queue.MaxRetryTime = types.NumberNull()
-			}
+			r.Config.SamplingRate = types.Float64PointerValue(resp.Config.SamplingRate)
+			r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
+			r.Config.TracesEndpoint = types.StringPointerValue(resp.Config.TracesEndpoint)
 		}
-		r.Config.ReadTimeout = types.Int64PointerValue(resp.Config.ReadTimeout)
-		if len(resp.Config.ResourceAttributes) > 0 {
-			r.Config.ResourceAttributes = make(map[string]types.String, len(resp.Config.ResourceAttributes))
-			for key1, value1 := range resp.Config.ResourceAttributes {
-				result1, _ := json.Marshal(value1)
-				r.Config.ResourceAttributes[key1] = types.StringValue(string(result1))
-			}
-		}
-		if resp.Config.SamplingRate != nil {
-			r.Config.SamplingRate = types.NumberValue(big.NewFloat(float64(*resp.Config.SamplingRate)))
-		} else {
-			r.Config.SamplingRate = types.NumberNull()
-		}
-		r.Config.SendTimeout = types.Int64PointerValue(resp.Config.SendTimeout)
-		r.Config.TracesEndpoint = types.StringPointerValue(resp.Config.TracesEndpoint)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -150,4 +138,6 @@ func (r *GatewayPluginOpentelemetryDataSourceModel) RefreshFromSharedOpentelemet
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

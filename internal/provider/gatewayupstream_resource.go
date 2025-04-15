@@ -106,6 +106,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"hash_fallback": schema.StringAttribute{
@@ -208,7 +209,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										ElementType: types.Int64Type,
 									},
-									"interval": schema.NumberAttribute{
+									"interval": schema.Float64Attribute{
 										Computed: true,
 										Optional: true,
 									},
@@ -230,7 +231,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 								Computed: true,
 								Optional: true,
 							},
-							"timeout": schema.NumberAttribute{
+							"timeout": schema.Float64Attribute{
 								Computed: true,
 								Optional: true,
 							},
@@ -261,7 +262,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 										Optional:    true,
 										ElementType: types.Int64Type,
 									},
-									"interval": schema.NumberAttribute{
+									"interval": schema.Float64Attribute{
 										Computed: true,
 										Optional: true,
 									},
@@ -335,7 +336,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 							},
 						},
 					},
-					"threshold": schema.NumberAttribute{
+					"threshold": schema.Float64Attribute{
 						Computed: true,
 						Optional: true,
 					},
@@ -367,6 +368,7 @@ func (r *GatewayUpstreamResource) Schema(ctx context.Context, req resource.Schem
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 			"use_srv_name": schema.BoolAttribute{
@@ -419,7 +421,7 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstream := *data.ToSharedUpstreamInput()
+	upstream := *data.ToSharedUpstream()
 	request := operations.CreateUpstreamRequest{
 		ControlPlaneID: controlPlaneID,
 		Upstream:       upstream,
@@ -444,8 +446,17 @@ func (r *GatewayUpstreamResource) Create(ctx context.Context, req resource.Creat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstream(res.Upstream)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstream(ctx, res.Upstream)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -503,7 +514,11 @@ func (r *GatewayUpstreamResource) Read(ctx context.Context, req resource.ReadReq
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstream(res.Upstream)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstream(ctx, res.Upstream)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -529,7 +544,7 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	upstream := *data.ToSharedUpstreamInput()
+	upstream := *data.ToSharedUpstream()
 	request := operations.UpsertUpstreamRequest{
 		UpstreamID:     upstreamID,
 		ControlPlaneID: controlPlaneID,
@@ -555,8 +570,17 @@ func (r *GatewayUpstreamResource) Update(ctx context.Context, req resource.Updat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstream(res.Upstream)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstream(ctx, res.Upstream)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -618,7 +642,7 @@ func (r *GatewayUpstreamResource) ImportState(ctx context.Context, req resource.
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "upstream_id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "426d620c-7058-4ae6-aacc-f85a3204a2c5"}': `+err.Error())
 		return
 	}
 

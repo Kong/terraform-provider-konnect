@@ -29,7 +29,7 @@ type GatewayPluginBasicAuthDataSource struct {
 
 // GatewayPluginBasicAuthDataSourceModel describes the data model.
 type GatewayPluginBasicAuthDataSourceModel struct {
-	Config         tfTypes.BasicAuthPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.BasicAuthPluginConfig     `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -220,7 +220,11 @@ func (r *GatewayPluginBasicAuthDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedBasicAuthPlugin(res.BasicAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedBasicAuthPlugin(ctx, res.BasicAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

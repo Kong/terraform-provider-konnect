@@ -11,8 +11,8 @@ type UpdatePrometheusPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID   string                       `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	PrometheusPlugin shared.PrometheusPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID   string                  `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	PrometheusPlugin shared.PrometheusPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdatePrometheusPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdatePrometheusPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPluginInput {
+func (o *UpdatePrometheusPluginRequest) GetPrometheusPlugin() shared.PrometheusPlugin {
 	if o == nil {
-		return shared.PrometheusPluginInput{}
+		return shared.PrometheusPlugin{}
 	}
 	return o.PrometheusPlugin
 }

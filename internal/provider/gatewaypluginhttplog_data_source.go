@@ -29,7 +29,7 @@ type GatewayPluginHTTPLogDataSource struct {
 
 // GatewayPluginHTTPLogDataSourceModel describes the data model.
 type GatewayPluginHTTPLogDataSourceModel struct {
-	Config         tfTypes.HTTPLogPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.HTTPLogPluginConfig       `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -67,7 +67,7 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 						ElementType: types.StringType,
 						Description: `Lua code as a key-value map`,
 					},
-					"flush_timeout": schema.NumberAttribute{
+					"flush_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Optional time in seconds. If ` + "`" + `queue_size` + "`" + ` > 1, this is the max idle time before sending a log with less than ` + "`" + `queue_size` + "`" + ` records.`,
 					},
@@ -80,7 +80,7 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `A string representing a URL, such as https://example.com/path/to/resource?q=search.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional value in milliseconds that defines how long an idle connection will live before being closed.`,
 					},
@@ -95,7 +95,7 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited.`,
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 							},
@@ -107,7 +107,7 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
 							},
@@ -115,11 +115,11 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 								Computed:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
 							},
@@ -133,7 +133,7 @@ func (r *GatewayPluginHTTPLogDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `Number of times to retry when sending data to the upstream server.`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when sending data to the upstream server.`,
 					},
@@ -297,7 +297,11 @@ func (r *GatewayPluginHTTPLogDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHTTPLogPlugin(res.HTTPLogPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedHTTPLogPlugin(ctx, res.HTTPLogPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

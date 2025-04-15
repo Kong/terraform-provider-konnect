@@ -152,7 +152,11 @@ func (r *GatewayCACertificateDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCACertificate(res.CACertificate)
+	resp.Diagnostics.Append(data.RefreshFromSharedCACertificate(ctx, res.CACertificate)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

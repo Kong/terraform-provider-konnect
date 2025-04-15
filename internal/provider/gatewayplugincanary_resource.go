@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -39,7 +40,7 @@ type GatewayPluginCanaryResource struct {
 
 // GatewayPluginCanaryResourceModel describes the resource data model.
 type GatewayPluginCanaryResourceModel struct {
-	Config         tfTypes.CanaryPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.CanaryPluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -62,14 +63,15 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginCanary Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"canary_by_header_name": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"duration": schema.NumberAttribute{
+					"duration": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The duration of the canary release in seconds.`,
@@ -108,20 +110,26 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 						Optional:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"percentage": schema.NumberAttribute{
+					"percentage": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The percentage of traffic to be routed to the canary release.`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(100),
+						},
 					},
-					"start": schema.NumberAttribute{
+					"start": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Future time in seconds since epoch, when the canary release will start. Ignored when ` + "`" + `percentage` + "`" + ` is set, or when using ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + ` in ` + "`" + `hash` + "`" + `.`,
 					},
-					"steps": schema.NumberAttribute{
+					"steps": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `The number of steps for the canary release.`,
+						Validators: []validator.Float64{
+							float64validator.AtLeast(1),
+						},
 					},
 					"upstream_fallback": schema.BoolAttribute{
 						Computed:    true,
@@ -160,6 +168,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -245,6 +254,7 @@ func (r *GatewayPluginCanaryResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -292,7 +302,7 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := *data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPlugin()
 	request := operations.CreateCanaryPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		CanaryPlugin:   canaryPlugin,
@@ -317,8 +327,17 @@ func (r *GatewayPluginCanaryResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -376,7 +395,11 @@ func (r *GatewayPluginCanaryResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -402,7 +425,7 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	canaryPlugin := *data.ToSharedCanaryPluginInput()
+	canaryPlugin := *data.ToSharedCanaryPlugin()
 	request := operations.UpdateCanaryPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -428,8 +451,17 @@ func (r *GatewayPluginCanaryResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -491,7 +523,7 @@ func (r *GatewayPluginCanaryResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

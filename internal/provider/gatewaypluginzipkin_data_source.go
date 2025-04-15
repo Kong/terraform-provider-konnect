@@ -29,7 +29,7 @@ type GatewayPluginZipkinDataSource struct {
 
 // GatewayPluginZipkinDataSourceModel describes the data model.
 type GatewayPluginZipkinDataSourceModel struct {
-	Config         tfTypes.ZipkinPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.ZipkinPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -128,7 +128,7 @@ func (r *GatewayPluginZipkinDataSource) Schema(ctx context.Context, req datasour
 								Computed:    true,
 								Description: `The number of of queue delivery timers. -1 indicates unlimited.`,
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
 							},
@@ -140,7 +140,7 @@ func (r *GatewayPluginZipkinDataSource) Schema(ctx context.Context, req datasour
 								Computed:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
 							},
@@ -148,11 +148,11 @@ func (r *GatewayPluginZipkinDataSource) Schema(ctx context.Context, req datasour
 								Computed:    true,
 								Description: `Maximum number of entries that can be waiting on the queue.`,
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
 							},
@@ -162,7 +162,7 @@ func (r *GatewayPluginZipkinDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.`,
 					},
-					"sample_ratio": schema.NumberAttribute{
+					"sample_ratio": schema.Float64Attribute{
 						Computed:    true,
 						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
 					},
@@ -352,7 +352,11 @@ func (r *GatewayPluginZipkinDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedZipkinPlugin(res.ZipkinPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedZipkinPlugin(ctx, res.ZipkinPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

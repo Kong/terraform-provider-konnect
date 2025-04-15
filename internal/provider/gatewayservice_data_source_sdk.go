@@ -3,12 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Service) {
+func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(ctx context.Context, resp *shared.Service) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CaCertificates != nil {
 			r.CaCertificates = make([]types.String, 0, len(resp.CaCertificates))
@@ -29,8 +33,12 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
 		r.Path = types.StringPointerValue(resp.Path)
-		r.Port = types.Int64Value(resp.Port)
-		r.Protocol = types.StringValue(string(resp.Protocol))
+		r.Port = types.Int64PointerValue(resp.Port)
+		if resp.Protocol != nil {
+			r.Protocol = types.StringValue(string(*resp.Protocol))
+		} else {
+			r.Protocol = types.StringNull()
+		}
 		r.ReadTimeout = types.Int64PointerValue(resp.ReadTimeout)
 		r.Retries = types.Int64PointerValue(resp.Retries)
 		r.Tags = make([]types.String, 0, len(resp.Tags))
@@ -42,4 +50,6 @@ func (r *GatewayServiceDataSourceModel) RefreshFromSharedService(resp *shared.Se
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 		r.WriteTimeout = types.Int64PointerValue(resp.WriteTimeout)
 	}
+
+	return diags
 }

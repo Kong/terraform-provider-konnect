@@ -179,8 +179,8 @@ type FileLogPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64              `json:"updated_at,omitempty"`
-	Config    FileLogPluginConfig `json:"config"`
+	UpdatedAt *int64               `json:"updated_at,omitempty"`
+	Config    *FileLogPluginConfig `json:"config,omitempty"`
 	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
 	Consumer *FileLogPluginConsumer `json:"consumer"`
 	// A set of strings representing protocols.
@@ -255,9 +255,9 @@ func (o *FileLogPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *FileLogPlugin) GetConfig() FileLogPluginConfig {
+func (o *FileLogPlugin) GetConfig() *FileLogPluginConfig {
 	if o == nil {
-		return FileLogPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -284,112 +284,6 @@ func (o *FileLogPlugin) GetRoute() *FileLogPluginRoute {
 }
 
 func (o *FileLogPlugin) GetService() *FileLogPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// FileLogPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type FileLogPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                  `json:"enabled,omitempty"`
-	ID           *string                `json:"id,omitempty"`
-	InstanceName *string                `json:"instance_name,omitempty"`
-	name         string                 `const:"file-log" json:"name"`
-	Ordering     *FileLogPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string            `json:"tags,omitempty"`
-	Config FileLogPluginConfig `json:"config"`
-	// If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.
-	Consumer *FileLogPluginConsumer `json:"consumer"`
-	// A set of strings representing protocols.
-	Protocols []FileLogPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *FileLogPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *FileLogPluginService `json:"service"`
-}
-
-func (f FileLogPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(f, "", false)
-}
-
-func (f *FileLogPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &f, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *FileLogPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *FileLogPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *FileLogPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *FileLogPluginInput) GetName() string {
-	return "file-log"
-}
-
-func (o *FileLogPluginInput) GetOrdering() *FileLogPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *FileLogPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *FileLogPluginInput) GetConfig() FileLogPluginConfig {
-	if o == nil {
-		return FileLogPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *FileLogPluginInput) GetConsumer() *FileLogPluginConsumer {
-	if o == nil {
-		return nil
-	}
-	return o.Consumer
-}
-
-func (o *FileLogPluginInput) GetProtocols() []FileLogPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *FileLogPluginInput) GetRoute() *FileLogPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *FileLogPluginInput) GetService() *FileLogPluginService {
 	if o == nil {
 		return nil
 	}

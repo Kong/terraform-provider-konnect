@@ -16,6 +16,7 @@ GatewayVault Resource
 resource "konnect_gateway_vault" "my_gatewayvault" {
   config           = "{ \"see\": \"documentation\" }"
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 4
   description      = "...my_description..."
   id               = "...my_id..."
   name             = "...my_name..."
@@ -23,6 +24,7 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
   tags = [
     "..."
   ]
+  updated_at = 4
 }
 ```
 
@@ -38,19 +40,19 @@ resource "konnect_gateway_vault" "my_gatewayvault" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `description` (String) The description of the Vault entity.
 - `tags` (List of String) An optional set of strings associated with the Vault for grouping and filtering.
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_vault.my_konnect_gateway_vault "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"vault_id\": \"9d4d6d19-77c6-428e-a965-9bc9647633e9\"}"
+terraform import konnect_gateway_vault.my_konnect_gateway_vault "{ \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\",  \"id\": \"9d4d6d19-77c6-428e-a965-9bc9647633e9\"}"
 ```

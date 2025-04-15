@@ -3,19 +3,28 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginPrometheusDataSourceModel) RefreshFromSharedPrometheusPlugin(resp *shared.PrometheusPlugin) {
+func (r *GatewayPluginPrometheusDataSourceModel) RefreshFromSharedPrometheusPlugin(ctx context.Context, resp *shared.PrometheusPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
-		r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
-		r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
-		r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
-		r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
-		r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.PrometheusPluginConfig{}
+			r.Config.AiMetrics = types.BoolPointerValue(resp.Config.AiMetrics)
+			r.Config.BandwidthMetrics = types.BoolPointerValue(resp.Config.BandwidthMetrics)
+			r.Config.LatencyMetrics = types.BoolPointerValue(resp.Config.LatencyMetrics)
+			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
+			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
+			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -71,4 +80,6 @@ func (r *GatewayPluginPrometheusDataSourceModel) RefreshFromSharedPrometheusPlug
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

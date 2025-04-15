@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPluginInput() *shared.BotDetectionPluginInput {
+func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPlugin() *shared.BotDetectionPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,17 +66,26 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPluginInput
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var allow []string = []string{}
-	for _, allowItem := range r.Config.Allow {
-		allow = append(allow, allowItem.ValueString())
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
 	}
-	var deny []string = []string{}
-	for _, denyItem := range r.Config.Deny {
-		deny = append(deny, denyItem.ValueString())
-	}
-	config := shared.BotDetectionPluginConfig{
-		Allow: allow,
-		Deny:  deny,
+	var config *shared.BotDetectionPluginConfig
+	if r.Config != nil {
+		var allow []string = []string{}
+		for _, allowItem := range r.Config.Allow {
+			allow = append(allow, allowItem.ValueString())
+		}
+		var deny []string = []string{}
+		for _, denyItem := range r.Config.Deny {
+			deny = append(deny, denyItem.ValueString())
+		}
+		config = &shared.BotDetectionPluginConfig{
+			Allow: allow,
+			Deny:  deny,
+		}
 	}
 	var protocols []shared.BotDetectionPluginProtocols = []shared.BotDetectionPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -98,12 +115,14 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPluginInput
 			ID: id2,
 		}
 	}
-	out := shared.BotDetectionPluginInput{
+	out := shared.BotDetectionPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -112,15 +131,22 @@ func (r *GatewayPluginBotDetectionResourceModel) ToSharedBotDetectionPluginInput
 	return &out
 }
 
-func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPlugin(resp *shared.BotDetectionPlugin) {
+func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPlugin(ctx context.Context, resp *shared.BotDetectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.BotDetectionPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -171,4 +197,6 @@ func (r *GatewayPluginBotDetectionResourceModel) RefreshFromSharedBotDetectionPl
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

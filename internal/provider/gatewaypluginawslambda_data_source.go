@@ -29,7 +29,7 @@ type GatewayPluginAwsLambdaDataSource struct {
 
 // GatewayPluginAwsLambdaDataSourceModel describes the data model.
 type GatewayPluginAwsLambdaDataSourceModel struct {
-	Config         tfTypes.AwsLambdaPluginConfig      `tfsdk:"config"`
+	Config         *tfTypes.AwsLambdaPluginConfig     `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -133,7 +133,7 @@ func (r *GatewayPluginAwsLambdaDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `An optional value that defines whether the response format to receive from the Lambda to this format.`,
 					},
-					"keepalive": schema.NumberAttribute{
+					"keepalive": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional value in milliseconds that defines how long an idle connection lives before being closed.`,
 					},
@@ -157,7 +157,7 @@ func (r *GatewayPluginAwsLambdaDataSource) Schema(ctx context.Context, req datas
 						Computed:    true,
 						Description: `An optional value that defines whether Kong should send large bodies that are buffered to disk`,
 					},
-					"timeout": schema.NumberAttribute{
+					"timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `An optional timeout in milliseconds when invoking the function.`,
 					},
@@ -325,7 +325,11 @@ func (r *GatewayPluginAwsLambdaDataSource) Read(ctx context.Context, req datasou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAwsLambdaPlugin(res.AwsLambdaPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAwsLambdaPlugin(ctx, res.AwsLambdaPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

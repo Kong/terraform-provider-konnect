@@ -29,7 +29,7 @@ type GatewayPluginHmacAuthDataSource struct {
 
 // GatewayPluginHmacAuthDataSourceModel describes the data model.
 type GatewayPluginHmacAuthDataSourceModel struct {
-	Config         tfTypes.HmacAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.HmacAuthPluginConfig      `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -66,7 +66,7 @@ func (r *GatewayPluginHmacAuthDataSource) Schema(ctx context.Context, req dataso
 						Computed:    true,
 						Description: `An optional string (Consumer UUID or username) value to use as an “anonymous” consumer if authentication fails.`,
 					},
-					"clock_skew": schema.NumberAttribute{
+					"clock_skew": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Clock skew in seconds to prevent replay attacks.`,
 					},
@@ -238,7 +238,11 @@ func (r *GatewayPluginHmacAuthDataSource) Read(ctx context.Context, req datasour
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedHmacAuthPlugin(res.HmacAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedHmacAuthPlugin(ctx, res.HmacAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

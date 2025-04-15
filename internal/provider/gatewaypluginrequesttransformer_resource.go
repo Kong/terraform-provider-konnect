@@ -39,20 +39,20 @@ type GatewayPluginRequestTransformerResource struct {
 
 // GatewayPluginRequestTransformerResourceModel describes the resource data model.
 type GatewayPluginRequestTransformerResourceModel struct {
-	Config         tfTypes.RequestTransformerPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                           `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                            `tfsdk:"created_at"`
-	Enabled        types.Bool                             `tfsdk:"enabled"`
-	ID             types.String                           `tfsdk:"id"`
-	InstanceName   types.String                           `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering             `tfsdk:"ordering"`
-	Protocols      []types.String                         `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer     `tfsdk:"service"`
-	Tags           []types.String                         `tfsdk:"tags"`
-	UpdatedAt      types.Int64                            `tfsdk:"updated_at"`
+	Config         *tfTypes.RequestTransformerPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                             `tfsdk:"created_at"`
+	Enabled        types.Bool                              `tfsdk:"enabled"`
+	ID             types.String                            `tfsdk:"id"`
+	InstanceName   types.String                            `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
+	Protocols      []types.String                          `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
+	Tags           []types.String                          `tfsdk:"tags"`
+	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginRequestTransformerResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 		MarkdownDescription: "GatewayPluginRequestTransformer Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"add": schema.SingleNestedAttribute{
 						Computed: true,
@@ -222,6 +223,7 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -307,6 +309,7 @@ func (r *GatewayPluginRequestTransformerResource) Schema(ctx context.Context, re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -354,7 +357,7 @@ func (r *GatewayPluginRequestTransformerResource) Create(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTransformerPlugin := *data.ToSharedRequestTransformerPluginInput()
+	requestTransformerPlugin := *data.ToSharedRequestTransformerPlugin()
 	request := operations.CreateRequesttransformerPluginRequest{
 		ControlPlaneID:           controlPlaneID,
 		RequestTransformerPlugin: requestTransformerPlugin,
@@ -379,8 +382,17 @@ func (r *GatewayPluginRequestTransformerResource) Create(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestTransformerPlugin(res.RequestTransformerPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestTransformerPlugin(ctx, res.RequestTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -438,7 +450,11 @@ func (r *GatewayPluginRequestTransformerResource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestTransformerPlugin(res.RequestTransformerPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestTransformerPlugin(ctx, res.RequestTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -464,7 +480,7 @@ func (r *GatewayPluginRequestTransformerResource) Update(ctx context.Context, re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	requestTransformerPlugin := *data.ToSharedRequestTransformerPluginInput()
+	requestTransformerPlugin := *data.ToSharedRequestTransformerPlugin()
 	request := operations.UpdateRequesttransformerPluginRequest{
 		PluginID:                 pluginID,
 		ControlPlaneID:           controlPlaneID,
@@ -490,8 +506,17 @@ func (r *GatewayPluginRequestTransformerResource) Update(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRequestTransformerPlugin(res.RequestTransformerPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRequestTransformerPlugin(ctx, res.RequestTransformerPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -553,7 +578,7 @@ func (r *GatewayPluginRequestTransformerResource) ImportState(ctx context.Contex
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

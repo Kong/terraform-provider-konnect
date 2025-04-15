@@ -41,18 +41,18 @@ type GatewayPluginAiAzureContentSafetyResource struct {
 
 // GatewayPluginAiAzureContentSafetyResourceModel describes the resource data model.
 type GatewayPluginAiAzureContentSafetyResourceModel struct {
-	Config         tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                              `tfsdk:"created_at"`
-	Enabled        types.Bool                               `tfsdk:"enabled"`
-	ID             types.String                             `tfsdk:"id"`
-	InstanceName   types.String                             `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
-	Protocols      []types.String                           `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
-	Tags           []types.String                           `tfsdk:"tags"`
-	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
+	Config         *tfTypes.AiAzureContentSafetyPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                               `tfsdk:"created_at"`
+	Enabled        types.Bool                                `tfsdk:"enabled"`
+	ID             types.String                              `tfsdk:"id"`
+	InstanceName   types.String                              `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
+	Protocols      []types.String                            `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"service"`
+	Tags           []types.String                            `tfsdk:"tags"`
+	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginAiAzureContentSafetyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 		MarkdownDescription: "GatewayPluginAiAzureContentSafety Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"azure_api_version": schema.StringAttribute{
 						Computed:    true,
@@ -181,6 +182,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -266,6 +268,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Schema(ctx context.Context, 
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -313,7 +316,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Create(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPluginInput()
+	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPlugin()
 	request := operations.CreateAiazurecontentsafetyPluginRequest{
 		ControlPlaneID:             controlPlaneID,
 		AiAzureContentSafetyPlugin: aiAzureContentSafetyPlugin,
@@ -338,8 +341,17 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Create(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiAzureContentSafetyPlugin(res.AiAzureContentSafetyPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiAzureContentSafetyPlugin(ctx, res.AiAzureContentSafetyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -397,7 +409,11 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Read(ctx context.Context, re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiAzureContentSafetyPlugin(res.AiAzureContentSafetyPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiAzureContentSafetyPlugin(ctx, res.AiAzureContentSafetyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -423,7 +439,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Update(ctx context.Context, 
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPluginInput()
+	aiAzureContentSafetyPlugin := *data.ToSharedAiAzureContentSafetyPlugin()
 	request := operations.UpdateAiazurecontentsafetyPluginRequest{
 		PluginID:                   pluginID,
 		ControlPlaneID:             controlPlaneID,
@@ -449,8 +465,17 @@ func (r *GatewayPluginAiAzureContentSafetyResource) Update(ctx context.Context, 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiAzureContentSafetyPlugin(res.AiAzureContentSafetyPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiAzureContentSafetyPlugin(ctx, res.AiAzureContentSafetyPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -512,7 +537,7 @@ func (r *GatewayPluginAiAzureContentSafetyResource) ImportState(ctx context.Cont
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

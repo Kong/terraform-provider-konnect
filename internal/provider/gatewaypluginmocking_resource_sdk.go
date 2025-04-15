@@ -3,13 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginMockingResourceModel) ToSharedMockingPluginInput() *shared.MockingPluginInput {
+func (r *GatewayPluginMockingResourceModel) ToSharedMockingPlugin() *shared.MockingPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -59,75 +66,84 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPluginInput() *shared
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	apiSpecification := new(string)
-	if !r.Config.APISpecification.IsUnknown() && !r.Config.APISpecification.IsNull() {
-		*apiSpecification = r.Config.APISpecification.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		apiSpecification = nil
+		updatedAt = nil
 	}
-	apiSpecificationFilename := new(string)
-	if !r.Config.APISpecificationFilename.IsUnknown() && !r.Config.APISpecificationFilename.IsNull() {
-		*apiSpecificationFilename = r.Config.APISpecificationFilename.ValueString()
-	} else {
-		apiSpecificationFilename = nil
-	}
-	customBasePath := new(string)
-	if !r.Config.CustomBasePath.IsUnknown() && !r.Config.CustomBasePath.IsNull() {
-		*customBasePath = r.Config.CustomBasePath.ValueString()
-	} else {
-		customBasePath = nil
-	}
-	includeBasePath := new(bool)
-	if !r.Config.IncludeBasePath.IsUnknown() && !r.Config.IncludeBasePath.IsNull() {
-		*includeBasePath = r.Config.IncludeBasePath.ValueBool()
-	} else {
-		includeBasePath = nil
-	}
-	var includedStatusCodes []int64 = []int64{}
-	for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
-		includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
-	}
-	maxDelayTime := new(float64)
-	if !r.Config.MaxDelayTime.IsUnknown() && !r.Config.MaxDelayTime.IsNull() {
-		*maxDelayTime, _ = r.Config.MaxDelayTime.ValueBigFloat().Float64()
-	} else {
-		maxDelayTime = nil
-	}
-	minDelayTime := new(float64)
-	if !r.Config.MinDelayTime.IsUnknown() && !r.Config.MinDelayTime.IsNull() {
-		*minDelayTime, _ = r.Config.MinDelayTime.ValueBigFloat().Float64()
-	} else {
-		minDelayTime = nil
-	}
-	randomDelay := new(bool)
-	if !r.Config.RandomDelay.IsUnknown() && !r.Config.RandomDelay.IsNull() {
-		*randomDelay = r.Config.RandomDelay.ValueBool()
-	} else {
-		randomDelay = nil
-	}
-	randomExamples := new(bool)
-	if !r.Config.RandomExamples.IsUnknown() && !r.Config.RandomExamples.IsNull() {
-		*randomExamples = r.Config.RandomExamples.ValueBool()
-	} else {
-		randomExamples = nil
-	}
-	randomStatusCode := new(bool)
-	if !r.Config.RandomStatusCode.IsUnknown() && !r.Config.RandomStatusCode.IsNull() {
-		*randomStatusCode = r.Config.RandomStatusCode.ValueBool()
-	} else {
-		randomStatusCode = nil
-	}
-	config := shared.MockingPluginConfig{
-		APISpecification:         apiSpecification,
-		APISpecificationFilename: apiSpecificationFilename,
-		CustomBasePath:           customBasePath,
-		IncludeBasePath:          includeBasePath,
-		IncludedStatusCodes:      includedStatusCodes,
-		MaxDelayTime:             maxDelayTime,
-		MinDelayTime:             minDelayTime,
-		RandomDelay:              randomDelay,
-		RandomExamples:           randomExamples,
-		RandomStatusCode:         randomStatusCode,
+	var config *shared.MockingPluginConfig
+	if r.Config != nil {
+		apiSpecification := new(string)
+		if !r.Config.APISpecification.IsUnknown() && !r.Config.APISpecification.IsNull() {
+			*apiSpecification = r.Config.APISpecification.ValueString()
+		} else {
+			apiSpecification = nil
+		}
+		apiSpecificationFilename := new(string)
+		if !r.Config.APISpecificationFilename.IsUnknown() && !r.Config.APISpecificationFilename.IsNull() {
+			*apiSpecificationFilename = r.Config.APISpecificationFilename.ValueString()
+		} else {
+			apiSpecificationFilename = nil
+		}
+		customBasePath := new(string)
+		if !r.Config.CustomBasePath.IsUnknown() && !r.Config.CustomBasePath.IsNull() {
+			*customBasePath = r.Config.CustomBasePath.ValueString()
+		} else {
+			customBasePath = nil
+		}
+		includeBasePath := new(bool)
+		if !r.Config.IncludeBasePath.IsUnknown() && !r.Config.IncludeBasePath.IsNull() {
+			*includeBasePath = r.Config.IncludeBasePath.ValueBool()
+		} else {
+			includeBasePath = nil
+		}
+		var includedStatusCodes []int64 = []int64{}
+		for _, includedStatusCodesItem := range r.Config.IncludedStatusCodes {
+			includedStatusCodes = append(includedStatusCodes, includedStatusCodesItem.ValueInt64())
+		}
+		maxDelayTime := new(float64)
+		if !r.Config.MaxDelayTime.IsUnknown() && !r.Config.MaxDelayTime.IsNull() {
+			*maxDelayTime = r.Config.MaxDelayTime.ValueFloat64()
+		} else {
+			maxDelayTime = nil
+		}
+		minDelayTime := new(float64)
+		if !r.Config.MinDelayTime.IsUnknown() && !r.Config.MinDelayTime.IsNull() {
+			*minDelayTime = r.Config.MinDelayTime.ValueFloat64()
+		} else {
+			minDelayTime = nil
+		}
+		randomDelay := new(bool)
+		if !r.Config.RandomDelay.IsUnknown() && !r.Config.RandomDelay.IsNull() {
+			*randomDelay = r.Config.RandomDelay.ValueBool()
+		} else {
+			randomDelay = nil
+		}
+		randomExamples := new(bool)
+		if !r.Config.RandomExamples.IsUnknown() && !r.Config.RandomExamples.IsNull() {
+			*randomExamples = r.Config.RandomExamples.ValueBool()
+		} else {
+			randomExamples = nil
+		}
+		randomStatusCode := new(bool)
+		if !r.Config.RandomStatusCode.IsUnknown() && !r.Config.RandomStatusCode.IsNull() {
+			*randomStatusCode = r.Config.RandomStatusCode.ValueBool()
+		} else {
+			randomStatusCode = nil
+		}
+		config = &shared.MockingPluginConfig{
+			APISpecification:         apiSpecification,
+			APISpecificationFilename: apiSpecificationFilename,
+			CustomBasePath:           customBasePath,
+			IncludeBasePath:          includeBasePath,
+			IncludedStatusCodes:      includedStatusCodes,
+			MaxDelayTime:             maxDelayTime,
+			MinDelayTime:             minDelayTime,
+			RandomDelay:              randomDelay,
+			RandomExamples:           randomExamples,
+			RandomStatusCode:         randomStatusCode,
+		}
 	}
 	var consumer *shared.MockingPluginConsumer
 	if r.Consumer != nil {
@@ -169,12 +185,14 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPluginInput() *shared
 			ID: id3,
 		}
 	}
-	out := shared.MockingPluginInput{
+	out := shared.MockingPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Consumer:     consumer,
 		Protocols:    protocols,
@@ -184,29 +202,28 @@ func (r *GatewayPluginMockingResourceModel) ToSharedMockingPluginInput() *shared
 	return &out
 }
 
-func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(resp *shared.MockingPlugin) {
+func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(ctx context.Context, resp *shared.MockingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.APISpecification = types.StringPointerValue(resp.Config.APISpecification)
-		r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
-		r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
-		r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
-		r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
-		for _, v := range resp.Config.IncludedStatusCodes {
-			r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
-		}
-		if resp.Config.MaxDelayTime != nil {
-			r.Config.MaxDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MaxDelayTime)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.MaxDelayTime = types.NumberNull()
+			r.Config = &tfTypes.MockingPluginConfig{}
+			r.Config.APISpecification = types.StringPointerValue(resp.Config.APISpecification)
+			r.Config.APISpecificationFilename = types.StringPointerValue(resp.Config.APISpecificationFilename)
+			r.Config.CustomBasePath = types.StringPointerValue(resp.Config.CustomBasePath)
+			r.Config.IncludeBasePath = types.BoolPointerValue(resp.Config.IncludeBasePath)
+			r.Config.IncludedStatusCodes = make([]types.Int64, 0, len(resp.Config.IncludedStatusCodes))
+			for _, v := range resp.Config.IncludedStatusCodes {
+				r.Config.IncludedStatusCodes = append(r.Config.IncludedStatusCodes, types.Int64Value(v))
+			}
+			r.Config.MaxDelayTime = types.Float64PointerValue(resp.Config.MaxDelayTime)
+			r.Config.MinDelayTime = types.Float64PointerValue(resp.Config.MinDelayTime)
+			r.Config.RandomDelay = types.BoolPointerValue(resp.Config.RandomDelay)
+			r.Config.RandomExamples = types.BoolPointerValue(resp.Config.RandomExamples)
+			r.Config.RandomStatusCode = types.BoolPointerValue(resp.Config.RandomStatusCode)
 		}
-		if resp.Config.MinDelayTime != nil {
-			r.Config.MinDelayTime = types.NumberValue(big.NewFloat(float64(*resp.Config.MinDelayTime)))
-		} else {
-			r.Config.MinDelayTime = types.NumberNull()
-		}
-		r.Config.RandomDelay = types.BoolPointerValue(resp.Config.RandomDelay)
-		r.Config.RandomExamples = types.BoolPointerValue(resp.Config.RandomExamples)
-		r.Config.RandomStatusCode = types.BoolPointerValue(resp.Config.RandomStatusCode)
 		if resp.Consumer == nil {
 			r.Consumer = nil
 		} else {
@@ -262,4 +279,6 @@ func (r *GatewayPluginMockingResourceModel) RefreshFromSharedMockingPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

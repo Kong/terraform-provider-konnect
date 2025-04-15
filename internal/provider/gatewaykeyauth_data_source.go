@@ -36,6 +36,7 @@ type GatewayKeyAuthDataSourceModel struct {
 	ID             types.String                       `tfsdk:"id"`
 	Key            types.String                       `tfsdk:"key"`
 	Tags           []types.String                     `tfsdk:"tags"`
+	TTL            types.Int64                        `tfsdk:"ttl"`
 }
 
 // Metadata returns the data source type name.
@@ -78,6 +79,10 @@ func (r *GatewayKeyAuthDataSource) Schema(ctx context.Context, req datasource.Sc
 			"tags": schema.ListAttribute{
 				Computed:    true,
 				ElementType: types.StringType,
+			},
+			"ttl": schema.Int64Attribute{
+				Computed:    true,
+				Description: `key-auth ttl in seconds`,
 			},
 		},
 	}
@@ -159,7 +164,11 @@ func (r *GatewayKeyAuthDataSource) Read(ctx context.Context, req datasource.Read
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeyAuth(res.KeyAuth)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuth(ctx, res.KeyAuth)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

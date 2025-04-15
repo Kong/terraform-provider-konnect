@@ -11,8 +11,8 @@ type UpdateJsonthreatprotectionPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID             string                                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	JSONThreatProtectionPlugin shared.JSONThreatProtectionPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID             string                            `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	JSONThreatProtectionPlugin shared.JSONThreatProtectionPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateJsonthreatprotectionPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateJsonthreatprotectionPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateJsonthreatprotectionPluginRequest) GetJSONThreatProtectionPlugin() shared.JSONThreatProtectionPluginInput {
+func (o *UpdateJsonthreatprotectionPluginRequest) GetJSONThreatProtectionPlugin() shared.JSONThreatProtectionPlugin {
 	if o == nil {
-		return shared.JSONThreatProtectionPluginInput{}
+		return shared.JSONThreatProtectionPlugin{}
 	}
 	return o.JSONThreatProtectionPlugin
 }

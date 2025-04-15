@@ -41,18 +41,18 @@ type GatewayPluginInjectionProtectionResource struct {
 
 // GatewayPluginInjectionProtectionResourceModel describes the resource data model.
 type GatewayPluginInjectionProtectionResourceModel struct {
-	Config         tfTypes.InjectionProtectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.InjectionProtectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginInjectionProtectionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -64,7 +64,8 @@ func (r *GatewayPluginInjectionProtectionResource) Schema(ctx context.Context, r
 		MarkdownDescription: "GatewayPluginInjectionProtection Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"custom_injections": schema.ListNestedAttribute{
 						Computed: true,
@@ -141,6 +142,7 @@ func (r *GatewayPluginInjectionProtectionResource) Schema(ctx context.Context, r
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -226,6 +228,7 @@ func (r *GatewayPluginInjectionProtectionResource) Schema(ctx context.Context, r
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -273,7 +276,7 @@ func (r *GatewayPluginInjectionProtectionResource) Create(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	injectionProtectionPlugin := *data.ToSharedInjectionProtectionPluginInput()
+	injectionProtectionPlugin := *data.ToSharedInjectionProtectionPlugin()
 	request := operations.CreateInjectionprotectionPluginRequest{
 		ControlPlaneID:            controlPlaneID,
 		InjectionProtectionPlugin: injectionProtectionPlugin,
@@ -298,8 +301,17 @@ func (r *GatewayPluginInjectionProtectionResource) Create(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedInjectionProtectionPlugin(res.InjectionProtectionPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedInjectionProtectionPlugin(ctx, res.InjectionProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -357,7 +369,11 @@ func (r *GatewayPluginInjectionProtectionResource) Read(ctx context.Context, req
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedInjectionProtectionPlugin(res.InjectionProtectionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedInjectionProtectionPlugin(ctx, res.InjectionProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -383,7 +399,7 @@ func (r *GatewayPluginInjectionProtectionResource) Update(ctx context.Context, r
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	injectionProtectionPlugin := *data.ToSharedInjectionProtectionPluginInput()
+	injectionProtectionPlugin := *data.ToSharedInjectionProtectionPlugin()
 	request := operations.UpdateInjectionprotectionPluginRequest{
 		PluginID:                  pluginID,
 		ControlPlaneID:            controlPlaneID,
@@ -409,8 +425,17 @@ func (r *GatewayPluginInjectionProtectionResource) Update(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedInjectionProtectionPlugin(res.InjectionProtectionPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedInjectionProtectionPlugin(ctx, res.InjectionProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -472,7 +497,7 @@ func (r *GatewayPluginInjectionProtectionResource) ImportState(ctx context.Conte
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

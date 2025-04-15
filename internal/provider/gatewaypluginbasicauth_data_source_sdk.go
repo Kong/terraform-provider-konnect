@@ -3,16 +3,25 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBasicAuthDataSourceModel) RefreshFromSharedBasicAuthPlugin(resp *shared.BasicAuthPlugin) {
+func (r *GatewayPluginBasicAuthDataSourceModel) RefreshFromSharedBasicAuthPlugin(ctx context.Context, resp *shared.BasicAuthPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.BasicAuthPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -62,4 +71,6 @@ func (r *GatewayPluginBasicAuthDataSourceModel) RefreshFromSharedBasicAuthPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

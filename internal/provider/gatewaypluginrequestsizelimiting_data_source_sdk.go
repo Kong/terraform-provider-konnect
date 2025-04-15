@@ -3,19 +3,28 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestSizeLimitingDataSourceModel) RefreshFromSharedRequestSizeLimitingPlugin(resp *shared.RequestSizeLimitingPlugin) {
+func (r *GatewayPluginRequestSizeLimitingDataSourceModel) RefreshFromSharedRequestSizeLimitingPlugin(ctx context.Context, resp *shared.RequestSizeLimitingPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AllowedPayloadSize = types.Int64PointerValue(resp.Config.AllowedPayloadSize)
-		r.Config.RequireContentLength = types.BoolPointerValue(resp.Config.RequireContentLength)
-		if resp.Config.SizeUnit != nil {
-			r.Config.SizeUnit = types.StringValue(string(*resp.Config.SizeUnit))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.SizeUnit = types.StringNull()
+			r.Config = &tfTypes.RequestSizeLimitingPluginConfig{}
+			r.Config.AllowedPayloadSize = types.Int64PointerValue(resp.Config.AllowedPayloadSize)
+			r.Config.RequireContentLength = types.BoolPointerValue(resp.Config.RequireContentLength)
+			if resp.Config.SizeUnit != nil {
+				r.Config.SizeUnit = types.StringValue(string(*resp.Config.SizeUnit))
+			} else {
+				r.Config.SizeUnit = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -72,4 +81,6 @@ func (r *GatewayPluginRequestSizeLimitingDataSourceModel) RefreshFromSharedReque
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

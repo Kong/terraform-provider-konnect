@@ -3,11 +3,13 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCertificateResourceModel) ToSharedCertificateInput() *shared.CertificateInput {
+func (r *GatewayCertificateResourceModel) ToSharedCertificate() *shared.Certificate {
 	var cert string
 	cert = r.Cert.ValueString()
 
@@ -16,6 +18,12 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificateInput() *shared.Cer
 		*certAlt = r.CertAlt.ValueString()
 	} else {
 		certAlt = nil
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -40,19 +48,29 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificateInput() *shared.Cer
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.CertificateInput{
-		Cert:    cert,
-		CertAlt: certAlt,
-		ID:      id,
-		Key:     key,
-		KeyAlt:  keyAlt,
-		Snis:    snis,
-		Tags:    tags,
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.Certificate{
+		Cert:      cert,
+		CertAlt:   certAlt,
+		CreatedAt: createdAt,
+		ID:        id,
+		Key:       key,
+		KeyAlt:    keyAlt,
+		Snis:      snis,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
 	}
 	return &out
 }
 
-func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(resp *shared.Certificate) {
+func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(ctx context.Context, resp *shared.Certificate) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Cert = types.StringValue(resp.Cert)
 		r.CertAlt = types.StringPointerValue(resp.CertAlt)
@@ -72,4 +90,6 @@ func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(resp *sha
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

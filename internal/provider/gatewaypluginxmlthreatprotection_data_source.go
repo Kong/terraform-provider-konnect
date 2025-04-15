@@ -29,19 +29,19 @@ type GatewayPluginXMLThreatProtectionDataSource struct {
 
 // GatewayPluginXMLThreatProtectionDataSourceModel describes the data model.
 type GatewayPluginXMLThreatProtectionDataSourceModel struct {
-	Config         tfTypes.XMLThreatProtectionPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"consumer"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.XMLThreatProtectionPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"consumer"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -71,7 +71,7 @@ func (r *GatewayPluginXMLThreatProtectionDataSource) Schema(ctx context.Context,
 						Computed:    true,
 						Description: `Maximum size of the attribute value.`,
 					},
-					"bla_max_amplification": schema.NumberAttribute{
+					"bla_max_amplification": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Sets the maximum allowed amplification. This protects against the Billion Laughs Attack.`,
 					},
@@ -312,7 +312,11 @@ func (r *GatewayPluginXMLThreatProtectionDataSource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedXMLThreatProtectionPlugin(res.XMLThreatProtectionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedXMLThreatProtectionPlugin(ctx, res.XMLThreatProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

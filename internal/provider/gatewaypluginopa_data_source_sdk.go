@@ -3,28 +3,37 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOpaDataSourceModel) RefreshFromSharedOpaPlugin(resp *shared.OpaPlugin) {
+func (r *GatewayPluginOpaDataSourceModel) RefreshFromSharedOpaPlugin(ctx context.Context, resp *shared.OpaPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.IncludeBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeBodyInOpaInput)
-		r.Config.IncludeConsumerInOpaInput = types.BoolPointerValue(resp.Config.IncludeConsumerInOpaInput)
-		r.Config.IncludeParsedJSONBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeParsedJSONBodyInOpaInput)
-		r.Config.IncludeRouteInOpaInput = types.BoolPointerValue(resp.Config.IncludeRouteInOpaInput)
-		r.Config.IncludeServiceInOpaInput = types.BoolPointerValue(resp.Config.IncludeServiceInOpaInput)
-		r.Config.IncludeURICapturesInOpaInput = types.BoolPointerValue(resp.Config.IncludeURICapturesInOpaInput)
-		r.Config.OpaHost = types.StringPointerValue(resp.Config.OpaHost)
-		r.Config.OpaPath = types.StringPointerValue(resp.Config.OpaPath)
-		r.Config.OpaPort = types.Int64PointerValue(resp.Config.OpaPort)
-		if resp.Config.OpaProtocol != nil {
-			r.Config.OpaProtocol = types.StringValue(string(*resp.Config.OpaProtocol))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.OpaProtocol = types.StringNull()
+			r.Config = &tfTypes.OpaPluginConfig{}
+			r.Config.IncludeBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeBodyInOpaInput)
+			r.Config.IncludeConsumerInOpaInput = types.BoolPointerValue(resp.Config.IncludeConsumerInOpaInput)
+			r.Config.IncludeParsedJSONBodyInOpaInput = types.BoolPointerValue(resp.Config.IncludeParsedJSONBodyInOpaInput)
+			r.Config.IncludeRouteInOpaInput = types.BoolPointerValue(resp.Config.IncludeRouteInOpaInput)
+			r.Config.IncludeServiceInOpaInput = types.BoolPointerValue(resp.Config.IncludeServiceInOpaInput)
+			r.Config.IncludeURICapturesInOpaInput = types.BoolPointerValue(resp.Config.IncludeURICapturesInOpaInput)
+			r.Config.OpaHost = types.StringPointerValue(resp.Config.OpaHost)
+			r.Config.OpaPath = types.StringPointerValue(resp.Config.OpaPath)
+			r.Config.OpaPort = types.Int64PointerValue(resp.Config.OpaPort)
+			if resp.Config.OpaProtocol != nil {
+				r.Config.OpaProtocol = types.StringValue(string(*resp.Config.OpaProtocol))
+			} else {
+				r.Config.OpaProtocol = types.StringNull()
+			}
+			r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		}
-		r.Config.SslVerify = types.BoolPointerValue(resp.Config.SslVerify)
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -74,4 +83,6 @@ func (r *GatewayPluginOpaDataSourceModel) RefreshFromSharedOpaPlugin(resp *share
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

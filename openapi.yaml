@@ -23,7 +23,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#create
       operationId: create-serverless-cloud-gateway
       summary: Create a new serverless cloud gateway
-      description: Create a new serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create a new serverless cloud gateway
       requestBody:
         required: true
         content:
@@ -58,7 +62,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#read
       operationId: get-serverless-cloud-gateway
       summary: Get the serverless cloud gateway
-      description: Get the serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get the serverless cloud gateway
       responses:
         '200':
           $ref: '#/components/responses/RetrieveServerlessCloudGatewayResponse'
@@ -76,7 +84,11 @@ paths:
       x-speakeasy-entity-operation: ServerlessCloudGateway#delete
       operationId: delete-serverless-cloud-gateway
       summary: Delete the serverless cloud gateway
-      description: Delete the serverless cloud gateway
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Delete the serverless cloud gateway
       responses:
         '204':
           description: No Content
@@ -157,22 +169,22 @@ paths:
           $ref: '#/components/responses/MeshControlPlaneNotFoundError'
       tags:
         - Mesh
-    patch:
+    put:
       x-speakeasy-entity-operation: MeshControlPlane#update
-      operationId: update-mesh-control-plane
-      summary: Update control plane
-      description: Update an individual control plane.
+      operationId: update-cp
+      summary: Update a whole control plane
+      description: Update a whole control plane
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateMeshControlPlaneRequest'
+              $ref: '#/components/schemas/PutMeshControlPlaneRequest'
       responses:
         '200':
-          $ref: '#/components/responses/UpdateMeshControlPlaneResponse'
+          $ref: '#/components/responses/PutMeshControlPlaneResponse'
         '400':
-          $ref: '#/components/responses/UpdateMeshControlPlaneValidationError'
+          $ref: '#/components/responses/PutMeshControlPlaneValidationError'
         '401':
           $ref: '#/components/responses/MeshControlPlaneUnauthorizedError'
         '403':
@@ -1227,6 +1239,32 @@ paths:
         - Provider Accounts
       x-speakeasy-group: CloudGateways
   /v2/control-planes:
+    get:
+      x-speakeasy-entity-operation: GatewayControlPlaneList#read
+      operationId: list-control-planes
+      summary: List Control Planes
+      description: Returns an array of control plane objects containing information about the Konnect Control Planes.
+      parameters:
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/ControlPlaneFilter'
+        - $ref: '#/components/parameters/FilterByLabels'
+        - $ref: '#/components/parameters/ControlPlaneSort'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListControlPlanesResponse'
+        '400':
+          $ref: '#/components/responses/ControlPlanesBadRequest'
+        '401':
+          $ref: '#/components/responses/ControlPlaneUnauthenticated'
+        '403':
+          $ref: '#/components/responses/ControlPlanePermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      tags:
+        - Control Planes
     parameters: []
     post:
       x-speakeasy-entity-operation: GatewayControlPlane#create
@@ -11674,6 +11712,23 @@ components:
       schema:
         type: string
       x-speakeasy-name-override: consumer_id
+    ControlPlaneFilter:
+      name: filter
+      description: Filters a collection of control-planes.
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/ControlPlaneFilterParameters'
+      style: deepObject
+    ControlPlaneSort:
+      name: sort
+      description: |
+        Sorts a collection of control-planes. Supported sort attributes are:
+          - created_at
+      required: false
+      in: query
+      schema:
+        $ref: '#/components/schemas/SortQuery'
     CustomDomainId:
       name: customDomainId
       description: ID of the custom domain to operate on.
@@ -11689,6 +11744,14 @@ components:
         type: string
       required: true
       x-speakeasy-match: id
+    FilterByLabels:
+      name: labels
+      description: Filter control planes in the response by associated labels.
+      in: query
+      required: false
+      schema:
+        type: string
+        example: 'key:value,existCheck'
     HMACAuthId:
       description: ID of the HMAC-auth credential to lookup
       example: 70e7b00b-72f2-471b-a5ce-9c4171775360
@@ -12137,6 +12200,56 @@ components:
           port: 443
           protocol: https
       title: ProxyURLs
+    ControlPlaneFilterParameters:
+      type: object
+      properties:
+        id:
+          description: Returns entities that exact match any of the comma-delimited phrases in the filter string.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            oeq:
+              type: string
+        name:
+          description: Filters on the given string field value by exact match inequality.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            contains:
+              type: string
+            neq:
+              type: string
+        cluster_type:
+          description: Filters on the given string field value by exact match inequality.
+          type: object
+          additionalProperties: false
+          properties:
+            eq:
+              type: string
+            neq:
+              type: string
+        cloud_gateway:
+          $ref: '#/components/schemas/BooleanFieldFilter'
+      additionalProperties: false
+      title: ControlPlaneFilterParameters
+    BooleanFieldFilter:
+      description: Filter by a boolean value (true/false).
+      type: boolean
+      example: true
+      title: BooleanFieldFilter
+    SortQuery:
+      description: |
+        The `asc` suffix is optional as the default sort order is ascending.
+        The `desc` suffix is used to specify a descending order.
+        Multiple sort attributes may be provided via a comma separated list.
+        JSONPath notation may be used to specify a sub-attribute (eg: 'foo.bar desc').
+      type: string
+      example: created_at desc
+      title: SortQuery
     PageMeta:
       description: Contains pagination query parameters and the total number of objects returned.
       type: object
@@ -12529,7 +12642,6 @@ components:
       description: Supported gateway version.
       type: string
       example: '3.2'
-      pattern: ^(\d)+(\.(\d)+)?$
       title: Gateway Version
     InstanceTypeName:
       description: Instance type name to indicate capacity.
@@ -12999,11 +13111,19 @@ components:
       additionalProperties: false
       title: PatchNetworkRequest
     TransitGatewayState:
-      description: State of the transit gateway.
+      description: |
+        The current state of the Transit Gateway. Possible values:
+        - `created` - The attachment has been created but is not attached to transit gateway.
+        - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
+        - `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+        - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
+        - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
+        - `terminated` - The attachment has been fully deleted and is no longer available.
       type: string
       enum:
         - created
         - initializing
+        - pending-acceptance
         - ready
         - terminating
         - terminated
@@ -13129,18 +13249,17 @@ components:
         - 100.64.0.0/10
         - 172.16.0.0/12
       title: Transit Gateway CIDR Blocks
-    BaseTransitGateway:
+    AwsTransitGatewayResponse:
       type: object
       properties:
         name:
           $ref: '#/components/schemas/TransitGatewayName'
         dns_config:
           $ref: '#/components/schemas/TransitGatewayDnsConfig'
-      required:
-        - name
-    BaseTransitGatewayResponse:
-      type: object
-      properties:
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
         id:
           $ref: '#/components/schemas/TransitGatewayId'
         state:
@@ -13165,93 +13284,156 @@ components:
           example: '2022-11-04T20:10:06.927Z'
           readOnly: true
       required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+        - dns_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Transit Gateway
+    AwsVpcPeeringGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+        - dns_config
+        - id
+        - state
+        - entity_version
+        - created_at
+        - updated_at
+      title: AWS Vpc Peering Gateway
+    AzureTransitGatewayResponse:
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+        id:
+          $ref: '#/components/schemas/TransitGatewayId'
+        state:
+          $ref: '#/components/schemas/TransitGatewayState'
+        entity_version:
+          description: |
+            Monotonically-increasing version count of the transit gateway, to indicate the order of updates to the
+            transit gateway.
+          type: integer
+          example: 1
+          readOnly: true
+        created_at:
+          description: An RFC-3339 timestamp representation of transit gateway creation date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+        updated_at:
+          description: An RFC-3339 timestamp representation of transit gateway update date.
+          type: string
+          format: date-time
+          example: '2022-11-04T20:10:06.927Z'
+          readOnly: true
+      required:
+        - name
+        - transit_gateway_attachment_config
         - id
         - dns_config
         - state
         - entity_version
         - created_at
         - updated_at
-    AwsTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: AWS Transit Gateway
-          type: object
-          properties:
-            cidr_blocks:
-              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
-          required:
-            - cidr_blocks
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AwsTransitGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AwsTransitGateway'
-        - required:
-            - dns_config
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
-    AwsVpcPeeringGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: AWS Vpc Peering Gateway
-          type: object
-          properties:
-            cidr_blocks:
-              $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
-          required:
-            - cidr_blocks
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AwsVpcPeeringGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
-        - required:
-            - dns_config
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
-    AzureTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/BaseTransitGateway'
-        - title: Azure Transit Gateway
-          type: object
-          properties:
-            transit_gateway_attachment_config:
-              $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
-          required:
-            - transit_gateway_attachment_config
-      x-flatten-allOf: true
-    AzureTransitGatewayResponse:
-      allOf:
-        - $ref: '#/components/schemas/AzureTransitGateway'
-        - $ref: '#/components/schemas/BaseTransitGatewayResponse'
-      x-flatten-allOf: true
+      title: Azure Transit Gateway
     TransitGatewayResponse:
       oneOf:
         - $ref: '#/components/schemas/AwsTransitGatewayResponse'
         - $ref: '#/components/schemas/AwsVpcPeeringGatewayResponse'
         - $ref: '#/components/schemas/AzureTransitGatewayResponse'
     CreateAwsTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/AwsTransitGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsTransitGatewayAttachmentConfig'
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+      title: AWS Transit Gateway
+      x-speakeasy-name-override: AWSTransitGateway
     CreateAwsVpcPeeringGateway:
-      allOf:
-        - $ref: '#/components/schemas/AwsVpcPeeringGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        cidr_blocks:
+          $ref: '#/components/schemas/TransitGatewayCIDRBlocks'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AwsVpcPeeringGatewayAttachmentConfig'
+      required:
+        - name
+        - cidr_blocks
+        - transit_gateway_attachment_config
+      title: AWS Vpc Peering Gateway
+      x-speakeasy-name-override: AWSVpcPeeringGateway
     CreateAzureTransitGateway:
-      allOf:
-        - $ref: '#/components/schemas/AzureTransitGateway'
-        - required:
-            - name
-      x-flatten-allOf: true
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/TransitGatewayName'
+        dns_config:
+          $ref: '#/components/schemas/TransitGatewayDnsConfig'
+        transit_gateway_attachment_config:
+          $ref: '#/components/schemas/AzureVNETPeeringAttachmentConfig'
+      required:
+        - name
+        - transit_gateway_attachment_config
+      title: Azure Transit Gateway
+      x-speakeasy-name-override: AzureTransitGateway
     CreateTransitGatewayRequest:
       description: Request schema for creating a transit gateway.
       type: object
@@ -13446,6 +13628,19 @@ components:
       maxProperties: 10
       nullable: true
       title: Labels
+    MeshControlPlaneNonNullableLabels:
+      description: Labels to facilitate tagged search on control planes. Keys must be of length 1-63 characters.
+      type: object
+      example:
+        test: 'true'
+      additionalProperties:
+        type: string
+        pattern: '^[a-z0-9A-Z]{1}([a-z0-9A-Z\-\.\_]*[a-z0-9A-Z]+)?$'
+        minLength: 1
+        maxLength: 63
+      maxProperties: 10
+      nullable: true
+      title: Labels
     MeshControlPlane:
       description: a control plane
       type: object
@@ -13458,15 +13653,9 @@ components:
           readOnly: true
           x-speakeasy-param-suppress-computed-diff: true
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
           $ref: '#/components/schemas/MeshControlPlaneLabels'
         features:
@@ -13494,16 +13683,9 @@ components:
       type: object
       properties:
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          minLength: 1
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         features:
           $ref: '#/components/schemas/MeshControlPlaneFeatures'
         labels:
@@ -13512,23 +13694,30 @@ components:
       required:
         - name
       title: CreateMeshControlPlaneRequest
-    UpdateMeshControlPlaneRequest:
-      description: a payload to update the control plane
+    PutMeshControlPlaneRequest:
+      description: a payload to update the whole control plane
       type: object
       properties:
         name:
-          description: The name of the control plane.
-          type: string
-          example: Test control plane
-          maxLength: 100
-          pattern: '^[a-z0-9A-Z]{1}.*$'
+          $ref: '#/components/schemas/MeshControlPlaneName'
         description:
-          type: string
-          example: A control plane to handle traffic on development environment.
-          maxLength: 250
+          $ref: '#/components/schemas/MeshControlPlaneDescription'
         labels:
-          $ref: '#/components/schemas/MeshControlPlaneLabels'
-      title: UpdateMeshControlPlaneRequest
+          $ref: '#/components/schemas/MeshControlPlaneNonNullableLabels'
+      required:
+        - name
+      title: PutMeshControlPlaneRequest
+    MeshControlPlaneName:
+      description: The name of the control plane.
+      type: string
+      example: Test control plane
+      maxLength: 100
+      minLength: 1
+      pattern: '^[a-z0-9A-Z]{1}.*$'
+    MeshControlPlaneDescription:
+      type: string
+      example: A control plane to handle traffic on development environment.
+      maxLength: 250
     APIProductPortals:
       description: The list of portals which this API product is published to
       type: array
@@ -13812,7 +14001,7 @@ components:
             - id
             - control_plane_id
         publish_status:
-          description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
+          description: 'This field is published if the API product version is published to at least one portal. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: string
           example: unpublished
           enum:
@@ -13821,7 +14010,7 @@ components:
           deprecated: true
           x-speakeasy-terraform-ignore: true
         deprecated:
-          description: 'Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead'
+          description: 'Whether this API product version is deprecated in at least one portal. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead'
           type: boolean
           example: false
           deprecated: true
@@ -13950,7 +14139,7 @@ components:
     CreateAPIProductVersionDTO:
       description: |
         The request schema to create a version of an API product.
-        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
+        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
       type: object
       properties:
         name:
@@ -13960,7 +14149,7 @@ components:
           minLength: 1
           nullable: false
         publish_status:
-          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
+          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: string
           example: unpublished
           enum:
@@ -13969,7 +14158,7 @@ components:
           deprecated: true
           nullable: false
         deprecated:
-          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
+          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: boolean
           example: false
           deprecated: true
@@ -14083,7 +14272,7 @@ components:
     UpdateAPIProductVersionDTO:
       description: |
         The request schema for updating a version of an API product.
-        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.
+        Note that the `publish_status` and `deprecated` fields are deprecated:  Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.
       type: object
       properties:
         name:
@@ -14092,7 +14281,7 @@ components:
           example: v1
           minLength: 1
         publish_status:
-          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
+          description: 'The publish status of the API product version. Applies publish status to all related portal product versions. This field is deprecated: Use [PortalProductVersion.publish_status](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: string
           example: unpublished
           enum:
@@ -14100,7 +14289,7 @@ components:
             - published
           deprecated: true
         deprecated:
-          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/latest/#/Portal%20Product%20Versions/create-portal-product-version) instead.'
+          description: 'Indicates if the version of the API product is deprecated. Applies deprecation or removes deprecation from all related portal product versions. This field is deprecated: Use [PortalProductVersion.deprecated](https://docs.konghq.com/konnect/api/portal-management/v2/#/operations/create-portal-product-version) instead.'
           type: boolean
           example: false
           deprecated: true
@@ -15536,16 +15725,6 @@ components:
       pattern: '^data:image/(png|jpeg|x-icon|ico|icon|vnd.microsoft.icon|gif)(;base64)?,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$'
       title: ImageDataUri
       x-validation-message: 'must be a data URL with base64 image data, e.g., data:image/jpeg;base64,<BASE64_IMAGE_DATA>'
-    EntityRegion:
-      type: string
-      example: eu
-      enum:
-        - us
-        - eu
-        - au
-        - me
-        - in
-        - '*'
     DcrProviderType:
       description: 'The type of DCR provider. Can be one of the following - auth0, azureAd, curity, okta, http'
       type: string
@@ -15994,10 +16173,16 @@ components:
           type: string
           example: Control Planes
         entity_region:
-          allOf:
-            - $ref: '#/components/schemas/EntityRegion'
-            - description: Region of the entity.
-          x-flatten-allOf: true
+          description: Region of the entity.
+          type: string
+          example: eu
+          enum:
+            - us
+            - eu
+            - au
+            - me
+            - in
+            - '*'
       example:
         id: 54cc6168-ebb1-4300-8168-d62a0dd08fc8
         role_name: Viewer
@@ -16291,7 +16476,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         group:
           type: string
         id:
@@ -16387,7 +16572,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         group:
           type: string
         id:
@@ -19481,7 +19666,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -19573,7 +19758,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -19665,7 +19850,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -19677,7 +19862,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         cert: |-
           -----BEGIN CERTIFICATE-----
@@ -19809,7 +19994,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -19833,7 +20018,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         cert: |-
           -----BEGIN CERTIFICATE-----
@@ -19995,7 +20180,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         custom_id:
           description: Field for storing an existing unique ID for the Consumer - useful for mapping Kong with users in your existing database. You must send either this field or `username` with the request.
           type: string
@@ -20011,7 +20196,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
         username:
           description: The unique username of the Consumer. You must send either this field or `custom_id` with the request.
           type: string
@@ -20030,7 +20215,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -20043,7 +20228,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       additionalProperties: false
       required:
         - name
@@ -21315,7 +21500,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -21353,7 +21538,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -21922,7 +22107,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -21980,7 +22165,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23068,7 +23253,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23110,7 +23295,10 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
+        x5t:
+          type: string
+          nullable: true
       example:
         id: d958f66b-8e99-44d2-b0b4-edd5bbf24658
         jwk: '{"alg":"RSA",  "kid": "42",  ...}'
@@ -23140,7 +23328,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23150,6 +23338,10 @@ components:
           type: array
           items:
             type: string
+        ttl:
+          description: key-auth ttl in seconds
+          type: integer
+          nullable: true
       example:
         consumer:
           id: 84a73fb8-50fc-44a7-a4d5-aa17728ee83f
@@ -23318,7 +23510,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23328,6 +23520,10 @@ components:
           type: array
           items:
             type: string
+        ttl:
+          description: key-auth ttl in seconds
+          type: integer
+          nullable: true
       example:
         id: b2f34145-0343-41a4-9602-4c69dec2f269
         key: IL1deIyHyQA40WpeLeA1bIUXuvTwlGjo
@@ -23341,7 +23537,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23355,7 +23551,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         id: b58c7d9d-e54f-444c-b24d-cdfc4159f61e
         name: example-key-set
@@ -23721,7 +23917,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -23766,7 +23962,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -25356,6 +25552,8 @@ components:
               type: array
               items:
                 type: string
+              default: []
+              nullable: true
             scopes_claim:
               description: 'The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.'
               type: array
@@ -25672,8 +25870,6 @@ components:
             verify_signature:
               description: Verify signature of tokens.
               type: boolean
-          required:
-            - scopes
           shorthand_fields:
             authorization_cookie_httponly:
               type: boolean
@@ -25986,6 +26182,7 @@ components:
           description: 'The configuration properties for the Plugin which can be found on the plugins documentation page in the [Kong Hub](https://docs.konghq.com/hub/).'
           type: object
           additionalProperties: true
+          nullable: true
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -26008,7 +26205,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         enabled:
           description: Whether the plugin is applied.
           type: boolean
@@ -26085,7 +26282,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         config:
           anonymous: null
@@ -26107,7 +26304,6 @@ components:
       additionalProperties: false
       required:
         - name
-        - config
     PluginBase:
       description: 'A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.'
       type: object
@@ -26115,7 +26311,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         enabled:
           description: Whether the plugin is applied.
           type: boolean
@@ -26155,7 +26351,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         config:
           anonymous: null
@@ -26177,7 +26373,6 @@ components:
       additionalProperties: false
       required:
         - name
-        - config
     PostFunctionPlugin:
       x-speakeasy-entity: GatewayPluginPostFunction
       allOf:
@@ -28515,7 +28710,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         expression:
           description: Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
           type: string
@@ -28598,7 +28793,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       additionalProperties: false
     RouteJson:
       x-speakeasy-entity: GatewayRoute
@@ -28608,7 +28803,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         destinations:
           description: A list of IP destinations of incoming connections that match this Route when using stream routing. Each entry is an object with fields "ip" (optionally in CIDR range notation) and/or "port".
           type: array
@@ -28742,7 +28937,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         hosts:
           - foo.example.com
@@ -28834,7 +29029,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -28849,7 +29044,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         certificate:
           id: bd380f99-659d-415e-b0e7-72ea05df3218
@@ -29295,7 +29490,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         enabled:
           description: 'Whether the Service is active. If set to `false`, the proxy behavior will be as if any routes attached to it do not exist (404). Default: `true`.'
           type: boolean
@@ -29317,6 +29512,7 @@ components:
         port:
           description: The upstream server port.
           type: integer
+          nullable: true
         protocol:
           description: The protocol used to communicate with the upstream.
           type: string
@@ -29331,6 +29527,7 @@ components:
             - udp
             - ws
             - wss
+          nullable: true
         read_timeout:
           description: The timeout in milliseconds between two successive read operations for transmitting a request to the upstream server.
           type: integer
@@ -29355,7 +29552,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
         url:
           description: 'Helper field to set `protocol`, `host`, `port` and `path` using a URL. This field is write-only and is not returned in responses.'
           type: string
@@ -29374,9 +29571,7 @@ components:
         protocol: http
       additionalProperties: false
       required:
-        - protocol
         - host
-        - port
     ServiceProtectionPlugin:
       x-speakeasy-entity: GatewayPluginServiceProtection
       allOf:
@@ -30372,7 +30567,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: number
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -30388,7 +30583,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
-          readOnly: true
+          nullable: true
         upstream:
           type: object
           default: null
@@ -30417,7 +30612,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: number
-          readOnly: true
+          nullable: true
         id:
           type: string
           nullable: true
@@ -30433,7 +30628,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: number
-          readOnly: true
+          nullable: true
         upstream:
           type: object
           default: null
@@ -30745,7 +30940,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         hash_fallback:
           description: 'What to use as hashing input if the primary `hash_on` does not return a hash (eg. header is missing, or no Consumer identified). Not available if `hash_on` is set to `cookie`.'
           type: string
@@ -30916,7 +31111,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
         use_srv_name:
           description: 'If set, the balancer will use SRV hostname(if DNS Answer has SRV record) as the proxy upstream `Host`.'
           type: boolean
@@ -31393,7 +31588,7 @@ components:
         created_at:
           description: Unix epoch when the resource was created.
           type: integer
-          readOnly: true
+          nullable: true
         description:
           description: The description of the Vault entity.
           type: string
@@ -31415,7 +31610,7 @@ components:
         updated_at:
           description: Unix epoch when the resource was last updated.
           type: integer
-          readOnly: true
+          nullable: true
       example:
         config:
           prefix: ENV_PREFIX
@@ -32329,10 +32524,16 @@ components:
                   - Portals
                   - Service Hub
               entity_region:
-                allOf:
-                  - $ref: '#/components/schemas/EntityRegion'
-                  - description: Region of the team.
-                x-flatten-allOf: true
+                description: Region of the team.
+                type: string
+                example: eu
+                enum:
+                  - us
+                  - eu
+                  - au
+                  - me
+                  - in
+                  - '*'
       description: The request schema for assigning a role.
     CreateSystemAccount:
       content:
@@ -32571,6 +32772,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ControlPlane'
+    ListControlPlanesResponse:
+      description: A paginated list response for a collection of control planes.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/PaginatedMeta'
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlPlane'
+            additionalProperties: false
+            required:
+              - meta
+              - data
+            title: ListControlPlanesResponse
     ControlPlanesBadRequest:
       description: Bad Request
       content:
@@ -32831,7 +33050,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/BadRequestError'
-    UpdateMeshControlPlaneValidationError:
+    PutMeshControlPlaneValidationError:
       description: Validation Error
       content:
         application/problem+json:
@@ -32855,7 +33074,7 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/NotFoundError'
-    UpdateMeshControlPlaneResponse:
+    PutMeshControlPlaneResponse:
       description: A response to updating a control plane.
       content:
         application/json:
@@ -33353,7 +33572,7 @@ tags:
       You can either rely on Kong Gateway as the primary datastore, or you can map the consumer list with your database to keep consistency between Kong Gateway and your existing primary datastore.
     name: Consumers
   - description: |-
-      Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem. 
+      Consumer groups enable the organization and categorization of consumers (users or applications) within an API ecosystem.
       By grouping consumers together, you eliminate the need to manage them individually, providing a scalable, efficient approach to managing configurations.
     name: Consumer Groups
   - description: |
@@ -33364,18 +33583,18 @@ tags:
       If intermediate certificates are required in addition to the main certificate, they should be concatenated together into one string.
     name: Certificates
   - description: |-
-      An SNI object represents a many-to-one mapping of hostnames to a certificate. 
+      An SNI object represents a many-to-one mapping of hostnames to a certificate.
       <br><br>
       A certificate object can have many hostnames associated with it. When Kong Gateway receives an SSL request, it uses the SNI field in the Client Hello to look up the certificate object based on the SNI associated with the certificate.
     name: SNIs
   - description: |-
-      A CA certificate object represents a trusted certificate authority. 
+      A CA certificate object represents a trusted certificate authority.
       These objects are used by Kong Gateway to verify the validity of a client or server certificate.
     name: CA Certificates
   - description: |-
-      The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets). 
+      The upstream object represents a virtual hostname and can be used to load balance incoming requests over multiple services (targets).
       <br><br>
-      An upstream also includes a [health checker](https://docs.konghq.com/gateway/latest/how-kong-works/health-checks/), which can enable and disable targets based on their ability or inability to serve requests. 
+      An upstream also includes a [health checker](https://docs.konghq.com/gateway/latest/how-kong-works/health-checks/), which can enable and disable targets based on their ability or inability to serve requests.
       The configuration for the health checker is stored in the upstream object, and applies to all of its targets.
     name: Upstreams
   - description: |

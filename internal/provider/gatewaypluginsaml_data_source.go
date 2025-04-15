@@ -29,7 +29,7 @@ type GatewayPluginSamlDataSource struct {
 
 // GatewayPluginSamlDataSourceModel describes the data model.
 type GatewayPluginSamlDataSourceModel struct {
-	Config         tfTypes.SamlPluginConfig           `tfsdk:"config"`
+	Config         *tfTypes.SamlPluginConfig          `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -230,7 +230,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `The algorithm for validating signatures in SAML responses. Options available are: - ` + "`" + `SHA256` + "`" + ` - ` + "`" + `SHA384` + "`" + ` - ` + "`" + `SHA512` + "`" + ``,
 					},
-					"session_absolute_timeout": schema.NumberAttribute{
+					"session_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
@@ -274,7 +274,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `When set to ` + "`" + `true` + "`" + `, the value of subject is hashed before being stored. Only applies when ` + "`" + `session_store_metadata` + "`" + ` is enabled.`,
 					},
-					"session_idling_timeout": schema.NumberAttribute{
+					"session_idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie idle time in seconds.`,
 					},
@@ -298,7 +298,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `Enables or disables persistent sessions`,
 					},
-					"session_remember_absolute_timeout": schema.NumberAttribute{
+					"session_remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Persistent session absolute timeout in seconds.`,
 					},
@@ -306,7 +306,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						Description: `Persistent session cookie name`,
 					},
-					"session_remember_rolling_timeout": schema.NumberAttribute{
+					"session_remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Persistent session rolling timeout in seconds.`,
 					},
@@ -318,7 +318,7 @@ func (r *GatewayPluginSamlDataSource) Schema(ctx context.Context, req datasource
 						Computed:    true,
 						ElementType: types.StringType,
 					},
-					"session_rolling_timeout": schema.NumberAttribute{
+					"session_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie absolute timeout in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
@@ -489,7 +489,11 @@ func (r *GatewayPluginSamlDataSource) Read(ctx context.Context, req datasource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSamlPlugin(res.SamlPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedSamlPlugin(ctx, res.SamlPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

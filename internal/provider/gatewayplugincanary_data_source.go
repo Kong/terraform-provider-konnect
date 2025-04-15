@@ -29,7 +29,7 @@ type GatewayPluginCanaryDataSource struct {
 
 // GatewayPluginCanaryDataSourceModel describes the data model.
 type GatewayPluginCanaryDataSourceModel struct {
-	Config         tfTypes.CanaryPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.CanaryPluginConfig        `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -61,7 +61,7 @@ func (r *GatewayPluginCanaryDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"duration": schema.NumberAttribute{
+					"duration": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The duration of the canary release in seconds.`,
 					},
@@ -85,15 +85,15 @@ func (r *GatewayPluginCanaryDataSource) Schema(ctx context.Context, req datasour
 						Computed:    true,
 						Description: `A string representing an HTTP header name.`,
 					},
-					"percentage": schema.NumberAttribute{
+					"percentage": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The percentage of traffic to be routed to the canary release.`,
 					},
-					"start": schema.NumberAttribute{
+					"start": schema.Float64Attribute{
 						Computed:    true,
 						Description: `Future time in seconds since epoch, when the canary release will start. Ignored when ` + "`" + `percentage` + "`" + ` is set, or when using ` + "`" + `allow` + "`" + ` or ` + "`" + `deny` + "`" + ` in ` + "`" + `hash` + "`" + `.`,
 					},
-					"steps": schema.NumberAttribute{
+					"steps": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The number of steps for the canary release.`,
 					},
@@ -264,7 +264,11 @@ func (r *GatewayPluginCanaryDataSource) Read(ctx context.Context, req datasource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedCanaryPlugin(res.CanaryPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedCanaryPlugin(ctx, res.CanaryPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

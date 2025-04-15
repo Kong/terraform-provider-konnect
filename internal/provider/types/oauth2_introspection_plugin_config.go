@@ -17,5 +17,5 @@ type Oauth2IntrospectionPluginConfig struct {
 	RunOnPreflight             types.Bool              `tfsdk:"run_on_preflight"`
 	Timeout                    types.Int64             `tfsdk:"timeout"`
 	TokenTypeHint              types.String            `tfsdk:"token_type_hint"`
-	TTL                        types.Number            `tfsdk:"ttl"`
+	TTL                        types.Float64           `tfsdk:"ttl"`
 }

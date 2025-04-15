@@ -38,7 +38,7 @@ type GatewayPluginRedirectResource struct {
 
 // GatewayPluginRedirectResourceModel describes the resource data model.
 type GatewayPluginRedirectResourceModel struct {
-	Config         tfTypes.RedirectPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.RedirectPluginConfig      `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -63,7 +63,8 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 		MarkdownDescription: "GatewayPluginRedirect Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"keep_incoming_path": schema.BoolAttribute{
 						Computed:    true,
@@ -122,6 +123,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -207,6 +209,7 @@ func (r *GatewayPluginRedirectResource) Schema(ctx context.Context, req resource
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -254,7 +257,7 @@ func (r *GatewayPluginRedirectResource) Create(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	redirectPlugin := *data.ToSharedRedirectPluginInput()
+	redirectPlugin := *data.ToSharedRedirectPlugin()
 	request := operations.CreateRedirectPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		RedirectPlugin: redirectPlugin,
@@ -279,8 +282,17 @@ func (r *GatewayPluginRedirectResource) Create(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRedirectPlugin(res.RedirectPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRedirectPlugin(ctx, res.RedirectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -338,7 +350,11 @@ func (r *GatewayPluginRedirectResource) Read(ctx context.Context, req resource.R
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRedirectPlugin(res.RedirectPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedRedirectPlugin(ctx, res.RedirectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -364,7 +380,7 @@ func (r *GatewayPluginRedirectResource) Update(ctx context.Context, req resource
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	redirectPlugin := *data.ToSharedRedirectPluginInput()
+	redirectPlugin := *data.ToSharedRedirectPlugin()
 	request := operations.UpdateRedirectPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -390,8 +406,17 @@ func (r *GatewayPluginRedirectResource) Update(ctx context.Context, req resource
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedRedirectPlugin(res.RedirectPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedRedirectPlugin(ctx, res.RedirectPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -453,7 +478,7 @@ func (r *GatewayPluginRedirectResource) ImportState(ctx context.Context, req res
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

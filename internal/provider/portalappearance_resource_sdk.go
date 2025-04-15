@@ -3,12 +3,14 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalAppearanceResourceModel) ToSharedUpdatePortalAppearanceRequest() *shared.UpdatePortalAppearanceRequest {
+func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance() *shared.PortalAppearance {
 	themeName := new(shared.PortalTheme)
 	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
 		*themeName = shared.PortalTheme(r.ThemeName.ValueString())
@@ -359,7 +361,7 @@ func (r *PortalAppearanceResourceModel) ToSharedUpdatePortalAppearanceRequest() 
 			CatalogCover: catalogCover,
 		}
 	}
-	out := shared.UpdatePortalAppearanceRequest{
+	out := shared.PortalAppearance{
 		ThemeName:      themeName,
 		CustomTheme:    customTheme,
 		CustomFonts:    customFonts,
@@ -370,7 +372,9 @@ func (r *PortalAppearanceResourceModel) ToSharedUpdatePortalAppearanceRequest() 
 	return &out
 }
 
-func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceResponse(resp *shared.UpdatePortalAppearanceResponse) {
+func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceResponse(ctx context.Context, resp *shared.UpdatePortalAppearanceResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
@@ -455,9 +459,13 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceR
 		r.ThemeName = types.StringValue(string(resp.ThemeName))
 		r.UseCustomFonts = types.BoolValue(resp.UseCustomFonts)
 	}
+
+	return diags
 }
 
-func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResponse(resp *shared.GetPortalAppearanceResponse) {
+func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResponse(ctx context.Context, resp *shared.GetPortalAppearanceResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.CustomFonts == nil {
 			r.CustomFonts = nil
@@ -542,4 +550,6 @@ func (r *PortalAppearanceResourceModel) RefreshFromSharedGetPortalAppearanceResp
 		r.ThemeName = types.StringValue(string(resp.ThemeName))
 		r.UseCustomFonts = types.BoolValue(resp.UseCustomFonts)
 	}
+
+	return diags
 }

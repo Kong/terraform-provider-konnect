@@ -3,39 +3,43 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *shared.JwtPlugin) {
+func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(ctx context.Context, resp *shared.JwtPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
-		r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
-		for _, v := range resp.Config.ClaimsToVerify {
-			r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
-		}
-		r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
-		for _, v := range resp.Config.CookieNames {
-			r.Config.CookieNames = append(r.Config.CookieNames, types.StringValue(v))
-		}
-		r.Config.HeaderNames = make([]types.String, 0, len(resp.Config.HeaderNames))
-		for _, v := range resp.Config.HeaderNames {
-			r.Config.HeaderNames = append(r.Config.HeaderNames, types.StringValue(v))
-		}
-		r.Config.KeyClaimName = types.StringPointerValue(resp.Config.KeyClaimName)
-		if resp.Config.MaximumExpiration != nil {
-			r.Config.MaximumExpiration = types.NumberValue(big.NewFloat(float64(*resp.Config.MaximumExpiration)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.MaximumExpiration = types.NumberNull()
-		}
-		r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
-		r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-		r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
-		r.Config.URIParamNames = make([]types.String, 0, len(resp.Config.URIParamNames))
-		for _, v := range resp.Config.URIParamNames {
-			r.Config.URIParamNames = append(r.Config.URIParamNames, types.StringValue(v))
+			r.Config = &tfTypes.JwtPluginConfig{}
+			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
+			r.Config.ClaimsToVerify = make([]types.String, 0, len(resp.Config.ClaimsToVerify))
+			for _, v := range resp.Config.ClaimsToVerify {
+				r.Config.ClaimsToVerify = append(r.Config.ClaimsToVerify, types.StringValue(string(v)))
+			}
+			r.Config.CookieNames = make([]types.String, 0, len(resp.Config.CookieNames))
+			for _, v := range resp.Config.CookieNames {
+				r.Config.CookieNames = append(r.Config.CookieNames, types.StringValue(v))
+			}
+			r.Config.HeaderNames = make([]types.String, 0, len(resp.Config.HeaderNames))
+			for _, v := range resp.Config.HeaderNames {
+				r.Config.HeaderNames = append(r.Config.HeaderNames, types.StringValue(v))
+			}
+			r.Config.KeyClaimName = types.StringPointerValue(resp.Config.KeyClaimName)
+			r.Config.MaximumExpiration = types.Float64PointerValue(resp.Config.MaximumExpiration)
+			r.Config.Realm = types.StringPointerValue(resp.Config.Realm)
+			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
+			r.Config.SecretIsBase64 = types.BoolPointerValue(resp.Config.SecretIsBase64)
+			r.Config.URIParamNames = make([]types.String, 0, len(resp.Config.URIParamNames))
+			for _, v := range resp.Config.URIParamNames {
+				r.Config.URIParamNames = append(r.Config.URIParamNames, types.StringValue(v))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -86,4 +90,6 @@ func (r *GatewayPluginJwtDataSourceModel) RefreshFromSharedJwtPlugin(resp *share
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

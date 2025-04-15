@@ -29,7 +29,7 @@ type GatewayPluginSessionDataSource struct {
 
 // GatewayPluginSessionDataSourceModel describes the data model.
 type GatewayPluginSessionDataSourceModel struct {
-	Config         tfTypes.SessionPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.SessionPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -57,7 +57,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
-					"absolute_timeout": schema.NumberAttribute{
+					"absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie absolute timeout, in seconds. Specifies how long the session can be used until it is no longer valid.`,
 					},
@@ -89,7 +89,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.`,
 					},
-					"idling_timeout": schema.NumberAttribute{
+					"idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie idle time, in seconds.`,
 					},
@@ -113,7 +113,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `Enables or disables persistent sessions.`,
 					},
-					"remember_absolute_timeout": schema.NumberAttribute{
+					"remember_absolute_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The persistent session absolute timeout limit, in seconds.`,
 					},
@@ -121,7 +121,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `Persistent session cookie name. Use with the ` + "`" + `remember` + "`" + ` configuration parameter.`,
 					},
-					"remember_rolling_timeout": schema.NumberAttribute{
+					"remember_rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The persistent session rolling timeout window, in seconds.`,
 					},
@@ -135,7 +135,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						ElementType: types.StringType,
 						Description: `List of information to include, as headers, in the response to the downstream.`,
 					},
-					"rolling_timeout": schema.NumberAttribute{
+					"rolling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie rolling timeout, in seconds. Specifies how long the session can be used until it needs to be renewed.`,
 					},
@@ -143,7 +143,7 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `The secret that is used in keyed HMAC generation.`,
 					},
-					"stale_ttl": schema.NumberAttribute{
+					"stale_ttl": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.`,
 					},
@@ -302,7 +302,11 @@ func (r *GatewayPluginSessionDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSessionPlugin(res.SessionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedSessionPlugin(ctx, res.SessionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

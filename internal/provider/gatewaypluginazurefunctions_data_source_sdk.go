@@ -3,31 +3,31 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"math/big"
 )
 
-func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunctionsPlugin(resp *shared.AzureFunctionsPlugin) {
+func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunctionsPlugin(ctx context.Context, resp *shared.AzureFunctionsPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
-		r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
-		r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
-		r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
-		r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
-		r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
-		r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
-		if resp.Config.Keepalive != nil {
-			r.Config.Keepalive = types.NumberValue(big.NewFloat(float64(*resp.Config.Keepalive)))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Keepalive = types.NumberNull()
-		}
-		r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
-		if resp.Config.Timeout != nil {
-			r.Config.Timeout = types.NumberValue(big.NewFloat(float64(*resp.Config.Timeout)))
-		} else {
-			r.Config.Timeout = types.NumberNull()
+			r.Config = &tfTypes.AzureFunctionsPluginConfig{}
+			r.Config.Apikey = types.StringPointerValue(resp.Config.Apikey)
+			r.Config.Appname = types.StringPointerValue(resp.Config.Appname)
+			r.Config.Clientid = types.StringPointerValue(resp.Config.Clientid)
+			r.Config.Functionname = types.StringPointerValue(resp.Config.Functionname)
+			r.Config.Hostdomain = types.StringPointerValue(resp.Config.Hostdomain)
+			r.Config.HTTPS = types.BoolPointerValue(resp.Config.HTTPS)
+			r.Config.HTTPSVerify = types.BoolPointerValue(resp.Config.HTTPSVerify)
+			r.Config.Keepalive = types.Float64PointerValue(resp.Config.Keepalive)
+			r.Config.Routeprefix = types.StringPointerValue(resp.Config.Routeprefix)
+			r.Config.Timeout = types.Float64PointerValue(resp.Config.Timeout)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -84,4 +84,6 @@ func (r *GatewayPluginAzureFunctionsDataSourceModel) RefreshFromSharedAzureFunct
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

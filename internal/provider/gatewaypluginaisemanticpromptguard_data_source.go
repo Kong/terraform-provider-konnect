@@ -29,20 +29,20 @@ type GatewayPluginAiSemanticPromptGuardDataSource struct {
 
 // GatewayPluginAiSemanticPromptGuardDataSourceModel describes the data model.
 type GatewayPluginAiSemanticPromptGuardDataSourceModel struct {
-	Config         tfTypes.AiSemanticPromptGuardPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                              `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                               `tfsdk:"created_at"`
-	Enabled        types.Bool                                `tfsdk:"enabled"`
-	ID             types.String                              `tfsdk:"id"`
-	InstanceName   types.String                              `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering                `tfsdk:"ordering"`
-	Protocols      []types.String                            `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer        `tfsdk:"service"`
-	Tags           []types.String                            `tfsdk:"tags"`
-	UpdatedAt      types.Int64                               `tfsdk:"updated_at"`
+	Config         *tfTypes.AiSemanticPromptGuardPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                               `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                                `tfsdk:"created_at"`
+	Enabled        types.Bool                                 `tfsdk:"enabled"`
+	ID             types.String                               `tfsdk:"id"`
+	InstanceName   types.String                               `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering                 `tfsdk:"ordering"`
+	Protocols      []types.String                             `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer         `tfsdk:"service"`
+	Tags           []types.String                             `tfsdk:"tags"`
+	UpdatedAt      types.Int64                                `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -178,7 +178,7 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Schema(ctx context.Contex
 					"search": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Description: `Threshold for the similarity score to be considered a match.`,
 							},
@@ -312,7 +312,7 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Schema(ctx context.Contex
 								Computed:    true,
 								Description: `which vector database driver to use`,
 							},
-							"threshold": schema.NumberAttribute{
+							"threshold": schema.Float64Attribute{
 								Computed:    true,
 								Description: `the default similarity threshold for accepting semantic search results (float)`,
 							},
@@ -487,7 +487,11 @@ func (r *GatewayPluginAiSemanticPromptGuardDataSource) Read(ctx context.Context,
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiSemanticPromptGuardPlugin(res.AiSemanticPromptGuardPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiSemanticPromptGuardPlugin(ctx, res.AiSemanticPromptGuardPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

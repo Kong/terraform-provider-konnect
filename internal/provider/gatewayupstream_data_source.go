@@ -145,7 +145,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 										Computed:    true,
 										ElementType: types.Int64Type,
 									},
-									"interval": schema.NumberAttribute{
+									"interval": schema.Float64Attribute{
 										Computed: true,
 									},
 									"successes": schema.Int64Attribute{
@@ -162,7 +162,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 							"https_verify_certificate": schema.BoolAttribute{
 								Computed: true,
 							},
-							"timeout": schema.NumberAttribute{
+							"timeout": schema.Float64Attribute{
 								Computed: true,
 							},
 							"type": schema.StringAttribute{
@@ -178,7 +178,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 										Computed:    true,
 										ElementType: types.Int64Type,
 									},
-									"interval": schema.NumberAttribute{
+									"interval": schema.Float64Attribute{
 										Computed: true,
 									},
 									"tcp_failures": schema.Int64Attribute{
@@ -229,7 +229,7 @@ func (r *GatewayUpstreamDataSource) Schema(ctx context.Context, req datasource.S
 							},
 						},
 					},
-					"threshold": schema.NumberAttribute{
+					"threshold": schema.Float64Attribute{
 						Computed: true,
 					},
 				},
@@ -338,7 +338,11 @@ func (r *GatewayUpstreamDataSource) Read(ctx context.Context, req datasource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstream(res.Upstream)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstream(ctx, res.Upstream)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

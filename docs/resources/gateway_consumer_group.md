@@ -15,11 +15,13 @@ GatewayConsumerGroup Resource
 ```terraform
 resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+  created_at       = 1
   id               = "...my_id..."
   name             = "...my_name..."
   tags = [
     "..."
   ]
+  updated_at = 9
 }
 ```
 
@@ -33,18 +35,18 @@ resource "konnect_gateway_consumer_group" "my_gatewayconsumergroup" {
 
 ### Optional
 
+- `created_at` (Number) Unix epoch when the resource was created.
 - `tags` (List of String)
+- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ### Read-Only
 
-- `created_at` (Number) Unix epoch when the resource was created.
 - `id` (String) The ID of this resource.
-- `updated_at` (Number) Unix epoch when the resource was last updated.
 
 ## Import
 
 Import is supported using the following syntax:
 
 ```shell
-terraform import konnect_gateway_consumer_group.my_konnect_gateway_consumer_group "{ \"consumer_group_id\": \"\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
+terraform import konnect_gateway_consumer_group.my_konnect_gateway_consumer_group "{ \"id\": \"\",  \"control_plane_id\": \"9524ec7d-36d9-465d-a8c5-83a3c9390458\"}"
 ```

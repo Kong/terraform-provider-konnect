@@ -36,7 +36,7 @@ type GatewayPluginKeyAuthResource struct {
 
 // GatewayPluginKeyAuthResourceModel describes the resource data model.
 type GatewayPluginKeyAuthResourceModel struct {
-	Config         tfTypes.KeyAuthPluginConfig        `tfsdk:"config"`
+	Config         *tfTypes.KeyAuthPluginConfig       `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`
@@ -59,7 +59,8 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 		MarkdownDescription: "GatewayPluginKeyAuth Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"anonymous": schema.StringAttribute{
 						Computed:    true,
@@ -113,6 +114,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -198,6 +200,7 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -245,7 +248,7 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPlugin()
 	request := operations.CreateKeyauthPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		KeyAuthPlugin:  keyAuthPlugin,
@@ -270,8 +273,17 @@ func (r *GatewayPluginKeyAuthResource) Create(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthPlugin(ctx, res.KeyAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -329,7 +341,11 @@ func (r *GatewayPluginKeyAuthResource) Read(ctx context.Context, req resource.Re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthPlugin(ctx, res.KeyAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -355,7 +371,7 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	keyAuthPlugin := *data.ToSharedKeyAuthPluginInput()
+	keyAuthPlugin := *data.ToSharedKeyAuthPlugin()
 	request := operations.UpdateKeyauthPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -381,8 +397,17 @@ func (r *GatewayPluginKeyAuthResource) Update(ctx context.Context, req resource.
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKeyAuthPlugin(res.KeyAuthPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedKeyAuthPlugin(ctx, res.KeyAuthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -444,7 +469,7 @@ func (r *GatewayPluginKeyAuthResource) ImportState(ctx context.Context, req reso
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

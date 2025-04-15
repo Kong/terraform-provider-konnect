@@ -27,7 +27,7 @@ type GetAppAuthStrategyResponse struct {
 	// Raw HTTP response; suitable for custom response parsing
 	RawResponse *http.Response
 	// A response containing a single application auth strategy object.
-	GetAppAuthStrategyResponse *shared.GetAppAuthStrategyResponse
+	CreateAppAuthStrategyResponse *shared.CreateAppAuthStrategyResponse
 	// Unauthorized
 	UnauthorizedError *shared.UnauthorizedError
 	// Forbidden
@@ -57,23 +57,23 @@ func (o *GetAppAuthStrategyResponse) GetRawResponse() *http.Response {
 	return o.RawResponse
 }
 
-func (o *GetAppAuthStrategyResponse) GetGetAppAuthStrategyResponse() *shared.GetAppAuthStrategyResponse {
+func (o *GetAppAuthStrategyResponse) GetCreateAppAuthStrategyResponse() *shared.CreateAppAuthStrategyResponse {
 	if o == nil {
 		return nil
 	}
-	return o.GetAppAuthStrategyResponse
+	return o.CreateAppAuthStrategyResponse
 }
 
-func (o *GetAppAuthStrategyResponse) GetGetAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse {
-	if v := o.GetGetAppAuthStrategyResponse(); v != nil {
-		return v.AppAuthStrategyKeyAuthResponseAppAuthStrategyKeyAuthResponse
+func (o *GetAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseKeyAuth() *shared.AppAuthStrategyKeyAuthResponse {
+	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+		return v.AppAuthStrategyKeyAuthResponse
 	}
 	return nil
 }
 
-func (o *GetAppAuthStrategyResponse) GetGetAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse {
-	if v := o.GetGetAppAuthStrategyResponse(); v != nil {
-		return v.AppAuthStrategyOpenIDConnectResponseAppAuthStrategyOpenIDConnectResponse
+func (o *GetAppAuthStrategyResponse) GetCreateAppAuthStrategyResponseOpenidConnect() *shared.AppAuthStrategyOpenIDConnectResponse {
+	if v := o.GetCreateAppAuthStrategyResponse(); v != nil {
+		return v.AppAuthStrategyOpenIDConnectResponse
 	}
 	return nil
 }

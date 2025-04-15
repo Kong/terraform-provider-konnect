@@ -3,29 +3,38 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptTemplateDataSourceModel) RefreshFromSharedAiPromptTemplatePlugin(resp *shared.AiPromptTemplatePlugin) {
+func (r *GatewayPluginAiPromptTemplateDataSourceModel) RefreshFromSharedAiPromptTemplatePlugin(ctx context.Context, resp *shared.AiPromptTemplatePlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
-		r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
-		r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
-		r.Config.Templates = []tfTypes.Templates{}
-		if len(r.Config.Templates) > len(resp.Config.Templates) {
-			r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
-		}
-		for templatesCount, templatesItem := range resp.Config.Templates {
-			var templates1 tfTypes.Templates
-			templates1.Name = types.StringValue(templatesItem.Name)
-			templates1.Template = types.StringValue(templatesItem.Template)
-			if templatesCount+1 > len(r.Config.Templates) {
-				r.Config.Templates = append(r.Config.Templates, templates1)
-			} else {
-				r.Config.Templates[templatesCount].Name = templates1.Name
-				r.Config.Templates[templatesCount].Template = templates1.Template
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.AiPromptTemplatePluginConfig{}
+			r.Config.AllowUntemplatedRequests = types.BoolPointerValue(resp.Config.AllowUntemplatedRequests)
+			r.Config.LogOriginalRequest = types.BoolPointerValue(resp.Config.LogOriginalRequest)
+			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
+			r.Config.Templates = []tfTypes.Templates{}
+			if len(r.Config.Templates) > len(resp.Config.Templates) {
+				r.Config.Templates = r.Config.Templates[:len(resp.Config.Templates)]
+			}
+			for templatesCount, templatesItem := range resp.Config.Templates {
+				var templates tfTypes.Templates
+				templates.Name = types.StringValue(templatesItem.Name)
+				templates.Template = types.StringValue(templatesItem.Template)
+				if templatesCount+1 > len(r.Config.Templates) {
+					r.Config.Templates = append(r.Config.Templates, templates)
+				} else {
+					r.Config.Templates[templatesCount].Name = templates.Name
+					r.Config.Templates[templatesCount].Template = templates.Template
+				}
 			}
 		}
 		if resp.Consumer == nil {
@@ -89,4 +98,6 @@ func (r *GatewayPluginAiPromptTemplateDataSourceModel) RefreshFromSharedAiPrompt
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -173,8 +173,17 @@ func (r *SystemAccountAccessTokenResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSystemAccountAccessTokenCreated(res.SystemAccountAccessTokenCreated)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessTokenCreated(ctx, res.SystemAccountAccessTokenCreated)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	var accountId1 string
 	accountId1 = data.AccountID.ValueString()
 
@@ -205,8 +214,17 @@ func (r *SystemAccountAccessTokenResource) Create(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res1.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSystemAccountAccessToken(res1.SystemAccountAccessToken)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessToken(ctx, res1.SystemAccountAccessToken)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -264,7 +282,11 @@ func (r *SystemAccountAccessTokenResource) Read(ctx context.Context, req resourc
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSystemAccountAccessToken(res.SystemAccountAccessToken)
+	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessToken(ctx, res.SystemAccountAccessToken)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -316,8 +338,17 @@ func (r *SystemAccountAccessTokenResource) Update(ctx context.Context, req resou
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedSystemAccountAccessToken(res.SystemAccountAccessToken)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedSystemAccountAccessToken(ctx, res.SystemAccountAccessToken)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -379,7 +410,7 @@ func (r *SystemAccountAccessTokenResource) ImportState(ctx context.Context, req 
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "account_id": "",  "token_id": ""}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "account_id": "",  "id": ""}': `+err.Error())
 		return
 	}
 

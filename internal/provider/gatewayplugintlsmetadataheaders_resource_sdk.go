@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeadersPluginInput() *shared.TLSMetadataHeadersPluginInput {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeadersPlugin() *shared.TLSMetadataHeadersPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,49 +66,58 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	clientCertFingerprintHeaderName := new(string)
-	if !r.Config.ClientCertFingerprintHeaderName.IsUnknown() && !r.Config.ClientCertFingerprintHeaderName.IsNull() {
-		*clientCertFingerprintHeaderName = r.Config.ClientCertFingerprintHeaderName.ValueString()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		clientCertFingerprintHeaderName = nil
+		updatedAt = nil
 	}
-	clientCertHeaderName := new(string)
-	if !r.Config.ClientCertHeaderName.IsUnknown() && !r.Config.ClientCertHeaderName.IsNull() {
-		*clientCertHeaderName = r.Config.ClientCertHeaderName.ValueString()
-	} else {
-		clientCertHeaderName = nil
-	}
-	clientCertIssuerDnHeaderName := new(string)
-	if !r.Config.ClientCertIssuerDnHeaderName.IsUnknown() && !r.Config.ClientCertIssuerDnHeaderName.IsNull() {
-		*clientCertIssuerDnHeaderName = r.Config.ClientCertIssuerDnHeaderName.ValueString()
-	} else {
-		clientCertIssuerDnHeaderName = nil
-	}
-	clientCertSubjectDnHeaderName := new(string)
-	if !r.Config.ClientCertSubjectDnHeaderName.IsUnknown() && !r.Config.ClientCertSubjectDnHeaderName.IsNull() {
-		*clientCertSubjectDnHeaderName = r.Config.ClientCertSubjectDnHeaderName.ValueString()
-	} else {
-		clientCertSubjectDnHeaderName = nil
-	}
-	clientSerialHeaderName := new(string)
-	if !r.Config.ClientSerialHeaderName.IsUnknown() && !r.Config.ClientSerialHeaderName.IsNull() {
-		*clientSerialHeaderName = r.Config.ClientSerialHeaderName.ValueString()
-	} else {
-		clientSerialHeaderName = nil
-	}
-	injectClientCertDetails := new(bool)
-	if !r.Config.InjectClientCertDetails.IsUnknown() && !r.Config.InjectClientCertDetails.IsNull() {
-		*injectClientCertDetails = r.Config.InjectClientCertDetails.ValueBool()
-	} else {
-		injectClientCertDetails = nil
-	}
-	config := shared.TLSMetadataHeadersPluginConfig{
-		ClientCertFingerprintHeaderName: clientCertFingerprintHeaderName,
-		ClientCertHeaderName:            clientCertHeaderName,
-		ClientCertIssuerDnHeaderName:    clientCertIssuerDnHeaderName,
-		ClientCertSubjectDnHeaderName:   clientCertSubjectDnHeaderName,
-		ClientSerialHeaderName:          clientSerialHeaderName,
-		InjectClientCertDetails:         injectClientCertDetails,
+	var config *shared.TLSMetadataHeadersPluginConfig
+	if r.Config != nil {
+		clientCertFingerprintHeaderName := new(string)
+		if !r.Config.ClientCertFingerprintHeaderName.IsUnknown() && !r.Config.ClientCertFingerprintHeaderName.IsNull() {
+			*clientCertFingerprintHeaderName = r.Config.ClientCertFingerprintHeaderName.ValueString()
+		} else {
+			clientCertFingerprintHeaderName = nil
+		}
+		clientCertHeaderName := new(string)
+		if !r.Config.ClientCertHeaderName.IsUnknown() && !r.Config.ClientCertHeaderName.IsNull() {
+			*clientCertHeaderName = r.Config.ClientCertHeaderName.ValueString()
+		} else {
+			clientCertHeaderName = nil
+		}
+		clientCertIssuerDnHeaderName := new(string)
+		if !r.Config.ClientCertIssuerDnHeaderName.IsUnknown() && !r.Config.ClientCertIssuerDnHeaderName.IsNull() {
+			*clientCertIssuerDnHeaderName = r.Config.ClientCertIssuerDnHeaderName.ValueString()
+		} else {
+			clientCertIssuerDnHeaderName = nil
+		}
+		clientCertSubjectDnHeaderName := new(string)
+		if !r.Config.ClientCertSubjectDnHeaderName.IsUnknown() && !r.Config.ClientCertSubjectDnHeaderName.IsNull() {
+			*clientCertSubjectDnHeaderName = r.Config.ClientCertSubjectDnHeaderName.ValueString()
+		} else {
+			clientCertSubjectDnHeaderName = nil
+		}
+		clientSerialHeaderName := new(string)
+		if !r.Config.ClientSerialHeaderName.IsUnknown() && !r.Config.ClientSerialHeaderName.IsNull() {
+			*clientSerialHeaderName = r.Config.ClientSerialHeaderName.ValueString()
+		} else {
+			clientSerialHeaderName = nil
+		}
+		injectClientCertDetails := new(bool)
+		if !r.Config.InjectClientCertDetails.IsUnknown() && !r.Config.InjectClientCertDetails.IsNull() {
+			*injectClientCertDetails = r.Config.InjectClientCertDetails.ValueBool()
+		} else {
+			injectClientCertDetails = nil
+		}
+		config = &shared.TLSMetadataHeadersPluginConfig{
+			ClientCertFingerprintHeaderName: clientCertFingerprintHeaderName,
+			ClientCertHeaderName:            clientCertHeaderName,
+			ClientCertIssuerDnHeaderName:    clientCertIssuerDnHeaderName,
+			ClientCertSubjectDnHeaderName:   clientCertSubjectDnHeaderName,
+			ClientSerialHeaderName:          clientSerialHeaderName,
+			InjectClientCertDetails:         injectClientCertDetails,
+		}
 	}
 	var protocols []shared.TLSMetadataHeadersPluginProtocols = []shared.TLSMetadataHeadersPluginProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -130,12 +147,14 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 			ID: id2,
 		}
 	}
-	out := shared.TLSMetadataHeadersPluginInput{
+	out := shared.TLSMetadataHeadersPlugin{
+		CreatedAt:    createdAt,
 		Enabled:      enabled,
 		ID:           id,
 		InstanceName: instanceName,
 		Ordering:     ordering,
 		Tags:         tags,
+		UpdatedAt:    updatedAt,
 		Config:       config,
 		Protocols:    protocols,
 		Route:        route,
@@ -144,14 +163,21 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) ToSharedTLSMetadataHeader
 	return &out
 }
 
-func (r *GatewayPluginTLSMetadataHeadersResourceModel) RefreshFromSharedTLSMetadataHeadersPlugin(resp *shared.TLSMetadataHeadersPlugin) {
+func (r *GatewayPluginTLSMetadataHeadersResourceModel) RefreshFromSharedTLSMetadataHeadersPlugin(ctx context.Context, resp *shared.TLSMetadataHeadersPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.ClientCertFingerprintHeaderName = types.StringPointerValue(resp.Config.ClientCertFingerprintHeaderName)
-		r.Config.ClientCertHeaderName = types.StringPointerValue(resp.Config.ClientCertHeaderName)
-		r.Config.ClientCertIssuerDnHeaderName = types.StringPointerValue(resp.Config.ClientCertIssuerDnHeaderName)
-		r.Config.ClientCertSubjectDnHeaderName = types.StringPointerValue(resp.Config.ClientCertSubjectDnHeaderName)
-		r.Config.ClientSerialHeaderName = types.StringPointerValue(resp.Config.ClientSerialHeaderName)
-		r.Config.InjectClientCertDetails = types.BoolPointerValue(resp.Config.InjectClientCertDetails)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.TLSMetadataHeadersPluginConfig{}
+			r.Config.ClientCertFingerprintHeaderName = types.StringPointerValue(resp.Config.ClientCertFingerprintHeaderName)
+			r.Config.ClientCertHeaderName = types.StringPointerValue(resp.Config.ClientCertHeaderName)
+			r.Config.ClientCertIssuerDnHeaderName = types.StringPointerValue(resp.Config.ClientCertIssuerDnHeaderName)
+			r.Config.ClientCertSubjectDnHeaderName = types.StringPointerValue(resp.Config.ClientCertSubjectDnHeaderName)
+			r.Config.ClientSerialHeaderName = types.StringPointerValue(resp.Config.ClientSerialHeaderName)
+			r.Config.InjectClientCertDetails = types.BoolPointerValue(resp.Config.InjectClientCertDetails)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -201,4 +227,6 @@ func (r *GatewayPluginTLSMetadataHeadersResourceModel) RefreshFromSharedTLSMetad
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

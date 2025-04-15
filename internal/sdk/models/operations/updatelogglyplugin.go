@@ -11,8 +11,8 @@ type UpdateLogglyPluginRequest struct {
 	// ID of the Plugin to lookup
 	PluginID string `pathParam:"style=simple,explode=false,name=PluginId"`
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID string                   `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	LogglyPlugin   shared.LogglyPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID string              `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	LogglyPlugin   shared.LogglyPlugin `request:"mediaType=application/json"`
 }
 
 func (o *UpdateLogglyPluginRequest) GetPluginID() string {
@@ -29,9 +29,9 @@ func (o *UpdateLogglyPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *UpdateLogglyPluginRequest) GetLogglyPlugin() shared.LogglyPluginInput {
+func (o *UpdateLogglyPluginRequest) GetLogglyPlugin() shared.LogglyPlugin {
 	if o == nil {
-		return shared.LogglyPluginInput{}
+		return shared.LogglyPlugin{}
 	}
 	return o.LogglyPlugin
 }

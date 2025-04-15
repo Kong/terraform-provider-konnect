@@ -29,7 +29,7 @@ type GatewayPluginGrpcGatewayDataSource struct {
 
 // GatewayPluginGrpcGatewayDataSourceModel describes the data model.
 type GatewayPluginGrpcGatewayDataSourceModel struct {
-	Config         tfTypes.GrpcGatewayPluginConfig    `tfsdk:"config"`
+	Config         *tfTypes.GrpcGatewayPluginConfig   `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -222,7 +222,11 @@ func (r *GatewayPluginGrpcGatewayDataSource) Read(ctx context.Context, req datas
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedGrpcGatewayPlugin(res.GrpcGatewayPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedGrpcGatewayPlugin(ctx, res.GrpcGatewayPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

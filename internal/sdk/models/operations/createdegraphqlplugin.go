@@ -9,8 +9,8 @@ import (
 
 type CreateDegraphqlPluginRequest struct {
 	// The UUID of your control plane. This variable is available in the Konnect manager.
-	ControlPlaneID  string                      `pathParam:"style=simple,explode=false,name=controlPlaneId"`
-	DegraphqlPlugin shared.DegraphqlPluginInput `request:"mediaType=application/json"`
+	ControlPlaneID  string                 `pathParam:"style=simple,explode=false,name=controlPlaneId"`
+	DegraphqlPlugin shared.DegraphqlPlugin `request:"mediaType=application/json"`
 }
 
 func (o *CreateDegraphqlPluginRequest) GetControlPlaneID() string {
@@ -20,9 +20,9 @@ func (o *CreateDegraphqlPluginRequest) GetControlPlaneID() string {
 	return o.ControlPlaneID
 }
 
-func (o *CreateDegraphqlPluginRequest) GetDegraphqlPlugin() shared.DegraphqlPluginInput {
+func (o *CreateDegraphqlPluginRequest) GetDegraphqlPlugin() shared.DegraphqlPlugin {
 	if o == nil {
-		return shared.DegraphqlPluginInput{}
+		return shared.DegraphqlPlugin{}
 	}
 	return o.DegraphqlPlugin
 }

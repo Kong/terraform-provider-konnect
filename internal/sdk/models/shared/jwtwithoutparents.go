@@ -78,13 +78,15 @@ func (o *JWTWithoutParentsConsumer) GetID() *string {
 }
 
 type JWTWithoutParents struct {
-	Algorithm    *Algorithm                 `json:"algorithm,omitempty"`
-	Consumer     *JWTWithoutParentsConsumer `json:"consumer"`
-	ID           *string                    `json:"id,omitempty"`
-	Key          *string                    `json:"key,omitempty"`
-	RsaPublicKey *string                    `json:"rsa_public_key,omitempty"`
-	Secret       *string                    `json:"secret,omitempty"`
-	Tags         []string                   `json:"tags,omitempty"`
+	Algorithm *Algorithm                 `json:"algorithm,omitempty"`
+	Consumer  *JWTWithoutParentsConsumer `json:"consumer"`
+	// Unix epoch when the resource was created.
+	CreatedAt    *int64   `json:"created_at,omitempty"`
+	ID           *string  `json:"id,omitempty"`
+	Key          *string  `json:"key,omitempty"`
+	RsaPublicKey *string  `json:"rsa_public_key,omitempty"`
+	Secret       *string  `json:"secret,omitempty"`
+	Tags         []string `json:"tags,omitempty"`
 }
 
 func (o *JWTWithoutParents) GetAlgorithm() *Algorithm {
@@ -99,6 +101,13 @@ func (o *JWTWithoutParents) GetConsumer() *JWTWithoutParentsConsumer {
 		return nil
 	}
 	return o.Consumer
+}
+
+func (o *JWTWithoutParents) GetCreatedAt() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.CreatedAt
 }
 
 func (o *JWTWithoutParents) GetID() *string {

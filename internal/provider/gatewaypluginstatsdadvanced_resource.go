@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -41,19 +42,19 @@ type GatewayPluginStatsdAdvancedResource struct {
 
 // GatewayPluginStatsdAdvancedResourceModel describes the resource data model.
 type GatewayPluginStatsdAdvancedResourceModel struct {
-	Config         tfTypes.StatsdAdvancedPluginConfig `tfsdk:"config"`
-	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
-	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                        `tfsdk:"created_at"`
-	Enabled        types.Bool                         `tfsdk:"enabled"`
-	ID             types.String                       `tfsdk:"id"`
-	InstanceName   types.String                       `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering         `tfsdk:"ordering"`
-	Protocols      []types.String                     `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer `tfsdk:"service"`
-	Tags           []types.String                     `tfsdk:"tags"`
-	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	Config         *tfTypes.StatsdAdvancedPluginConfig `tfsdk:"config"`
+	Consumer       *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"consumer"`
+	ControlPlaneID types.String                        `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                         `tfsdk:"created_at"`
+	Enabled        types.Bool                          `tfsdk:"enabled"`
+	ID             types.String                        `tfsdk:"id"`
+	InstanceName   types.String                        `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering          `tfsdk:"ordering"`
+	Protocols      []types.String                      `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer  `tfsdk:"service"`
+	Tags           []types.String                      `tfsdk:"tags"`
+	UpdatedAt      types.Int64                         `tfsdk:"updated_at"`
 }
 
 func (r *GatewayPluginStatsdAdvancedResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -65,7 +66,8 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 		MarkdownDescription: "GatewayPluginStatsdAdvanced Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"allow_status_codes": schema.ListAttribute{
 						Computed:    true,
@@ -140,7 +142,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 										),
 									},
 								},
-								"sample_rate": schema.NumberAttribute{
+								"sample_rate": schema.Float64Attribute{
 									Computed: true,
 									Optional: true,
 								},
@@ -213,10 +215,13 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 									int64validator.OneOf(-1, 1),
 								},
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(1000000),
+								},
 							},
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
@@ -231,10 +236,13 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(3600),
+								},
 							},
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
@@ -244,12 +252,15 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 									int64validator.Between(1, 1000000),
 								},
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(1000000),
+								},
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
@@ -269,10 +280,13 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 							),
 						},
 					},
-					"udp_packet_size": schema.NumberAttribute{
+					"udp_packet_size": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `Combine UDP packet up to the size configured. If zero (0), don't combine the UDP packet. Must be a number between 0 and 65507 (inclusive).`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(65507),
+						},
 					},
 					"use_tcp": schema.BoolAttribute{
 						Computed:    true,
@@ -315,6 +329,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -400,6 +415,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Schema(ctx context.Context, req re
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -447,7 +463,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Create(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdAdvancedPlugin := *data.ToSharedStatsdAdvancedPluginInput()
+	statsdAdvancedPlugin := *data.ToSharedStatsdAdvancedPlugin()
 	request := operations.CreateStatsdadvancedPluginRequest{
 		ControlPlaneID:       controlPlaneID,
 		StatsdAdvancedPlugin: statsdAdvancedPlugin,
@@ -472,8 +488,17 @@ func (r *GatewayPluginStatsdAdvancedResource) Create(ctx context.Context, req re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedStatsdAdvancedPlugin(res.StatsdAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedStatsdAdvancedPlugin(ctx, res.StatsdAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -531,7 +556,11 @@ func (r *GatewayPluginStatsdAdvancedResource) Read(ctx context.Context, req reso
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedStatsdAdvancedPlugin(res.StatsdAdvancedPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedStatsdAdvancedPlugin(ctx, res.StatsdAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -557,7 +586,7 @@ func (r *GatewayPluginStatsdAdvancedResource) Update(ctx context.Context, req re
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	statsdAdvancedPlugin := *data.ToSharedStatsdAdvancedPluginInput()
+	statsdAdvancedPlugin := *data.ToSharedStatsdAdvancedPlugin()
 	request := operations.UpdateStatsdadvancedPluginRequest{
 		PluginID:             pluginID,
 		ControlPlaneID:       controlPlaneID,
@@ -583,8 +612,17 @@ func (r *GatewayPluginStatsdAdvancedResource) Update(ctx context.Context, req re
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedStatsdAdvancedPlugin(res.StatsdAdvancedPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedStatsdAdvancedPlugin(ctx, res.StatsdAdvancedPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -646,7 +684,7 @@ func (r *GatewayPluginStatsdAdvancedResource) ImportState(ctx context.Context, r
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

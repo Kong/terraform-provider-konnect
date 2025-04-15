@@ -3,10 +3,12 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
-	"time"
 )
 
 func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() *shared.CreateAPIProductDocumentDTO {
@@ -44,10 +46,12 @@ func (r *APIProductDocumentResourceModel) ToSharedCreateAPIProductDocumentDTO() 
 	return &out
 }
 
-func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(resp *shared.APIProductDocument) {
+func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ctx context.Context, resp *shared.APIProductDocument) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(resp.CreatedAt.Format(time.RFC3339Nano))
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		if r.Metadata == nil {
 			r.Metadata = &tfTypes.Metadata{}
@@ -56,8 +60,10 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(re
 		r.Slug = types.StringValue(resp.Slug)
 		r.Status = types.StringValue(string(resp.Status))
 		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(resp.UpdatedAt.Format(time.RFC3339Nano))
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
+
+	return diags
 }
 
 func (r *APIProductDocumentResourceModel) ToSharedUpdateAPIProductDocumentDTO() *shared.UpdateAPIProductDocumentDTO {

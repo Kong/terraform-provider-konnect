@@ -29,7 +29,7 @@ type GatewayPluginAiPromptGuardDataSource struct {
 
 // GatewayPluginAiPromptGuardDataSourceModel describes the data model.
 type GatewayPluginAiPromptGuardDataSourceModel struct {
-	Config         tfTypes.AiPromptGuardPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.AiPromptGuardPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -250,7 +250,11 @@ func (r *GatewayPluginAiPromptGuardDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedAiPromptGuardPlugin(res.AiPromptGuardPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedAiPromptGuardPlugin(ctx, res.AiPromptGuardPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

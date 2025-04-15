@@ -29,18 +29,18 @@ type GatewayPluginInjectionProtectionDataSource struct {
 
 // GatewayPluginInjectionProtectionDataSourceModel describes the data model.
 type GatewayPluginInjectionProtectionDataSourceModel struct {
-	Config         tfTypes.InjectionProtectionPluginConfig `tfsdk:"config"`
-	ControlPlaneID types.String                            `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                             `tfsdk:"created_at"`
-	Enabled        types.Bool                              `tfsdk:"enabled"`
-	ID             types.String                            `tfsdk:"id"`
-	InstanceName   types.String                            `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering              `tfsdk:"ordering"`
-	Protocols      []types.String                          `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer      `tfsdk:"service"`
-	Tags           []types.String                          `tfsdk:"tags"`
-	UpdatedAt      types.Int64                             `tfsdk:"updated_at"`
+	Config         *tfTypes.InjectionProtectionPluginConfig `tfsdk:"config"`
+	ControlPlaneID types.String                             `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                              `tfsdk:"created_at"`
+	Enabled        types.Bool                               `tfsdk:"enabled"`
+	ID             types.String                             `tfsdk:"id"`
+	InstanceName   types.String                             `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering               `tfsdk:"ordering"`
+	Protocols      []types.String                           `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer       `tfsdk:"service"`
+	Tags           []types.String                           `tfsdk:"tags"`
+	UpdatedAt      types.Int64                              `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -246,7 +246,11 @@ func (r *GatewayPluginInjectionProtectionDataSource) Read(ctx context.Context, r
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedInjectionProtectionPlugin(res.InjectionProtectionPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedInjectionProtectionPlugin(ctx, res.InjectionProtectionPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

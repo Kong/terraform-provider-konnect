@@ -29,19 +29,19 @@ type GatewayPluginStandardWebhooksDataSource struct {
 
 // GatewayPluginStandardWebhooksDataSourceModel describes the data model.
 type GatewayPluginStandardWebhooksDataSourceModel struct {
-	Config         tfTypes.StandardWebhooksPluginConfig `tfsdk:"config"`
-	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"consumer_group"`
-	ControlPlaneID types.String                         `tfsdk:"control_plane_id"`
-	CreatedAt      types.Int64                          `tfsdk:"created_at"`
-	Enabled        types.Bool                           `tfsdk:"enabled"`
-	ID             types.String                         `tfsdk:"id"`
-	InstanceName   types.String                         `tfsdk:"instance_name"`
-	Ordering       *tfTypes.ACLPluginOrdering           `tfsdk:"ordering"`
-	Protocols      []types.String                       `tfsdk:"protocols"`
-	Route          *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"route"`
-	Service        *tfTypes.ACLWithoutParentsConsumer   `tfsdk:"service"`
-	Tags           []types.String                       `tfsdk:"tags"`
-	UpdatedAt      types.Int64                          `tfsdk:"updated_at"`
+	Config         *tfTypes.StandardWebhooksPluginConfig `tfsdk:"config"`
+	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"consumer_group"`
+	ControlPlaneID types.String                          `tfsdk:"control_plane_id"`
+	CreatedAt      types.Int64                           `tfsdk:"created_at"`
+	Enabled        types.Bool                            `tfsdk:"enabled"`
+	ID             types.String                          `tfsdk:"id"`
+	InstanceName   types.String                          `tfsdk:"instance_name"`
+	Ordering       *tfTypes.ACLPluginOrdering            `tfsdk:"ordering"`
+	Protocols      []types.String                        `tfsdk:"protocols"`
+	Route          *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"route"`
+	Service        *tfTypes.ACLWithoutParentsConsumer    `tfsdk:"service"`
+	Tags           []types.String                        `tfsdk:"tags"`
+	UpdatedAt      types.Int64                           `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -226,7 +226,11 @@ func (r *GatewayPluginStandardWebhooksDataSource) Read(ctx context.Context, req 
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedStandardWebhooksPlugin(res.StandardWebhooksPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedStandardWebhooksPlugin(ctx, res.StandardWebhooksPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

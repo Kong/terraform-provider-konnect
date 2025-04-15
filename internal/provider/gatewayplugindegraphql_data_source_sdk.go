@@ -3,14 +3,23 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDegraphqlDataSourceModel) RefreshFromSharedDegraphqlPlugin(resp *shared.DegraphqlPlugin) {
+func (r *GatewayPluginDegraphqlDataSourceModel) RefreshFromSharedDegraphqlPlugin(ctx context.Context, resp *shared.DegraphqlPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.DegraphqlPluginConfig{}
+			r.Config.GraphqlServerPath = types.StringPointerValue(resp.Config.GraphqlServerPath)
+		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -60,4 +69,6 @@ func (r *GatewayPluginDegraphqlDataSourceModel) RefreshFromSharedDegraphqlPlugin
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3407,7 +3407,7 @@ func (o *OpenidConnectPluginConfig) GetRunOnPreflight() *bool {
 
 func (o *OpenidConnectPluginConfig) GetScopes() []string {
 	if o == nil {
-		return []string{}
+		return nil
 	}
 	return o.Scopes
 }
@@ -4006,8 +4006,8 @@ type OpenidConnectPlugin struct {
 	// An optional set of strings associated with the Plugin for grouping and filtering.
 	Tags []string `json:"tags,omitempty"`
 	// Unix epoch when the resource was last updated.
-	UpdatedAt *int64                    `json:"updated_at,omitempty"`
-	Config    OpenidConnectPluginConfig `json:"config"`
+	UpdatedAt *int64                     `json:"updated_at,omitempty"`
+	Config    *OpenidConnectPluginConfig `json:"config,omitempty"`
 	// A set of strings representing HTTP protocols.
 	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
 	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
@@ -4080,9 +4080,9 @@ func (o *OpenidConnectPlugin) GetUpdatedAt() *int64 {
 	return o.UpdatedAt
 }
 
-func (o *OpenidConnectPlugin) GetConfig() OpenidConnectPluginConfig {
+func (o *OpenidConnectPlugin) GetConfig() *OpenidConnectPluginConfig {
 	if o == nil {
-		return OpenidConnectPluginConfig{}
+		return nil
 	}
 	return o.Config
 }
@@ -4102,103 +4102,6 @@ func (o *OpenidConnectPlugin) GetRoute() *OpenidConnectPluginRoute {
 }
 
 func (o *OpenidConnectPlugin) GetService() *OpenidConnectPluginService {
-	if o == nil {
-		return nil
-	}
-	return o.Service
-}
-
-// OpenidConnectPluginInput - A Plugin entity represents a plugin configuration that will be executed during the HTTP request/response lifecycle. It is how you can add functionalities to Services that run behind Kong, like Authentication or Rate Limiting for example. You can find more information about how to install and what values each plugin takes by visiting the [Kong Hub](https://docs.konghq.com/hub/). When adding a Plugin Configuration to a Service, every request made by a client to that Service will run said Plugin. If a Plugin needs to be tuned to different values for some specific Consumers, you can do so by creating a separate plugin instance that specifies both the Service and the Consumer, through the `service` and `consumer` fields.
-type OpenidConnectPluginInput struct {
-	// Whether the plugin is applied.
-	Enabled      *bool                        `json:"enabled,omitempty"`
-	ID           *string                      `json:"id,omitempty"`
-	InstanceName *string                      `json:"instance_name,omitempty"`
-	name         string                       `const:"openid-connect" json:"name"`
-	Ordering     *OpenidConnectPluginOrdering `json:"ordering,omitempty"`
-	// An optional set of strings associated with the Plugin for grouping and filtering.
-	Tags   []string                  `json:"tags,omitempty"`
-	Config OpenidConnectPluginConfig `json:"config"`
-	// A set of strings representing HTTP protocols.
-	Protocols []OpenidConnectPluginProtocols `json:"protocols,omitempty"`
-	// If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.
-	Route *OpenidConnectPluginRoute `json:"route"`
-	// If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.
-	Service *OpenidConnectPluginService `json:"service"`
-}
-
-func (o OpenidConnectPluginInput) MarshalJSON() ([]byte, error) {
-	return utils.MarshalJSON(o, "", false)
-}
-
-func (o *OpenidConnectPluginInput) UnmarshalJSON(data []byte) error {
-	if err := utils.UnmarshalJSON(data, &o, "", false, false); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (o *OpenidConnectPluginInput) GetEnabled() *bool {
-	if o == nil {
-		return nil
-	}
-	return o.Enabled
-}
-
-func (o *OpenidConnectPluginInput) GetID() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ID
-}
-
-func (o *OpenidConnectPluginInput) GetInstanceName() *string {
-	if o == nil {
-		return nil
-	}
-	return o.InstanceName
-}
-
-func (o *OpenidConnectPluginInput) GetName() string {
-	return "openid-connect"
-}
-
-func (o *OpenidConnectPluginInput) GetOrdering() *OpenidConnectPluginOrdering {
-	if o == nil {
-		return nil
-	}
-	return o.Ordering
-}
-
-func (o *OpenidConnectPluginInput) GetTags() []string {
-	if o == nil {
-		return nil
-	}
-	return o.Tags
-}
-
-func (o *OpenidConnectPluginInput) GetConfig() OpenidConnectPluginConfig {
-	if o == nil {
-		return OpenidConnectPluginConfig{}
-	}
-	return o.Config
-}
-
-func (o *OpenidConnectPluginInput) GetProtocols() []OpenidConnectPluginProtocols {
-	if o == nil {
-		return nil
-	}
-	return o.Protocols
-}
-
-func (o *OpenidConnectPluginInput) GetRoute() *OpenidConnectPluginRoute {
-	if o == nil {
-		return nil
-	}
-	return o.Route
-}
-
-func (o *OpenidConnectPluginInput) GetService() *OpenidConnectPluginService {
 	if o == nil {
 		return nil
 	}

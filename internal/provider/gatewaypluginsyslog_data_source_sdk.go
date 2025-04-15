@@ -3,45 +3,54 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSyslogDataSourceModel) RefreshFromSharedSyslogPlugin(resp *shared.SyslogPlugin) {
+func (r *GatewayPluginSyslogDataSourceModel) RefreshFromSharedSyslogPlugin(ctx context.Context, resp *shared.SyslogPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.Config.ClientErrorsSeverity != nil {
-			r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.ClientErrorsSeverity = types.StringNull()
-		}
-		if len(resp.Config.CustomFieldsByLua) > 0 {
-			r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
-			for key, value := range resp.Config.CustomFieldsByLua {
-				result, _ := json.Marshal(value)
-				r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+			r.Config = &tfTypes.SyslogPluginConfig{}
+			if resp.Config.ClientErrorsSeverity != nil {
+				r.Config.ClientErrorsSeverity = types.StringValue(string(*resp.Config.ClientErrorsSeverity))
+			} else {
+				r.Config.ClientErrorsSeverity = types.StringNull()
 			}
-		}
-		if resp.Config.Facility != nil {
-			r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
-		} else {
-			r.Config.Facility = types.StringNull()
-		}
-		if resp.Config.LogLevel != nil {
-			r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
-		} else {
-			r.Config.LogLevel = types.StringNull()
-		}
-		if resp.Config.ServerErrorsSeverity != nil {
-			r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
-		} else {
-			r.Config.ServerErrorsSeverity = types.StringNull()
-		}
-		if resp.Config.SuccessfulSeverity != nil {
-			r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
-		} else {
-			r.Config.SuccessfulSeverity = types.StringNull()
+			if len(resp.Config.CustomFieldsByLua) > 0 {
+				r.Config.CustomFieldsByLua = make(map[string]types.String, len(resp.Config.CustomFieldsByLua))
+				for key, value := range resp.Config.CustomFieldsByLua {
+					result, _ := json.Marshal(value)
+					r.Config.CustomFieldsByLua[key] = types.StringValue(string(result))
+				}
+			}
+			if resp.Config.Facility != nil {
+				r.Config.Facility = types.StringValue(string(*resp.Config.Facility))
+			} else {
+				r.Config.Facility = types.StringNull()
+			}
+			if resp.Config.LogLevel != nil {
+				r.Config.LogLevel = types.StringValue(string(*resp.Config.LogLevel))
+			} else {
+				r.Config.LogLevel = types.StringNull()
+			}
+			if resp.Config.ServerErrorsSeverity != nil {
+				r.Config.ServerErrorsSeverity = types.StringValue(string(*resp.Config.ServerErrorsSeverity))
+			} else {
+				r.Config.ServerErrorsSeverity = types.StringNull()
+			}
+			if resp.Config.SuccessfulSeverity != nil {
+				r.Config.SuccessfulSeverity = types.StringValue(string(*resp.Config.SuccessfulSeverity))
+			} else {
+				r.Config.SuccessfulSeverity = types.StringNull()
+			}
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -98,4 +107,6 @@ func (r *GatewayPluginSyslogDataSourceModel) RefreshFromSharedSyslogPlugin(resp 
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -26,6 +28,12 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 		consumer = &shared.JWTWithoutParentsConsumer{
 			ID: id,
 		}
+	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
 	}
 	id1 := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
@@ -58,6 +66,7 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	out := shared.JWTWithoutParents{
 		Algorithm:    algorithm,
 		Consumer:     consumer,
+		CreatedAt:    createdAt,
 		ID:           id1,
 		Key:          key,
 		RsaPublicKey: rsaPublicKey,
@@ -67,7 +76,9 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	return &out
 }
 
-func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
+func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp *shared.Jwt) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Algorithm != nil {
 			r.Algorithm = types.StringValue(string(*resp.Algorithm))
@@ -90,4 +101,6 @@ func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(resp *shared.Jwt) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

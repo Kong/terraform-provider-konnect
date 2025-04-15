@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponseTransformerAdvancedPluginInput() *shared.ResponseTransformerAdvancedPluginInput {
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponseTransformerAdvancedPlugin() *shared.ResponseTransformerAdvancedPlugin {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	enabled := new(bool)
 	if !r.Enabled.IsUnknown() && !r.Enabled.IsNull() {
 		*enabled = r.Enabled.ValueBool()
@@ -58,168 +66,177 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	var add *shared.ResponseTransformerAdvancedPluginAdd
-	if r.Config.Add != nil {
-		var headers []string = []string{}
-		for _, headersItem := range r.Config.Add.Headers {
-			headers = append(headers, headersItem.ValueString())
-		}
-		var ifStatus []string = []string{}
-		for _, ifStatusItem := range r.Config.Add.IfStatus {
-			ifStatus = append(ifStatus, ifStatusItem.ValueString())
-		}
-		var jsonVar []string = []string{}
-		for _, jsonItem := range r.Config.Add.JSON {
-			jsonVar = append(jsonVar, jsonItem.ValueString())
-		}
-		var jsonTypes []shared.ResponseTransformerAdvancedPluginJSONTypes = []shared.ResponseTransformerAdvancedPluginJSONTypes{}
-		for _, jsonTypesItem := range r.Config.Add.JSONTypes {
-			jsonTypes = append(jsonTypes, shared.ResponseTransformerAdvancedPluginJSONTypes(jsonTypesItem.ValueString()))
-		}
-		add = &shared.ResponseTransformerAdvancedPluginAdd{
-			Headers:   headers,
-			IfStatus:  ifStatus,
-			JSON:      jsonVar,
-			JSONTypes: jsonTypes,
-		}
-	}
-	var allow *shared.ResponseTransformerAdvancedPluginAllow
-	if r.Config.Allow != nil {
-		var jsonVar1 []string = []string{}
-		for _, jsonItem1 := range r.Config.Allow.JSON {
-			jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
-		}
-		allow = &shared.ResponseTransformerAdvancedPluginAllow{
-			JSON: jsonVar1,
-		}
-	}
-	var append1 *shared.ResponseTransformerAdvancedPluginAppend
-	if r.Config.Append != nil {
-		var headers1 []string = []string{}
-		for _, headersItem1 := range r.Config.Append.Headers {
-			headers1 = append(headers1, headersItem1.ValueString())
-		}
-		var ifStatus1 []string = []string{}
-		for _, ifStatusItem1 := range r.Config.Append.IfStatus {
-			ifStatus1 = append(ifStatus1, ifStatusItem1.ValueString())
-		}
-		var jsonVar2 []string = []string{}
-		for _, jsonItem2 := range r.Config.Append.JSON {
-			jsonVar2 = append(jsonVar2, jsonItem2.ValueString())
-		}
-		var jsonTypes1 []shared.ResponseTransformerAdvancedPluginConfigJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigJSONTypes{}
-		for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
-			jsonTypes1 = append(jsonTypes1, shared.ResponseTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
-		}
-		append1 = &shared.ResponseTransformerAdvancedPluginAppend{
-			Headers:   headers1,
-			IfStatus:  ifStatus1,
-			JSON:      jsonVar2,
-			JSONTypes: jsonTypes1,
-		}
-	}
-	dotsInKeys := new(bool)
-	if !r.Config.DotsInKeys.IsUnknown() && !r.Config.DotsInKeys.IsNull() {
-		*dotsInKeys = r.Config.DotsInKeys.ValueBool()
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
 	} else {
-		dotsInKeys = nil
+		updatedAt = nil
 	}
-	var remove *shared.ResponseTransformerAdvancedPluginRemove
-	if r.Config.Remove != nil {
-		var headers2 []string = []string{}
-		for _, headersItem2 := range r.Config.Remove.Headers {
-			headers2 = append(headers2, headersItem2.ValueString())
+	var config *shared.ResponseTransformerAdvancedPluginConfig
+	if r.Config != nil {
+		var add *shared.ResponseTransformerAdvancedPluginAdd
+		if r.Config.Add != nil {
+			var headers []string = []string{}
+			for _, headersItem := range r.Config.Add.Headers {
+				headers = append(headers, headersItem.ValueString())
+			}
+			var ifStatus []string = []string{}
+			for _, ifStatusItem := range r.Config.Add.IfStatus {
+				ifStatus = append(ifStatus, ifStatusItem.ValueString())
+			}
+			var jsonVar []string = []string{}
+			for _, jsonItem := range r.Config.Add.JSON {
+				jsonVar = append(jsonVar, jsonItem.ValueString())
+			}
+			var jsonTypes []shared.ResponseTransformerAdvancedPluginJSONTypes = []shared.ResponseTransformerAdvancedPluginJSONTypes{}
+			for _, jsonTypesItem := range r.Config.Add.JSONTypes {
+				jsonTypes = append(jsonTypes, shared.ResponseTransformerAdvancedPluginJSONTypes(jsonTypesItem.ValueString()))
+			}
+			add = &shared.ResponseTransformerAdvancedPluginAdd{
+				Headers:   headers,
+				IfStatus:  ifStatus,
+				JSON:      jsonVar,
+				JSONTypes: jsonTypes,
+			}
 		}
-		var ifStatus2 []string = []string{}
-		for _, ifStatusItem2 := range r.Config.Remove.IfStatus {
-			ifStatus2 = append(ifStatus2, ifStatusItem2.ValueString())
+		var allow *shared.ResponseTransformerAdvancedPluginAllow
+		if r.Config.Allow != nil {
+			var jsonVar1 []string = []string{}
+			for _, jsonItem1 := range r.Config.Allow.JSON {
+				jsonVar1 = append(jsonVar1, jsonItem1.ValueString())
+			}
+			allow = &shared.ResponseTransformerAdvancedPluginAllow{
+				JSON: jsonVar1,
+			}
 		}
-		var jsonVar3 []string = []string{}
-		for _, jsonItem3 := range r.Config.Remove.JSON {
-			jsonVar3 = append(jsonVar3, jsonItem3.ValueString())
+		var append1 *shared.ResponseTransformerAdvancedPluginAppend
+		if r.Config.Append != nil {
+			var headers1 []string = []string{}
+			for _, headersItem1 := range r.Config.Append.Headers {
+				headers1 = append(headers1, headersItem1.ValueString())
+			}
+			var ifStatus1 []string = []string{}
+			for _, ifStatusItem1 := range r.Config.Append.IfStatus {
+				ifStatus1 = append(ifStatus1, ifStatusItem1.ValueString())
+			}
+			var jsonVar2 []string = []string{}
+			for _, jsonItem2 := range r.Config.Append.JSON {
+				jsonVar2 = append(jsonVar2, jsonItem2.ValueString())
+			}
+			var jsonTypes1 []shared.ResponseTransformerAdvancedPluginConfigJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigJSONTypes{}
+			for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
+				jsonTypes1 = append(jsonTypes1, shared.ResponseTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem1.ValueString()))
+			}
+			append1 = &shared.ResponseTransformerAdvancedPluginAppend{
+				Headers:   headers1,
+				IfStatus:  ifStatus1,
+				JSON:      jsonVar2,
+				JSONTypes: jsonTypes1,
+			}
 		}
-		remove = &shared.ResponseTransformerAdvancedPluginRemove{
-			Headers:  headers2,
-			IfStatus: ifStatus2,
-			JSON:     jsonVar3,
-		}
-	}
-	var rename *shared.ResponseTransformerAdvancedPluginRename
-	if r.Config.Rename != nil {
-		var headers3 []string = []string{}
-		for _, headersItem3 := range r.Config.Rename.Headers {
-			headers3 = append(headers3, headersItem3.ValueString())
-		}
-		var ifStatus3 []string = []string{}
-		for _, ifStatusItem3 := range r.Config.Rename.IfStatus {
-			ifStatus3 = append(ifStatus3, ifStatusItem3.ValueString())
-		}
-		rename = &shared.ResponseTransformerAdvancedPluginRename{
-			Headers:  headers3,
-			IfStatus: ifStatus3,
-		}
-	}
-	var replace *shared.ResponseTransformerAdvancedPluginReplace
-	if r.Config.Replace != nil {
-		body := new(string)
-		if !r.Config.Replace.Body.IsUnknown() && !r.Config.Replace.Body.IsNull() {
-			*body = r.Config.Replace.Body.ValueString()
+		dotsInKeys := new(bool)
+		if !r.Config.DotsInKeys.IsUnknown() && !r.Config.DotsInKeys.IsNull() {
+			*dotsInKeys = r.Config.DotsInKeys.ValueBool()
 		} else {
-			body = nil
+			dotsInKeys = nil
 		}
-		var headers4 []string = []string{}
-		for _, headersItem4 := range r.Config.Replace.Headers {
-			headers4 = append(headers4, headersItem4.ValueString())
+		var remove *shared.ResponseTransformerAdvancedPluginRemove
+		if r.Config.Remove != nil {
+			var headers2 []string = []string{}
+			for _, headersItem2 := range r.Config.Remove.Headers {
+				headers2 = append(headers2, headersItem2.ValueString())
+			}
+			var ifStatus2 []string = []string{}
+			for _, ifStatusItem2 := range r.Config.Remove.IfStatus {
+				ifStatus2 = append(ifStatus2, ifStatusItem2.ValueString())
+			}
+			var jsonVar3 []string = []string{}
+			for _, jsonItem3 := range r.Config.Remove.JSON {
+				jsonVar3 = append(jsonVar3, jsonItem3.ValueString())
+			}
+			remove = &shared.ResponseTransformerAdvancedPluginRemove{
+				Headers:  headers2,
+				IfStatus: ifStatus2,
+				JSON:     jsonVar3,
+			}
 		}
-		var ifStatus4 []string = []string{}
-		for _, ifStatusItem4 := range r.Config.Replace.IfStatus {
-			ifStatus4 = append(ifStatus4, ifStatusItem4.ValueString())
+		var rename *shared.ResponseTransformerAdvancedPluginRename
+		if r.Config.Rename != nil {
+			var headers3 []string = []string{}
+			for _, headersItem3 := range r.Config.Rename.Headers {
+				headers3 = append(headers3, headersItem3.ValueString())
+			}
+			var ifStatus3 []string = []string{}
+			for _, ifStatusItem3 := range r.Config.Rename.IfStatus {
+				ifStatus3 = append(ifStatus3, ifStatusItem3.ValueString())
+			}
+			rename = &shared.ResponseTransformerAdvancedPluginRename{
+				Headers:  headers3,
+				IfStatus: ifStatus3,
+			}
 		}
-		var jsonVar4 []string = []string{}
-		for _, jsonItem4 := range r.Config.Replace.JSON {
-			jsonVar4 = append(jsonVar4, jsonItem4.ValueString())
+		var replace *shared.ResponseTransformerAdvancedPluginReplace
+		if r.Config.Replace != nil {
+			body := new(string)
+			if !r.Config.Replace.Body.IsUnknown() && !r.Config.Replace.Body.IsNull() {
+				*body = r.Config.Replace.Body.ValueString()
+			} else {
+				body = nil
+			}
+			var headers4 []string = []string{}
+			for _, headersItem4 := range r.Config.Replace.Headers {
+				headers4 = append(headers4, headersItem4.ValueString())
+			}
+			var ifStatus4 []string = []string{}
+			for _, ifStatusItem4 := range r.Config.Replace.IfStatus {
+				ifStatus4 = append(ifStatus4, ifStatusItem4.ValueString())
+			}
+			var jsonVar4 []string = []string{}
+			for _, jsonItem4 := range r.Config.Replace.JSON {
+				jsonVar4 = append(jsonVar4, jsonItem4.ValueString())
+			}
+			var jsonTypes2 []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes{}
+			for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
+				jsonTypes2 = append(jsonTypes2, shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes(jsonTypesItem2.ValueString()))
+			}
+			replace = &shared.ResponseTransformerAdvancedPluginReplace{
+				Body:      body,
+				Headers:   headers4,
+				IfStatus:  ifStatus4,
+				JSON:      jsonVar4,
+				JSONTypes: jsonTypes2,
+			}
 		}
-		var jsonTypes2 []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes = []shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes{}
-		for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
-			jsonTypes2 = append(jsonTypes2, shared.ResponseTransformerAdvancedPluginConfigReplaceJSONTypes(jsonTypesItem2.ValueString()))
+		var transform *shared.Transform
+		if r.Config.Transform != nil {
+			var functions []string = []string{}
+			for _, functionsItem := range r.Config.Transform.Functions {
+				functions = append(functions, functionsItem.ValueString())
+			}
+			var ifStatus5 []string = []string{}
+			for _, ifStatusItem5 := range r.Config.Transform.IfStatus {
+				ifStatus5 = append(ifStatus5, ifStatusItem5.ValueString())
+			}
+			var jsonVar5 []string = []string{}
+			for _, jsonItem5 := range r.Config.Transform.JSON {
+				jsonVar5 = append(jsonVar5, jsonItem5.ValueString())
+			}
+			transform = &shared.Transform{
+				Functions: functions,
+				IfStatus:  ifStatus5,
+				JSON:      jsonVar5,
+			}
 		}
-		replace = &shared.ResponseTransformerAdvancedPluginReplace{
-			Body:      body,
-			Headers:   headers4,
-			IfStatus:  ifStatus4,
-			JSON:      jsonVar4,
-			JSONTypes: jsonTypes2,
+		config = &shared.ResponseTransformerAdvancedPluginConfig{
+			Add:        add,
+			Allow:      allow,
+			Append:     append1,
+			DotsInKeys: dotsInKeys,
+			Remove:     remove,
+			Rename:     rename,
+			Replace:    replace,
+			Transform:  transform,
 		}
-	}
-	var transform *shared.Transform
-	if r.Config.Transform != nil {
-		var functions []string = []string{}
-		for _, functionsItem := range r.Config.Transform.Functions {
-			functions = append(functions, functionsItem.ValueString())
-		}
-		var ifStatus5 []string = []string{}
-		for _, ifStatusItem5 := range r.Config.Transform.IfStatus {
-			ifStatus5 = append(ifStatus5, ifStatusItem5.ValueString())
-		}
-		var jsonVar5 []string = []string{}
-		for _, jsonItem5 := range r.Config.Transform.JSON {
-			jsonVar5 = append(jsonVar5, jsonItem5.ValueString())
-		}
-		transform = &shared.Transform{
-			Functions: functions,
-			IfStatus:  ifStatus5,
-			JSON:      jsonVar5,
-		}
-	}
-	config := shared.ResponseTransformerAdvancedPluginConfig{
-		Add:        add,
-		Allow:      allow,
-		Append:     append1,
-		DotsInKeys: dotsInKeys,
-		Remove:     remove,
-		Rename:     rename,
-		Replace:    replace,
-		Transform:  transform,
 	}
 	var consumer *shared.ResponseTransformerAdvancedPluginConsumer
 	if r.Consumer != nil {
@@ -273,12 +290,14 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 			ID: id4,
 		}
 	}
-	out := shared.ResponseTransformerAdvancedPluginInput{
+	out := shared.ResponseTransformerAdvancedPlugin{
+		CreatedAt:     createdAt,
 		Enabled:       enabled,
 		ID:            id,
 		InstanceName:  instanceName,
 		Ordering:      ordering,
 		Tags:          tags,
+		UpdatedAt:     updatedAt,
 		Config:        config,
 		Consumer:      consumer,
 		ConsumerGroup: consumerGroup,
@@ -289,127 +308,134 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) ToSharedResponse
 	return &out
 }
 
-func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromSharedResponseTransformerAdvancedPlugin(resp *shared.ResponseTransformerAdvancedPlugin) {
+func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromSharedResponseTransformerAdvancedPlugin(ctx context.Context, resp *shared.ResponseTransformerAdvancedPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.Config.Add == nil {
-			r.Config.Add = nil
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Add = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
-			r.Config.Add.Headers = make([]types.String, 0, len(resp.Config.Add.Headers))
-			for _, v := range resp.Config.Add.Headers {
-				r.Config.Add.Headers = append(r.Config.Add.Headers, types.StringValue(v))
+			r.Config = &tfTypes.ResponseTransformerAdvancedPluginConfig{}
+			if resp.Config.Add == nil {
+				r.Config.Add = nil
+			} else {
+				r.Config.Add = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
+				r.Config.Add.Headers = make([]types.String, 0, len(resp.Config.Add.Headers))
+				for _, v := range resp.Config.Add.Headers {
+					r.Config.Add.Headers = append(r.Config.Add.Headers, types.StringValue(v))
+				}
+				r.Config.Add.IfStatus = make([]types.String, 0, len(resp.Config.Add.IfStatus))
+				for _, v := range resp.Config.Add.IfStatus {
+					r.Config.Add.IfStatus = append(r.Config.Add.IfStatus, types.StringValue(v))
+				}
+				r.Config.Add.JSON = make([]types.String, 0, len(resp.Config.Add.JSON))
+				for _, v := range resp.Config.Add.JSON {
+					r.Config.Add.JSON = append(r.Config.Add.JSON, types.StringValue(v))
+				}
+				r.Config.Add.JSONTypes = make([]types.String, 0, len(resp.Config.Add.JSONTypes))
+				for _, v := range resp.Config.Add.JSONTypes {
+					r.Config.Add.JSONTypes = append(r.Config.Add.JSONTypes, types.StringValue(string(v)))
+				}
 			}
-			r.Config.Add.IfStatus = make([]types.String, 0, len(resp.Config.Add.IfStatus))
-			for _, v := range resp.Config.Add.IfStatus {
-				r.Config.Add.IfStatus = append(r.Config.Add.IfStatus, types.StringValue(v))
+			if resp.Config.Allow == nil {
+				r.Config.Allow = nil
+			} else {
+				r.Config.Allow = &tfTypes.ResponseTransformerAdvancedPluginAllow{}
+				r.Config.Allow.JSON = make([]types.String, 0, len(resp.Config.Allow.JSON))
+				for _, v := range resp.Config.Allow.JSON {
+					r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
+				}
 			}
-			r.Config.Add.JSON = make([]types.String, 0, len(resp.Config.Add.JSON))
-			for _, v := range resp.Config.Add.JSON {
-				r.Config.Add.JSON = append(r.Config.Add.JSON, types.StringValue(v))
+			if resp.Config.Append == nil {
+				r.Config.Append = nil
+			} else {
+				r.Config.Append = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
+				r.Config.Append.Headers = make([]types.String, 0, len(resp.Config.Append.Headers))
+				for _, v := range resp.Config.Append.Headers {
+					r.Config.Append.Headers = append(r.Config.Append.Headers, types.StringValue(v))
+				}
+				r.Config.Append.IfStatus = make([]types.String, 0, len(resp.Config.Append.IfStatus))
+				for _, v := range resp.Config.Append.IfStatus {
+					r.Config.Append.IfStatus = append(r.Config.Append.IfStatus, types.StringValue(v))
+				}
+				r.Config.Append.JSON = make([]types.String, 0, len(resp.Config.Append.JSON))
+				for _, v := range resp.Config.Append.JSON {
+					r.Config.Append.JSON = append(r.Config.Append.JSON, types.StringValue(v))
+				}
+				r.Config.Append.JSONTypes = make([]types.String, 0, len(resp.Config.Append.JSONTypes))
+				for _, v := range resp.Config.Append.JSONTypes {
+					r.Config.Append.JSONTypes = append(r.Config.Append.JSONTypes, types.StringValue(string(v)))
+				}
 			}
-			r.Config.Add.JSONTypes = make([]types.String, 0, len(resp.Config.Add.JSONTypes))
-			for _, v := range resp.Config.Add.JSONTypes {
-				r.Config.Add.JSONTypes = append(r.Config.Add.JSONTypes, types.StringValue(string(v)))
+			r.Config.DotsInKeys = types.BoolPointerValue(resp.Config.DotsInKeys)
+			if resp.Config.Remove == nil {
+				r.Config.Remove = nil
+			} else {
+				r.Config.Remove = &tfTypes.ResponseTransformerAdvancedPluginRemove{}
+				r.Config.Remove.Headers = make([]types.String, 0, len(resp.Config.Remove.Headers))
+				for _, v := range resp.Config.Remove.Headers {
+					r.Config.Remove.Headers = append(r.Config.Remove.Headers, types.StringValue(v))
+				}
+				r.Config.Remove.IfStatus = make([]types.String, 0, len(resp.Config.Remove.IfStatus))
+				for _, v := range resp.Config.Remove.IfStatus {
+					r.Config.Remove.IfStatus = append(r.Config.Remove.IfStatus, types.StringValue(v))
+				}
+				r.Config.Remove.JSON = make([]types.String, 0, len(resp.Config.Remove.JSON))
+				for _, v := range resp.Config.Remove.JSON {
+					r.Config.Remove.JSON = append(r.Config.Remove.JSON, types.StringValue(v))
+				}
 			}
-		}
-		if resp.Config.Allow == nil {
-			r.Config.Allow = nil
-		} else {
-			r.Config.Allow = &tfTypes.ResponseTransformerAdvancedPluginAllow{}
-			r.Config.Allow.JSON = make([]types.String, 0, len(resp.Config.Allow.JSON))
-			for _, v := range resp.Config.Allow.JSON {
-				r.Config.Allow.JSON = append(r.Config.Allow.JSON, types.StringValue(v))
+			if resp.Config.Rename == nil {
+				r.Config.Rename = nil
+			} else {
+				r.Config.Rename = &tfTypes.ResponseTransformerAdvancedPluginRename{}
+				r.Config.Rename.Headers = make([]types.String, 0, len(resp.Config.Rename.Headers))
+				for _, v := range resp.Config.Rename.Headers {
+					r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
+				}
+				r.Config.Rename.IfStatus = make([]types.String, 0, len(resp.Config.Rename.IfStatus))
+				for _, v := range resp.Config.Rename.IfStatus {
+					r.Config.Rename.IfStatus = append(r.Config.Rename.IfStatus, types.StringValue(v))
+				}
 			}
-		}
-		if resp.Config.Append == nil {
-			r.Config.Append = nil
-		} else {
-			r.Config.Append = &tfTypes.ResponseTransformerAdvancedPluginAdd{}
-			r.Config.Append.Headers = make([]types.String, 0, len(resp.Config.Append.Headers))
-			for _, v := range resp.Config.Append.Headers {
-				r.Config.Append.Headers = append(r.Config.Append.Headers, types.StringValue(v))
+			if resp.Config.Replace == nil {
+				r.Config.Replace = nil
+			} else {
+				r.Config.Replace = &tfTypes.ResponseTransformerAdvancedPluginReplace{}
+				r.Config.Replace.Body = types.StringPointerValue(resp.Config.Replace.Body)
+				r.Config.Replace.Headers = make([]types.String, 0, len(resp.Config.Replace.Headers))
+				for _, v := range resp.Config.Replace.Headers {
+					r.Config.Replace.Headers = append(r.Config.Replace.Headers, types.StringValue(v))
+				}
+				r.Config.Replace.IfStatus = make([]types.String, 0, len(resp.Config.Replace.IfStatus))
+				for _, v := range resp.Config.Replace.IfStatus {
+					r.Config.Replace.IfStatus = append(r.Config.Replace.IfStatus, types.StringValue(v))
+				}
+				r.Config.Replace.JSON = make([]types.String, 0, len(resp.Config.Replace.JSON))
+				for _, v := range resp.Config.Replace.JSON {
+					r.Config.Replace.JSON = append(r.Config.Replace.JSON, types.StringValue(v))
+				}
+				r.Config.Replace.JSONTypes = make([]types.String, 0, len(resp.Config.Replace.JSONTypes))
+				for _, v := range resp.Config.Replace.JSONTypes {
+					r.Config.Replace.JSONTypes = append(r.Config.Replace.JSONTypes, types.StringValue(string(v)))
+				}
 			}
-			r.Config.Append.IfStatus = make([]types.String, 0, len(resp.Config.Append.IfStatus))
-			for _, v := range resp.Config.Append.IfStatus {
-				r.Config.Append.IfStatus = append(r.Config.Append.IfStatus, types.StringValue(v))
-			}
-			r.Config.Append.JSON = make([]types.String, 0, len(resp.Config.Append.JSON))
-			for _, v := range resp.Config.Append.JSON {
-				r.Config.Append.JSON = append(r.Config.Append.JSON, types.StringValue(v))
-			}
-			r.Config.Append.JSONTypes = make([]types.String, 0, len(resp.Config.Append.JSONTypes))
-			for _, v := range resp.Config.Append.JSONTypes {
-				r.Config.Append.JSONTypes = append(r.Config.Append.JSONTypes, types.StringValue(string(v)))
-			}
-		}
-		r.Config.DotsInKeys = types.BoolPointerValue(resp.Config.DotsInKeys)
-		if resp.Config.Remove == nil {
-			r.Config.Remove = nil
-		} else {
-			r.Config.Remove = &tfTypes.ResponseTransformerAdvancedPluginRemove{}
-			r.Config.Remove.Headers = make([]types.String, 0, len(resp.Config.Remove.Headers))
-			for _, v := range resp.Config.Remove.Headers {
-				r.Config.Remove.Headers = append(r.Config.Remove.Headers, types.StringValue(v))
-			}
-			r.Config.Remove.IfStatus = make([]types.String, 0, len(resp.Config.Remove.IfStatus))
-			for _, v := range resp.Config.Remove.IfStatus {
-				r.Config.Remove.IfStatus = append(r.Config.Remove.IfStatus, types.StringValue(v))
-			}
-			r.Config.Remove.JSON = make([]types.String, 0, len(resp.Config.Remove.JSON))
-			for _, v := range resp.Config.Remove.JSON {
-				r.Config.Remove.JSON = append(r.Config.Remove.JSON, types.StringValue(v))
-			}
-		}
-		if resp.Config.Rename == nil {
-			r.Config.Rename = nil
-		} else {
-			r.Config.Rename = &tfTypes.ResponseTransformerAdvancedPluginRename{}
-			r.Config.Rename.Headers = make([]types.String, 0, len(resp.Config.Rename.Headers))
-			for _, v := range resp.Config.Rename.Headers {
-				r.Config.Rename.Headers = append(r.Config.Rename.Headers, types.StringValue(v))
-			}
-			r.Config.Rename.IfStatus = make([]types.String, 0, len(resp.Config.Rename.IfStatus))
-			for _, v := range resp.Config.Rename.IfStatus {
-				r.Config.Rename.IfStatus = append(r.Config.Rename.IfStatus, types.StringValue(v))
-			}
-		}
-		if resp.Config.Replace == nil {
-			r.Config.Replace = nil
-		} else {
-			r.Config.Replace = &tfTypes.ResponseTransformerAdvancedPluginReplace{}
-			r.Config.Replace.Body = types.StringPointerValue(resp.Config.Replace.Body)
-			r.Config.Replace.Headers = make([]types.String, 0, len(resp.Config.Replace.Headers))
-			for _, v := range resp.Config.Replace.Headers {
-				r.Config.Replace.Headers = append(r.Config.Replace.Headers, types.StringValue(v))
-			}
-			r.Config.Replace.IfStatus = make([]types.String, 0, len(resp.Config.Replace.IfStatus))
-			for _, v := range resp.Config.Replace.IfStatus {
-				r.Config.Replace.IfStatus = append(r.Config.Replace.IfStatus, types.StringValue(v))
-			}
-			r.Config.Replace.JSON = make([]types.String, 0, len(resp.Config.Replace.JSON))
-			for _, v := range resp.Config.Replace.JSON {
-				r.Config.Replace.JSON = append(r.Config.Replace.JSON, types.StringValue(v))
-			}
-			r.Config.Replace.JSONTypes = make([]types.String, 0, len(resp.Config.Replace.JSONTypes))
-			for _, v := range resp.Config.Replace.JSONTypes {
-				r.Config.Replace.JSONTypes = append(r.Config.Replace.JSONTypes, types.StringValue(string(v)))
-			}
-		}
-		if resp.Config.Transform == nil {
-			r.Config.Transform = nil
-		} else {
-			r.Config.Transform = &tfTypes.Transform{}
-			r.Config.Transform.Functions = make([]types.String, 0, len(resp.Config.Transform.Functions))
-			for _, v := range resp.Config.Transform.Functions {
-				r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))
-			}
-			r.Config.Transform.IfStatus = make([]types.String, 0, len(resp.Config.Transform.IfStatus))
-			for _, v := range resp.Config.Transform.IfStatus {
-				r.Config.Transform.IfStatus = append(r.Config.Transform.IfStatus, types.StringValue(v))
-			}
-			r.Config.Transform.JSON = make([]types.String, 0, len(resp.Config.Transform.JSON))
-			for _, v := range resp.Config.Transform.JSON {
-				r.Config.Transform.JSON = append(r.Config.Transform.JSON, types.StringValue(v))
+			if resp.Config.Transform == nil {
+				r.Config.Transform = nil
+			} else {
+				r.Config.Transform = &tfTypes.Transform{}
+				r.Config.Transform.Functions = make([]types.String, 0, len(resp.Config.Transform.Functions))
+				for _, v := range resp.Config.Transform.Functions {
+					r.Config.Transform.Functions = append(r.Config.Transform.Functions, types.StringValue(v))
+				}
+				r.Config.Transform.IfStatus = make([]types.String, 0, len(resp.Config.Transform.IfStatus))
+				for _, v := range resp.Config.Transform.IfStatus {
+					r.Config.Transform.IfStatus = append(r.Config.Transform.IfStatus, types.StringValue(v))
+				}
+				r.Config.Transform.JSON = make([]types.String, 0, len(resp.Config.Transform.JSON))
+				for _, v := range resp.Config.Transform.JSON {
+					r.Config.Transform.JSON = append(r.Config.Transform.JSON, types.StringValue(v))
+				}
 			}
 		}
 		if resp.Consumer == nil {
@@ -473,4 +499,6 @@ func (r *GatewayPluginResponseTransformerAdvancedResourceModel) RefreshFromShare
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

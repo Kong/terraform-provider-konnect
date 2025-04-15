@@ -18,7 +18,7 @@ type ZipkinPluginConfig struct {
 	Propagation                  *Propagation                                  `tfsdk:"propagation"`
 	Queue                        *Queue                                        `tfsdk:"queue"`
 	ReadTimeout                  types.Int64                                   `tfsdk:"read_timeout"`
-	SampleRatio                  types.Number                                  `tfsdk:"sample_ratio"`
+	SampleRatio                  types.Float64                                 `tfsdk:"sample_ratio"`
 	SendTimeout                  types.Int64                                   `tfsdk:"send_timeout"`
 	StaticTags                   []ConfigurationDataPlaneGroupEnvironmentField `tfsdk:"static_tags"`
 	TagsHeader                   types.String                                  `tfsdk:"tags_header"`

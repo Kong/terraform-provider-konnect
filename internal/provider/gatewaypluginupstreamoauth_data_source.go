@@ -29,7 +29,7 @@ type GatewayPluginUpstreamOauthDataSource struct {
 
 // GatewayPluginUpstreamOauthDataSourceModel describes the data model.
 type GatewayPluginUpstreamOauthDataSourceModel struct {
-	Config         tfTypes.UpstreamOauthPluginConfig  `tfsdk:"config"`
+	Config         *tfTypes.UpstreamOauthPluginConfig `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ConsumerGroup  *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer_group"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
@@ -92,7 +92,7 @@ func (r *GatewayPluginUpstreamOauthDataSource) Schema(ctx context.Context, req d
 					"cache": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
-							"default_ttl": schema.NumberAttribute{
+							"default_ttl": schema.Float64Attribute{
 								Computed:    true,
 								Description: `The lifetime of a token without an explicit ` + "`" + `expires_in` + "`" + ` value.`,
 							},
@@ -247,7 +247,7 @@ func (r *GatewayPluginUpstreamOauthDataSource) Schema(ctx context.Context, req d
 								Computed:    true,
 								Description: `The ` + "`" + `Proxy-Authorization` + "`" + ` header value to be used with ` + "`" + `http_proxy` + "`" + `.`,
 							},
-							"http_version": schema.NumberAttribute{
+							"http_version": schema.Float64Attribute{
 								Computed:    true,
 								Description: `The HTTP version used for requests made by this plugin. Supported values: ` + "`" + `1.1` + "`" + ` for HTTP 1.1 and ` + "`" + `1.0` + "`" + ` for HTTP 1.0.`,
 							},
@@ -495,7 +495,11 @@ func (r *GatewayPluginUpstreamOauthDataSource) Read(ctx context.Context, req dat
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedUpstreamOauthPlugin(res.UpstreamOauthPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedUpstreamOauthPlugin(ctx, res.UpstreamOauthPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

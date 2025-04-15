@@ -3,20 +3,29 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginBotDetectionDataSourceModel) RefreshFromSharedBotDetectionPlugin(resp *shared.BotDetectionPlugin) {
+func (r *GatewayPluginBotDetectionDataSourceModel) RefreshFromSharedBotDetectionPlugin(ctx context.Context, resp *shared.BotDetectionPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
-		for _, v := range resp.Config.Allow {
-			r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
-		}
-		r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
-		for _, v := range resp.Config.Deny {
-			r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+		if resp.Config == nil {
+			r.Config = nil
+		} else {
+			r.Config = &tfTypes.BotDetectionPluginConfig{}
+			r.Config.Allow = make([]types.String, 0, len(resp.Config.Allow))
+			for _, v := range resp.Config.Allow {
+				r.Config.Allow = append(r.Config.Allow, types.StringValue(v))
+			}
+			r.Config.Deny = make([]types.String, 0, len(resp.Config.Deny))
+			for _, v := range resp.Config.Deny {
+				r.Config.Deny = append(r.Config.Deny, types.StringValue(v))
+			}
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)
@@ -67,4 +76,6 @@ func (r *GatewayPluginBotDetectionDataSourceModel) RefreshFromSharedBotDetection
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

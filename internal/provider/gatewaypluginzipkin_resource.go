@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/float64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/int64validator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -41,7 +42,7 @@ type GatewayPluginZipkinResource struct {
 
 // GatewayPluginZipkinResourceModel describes the resource data model.
 type GatewayPluginZipkinResourceModel struct {
-	Config         tfTypes.ZipkinPluginConfig         `tfsdk:"config"`
+	Config         *tfTypes.ZipkinPluginConfig        `tfsdk:"config"`
 	Consumer       *tfTypes.ACLWithoutParentsConsumer `tfsdk:"consumer"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
@@ -65,7 +66,8 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 		MarkdownDescription: "GatewayPluginZipkin Resource",
 		Attributes: map[string]schema.Attribute{
 			"config": schema.SingleNestedAttribute{
-				Required: true,
+				Computed: true,
+				Optional: true,
 				Attributes: map[string]schema.Attribute{
 					"connect_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -211,10 +213,13 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 									int64validator.OneOf(-1, 1),
 								},
 							},
-							"initial_retry_delay": schema.NumberAttribute{
+							"initial_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Time in seconds before the initial retry is made for a failing batch.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(1000000),
+								},
 							},
 							"max_batch_size": schema.Int64Attribute{
 								Computed:    true,
@@ -229,10 +234,13 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 								Optional:    true,
 								Description: `Maximum number of bytes that can be waiting on a queue, requires string content.`,
 							},
-							"max_coalescing_delay": schema.NumberAttribute{
+							"max_coalescing_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum number of (fractional) seconds to elapse after the first entry was queued before the queue starts calling the handler.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(3600),
+								},
 							},
 							"max_entries": schema.Int64Attribute{
 								Computed:    true,
@@ -242,12 +250,15 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 									int64validator.Between(1, 1000000),
 								},
 							},
-							"max_retry_delay": schema.NumberAttribute{
+							"max_retry_delay": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Maximum time in seconds between retries, caps exponential backoff.`,
+								Validators: []validator.Float64{
+									float64validator.AtMost(1000000),
+								},
 							},
-							"max_retry_time": schema.NumberAttribute{
+							"max_retry_time": schema.Float64Attribute{
 								Computed:    true,
 								Optional:    true,
 								Description: `Time in seconds before the queue gives up calling a failed handler for a batch.`,
@@ -262,10 +273,13 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 							int64validator.AtMost(2147483646),
 						},
 					},
-					"sample_ratio": schema.NumberAttribute{
+					"sample_ratio": schema.Float64Attribute{
 						Computed:    true,
 						Optional:    true,
 						Description: `How often to sample requests that do not contain trace IDs. Set to ` + "`" + `0` + "`" + ` to turn sampling off, or to ` + "`" + `1` + "`" + ` to sample **all** requests.`,
+						Validators: []validator.Float64{
+							float64validator.AtMost(1),
+						},
 					},
 					"send_timeout": schema.Int64Attribute{
 						Computed:    true,
@@ -341,6 +355,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"created_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
 			"enabled": schema.BoolAttribute{
@@ -426,6 +441,7 @@ func (r *GatewayPluginZipkinResource) Schema(ctx context.Context, req resource.S
 			},
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
+				Optional:    true,
 				Description: `Unix epoch when the resource was last updated.`,
 			},
 		},
@@ -473,7 +489,7 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := *data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPlugin()
 	request := operations.CreateZipkinPluginRequest{
 		ControlPlaneID: controlPlaneID,
 		ZipkinPlugin:   zipkinPlugin,
@@ -498,8 +514,17 @@ func (r *GatewayPluginZipkinResource) Create(ctx context.Context, req resource.C
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedZipkinPlugin(res.ZipkinPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedZipkinPlugin(ctx, res.ZipkinPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -557,7 +582,11 @@ func (r *GatewayPluginZipkinResource) Read(ctx context.Context, req resource.Rea
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedZipkinPlugin(res.ZipkinPlugin)
+	resp.Diagnostics.Append(data.RefreshFromSharedZipkinPlugin(ctx, res.ZipkinPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -583,7 +612,7 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 	var controlPlaneID string
 	controlPlaneID = data.ControlPlaneID.ValueString()
 
-	zipkinPlugin := *data.ToSharedZipkinPluginInput()
+	zipkinPlugin := *data.ToSharedZipkinPlugin()
 	request := operations.UpdateZipkinPluginRequest{
 		PluginID:       pluginID,
 		ControlPlaneID: controlPlaneID,
@@ -609,8 +638,17 @@ func (r *GatewayPluginZipkinResource) Update(ctx context.Context, req resource.U
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedZipkinPlugin(res.ZipkinPlugin)
-	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+	resp.Diagnostics.Append(data.RefreshFromSharedZipkinPlugin(ctx, res.ZipkinPlugin)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	resp.Diagnostics.Append(refreshPlan(ctx, plan, &data)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -672,7 +710,7 @@ func (r *GatewayPluginZipkinResource) ImportState(ctx context.Context, req resou
 	}
 
 	if err := dec.Decode(&data); err != nil {
-		resp.Diagnostics.AddError("Invalid ID", `The ID is not valid. It's expected to be a JSON object alike '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "plugin_id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
+		resp.Diagnostics.AddError("Invalid ID", `The import ID is not valid. It is expected to be a JSON object string with the format: '{ "control_plane_id": "9524ec7d-36d9-465d-a8c5-83a3c9390458",  "id": "3473c251-5b6c-4f45-b1ff-7ede735a366d"}': `+err.Error())
 		return
 	}
 

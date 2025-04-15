@@ -39,6 +39,7 @@ type GatewayKeyDataSourceModel struct {
 	Set            *tfTypes.ACLWithoutParentsConsumer `tfsdk:"set"`
 	Tags           []types.String                     `tfsdk:"tags"`
 	UpdatedAt      types.Int64                        `tfsdk:"updated_at"`
+	X5t            types.String                       `tfsdk:"x5t"`
 }
 
 // Metadata returns the data source type name.
@@ -104,6 +105,9 @@ func (r *GatewayKeyDataSource) Schema(ctx context.Context, req datasource.Schema
 			"updated_at": schema.Int64Attribute{
 				Computed:    true,
 				Description: `Unix epoch when the resource was last updated.`,
+			},
+			"x5t": schema.StringAttribute{
+				Computed: true,
 			},
 		},
 	}
@@ -181,7 +185,11 @@ func (r *GatewayKeyDataSource) Read(ctx context.Context, req datasource.ReadRequ
 		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return
 	}
-	data.RefreshFromSharedKey(res.Key)
+	resp.Diagnostics.Append(data.RefreshFromSharedKey(ctx, res.Key)...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

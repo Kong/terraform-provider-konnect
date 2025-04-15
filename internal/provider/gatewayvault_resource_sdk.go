@@ -3,14 +3,22 @@
 package provider
 
 import (
+	"context"
 	"encoding/json"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayVaultResourceModel) ToSharedVaultInput() *shared.VaultInput {
+func (r *GatewayVaultResourceModel) ToSharedVault() *shared.Vault {
 	var config interface{}
 	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	description := new(string)
 	if !r.Description.IsUnknown() && !r.Description.IsNull() {
 		*description = r.Description.ValueString()
@@ -33,18 +41,28 @@ func (r *GatewayVaultResourceModel) ToSharedVaultInput() *shared.VaultInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.VaultInput{
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	out := shared.Vault{
 		Config:      config,
+		CreatedAt:   createdAt,
 		Description: description,
 		ID:          id,
 		Name:        name,
 		Prefix:      prefix,
 		Tags:        tags,
+		UpdatedAt:   updatedAt,
 	}
 	return &out
 }
 
-func (r *GatewayVaultResourceModel) RefreshFromSharedVault(resp *shared.Vault) {
+func (r *GatewayVaultResourceModel) RefreshFromSharedVault(ctx context.Context, resp *shared.Vault) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		configResult, _ := json.Marshal(resp.Config)
 		r.Config = types.StringValue(string(configResult))
@@ -59,4 +77,6 @@ func (r *GatewayVaultResourceModel) RefreshFromSharedVault(resp *shared.Vault) {
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }

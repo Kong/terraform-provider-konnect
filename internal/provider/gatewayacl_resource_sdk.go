@@ -3,6 +3,8 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
@@ -21,6 +23,12 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 			ID: id,
 		}
 	}
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	var group string
 	group = r.Group.ValueString()
 
@@ -35,15 +43,18 @@ func (r *GatewayACLResourceModel) ToSharedACLWithoutParents() *shared.ACLWithout
 		tags = append(tags, tagsItem.ValueString())
 	}
 	out := shared.ACLWithoutParents{
-		Consumer: consumer,
-		Group:    group,
-		ID:       id1,
-		Tags:     tags,
+		Consumer:  consumer,
+		CreatedAt: createdAt,
+		Group:     group,
+		ID:        id1,
+		Tags:      tags,
 	}
 	return &out
 }
 
-func (r *GatewayACLResourceModel) RefreshFromSharedACL(resp *shared.ACL) {
+func (r *GatewayACLResourceModel) RefreshFromSharedACL(ctx context.Context, resp *shared.ACL) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		if resp.Consumer == nil {
 			r.Consumer = nil
@@ -59,4 +70,6 @@ func (r *GatewayACLResourceModel) RefreshFromSharedACL(resp *shared.ACL) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 	}
+
+	return diags
 }

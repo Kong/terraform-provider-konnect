@@ -3,12 +3,20 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
+func (r *GatewayKeyResourceModel) ToSharedKey() *shared.Key {
+	createdAt := new(int64)
+	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
+		*createdAt = r.CreatedAt.ValueInt64()
+	} else {
+		createdAt = nil
+	}
 	id := new(string)
 	if !r.ID.IsUnknown() && !r.ID.IsNull() {
 		*id = r.ID.ValueString()
@@ -65,19 +73,36 @@ func (r *GatewayKeyResourceModel) ToSharedKeyInput() *shared.KeyInput {
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
-	out := shared.KeyInput{
-		ID:   id,
-		Jwk:  jwk,
-		Kid:  kid,
-		Name: name,
-		Pem:  pem,
-		Set:  set,
-		Tags: tags,
+	updatedAt := new(int64)
+	if !r.UpdatedAt.IsUnknown() && !r.UpdatedAt.IsNull() {
+		*updatedAt = r.UpdatedAt.ValueInt64()
+	} else {
+		updatedAt = nil
+	}
+	x5t := new(string)
+	if !r.X5t.IsUnknown() && !r.X5t.IsNull() {
+		*x5t = r.X5t.ValueString()
+	} else {
+		x5t = nil
+	}
+	out := shared.Key{
+		CreatedAt: createdAt,
+		ID:        id,
+		Jwk:       jwk,
+		Kid:       kid,
+		Name:      name,
+		Pem:       pem,
+		Set:       set,
+		Tags:      tags,
+		UpdatedAt: updatedAt,
+		X5t:       x5t,
 	}
 	return &out
 }
 
-func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
+func (r *GatewayKeyResourceModel) RefreshFromSharedKey(ctx context.Context, resp *shared.Key) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.ID = types.StringPointerValue(resp.ID)
@@ -102,5 +127,8 @@ func (r *GatewayKeyResourceModel) RefreshFromSharedKey(resp *shared.Key) {
 			r.Tags = append(r.Tags, types.StringValue(v))
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
+		r.X5t = types.StringPointerValue(resp.X5t)
 	}
+
+	return diags
 }

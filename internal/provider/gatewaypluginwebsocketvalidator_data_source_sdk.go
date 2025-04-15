@@ -3,49 +3,58 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsocketValidatorPlugin(resp *shared.WebsocketValidatorPlugin) {
+func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsocketValidatorPlugin(ctx context.Context, resp *shared.WebsocketValidatorPlugin) diag.Diagnostics {
+	var diags diag.Diagnostics
+
 	if resp != nil {
-		if resp.Config.Client == nil {
-			r.Config.Client = nil
+		if resp.Config == nil {
+			r.Config = nil
 		} else {
-			r.Config.Client = &tfTypes.WebsocketValidatorPluginClient{}
-			if resp.Config.Client.Binary == nil {
-				r.Config.Client.Binary = nil
+			r.Config = &tfTypes.WebsocketValidatorPluginConfig{}
+			if resp.Config.Client == nil {
+				r.Config.Client = nil
 			} else {
-				r.Config.Client.Binary = &tfTypes.Binary{}
-				r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
-				r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
+				r.Config.Client = &tfTypes.WebsocketValidatorPluginClient{}
+				if resp.Config.Client.Binary == nil {
+					r.Config.Client.Binary = nil
+				} else {
+					r.Config.Client.Binary = &tfTypes.Binary{}
+					r.Config.Client.Binary.Schema = types.StringValue(resp.Config.Client.Binary.Schema)
+					r.Config.Client.Binary.Type = types.StringValue(string(resp.Config.Client.Binary.Type))
+				}
+				if resp.Config.Client.Text == nil {
+					r.Config.Client.Text = nil
+				} else {
+					r.Config.Client.Text = &tfTypes.Binary{}
+					r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
+					r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
+				}
 			}
-			if resp.Config.Client.Text == nil {
-				r.Config.Client.Text = nil
+			if resp.Config.Upstream == nil {
+				r.Config.Upstream = nil
 			} else {
-				r.Config.Client.Text = &tfTypes.Binary{}
-				r.Config.Client.Text.Schema = types.StringValue(resp.Config.Client.Text.Schema)
-				r.Config.Client.Text.Type = types.StringValue(string(resp.Config.Client.Text.Type))
-			}
-		}
-		if resp.Config.Upstream == nil {
-			r.Config.Upstream = nil
-		} else {
-			r.Config.Upstream = &tfTypes.WebsocketValidatorPluginClient{}
-			if resp.Config.Upstream.Binary == nil {
-				r.Config.Upstream.Binary = nil
-			} else {
-				r.Config.Upstream.Binary = &tfTypes.Binary{}
-				r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
-				r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
-			}
-			if resp.Config.Upstream.Text == nil {
-				r.Config.Upstream.Text = nil
-			} else {
-				r.Config.Upstream.Text = &tfTypes.Binary{}
-				r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
-				r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
+				r.Config.Upstream = &tfTypes.WebsocketValidatorPluginClient{}
+				if resp.Config.Upstream.Binary == nil {
+					r.Config.Upstream.Binary = nil
+				} else {
+					r.Config.Upstream.Binary = &tfTypes.Binary{}
+					r.Config.Upstream.Binary.Schema = types.StringValue(resp.Config.Upstream.Binary.Schema)
+					r.Config.Upstream.Binary.Type = types.StringValue(string(resp.Config.Upstream.Binary.Type))
+				}
+				if resp.Config.Upstream.Text == nil {
+					r.Config.Upstream.Text = nil
+				} else {
+					r.Config.Upstream.Text = &tfTypes.Binary{}
+					r.Config.Upstream.Text.Schema = types.StringValue(resp.Config.Upstream.Text.Schema)
+					r.Config.Upstream.Text.Type = types.StringValue(string(resp.Config.Upstream.Text.Type))
+				}
 			}
 		}
 		if resp.Consumer == nil {
@@ -103,4 +112,6 @@ func (r *GatewayPluginWebsocketValidatorDataSourceModel) RefreshFromSharedWebsoc
 		}
 		r.UpdatedAt = types.Int64PointerValue(resp.UpdatedAt)
 	}
+
+	return diags
 }
