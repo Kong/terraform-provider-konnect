@@ -3407,7 +3407,7 @@ func (o *OpenidConnectPluginConfig) GetRunOnPreflight() *bool {
 
 func (o *OpenidConnectPluginConfig) GetScopes() []string {
 	if o == nil {
-		return []string{}
+		return nil
 	}
 	return o.Scopes
 }
