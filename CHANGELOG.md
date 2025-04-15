@@ -1,11 +1,15 @@
 # Changelog
 
 ## 2.5.0
-> Released on ?
+> Released on 2025/04/15
 
 ### Features
 
 * Add support for `konnect_gateway_control_plane_list`  data source
+
+### Bug fixes
+
+* The `scopes` property in `konnect_gateway_plugin_openid_connect` is no longer required
 
 ## 2.4.1
 > Released on 2025/03/13
