@@ -536,9 +536,11 @@ func (r *GatewayPluginOpenidConnectDataSourceModel) RefreshFromSharedOpenidConne
 				r.Config.RolesRequired = append(r.Config.RolesRequired, types.StringValue(v))
 			}
 			r.Config.RunOnPreflight = types.BoolPointerValue(resp.Config.RunOnPreflight)
-			r.Config.Scopes = make([]types.String, 0, len(resp.Config.Scopes))
-			for _, v := range resp.Config.Scopes {
-				r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
+			if resp.Config.Scopes != nil {
+				r.Config.Scopes = make([]types.String, 0, len(resp.Config.Scopes))
+				for _, v := range resp.Config.Scopes {
+					r.Config.Scopes = append(r.Config.Scopes, types.StringValue(v))
+				}
 			}
 			r.Config.ScopesClaim = make([]types.String, 0, len(resp.Config.ScopesClaim))
 			for _, v := range resp.Config.ScopesClaim {

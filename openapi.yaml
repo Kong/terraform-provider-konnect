@@ -25552,6 +25552,8 @@ components:
               type: array
               items:
                 type: string
+              default: []
+              nullable: true
             scopes_claim:
               description: 'The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.'
               type: array
@@ -25868,8 +25870,6 @@ components:
             verify_signature:
               description: Verify signature of tokens.
               type: boolean
-          required:
-            - scopes
           shorthand_fields:
             authorization_cookie_httponly:
               type: boolean

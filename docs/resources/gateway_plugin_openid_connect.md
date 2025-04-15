@@ -688,7 +688,7 @@ For more granular token revocation, you can also adjust the `logout_revoke_acces
 - `roles_claim` (List of String) The claim that contains the roles. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `roles_required` (List of String) The roles (`roles_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 - `run_on_preflight` (Boolean) Specifies whether to run this plugin on pre-flight (`OPTIONS`) requests.
-- `scopes` (List of String) The scopes passed to the authorization and token endpoints. Not Null
+- `scopes` (List of String) The scopes passed to the authorization and token endpoints.
 - `scopes_claim` (List of String) The claim that contains the scopes. If multiple values are set, it means the claim is inside a nested object of the token payload.
 - `scopes_required` (List of String) The scopes (`scopes_claim` claim) required to be present in the access token (or introspection results) for successful authorization. This config parameter works in both **AND** / **OR** cases.
 - `search_user_info` (Boolean) Specify whether to use the user info endpoint to get additional claims for consumer mapping, credential mapping, authenticated groups, and upstream and downstream headers.
