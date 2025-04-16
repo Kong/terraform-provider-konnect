@@ -8,8 +8,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
-func TestPortal(t *testing.T) {
-	t.Run("appearance", func(t *testing.T) {
+func TestAPIProductSpecification(t *testing.T) {
+	t.Run("plan-diff", func(t *testing.T) {
 		resource.Test(t, resource.TestCase{
 			ProtoV6ProviderFactories: providerFactory,
 			Steps: []resource.TestStep{
@@ -17,7 +17,7 @@ func TestPortal(t *testing.T) {
 					Config:          providerConfigUs,
 					ConfigDirectory: config.TestNameDirectory(),
 					Check: resource.ComposeAggregateTestCheckFunc(
-						resource.TestCheckResourceAttrSet("konnect_portal_appearance.test", "portal_id"),
+						resource.TestCheckResourceAttr("konnect_api_product_specification.my_apiproductspecification", "name", "oas.yaml"),
 					),
 				},
 				{
