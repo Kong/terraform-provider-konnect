@@ -656,7 +656,7 @@ type Oauth struct {
 	// The password to use if `config.oauth.grant_type` is set to `password`.
 	Password *string `json:"password,omitempty"`
 	// List of scopes to request from the IdP when obtaining a new token.
-	Scopes []string `json:"scopes,omitempty"`
+	Scopes []string `json:"scopes"`
 	// The token endpoint URI.
 	TokenEndpoint *string `json:"token_endpoint,omitempty"`
 	// Extra headers to be passed in the token endpoint request.
