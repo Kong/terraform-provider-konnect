@@ -26253,6 +26253,11 @@ components:
               - ws
               - wss
             type: string
+          default:
+            - grpc
+            - grpcs
+            - http
+            - https
           nullable: true
         route:
           description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the Route being used.'
@@ -28762,6 +28767,9 @@ components:
               - ws
               - wss
             type: string
+          default:
+            - http
+            - https
           nullable: true
         request_buffering:
           description: 'Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.'
@@ -28885,6 +28893,9 @@ components:
               - ws
               - wss
             type: string
+          default:
+            - http
+            - https
           nullable: true
         regex_priority:
           description: 'A number used to choose which route resolves a given request when several routes match it using regexes simultaneously. When two routes match the path and have the same `regex_priority`, the older one (lowest `created_at`) is used. Note that the priority for non-regex routes is different (longer non-regex routes are matched before shorter ones).'
@@ -31440,6 +31451,8 @@ components:
                   type: array
                   items:
                     type: string
+                  default: []
+                  nullable: true
                 token_endpoint:
                   description: The token endpoint URI.
                   type: string
