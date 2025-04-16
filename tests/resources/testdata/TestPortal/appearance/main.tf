@@ -1,5 +1,5 @@
 resource "konnect_portal" "my_portal" {
-  name                      = "My New Portal"
+  name                      = "My New Portal for appearance"
   auto_approve_applications = false
   auto_approve_developers   = false
   custom_domain             = "portal.example.com"
