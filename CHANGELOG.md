@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.6.0
+> Released on 2025/??/??
+
+### Bug fixes
+
+* The `scopes` property in `konnect_gateway_plugin_upstream_oauth` can now be set to an empty array
+
 ## 2.5.0
 > Released on 2025/04/15
 

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e2ba33eead485a4d1bfb3c4d0e6593fa
+  docChecksum: 29e10025471a93554c99da80e83fd08d
   docVersion: 2.0.0
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
@@ -7779,10 +7779,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "201":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 811488}
   delete-route:
@@ -7802,7 +7802,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 248766}
   upsert-route:
@@ -7812,10 +7812,10 @@ examples:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "200":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 298474}
   delete-route-RouteExpression:
@@ -7835,7 +7835,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 419229}
   upsert-route-RouteExpression:
@@ -7845,10 +7845,10 @@ examples:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"service": null}
+        application/json: {"protocols": ["http", "https"], "service": null}
       responses:
         "200":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 578176}
   create-route-RouteExpression:
@@ -7857,10 +7857,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"service": null}
+        application/json: {"protocols": ["http", "https"], "service": null}
       responses:
         "201":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 468015}
   create-service:

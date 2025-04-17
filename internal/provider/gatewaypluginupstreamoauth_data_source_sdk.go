@@ -149,9 +149,11 @@ func (r *GatewayPluginUpstreamOauthDataSourceModel) RefreshFromSharedUpstreamOau
 					r.Config.Oauth.GrantType = types.StringNull()
 				}
 				r.Config.Oauth.Password = types.StringPointerValue(resp.Config.Oauth.Password)
-				r.Config.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Oauth.Scopes))
-				for _, v := range resp.Config.Oauth.Scopes {
-					r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
+				if resp.Config.Oauth.Scopes != nil {
+					r.Config.Oauth.Scopes = make([]types.String, 0, len(resp.Config.Oauth.Scopes))
+					for _, v := range resp.Config.Oauth.Scopes {
+						r.Config.Oauth.Scopes = append(r.Config.Oauth.Scopes, types.StringValue(v))
+					}
 				}
 				r.Config.Oauth.TokenEndpoint = types.StringPointerValue(resp.Config.Oauth.TokenEndpoint)
 				if len(resp.Config.Oauth.TokenHeaders) > 0 {
