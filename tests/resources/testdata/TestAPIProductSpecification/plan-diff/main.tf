@@ -1,10 +1,3 @@
-resource "konnect_gateway_control_plane" "my_cp1" {
-  name         = "Terraform Test Control Plane"
-  description  = "This is a sample description"
-  cluster_type = "CLUSTER_TYPE_CONTROL_PLANE"
-  auth_type    = "pinned_client_certs"
-}
-
 resource "konnect_portal" "my_portal" {
   name                      = "My New Test Portal"
   auto_approve_applications = false
@@ -25,21 +18,8 @@ resource "konnect_api_product" "my_apiproduct" {
   ]
 }
 
-resource "konnect_gateway_service" "my_service" {
-  name             = "HTTPBin"
-  protocol         = "https"
-  host             = "httpbin.org"
-  port             = 443
-  path             = "/"
-  control_plane_id = konnect_gateway_control_plane.my_cp1.id
-}
-
 resource "konnect_api_product_version" "my_apiproductversion" {
   api_product_id = konnect_api_product.my_apiproduct.id
-  gateway_service = {
-    control_plane_id = konnect_gateway_control_plane.my_cp1.id
-    id               = konnect_gateway_service.my_service.id
-  }
   name = "v1"
 }
 
