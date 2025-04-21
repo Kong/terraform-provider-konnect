@@ -13874,16 +13874,19 @@ components:
         - version_count
       title: API Product
     APIProductDocument:
+      x-speakeasy-entity: APIProductDocument
       description: an api product document
       type: object
       properties:
         id:
           type: string
           format: uuid
+          x-speakeasy-param-suppress-computed-diff: true
         parent_document_id:
           type: string
           format: uuid
           nullable: true
+          x-speakeasy-param-computed: false
         title:
           type: string
         slug:
@@ -14048,6 +14051,7 @@ components:
           format: uuid
           example: 7710d5c4-d902-410b-992f-18b814155b53
           readOnly: true
+          x-speakeasy-param-suppress-computed-diff: true
         name:
           description: The name of the API product version specification
           type: string
@@ -14201,6 +14205,7 @@ components:
         - content
       title: Create API Product Version Specification Request
     CreateAPIProductDocumentDTO:
+      x-speakeasy-entity: APIProductDocument
       description: a document payload
       type: object
       properties:
@@ -14267,6 +14272,7 @@ components:
           description: Can be markdown string content or base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
           type: string
+          x-speakeasy-plan-modifiers: Base64InputEquality
         metadata:
           type: object
           nullable: false
