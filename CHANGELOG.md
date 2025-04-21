@@ -6,6 +6,7 @@
 ### Bug fixes
 
 * The `scopes` property in `konnect_gateway_plugin_upstream_oauth` can now be set to an empty array
+* The perpetual diff seen in `konnect_api_product_document` and `konnect_api_product_specification` is now fixed
 
 ## 2.5.0
 > Released on 2025/04/15
