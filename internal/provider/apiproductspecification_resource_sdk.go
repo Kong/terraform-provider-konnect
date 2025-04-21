@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
@@ -29,10 +28,8 @@ func (r *APIProductSpecificationResourceModel) RefreshFromSharedAPIProductVersio
 
 	if resp != nil {
 		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		r.Name = types.StringValue(resp.Name)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

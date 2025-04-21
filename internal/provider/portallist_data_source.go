@@ -63,10 +63,6 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 							Computed:    true,
 							Description: `Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.`,
 						},
-						"created_at": schema.StringAttribute{
-							Computed:    true,
-							Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						},
 						"custom_client_domain": schema.StringAttribute{
 							Computed:    true,
 							Description: `The custom domain to access a self-hosted customized developer portal client. If this is set, the Konnect-hosted portal client will no longer be available. ` + "`" + `custom_domain` + "`" + ` must be also set for this value to be set. See https://github.com/Kong/konnect-portal for information on how to get started deploying and customizing your own Konnect portal.`,
@@ -121,10 +117,6 @@ func (r *PortalListDataSource) Schema(ctx context.Context, req datasource.Schema
 						"rbac_enabled": schema.BoolAttribute{
 							Computed:    true,
 							Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.`,
-						},
-						"updated_at": schema.StringAttribute{
-							Computed:    true,
-							Description: `An ISO-8601 timestamp representation of entity update date.`,
 						},
 					},
 				},

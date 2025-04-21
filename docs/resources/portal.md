@@ -57,9 +57,7 @@ Keys must be of length 1-63 characters, and cannot start with "kong", "konnect",
 ### Read-Only
 
 - `application_count` (Number) Number of applications created in the portal.
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `default_domain` (String) The domain assigned to the portal by Konnect. This is the default place to access the portal and its API if not using a `custom_domain``.
 - `developer_count` (Number) Number of developers using the portal.
 - `id` (String) Contains a unique identifier used by the API for this resource.
 - `published_product_count` (Number) Number of api products published to the portal
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.

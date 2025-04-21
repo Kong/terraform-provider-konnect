@@ -11,12 +11,14 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
 
@@ -38,10 +40,8 @@ type APIProductSpecificationResourceModel struct {
 	APIProductID        types.String `tfsdk:"api_product_id"`
 	APIProductVersionID types.String `tfsdk:"api_product_version_id"`
 	Content             types.String `tfsdk:"content"`
-	CreatedAt           types.String `tfsdk:"created_at"`
 	ID                  types.String `tfsdk:"id"`
 	Name                types.String `tfsdk:"name"`
-	UpdatedAt           types.String `tfsdk:"updated_at"`
 }
 
 func (r *APIProductSpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,21 +61,20 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Description: `The API product version identifier`,
 			},
 			"content": schema.StringAttribute{
-				Required:    true,
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.Base64InputEquality(),
+				},
 				Description: `The base64 encoded contents of the API product version specification`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtLeast(1),
 				},
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The API product version specification identifier.`,
 			},
 			"name": schema.StringAttribute{
@@ -84,13 +83,6 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 255),
 					stringvalidator.RegexMatches(regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`), "must match pattern "+regexp.MustCompile(`^.+(?:\.yaml|\.yml|\.json)$`).String()),
-				},
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

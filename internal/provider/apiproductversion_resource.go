@@ -17,7 +17,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
@@ -37,14 +36,12 @@ type APIProductVersionResource struct {
 // APIProductVersionResourceModel describes the resource data model.
 type APIProductVersionResourceModel struct {
 	APIProductID   types.String                      `tfsdk:"api_product_id"`
-	CreatedAt      types.String                      `tfsdk:"created_at"`
 	Deprecated     types.Bool                        `tfsdk:"deprecated"`
 	GatewayService *tfTypes.GatewayServicePayload    `tfsdk:"gateway_service"`
 	ID             types.String                      `tfsdk:"id"`
 	Labels         map[string]types.String           `tfsdk:"labels"`
 	Name           types.String                      `tfsdk:"name"`
 	Portals        []tfTypes.APIProductVersionPortal `tfsdk:"portals"`
-	UpdatedAt      types.String                      `tfsdk:"updated_at"`
 }
 
 func (r *APIProductVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,13 +55,6 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 			"api_product_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The API Product ID`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"deprecated": schema.BoolAttribute{
 				Computed:           true,
@@ -166,13 +156,6 @@ func (r *APIProductVersionResource) Schema(ctx context.Context, req resource.Sch
 					},
 				},
 				Description: `The list of portals which this API product version is configured for`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

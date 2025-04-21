@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -24,7 +23,6 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedCreateAppAuthS
 			for _, v := range resp.AppAuthStrategyKeyAuthResponse.Configs.KeyAuth.KeyNames {
 				r.KeyAuth.Configs.KeyAuth.KeyNames = append(r.KeyAuth.Configs.KeyAuth.KeyNames, types.StringValue(v))
 			}
-			r.KeyAuth.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.CreatedAt))
 			if resp.AppAuthStrategyKeyAuthResponse.DcrProvider == nil {
 				r.KeyAuth.DcrProvider = nil
 			} else {
@@ -47,7 +45,6 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedCreateAppAuthS
 			r.KeyAuth.Name = types.StringValue(resp.AppAuthStrategyKeyAuthResponse.Name)
 			r.Name = r.KeyAuth.Name
 			r.KeyAuth.StrategyType = types.StringValue(string(resp.AppAuthStrategyKeyAuthResponse.StrategyType))
-			r.KeyAuth.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyKeyAuthResponse.UpdatedAt))
 		}
 		if resp.AppAuthStrategyOpenIDConnectResponse != nil {
 			r.OpenidConnect = &tfTypes.AppAuthStrategyOpenIDConnectResponse{}
@@ -78,7 +75,6 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedCreateAppAuthS
 			for _, v := range resp.AppAuthStrategyOpenIDConnectResponse.Configs.OpenidConnect.Scopes {
 				r.OpenidConnect.Configs.OpenidConnect.Scopes = append(r.OpenidConnect.Configs.OpenidConnect.Scopes, types.StringValue(v))
 			}
-			r.OpenidConnect.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.CreatedAt))
 			if resp.AppAuthStrategyOpenIDConnectResponse.DcrProvider == nil {
 				r.OpenidConnect.DcrProvider = nil
 			} else {
@@ -101,7 +97,6 @@ func (r *ApplicationAuthStrategyDataSourceModel) RefreshFromSharedCreateAppAuthS
 			r.OpenidConnect.Name = types.StringValue(resp.AppAuthStrategyOpenIDConnectResponse.Name)
 			r.Name = r.OpenidConnect.Name
 			r.OpenidConnect.StrategyType = types.StringValue(string(resp.AppAuthStrategyOpenIDConnectResponse.StrategyType))
-			r.OpenidConnect.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.AppAuthStrategyOpenIDConnectResponse.UpdatedAt))
 		}
 	}
 

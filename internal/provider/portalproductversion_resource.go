@@ -19,7 +19,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -41,14 +40,12 @@ type PortalProductVersionResourceModel struct {
 	AuthStrategies                 []tfTypes.AuthStrategy `tfsdk:"auth_strategies"`
 	AuthStrategyIds                []types.String         `tfsdk:"auth_strategy_ids"`
 	AutoApproveRegistration        types.Bool             `tfsdk:"auto_approve_registration"`
-	CreatedAt                      types.String           `tfsdk:"created_at"`
 	Deprecated                     types.Bool             `tfsdk:"deprecated"`
 	ID                             types.String           `tfsdk:"id"`
 	NotifyDevelopers               types.Bool             `tfsdk:"notify_developers"`
 	PortalID                       types.String           `tfsdk:"portal_id"`
 	ProductVersionID               types.String           `tfsdk:"product_version_id"`
 	PublishStatus                  types.String           `tfsdk:"publish_status"`
-	UpdatedAt                      types.String           `tfsdk:"updated_at"`
 }
 
 func (r *PortalProductVersionResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -152,13 +149,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 				Required:    true,
 				Description: `Whether the application registration auto approval on this portal for the api product version is enabled`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
 			"deprecated": schema.BoolAttribute{
 				Required:    true,
 				Description: `Whether the api product version on the portal is deprecated`,
@@ -187,13 +177,6 @@ func (r *PortalProductVersionResource) Schema(ctx context.Context, req resource.
 						"published",
 						"unpublished",
 					),
-				},
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

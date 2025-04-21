@@ -11,13 +11,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	custom_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
+	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
 
@@ -38,14 +40,12 @@ type APIProductDocumentResource struct {
 type APIProductDocumentResourceModel struct {
 	APIProductID     types.String      `tfsdk:"api_product_id"`
 	Content          types.String      `tfsdk:"content"`
-	CreatedAt        types.String      `tfsdk:"created_at"`
 	ID               types.String      `tfsdk:"id"`
 	Metadata         *tfTypes.Metadata `tfsdk:"metadata"`
 	ParentDocumentID types.String      `tfsdk:"parent_document_id"`
 	Slug             types.String      `tfsdk:"slug"`
 	Status           types.String      `tfsdk:"status"`
 	Title            types.String      `tfsdk:"title"`
-	UpdatedAt        types.String      `tfsdk:"updated_at"`
 }
 
 func (r *APIProductDocumentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,19 +61,18 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The API product identifier`,
 			},
 			"content": schema.StringAttribute{
-				Computed:    true,
-				Optional:    true,
+				Computed: true,
+				Optional: true,
+				PlanModifiers: []planmodifier.String{
+					custom_stringplanmodifier.Base64InputEquality(),
+				},
 				Description: `Can be markdown string content or base64 encoded string`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
 			"id": schema.StringAttribute{
-				Computed:    true,
+				Computed: true,
+				PlanModifiers: []planmodifier.String{
+					speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
+				},
 				Description: `The document identifier related to the API product`,
 			},
 			"metadata": schema.SingleNestedAttribute{
@@ -82,7 +81,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `metadata of the document`,
 			},
 			"parent_document_id": schema.StringAttribute{
-				Computed:    true,
 				Optional:    true,
 				Description: `parent document id`,
 			},
@@ -109,13 +107,6 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `document title`,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthAtLeast(1),
-				},
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

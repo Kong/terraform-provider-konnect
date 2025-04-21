@@ -44,9 +44,7 @@ resource "konnect_api_product_document" "my_apiproductdocument" {
 
 ### Read-Only
 
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The document identifier related to the API product
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--metadata"></a>
 ### Nested Schema for `metadata`

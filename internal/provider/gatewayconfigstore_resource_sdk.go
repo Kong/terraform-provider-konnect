@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
@@ -27,10 +26,8 @@ func (r *GatewayConfigStoreResourceModel) RefreshFromSharedConfigStore(ctx conte
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
 		r.ID = types.StringPointerValue(resp.ID)
 		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
 	}
 
 	return diags

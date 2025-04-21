@@ -29,7 +29,6 @@ type APIProductDataSource struct {
 
 // APIProductDataSourceModel describes the data model.
 type APIProductDataSourceModel struct {
-	CreatedAt    types.String               `tfsdk:"created_at"`
 	Description  types.String               `tfsdk:"description"`
 	ID           types.String               `tfsdk:"id"`
 	Labels       map[string]types.String    `tfsdk:"labels"`
@@ -37,7 +36,6 @@ type APIProductDataSourceModel struct {
 	PortalIds    []types.String             `tfsdk:"portal_ids"`
 	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
 	PublicLabels map[string]types.String    `tfsdk:"public_labels"`
-	UpdatedAt    types.String               `tfsdk:"updated_at"`
 	VersionCount types.Float64              `tfsdk:"version_count"`
 }
 
@@ -52,10 +50,6 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 		MarkdownDescription: "APIProduct DataSource",
 
 		Attributes: map[string]schema.Attribute{
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Description: `The description of the API product`,
@@ -104,10 +98,6 @@ func (r *APIProductDataSource) Schema(ctx context.Context, req datasource.Schema
 					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 			"version_count": schema.Float64Attribute{
 				Computed:    true,

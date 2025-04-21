@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -51,7 +50,6 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ct
 
 	if resp != nil {
 		r.Content = types.StringValue(resp.Content)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.ID = types.StringValue(resp.ID)
 		if r.Metadata == nil {
 			r.Metadata = &tfTypes.Metadata{}
@@ -60,7 +58,6 @@ func (r *APIProductDocumentResourceModel) RefreshFromSharedAPIProductDocument(ct
 		r.Slug = types.StringValue(resp.Slug)
 		r.Status = types.StringValue(string(resp.Status))
 		r.Title = types.StringValue(resp.Title)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

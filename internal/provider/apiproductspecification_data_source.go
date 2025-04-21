@@ -31,10 +31,8 @@ type APIProductSpecificationDataSourceModel struct {
 	APIProductID        types.String `tfsdk:"api_product_id"`
 	APIProductVersionID types.String `tfsdk:"api_product_version_id"`
 	Content             types.String `tfsdk:"content"`
-	CreatedAt           types.String `tfsdk:"created_at"`
 	ID                  types.String `tfsdk:"id"`
 	Name                types.String `tfsdk:"name"`
-	UpdatedAt           types.String `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -60,10 +58,6 @@ func (r *APIProductSpecificationDataSource) Schema(ctx context.Context, req data
 				Computed:    true,
 				Description: `The contents of the API product version specification`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The API product version specification identifier.`,
@@ -71,10 +65,6 @@ func (r *APIProductSpecificationDataSource) Schema(ctx context.Context, req data
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the API product version specification`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

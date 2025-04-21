@@ -86,10 +86,6 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						},
 						Description: `JSON-B object containing the configuration for the Key Auth strategy`,
 					},
-					"created_at": schema.StringAttribute{
-						Computed:    true,
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -131,10 +127,6 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed:    true,
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `Response payload from creating or updating a Key Auth Application Auth Strategy`,
@@ -191,10 +183,6 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 						},
 						Description: `JSON-B object containing the configuration for the OIDC strategy`,
 					},
-					"created_at": schema.StringAttribute{
-						Computed:    true,
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -236,10 +224,6 @@ func (r *ApplicationAuthStrategyDataSource) Schema(ctx context.Context, req data
 					},
 					"strategy_type": schema.StringAttribute{
 						Computed: true,
-					},
-					"updated_at": schema.StringAttribute{
-						Computed:    true,
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
 					},
 				},
 				Description: `Response payload from creating an OIDC Application Auth Strategy`,

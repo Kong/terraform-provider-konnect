@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
@@ -101,7 +100,6 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.
 		r.ApplicationCount = types.Float64Value(resp.ApplicationCount)
 		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
 		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
 		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
 		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
@@ -120,7 +118,6 @@ func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.
 		r.Name = types.StringValue(resp.Name)
 		r.PublishedProductCount = types.Float64Value(resp.PublishedProductCount)
 		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

@@ -31,14 +31,12 @@ type APIProductDocumentDataSource struct {
 type APIProductDocumentDataSourceModel struct {
 	APIProductID     types.String     `tfsdk:"api_product_id"`
 	Content          types.String     `tfsdk:"content"`
-	CreatedAt        types.String     `tfsdk:"created_at"`
 	ID               types.String     `tfsdk:"id"`
 	Metadata         tfTypes.Metadata `tfsdk:"metadata"`
 	ParentDocumentID types.String     `tfsdk:"parent_document_id"`
 	Slug             types.String     `tfsdk:"slug"`
 	Status           types.String     `tfsdk:"status"`
 	Title            types.String     `tfsdk:"title"`
-	UpdatedAt        types.String     `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -60,10 +58,6 @@ func (r *APIProductDocumentDataSource) Schema(ctx context.Context, req datasourc
 				Computed:    true,
 				Description: `The unencoded markdown string of the api product document.`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
 			"id": schema.StringAttribute{
 				Required:    true,
 				Description: `The document identifier related to the API product`,
@@ -82,10 +76,6 @@ func (r *APIProductDocumentDataSource) Schema(ctx context.Context, req datasourc
 			},
 			"title": schema.StringAttribute{
 				Computed: true,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

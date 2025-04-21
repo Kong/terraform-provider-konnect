@@ -8,7 +8,6 @@ type Portal struct {
 	ApplicationCount                 types.Float64           `tfsdk:"application_count"`
 	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
-	CreatedAt                        types.String            `tfsdk:"created_at"`
 	CustomClientDomain               types.String            `tfsdk:"custom_client_domain"`
 	CustomDomain                     types.String            `tfsdk:"custom_domain"`
 	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
@@ -22,5 +21,4 @@ type Portal struct {
 	Name                             types.String            `tfsdk:"name"`
 	PublishedProductCount            types.Float64           `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
-	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }

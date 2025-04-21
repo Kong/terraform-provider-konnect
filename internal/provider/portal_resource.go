@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -35,7 +34,6 @@ type PortalResourceModel struct {
 	ApplicationCount                 types.Float64           `tfsdk:"application_count"`
 	AutoApproveApplications          types.Bool              `tfsdk:"auto_approve_applications"`
 	AutoApproveDevelopers            types.Bool              `tfsdk:"auto_approve_developers"`
-	CreatedAt                        types.String            `tfsdk:"created_at"`
 	CustomClientDomain               types.String            `tfsdk:"custom_client_domain"`
 	CustomDomain                     types.String            `tfsdk:"custom_domain"`
 	DefaultApplicationAuthStrategyID types.String            `tfsdk:"default_application_auth_strategy_id"`
@@ -50,7 +48,6 @@ type PortalResourceModel struct {
 	Name                             types.String            `tfsdk:"name"`
 	PublishedProductCount            types.Float64           `tfsdk:"published_product_count"`
 	RbacEnabled                      types.Bool              `tfsdk:"rbac_enabled"`
-	UpdatedAt                        types.String            `tfsdk:"updated_at"`
 }
 
 func (r *PortalResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -74,13 +71,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Description: `Whether the developer account registrations will be automatically approved, or if they will be set to pending until approved by an admin.`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"custom_client_domain": schema.StringAttribute{
 				Computed:    true,
@@ -171,13 +161,6 @@ func (r *PortalResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:    true,
 				Optional:    true,
 				Description: `Whether the portal resources are protected by Role Based Access Control (RBAC). If enabled, developers view or register for products until unless assigned to teams with access to view and consume specific products.`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 		},
 	}

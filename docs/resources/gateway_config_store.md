@@ -32,9 +32,7 @@ resource "konnect_gateway_config_store" "my_gatewayconfigstore" {
 
 ### Read-Only
 
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The Config Store ID.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import
 

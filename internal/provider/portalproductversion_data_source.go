@@ -32,13 +32,11 @@ type PortalProductVersionDataSourceModel struct {
 	ApplicationRegistrationEnabled types.Bool             `tfsdk:"application_registration_enabled"`
 	AuthStrategies                 []tfTypes.AuthStrategy `tfsdk:"auth_strategies"`
 	AutoApproveRegistration        types.Bool             `tfsdk:"auto_approve_registration"`
-	CreatedAt                      types.String           `tfsdk:"created_at"`
 	Deprecated                     types.Bool             `tfsdk:"deprecated"`
 	ID                             types.String           `tfsdk:"id"`
 	PortalID                       types.String           `tfsdk:"portal_id"`
 	ProductVersionID               types.String           `tfsdk:"product_version_id"`
 	PublishStatus                  types.String           `tfsdk:"publish_status"`
-	UpdatedAt                      types.String           `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -113,10 +111,6 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 				Computed:    true,
 				Description: `Whether the application registration auto approval on this portal for the api product version is enabled`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
 			"deprecated": schema.BoolAttribute{
 				Computed:    true,
 				Description: `Whether the api product version on the portal is deprecated`,
@@ -136,10 +130,6 @@ func (r *PortalProductVersionDataSource) Schema(ctx context.Context, req datasou
 			"publish_status": schema.StringAttribute{
 				Computed:    true,
 				Description: `Publication status of the API product version on the portal`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

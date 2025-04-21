@@ -33,9 +33,7 @@ resource "konnect_api_product_specification" "my_apiproductspecification" {
 
 ### Read-Only
 
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `id` (String) The API product version specification identifier.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 ## Import
 

@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -37,10 +36,8 @@ type GatewayConfigStoreResource struct {
 // GatewayConfigStoreResourceModel describes the resource data model.
 type GatewayConfigStoreResourceModel struct {
 	ControlPlaneID types.String `tfsdk:"control_plane_id"`
-	CreatedAt      types.String `tfsdk:"created_at"`
 	ID             types.String `tfsdk:"id"`
 	Name           types.String `tfsdk:"name"`
-	UpdatedAt      types.String `tfsdk:"updated_at"`
 }
 
 func (r *GatewayConfigStoreResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -58,13 +55,6 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				},
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager. Requires replacement if changed.`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The Config Store ID.`,
@@ -74,13 +64,6 @@ func (r *GatewayConfigStoreResource) Schema(ctx context.Context, req resource.Sc
 				Optional: true,
 				Validators: []validator.String{
 					stringvalidator.UTF8LengthBetween(1, 100),
-				},
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
 				},
 			},
 		},

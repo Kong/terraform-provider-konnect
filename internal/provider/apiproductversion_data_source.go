@@ -30,14 +30,12 @@ type APIProductVersionDataSource struct {
 // APIProductVersionDataSourceModel describes the data model.
 type APIProductVersionDataSourceModel struct {
 	APIProductID   types.String                      `tfsdk:"api_product_id"`
-	CreatedAt      types.String                      `tfsdk:"created_at"`
 	Deprecated     types.Bool                        `tfsdk:"deprecated"`
 	GatewayService *tfTypes.GatewayService           `tfsdk:"gateway_service"`
 	ID             types.String                      `tfsdk:"id"`
 	Labels         map[string]types.String           `tfsdk:"labels"`
 	Name           types.String                      `tfsdk:"name"`
 	Portals        []tfTypes.APIProductVersionPortal `tfsdk:"portals"`
-	UpdatedAt      types.String                      `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -54,10 +52,6 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 			"api_product_id": schema.StringAttribute{
 				Required:    true,
 				Description: `The API product identifier`,
-			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
 			},
 			"deprecated": schema.BoolAttribute{
 				Computed:           true,
@@ -138,10 +132,6 @@ func (r *APIProductVersionDataSource) Schema(ctx context.Context, req datasource
 					},
 				},
 				Description: `The list of portals which this API product version is configured for`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

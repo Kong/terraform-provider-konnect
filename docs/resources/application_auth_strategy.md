@@ -91,10 +91,8 @@ Requires replacement if changed.
 Read-Only:
 
 - `active` (Boolean) At least one published product version is using this auth strategy.
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--key_auth--dcr_provider))
 - `id` (String) Contains a unique identifier used by the API for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--key_auth--configs"></a>
 ### Nested Schema for `key_auth.configs`
@@ -145,10 +143,8 @@ Requires replacement if changed.
 Read-Only:
 
 - `active` (Boolean) At least one published product version is using this auth strategy.
-- `created_at` (String) An ISO-8601 timestamp representation of entity creation date.
 - `dcr_provider` (Attributes) (see [below for nested schema](#nestedatt--openid_connect--dcr_provider))
 - `id` (String) Contains a unique identifier used by the API for this resource.
-- `updated_at` (String) An ISO-8601 timestamp representation of entity update date.
 
 <a id="nestedatt--openid_connect--configs"></a>
 ### Nested Schema for `openid_connect.configs`

@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -15,7 +14,6 @@ func (r *APIProductDataSourceModel) RefreshFromSharedAPIProduct(ctx context.Cont
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Description = types.StringPointerValue(resp.Description)
 		r.ID = types.StringValue(resp.ID)
 		if len(resp.Labels) > 0 {
@@ -50,7 +48,6 @@ func (r *APIProductDataSourceModel) RefreshFromSharedAPIProduct(ctx context.Cont
 				r.PublicLabels[key1] = types.StringValue(value1)
 			}
 		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 		r.VersionCount = types.Float64Value(resp.VersionCount)
 	}
 

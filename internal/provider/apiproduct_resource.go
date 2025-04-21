@@ -16,7 +16,6 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -34,7 +33,6 @@ type APIProductResource struct {
 
 // APIProductResourceModel describes the resource data model.
 type APIProductResourceModel struct {
-	CreatedAt    types.String               `tfsdk:"created_at"`
 	Description  types.String               `tfsdk:"description"`
 	ID           types.String               `tfsdk:"id"`
 	Labels       map[string]types.String    `tfsdk:"labels"`
@@ -42,7 +40,6 @@ type APIProductResourceModel struct {
 	PortalIds    []types.String             `tfsdk:"portal_ids"`
 	Portals      []tfTypes.APIProductPortal `tfsdk:"portals"`
 	PublicLabels map[string]types.String    `tfsdk:"public_labels"`
-	UpdatedAt    types.String               `tfsdk:"updated_at"`
 	VersionCount types.Float64              `tfsdk:"version_count"`
 }
 
@@ -54,13 +51,6 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "APIProduct Resource",
 		Attributes: map[string]schema.Attribute{
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
-			},
 			"description": schema.StringAttribute{
 				Computed:    true,
 				Optional:    true,
@@ -116,13 +106,6 @@ func (r *APIProductResource) Schema(ctx context.Context, req resource.SchemaRequ
 					`Public labels are intended to store **PUBLIC** metadata. ` + "\n" +
 					`` + "\n" +
 					`Keys must be of length 1-63 characters, and cannot start with "kong", "konnect", "mesh", "kic", or "_".`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
-				Validators: []validator.String{
-					validators.IsRFC3339(),
-				},
 			},
 			"version_count": schema.Float64Attribute{
 				Computed:    true,

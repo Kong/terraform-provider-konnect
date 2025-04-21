@@ -29,10 +29,8 @@ type GatewayConfigStoreDataSource struct {
 // GatewayConfigStoreDataSourceModel describes the data model.
 type GatewayConfigStoreDataSourceModel struct {
 	ControlPlaneID types.String `tfsdk:"control_plane_id"`
-	CreatedAt      types.String `tfsdk:"created_at"`
 	ID             types.String `tfsdk:"id"`
 	Name           types.String `tfsdk:"name"`
-	UpdatedAt      types.String `tfsdk:"updated_at"`
 }
 
 // Metadata returns the data source type name.
@@ -50,10 +48,6 @@ func (r *GatewayConfigStoreDataSource) Schema(ctx context.Context, req datasourc
 				Required:    true,
 				Description: `The UUID of your control plane. This variable is available in the Konnect manager.`,
 			},
-			"created_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity creation date.`,
-			},
 			"id": schema.StringAttribute{
 				Computed:    true,
 				Description: `The Config Store ID.`,
@@ -61,10 +55,6 @@ func (r *GatewayConfigStoreDataSource) Schema(ctx context.Context, req datasourc
 			"name": schema.StringAttribute{
 				Computed:    true,
 				Description: `The name of the Config Store`,
-			},
-			"updated_at": schema.StringAttribute{
-				Computed:    true,
-				Description: `An ISO-8601 timestamp representation of entity update date.`,
 			},
 		},
 	}

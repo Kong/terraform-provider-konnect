@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -57,7 +56,6 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 	var diags diag.Diagnostics
 
 	if resp != nil {
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
 		r.Deprecated = types.BoolValue(resp.Deprecated)
 		if resp.GatewayService == nil {
 			r.GatewayService = nil
@@ -113,7 +111,6 @@ func (r *APIProductVersionResourceModel) RefreshFromSharedAPIProductVersion(ctx 
 				r.Portals[portalsCount].PublishStatus = portals.PublishStatus
 			}
 		}
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
 	}
 
 	return diags

@@ -139,16 +139,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_objectvalidators.NotNull(),
 						},
 					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.Object{
@@ -253,16 +243,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 						Validators: []validator.String{
 							speakeasy_stringvalidators.NotNull(),
 							stringvalidator.OneOf("key_auth"),
-						},
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
 						},
 					},
 				},
@@ -407,16 +387,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							speakeasy_objectvalidators.NotNull(),
 						},
 					},
-					"created_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity creation date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
-						},
-					},
 					"dcr_provider": schema.SingleNestedAttribute{
 						Computed: true,
 						PlanModifiers: []planmodifier.Object{
@@ -532,16 +502,6 @@ func (r *ApplicationAuthStrategyResource) Schema(ctx context.Context, req resour
 							stringvalidator.OneOf(
 								"openid_connect",
 							),
-						},
-					},
-					"updated_at": schema.StringAttribute{
-						Computed: true,
-						PlanModifiers: []planmodifier.String{
-							speakeasy_stringplanmodifier.SuppressDiff(speakeasy_stringplanmodifier.ExplicitSuppress),
-						},
-						Description: `An ISO-8601 timestamp representation of entity update date.`,
-						Validators: []validator.String{
-							validators.IsRFC3339(),
 						},
 					},
 				},

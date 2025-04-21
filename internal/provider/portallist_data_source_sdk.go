@@ -6,7 +6,6 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
@@ -24,7 +23,6 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 			data.ApplicationCount = types.Float64Value(dataItem.ApplicationCount)
 			data.AutoApproveApplications = types.BoolValue(dataItem.AutoApproveApplications)
 			data.AutoApproveDevelopers = types.BoolValue(dataItem.AutoApproveDevelopers)
-			data.CreatedAt = types.StringValue(typeconvert.TimeToString(dataItem.CreatedAt))
 			data.CustomClientDomain = types.StringPointerValue(dataItem.CustomClientDomain)
 			data.CustomDomain = types.StringPointerValue(dataItem.CustomDomain)
 			data.DefaultApplicationAuthStrategyID = types.StringPointerValue(dataItem.DefaultApplicationAuthStrategyID)
@@ -43,14 +41,12 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 			data.Name = types.StringValue(dataItem.Name)
 			data.PublishedProductCount = types.Float64Value(dataItem.PublishedProductCount)
 			data.RbacEnabled = types.BoolValue(dataItem.RbacEnabled)
-			data.UpdatedAt = types.StringValue(typeconvert.TimeToString(dataItem.UpdatedAt))
 			if dataCount+1 > len(r.Data) {
 				r.Data = append(r.Data, data)
 			} else {
 				r.Data[dataCount].ApplicationCount = data.ApplicationCount
 				r.Data[dataCount].AutoApproveApplications = data.AutoApproveApplications
 				r.Data[dataCount].AutoApproveDevelopers = data.AutoApproveDevelopers
-				r.Data[dataCount].CreatedAt = data.CreatedAt
 				r.Data[dataCount].CustomClientDomain = data.CustomClientDomain
 				r.Data[dataCount].CustomDomain = data.CustomDomain
 				r.Data[dataCount].DefaultApplicationAuthStrategyID = data.DefaultApplicationAuthStrategyID
@@ -64,7 +60,6 @@ func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx con
 				r.Data[dataCount].Name = data.Name
 				r.Data[dataCount].PublishedProductCount = data.PublishedProductCount
 				r.Data[dataCount].RbacEnabled = data.RbacEnabled
-				r.Data[dataCount].UpdatedAt = data.UpdatedAt
 			}
 		}
 		r.Meta.Page.Number = types.Float64Value(resp.Meta.Page.Number)
