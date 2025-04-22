@@ -149,7 +149,7 @@ type RouteExpression struct {
 	PreserveHost *bool  `json:"preserve_host,omitempty"`
 	Priority     *int64 `json:"priority,omitempty"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
-	Protocols []RouteExpressionProtocols `json:"protocols,omitempty"`
+	Protocols []RouteExpressionProtocols `json:"protocols"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
 	RequestBuffering *bool `json:"request_buffering,omitempty"`
 	// Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.

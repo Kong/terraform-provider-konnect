@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.6.0
+> Released on 2025/04/22
+
+### Features
+
+* Add support for `konnect_gateway_custom_plugin_streaming` resource, which allows custom plugins to be deployed to Dedicated Cloud Gateways
+
+### Bug fixes
+
+* The `scopes` property in `konnect_gateway_plugin_upstream_oauth` can now be set to an empty array
+
 ## 2.5.0
 > Released on 2025/04/15
 

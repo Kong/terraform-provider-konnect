@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: e2ba33eead485a4d1bfb3c4d0e6593fa
+  docChecksum: f44fefd3a2ee6f49facb95cfd0541d90
   docVersion: 2.0.0
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
-  releaseVersion: 2.5.0
-  configChecksum: 3a648e14d55b8ef5a8f5161c2eac40a8
+  releaseVersion: 2.6.0
+  configChecksum: f24529982bf127cfa59672e00e016916
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -53,6 +53,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_control_plane/data-source.tf
   - examples/data-sources/konnect_gateway_control_plane_list/data-source.tf
   - examples/data-sources/konnect_gateway_custom_plugin_schema/data-source.tf
+  - examples/data-sources/konnect_gateway_custom_plugin_streaming/data-source.tf
   - examples/data-sources/konnect_gateway_data_plane_client_certificate/data-source.tf
   - examples/data-sources/konnect_gateway_hmac_auth/data-source.tf
   - examples/data-sources/konnect_gateway_jwt/data-source.tf
@@ -211,6 +212,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_control_plane_membership/resource.tf
   - examples/resources/konnect_gateway_custom_plugin_schema/import.sh
   - examples/resources/konnect_gateway_custom_plugin_schema/resource.tf
+  - examples/resources/konnect_gateway_custom_plugin_streaming/import.sh
+  - examples/resources/konnect_gateway_custom_plugin_streaming/resource.tf
   - examples/resources/konnect_gateway_data_plane_client_certificate/import.sh
   - examples/resources/konnect_gateway_data_plane_client_certificate/resource.tf
   - examples/resources/konnect_gateway_hmac_auth/import.sh
@@ -548,6 +551,10 @@ generatedFiles:
   - internal/provider/gatewaycustompluginschema_data_source_sdk.go
   - internal/provider/gatewaycustompluginschema_resource.go
   - internal/provider/gatewaycustompluginschema_resource_sdk.go
+  - internal/provider/gatewaycustompluginstreaming_data_source.go
+  - internal/provider/gatewaycustompluginstreaming_data_source_sdk.go
+  - internal/provider/gatewaycustompluginstreaming_resource.go
+  - internal/provider/gatewaycustompluginstreaming_resource_sdk.go
   - internal/provider/gatewaydataplaneclientcertificate_data_source.go
   - internal/provider/gatewaydataplaneclientcertificate_data_source_sdk.go
   - internal/provider/gatewaydataplaneclientcertificate_resource.go
@@ -1293,6 +1300,7 @@ generatedFiles:
   - internal/sdk/consumers.go
   - internal/sdk/controlplanegroups.go
   - internal/sdk/controlplanes.go
+  - internal/sdk/customplugins.go
   - internal/sdk/custompluginschemas.go
   - internal/sdk/docs/models/operations/option.md
   - internal/sdk/dpcertificates.go
@@ -1355,6 +1363,7 @@ generatedFiles:
   - internal/sdk/models/operations/createcorsplugin.go
   - internal/sdk/models/operations/createcp.go
   - internal/sdk/models/operations/createcustomdomains.go
+  - internal/sdk/models/operations/createcustomplugin.go
   - internal/sdk/models/operations/createdatadogplugin.go
   - internal/sdk/models/operations/createdatadogtracingplugin.go
   - internal/sdk/models/operations/createdataplanecertificate.go
@@ -1485,6 +1494,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletecorrelationidplugin.go
   - internal/sdk/models/operations/deletecorsplugin.go
   - internal/sdk/models/operations/deletecustomdomain.go
+  - internal/sdk/models/operations/deletecustomplugin.go
   - internal/sdk/models/operations/deletedatadogplugin.go
   - internal/sdk/models/operations/deletedatadogtracingplugin.go
   - internal/sdk/models/operations/deletedataplanecertificate.go
@@ -1623,6 +1633,7 @@ generatedFiles:
   - internal/sdk/models/operations/getcorrelationidplugin.go
   - internal/sdk/models/operations/getcorsplugin.go
   - internal/sdk/models/operations/getcustomdomain.go
+  - internal/sdk/models/operations/getcustomplugin.go
   - internal/sdk/models/operations/getdatadogplugin.go
   - internal/sdk/models/operations/getdatadogtracingplugin.go
   - internal/sdk/models/operations/getdataplanecertificate.go
@@ -1851,6 +1862,7 @@ generatedFiles:
   - internal/sdk/models/operations/upsertcertificate.go
   - internal/sdk/models/operations/upsertconsumer.go
   - internal/sdk/models/operations/upsertconsumergroup.go
+  - internal/sdk/models/operations/upsertcustomplugin.go
   - internal/sdk/models/operations/upsertkey.go
   - internal/sdk/models/operations/upsertkeyset.go
   - internal/sdk/models/operations/upsertplugin.go
@@ -1964,6 +1976,7 @@ generatedFiles:
   - internal/sdk/models/shared/createtransitgatewayrequest.go
   - internal/sdk/models/shared/customdomain.go
   - internal/sdk/models/shared/customdomainstate.go
+  - internal/sdk/models/shared/customplugin.go
   - internal/sdk/models/shared/datadogplugin.go
   - internal/sdk/models/shared/datadogtracingplugin.go
   - internal/sdk/models/shared/dataplaneclientcertificate.go
@@ -7779,10 +7792,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "201":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 811488}
   delete-route:
@@ -7802,7 +7815,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 248766}
   upsert-route:
@@ -7812,10 +7825,10 @@ examples:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+        application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
       responses:
         "200":
-          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
+          application/json: {"hosts": ["foo.example.com", "foo.example.us"], "id": "56c4566c-14cc-4132-9011-4139fcbbe50a", "name": "example-route", "paths": ["/v1", "/v2"], "protocols": ["http", "https"], "service": {"id": "bd380f99-659d-415e-b0e7-72ea05df3218"}}
         "401":
           application/json: {"message": "<value>", "status": 298474}
   delete-route-RouteExpression:
@@ -7835,7 +7848,7 @@ examples:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       responses:
         "200":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 419229}
   upsert-route-RouteExpression:
@@ -7845,10 +7858,10 @@ examples:
           RouteId: "a4326a41-aa12-44e3-93e4-6b6e58bfb9d7"
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"service": null}
+        application/json: {"protocols": ["http", "https"], "service": null}
       responses:
         "200":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 578176}
   create-route-RouteExpression:
@@ -7857,10 +7870,10 @@ examples:
         path:
           controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
       requestBody:
-        application/json: {"service": null}
+        application/json: {"protocols": ["http", "https"], "service": null}
       responses:
         "201":
-          application/json: {"service": null}
+          application/json: {"protocols": ["http", "https"], "service": null}
         "401":
           application/json: {"message": "<value>", "status": 468015}
   create-service:
@@ -8643,5 +8656,50 @@ examples:
           application/problem+json: {"status": 181794, "title": "<value>", "instance": "<value>", "detail": "<value>"}
         "503":
           application/problem+json: {"status": 503, "title": "Service Unavailable", "instance": "konnect:trace:2287285207635123011", "detail": "Could not retrieve permissions to check resource accessibility."}
+  create-custom-plugin:
+    speakeasy-default-create-custom-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
+      responses:
+        "201":
+          application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
+        "401":
+          application/json: {"message": "<value>", "status": 714396}
+  delete-custom-plugin:
+    "":
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+          CustomPluginId: ""
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 523768}
+  get-custom-plugin:
+    "":
+      parameters:
+        path:
+          CustomPluginId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
+        "401":
+          application/json: {"message": "<value>", "status": 4946}
+  upsert-custom-plugin:
+    "":
+      parameters:
+        path:
+          CustomPluginId: ""
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
+      responses:
+        "200":
+          application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
+        "401":
+          application/json: {"message": "<value>", "status": 939505}
 examplesVersion: 1.0.1
 generatedTests: {}
