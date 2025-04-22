@@ -2142,6 +2142,107 @@ paths:
         - MTLS-auth credentials
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
+  '/v2/control-planes/{controlPlaneId}/core-entities/custom-plugins':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayCustomPluginStreaming#create
+      operationId: create-custom-plugin
+      summary: Create a new CustomPlugin
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create a new CustomPlugin
+      requestBody:
+        description: Description of the new CustomPlugin for creation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomPlugin'
+      responses:
+        '201':
+          description: Successfully created CustomPlugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CustomPlugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/custom-plugins/{CustomPluginId}':
+    delete:
+      x-speakeasy-entity-operation: GatewayCustomPluginStreaming#delete
+      operationId: delete-custom-plugin
+      summary: Delete a CustomPlugin
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Delete a CustomPlugin
+      parameters:
+        - $ref: '#/components/parameters/CustomPluginId'
+      responses:
+        '204':
+          description: Successfully deleted CustomPlugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CustomPlugins
+    get:
+      x-speakeasy-entity-operation: GatewayCustomPluginStreaming#read
+      operationId: get-custom-plugin
+      summary: Fetch a CustomPlugin
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Get a CustomPlugin using ID or name.
+      responses:
+        '200':
+          description: Successfully fetched CustomPlugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - CustomPlugins
+    parameters:
+      - $ref: '#/components/parameters/CustomPluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayCustomPluginStreaming#update
+      operationId: upsert-custom-plugin
+      summary: Upsert a CustomPlugin
+      description: |-
+        **Pre-release Endpoint**
+        This endpoint is currently in beta and is subject to change.
+
+        Create or Update CustomPlugin using ID or name.
+      requestBody:
+        description: Description of the CustomPlugin
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomPlugin'
+      responses:
+        '200':
+          description: Successfully upserted CustomPlugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - CustomPlugins
   '/v2/control-planes/{controlPlaneId}/core-entities/key-sets':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -11737,6 +11838,15 @@ components:
       schema:
         $ref: '#/components/schemas/CustomDomainId'
       x-speakeasy-match: id
+    CustomPluginId:
+      description: ID of the CustomPlugin to lookup
+      example: ''
+      in: path
+      name: CustomPluginId
+      required: true
+      schema:
+        type: string
+      x-speakeasy-match: id
     DataPlaneCertificateId:
       name: certificateId
       in: path
@@ -13115,7 +13225,7 @@ components:
         The current state of the Transit Gateway. Possible values:
         - `created` - The attachment has been created but is not attached to transit gateway.
         - `initializing` - The attachment is in the process of being initialized and is setting up necessary resources.
-        - `pending` - acceptance The attachment request is awaiting acceptance in customer VPC.
+        - `pending-acceptance` The attachment request is awaiting acceptance in customer VPC.
         - `ready` - The transit gateway attachment is fully operational and can route traffic as configured.
         - `terminating` - The attachment is in the process of being deleted and is no longer accepting new traffic.
         - `terminated` - The attachment has been fully deleted and is no longer available.
@@ -20389,6 +20499,41 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    CustomPlugin:
+      x-speakeasy-entity: GatewayCustomPluginStreaming
+      type: object
+      properties:
+        created_at:
+          description: Unix epoch when the resource was created.
+          type: integer
+          nullable: true
+        handler:
+          type: string
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+        schema:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        updated_at:
+          description: Unix epoch when the resource was last updated.
+          type: integer
+          nullable: true
+      example:
+        handler: 'return { VERSION = ''1.0,0'', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }'
+        id: 868346aa-1105-4b77-8346-aa1105fb77c4
+        name: set-header
+        schema: 'return { name = ''set-header'', fields = { { protocols = require(''kong.db.schema.typedefs'').protocols_http }, { config = { type = ''record'', fields = { { name = { description = ''The name of the header to set.'', type = ''string'', required = true } }, { value = { description = ''The value for the header.'', type = ''string'', required = true } } } } } } }'
+      additionalProperties: false
+      required:
+        - name
+        - schema
+        - handler
     DatadogPlugin:
       x-speakeasy-entity: GatewayPluginDatadog
       allOf:
@@ -33530,6 +33675,7 @@ tags:
     name: Custom Plugin Schemas
   - description: Config Stores
     name: Config Stores
+  - name: CustomPlugins
   - description: |
       Service entities are abstractions of your microservice interfaces or formal APIs. For example, a service could be a data transformation microservice or a billing API.
       <br><br>
@@ -33633,7 +33779,7 @@ tags:
   - name: ACLs
 externalDocs:
   description: Documentation for Kong Gateway and its APIs
-  url: 'https://docs.konghq.com'
+  url: 'https://developer.konghq.com'
 security:
   - personalAccessToken: []
   - systemAccountAccessToken: []

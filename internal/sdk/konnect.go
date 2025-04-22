@@ -74,7 +74,7 @@ func (c *sdkConfiguration) GetServerDetails() (string, map[string]string) {
 
 // Konnect API: The Konnect platform API
 //
-// https://docs.konghq.com - Documentation for Kong Gateway and its APIs
+// https://developer.konghq.com - Documentation for Kong Gateway and its APIs
 type Konnect struct {
 	ServerlessCloudGateways        *ServerlessCloudGateways
 	Mesh                           *Mesh
@@ -115,6 +115,7 @@ type Konnect struct {
 	JWTs                 *JWTs
 	APIKeys              *APIKeys
 	MTLSAuthCredentials  *MTLSAuthCredentials
+	CustomPlugins        *CustomPlugins
 	// A JSON Web key set. Key sets are the preferred way to expose keys to plugins because they tell the plugin where to look for keys or have a scoping mechanism to restrict plugins to specific keys.
 	//
 	KeySets *KeySets
@@ -358,6 +359,8 @@ func New(opts ...SDKOption) *Konnect {
 	sdk.APIKeys = newAPIKeys(sdk.sdkConfiguration)
 
 	sdk.MTLSAuthCredentials = newMTLSAuthCredentials(sdk.sdkConfiguration)
+
+	sdk.CustomPlugins = newCustomPlugins(sdk.sdkConfiguration)
 
 	sdk.KeySets = newKeySets(sdk.sdkConfiguration)
 
