@@ -1,13 +1,11 @@
 # Changelog
 
 ## 2.6.0
-> Released on 2025/??/??
-
+> Released on 2025/04/22
 
 ### Features
 
 * Add support for `konnect_gateway_custom_plugin_streaming` resource, which allows custom plugins to be deployed to Dedicated Cloud Gateways
-
 
 ### Bug fixes
 
