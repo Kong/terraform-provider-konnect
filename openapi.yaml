@@ -3025,6 +3025,62 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiRagInjector':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginAiRagInjector#delete
+      operationId: delete-airaginjector-plugin
+      summary: Delete a AiRagInjector plugin
+      description: Delete a AiRagInjector plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginAiRagInjector#read
+      operationId: get-airaginjector-plugin
+      summary: Get a AiRagInjector plugin
+      description: Get a AiRagInjector plugin
+      responses:
+        '200':
+          description: AiRagInjector plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiRagInjectorPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginAiRagInjector#update
+      operationId: update-airaginjector-plugin
+      summary: Update a AiRagInjector plugin
+      description: Update a AiRagInjector plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiRagInjectorPlugin'
+      responses:
+        '200':
+          description: AiRagInjector plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiRagInjectorPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiRateLimitingAdvanced':
     delete:
       x-speakeasy-entity-operation: GatewayPluginAiRateLimitingAdvanced#delete
@@ -3189,6 +3245,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AiResponseTransformerPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#AiSanitizer':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginAiSanitizer#delete
+      operationId: delete-aisanitizer-plugin
+      summary: Delete a AiSanitizer plugin
+      description: Delete a AiSanitizer plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginAiSanitizer#read
+      operationId: get-aisanitizer-plugin
+      summary: Get a AiSanitizer plugin
+      description: Get a AiSanitizer plugin
+      responses:
+        '200':
+          description: AiSanitizer plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSanitizerPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginAiSanitizer#update
+      operationId: update-aisanitizer-plugin
+      summary: Update a AiSanitizer plugin
+      description: Update a AiSanitizer plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiSanitizerPlugin'
+      responses:
+        '200':
+          description: AiSanitizer plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSanitizerPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -3637,6 +3749,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfluentPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#ConfluentConsume':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginConfluentConsume#delete
+      operationId: delete-confluentconsume-plugin
+      summary: Delete a ConfluentConsume plugin
+      description: Delete a ConfluentConsume plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginConfluentConsume#read
+      operationId: get-confluentconsume-plugin
+      summary: Get a ConfluentConsume plugin
+      description: Get a ConfluentConsume plugin
+      responses:
+        '200':
+          description: ConfluentConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfluentConsumePlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginConfluentConsume#update
+      operationId: update-confluentconsume-plugin
+      summary: Update a ConfluentConsume plugin
+      description: Update a ConfluentConsume plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfluentConsumePlugin'
+      responses:
+        '200':
+          description: ConfluentConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfluentConsumePlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -4869,6 +5037,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JwtSignerPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#KafkaConsume':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginKafkaConsume#delete
+      operationId: delete-kafkaconsume-plugin
+      summary: Delete a KafkaConsume plugin
+      description: Delete a KafkaConsume plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginKafkaConsume#read
+      operationId: get-kafkaconsume-plugin
+      summary: Get a KafkaConsume plugin
+      description: Get a KafkaConsume plugin
+      responses:
+        '200':
+          description: KafkaConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KafkaConsumePlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginKafkaConsume#update
+      operationId: update-kafkaconsume-plugin
+      summary: Update a KafkaConsume plugin
+      description: Update a KafkaConsume plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KafkaConsumePlugin'
+      responses:
+        '200':
+          description: KafkaConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KafkaConsumePlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -6157,6 +6381,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RedirectPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins/{PluginId}#RequestCallout':
+    delete:
+      x-speakeasy-entity-operation: GatewayPluginRequestCallout#delete
+      operationId: delete-requestcallout-plugin
+      summary: Delete a RequestCallout plugin
+      description: Delete a RequestCallout plugin
+      responses:
+        '204':
+          description: Successfully deleted Plugin or the resource didn't exist
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+    get:
+      x-speakeasy-entity-operation: GatewayPluginRequestCallout#read
+      operationId: get-requestcallout-plugin
+      summary: Get a RequestCallout plugin
+      description: Get a RequestCallout plugin
+      responses:
+        '200':
+          description: RequestCallout plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCalloutPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+        '404':
+          description: Resource does not exist
+      tags:
+        - Plugins
+    parameters:
+      - $ref: '#/components/parameters/PluginId'
+      - $ref: '#/components/parameters/controlPlaneId'
+    put:
+      x-speakeasy-entity-operation: GatewayPluginRequestCallout#update
+      operationId: update-requestcallout-plugin
+      summary: Update a RequestCallout plugin
+      description: Update a RequestCallout plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCalloutPlugin'
+      responses:
+        '200':
+          description: RequestCallout plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCalloutPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -7929,6 +8209,31 @@ paths:
           $ref: '#/components/responses/HTTP401Error'
       tags:
         - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiRagInjector':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginAiRagInjector#create
+      operationId: create-airaginjector-plugin
+      summary: Create a AiRagInjector plugin
+      description: Create a AiRagInjector plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiRagInjectorPlugin'
+      responses:
+        '201':
+          description: Created AiRagInjector plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiRagInjectorPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
   '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiRateLimitingAdvanced':
     parameters:
       - $ref: '#/components/parameters/controlPlaneId'
@@ -8000,6 +8305,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AiResponseTransformerPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#AiSanitizer':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginAiSanitizer#create
+      operationId: create-aisanitizer-plugin
+      summary: Create a AiSanitizer plugin
+      description: Create a AiSanitizer plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AiSanitizerPlugin'
+      responses:
+        '201':
+          description: Created AiSanitizer plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSanitizerPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -8200,6 +8530,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfluentPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#ConfluentConsume':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginConfluentConsume#create
+      operationId: create-confluentconsume-plugin
+      summary: Create a ConfluentConsume plugin
+      description: Create a ConfluentConsume plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfluentConsumePlugin'
+      responses:
+        '201':
+          description: Created ConfluentConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfluentConsumePlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -8750,6 +9105,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/JwtSignerPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#KafkaConsume':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginKafkaConsume#create
+      operationId: create-kafkaconsume-plugin
+      summary: Create a KafkaConsume plugin
+      description: Create a KafkaConsume plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KafkaConsumePlugin'
+      responses:
+        '201':
+          description: Created KafkaConsume plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KafkaConsumePlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -9325,6 +9705,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RedirectPlugin'
+        '401':
+          $ref: '#/components/responses/HTTP401Error'
+      tags:
+        - Plugins
+  '/v2/control-planes/{controlPlaneId}/core-entities/plugins#RequestCallout':
+    parameters:
+      - $ref: '#/components/parameters/controlPlaneId'
+    post:
+      x-speakeasy-entity-operation: GatewayPluginRequestCallout#create
+      operationId: create-requestcallout-plugin
+      summary: Create a RequestCallout plugin
+      description: Create a RequestCallout plugin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCalloutPlugin'
+      responses:
+        '201':
+          description: Created RequestCallout plugin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestCalloutPlugin'
         '401':
           $ref: '#/components/responses/HTTP401Error'
       tags:
@@ -17045,6 +17450,13 @@ components:
         config:
           type: object
           properties:
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             max_request_body_size:
               description: max allowed body size allowed to be introspected
               type: integer
@@ -17172,6 +17584,13 @@ components:
                 minLength: 1
                 type: string
               maxLength: 10
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             match_all_roles:
               description: 'If true, will match all roles in addition to ''user'' role in conversation history.'
               type: boolean
@@ -17340,12 +17759,30 @@ components:
                     - consistent-hashing
                     - lowest-latency
                     - lowest-usage
+                    - priority
                     - round-robin
                     - semantic
                 connect_timeout:
                   type: integer
                   maximum: 2147483646
                   minimum: 1
+                failover_criteria:
+                  description: 'Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream'
+                  type: array
+                  items:
+                    enum:
+                      - error
+                      - http_403
+                      - http_404
+                      - http_429
+                      - http_500
+                      - http_502
+                      - http_503
+                      - http_504
+                      - invalid_header
+                      - non_idempotent
+                      - timeout
+                    type: string
                 hash_on_header:
                   description: The header to use for consistent-hashing.
                   type: string
@@ -17370,10 +17807,11 @@ components:
                   maximum: 65536
                   minimum: 10
                 tokens_count_strategy:
-                  description: 'What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, and `completion_tokens`.'
+                  description: 'What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`.'
                   type: string
                   enum:
                     - completion-tokens
+                    - cost
                     - prompt-tokens
                     - total-tokens
                 write_timeout:
@@ -17441,13 +17879,67 @@ components:
                       description: Key/value settings for the model
                       type: object
                       properties:
+                        azure:
+                          type: object
+                          properties:
+                            api_version:
+                              description: '''api-version'' for Azure OpenAI instances.'
+                              type: string
+                            deployment_id:
+                              description: Deployment ID for Azure OpenAI instances.
+                              type: string
+                            instance:
+                              description: Instance name for Azure OpenAI hosted models.
+                              type: string
+                        bedrock:
+                          type: object
+                          properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
+                            aws_region:
+                              description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
+                              type: string
+                        gemini:
+                          type: object
+                          properties:
+                            api_endpoint:
+                              description: 'If running Gemini on Vertex, specify the regional API endpoint (hostname only).'
+                              type: string
+                            location_id:
+                              description: 'If running Gemini on Vertex, specify the location ID.'
+                              type: string
+                            project_id:
+                              description: 'If running Gemini on Vertex, specify the project ID.'
+                              type: string
+                        huggingface:
+                          type: object
+                          properties:
+                            use_cache:
+                              description: Use the cache layer on the inference API
+                              type: boolean
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
                         upstream_url:
                           description: upstream url for the embeddings
                           type: string
+                      required:
+                        - azure
                     provider:
                       description: AI provider format to use for embeddings API
                       type: string
                       enum:
+                        - azure
+                        - bedrock
+                        - gemini
+                        - huggingface
                         - mistral
                         - openai
                   required:
@@ -17455,6 +17947,13 @@ components:
                     - provider
               required:
                 - model
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             max_request_body_size:
               description: max allowed body size allowed to be introspected
               type: integer
@@ -17522,7 +18021,7 @@ components:
                         description: Specify the full parameter value for 'param_name'.
                         type: string
                   description:
-                    description: 'The semantic description of the target, required if using semantic load balancing.'
+                    description: 'The semantic description of the target, required if using semantic load balancing. Specially, setting this to ''CATCHALL'' will indicate such target to be used when no other targets match the semantic threshold.'
                     type: string
                   logging:
                     type: object
@@ -17558,8 +18057,17 @@ components:
                           bedrock:
                             type: object
                             properties:
+                              aws_assume_role_arn:
+                                description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                                type: string
                               aws_region:
                                 description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                                type: string
+                              aws_role_session_name:
+                                description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                                type: string
+                              aws_sts_endpoint_url:
+                                description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                                 type: string
                           gemini:
                             type: object
@@ -17671,6 +18179,49 @@ components:
                   enum:
                     - cosine
                     - euclidean
+                pgvector:
+                  type: object
+                  properties:
+                    database:
+                      description: the database of the pgvector database
+                      type: string
+                    host:
+                      description: the host of the pgvector database
+                      type: string
+                    password:
+                      description: the password of the pgvector database
+                      type: string
+                    port:
+                      description: the port of the pgvector database
+                      type: integer
+                    ssl:
+                      description: whether to use ssl for the pgvector database
+                      type: boolean
+                    ssl_cert:
+                      description: the path of ssl cert to use for the pgvector database
+                      type: string
+                    ssl_cert_key:
+                      description: the path of ssl cert key to use for the pgvector database
+                      type: string
+                    ssl_required:
+                      description: whether ssl is required for the pgvector database
+                      type: boolean
+                    ssl_verify:
+                      description: whether to verify ssl for the pgvector database
+                      type: boolean
+                    ssl_version:
+                      description: the ssl version to use for the pgvector database
+                      type: string
+                      enum:
+                        - any
+                        - tlsv1_2
+                        - tlsv1_3
+                    timeout:
+                      description: the timeout of the pgvector database
+                      type: number
+                    user:
+                      description: the user of the pgvector database
+                      type: string
                 redis:
                   type: object
                   properties:
@@ -17794,6 +18345,7 @@ components:
                   description: which vector database driver to use
                   type: string
                   enum:
+                    - pgvector
                     - redis
                 threshold:
                   description: the default similarity threshold for accepting semantic search results (float)
@@ -17801,6 +18353,7 @@ components:
               required:
                 - dimensions
                 - distance_metric
+                - pgvector
                 - redis
                 - strategy
                 - threshold
@@ -17915,6 +18468,13 @@ components:
                 param_value:
                   description: Specify the full parameter value for 'param_name'.
                   type: string
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             logging:
               type: object
               properties:
@@ -17953,8 +18513,17 @@ components:
                     bedrock:
                       type: object
                       properties:
+                        aws_assume_role_arn:
+                          description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                          type: string
                         aws_region:
                           description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                          type: string
+                        aws_role_session_name:
+                          description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                          type: string
+                        aws_sts_endpoint_url:
+                          description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                           type: string
                     gemini:
                       type: object
@@ -18105,6 +18674,390 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    AiRagInjectorPlugin:
+      x-speakeasy-entity: GatewayPluginAiRagInjector
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/AiRagInjectorPluginConfig'
+    AiRagInjectorPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            embeddings:
+              type: object
+              properties:
+                auth:
+                  type: object
+                  properties:
+                    allow_override:
+                      description: 'If enabled, the authorization header or parameter can be overridden in the request by the value configured in the plugin.'
+                      type: boolean
+                    aws_access_key_id:
+                      description: Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_ACCESS_KEY_ID environment variable for this plugin instance.
+                      type: string
+                    aws_secret_access_key:
+                      description: Set this if you are using an AWS provider (Bedrock) and you are authenticating using static IAM User credentials. Setting this will override the AWS_SECRET_ACCESS_KEY environment variable for this plugin instance.
+                      type: string
+                    azure_client_id:
+                      description: 'If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client ID.'
+                      type: string
+                    azure_client_secret:
+                      description: 'If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the client secret.'
+                      type: string
+                    azure_tenant_id:
+                      description: 'If azure_use_managed_identity is set to true, and you need to use a different user-assigned identity for this LLM instance, set the tenant ID.'
+                      type: string
+                    azure_use_managed_identity:
+                      description: Set true to use the Azure Cloud Managed Identity (or user-assigned identity) to authenticate with Azure-provider models.
+                      type: boolean
+                    gcp_service_account_json:
+                      description: 'Set this field to the full JSON of the GCP service account to authenticate, if required. If null (and gcp_use_service_account is true), Kong will attempt to read from environment variable `GCP_SERVICE_ACCOUNT`.'
+                      type: string
+                    gcp_use_service_account:
+                      description: Use service account auth for GCP-based providers and models.
+                      type: boolean
+                    header_name:
+                      description: 'If AI model requires authentication via Authorization or API key header, specify its name here.'
+                      type: string
+                    header_value:
+                      description: 'Specify the full auth header value for ''header_name'', for example ''Bearer key'' or just ''key''.'
+                      type: string
+                    param_location:
+                      description: 'Specify whether the ''param_name'' and ''param_value'' options go in a query string, or the POST form/JSON body.'
+                      type: string
+                      enum:
+                        - body
+                        - query
+                    param_name:
+                      description: 'If AI model requires authentication via query parameter, specify its name here.'
+                      type: string
+                    param_value:
+                      description: Specify the full parameter value for 'param_name'.
+                      type: string
+                model:
+                  type: object
+                  properties:
+                    name:
+                      description: Model name to execute.
+                      type: string
+                    options:
+                      description: Key/value settings for the model
+                      type: object
+                      properties:
+                        azure:
+                          type: object
+                          properties:
+                            api_version:
+                              description: '''api-version'' for Azure OpenAI instances.'
+                              type: string
+                            deployment_id:
+                              description: Deployment ID for Azure OpenAI instances.
+                              type: string
+                            instance:
+                              description: Instance name for Azure OpenAI hosted models.
+                              type: string
+                        bedrock:
+                          type: object
+                          properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
+                            aws_region:
+                              description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
+                              type: string
+                        gemini:
+                          type: object
+                          properties:
+                            api_endpoint:
+                              description: 'If running Gemini on Vertex, specify the regional API endpoint (hostname only).'
+                              type: string
+                            location_id:
+                              description: 'If running Gemini on Vertex, specify the location ID.'
+                              type: string
+                            project_id:
+                              description: 'If running Gemini on Vertex, specify the project ID.'
+                              type: string
+                        huggingface:
+                          type: object
+                          properties:
+                            use_cache:
+                              description: Use the cache layer on the inference API
+                              type: boolean
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
+                        upstream_url:
+                          description: upstream url for the embeddings
+                          type: string
+                      required:
+                        - azure
+                    provider:
+                      description: AI provider format to use for embeddings API
+                      type: string
+                      enum:
+                        - azure
+                        - bedrock
+                        - gemini
+                        - huggingface
+                        - mistral
+                        - openai
+            fetch_chunks_count:
+              description: The maximum number of chunks to fetch from vectordb
+              type: number
+            inject_as_role:
+              type: string
+              enum:
+                - assistant
+                - system
+                - user
+            inject_template:
+              type: string
+            stop_on_failure:
+              description: Halt the LLM request process in case of a vectordb or embeddings service failure
+              type: boolean
+            vectordb:
+              type: object
+              properties:
+                dimensions:
+                  description: the desired dimensionality for the vectors
+                  type: integer
+                distance_metric:
+                  description: the distance metric to use for vector searches
+                  type: string
+                  enum:
+                    - cosine
+                    - euclidean
+                pgvector:
+                  type: object
+                  properties:
+                    database:
+                      description: the database of the pgvector database
+                      type: string
+                    host:
+                      description: the host of the pgvector database
+                      type: string
+                    password:
+                      description: the password of the pgvector database
+                      type: string
+                    port:
+                      description: the port of the pgvector database
+                      type: integer
+                    ssl:
+                      description: whether to use ssl for the pgvector database
+                      type: boolean
+                    ssl_cert:
+                      description: the path of ssl cert to use for the pgvector database
+                      type: string
+                    ssl_cert_key:
+                      description: the path of ssl cert key to use for the pgvector database
+                      type: string
+                    ssl_required:
+                      description: whether ssl is required for the pgvector database
+                      type: boolean
+                    ssl_verify:
+                      description: whether to verify ssl for the pgvector database
+                      type: boolean
+                    ssl_version:
+                      description: the ssl version to use for the pgvector database
+                      type: string
+                      enum:
+                        - any
+                        - tlsv1_2
+                        - tlsv1_3
+                    timeout:
+                      description: the timeout of the pgvector database
+                      type: number
+                    user:
+                      description: the user of the pgvector database
+                      type: string
+                redis:
+                  type: object
+                  properties:
+                    cluster_max_redirections:
+                      description: Maximum retry attempts for redirection.
+                      type: integer
+                    cluster_nodes:
+                      description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                      type: array
+                      items:
+                        properties:
+                          ip:
+                            description: 'A string representing a host name, such as example.com.'
+                            type: string
+                          port:
+                            description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                            type: integer
+                            maximum: 65535
+                            minimum: 0
+                        type: object
+                      minLength: 1
+                    connect_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    connection_is_proxied:
+                      description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                      type: boolean
+                    database:
+                      description: Database to use for the Redis connection when using the `redis` strategy
+                      type: integer
+                    host:
+                      description: 'A string representing a host name, such as example.com.'
+                      type: string
+                    keepalive_backlog:
+                      description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    keepalive_pool_size:
+                      description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 1
+                    password:
+                      description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                      type: string
+                    port:
+                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                      type: integer
+                      maximum: 65535
+                      minimum: 0
+                    read_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    send_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    sentinel_master:
+                      description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                      type: string
+                    sentinel_nodes:
+                      description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                      type: array
+                      items:
+                        properties:
+                          host:
+                            description: 'A string representing a host name, such as example.com.'
+                            type: string
+                          port:
+                            description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                            type: integer
+                            maximum: 65535
+                            minimum: 0
+                        type: object
+                      minLength: 1
+                    sentinel_password:
+                      description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                      type: string
+                    sentinel_role:
+                      description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                      type: string
+                      enum:
+                        - any
+                        - master
+                        - slave
+                    sentinel_username:
+                      description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                      type: string
+                    server_name:
+                      description: A string representing an SNI (server name indication) value for TLS.
+                      type: string
+                    ssl:
+                      description: 'If set to true, uses SSL to connect to Redis.'
+                      type: boolean
+                    ssl_verify:
+                      description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                      type: boolean
+                    username:
+                      description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                      type: string
+                  shorthand_fields:
+                    cluster_addresses:
+                      items:
+                        type: string
+                      minLength: 1
+                      type: array
+                    sentinel_addresses:
+                      items:
+                        type: string
+                      minLength: 1
+                      type: array
+                    timeout:
+                      type: integer
+                strategy:
+                  description: which vector database driver to use
+                  type: string
+                  enum:
+                    - pgvector
+                    - redis
+            vectordb_namespace:
+              description: The namespace of the vectordb to use for embeddings lookup
+              type: string
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: ai-rag-injector
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
     AiRateLimitingAdvancedPlugin:
       x-speakeasy-entity: GatewayPluginAiRateLimitingAdvanced
       allOf:
@@ -18138,7 +19091,7 @@ components:
               description: Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
               type: boolean
             identifier:
-              description: 'The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.'
+              description: 'The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.'
               type: string
               enum:
                 - consumer
@@ -18148,14 +19101,23 @@ components:
                 - ip
                 - path
                 - service
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             llm_providers:
               description: 'The provider config. Takes an array of `name`, `limit` and `window size` values.'
               type: array
               items:
                 properties:
                   limit:
-                    description: The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter.
-                    type: number
+                    description: One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
+                    type: array
+                    items:
+                      type: number
                   name:
                     description: The LLM provider to which the rate limit applies.
                     type: string
@@ -18171,8 +19133,10 @@ components:
                       - openai
                       - requestPrompt
                   window_size:
-                    description: The window size to apply a limit (defined in seconds).
-                    type: number
+                    description: One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
+                    type: array
+                    items:
+                      type: number
                 required:
                   - limit
                   - name
@@ -18500,8 +19464,17 @@ components:
                         bedrock:
                           type: object
                           properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
                             aws_region:
                               description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
                         gemini:
                           type: object
@@ -18759,8 +19732,17 @@ components:
                         bedrock:
                           type: object
                           properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
                             aws_region:
                               description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
                               type: string
                         gemini:
                           type: object
@@ -18914,6 +19896,140 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    AiSanitizerPlugin:
+      x-speakeasy-entity: GatewayPluginAiSanitizer
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/AiSanitizerPluginConfig'
+    AiSanitizerPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            anonymize:
+              description: List of types to be anonymized
+              type: array
+              items:
+                enum:
+                  - all
+                  - all_and_credentials
+                  - bank
+                  - credentials
+                  - creditcard
+                  - crypto
+                  - custom
+                  - date
+                  - domain
+                  - driverlicense
+                  - email
+                  - general
+                  - ip
+                  - medical
+                  - nationalid
+                  - nrp
+                  - passport
+                  - phone
+                  - ssn
+                  - url
+                type: string
+            custom_patterns:
+              description: List of custom patterns to be used for anonymization
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                  regex:
+                    type: string
+                  score:
+                    type: number
+                    maximum: 1
+                    minimum: 0
+                required:
+                  - name
+                  - regex
+                type: object
+              minLength: 1
+            host:
+              description: The host of the sanitizer
+              type: string
+            keepalive_timeout:
+              description: The keepalive timeout for the established http connnection
+              type: number
+            port:
+              description: The port of the sanitizer
+              type: number
+            recover_redacted:
+              description: Whether to recover redacted data
+              type: boolean
+            redact_type:
+              description: What value to be used to redacted to
+              type: string
+              enum:
+                - placeholder
+                - synthetic
+            scheme:
+              description: The protocol can be http and https
+              type: string
+            stop_on_error:
+              description: Stop processing if an error occurs
+              type: boolean
+            timeout:
+              description: Connection timeout with the sanitizer
+              type: number
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: ai-sanitizer
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
     AiSemanticCachePlugin:
       x-speakeasy-entity: GatewayPluginAiSemanticCache
       allOf:
@@ -18992,13 +20108,67 @@ components:
                       description: Key/value settings for the model
                       type: object
                       properties:
+                        azure:
+                          type: object
+                          properties:
+                            api_version:
+                              description: '''api-version'' for Azure OpenAI instances.'
+                              type: string
+                            deployment_id:
+                              description: Deployment ID for Azure OpenAI instances.
+                              type: string
+                            instance:
+                              description: Instance name for Azure OpenAI hosted models.
+                              type: string
+                        bedrock:
+                          type: object
+                          properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
+                            aws_region:
+                              description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
+                              type: string
+                        gemini:
+                          type: object
+                          properties:
+                            api_endpoint:
+                              description: 'If running Gemini on Vertex, specify the regional API endpoint (hostname only).'
+                              type: string
+                            location_id:
+                              description: 'If running Gemini on Vertex, specify the location ID.'
+                              type: string
+                            project_id:
+                              description: 'If running Gemini on Vertex, specify the project ID.'
+                              type: string
+                        huggingface:
+                          type: object
+                          properties:
+                            use_cache:
+                              description: Use the cache layer on the inference API
+                              type: boolean
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
                         upstream_url:
                           description: upstream url for the embeddings
                           type: string
+                      required:
+                        - azure
                     provider:
                       description: AI provider format to use for embeddings API
                       type: string
                       enum:
+                        - azure
+                        - bedrock
+                        - gemini
+                        - huggingface
                         - mistral
                         - openai
             exact_caching:
@@ -19013,6 +20183,13 @@ components:
             ignore_tool_prompts:
               description: Ignore and discard any tool prompts when Vectorizing the request
               type: boolean
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             message_countback:
               description: Number of messages in the chat history to Vectorize/Cache
               type: number
@@ -19033,6 +20210,49 @@ components:
                   enum:
                     - cosine
                     - euclidean
+                pgvector:
+                  type: object
+                  properties:
+                    database:
+                      description: the database of the pgvector database
+                      type: string
+                    host:
+                      description: the host of the pgvector database
+                      type: string
+                    password:
+                      description: the password of the pgvector database
+                      type: string
+                    port:
+                      description: the port of the pgvector database
+                      type: integer
+                    ssl:
+                      description: whether to use ssl for the pgvector database
+                      type: boolean
+                    ssl_cert:
+                      description: the path of ssl cert to use for the pgvector database
+                      type: string
+                    ssl_cert_key:
+                      description: the path of ssl cert key to use for the pgvector database
+                      type: string
+                    ssl_required:
+                      description: whether ssl is required for the pgvector database
+                      type: boolean
+                    ssl_verify:
+                      description: whether to verify ssl for the pgvector database
+                      type: boolean
+                    ssl_version:
+                      description: the ssl version to use for the pgvector database
+                      type: string
+                      enum:
+                        - any
+                        - tlsv1_2
+                        - tlsv1_3
+                    timeout:
+                      description: the timeout of the pgvector database
+                      type: number
+                    user:
+                      description: the user of the pgvector database
+                      type: string
                 redis:
                   type: object
                   properties:
@@ -19156,6 +20376,7 @@ components:
                   description: which vector database driver to use
                   type: string
                   enum:
+                    - pgvector
                     - redis
                 threshold:
                   description: the default similarity threshold for accepting semantic search results (float)
@@ -19284,15 +20505,76 @@ components:
                       description: Key/value settings for the model
                       type: object
                       properties:
+                        azure:
+                          type: object
+                          properties:
+                            api_version:
+                              description: '''api-version'' for Azure OpenAI instances.'
+                              type: string
+                            deployment_id:
+                              description: Deployment ID for Azure OpenAI instances.
+                              type: string
+                            instance:
+                              description: Instance name for Azure OpenAI hosted models.
+                              type: string
+                        bedrock:
+                          type: object
+                          properties:
+                            aws_assume_role_arn:
+                              description: If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+                              type: string
+                            aws_region:
+                              description: If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+                              type: string
+                            aws_role_session_name:
+                              description: 'If using AWS providers (Bedrock), set the identifier of the assumed role session.'
+                              type: string
+                            aws_sts_endpoint_url:
+                              description: 'If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.'
+                              type: string
+                        gemini:
+                          type: object
+                          properties:
+                            api_endpoint:
+                              description: 'If running Gemini on Vertex, specify the regional API endpoint (hostname only).'
+                              type: string
+                            location_id:
+                              description: 'If running Gemini on Vertex, specify the location ID.'
+                              type: string
+                            project_id:
+                              description: 'If running Gemini on Vertex, specify the project ID.'
+                              type: string
+                        huggingface:
+                          type: object
+                          properties:
+                            use_cache:
+                              description: Use the cache layer on the inference API
+                              type: boolean
+                            wait_for_model:
+                              description: Wait for the model if it is not ready
+                              type: boolean
                         upstream_url:
                           description: upstream url for the embeddings
                           type: string
+                      required:
+                        - azure
                     provider:
                       description: AI provider format to use for embeddings API
                       type: string
                       enum:
+                        - azure
+                        - bedrock
+                        - gemini
+                        - huggingface
                         - mistral
                         - openai
+            llm_format:
+              description: LLM input and output format and schema to use
+              type: string
+              enum:
+                - bedrock
+                - gemini
+                - openai
             rules:
               type: object
               properties:
@@ -19340,6 +20622,49 @@ components:
                   enum:
                     - cosine
                     - euclidean
+                pgvector:
+                  type: object
+                  properties:
+                    database:
+                      description: the database of the pgvector database
+                      type: string
+                    host:
+                      description: the host of the pgvector database
+                      type: string
+                    password:
+                      description: the password of the pgvector database
+                      type: string
+                    port:
+                      description: the port of the pgvector database
+                      type: integer
+                    ssl:
+                      description: whether to use ssl for the pgvector database
+                      type: boolean
+                    ssl_cert:
+                      description: the path of ssl cert to use for the pgvector database
+                      type: string
+                    ssl_cert_key:
+                      description: the path of ssl cert key to use for the pgvector database
+                      type: string
+                    ssl_required:
+                      description: whether ssl is required for the pgvector database
+                      type: boolean
+                    ssl_verify:
+                      description: whether to verify ssl for the pgvector database
+                      type: boolean
+                    ssl_version:
+                      description: the ssl version to use for the pgvector database
+                      type: string
+                      enum:
+                        - any
+                        - tlsv1_2
+                        - tlsv1_3
+                    timeout:
+                      description: the timeout of the pgvector database
+                      type: number
+                    user:
+                      description: the user of the pgvector database
+                      type: string
                 redis:
                   type: object
                   properties:
@@ -19463,6 +20788,7 @@ components:
                   description: which vector database driver to use
                   type: string
                   enum:
+                    - pgvector
                     - redis
                 threshold:
                   description: the default similarity threshold for accepting semantic search results (float)
@@ -20143,6 +21469,134 @@ components:
       required:
         - cert
         - key
+    ConfluentConsumePlugin:
+      x-speakeasy-entity: GatewayPluginConfluentConsume
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/ConfluentConsumePluginConfig'
+    ConfluentConsumePluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            auto_offset_reset:
+              description: The offset to start from when there is no initial offset in the consumer group.
+              type: string
+              enum:
+                - earliest
+                - latest
+            bootstrap_servers:
+              description: 'Set of bootstrap brokers in a `{host: host, port: port}` list format.'
+              type: array
+              items:
+                properties:
+                  host:
+                    description: 'A string representing a host name, such as example.com.'
+                    type: string
+                  port:
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                    type: integer
+                    maximum: 65535
+                    minimum: 0
+                required:
+                  - host
+                  - port
+                type: object
+            cluster_api_key:
+              description: Username/Apikey for SASL authentication.
+              type: string
+            cluster_api_secret:
+              description: Password/ApiSecret for SASL authentication.
+              type: string
+            cluster_name:
+              description: 'An identifier for the Kafka cluster. By default, this field generates a random string. You can also set your own custom cluster identifier.  If more than one Kafka plugin is configured without a `cluster_name` (that is, if the default autogenerated value is removed), these plugins will use the same producer, and by extension, the same cluster. Logs will be sent to the leader of the cluster.'
+              type: string
+            commit_strategy:
+              description: The strategy to use for committing offsets.
+              type: string
+              enum:
+                - auto
+                - 'off'
+            confluent_cloud_api_key:
+              description: 'Apikey for authentication with Confluent Cloud. This allows for management tasks such as creating topics, ACLs, etc.'
+              type: string
+            confluent_cloud_api_secret:
+              description: The corresponding secret for the Confluent Cloud API key.
+              type: string
+            keepalive:
+              description: Keepalive timeout in milliseconds.
+              type: integer
+            keepalive_enabled:
+              type: boolean
+            message_deserializer:
+              description: The deserializer to use for the consumed messages.
+              type: string
+              enum:
+                - json
+                - noop
+            mode:
+              description: The mode of operation for the plugin.
+              type: string
+              enum:
+                - http-get
+                - server-sent-events
+            timeout:
+              description: Socket timeout in milliseconds.
+              type: integer
+            topics:
+              description: The Kafka topics and their configuration you want to consume from.
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                required:
+                  - name
+                type: object
+              minLength: 1
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: confluent-consume
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
     ConfluentPlugin:
       x-speakeasy-entity: GatewayPluginConfluent
       allOf:
@@ -20153,6 +21607,11 @@ components:
         config:
           type: object
           properties:
+            allowed_topics:
+              description: 'The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.'
+              type: array
+              items:
+                type: string
             bootstrap_servers:
               description: 'Set of bootstrap brokers in a `{host: host, port: port}` list format.'
               type: array
@@ -20202,6 +21661,11 @@ components:
               type: integer
             keepalive_enabled:
               type: boolean
+            message_by_lua_functions:
+              description: The Lua functions that manipulates the message being sent to the Kafka topic.
+              type: array
+              items:
+                type: string
             producer_async:
               description: Flag to enable asynchronous mode.
               type: boolean
@@ -20237,7 +21701,10 @@ components:
               description: Socket timeout in milliseconds.
               type: integer
             topic:
-              description: The Kafka topic to publish to.
+              description: The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
+              type: string
+            topics_query_arg:
+              description: The request query parameter name that contains the topics to publish to
               type: string
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -20423,6 +21890,9 @@ components:
         config:
           type: object
           properties:
+            allow_origin_absent:
+              description: A boolean value that skip cors response headers when origin header of request is empty
+              type: boolean
             credentials:
               description: Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
               type: boolean
@@ -20912,7 +22382,7 @@ components:
             path:
               description: The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
               type: string
-              pattern: '^[^*&%%\`]+$'
+              pattern: '^[^[\t\n\v\f\r ]*&%%\`][^*&%%\`]*[^[\t\n\v\f\r ]*&%%\`]$'
             reopen:
               description: Determines whether the log file is closed and reopened on every request.
               type: boolean
@@ -22440,6 +23910,9 @@ components:
         config:
           type: object
           properties:
+            allow_duplicate_object_entry_name:
+              description: Allow or disallow duplicate object entry name.
+              type: boolean
             enforcement_mode:
               description: Enforcement mode of the security policy.
               type: string
@@ -23075,6 +24548,150 @@ components:
             id:
               type: string
           x-speakeasy-param-computed: false
+    KafkaConsumePlugin:
+      x-speakeasy-entity: GatewayPluginKafkaConsume
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/KafkaConsumePluginConfig'
+    KafkaConsumePluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            authentication:
+              type: object
+              properties:
+                mechanism:
+                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.'
+                  type: string
+                  enum:
+                    - PLAIN
+                    - SCRAM-SHA-256
+                    - SCRAM-SHA-512
+                password:
+                  description: Password for SASL authentication.
+                  type: string
+                strategy:
+                  description: 'The authentication strategy for the plugin, the only option for the value is `sasl`.'
+                  type: string
+                  enum:
+                    - sasl
+                tokenauth:
+                  description: Enable this to indicate `DelegationToken` authentication
+                  type: boolean
+                user:
+                  description: Username for SASL authentication.
+                  type: string
+            auto_offset_reset:
+              description: The offset to start from when there is no initial offset in the consumer group.
+              type: string
+              enum:
+                - earliest
+                - latest
+            bootstrap_servers:
+              description: 'Set of bootstrap brokers in a `{host: host, port: port}` list format.'
+              type: array
+              items:
+                properties:
+                  host:
+                    description: 'A string representing a host name, such as example.com.'
+                    type: string
+                  port:
+                    description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                    type: integer
+                    maximum: 65535
+                    minimum: 0
+                required:
+                  - host
+                  - port
+                type: object
+            cluster_name:
+              description: An identifier for the Kafka cluster.
+              type: string
+            commit_strategy:
+              description: The strategy to use for committing offsets.
+              type: string
+              enum:
+                - auto
+                - 'off'
+            message_deserializer:
+              description: The deserializer to use for the consumed messages.
+              type: string
+              enum:
+                - json
+                - noop
+            mode:
+              description: The mode of operation for the plugin.
+              type: string
+              enum:
+                - http-get
+                - server-sent-events
+            security:
+              type: object
+              properties:
+                certificate_id:
+                  description: UUID of certificate entity for mTLS authentication.
+                  type: string
+                  uuid: true
+                ssl:
+                  description: Enables TLS.
+                  type: boolean
+            topics:
+              description: The Kafka topics and their configuration you want to consume from.
+              type: array
+              items:
+                properties:
+                  name:
+                    type: string
+                required:
+                  - name
+                type: object
+              minLength: 1
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: kafka-consume
+        protocols:
+          description: 'A list of the request protocols that will trigger this plugin. The default value, as well as the possible values allowed on this field, may change depending on the plugin type. For example, plugins that only work in stream mode will only support tcp and tls.'
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+              - ws
+              - wss
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
     KafkaLogPlugin:
       x-speakeasy-entity: GatewayPluginKafkaLog
       allOf:
@@ -23089,7 +24706,7 @@ components:
               type: object
               properties:
                 mechanism:
-                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`.'
+                  description: 'The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`.'
                   type: string
                   enum:
                     - PLAIN
@@ -23239,6 +24856,11 @@ components:
         config:
           type: object
           properties:
+            allowed_topics:
+              description: 'The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.'
+              type: array
+              items:
+                type: string
             authentication:
               type: object
               properties:
@@ -23300,6 +24922,11 @@ components:
               type: integer
             keepalive_enabled:
               type: boolean
+            message_by_lua_functions:
+              description: The Lua functions that manipulates the message being sent to the Kafka topic.
+              type: array
+              items:
+                type: string
             producer_async:
               description: Flag to enable asynchronous mode.
               type: boolean
@@ -23345,7 +24972,10 @@ components:
               description: Socket timeout in milliseconds.
               type: integer
             topic:
-              description: The Kafka topic to publish to.
+              description: The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
+              type: string
+            topics_query_arg:
+              description: The request query parameter name that contains the topics to publish to
               type: string
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
@@ -23583,6 +25213,23 @@ components:
             hide_credentials:
               description: 'An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.'
               type: boolean
+            identity_realms:
+              description: A configuration of Konnect Identity Realms that indicate where to source a consumer from.
+              type: array
+              items:
+                properties:
+                  id:
+                    description: A string representing a UUID (universally unique identifier).
+                    type: string
+                    uuid: true
+                  region:
+                    type: string
+                  scope:
+                    type: string
+                    enum:
+                      - cp
+                      - realm
+                type: object
             key_in_body:
               description: 'If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.'
               type: boolean
@@ -26148,6 +27795,7 @@ components:
                 - datadog
                 - gcp
                 - ignore
+                - instana
                 - jaeger
                 - ot
                 - preserve
@@ -26178,6 +27826,7 @@ components:
                     - b3-single
                     - datadog
                     - gcp
+                    - instana
                     - jaeger
                     - ot
                     - w3c
@@ -26190,6 +27839,7 @@ components:
                       - b3
                       - datadog
                       - gcp
+                      - instana
                       - jaeger
                       - ot
                       - w3c
@@ -26204,6 +27854,7 @@ components:
                       - b3-single
                       - datadog
                       - gcp
+                      - instana
                       - jaeger
                       - ot
                       - preserve
@@ -26731,6 +28382,9 @@ components:
             upstream_health_metrics:
               description: 'A boolean value that determines if upstream metrics should be collected. If enabled, `upstream_target_health` metric will be exported.'
               type: boolean
+            wasm_metrics:
+              description: A boolean value that determines if Wasm metrics should be collected.
+              type: boolean
         consumer:
           description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
           type: object
@@ -26978,7 +28632,7 @@ components:
               items:
                 type: string
             vary_query_params:
-              description: 'Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.'
+              description: 'Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.'
               type: array
               items:
                 type: string
@@ -27223,7 +28877,7 @@ components:
               description: Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
               type: boolean
             identifier:
-              description: 'The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.'
+              description: 'The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.'
               type: string
               enum:
                 - consumer
@@ -27674,6 +29328,432 @@ components:
         name:
           type: string
           const: redirect
+        protocols:
+          description: A set of strings representing HTTP protocols.
+          type: array
+          items:
+            enum:
+              - grpc
+              - grpcs
+              - http
+              - https
+            type: string
+        route:
+          description: 'If set, the plugin will only activate when receiving requests via the specified route. Leave unset for the plugin to activate regardless of the route being used.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        service:
+          description: 'If set, the plugin will only activate when receiving requests via one of the routes belonging to the specified Service. Leave unset for the plugin to activate regardless of the Service being matched.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+    RequestCalloutPlugin:
+      x-speakeasy-entity: GatewayPluginRequestCallout
+      allOf:
+        - $ref: '#/components/schemas/PluginBase'
+        - $ref: '#/components/schemas/RequestCalloutPluginConfig'
+    RequestCalloutPluginConfig:
+      properties:
+        config:
+          type: object
+          properties:
+            cache:
+              description: Plugin global caching configuration.
+              type: object
+              properties:
+                cache_ttl:
+                  description: TTL in seconds of cache entities.
+                  type: integer
+                  minimum: 0
+                memory:
+                  type: object
+                  properties:
+                    dictionary_name:
+                      description: The name of the shared dictionary in which to hold cache entities when the memory strategy is selected. Note that this dictionary currently must be defined manually in the Kong Nginx template.
+                      type: string
+                redis:
+                  type: object
+                  properties:
+                    cluster_max_redirections:
+                      description: Maximum retry attempts for redirection.
+                      type: integer
+                    cluster_nodes:
+                      description: Cluster addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Cluster. The minimum length of the array is 1 element.
+                      type: array
+                      items:
+                        properties:
+                          ip:
+                            description: 'A string representing a host name, such as example.com.'
+                            type: string
+                          port:
+                            description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                            type: integer
+                            maximum: 65535
+                            minimum: 0
+                        type: object
+                      minLength: 1
+                    connect_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    connection_is_proxied:
+                      description: 'If the connection to Redis is proxied (e.g. Envoy), set it `true`. Set the `host` and `port` to point to the proxy address.'
+                      type: boolean
+                    database:
+                      description: Database to use for the Redis connection when using the `redis` strategy
+                      type: integer
+                    host:
+                      description: 'A string representing a host name, such as example.com.'
+                      type: string
+                    keepalive_backlog:
+                      description: 'Limits the total number of opened connections for a pool. If the connection pool is full, connection queues above the limit go into the backlog queue. If the backlog queue is full, subsequent connect operations fail and return `nil`. Queued operations (subject to set timeouts) resume once the number of connections in the pool is less than `keepalive_pool_size`. If latency is high or throughput is low, try increasing this value. Empirically, this value is larger than `keepalive_pool_size`.'
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    keepalive_pool_size:
+                      description: 'The size limit for every cosocket connection pool associated with every remote server, per worker process. If neither `keepalive_pool_size` nor `keepalive_backlog` is specified, no pool is created. If `keepalive_pool_size` isn''t specified but `keepalive_backlog` is specified, then the pool uses the default value. Try to increase (e.g. 512) this value if latency is high or throughput is low.'
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 1
+                    password:
+                      description: 'Password to use for Redis connections. If undefined, no AUTH commands are sent to Redis.'
+                      type: string
+                    port:
+                      description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                      type: integer
+                      maximum: 65535
+                      minimum: 0
+                    read_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    send_timeout:
+                      description: An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
+                      type: integer
+                      maximum: 2147483646
+                      minimum: 0
+                    sentinel_master:
+                      description: Sentinel master to use for Redis connections. Defining this value implies using Redis Sentinel.
+                      type: string
+                    sentinel_nodes:
+                      description: Sentinel node addresses to use for Redis connections when the `redis` strategy is defined. Defining this field implies using a Redis Sentinel. The minimum length of the array is 1 element.
+                      type: array
+                      items:
+                        properties:
+                          host:
+                            description: 'A string representing a host name, such as example.com.'
+                            type: string
+                          port:
+                            description: 'An integer representing a port number between 0 and 65535, inclusive.'
+                            type: integer
+                            maximum: 65535
+                            minimum: 0
+                        type: object
+                      minLength: 1
+                    sentinel_password:
+                      description: 'Sentinel password to authenticate with a Redis Sentinel instance. If undefined, no AUTH commands are sent to Redis Sentinels.'
+                      type: string
+                    sentinel_role:
+                      description: Sentinel role to use for Redis connections when the `redis` strategy is defined. Defining this value implies using Redis Sentinel.
+                      type: string
+                      enum:
+                        - any
+                        - master
+                        - slave
+                    sentinel_username:
+                      description: 'Sentinel username to authenticate with a Redis Sentinel instance. If undefined, ACL authentication won''t be performed. This requires Redis v6.2.0+.'
+                      type: string
+                    server_name:
+                      description: A string representing an SNI (server name indication) value for TLS.
+                      type: string
+                    ssl:
+                      description: 'If set to true, uses SSL to connect to Redis.'
+                      type: boolean
+                    ssl_verify:
+                      description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                      type: boolean
+                    username:
+                      description: 'Username to use for Redis connections. If undefined, ACL authentication won''t be performed. This requires Redis v6.0.0+. To be compatible with Redis v5.x.y, you can set it to `default`.'
+                      type: string
+                  shorthand_fields:
+                    cluster_addresses:
+                      items:
+                        type: string
+                      minLength: 1
+                      type: array
+                    sentinel_addresses:
+                      items:
+                        type: string
+                      minLength: 1
+                      type: array
+                    timeout:
+                      type: integer
+                strategy:
+                  description: 'The backing data store in which to hold cache entities. Accepted values are: `off`, `memory`, and `redis`.'
+                  type: string
+                  enum:
+                    - memory
+                    - 'off'
+                    - redis
+            callouts:
+              description: 'A collection of callout objects, where each object represents an HTTPrequest made in the context of a proxy request.'
+              type: array
+              items:
+                properties:
+                  cache:
+                    description: Callout caching configuration.
+                    type: object
+                    properties:
+                      bypass:
+                        description: 'If true, skips caching the callout response.'
+                        type: boolean
+                  depends_on:
+                    description: An array of callout names the current callout depends on.This dependency determines the callout execution order.
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    description: A string identifier for a callout. A callout object is referenceablevia its name in the kong.ctx.shared.callouts.<name>
+                    type: string
+                  request:
+                    description: The customizations for the callout request.
+                    type: object
+                    properties:
+                      body:
+                        description: Callout request body customizations.
+                        type: object
+                        properties:
+                          custom:
+                            description: The custom body fields to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            type: object
+                            additionalProperties: true
+                          decode:
+                            description: 'If true, decodes the request''s body to make it available for customizations.'
+                            type: boolean
+                          forward:
+                            description: 'If true, forwards the incoming request''s body to the callout request.'
+                            type: boolean
+                      by_lua:
+                        description: Lua code that executes before the callout request is made.Standard Lua sandboxing restrictions apply.
+                        type: string
+                      error:
+                        description: The error handling policy the plugin will apply to TCP and HTTP errors.
+                        type: object
+                        properties:
+                          error_response_code:
+                            description: The error code to respond with if `on_error` is `fail` or if `retries` is achieved.
+                            type: integer
+                          error_response_msg:
+                            description: The error mesasge to respond with if `on_error` is `fail` or if `retries` is achieved.Templating with Lua expressions is supported.
+                            type: string
+                          http_statuses:
+                            description: The list of HTTP status codes considered errors under the error handling policy.
+                            type: array
+                            items:
+                              maximum: 999
+                              minimum: 100
+                              type: integer
+                          on_error:
+                            type: string
+                            enum:
+                              - continue
+                              - fail
+                              - retry
+                          retries:
+                            description: The number of retries the plugin will attempt on TCP and HTTP errors if `on_error` is set to `retry`.
+                            type: integer
+                      headers:
+                        description: Callout request header customizations.
+                        type: object
+                        properties:
+                          custom:
+                            description: The custom headers to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            type: object
+                            additionalProperties: true
+                          forward:
+                            description: 'If true, forwards the incoming request''s headers to the callout request. '
+                            type: boolean
+                      http_opts:
+                        description: HTTP connection parameters.
+                        type: object
+                        properties:
+                          proxy:
+                            description: Proxy settings.
+                            type: object
+                            properties:
+                              auth_password:
+                                description: 'The password to authenticate with, if the forward proxy is protected by basic authentication.'
+                                type: string
+                              auth_username:
+                                description: 'The username to authenticate with, if the forward proxy is protected by basic authentication.'
+                                type: string
+                              http_proxy:
+                                description: The HTTP proxy URL. This proxy server will be used for HTTP requests.
+                                type: string
+                              https_proxy:
+                                description: The HTTPS proxy URL. This proxy server will be used for HTTPS requests.
+                                type: string
+                          ssl_server_name:
+                            description: The SNI used in the callout request. Defaults to host if omitted.
+                            type: string
+                          ssl_verify:
+                            description: 'If set to true, verifies the validity of the server SSL certificate. If setting this parameter, also configure `lua_ssl_trusted_certificate` in `kong.conf` to specify the CA (or server) certificate used by your Redis server. You may also need to configure `lua_ssl_verify_depth` accordingly.'
+                            type: boolean
+                          timeouts:
+                            description: Socket timeouts in milliseconds. All or none must be set.
+                            type: object
+                            properties:
+                              connect:
+                                description: The socket connect timeout.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              read:
+                                description: 'The socket read timeout. '
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                              write:
+                                description: The socket write timeout.
+                                type: integer
+                                maximum: 2147483646
+                                minimum: 0
+                      method:
+                        description: The HTTP method that will be requested.
+                        type: string
+                        pattern: '^[A-Z]+$'
+                      query:
+                        description: Callout request query param customizations.
+                        type: object
+                        properties:
+                          custom:
+                            description: The custom query params to be added in the callout HTTP request.Values can contain Lua expressions in the form $(some_lua_code).
+                            type: object
+                            additionalProperties: true
+                          forward:
+                            description: 'If true, forwards the incoming request''s query params to the callout request. '
+                            type: boolean
+                      url:
+                        description: The URL that will be requested.
+                        type: string
+                    required:
+                      - body
+                      - error
+                      - headers
+                      - http_opts
+                      - query
+                      - url
+                  response:
+                    description: Configurations of callout response handling.
+                    type: object
+                    properties:
+                      body:
+                        type: object
+                        properties:
+                          decode:
+                            description: 'If true, decodes the response body before storing into the context. Only JSON is supported.'
+                            type: boolean
+                          store:
+                            description: 'If false, skips storing the callout response body into kong.ctx.shared.callouts.<name>.response.body.'
+                            type: boolean
+                      by_lua:
+                        description: 'Lua code that executes after the callout request is made, before caching takes place. Standard Lua sandboxing restrictions apply.'
+                        type: string
+                      headers:
+                        description: Callout response header customizations.
+                        type: object
+                        properties:
+                          store:
+                            description: 'If false, skips storing the callout response headers intokong.ctx.shared.callouts.<name>.response.headers.'
+                            type: boolean
+                    required:
+                      - body
+                      - headers
+                required:
+                  - cache
+                  - name
+                  - request
+                  - response
+                type: object
+            upstream:
+              description: Customizations to the upstream request.
+              type: object
+              properties:
+                body:
+                  description: Callout request body customizations.
+                  type: object
+                  properties:
+                    custom:
+                      description: The custom body fields to be added in the upstream request body. Values can contain Lua expressions in the form $(some_lua_code).
+                      type: object
+                      additionalProperties: true
+                    decode:
+                      description: 'If true, decodes the request''s body to make it available for upstream by_lua customizations.'
+                      type: boolean
+                    forward:
+                      description: 'If false, skips forwarding the incoming request''s body to the upstream request.'
+                      type: boolean
+                by_lua:
+                  description: Lua code that executes before the upstream request is made. Standard Lua sandboxing restrictions apply.
+                  type: string
+                headers:
+                  description: Callout request header customizations.
+                  type: object
+                  properties:
+                    custom:
+                      description: The custom headers to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+                      type: object
+                      additionalProperties: true
+                    forward:
+                      description: 'If false, does not forward request headers to upstream request.'
+                      type: boolean
+                query:
+                  description: Upstream request query param customizations.
+                  type: object
+                  properties:
+                    custom:
+                      description: The custom query params to be added in the upstream HTTP request. Values can contain Lua expressions in the form $(some_lua_code).
+                      type: object
+                      additionalProperties: true
+                    forward:
+                      description: 'If false, does not forward request query params to upstream request.'
+                      type: boolean
+        consumer:
+          description: 'If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        consumer_group:
+          description: 'If set, the plugin will activate only for requests where the specified consumer group has been authenticated. (Note that some plugins can not be restricted to consumers groups this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer Groups'
+          type: object
+          default: null
+          additionalProperties: false
+          nullable: true
+          properties:
+            id:
+              type: string
+          x-speakeasy-param-computed: false
+        name:
+          type: string
+          const: request-callout
         protocols:
           description: A set of strings representing HTTP protocols.
           type: array
@@ -28861,10 +30941,6 @@ components:
           description: Unix epoch when the resource was created.
           type: integer
           nullable: true
-        expression:
-          description: Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
-          type: string
-          nullable: true
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.'
           type: integer
@@ -28892,9 +30968,6 @@ components:
         preserve_host:
           description: 'When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service''s `host`.'
           type: boolean
-          nullable: true
-        priority:
-          type: integer
           nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
@@ -29970,6 +32043,9 @@ components:
             cookie_secure:
               description: Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
               type: boolean
+            hash_subject:
+              description: Whether to hash or not the subject when store_metadata is enabled.
+              type: boolean
             idling_timeout:
               description: 'The session cookie idle time, in seconds.'
               type: number
@@ -30043,6 +32119,9 @@ components:
               enum:
                 - cookie
                 - kong
+            store_metadata:
+              description: 'Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.'
+              type: boolean
           shorthand_fields:
             cookie_discard:
               type: number
@@ -32197,6 +34276,7 @@ components:
                 - b3-single
                 - datadog
                 - gcp
+                - instana
                 - jaeger
                 - ot
                 - w3c
@@ -32213,6 +34293,7 @@ components:
                 - datadog
                 - gcp
                 - ignore
+                - instana
                 - jaeger
                 - ot
                 - preserve
@@ -32257,6 +34338,7 @@ components:
                     - b3-single
                     - datadog
                     - gcp
+                    - instana
                     - jaeger
                     - ot
                     - w3c
@@ -32269,6 +34351,7 @@ components:
                       - b3
                       - datadog
                       - gcp
+                      - instana
                       - jaeger
                       - ot
                       - w3c
@@ -32283,6 +34366,7 @@ components:
                       - b3-single
                       - datadog
                       - gcp
+                      - instana
                       - jaeger
                       - ot
                       - preserve
