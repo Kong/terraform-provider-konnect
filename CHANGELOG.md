@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.7.0  
+> Released on ?
+
+### Features
+
+* Add support for new Gateway 3.10 plugins:
+  * `gateway_plugin_ai_rag_injector`
+  * `gateway_plugin_ai_sanitizer`
+  * `gateway_plugin_confluent_consume`
+  * `gateway_plugin_kafka_consume`
+  * `gateway_plugin_request_callout`
+
+### Bug fixes
+
+* The properties `limit` and `window_size` now accept array of values in `ai-rate-limiting-advanced` plugin according to the Gateway 3.10 schema
+
 ## 2.6.0
 > Released on 2025/04/22
 
