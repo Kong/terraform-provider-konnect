@@ -28,6 +28,10 @@ func (r *GatewayPluginAiProxyAdvancedDataSourceModel) RefreshFromSharedAiProxyAd
 					r.Config.Balancer.Algorithm = types.StringNull()
 				}
 				r.Config.Balancer.ConnectTimeout = types.Int64PointerValue(resp.Config.Balancer.ConnectTimeout)
+				r.Config.Balancer.FailoverCriteria = make([]types.String, 0, len(resp.Config.Balancer.FailoverCriteria))
+				for _, v := range resp.Config.Balancer.FailoverCriteria {
+					r.Config.Balancer.FailoverCriteria = append(r.Config.Balancer.FailoverCriteria, types.StringValue(string(v)))
+				}
 				r.Config.Balancer.HashOnHeader = types.StringPointerValue(resp.Config.Balancer.HashOnHeader)
 				if resp.Config.Balancer.LatencyStrategy != nil {
 					r.Config.Balancer.LatencyStrategy = types.StringValue(string(*resp.Config.Balancer.LatencyStrategy))
@@ -76,9 +80,41 @@ func (r *GatewayPluginAiProxyAdvancedDataSourceModel) RefreshFromSharedAiProxyAd
 					r.Config.Embeddings.Model.Options = nil
 				} else {
 					r.Config.Embeddings.Model.Options = &tfTypes.AiProxyAdvancedPluginOptions{}
+					r.Config.Embeddings.Model.Options.Azure.APIVersion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.APIVersion)
+					r.Config.Embeddings.Model.Options.Azure.DeploymentID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.DeploymentID)
+					r.Config.Embeddings.Model.Options.Azure.Instance = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Azure.Instance)
+					if resp.Config.Embeddings.Model.Options.Bedrock == nil {
+						r.Config.Embeddings.Model.Options.Bedrock = nil
+					} else {
+						r.Config.Embeddings.Model.Options.Bedrock = &tfTypes.Bedrock{}
+						r.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsAssumeRoleArn)
+						r.Config.Embeddings.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRegion)
+						r.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsRoleSessionName)
+						r.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Bedrock.AwsStsEndpointURL)
+					}
+					if resp.Config.Embeddings.Model.Options.Gemini == nil {
+						r.Config.Embeddings.Model.Options.Gemini = nil
+					} else {
+						r.Config.Embeddings.Model.Options.Gemini = &tfTypes.Gemini{}
+						r.Config.Embeddings.Model.Options.Gemini.APIEndpoint = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.APIEndpoint)
+						r.Config.Embeddings.Model.Options.Gemini.LocationID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.LocationID)
+						r.Config.Embeddings.Model.Options.Gemini.ProjectID = types.StringPointerValue(resp.Config.Embeddings.Model.Options.Gemini.ProjectID)
+					}
+					if resp.Config.Embeddings.Model.Options.Huggingface == nil {
+						r.Config.Embeddings.Model.Options.Huggingface = nil
+					} else {
+						r.Config.Embeddings.Model.Options.Huggingface = &tfTypes.Huggingface{}
+						r.Config.Embeddings.Model.Options.Huggingface.UseCache = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.UseCache)
+						r.Config.Embeddings.Model.Options.Huggingface.WaitForModel = types.BoolPointerValue(resp.Config.Embeddings.Model.Options.Huggingface.WaitForModel)
+					}
 					r.Config.Embeddings.Model.Options.UpstreamURL = types.StringPointerValue(resp.Config.Embeddings.Model.Options.UpstreamURL)
 				}
 				r.Config.Embeddings.Model.Provider = types.StringValue(string(resp.Config.Embeddings.Model.Provider))
+			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
 			}
 			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 			r.Config.ModelNameHeader = types.BoolPointerValue(resp.Config.ModelNameHeader)
@@ -132,7 +168,10 @@ func (r *GatewayPluginAiProxyAdvancedDataSourceModel) RefreshFromSharedAiProxyAd
 						targets.Model.Options.Bedrock = nil
 					} else {
 						targets.Model.Options.Bedrock = &tfTypes.Bedrock{}
+						targets.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsAssumeRoleArn)
 						targets.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRegion)
+						targets.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsRoleSessionName)
+						targets.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(targetsItem.Model.Options.Bedrock.AwsStsEndpointURL)
 					}
 					if targetsItem.Model.Options.Gemini == nil {
 						targets.Model.Options.Gemini = nil
@@ -188,6 +227,22 @@ func (r *GatewayPluginAiProxyAdvancedDataSourceModel) RefreshFromSharedAiProxyAd
 				r.Config.Vectordb = &tfTypes.Vectordb{}
 				r.Config.Vectordb.Dimensions = types.Int64Value(resp.Config.Vectordb.Dimensions)
 				r.Config.Vectordb.DistanceMetric = types.StringValue(string(resp.Config.Vectordb.DistanceMetric))
+				r.Config.Vectordb.Pgvector.Database = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Database)
+				r.Config.Vectordb.Pgvector.Host = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Host)
+				r.Config.Vectordb.Pgvector.Password = types.StringPointerValue(resp.Config.Vectordb.Pgvector.Password)
+				r.Config.Vectordb.Pgvector.Port = types.Int64PointerValue(resp.Config.Vectordb.Pgvector.Port)
+				r.Config.Vectordb.Pgvector.Ssl = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.Ssl)
+				r.Config.Vectordb.Pgvector.SslCert = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCert)
+				r.Config.Vectordb.Pgvector.SslCertKey = types.StringPointerValue(resp.Config.Vectordb.Pgvector.SslCertKey)
+				r.Config.Vectordb.Pgvector.SslRequired = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslRequired)
+				r.Config.Vectordb.Pgvector.SslVerify = types.BoolPointerValue(resp.Config.Vectordb.Pgvector.SslVerify)
+				if resp.Config.Vectordb.Pgvector.SslVersion != nil {
+					r.Config.Vectordb.Pgvector.SslVersion = types.StringValue(string(*resp.Config.Vectordb.Pgvector.SslVersion))
+				} else {
+					r.Config.Vectordb.Pgvector.SslVersion = types.StringNull()
+				}
+				r.Config.Vectordb.Pgvector.Timeout = types.Float64PointerValue(resp.Config.Vectordb.Pgvector.Timeout)
+				r.Config.Vectordb.Pgvector.User = types.StringPointerValue(resp.Config.Vectordb.Pgvector.User)
 				r.Config.Vectordb.Redis.ClusterMaxRedirections = types.Int64PointerValue(resp.Config.Vectordb.Redis.ClusterMaxRedirections)
 				r.Config.Vectordb.Redis.ClusterNodes = []tfTypes.AiProxyAdvancedPluginClusterNodes{}
 				if len(r.Config.Vectordb.Redis.ClusterNodes) > len(resp.Config.Vectordb.Redis.ClusterNodes) {

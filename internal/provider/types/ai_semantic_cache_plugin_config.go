@@ -5,14 +5,15 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AiSemanticCachePluginConfig struct {
-	CacheControl           types.Bool                       `tfsdk:"cache_control"`
-	CacheTTL               types.Int64                      `tfsdk:"cache_ttl"`
-	Embeddings             *AiSemanticCachePluginEmbeddings `tfsdk:"embeddings"`
-	ExactCaching           types.Bool                       `tfsdk:"exact_caching"`
-	IgnoreAssistantPrompts types.Bool                       `tfsdk:"ignore_assistant_prompts"`
-	IgnoreSystemPrompts    types.Bool                       `tfsdk:"ignore_system_prompts"`
-	IgnoreToolPrompts      types.Bool                       `tfsdk:"ignore_tool_prompts"`
-	MessageCountback       types.Float64                    `tfsdk:"message_countback"`
-	StopOnFailure          types.Bool                       `tfsdk:"stop_on_failure"`
-	Vectordb               *AiSemanticCachePluginVectordb   `tfsdk:"vectordb"`
+	CacheControl           types.Bool                     `tfsdk:"cache_control"`
+	CacheTTL               types.Int64                    `tfsdk:"cache_ttl"`
+	Embeddings             *AiRagInjectorPluginEmbeddings `tfsdk:"embeddings"`
+	ExactCaching           types.Bool                     `tfsdk:"exact_caching"`
+	IgnoreAssistantPrompts types.Bool                     `tfsdk:"ignore_assistant_prompts"`
+	IgnoreSystemPrompts    types.Bool                     `tfsdk:"ignore_system_prompts"`
+	IgnoreToolPrompts      types.Bool                     `tfsdk:"ignore_tool_prompts"`
+	LlmFormat              types.String                   `tfsdk:"llm_format"`
+	MessageCountback       types.Float64                  `tfsdk:"message_countback"`
+	StopOnFailure          types.Bool                     `tfsdk:"stop_on_failure"`
+	Vectordb               *AiSemanticCachePluginVectordb `tfsdk:"vectordb"`
 }

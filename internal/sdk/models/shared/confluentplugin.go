@@ -101,6 +101,8 @@ func (e *ProducerRequestAcks) UnmarshalJSON(data []byte) error {
 }
 
 type ConfluentPluginConfig struct {
+	// The list of allowed topic names to which messages can be sent. The default topic configured in the `topic` field is always allowed, regardless of its inclusion in `allowed_topics`.
+	AllowedTopics []string `json:"allowed_topics,omitempty"`
 	// Set of bootstrap brokers in a `{host: host, port: port}` list format.
 	BootstrapServers []BootstrapServers `json:"bootstrap_servers,omitempty"`
 	// Username/Apikey for SASL authentication.
@@ -124,6 +126,8 @@ type ConfluentPluginConfig struct {
 	// Keepalive timeout in milliseconds.
 	Keepalive        *int64 `json:"keepalive,omitempty"`
 	KeepaliveEnabled *bool  `json:"keepalive_enabled,omitempty"`
+	// The Lua functions that manipulates the message being sent to the Kafka topic.
+	MessageByLuaFunctions []string `json:"message_by_lua_functions,omitempty"`
 	// Flag to enable asynchronous mode.
 	ProducerAsync *bool `json:"producer_async,omitempty"`
 	// Maximum number of messages that can be buffered in memory in asynchronous mode.
@@ -144,8 +148,17 @@ type ConfluentPluginConfig struct {
 	ProducerRequestTimeout *int64 `json:"producer_request_timeout,omitempty"`
 	// Socket timeout in milliseconds.
 	Timeout *int64 `json:"timeout,omitempty"`
-	// The Kafka topic to publish to.
+	// The default Kafka topic to publish to if the query parameter defined in the `topics_query_arg` does not exist in the request
 	Topic *string `json:"topic,omitempty"`
+	// The request query parameter name that contains the topics to publish to
+	TopicsQueryArg *string `json:"topics_query_arg,omitempty"`
+}
+
+func (o *ConfluentPluginConfig) GetAllowedTopics() []string {
+	if o == nil {
+		return nil
+	}
+	return o.AllowedTopics
 }
 
 func (o *ConfluentPluginConfig) GetBootstrapServers() []BootstrapServers {
@@ -232,6 +245,13 @@ func (o *ConfluentPluginConfig) GetKeepaliveEnabled() *bool {
 	return o.KeepaliveEnabled
 }
 
+func (o *ConfluentPluginConfig) GetMessageByLuaFunctions() []string {
+	if o == nil {
+		return nil
+	}
+	return o.MessageByLuaFunctions
+}
+
 func (o *ConfluentPluginConfig) GetProducerAsync() *bool {
 	if o == nil {
 		return nil
@@ -307,6 +327,13 @@ func (o *ConfluentPluginConfig) GetTopic() *string {
 		return nil
 	}
 	return o.Topic
+}
+
+func (o *ConfluentPluginConfig) GetTopicsQueryArg() *string {
+	if o == nil {
+		return nil
+	}
+	return o.TopicsQueryArg
 }
 
 // ConfluentPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.

@@ -58,6 +58,7 @@ const (
 	DefaultHeaderTypeB3Single DefaultHeaderType = "b3-single"
 	DefaultHeaderTypeDatadog  DefaultHeaderType = "datadog"
 	DefaultHeaderTypeGcp      DefaultHeaderType = "gcp"
+	DefaultHeaderTypeInstana  DefaultHeaderType = "instana"
 	DefaultHeaderTypeJaeger   DefaultHeaderType = "jaeger"
 	DefaultHeaderTypeOt       DefaultHeaderType = "ot"
 	DefaultHeaderTypeW3c      DefaultHeaderType = "w3c"
@@ -82,6 +83,8 @@ func (e *DefaultHeaderType) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -104,6 +107,7 @@ const (
 	ZipkinPluginHeaderTypeDatadog  ZipkinPluginHeaderType = "datadog"
 	ZipkinPluginHeaderTypeGcp      ZipkinPluginHeaderType = "gcp"
 	ZipkinPluginHeaderTypeIgnore   ZipkinPluginHeaderType = "ignore"
+	ZipkinPluginHeaderTypeInstana  ZipkinPluginHeaderType = "instana"
 	ZipkinPluginHeaderTypeJaeger   ZipkinPluginHeaderType = "jaeger"
 	ZipkinPluginHeaderTypeOt       ZipkinPluginHeaderType = "ot"
 	ZipkinPluginHeaderTypePreserve ZipkinPluginHeaderType = "preserve"
@@ -130,6 +134,8 @@ func (e *ZipkinPluginHeaderType) UnmarshalJSON(data []byte) error {
 	case "gcp":
 		fallthrough
 	case "ignore":
+		fallthrough
+	case "instana":
 		fallthrough
 	case "jaeger":
 		fallthrough
@@ -208,6 +214,7 @@ const (
 	ZipkinPluginDefaultFormatB3Single ZipkinPluginDefaultFormat = "b3-single"
 	ZipkinPluginDefaultFormatDatadog  ZipkinPluginDefaultFormat = "datadog"
 	ZipkinPluginDefaultFormatGcp      ZipkinPluginDefaultFormat = "gcp"
+	ZipkinPluginDefaultFormatInstana  ZipkinPluginDefaultFormat = "instana"
 	ZipkinPluginDefaultFormatJaeger   ZipkinPluginDefaultFormat = "jaeger"
 	ZipkinPluginDefaultFormatOt       ZipkinPluginDefaultFormat = "ot"
 	ZipkinPluginDefaultFormatW3c      ZipkinPluginDefaultFormat = "w3c"
@@ -232,6 +239,8 @@ func (e *ZipkinPluginDefaultFormat) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -251,6 +260,7 @@ const (
 	ZipkinPluginExtractB3      ZipkinPluginExtract = "b3"
 	ZipkinPluginExtractDatadog ZipkinPluginExtract = "datadog"
 	ZipkinPluginExtractGcp     ZipkinPluginExtract = "gcp"
+	ZipkinPluginExtractInstana ZipkinPluginExtract = "instana"
 	ZipkinPluginExtractJaeger  ZipkinPluginExtract = "jaeger"
 	ZipkinPluginExtractOt      ZipkinPluginExtract = "ot"
 	ZipkinPluginExtractW3c     ZipkinPluginExtract = "w3c"
@@ -273,6 +283,8 @@ func (e *ZipkinPluginExtract) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -293,6 +305,7 @@ const (
 	ZipkinPluginInjectB3Single ZipkinPluginInject = "b3-single"
 	ZipkinPluginInjectDatadog  ZipkinPluginInject = "datadog"
 	ZipkinPluginInjectGcp      ZipkinPluginInject = "gcp"
+	ZipkinPluginInjectInstana  ZipkinPluginInject = "instana"
 	ZipkinPluginInjectJaeger   ZipkinPluginInject = "jaeger"
 	ZipkinPluginInjectOt       ZipkinPluginInject = "ot"
 	ZipkinPluginInjectPreserve ZipkinPluginInject = "preserve"
@@ -317,6 +330,8 @@ func (e *ZipkinPluginInject) UnmarshalJSON(data []byte) error {
 	case "datadog":
 		fallthrough
 	case "gcp":
+		fallthrough
+	case "instana":
 		fallthrough
 	case "jaeger":
 		fallthrough

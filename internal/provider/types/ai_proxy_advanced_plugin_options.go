@@ -5,5 +5,9 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AiProxyAdvancedPluginOptions struct {
+	Azure       Azure        `tfsdk:"azure"`
+	Bedrock     *Bedrock     `tfsdk:"bedrock"`
+	Gemini      *Gemini      `tfsdk:"gemini"`
+	Huggingface *Huggingface `tfsdk:"huggingface"`
 	UpstreamURL types.String `tfsdk:"upstream_url"`
 }

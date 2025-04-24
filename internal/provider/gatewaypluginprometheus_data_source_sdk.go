@@ -24,6 +24,7 @@ func (r *GatewayPluginPrometheusDataSourceModel) RefreshFromSharedPrometheusPlug
 			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
 			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
 			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+			r.Config.WasmMetrics = types.BoolPointerValue(resp.Config.WasmMetrics)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

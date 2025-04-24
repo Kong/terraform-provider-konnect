@@ -18,6 +18,7 @@ func (r *GatewayPluginJSONThreatProtectionDataSourceModel) RefreshFromSharedJSON
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.JSONThreatProtectionPluginConfig{}
+			r.Config.AllowDuplicateObjectEntryName = types.BoolPointerValue(resp.Config.AllowDuplicateObjectEntryName)
 			if resp.Config.EnforcementMode != nil {
 				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
 			} else {

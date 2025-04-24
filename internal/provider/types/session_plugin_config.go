@@ -13,6 +13,7 @@ type SessionPluginConfig struct {
 	CookiePath              types.String   `tfsdk:"cookie_path"`
 	CookieSameSite          types.String   `tfsdk:"cookie_same_site"`
 	CookieSecure            types.Bool     `tfsdk:"cookie_secure"`
+	HashSubject             types.Bool     `tfsdk:"hash_subject"`
 	IdlingTimeout           types.Float64  `tfsdk:"idling_timeout"`
 	LogoutMethods           []types.String `tfsdk:"logout_methods"`
 	LogoutPostArg           types.String   `tfsdk:"logout_post_arg"`
@@ -28,4 +29,5 @@ type SessionPluginConfig struct {
 	Secret                  types.String   `tfsdk:"secret"`
 	StaleTTL                types.Float64  `tfsdk:"stale_ttl"`
 	Storage                 types.String   `tfsdk:"storage"`
+	StoreMetadata           types.Bool     `tfsdk:"store_metadata"`
 }

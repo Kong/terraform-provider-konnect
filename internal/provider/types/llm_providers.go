@@ -5,7 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type LlmProviders struct {
-	Limit      types.Float64 `tfsdk:"limit"`
-	Name       types.String  `tfsdk:"name"`
-	WindowSize types.Float64 `tfsdk:"window_size"`
+	Limit      []types.Float64 `tfsdk:"limit"`
+	Name       types.String    `tfsdk:"name"`
+	WindowSize []types.Float64 `tfsdk:"window_size"`
 }

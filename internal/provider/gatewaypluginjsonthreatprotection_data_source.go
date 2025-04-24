@@ -57,6 +57,10 @@ func (r *GatewayPluginJSONThreatProtectionDataSource) Schema(ctx context.Context
 			"config": schema.SingleNestedAttribute{
 				Computed: true,
 				Attributes: map[string]schema.Attribute{
+					"allow_duplicate_object_entry_name": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Allow or disallow duplicate object entry name.`,
+					},
 					"enforcement_mode": schema.StringAttribute{
 						Computed:    true,
 						Description: `Enforcement mode of the security policy.`,

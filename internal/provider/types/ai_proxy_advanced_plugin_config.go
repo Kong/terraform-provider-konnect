@@ -7,6 +7,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type AiProxyAdvancedPluginConfig struct {
 	Balancer           *Balancer    `tfsdk:"balancer"`
 	Embeddings         *Embeddings  `tfsdk:"embeddings"`
+	LlmFormat          types.String `tfsdk:"llm_format"`
 	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
 	ModelNameHeader    types.Bool   `tfsdk:"model_name_header"`
 	ResponseStreaming  types.String `tfsdk:"response_streaming"`

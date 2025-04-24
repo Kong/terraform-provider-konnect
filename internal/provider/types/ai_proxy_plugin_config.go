@@ -6,6 +6,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type AiProxyPluginConfig struct {
 	Auth               *Auth        `tfsdk:"auth"`
+	LlmFormat          types.String `tfsdk:"llm_format"`
 	Logging            *Logging     `tfsdk:"logging"`
 	MaxRequestBodySize types.Int64  `tfsdk:"max_request_body_size"`
 	Model              *Model       `tfsdk:"model"`

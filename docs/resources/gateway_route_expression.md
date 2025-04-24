@@ -16,13 +16,11 @@ GatewayRouteExpression Resource
 resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
   control_plane_id           = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at                 = 4
-  expression                 = "...my_expression..."
   https_redirect_status_code = 307
   id                         = "...my_id..."
   name                       = "...my_name..."
   path_handling              = "v0"
   preserve_host              = true
-  priority                   = 6
   protocols = [
     "http"
   ]
@@ -49,12 +47,10 @@ resource "konnect_gateway_route_expression" "my_gatewayrouteexpression" {
 ### Optional
 
 - `created_at` (Number) Unix epoch when the resource was created.
-- `expression` (String) Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
 - `https_redirect_status_code` (Number) The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol. must be one of ["426", "301", "302", "307", "308"]
 - `name` (String) The name of the Route. Route names must be unique, and they are case sensitive. For example, there can be two different Routes named "test" and "Test".
 - `path_handling` (String) Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior. must be one of ["v0", "v1"]
 - `preserve_host` (Boolean) When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
-- `priority` (Number)
 - `protocols` (List of String) An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
 - `request_buffering` (Boolean) Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
 - `response_buffering` (Boolean) Whether to enable response body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that send data with chunked transfer encoding.

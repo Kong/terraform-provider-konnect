@@ -18,6 +18,7 @@ func (r *GatewayPluginCorsDataSourceModel) RefreshFromSharedCorsPlugin(ctx conte
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.CorsPluginConfig{}
+			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
 			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
 			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
 			for _, v := range resp.Config.ExposedHeaders {

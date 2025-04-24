@@ -74,6 +74,12 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 	}
 	var config *shared.AiPromptDecoratorPluginConfig
 	if r.Config != nil {
+		llmFormat := new(shared.LlmFormat)
+		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
+			*llmFormat = shared.LlmFormat(r.Config.LlmFormat.ValueString())
+		} else {
+			llmFormat = nil
+		}
 		maxRequestBodySize := new(int64)
 		if !r.Config.MaxRequestBodySize.IsUnknown() && !r.Config.MaxRequestBodySize.IsNull() {
 			*maxRequestBodySize = r.Config.MaxRequestBodySize.ValueInt64()
@@ -120,6 +126,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 			}
 		}
 		config = &shared.AiPromptDecoratorPluginConfig{
+			LlmFormat:          llmFormat,
 			MaxRequestBodySize: maxRequestBodySize,
 			Prompts:            prompts,
 		}
@@ -202,6 +209,11 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptD
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.AiPromptDecoratorPluginConfig{}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 			if resp.Config.Prompts == nil {
 				r.Config.Prompts = nil

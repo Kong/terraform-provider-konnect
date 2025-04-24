@@ -68,6 +68,12 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"allowed_topics": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The list of allowed topic names to which messages can be sent. The default topic configured in the ` + "`" + `topic` + "`" + ` field is always allowed, regardless of its inclusion in ` + "`" + `allowed_topics` + "`" + `.`,
+					},
 					"bootstrap_servers": schema.ListNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -151,6 +157,12 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 						Computed: true,
 						Optional: true,
 					},
+					"message_by_lua_functions": schema.ListAttribute{
+						Computed:    true,
+						Optional:    true,
+						ElementType: types.StringType,
+						Description: `The Lua functions that manipulates the message being sent to the Kafka topic.`,
+					},
 					"producer_async": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,
@@ -207,7 +219,12 @@ func (r *GatewayPluginConfluentResource) Schema(ctx context.Context, req resourc
 					"topic": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The Kafka topic to publish to.`,
+						Description: `The default Kafka topic to publish to if the query parameter defined in the ` + "`" + `topics_query_arg` + "`" + ` does not exist in the request`,
+					},
+					"topics_query_arg": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `The request query parameter name that contains the topics to publish to`,
 					},
 				},
 			},

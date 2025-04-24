@@ -29,7 +29,7 @@ type GatewayPluginKeyAuthEncDataSource struct {
 
 // GatewayPluginKeyAuthEncDataSourceModel describes the data model.
 type GatewayPluginKeyAuthEncDataSourceModel struct {
-	Config         *tfTypes.KeyAuthPluginConfig       `tfsdk:"config"`
+	Config         *tfTypes.KeyAuthEncPluginConfig    `tfsdk:"config"`
 	ControlPlaneID types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt      types.Int64                        `tfsdk:"created_at"`
 	Enabled        types.Bool                         `tfsdk:"enabled"`

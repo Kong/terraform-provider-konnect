@@ -77,6 +77,8 @@ func (e *JSONThreatProtectionPluginEnforcementMode) UnmarshalJSON(data []byte) e
 }
 
 type JSONThreatProtectionPluginConfig struct {
+	// Allow or disallow duplicate object entry name.
+	AllowDuplicateObjectEntryName *bool `json:"allow_duplicate_object_entry_name,omitempty"`
 	// Enforcement mode of the security policy.
 	EnforcementMode *JSONThreatProtectionPluginEnforcementMode `json:"enforcement_mode,omitempty"`
 	// The response message when validation fails
@@ -95,6 +97,13 @@ type JSONThreatProtectionPluginConfig struct {
 	MaxObjectEntryNameLength *int64 `json:"max_object_entry_name_length,omitempty"`
 	// Max string value length. -1 means unlimited.
 	MaxStringValueLength *int64 `json:"max_string_value_length,omitempty"`
+}
+
+func (o *JSONThreatProtectionPluginConfig) GetAllowDuplicateObjectEntryName() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowDuplicateObjectEntryName
 }
 
 func (o *JSONThreatProtectionPluginConfig) GetEnforcementMode() *JSONThreatProtectionPluginEnforcementMode {

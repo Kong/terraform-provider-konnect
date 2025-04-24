@@ -74,6 +74,10 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin() *shared.
 	}
 	var config *shared.ConfluentPluginConfig
 	if r.Config != nil {
+		var allowedTopics []string = []string{}
+		for _, allowedTopicsItem := range r.Config.AllowedTopics {
+			allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
+		}
 		var bootstrapServers []shared.BootstrapServers = []shared.BootstrapServers{}
 		for _, bootstrapServersItem := range r.Config.BootstrapServers {
 			var host string
@@ -153,6 +157,10 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin() *shared.
 		} else {
 			keepaliveEnabled = nil
 		}
+		var messageByLuaFunctions []string = []string{}
+		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
+			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+		}
 		producerAsync := new(bool)
 		if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {
 			*producerAsync = r.Config.ProducerAsync.ValueBool()
@@ -219,7 +227,14 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin() *shared.
 		} else {
 			topic = nil
 		}
+		topicsQueryArg := new(string)
+		if !r.Config.TopicsQueryArg.IsUnknown() && !r.Config.TopicsQueryArg.IsNull() {
+			*topicsQueryArg = r.Config.TopicsQueryArg.ValueString()
+		} else {
+			topicsQueryArg = nil
+		}
 		config = &shared.ConfluentPluginConfig{
+			AllowedTopics:           allowedTopics,
 			BootstrapServers:        bootstrapServers,
 			ClusterAPIKey:           clusterAPIKey,
 			ClusterAPISecret:        clusterAPISecret,
@@ -232,6 +247,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin() *shared.
 			ForwardURI:              forwardURI,
 			Keepalive:               keepalive,
 			KeepaliveEnabled:        keepaliveEnabled,
+			MessageByLuaFunctions:   messageByLuaFunctions,
 			ProducerAsync:           producerAsync,
 			ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
 			ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,
@@ -243,6 +259,7 @@ func (r *GatewayPluginConfluentResourceModel) ToSharedConfluentPlugin() *shared.
 			ProducerRequestTimeout:                       producerRequestTimeout,
 			Timeout:                                      timeout,
 			Topic:                                        topic,
+			TopicsQueryArg:                               topicsQueryArg,
 		}
 	}
 	var consumer *shared.ConfluentPluginConsumer
@@ -310,6 +327,10 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.ConfluentPluginConfig{}
+			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
+			for _, v := range resp.Config.AllowedTopics {
+				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+			}
 			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
 			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
 				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
@@ -336,6 +357,10 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
 			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
+			for _, v := range resp.Config.MessageByLuaFunctions {
+				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+			}
 			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
 			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
@@ -351,6 +376,7 @@ func (r *GatewayPluginConfluentResourceModel) RefreshFromSharedConfluentPlugin(c
 			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
 			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
+			r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

@@ -440,7 +440,7 @@ type ProxyCacheAdvancedPluginConfig struct {
 	Strategy *ProxyCacheAdvancedPluginStrategy `json:"strategy,omitempty"`
 	// Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
 	VaryHeaders []string `json:"vary_headers,omitempty"`
-	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
+	// Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
 	VaryQueryParams []string `json:"vary_query_params,omitempty"`
 }
 

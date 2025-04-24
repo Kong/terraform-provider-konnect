@@ -13,6 +13,7 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	HeaderName                 types.String                `tfsdk:"header_name"`
 	HideClientHeaders          types.Bool                  `tfsdk:"hide_client_headers"`
 	Identifier                 types.String                `tfsdk:"identifier"`
+	LlmFormat                  types.String                `tfsdk:"llm_format"`
 	LlmProviders               []LlmProviders              `tfsdk:"llm_providers"`
 	Path                       types.String                `tfsdk:"path"`
 	Redis                      *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
