@@ -30941,6 +30941,10 @@ components:
           description: Unix epoch when the resource was created.
           type: integer
           nullable: true
+        expression:
+          description: Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
+          type: string
+          nullable: true
         https_redirect_status_code:
           description: 'The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.'
           type: integer
@@ -30968,6 +30972,9 @@ components:
         preserve_host:
           description: 'When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service''s `host`.'
           type: boolean
+          nullable: true
+        priority:
+          type: integer
           nullable: true
         protocols:
           description: 'An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.'
