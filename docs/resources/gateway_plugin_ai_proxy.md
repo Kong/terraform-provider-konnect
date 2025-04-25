@@ -31,6 +31,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
       param_name                 = "...my_param_name..."
       param_value                = "...my_param_value..."
     }
+    llm_format = "bedrock"
     logging = {
       log_payloads   = false
       log_statistics = true
@@ -44,7 +45,10 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
         azure_deployment_id = "...my_azure_deployment_id..."
         azure_instance      = "...my_azure_instance..."
         bedrock = {
-          aws_region = "...my_aws_region..."
+          aws_assume_role_arn   = "...my_aws_assume_role_arn..."
+          aws_region            = "...my_aws_region..."
+          aws_role_session_name = "...my_aws_role_session_name..."
+          aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
         }
         gemini = {
           api_endpoint = "...my_api_endpoint..."
@@ -143,6 +147,7 @@ resource "konnect_gateway_plugin_ai_proxy" "my_gatewaypluginaiproxy" {
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--auth))
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `logging` (Attributes) (see [below for nested schema](#nestedatt--config--logging))
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected
 - `model` (Attributes) (see [below for nested schema](#nestedatt--config--model))
@@ -217,7 +222,10 @@ Optional:
 
 Optional:
 
+- `aws_assume_role_arn` (String) If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+- `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
+- `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 
 
 <a id="nestedatt--config--model--options--gemini"></a>

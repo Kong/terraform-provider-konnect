@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type KafkaLogPluginSecurity struct {
-	CertificateID types.String `tfsdk:"certificate_id"`
-	Ssl           types.Bool   `tfsdk:"ssl"`
+type RequestCalloutPluginBody struct {
+	Decode types.Bool `tfsdk:"decode"`
+	Store  types.Bool `tfsdk:"store"`
 }

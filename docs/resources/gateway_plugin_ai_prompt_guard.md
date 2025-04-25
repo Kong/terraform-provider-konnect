@@ -22,6 +22,7 @@ resource "konnect_gateway_plugin_ai_prompt_guard" "my_gatewaypluginaipromptguard
     deny_patterns = [
       "..."
     ]
+    llm_format            = "gemini"
     match_all_roles       = false
     max_request_body_size = 10
   }
@@ -98,6 +99,7 @@ Optional:
 - `allow_all_conversation_history` (Boolean) If true, will ignore all previous chat prompts from the conversation history.
 - `allow_patterns` (List of String) Array of valid regex patterns, or valid questions from the 'user' role in chat.
 - `deny_patterns` (List of String) Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `match_all_roles` (Boolean) If true, will match all roles in addition to 'user' role in conversation history.
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected
 

@@ -62,6 +62,11 @@ func (r *GatewayPluginCorsResource) Schema(ctx context.Context, req resource.Sch
 				Computed: true,
 				Optional: true,
 				Attributes: map[string]schema.Attribute{
+					"allow_origin_absent": schema.BoolAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `A boolean value that skip cors response headers when origin header of request is empty`,
+					},
 					"credentials": schema.BoolAttribute{
 						Computed:    true,
 						Optional:    true,

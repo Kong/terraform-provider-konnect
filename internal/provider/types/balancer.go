@@ -5,13 +5,14 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type Balancer struct {
-	Algorithm           types.String `tfsdk:"algorithm"`
-	ConnectTimeout      types.Int64  `tfsdk:"connect_timeout"`
-	HashOnHeader        types.String `tfsdk:"hash_on_header"`
-	LatencyStrategy     types.String `tfsdk:"latency_strategy"`
-	ReadTimeout         types.Int64  `tfsdk:"read_timeout"`
-	Retries             types.Int64  `tfsdk:"retries"`
-	Slots               types.Int64  `tfsdk:"slots"`
-	TokensCountStrategy types.String `tfsdk:"tokens_count_strategy"`
-	WriteTimeout        types.Int64  `tfsdk:"write_timeout"`
+	Algorithm           types.String   `tfsdk:"algorithm"`
+	ConnectTimeout      types.Int64    `tfsdk:"connect_timeout"`
+	FailoverCriteria    []types.String `tfsdk:"failover_criteria"`
+	HashOnHeader        types.String   `tfsdk:"hash_on_header"`
+	LatencyStrategy     types.String   `tfsdk:"latency_strategy"`
+	ReadTimeout         types.Int64    `tfsdk:"read_timeout"`
+	Retries             types.Int64    `tfsdk:"retries"`
+	Slots               types.Int64    `tfsdk:"slots"`
+	TokensCountStrategy types.String   `tfsdk:"tokens_count_strategy"`
+	WriteTimeout        types.Int64    `tfsdk:"write_timeout"`
 }

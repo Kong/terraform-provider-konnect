@@ -205,6 +205,36 @@ func (o *Auth) GetParamValue() *string {
 	return o.ParamValue
 }
 
+// AiProxyPluginLlmFormat - LLM input and output format and schema to use
+type AiProxyPluginLlmFormat string
+
+const (
+	AiProxyPluginLlmFormatBedrock AiProxyPluginLlmFormat = "bedrock"
+	AiProxyPluginLlmFormatGemini  AiProxyPluginLlmFormat = "gemini"
+	AiProxyPluginLlmFormatOpenai  AiProxyPluginLlmFormat = "openai"
+)
+
+func (e AiProxyPluginLlmFormat) ToPointer() *AiProxyPluginLlmFormat {
+	return &e
+}
+func (e *AiProxyPluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiProxyPluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyPluginLlmFormat: %v", v)
+	}
+}
+
 type Logging struct {
 	// If enabled, will log the request and response body into the Kong log plugin(s) output.
 	LogPayloads *bool `json:"log_payloads,omitempty"`
@@ -227,8 +257,21 @@ func (o *Logging) GetLogStatistics() *bool {
 }
 
 type Bedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+}
+
+func (o *Bedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
 }
 
 func (o *Bedrock) GetAwsRegion() *string {
@@ -236,6 +279,20 @@ func (o *Bedrock) GetAwsRegion() *string {
 		return nil
 	}
 	return o.AwsRegion
+}
+
+func (o *Bedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *Bedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
 }
 
 type Gemini struct {
@@ -639,8 +696,10 @@ func (e *RouteType) UnmarshalJSON(data []byte) error {
 }
 
 type AiProxyPluginConfig struct {
-	Auth    *Auth    `json:"auth,omitempty"`
-	Logging *Logging `json:"logging,omitempty"`
+	Auth *Auth `json:"auth,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiProxyPluginLlmFormat `json:"llm_format,omitempty"`
+	Logging   *Logging                `json:"logging,omitempty"`
 	// max allowed body size allowed to be introspected
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	Model              *Model `json:"model,omitempty"`
@@ -657,6 +716,13 @@ func (o *AiProxyPluginConfig) GetAuth() *Auth {
 		return nil
 	}
 	return o.Auth
+}
+
+func (o *AiProxyPluginConfig) GetLlmFormat() *AiProxyPluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiProxyPluginConfig) GetLogging() *Logging {

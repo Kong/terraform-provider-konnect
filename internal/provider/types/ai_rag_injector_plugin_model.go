@@ -4,7 +4,7 @@ package types
 
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
-type AiSemanticCachePluginModel struct {
+type AiRagInjectorPluginModel struct {
 	Name     types.String                  `tfsdk:"name"`
 	Options  *AiProxyAdvancedPluginOptions `tfsdk:"options"`
 	Provider types.String                  `tfsdk:"provider"`

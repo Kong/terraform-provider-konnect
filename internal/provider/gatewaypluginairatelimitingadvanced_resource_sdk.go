@@ -122,15 +122,23 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 		} else {
 			identifier = nil
 		}
+		llmFormat := new(shared.AiRateLimitingAdvancedPluginLlmFormat)
+		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
+			*llmFormat = shared.AiRateLimitingAdvancedPluginLlmFormat(r.Config.LlmFormat.ValueString())
+		} else {
+			llmFormat = nil
+		}
 		var llmProviders []shared.LlmProviders = []shared.LlmProviders{}
 		for _, llmProvidersItem := range r.Config.LlmProviders {
-			var limit float64
-			limit = llmProvidersItem.Limit.ValueFloat64()
-
+			var limit []float64 = []float64{}
+			for _, limitItem := range llmProvidersItem.Limit {
+				limit = append(limit, limitItem.ValueFloat64())
+			}
 			name := shared.AiRateLimitingAdvancedPluginName(llmProvidersItem.Name.ValueString())
-			var windowSize float64
-			windowSize = llmProvidersItem.WindowSize.ValueFloat64()
-
+			var windowSize []float64 = []float64{}
+			for _, windowSizeItem := range llmProvidersItem.WindowSize {
+				windowSize = append(windowSize, windowSizeItem.ValueFloat64())
+			}
 			llmProviders = append(llmProviders, shared.LlmProviders{
 				Limit:      limit,
 				Name:       name,
@@ -366,6 +374,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) ToSharedAiRateLimitin
 			HeaderName:                 headerName,
 			HideClientHeaders:          hideClientHeaders,
 			Identifier:                 identifier,
+			LlmFormat:                  llmFormat,
 			LlmProviders:               llmProviders,
 			Path:                       path,
 			Redis:                      redis,
@@ -467,15 +476,26 @@ func (r *GatewayPluginAiRateLimitingAdvancedResourceModel) RefreshFromSharedAiRa
 			} else {
 				r.Config.Identifier = types.StringNull()
 			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			r.Config.LlmProviders = []tfTypes.LlmProviders{}
 			if len(r.Config.LlmProviders) > len(resp.Config.LlmProviders) {
 				r.Config.LlmProviders = r.Config.LlmProviders[:len(resp.Config.LlmProviders)]
 			}
 			for llmProvidersCount, llmProvidersItem := range resp.Config.LlmProviders {
 				var llmProviders tfTypes.LlmProviders
-				llmProviders.Limit = types.Float64Value(llmProvidersItem.Limit)
+				llmProviders.Limit = make([]types.Float64, 0, len(llmProvidersItem.Limit))
+				for _, v := range llmProvidersItem.Limit {
+					llmProviders.Limit = append(llmProviders.Limit, types.Float64Value(v))
+				}
 				llmProviders.Name = types.StringValue(string(llmProvidersItem.Name))
-				llmProviders.WindowSize = types.Float64Value(llmProvidersItem.WindowSize)
+				llmProviders.WindowSize = make([]types.Float64, 0, len(llmProvidersItem.WindowSize))
+				for _, v := range llmProvidersItem.WindowSize {
+					llmProviders.WindowSize = append(llmProviders.WindowSize, types.Float64Value(v))
+				}
 				if llmProvidersCount+1 > len(r.Config.LlmProviders) {
 					r.Config.LlmProviders = append(r.Config.LlmProviders, llmProviders)
 				} else {

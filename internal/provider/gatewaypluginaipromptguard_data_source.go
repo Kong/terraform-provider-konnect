@@ -73,6 +73,10 @@ func (r *GatewayPluginAiPromptGuardDataSource) Schema(ctx context.Context, req d
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
 					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Description: `LLM input and output format and schema to use`,
+					},
 					"match_all_roles": schema.BoolAttribute{
 						Computed:    true,
 						Description: `If true, will match all roles in addition to 'user' role in conversation history.`,

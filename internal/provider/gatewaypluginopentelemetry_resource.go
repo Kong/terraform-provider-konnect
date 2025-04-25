@@ -91,7 +91,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 					"header_type": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "jaeger", "ot", "preserve", "w3c"]`,
+						Description: `must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"aws",
@@ -100,6 +100,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 								"datadog",
 								"gcp",
 								"ignore",
+								"instana",
 								"jaeger",
 								"ot",
 								"preserve",
@@ -138,7 +139,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 							"default_format": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]`,
+								Description: `The default header format to use when extractors did not match any format in the incoming headers and ` + "`" + `inject` + "`" + ` is configured with the value: ` + "`" + `preserve` + "`" + `. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in ` + "`" + `extract` + "`" + `. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]`,
 								Validators: []validator.String{
 									speakeasy_stringvalidators.NotNull(),
 									stringvalidator.OneOf(
@@ -147,6 +148,7 @@ func (r *GatewayPluginOpentelemetryResource) Schema(ctx context.Context, req res
 										"b3-single",
 										"datadog",
 										"gcp",
+										"instana",
 										"jaeger",
 										"ot",
 										"w3c",

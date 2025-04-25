@@ -35,11 +35,32 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
       model = {
         name = "...my_name..."
         options = {
+          azure = {
+            api_version   = "...my_api_version..."
+            deployment_id = "...my_deployment_id..."
+            instance      = "...my_instance..."
+          }
+          bedrock = {
+            aws_assume_role_arn   = "...my_aws_assume_role_arn..."
+            aws_region            = "...my_aws_region..."
+            aws_role_session_name = "...my_aws_role_session_name..."
+            aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
+          }
+          gemini = {
+            api_endpoint = "...my_api_endpoint..."
+            location_id  = "...my_location_id..."
+            project_id   = "...my_project_id..."
+          }
+          huggingface = {
+            use_cache      = false
+            wait_for_model = true
+          }
           upstream_url = "...my_upstream_url..."
         }
-        provider = "openai"
+        provider = "mistral"
       }
     }
+    llm_format = "gemini"
     rules = {
       allow_prompts = [
         "..."
@@ -57,6 +78,20 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
     vectordb = {
       dimensions      = 4
       distance_metric = "euclidean"
+      pgvector = {
+        database     = "...my_database..."
+        host         = "...my_host..."
+        password     = "...my_password..."
+        port         = 4
+        ssl          = false
+        ssl_cert     = "...my_ssl_cert..."
+        ssl_cert_key = "...my_ssl_cert_key..."
+        ssl_required = false
+        ssl_verify   = false
+        ssl_version  = "tlsv1_3"
+        timeout      = 7.16
+        user         = "...my_user..."
+      }
       redis = {
         cluster_max_redirections = 10
         cluster_nodes = [
@@ -165,6 +200,7 @@ resource "konnect_gateway_plugin_ai_semantic_prompt_guard" "my_gatewaypluginaise
 Optional:
 
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `rules` (Attributes) (see [below for nested schema](#nestedatt--config--rules))
 - `search` (Attributes) (see [below for nested schema](#nestedatt--config--search))
 - `vectordb` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb))
@@ -205,14 +241,58 @@ Optional:
 
 - `name` (String) Model name to execute.
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
-- `provider` (String) AI provider format to use for embeddings API. must be one of ["mistral", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
 
 Optional:
 
+- `azure` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
+- `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--bedrock))
+- `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--gemini))
+- `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--huggingface))
 - `upstream_url` (String) upstream url for the embeddings
+
+<a id="nestedatt--config--embeddings--model--options--azure"></a>
+### Nested Schema for `config.embeddings.model.options.azure`
+
+Optional:
+
+- `api_version` (String) 'api-version' for Azure OpenAI instances.
+- `deployment_id` (String) Deployment ID for Azure OpenAI instances.
+- `instance` (String) Instance name for Azure OpenAI hosted models.
+
+
+<a id="nestedatt--config--embeddings--model--options--bedrock"></a>
+### Nested Schema for `config.embeddings.model.options.bedrock`
+
+Optional:
+
+- `aws_assume_role_arn` (String) If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+- `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+- `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
+- `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+
+
+<a id="nestedatt--config--embeddings--model--options--gemini"></a>
+### Nested Schema for `config.embeddings.model.options.gemini`
+
+Optional:
+
+- `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+- `location_id` (String) If running Gemini on Vertex, specify the location ID.
+- `project_id` (String) If running Gemini on Vertex, specify the project ID.
+
+
+<a id="nestedatt--config--embeddings--model--options--huggingface"></a>
+### Nested Schema for `config.embeddings.model.options.huggingface`
+
+Optional:
+
+- `use_cache` (Boolean) Use the cache layer on the inference API
+- `wait_for_model` (Boolean) Wait for the model if it is not ready
+
 
 
 
@@ -244,9 +324,29 @@ Optional:
 
 - `dimensions` (Number) the desired dimensionality for the vectors
 - `distance_metric` (String) the distance metric to use for vector searches. must be one of ["cosine", "euclidean"]
+- `pgvector` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--vectordb--redis))
-- `strategy` (String) which vector database driver to use. must be "redis"
+- `strategy` (String) which vector database driver to use. must be one of ["pgvector", "redis"]
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float)
+
+<a id="nestedatt--config--vectordb--pgvector"></a>
+### Nested Schema for `config.vectordb.pgvector`
+
+Optional:
+
+- `database` (String) the database of the pgvector database
+- `host` (String) the host of the pgvector database
+- `password` (String) the password of the pgvector database
+- `port` (Number) the port of the pgvector database
+- `ssl` (Boolean) whether to use ssl for the pgvector database
+- `ssl_cert` (String) the path of ssl cert to use for the pgvector database
+- `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
+- `ssl_required` (Boolean) whether ssl is required for the pgvector database
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database
+- `ssl_version` (String) the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `timeout` (Number) the timeout of the pgvector database
+- `user` (String) the user of the pgvector database
+
 
 <a id="nestedatt--config--vectordb--redis"></a>
 ### Nested Schema for `config.vectordb.redis`

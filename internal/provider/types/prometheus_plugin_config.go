@@ -11,4 +11,5 @@ type PrometheusPluginConfig struct {
 	PerConsumer           types.Bool `tfsdk:"per_consumer"`
 	StatusCodeMetrics     types.Bool `tfsdk:"status_code_metrics"`
 	UpstreamHealthMetrics types.Bool `tfsdk:"upstream_health_metrics"`
+	WasmMetrics           types.Bool `tfsdk:"wasm_metrics"`
 }

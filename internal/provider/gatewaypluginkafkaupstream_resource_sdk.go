@@ -74,6 +74,10 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 	}
 	var config *shared.KafkaUpstreamPluginConfig
 	if r.Config != nil {
+		var allowedTopics []string = []string{}
+		for _, allowedTopicsItem := range r.Config.AllowedTopics {
+			allowedTopics = append(allowedTopics, allowedTopicsItem.ValueString())
+		}
 		var authentication *shared.KafkaUpstreamPluginAuthentication
 		if r.Config.Authentication != nil {
 			mechanism := new(shared.KafkaUpstreamPluginMechanism)
@@ -169,6 +173,10 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 		} else {
 			keepaliveEnabled = nil
 		}
+		var messageByLuaFunctions []string = []string{}
+		for _, messageByLuaFunctionsItem := range r.Config.MessageByLuaFunctions {
+			messageByLuaFunctions = append(messageByLuaFunctions, messageByLuaFunctionsItem.ValueString())
+		}
 		producerAsync := new(bool)
 		if !r.Config.ProducerAsync.IsUnknown() && !r.Config.ProducerAsync.IsNull() {
 			*producerAsync = r.Config.ProducerAsync.ValueBool()
@@ -254,17 +262,25 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 		} else {
 			topic = nil
 		}
+		topicsQueryArg := new(string)
+		if !r.Config.TopicsQueryArg.IsUnknown() && !r.Config.TopicsQueryArg.IsNull() {
+			*topicsQueryArg = r.Config.TopicsQueryArg.ValueString()
+		} else {
+			topicsQueryArg = nil
+		}
 		config = &shared.KafkaUpstreamPluginConfig{
-			Authentication:   authentication,
-			BootstrapServers: bootstrapServers,
-			ClusterName:      clusterName,
-			ForwardBody:      forwardBody,
-			ForwardHeaders:   forwardHeaders,
-			ForwardMethod:    forwardMethod,
-			ForwardURI:       forwardURI,
-			Keepalive:        keepalive,
-			KeepaliveEnabled: keepaliveEnabled,
-			ProducerAsync:    producerAsync,
+			AllowedTopics:         allowedTopics,
+			Authentication:        authentication,
+			BootstrapServers:      bootstrapServers,
+			ClusterName:           clusterName,
+			ForwardBody:           forwardBody,
+			ForwardHeaders:        forwardHeaders,
+			ForwardMethod:         forwardMethod,
+			ForwardURI:            forwardURI,
+			Keepalive:             keepalive,
+			KeepaliveEnabled:      keepaliveEnabled,
+			MessageByLuaFunctions: messageByLuaFunctions,
+			ProducerAsync:         producerAsync,
 			ProducerAsyncBufferingLimitsMessagesInMemory: producerAsyncBufferingLimitsMessagesInMemory,
 			ProducerAsyncFlushTimeout:                    producerAsyncFlushTimeout,
 			ProducerRequestAcks:                          producerRequestAcks,
@@ -276,6 +292,7 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) ToSharedKafkaUpstreamPlugin() 
 			Security:                                     security,
 			Timeout:                                      timeout,
 			Topic:                                        topic,
+			TopicsQueryArg:                               topicsQueryArg,
 		}
 	}
 	var consumer *shared.KafkaUpstreamPluginConsumer
@@ -343,6 +360,10 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.KafkaUpstreamPluginConfig{}
+			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
+			for _, v := range resp.Config.AllowedTopics {
+				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+			}
 			if resp.Config.Authentication == nil {
 				r.Config.Authentication = nil
 			} else {
@@ -383,6 +404,10 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
 			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
+			for _, v := range resp.Config.MessageByLuaFunctions {
+				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+			}
 			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
 			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
@@ -399,12 +424,13 @@ func (r *GatewayPluginKafkaUpstreamResourceModel) RefreshFromSharedKafkaUpstream
 			if resp.Config.Security == nil {
 				r.Config.Security = nil
 			} else {
-				r.Config.Security = &tfTypes.KafkaLogPluginSecurity{}
+				r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
 				r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 				r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
 			}
 			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
+			r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

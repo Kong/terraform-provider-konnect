@@ -177,6 +177,12 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 				ParamValue:              paramValue,
 			}
 		}
+		llmFormat := new(shared.AiProxyPluginLlmFormat)
+		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
+			*llmFormat = shared.AiProxyPluginLlmFormat(r.Config.LlmFormat.ValueString())
+		} else {
+			llmFormat = nil
+		}
 		var logging *shared.Logging
 		if r.Config.Logging != nil {
 			logPayloads := new(bool)
@@ -238,14 +244,35 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 				}
 				var bedrock *shared.Bedrock
 				if r.Config.Model.Options.Bedrock != nil {
+					awsAssumeRoleArn := new(string)
+					if !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
+						*awsAssumeRoleArn = r.Config.Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
+					} else {
+						awsAssumeRoleArn = nil
+					}
 					awsRegion := new(string)
 					if !r.Config.Model.Options.Bedrock.AwsRegion.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRegion.IsNull() {
 						*awsRegion = r.Config.Model.Options.Bedrock.AwsRegion.ValueString()
 					} else {
 						awsRegion = nil
 					}
+					awsRoleSessionName := new(string)
+					if !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
+						*awsRoleSessionName = r.Config.Model.Options.Bedrock.AwsRoleSessionName.ValueString()
+					} else {
+						awsRoleSessionName = nil
+					}
+					awsStsEndpointURL := new(string)
+					if !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !r.Config.Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
+						*awsStsEndpointURL = r.Config.Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
+					} else {
+						awsStsEndpointURL = nil
+					}
 					bedrock = &shared.Bedrock{
-						AwsRegion: awsRegion,
+						AwsAssumeRoleArn:   awsAssumeRoleArn,
+						AwsRegion:          awsRegion,
+						AwsRoleSessionName: awsRoleSessionName,
+						AwsStsEndpointURL:  awsStsEndpointURL,
 					}
 				}
 				var gemini *shared.Gemini
@@ -405,6 +432,7 @@ func (r *GatewayPluginAiProxyResourceModel) ToSharedAiProxyPlugin() *shared.AiPr
 		}
 		config = &shared.AiProxyPluginConfig{
 			Auth:               auth,
+			LlmFormat:          llmFormat,
 			Logging:            logging,
 			MaxRequestBodySize: maxRequestBodySize,
 			Model:              model,
@@ -514,6 +542,11 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 				r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
 				r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
 			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			if resp.Config.Logging == nil {
 				r.Config.Logging = nil
 			} else {
@@ -539,7 +572,10 @@ func (r *GatewayPluginAiProxyResourceModel) RefreshFromSharedAiProxyPlugin(ctx c
 						r.Config.Model.Options.Bedrock = nil
 					} else {
 						r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
+						r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
 						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
+						r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
+						r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
 					}
 					if resp.Config.Model.Options.Gemini == nil {
 						r.Config.Model.Options.Gemini = nil

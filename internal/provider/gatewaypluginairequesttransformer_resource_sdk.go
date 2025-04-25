@@ -270,14 +270,35 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 					}
 					var bedrock *shared.AiRequestTransformerPluginBedrock
 					if r.Config.Llm.Model.Options.Bedrock != nil {
+						awsAssumeRoleArn := new(string)
+						if !r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn.IsNull() {
+							*awsAssumeRoleArn = r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn.ValueString()
+						} else {
+							awsAssumeRoleArn = nil
+						}
 						awsRegion := new(string)
 						if !r.Config.Llm.Model.Options.Bedrock.AwsRegion.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.AwsRegion.IsNull() {
 							*awsRegion = r.Config.Llm.Model.Options.Bedrock.AwsRegion.ValueString()
 						} else {
 							awsRegion = nil
 						}
+						awsRoleSessionName := new(string)
+						if !r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName.IsNull() {
+							*awsRoleSessionName = r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName.ValueString()
+						} else {
+							awsRoleSessionName = nil
+						}
+						awsStsEndpointURL := new(string)
+						if !r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL.IsUnknown() && !r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL.IsNull() {
+							*awsStsEndpointURL = r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL.ValueString()
+						} else {
+							awsStsEndpointURL = nil
+						}
 						bedrock = &shared.AiRequestTransformerPluginBedrock{
-							AwsRegion: awsRegion,
+							AwsAssumeRoleArn:   awsAssumeRoleArn,
+							AwsRegion:          awsRegion,
+							AwsRoleSessionName: awsRoleSessionName,
+							AwsStsEndpointURL:  awsStsEndpointURL,
 						}
 					}
 					var gemini *shared.AiRequestTransformerPluginGemini
@@ -583,7 +604,10 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequ
 							r.Config.Llm.Model.Options.Bedrock = nil
 						} else {
 							r.Config.Llm.Model.Options.Bedrock = &tfTypes.Bedrock{}
+							r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn)
 							r.Config.Llm.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRegion)
+							r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName)
+							r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL)
 						}
 						if resp.Config.Llm.Model.Options.Gemini == nil {
 							r.Config.Llm.Model.Options.Gemini = nil

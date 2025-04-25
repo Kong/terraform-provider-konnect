@@ -99,7 +99,7 @@ func (r *GatewayPluginRateLimitingAdvancedDataSource) Schema(ctx context.Context
 					},
 					"identifier": schema.StringAttribute{
 						Computed:    true,
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `.`,
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.`,
 					},
 					"limit": schema.ListAttribute{
 						Computed:    true,

@@ -75,7 +75,10 @@ func (r *GatewayPluginAiRequestTransformerDataSourceModel) RefreshFromSharedAiRe
 							r.Config.Llm.Model.Options.Bedrock = nil
 						} else {
 							r.Config.Llm.Model.Options.Bedrock = &tfTypes.Bedrock{}
+							r.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsAssumeRoleArn)
 							r.Config.Llm.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRegion)
+							r.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsRoleSessionName)
+							r.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Llm.Model.Options.Bedrock.AwsStsEndpointURL)
 						}
 						if resp.Config.Llm.Model.Options.Gemini == nil {
 							r.Config.Llm.Model.Options.Gemini = nil

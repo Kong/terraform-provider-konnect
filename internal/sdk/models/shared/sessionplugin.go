@@ -237,6 +237,8 @@ type SessionPluginConfig struct {
 	CookieSameSite *CookieSameSite `json:"cookie_same_site,omitempty"`
 	// Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
 	CookieSecure *bool `json:"cookie_secure,omitempty"`
+	// Whether to hash or not the subject when store_metadata is enabled.
+	HashSubject *bool `json:"hash_subject,omitempty"`
 	// The session cookie idle time, in seconds.
 	IdlingTimeout *float64 `json:"idling_timeout,omitempty"`
 	// A set of HTTP methods that the plugin will respond to.
@@ -266,6 +268,8 @@ type SessionPluginConfig struct {
 	StaleTTL *float64 `json:"stale_ttl,omitempty"`
 	// Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself.
 	Storage *SessionPluginStorage `json:"storage,omitempty"`
+	// Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.
+	StoreMetadata *bool `json:"store_metadata,omitempty"`
 }
 
 func (o *SessionPluginConfig) GetAbsoluteTimeout() *float64 {
@@ -322,6 +326,13 @@ func (o *SessionPluginConfig) GetCookieSecure() *bool {
 		return nil
 	}
 	return o.CookieSecure
+}
+
+func (o *SessionPluginConfig) GetHashSubject() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.HashSubject
 }
 
 func (o *SessionPluginConfig) GetIdlingTimeout() *float64 {
@@ -427,6 +438,13 @@ func (o *SessionPluginConfig) GetStorage() *SessionPluginStorage {
 		return nil
 	}
 	return o.Storage
+}
+
+func (o *SessionPluginConfig) GetStoreMetadata() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.StoreMetadata
 }
 
 // SessionPluginProtocols - A string representing a protocol, such as HTTP or HTTPS.

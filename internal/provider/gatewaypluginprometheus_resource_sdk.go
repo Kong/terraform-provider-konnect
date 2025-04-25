@@ -110,6 +110,12 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 		} else {
 			upstreamHealthMetrics = nil
 		}
+		wasmMetrics := new(bool)
+		if !r.Config.WasmMetrics.IsUnknown() && !r.Config.WasmMetrics.IsNull() {
+			*wasmMetrics = r.Config.WasmMetrics.ValueBool()
+		} else {
+			wasmMetrics = nil
+		}
 		config = &shared.PrometheusPluginConfig{
 			AiMetrics:             aiMetrics,
 			BandwidthMetrics:      bandwidthMetrics,
@@ -117,6 +123,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 			PerConsumer:           perConsumer,
 			StatusCodeMetrics:     statusCodeMetrics,
 			UpstreamHealthMetrics: upstreamHealthMetrics,
+			WasmMetrics:           wasmMetrics,
 		}
 	}
 	var consumer *shared.PrometheusPluginConsumer
@@ -190,6 +197,7 @@ func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin
 			r.Config.PerConsumer = types.BoolPointerValue(resp.Config.PerConsumer)
 			r.Config.StatusCodeMetrics = types.BoolPointerValue(resp.Config.StatusCodeMetrics)
 			r.Config.UpstreamHealthMetrics = types.BoolPointerValue(resp.Config.UpstreamHealthMetrics)
+			r.Config.WasmMetrics = types.BoolPointerValue(resp.Config.WasmMetrics)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

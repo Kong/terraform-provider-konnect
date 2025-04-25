@@ -30,6 +30,7 @@ func (r *GatewayPluginSessionDataSourceModel) RefreshFromSharedSessionPlugin(ctx
 				r.Config.CookieSameSite = types.StringNull()
 			}
 			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
+			r.Config.HashSubject = types.BoolPointerValue(resp.Config.HashSubject)
 			r.Config.IdlingTimeout = types.Float64PointerValue(resp.Config.IdlingTimeout)
 			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
 			for _, v := range resp.Config.LogoutMethods {
@@ -58,6 +59,7 @@ func (r *GatewayPluginSessionDataSourceModel) RefreshFromSharedSessionPlugin(ctx
 			} else {
 				r.Config.Storage = types.StringNull()
 			}
+			r.Config.StoreMetadata = types.BoolPointerValue(resp.Config.StoreMetadata)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

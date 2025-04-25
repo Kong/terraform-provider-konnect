@@ -86,6 +86,32 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		} else {
 			hideCredentials = nil
 		}
+		var identityRealms []shared.IdentityRealms = []shared.IdentityRealms{}
+		for _, identityRealmsItem := range r.Config.IdentityRealms {
+			id1 := new(string)
+			if !identityRealmsItem.ID.IsUnknown() && !identityRealmsItem.ID.IsNull() {
+				*id1 = identityRealmsItem.ID.ValueString()
+			} else {
+				id1 = nil
+			}
+			region := new(string)
+			if !identityRealmsItem.Region.IsUnknown() && !identityRealmsItem.Region.IsNull() {
+				*region = identityRealmsItem.Region.ValueString()
+			} else {
+				region = nil
+			}
+			scope := new(shared.Scope)
+			if !identityRealmsItem.Scope.IsUnknown() && !identityRealmsItem.Scope.IsNull() {
+				*scope = shared.Scope(identityRealmsItem.Scope.ValueString())
+			} else {
+				scope = nil
+			}
+			identityRealms = append(identityRealms, shared.IdentityRealms{
+				ID:     id1,
+				Region: region,
+				Scope:  scope,
+			})
+		}
 		keyInBody := new(bool)
 		if !r.Config.KeyInBody.IsUnknown() && !r.Config.KeyInBody.IsNull() {
 			*keyInBody = r.Config.KeyInBody.ValueBool()
@@ -123,6 +149,7 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 		config = &shared.KeyAuthPluginConfig{
 			Anonymous:       anonymous,
 			HideCredentials: hideCredentials,
+			IdentityRealms:  identityRealms,
 			KeyInBody:       keyInBody,
 			KeyInHeader:     keyInHeader,
 			KeyInQuery:      keyInQuery,
@@ -137,26 +164,26 @@ func (r *GatewayPluginKeyAuthResourceModel) ToSharedKeyAuthPlugin() *shared.KeyA
 	}
 	var route *shared.KeyAuthPluginRoute
 	if r.Route != nil {
-		id1 := new(string)
+		id2 := new(string)
 		if !r.Route.ID.IsUnknown() && !r.Route.ID.IsNull() {
-			*id1 = r.Route.ID.ValueString()
+			*id2 = r.Route.ID.ValueString()
 		} else {
-			id1 = nil
+			id2 = nil
 		}
 		route = &shared.KeyAuthPluginRoute{
-			ID: id1,
+			ID: id2,
 		}
 	}
 	var service *shared.KeyAuthPluginService
 	if r.Service != nil {
-		id2 := new(string)
+		id3 := new(string)
 		if !r.Service.ID.IsUnknown() && !r.Service.ID.IsNull() {
-			*id2 = r.Service.ID.ValueString()
+			*id3 = r.Service.ID.ValueString()
 		} else {
-			id2 = nil
+			id3 = nil
 		}
 		service = &shared.KeyAuthPluginService{
-			ID: id2,
+			ID: id3,
 		}
 	}
 	out := shared.KeyAuthPlugin{
@@ -185,6 +212,27 @@ func (r *GatewayPluginKeyAuthResourceModel) RefreshFromSharedKeyAuthPlugin(ctx c
 			r.Config = &tfTypes.KeyAuthPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
+			r.Config.IdentityRealms = []tfTypes.IdentityRealms{}
+			if len(r.Config.IdentityRealms) > len(resp.Config.IdentityRealms) {
+				r.Config.IdentityRealms = r.Config.IdentityRealms[:len(resp.Config.IdentityRealms)]
+			}
+			for identityRealmsCount, identityRealmsItem := range resp.Config.IdentityRealms {
+				var identityRealms tfTypes.IdentityRealms
+				identityRealms.ID = types.StringPointerValue(identityRealmsItem.ID)
+				identityRealms.Region = types.StringPointerValue(identityRealmsItem.Region)
+				if identityRealmsItem.Scope != nil {
+					identityRealms.Scope = types.StringValue(string(*identityRealmsItem.Scope))
+				} else {
+					identityRealms.Scope = types.StringNull()
+				}
+				if identityRealmsCount+1 > len(r.Config.IdentityRealms) {
+					r.Config.IdentityRealms = append(r.Config.IdentityRealms, identityRealms)
+				} else {
+					r.Config.IdentityRealms[identityRealmsCount].ID = identityRealms.ID
+					r.Config.IdentityRealms[identityRealmsCount].Region = identityRealms.Region
+					r.Config.IdentityRealms[identityRealmsCount].Scope = identityRealms.Scope
+				}
+			}
 			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)
 			r.Config.KeyInHeader = types.BoolPointerValue(resp.Config.KeyInHeader)
 			r.Config.KeyInQuery = types.BoolPointerValue(resp.Config.KeyInQuery)

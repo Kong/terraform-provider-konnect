@@ -18,6 +18,10 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.ConfluentPluginConfig{}
+			r.Config.AllowedTopics = make([]types.String, 0, len(resp.Config.AllowedTopics))
+			for _, v := range resp.Config.AllowedTopics {
+				r.Config.AllowedTopics = append(r.Config.AllowedTopics, types.StringValue(v))
+			}
 			r.Config.BootstrapServers = []tfTypes.BootstrapServers{}
 			if len(r.Config.BootstrapServers) > len(resp.Config.BootstrapServers) {
 				r.Config.BootstrapServers = r.Config.BootstrapServers[:len(resp.Config.BootstrapServers)]
@@ -44,6 +48,10 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 			r.Config.ForwardURI = types.BoolPointerValue(resp.Config.ForwardURI)
 			r.Config.Keepalive = types.Int64PointerValue(resp.Config.Keepalive)
 			r.Config.KeepaliveEnabled = types.BoolPointerValue(resp.Config.KeepaliveEnabled)
+			r.Config.MessageByLuaFunctions = make([]types.String, 0, len(resp.Config.MessageByLuaFunctions))
+			for _, v := range resp.Config.MessageByLuaFunctions {
+				r.Config.MessageByLuaFunctions = append(r.Config.MessageByLuaFunctions, types.StringValue(v))
+			}
 			r.Config.ProducerAsync = types.BoolPointerValue(resp.Config.ProducerAsync)
 			r.Config.ProducerAsyncBufferingLimitsMessagesInMemory = types.Int64PointerValue(resp.Config.ProducerAsyncBufferingLimitsMessagesInMemory)
 			r.Config.ProducerAsyncFlushTimeout = types.Int64PointerValue(resp.Config.ProducerAsyncFlushTimeout)
@@ -59,6 +67,7 @@ func (r *GatewayPluginConfluentDataSourceModel) RefreshFromSharedConfluentPlugin
 			r.Config.ProducerRequestTimeout = types.Int64PointerValue(resp.Config.ProducerRequestTimeout)
 			r.Config.Timeout = types.Int64PointerValue(resp.Config.Timeout)
 			r.Config.Topic = types.StringPointerValue(resp.Config.Topic)
+			r.Config.TopicsQueryArg = types.StringPointerValue(resp.Config.TopicsQueryArg)
 		}
 		if resp.Consumer == nil {
 			r.Consumer = nil

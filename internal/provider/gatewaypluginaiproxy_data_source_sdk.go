@@ -41,6 +41,11 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(ctx
 				r.Config.Auth.ParamName = types.StringPointerValue(resp.Config.Auth.ParamName)
 				r.Config.Auth.ParamValue = types.StringPointerValue(resp.Config.Auth.ParamValue)
 			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			if resp.Config.Logging == nil {
 				r.Config.Logging = nil
 			} else {
@@ -66,7 +71,10 @@ func (r *GatewayPluginAiProxyDataSourceModel) RefreshFromSharedAiProxyPlugin(ctx
 						r.Config.Model.Options.Bedrock = nil
 					} else {
 						r.Config.Model.Options.Bedrock = &tfTypes.Bedrock{}
+						r.Config.Model.Options.Bedrock.AwsAssumeRoleArn = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsAssumeRoleArn)
 						r.Config.Model.Options.Bedrock.AwsRegion = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRegion)
+						r.Config.Model.Options.Bedrock.AwsRoleSessionName = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsRoleSessionName)
+						r.Config.Model.Options.Bedrock.AwsStsEndpointURL = types.StringPointerValue(resp.Config.Model.Options.Bedrock.AwsStsEndpointURL)
 					}
 					if resp.Config.Model.Options.Gemini == nil {
 						r.Config.Model.Options.Gemini = nil

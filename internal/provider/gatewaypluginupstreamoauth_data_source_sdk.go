@@ -36,7 +36,7 @@ func (r *GatewayPluginUpstreamOauthDataSourceModel) RefreshFromSharedUpstreamOau
 			if resp.Config.Cache == nil {
 				r.Config.Cache = nil
 			} else {
-				r.Config.Cache = &tfTypes.Cache{}
+				r.Config.Cache = &tfTypes.UpstreamOauthPluginCache{}
 				r.Config.Cache.DefaultTTL = types.Float64PointerValue(resp.Config.Cache.DefaultTTL)
 				r.Config.Cache.EagerlyExpire = types.Int64PointerValue(resp.Config.Cache.EagerlyExpire)
 				if resp.Config.Cache.Memory == nil {

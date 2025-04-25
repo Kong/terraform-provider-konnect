@@ -23,11 +23,16 @@ resource "konnect_gateway_plugin_ai_rate_limiting_advanced" "my_gatewaypluginair
     header_name          = "...my_header_name..."
     hide_client_headers  = false
     identifier           = "credential"
+    llm_format           = "gemini"
     llm_providers = [
       {
-        limit       = 1.4
-        name        = "huggingface"
-        window_size = 6.05
+        limit = [
+          1.52
+        ]
+        name = "huggingface"
+        window_size = [
+          8.86
+        ]
       }
     ]
     path = "...my_path..."
@@ -148,7 +153,8 @@ Optional:
 - `error_message` (String) Set a custom error message to return when the rate limit is exceeded.
 - `header_name` (String) A string representing an HTTP header name.
 - `hide_client_headers` (Boolean) Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
-- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
+- `identifier` (String) The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `llm_providers` (Attributes List) The provider config. Takes an array of `name`, `limit` and `window size` values. (see [below for nested schema](#nestedatt--config--llm_providers))
 - `path` (String) A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
 - `redis` (Attributes) (see [below for nested schema](#nestedatt--config--redis))
@@ -164,9 +170,9 @@ Optional:
 
 Optional:
 
-- `limit` (Number) The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter. Not Null
+- `limit` (List of Number) One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified. Not Null
 - `name` (String) The LLM provider to which the rate limit applies. Not Null; must be one of ["anthropic", "azure", "bedrock", "cohere", "gemini", "huggingface", "llama2", "mistral", "openai", "requestPrompt"]
-- `window_size` (Number) The window size to apply a limit (defined in seconds). Not Null
+- `window_size` (List of Number) One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified. Not Null
 
 
 <a id="nestedatt--config--redis"></a>

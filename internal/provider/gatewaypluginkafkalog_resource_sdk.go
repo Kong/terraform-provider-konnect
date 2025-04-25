@@ -75,11 +75,11 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 	}
 	var config *shared.KafkaLogPluginConfig
 	if r.Config != nil {
-		var authentication *shared.Authentication
+		var authentication *shared.KafkaLogPluginAuthentication
 		if r.Config.Authentication != nil {
-			mechanism := new(shared.Mechanism)
+			mechanism := new(shared.KafkaLogPluginMechanism)
 			if !r.Config.Authentication.Mechanism.IsUnknown() && !r.Config.Authentication.Mechanism.IsNull() {
-				*mechanism = shared.Mechanism(r.Config.Authentication.Mechanism.ValueString())
+				*mechanism = shared.KafkaLogPluginMechanism(r.Config.Authentication.Mechanism.ValueString())
 			} else {
 				mechanism = nil
 			}
@@ -107,7 +107,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 			} else {
 				user = nil
 			}
-			authentication = &shared.Authentication{
+			authentication = &shared.KafkaLogPluginAuthentication{
 				Mechanism: mechanism,
 				Password:  password,
 				Strategy:  strategy,
@@ -382,7 +382,7 @@ func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx
 			if resp.Config.Security == nil {
 				r.Config.Security = nil
 			} else {
-				r.Config.Security = &tfTypes.KafkaLogPluginSecurity{}
+				r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
 				r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 				r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
 			}

@@ -8,6 +8,7 @@ type AiPromptGuardPluginConfig struct {
 	AllowAllConversationHistory types.Bool     `tfsdk:"allow_all_conversation_history"`
 	AllowPatterns               []types.String `tfsdk:"allow_patterns"`
 	DenyPatterns                []types.String `tfsdk:"deny_patterns"`
+	LlmFormat                   types.String   `tfsdk:"llm_format"`
 	MatchAllRoles               types.Bool     `tfsdk:"match_all_roles"`
 	MaxRequestBodySize          types.Int64    `tfsdk:"max_request_body_size"`
 }

@@ -1,7 +1,7 @@
 lockVersion: 2.0.0
 id: 9d20c53e-7836-4ea8-88b8-a75fb7dce3a2
 management:
-  docChecksum: f44fefd3a2ee6f49facb95cfd0541d90
+  docChecksum: bfcc9e7b83455b8d1c1ee983e65dc8b1
   docVersion: 2.0.0
   speakeasyVersion: 1.531.0
   generationVersion: 2.568.2
@@ -69,9 +69,11 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_ai_prompt_template/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_proxy/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_proxy_advanced/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_rag_injector/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_rate_limiting_advanced/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_request_transformer/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_response_transformer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_ai_sanitizer/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_semantic_cache/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_ai_semantic_prompt_guard/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_aws_lambda/data-source.tf
@@ -80,6 +82,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_bot_detection/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_canary/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_confluent/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_confluent_consume/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_correlation_id/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_cors/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_datadog/data-source.tf
@@ -102,6 +105,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_jwe_decrypt/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_jwt/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_jwt_signer/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_kafka_consume/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_kafka_log/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_kafka_upstream/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_key_auth/data-source.tf
@@ -125,6 +129,7 @@ generatedFiles:
   - examples/data-sources/konnect_gateway_plugin_rate_limiting/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_rate_limiting_advanced/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_redirect/data-source.tf
+  - examples/data-sources/konnect_gateway_plugin_request_callout/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_request_size_limiting/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_request_termination/data-source.tf
   - examples/data-sources/konnect_gateway_plugin_request_transformer/data-source.tf
@@ -244,12 +249,16 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_ai_proxy/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_ai_proxy_advanced/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_rag_injector/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_rag_injector/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/import.sh
   - examples/resources/konnect_gateway_plugin_ai_rate_limiting_advanced/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_request_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_ai_request_transformer/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_response_transformer/import.sh
   - examples/resources/konnect_gateway_plugin_ai_response_transformer/resource.tf
+  - examples/resources/konnect_gateway_plugin_ai_sanitizer/import.sh
+  - examples/resources/konnect_gateway_plugin_ai_sanitizer/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_cache/import.sh
   - examples/resources/konnect_gateway_plugin_ai_semantic_cache/resource.tf
   - examples/resources/konnect_gateway_plugin_ai_semantic_prompt_guard/import.sh
@@ -266,6 +275,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_canary/resource.tf
   - examples/resources/konnect_gateway_plugin_confluent/import.sh
   - examples/resources/konnect_gateway_plugin_confluent/resource.tf
+  - examples/resources/konnect_gateway_plugin_confluent_consume/import.sh
+  - examples/resources/konnect_gateway_plugin_confluent_consume/resource.tf
   - examples/resources/konnect_gateway_plugin_correlation_id/import.sh
   - examples/resources/konnect_gateway_plugin_correlation_id/resource.tf
   - examples/resources/konnect_gateway_plugin_cors/import.sh
@@ -310,6 +321,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_jwt/resource.tf
   - examples/resources/konnect_gateway_plugin_jwt_signer/import.sh
   - examples/resources/konnect_gateway_plugin_jwt_signer/resource.tf
+  - examples/resources/konnect_gateway_plugin_kafka_consume/import.sh
+  - examples/resources/konnect_gateway_plugin_kafka_consume/resource.tf
   - examples/resources/konnect_gateway_plugin_kafka_log/import.sh
   - examples/resources/konnect_gateway_plugin_kafka_log/resource.tf
   - examples/resources/konnect_gateway_plugin_kafka_upstream/import.sh
@@ -356,6 +369,8 @@ generatedFiles:
   - examples/resources/konnect_gateway_plugin_rate_limiting_advanced/resource.tf
   - examples/resources/konnect_gateway_plugin_redirect/import.sh
   - examples/resources/konnect_gateway_plugin_redirect/resource.tf
+  - examples/resources/konnect_gateway_plugin_request_callout/import.sh
+  - examples/resources/konnect_gateway_plugin_request_callout/resource.tf
   - examples/resources/konnect_gateway_plugin_request_size_limiting/import.sh
   - examples/resources/konnect_gateway_plugin_request_size_limiting/resource.tf
   - examples/resources/konnect_gateway_plugin_request_termination/import.sh
@@ -615,6 +630,10 @@ generatedFiles:
   - internal/provider/gatewaypluginaiproxyadvanced_data_source_sdk.go
   - internal/provider/gatewaypluginaiproxyadvanced_resource.go
   - internal/provider/gatewaypluginaiproxyadvanced_resource_sdk.go
+  - internal/provider/gatewaypluginairaginjector_data_source.go
+  - internal/provider/gatewaypluginairaginjector_data_source_sdk.go
+  - internal/provider/gatewaypluginairaginjector_resource.go
+  - internal/provider/gatewaypluginairaginjector_resource_sdk.go
   - internal/provider/gatewaypluginairatelimitingadvanced_data_source.go
   - internal/provider/gatewaypluginairatelimitingadvanced_data_source_sdk.go
   - internal/provider/gatewaypluginairatelimitingadvanced_resource.go
@@ -627,6 +646,10 @@ generatedFiles:
   - internal/provider/gatewaypluginairesponsetransformer_data_source_sdk.go
   - internal/provider/gatewaypluginairesponsetransformer_resource.go
   - internal/provider/gatewaypluginairesponsetransformer_resource_sdk.go
+  - internal/provider/gatewaypluginaisanitizer_data_source.go
+  - internal/provider/gatewaypluginaisanitizer_data_source_sdk.go
+  - internal/provider/gatewaypluginaisanitizer_resource.go
+  - internal/provider/gatewaypluginaisanitizer_resource_sdk.go
   - internal/provider/gatewaypluginaisemanticcache_data_source.go
   - internal/provider/gatewaypluginaisemanticcache_data_source_sdk.go
   - internal/provider/gatewaypluginaisemanticcache_resource.go
@@ -659,6 +682,10 @@ generatedFiles:
   - internal/provider/gatewaypluginconfluent_data_source_sdk.go
   - internal/provider/gatewaypluginconfluent_resource.go
   - internal/provider/gatewaypluginconfluent_resource_sdk.go
+  - internal/provider/gatewaypluginconfluentconsume_data_source.go
+  - internal/provider/gatewaypluginconfluentconsume_data_source_sdk.go
+  - internal/provider/gatewaypluginconfluentconsume_resource.go
+  - internal/provider/gatewaypluginconfluentconsume_resource_sdk.go
   - internal/provider/gatewayplugincorrelationid_data_source.go
   - internal/provider/gatewayplugincorrelationid_data_source_sdk.go
   - internal/provider/gatewayplugincorrelationid_resource.go
@@ -747,6 +774,10 @@ generatedFiles:
   - internal/provider/gatewaypluginjwtsigner_data_source_sdk.go
   - internal/provider/gatewaypluginjwtsigner_resource.go
   - internal/provider/gatewaypluginjwtsigner_resource_sdk.go
+  - internal/provider/gatewaypluginkafkaconsume_data_source.go
+  - internal/provider/gatewaypluginkafkaconsume_data_source_sdk.go
+  - internal/provider/gatewaypluginkafkaconsume_resource.go
+  - internal/provider/gatewaypluginkafkaconsume_resource_sdk.go
   - internal/provider/gatewaypluginkafkalog_data_source.go
   - internal/provider/gatewaypluginkafkalog_data_source_sdk.go
   - internal/provider/gatewaypluginkafkalog_resource.go
@@ -839,6 +870,10 @@ generatedFiles:
   - internal/provider/gatewaypluginredirect_data_source_sdk.go
   - internal/provider/gatewaypluginredirect_resource.go
   - internal/provider/gatewaypluginredirect_resource_sdk.go
+  - internal/provider/gatewaypluginrequestcallout_data_source.go
+  - internal/provider/gatewaypluginrequestcallout_data_source_sdk.go
+  - internal/provider/gatewaypluginrequestcallout_resource.go
+  - internal/provider/gatewaypluginrequestcallout_resource_sdk.go
   - internal/provider/gatewaypluginrequestsizelimiting_data_source.go
   - internal/provider/gatewaypluginrequestsizelimiting_data_source_sdk.go
   - internal/provider/gatewaypluginrequestsizelimiting_resource.go
@@ -1068,12 +1103,15 @@ generatedFiles:
   - internal/provider/types/ai_proxy_advanced_plugin_redis.go
   - internal/provider/types/ai_proxy_advanced_plugin_sentinel_nodes.go
   - internal/provider/types/ai_proxy_plugin_config.go
+  - internal/provider/types/ai_rag_injector_plugin_config.go
+  - internal/provider/types/ai_rag_injector_plugin_embeddings.go
+  - internal/provider/types/ai_rag_injector_plugin_model.go
+  - internal/provider/types/ai_rag_injector_plugin_vectordb.go
   - internal/provider/types/ai_rate_limiting_advanced_plugin_config.go
   - internal/provider/types/ai_request_transformer_plugin_config.go
   - internal/provider/types/ai_response_transformer_plugin_config.go
+  - internal/provider/types/ai_sanitizer_plugin_config.go
   - internal/provider/types/ai_semantic_cache_plugin_config.go
-  - internal/provider/types/ai_semantic_cache_plugin_embeddings.go
-  - internal/provider/types/ai_semantic_cache_plugin_model.go
   - internal/provider/types/ai_semantic_cache_plugin_vectordb.go
   - internal/provider/types/ai_semantic_prompt_guard_plugin_config.go
   - internal/provider/types/allow.go
@@ -1104,6 +1142,7 @@ generatedFiles:
   - internal/provider/types/aws_vpc_peering_gateway.go
   - internal/provider/types/aws_vpc_peering_gateway_attachment_config.go
   - internal/provider/types/aws_vpc_peering_gateway_response.go
+  - internal/provider/types/azure.go
   - internal/provider/types/azure_functions_plugin_config.go
   - internal/provider/types/azure_transit_gateway.go
   - internal/provider/types/azure_transit_gateway_response.go
@@ -1117,6 +1156,7 @@ generatedFiles:
   - internal/provider/types/bot_detection_plugin_config.go
   - internal/provider/types/button.go
   - internal/provider/types/cache.go
+  - internal/provider/types/callouts.go
   - internal/provider/types/canary_plugin_config.go
   - internal/provider/types/catalog.go
   - internal/provider/types/categories.go
@@ -1130,6 +1170,7 @@ generatedFiles:
   - internal/provider/types/configuration_data_plane_group_autoscale_static.go
   - internal/provider/types/configuration_data_plane_group_config.go
   - internal/provider/types/configuration_data_plane_group_environment_field.go
+  - internal/provider/types/confluent_consume_plugin_config.go
   - internal/provider/types/confluent_plugin_config.go
   - internal/provider/types/consul.go
   - internal/provider/types/control_plane.go
@@ -1138,11 +1179,13 @@ generatedFiles:
   - internal/provider/types/cors_plugin_config.go
   - internal/provider/types/custom_domain_state_metadata.go
   - internal/provider/types/custom_injections.go
+  - internal/provider/types/custom_patterns.go
   - internal/provider/types/datadog_plugin_config.go
   - internal/provider/types/datadog_tracing_plugin_config.go
   - internal/provider/types/dcr_provider.go
   - internal/provider/types/degraphql_plugin_config.go
   - internal/provider/types/embeddings.go
+  - internal/provider/types/error.go
   - internal/provider/types/exit_transformer_plugin_config.go
   - internal/provider/types/extra_options.go
   - internal/provider/types/file_log_plugin_config.go
@@ -1159,8 +1202,10 @@ generatedFiles:
   - internal/provider/types/healthy.go
   - internal/provider/types/hmac_auth_plugin_config.go
   - internal/provider/types/http_log_plugin_config.go
+  - internal/provider/types/http_opts.go
   - internal/provider/types/huggingface.go
   - internal/provider/types/id.go
+  - internal/provider/types/identity_realms.go
   - internal/provider/types/injection_protection_plugin_config.go
   - internal/provider/types/ip_restriction_plugin_config.go
   - internal/provider/types/jq_plugin_config.go
@@ -1168,9 +1213,11 @@ generatedFiles:
   - internal/provider/types/jwe_decrypt_plugin_config.go
   - internal/provider/types/jwt_plugin_config.go
   - internal/provider/types/jwt_signer_plugin_config.go
+  - internal/provider/types/kafka_consume_plugin_config.go
+  - internal/provider/types/kafka_consume_plugin_security.go
   - internal/provider/types/kafka_log_plugin_config.go
-  - internal/provider/types/kafka_log_plugin_security.go
   - internal/provider/types/kafka_upstream_plugin_config.go
+  - internal/provider/types/key_auth_enc_plugin_config.go
   - internal/provider/types/key_auth_plugin_config.go
   - internal/provider/types/ldap_auth_advanced_plugin_config.go
   - internal/provider/types/ldap_auth_plugin_config.go
@@ -1206,6 +1253,7 @@ generatedFiles:
   - internal/provider/types/parameter_schema.go
   - internal/provider/types/passive.go
   - internal/provider/types/pem.go
+  - internal/provider/types/pgvector.go
   - internal/provider/types/portal.go
   - internal/provider/types/portal_claim_mappings.go
   - internal/provider/types/portal_oidc_config.go
@@ -1214,6 +1262,7 @@ generatedFiles:
   - internal/provider/types/prompts.go
   - internal/provider/types/propagation.go
   - internal/provider/types/provider_account.go
+  - internal/provider/types/proxy.go
   - internal/provider/types/proxy_cache_advanced_plugin_config.go
   - internal/provider/types/proxy_cache_plugin_config.go
   - internal/provider/types/proxy_url.go
@@ -1224,6 +1273,14 @@ generatedFiles:
   - internal/provider/types/rate_limiting_plugin_redis.go
   - internal/provider/types/redirect_plugin_config.go
   - internal/provider/types/replace.go
+  - internal/provider/types/request.go
+  - internal/provider/types/request_callout_plugin_body.go
+  - internal/provider/types/request_callout_plugin_cache.go
+  - internal/provider/types/request_callout_plugin_config.go
+  - internal/provider/types/request_callout_plugin_config_body.go
+  - internal/provider/types/request_callout_plugin_config_headers.go
+  - internal/provider/types/request_callout_plugin_headers.go
+  - internal/provider/types/request_callout_plugin_upstream.go
   - internal/provider/types/request_jq_program_options.go
   - internal/provider/types/request_size_limiting_plugin_config.go
   - internal/provider/types/request_termination_plugin_config.go
@@ -1232,6 +1289,7 @@ generatedFiles:
   - internal/provider/types/request_transformer_advanced_plugin_replace.go
   - internal/provider/types/request_transformer_plugin_config.go
   - internal/provider/types/request_validator_plugin_config.go
+  - internal/provider/types/response.go
   - internal/provider/types/response_headers.go
   - internal/provider/types/response_ratelimiting_plugin_config.go
   - internal/provider/types/response_transformer_advanced_plugin_add.go
@@ -1264,13 +1322,16 @@ generatedFiles:
   - internal/provider/types/tcp_log_plugin_config.go
   - internal/provider/types/templates.go
   - internal/provider/types/text.go
+  - internal/provider/types/timeouts.go
   - internal/provider/types/tls_handshake_modifier_plugin_config.go
   - internal/provider/types/tls_metadata_headers_plugin_config.go
+  - internal/provider/types/topics.go
   - internal/provider/types/transform.go
   - internal/provider/types/transit_gateway_dns_config.go
   - internal/provider/types/udp_log_plugin_config.go
   - internal/provider/types/unhealthy.go
   - internal/provider/types/upstream_healthy.go
+  - internal/provider/types/upstream_oauth_plugin_cache.go
   - internal/provider/types/upstream_oauth_plugin_config.go
   - internal/provider/types/upstream_timeout_plugin_config.go
   - internal/provider/types/upstream_unhealthy.go
@@ -1334,9 +1395,11 @@ generatedFiles:
   - internal/sdk/models/operations/createaiprompttemplateplugin.go
   - internal/sdk/models/operations/createaiproxyadvancedplugin.go
   - internal/sdk/models/operations/createaiproxyplugin.go
+  - internal/sdk/models/operations/createairaginjectorplugin.go
   - internal/sdk/models/operations/createairatelimitingadvancedplugin.go
   - internal/sdk/models/operations/createairequesttransformerplugin.go
   - internal/sdk/models/operations/createairesponsetransformerplugin.go
+  - internal/sdk/models/operations/createaisanitizerplugin.go
   - internal/sdk/models/operations/createaisemanticcacheplugin.go
   - internal/sdk/models/operations/createaisemanticpromptguardplugin.go
   - internal/sdk/models/operations/createapiproduct.go
@@ -1355,6 +1418,7 @@ generatedFiles:
   - internal/sdk/models/operations/createcertificate.go
   - internal/sdk/models/operations/createconfigstore.go
   - internal/sdk/models/operations/createconfiguration.go
+  - internal/sdk/models/operations/createconfluentconsumeplugin.go
   - internal/sdk/models/operations/createconfluentplugin.go
   - internal/sdk/models/operations/createconsumer.go
   - internal/sdk/models/operations/createconsumergroup.go
@@ -1387,6 +1451,7 @@ generatedFiles:
   - internal/sdk/models/operations/createjwtplugin.go
   - internal/sdk/models/operations/createjwtsignerplugin.go
   - internal/sdk/models/operations/createjwtwithconsumer.go
+  - internal/sdk/models/operations/createkafkaconsumeplugin.go
   - internal/sdk/models/operations/createkafkalogplugin.go
   - internal/sdk/models/operations/createkafkaupstreamplugin.go
   - internal/sdk/models/operations/createkey.go
@@ -1419,6 +1484,7 @@ generatedFiles:
   - internal/sdk/models/operations/createratelimitingadvancedplugin.go
   - internal/sdk/models/operations/createratelimitingplugin.go
   - internal/sdk/models/operations/createredirectplugin.go
+  - internal/sdk/models/operations/createrequestcalloutplugin.go
   - internal/sdk/models/operations/createrequestsizelimitingplugin.go
   - internal/sdk/models/operations/createrequestterminationplugin.go
   - internal/sdk/models/operations/createrequesttransformeradvancedplugin.go
@@ -1466,9 +1532,11 @@ generatedFiles:
   - internal/sdk/models/operations/deleteaiprompttemplateplugin.go
   - internal/sdk/models/operations/deleteaiproxyadvancedplugin.go
   - internal/sdk/models/operations/deleteaiproxyplugin.go
+  - internal/sdk/models/operations/deleteairaginjectorplugin.go
   - internal/sdk/models/operations/deleteairatelimitingadvancedplugin.go
   - internal/sdk/models/operations/deleteairequesttransformerplugin.go
   - internal/sdk/models/operations/deleteairesponsetransformerplugin.go
+  - internal/sdk/models/operations/deleteaisanitizerplugin.go
   - internal/sdk/models/operations/deleteaisemanticcacheplugin.go
   - internal/sdk/models/operations/deleteaisemanticpromptguardplugin.go
   - internal/sdk/models/operations/deleteapiproduct.go
@@ -1487,6 +1555,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletecanaryplugin.go
   - internal/sdk/models/operations/deletecertificate.go
   - internal/sdk/models/operations/deleteconfigstore.go
+  - internal/sdk/models/operations/deleteconfluentconsumeplugin.go
   - internal/sdk/models/operations/deleteconfluentplugin.go
   - internal/sdk/models/operations/deleteconsumer.go
   - internal/sdk/models/operations/deleteconsumergroup.go
@@ -1518,6 +1587,7 @@ generatedFiles:
   - internal/sdk/models/operations/deletejwtplugin.go
   - internal/sdk/models/operations/deletejwtsignerplugin.go
   - internal/sdk/models/operations/deletejwtwithconsumer.go
+  - internal/sdk/models/operations/deletekafkaconsumeplugin.go
   - internal/sdk/models/operations/deletekafkalogplugin.go
   - internal/sdk/models/operations/deletekafkaupstreamplugin.go
   - internal/sdk/models/operations/deletekey.go
@@ -1552,6 +1622,7 @@ generatedFiles:
   - internal/sdk/models/operations/deleteratelimitingadvancedplugin.go
   - internal/sdk/models/operations/deleteratelimitingplugin.go
   - internal/sdk/models/operations/deleteredirectplugin.go
+  - internal/sdk/models/operations/deleterequestcalloutplugin.go
   - internal/sdk/models/operations/deleterequestsizelimitingplugin.go
   - internal/sdk/models/operations/deleterequestterminationplugin.go
   - internal/sdk/models/operations/deleterequesttransformeradvancedplugin.go
@@ -1604,9 +1675,11 @@ generatedFiles:
   - internal/sdk/models/operations/getaiprompttemplateplugin.go
   - internal/sdk/models/operations/getaiproxyadvancedplugin.go
   - internal/sdk/models/operations/getaiproxyplugin.go
+  - internal/sdk/models/operations/getairaginjectorplugin.go
   - internal/sdk/models/operations/getairatelimitingadvancedplugin.go
   - internal/sdk/models/operations/getairequesttransformerplugin.go
   - internal/sdk/models/operations/getairesponsetransformerplugin.go
+  - internal/sdk/models/operations/getaisanitizerplugin.go
   - internal/sdk/models/operations/getaisemanticcacheplugin.go
   - internal/sdk/models/operations/getaisemanticpromptguardplugin.go
   - internal/sdk/models/operations/getapiproduct.go
@@ -1626,6 +1699,7 @@ generatedFiles:
   - internal/sdk/models/operations/getcertificate.go
   - internal/sdk/models/operations/getconfigstore.go
   - internal/sdk/models/operations/getconfiguration.go
+  - internal/sdk/models/operations/getconfluentconsumeplugin.go
   - internal/sdk/models/operations/getconfluentplugin.go
   - internal/sdk/models/operations/getconsumer.go
   - internal/sdk/models/operations/getconsumergroup.go
@@ -1657,6 +1731,7 @@ generatedFiles:
   - internal/sdk/models/operations/getjwtplugin.go
   - internal/sdk/models/operations/getjwtsignerplugin.go
   - internal/sdk/models/operations/getjwtwithconsumer.go
+  - internal/sdk/models/operations/getkafkaconsumeplugin.go
   - internal/sdk/models/operations/getkafkalogplugin.go
   - internal/sdk/models/operations/getkafkaupstreamplugin.go
   - internal/sdk/models/operations/getkey.go
@@ -1692,6 +1767,7 @@ generatedFiles:
   - internal/sdk/models/operations/getratelimitingadvancedplugin.go
   - internal/sdk/models/operations/getratelimitingplugin.go
   - internal/sdk/models/operations/getredirectplugin.go
+  - internal/sdk/models/operations/getrequestcalloutplugin.go
   - internal/sdk/models/operations/getrequestsizelimitingplugin.go
   - internal/sdk/models/operations/getrequestterminationplugin.go
   - internal/sdk/models/operations/getrequesttransformeradvancedplugin.go
@@ -1757,9 +1833,11 @@ generatedFiles:
   - internal/sdk/models/operations/updateaiprompttemplateplugin.go
   - internal/sdk/models/operations/updateaiproxyadvancedplugin.go
   - internal/sdk/models/operations/updateaiproxyplugin.go
+  - internal/sdk/models/operations/updateairaginjectorplugin.go
   - internal/sdk/models/operations/updateairatelimitingadvancedplugin.go
   - internal/sdk/models/operations/updateairequesttransformerplugin.go
   - internal/sdk/models/operations/updateairesponsetransformerplugin.go
+  - internal/sdk/models/operations/updateaisanitizerplugin.go
   - internal/sdk/models/operations/updateaisemanticcacheplugin.go
   - internal/sdk/models/operations/updateaisemanticpromptguardplugin.go
   - internal/sdk/models/operations/updateapiproduct.go
@@ -1775,6 +1853,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatebotdetectionplugin.go
   - internal/sdk/models/operations/updatecanaryplugin.go
   - internal/sdk/models/operations/updateconfigstore.go
+  - internal/sdk/models/operations/updateconfluentconsumeplugin.go
   - internal/sdk/models/operations/updateconfluentplugin.go
   - internal/sdk/models/operations/updatecontrolplane.go
   - internal/sdk/models/operations/updatecorrelationidplugin.go
@@ -1800,6 +1879,7 @@ generatedFiles:
   - internal/sdk/models/operations/updatejwedecryptplugin.go
   - internal/sdk/models/operations/updatejwtplugin.go
   - internal/sdk/models/operations/updatejwtsignerplugin.go
+  - internal/sdk/models/operations/updatekafkaconsumeplugin.go
   - internal/sdk/models/operations/updatekafkalogplugin.go
   - internal/sdk/models/operations/updatekafkaupstreamplugin.go
   - internal/sdk/models/operations/updatekeyauthencplugin.go
@@ -1829,6 +1909,7 @@ generatedFiles:
   - internal/sdk/models/operations/updateratelimitingadvancedplugin.go
   - internal/sdk/models/operations/updateratelimitingplugin.go
   - internal/sdk/models/operations/updateredirectplugin.go
+  - internal/sdk/models/operations/updaterequestcalloutplugin.go
   - internal/sdk/models/operations/updaterequestsizelimitingplugin.go
   - internal/sdk/models/operations/updaterequestterminationplugin.go
   - internal/sdk/models/operations/updaterequesttransformeradvancedplugin.go
@@ -1884,9 +1965,11 @@ generatedFiles:
   - internal/sdk/models/shared/aiprompttemplateplugin.go
   - internal/sdk/models/shared/aiproxyadvancedplugin.go
   - internal/sdk/models/shared/aiproxyplugin.go
+  - internal/sdk/models/shared/airaginjectorplugin.go
   - internal/sdk/models/shared/airatelimitingadvancedplugin.go
   - internal/sdk/models/shared/airequesttransformerplugin.go
   - internal/sdk/models/shared/airesponsetransformerplugin.go
+  - internal/sdk/models/shared/aisanitizerplugin.go
   - internal/sdk/models/shared/aisemanticcacheplugin.go
   - internal/sdk/models/shared/aisemanticpromptguardplugin.go
   - internal/sdk/models/shared/apiaccess.go
@@ -1942,6 +2025,7 @@ generatedFiles:
   - internal/sdk/models/shared/configurationdataplanegroupenvironmentfield.go
   - internal/sdk/models/shared/configurationmanifest.go
   - internal/sdk/models/shared/conflicterror.go
+  - internal/sdk/models/shared/confluentconsumeplugin.go
   - internal/sdk/models/shared/confluentplugin.go
   - internal/sdk/models/shared/consumer.go
   - internal/sdk/models/shared/consumergroup.go
@@ -2019,6 +2103,7 @@ generatedFiles:
   - internal/sdk/models/shared/jwtplugin.go
   - internal/sdk/models/shared/jwtsignerplugin.go
   - internal/sdk/models/shared/jwtwithoutparents.go
+  - internal/sdk/models/shared/kafkaconsumeplugin.go
   - internal/sdk/models/shared/kafkalogplugin.go
   - internal/sdk/models/shared/kafkaupstreamplugin.go
   - internal/sdk/models/shared/key.go
@@ -2087,6 +2172,7 @@ generatedFiles:
   - internal/sdk/models/shared/ratelimitingplugin.go
   - internal/sdk/models/shared/redirectplugin.go
   - internal/sdk/models/shared/replaceportalproductversionpayload.go
+  - internal/sdk/models/shared/requestcalloutplugin.go
   - internal/sdk/models/shared/requestsizelimitingplugin.go
   - internal/sdk/models/shared/requestterminationplugin.go
   - internal/sdk/models/shared/requesttransformeradvancedplugin.go
@@ -8701,5 +8787,230 @@ examples:
           application/json: {"handler": "return { VERSION = '1.0,0', PRIORITY = 500, access = function(self, config) kong.service.request.set_header(config.name, config.value) end }", "id": "868346aa-1105-4b77-8346-aa1105fb77c4", "name": "set-header", "schema": "return { name = 'set-header', fields = { { protocols = require('kong.db.schema.typedefs').protocols_http }, { config = { type = 'record', fields = { { name = { description = 'The name of the header to set.', type = 'string', required = true } }, { value = { description = 'The value for the header.', type = 'string', required = true } } } } } } }"}
         "401":
           application/json: {"message": "<value>", "status": 939505}
+  delete-airaginjector-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 340982}
+  get-airaginjector-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 199678}
+  update-airaginjector-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 2611}
+  delete-aisanitizer-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 93537}
+  get-aisanitizer-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 358001}
+  update-aisanitizer-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 470233}
+  delete-confluentconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 670644}
+  get-confluentconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 220651}
+  update-confluentconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 970156}
+  delete-kafkaconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 682977}
+  get-kafkaconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 386722}
+  update-kafkaconsume-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 254243}
+  delete-requestcallout-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "401":
+          application/json: {"message": "<value>", "status": 665902}
+  get-requestcallout-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 673798}
+  update-requestcallout-plugin:
+    "":
+      parameters:
+        path:
+          PluginId: "3473c251-5b6c-4f45-b1ff-7ede735a366d"
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "200":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 788661}
+  create-airaginjector-plugin:
+    speakeasy-default-create-airaginjector-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 758330}
+  create-aisanitizer-plugin:
+    speakeasy-default-create-aisanitizer-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 81374}
+  create-confluentconsume-plugin:
+    speakeasy-default-create-confluentconsume-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 984949}
+  create-kafkaconsume-plugin:
+    speakeasy-default-create-kafkaconsume-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 364566}
+  create-requestcallout-plugin:
+    speakeasy-default-create-requestcallout-plugin:
+      parameters:
+        path:
+          controlPlaneId: "9524ec7d-36d9-465d-a8c5-83a3c9390458"
+      requestBody:
+        application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+      responses:
+        "201":
+          application/json: {"enabled": true, "id": "3fd1eea1-885a-4011-b986-289943ff8177", "name": "key-auth", "config": {}, "consumer": null, "consumer_group": null, "protocols": ["grpc", "grpcs", "http", "https"], "route": null, "service": null}
+        "401":
+          application/json: {"message": "<value>", "status": 805093}
 examplesVersion: 1.0.1
 generatedTests: {}

@@ -122,6 +122,12 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		} else {
 			cookieSecure = nil
 		}
+		hashSubject := new(bool)
+		if !r.Config.HashSubject.IsUnknown() && !r.Config.HashSubject.IsNull() {
+			*hashSubject = r.Config.HashSubject.ValueBool()
+		} else {
+			hashSubject = nil
+		}
 		idlingTimeout := new(float64)
 		if !r.Config.IdlingTimeout.IsUnknown() && !r.Config.IdlingTimeout.IsNull() {
 			*idlingTimeout = r.Config.IdlingTimeout.ValueFloat64()
@@ -206,6 +212,12 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 		} else {
 			storage = nil
 		}
+		storeMetadata := new(bool)
+		if !r.Config.StoreMetadata.IsUnknown() && !r.Config.StoreMetadata.IsNull() {
+			*storeMetadata = r.Config.StoreMetadata.ValueBool()
+		} else {
+			storeMetadata = nil
+		}
 		config = &shared.SessionPluginConfig{
 			AbsoluteTimeout:         absoluteTimeout,
 			Audience:                audience,
@@ -215,6 +227,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 			CookiePath:              cookiePath,
 			CookieSameSite:          cookieSameSite,
 			CookieSecure:            cookieSecure,
+			HashSubject:             hashSubject,
 			IdlingTimeout:           idlingTimeout,
 			LogoutMethods:           logoutMethods,
 			LogoutPostArg:           logoutPostArg,
@@ -230,6 +243,7 @@ func (r *GatewayPluginSessionResourceModel) ToSharedSessionPlugin() *shared.Sess
 			Secret:                  secret,
 			StaleTTL:                staleTTL,
 			Storage:                 storage,
+			StoreMetadata:           storeMetadata,
 		}
 	}
 	var protocols []shared.SessionPluginProtocols = []shared.SessionPluginProtocols{}
@@ -296,6 +310,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 				r.Config.CookieSameSite = types.StringNull()
 			}
 			r.Config.CookieSecure = types.BoolPointerValue(resp.Config.CookieSecure)
+			r.Config.HashSubject = types.BoolPointerValue(resp.Config.HashSubject)
 			r.Config.IdlingTimeout = types.Float64PointerValue(resp.Config.IdlingTimeout)
 			r.Config.LogoutMethods = make([]types.String, 0, len(resp.Config.LogoutMethods))
 			for _, v := range resp.Config.LogoutMethods {
@@ -324,6 +339,7 @@ func (r *GatewayPluginSessionResourceModel) RefreshFromSharedSessionPlugin(ctx c
 			} else {
 				r.Config.Storage = types.StringNull()
 			}
+			r.Config.StoreMetadata = types.BoolPointerValue(resp.Config.StoreMetadata)
 		}
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
 		r.Enabled = types.BoolPointerValue(resp.Enabled)

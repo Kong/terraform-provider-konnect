@@ -78,7 +78,7 @@ func (r *GatewayPluginKafkaLogResource) Schema(ctx context.Context, req resource
 							"mechanism": schema.StringAttribute{
 								Computed:    true,
 								Optional:    true,
-								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + ` or ` + "`" + `SCRAM-SHA-256` + "`" + `. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
+								Description: `The SASL authentication mechanism.  Supported options: ` + "`" + `PLAIN` + "`" + `, ` + "`" + `SCRAM-SHA-256` + "`" + ` or ` + "`" + `SCRAM-SHA-512` + "`" + `. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]`,
 								Validators: []validator.String{
 									stringvalidator.OneOf(
 										"PLAIN",

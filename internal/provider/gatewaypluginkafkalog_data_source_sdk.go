@@ -78,7 +78,7 @@ func (r *GatewayPluginKafkaLogDataSourceModel) RefreshFromSharedKafkaLogPlugin(c
 			if resp.Config.Security == nil {
 				r.Config.Security = nil
 			} else {
-				r.Config.Security = &tfTypes.KafkaLogPluginSecurity{}
+				r.Config.Security = &tfTypes.KafkaConsumePluginSecurity{}
 				r.Config.Security.CertificateID = types.StringPointerValue(resp.Config.Security.CertificateID)
 				r.Config.Security.Ssl = types.BoolPointerValue(resp.Config.Security.Ssl)
 			}

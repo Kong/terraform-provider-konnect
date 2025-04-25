@@ -97,6 +97,8 @@ func (e *Methods) UnmarshalJSON(data []byte) error {
 }
 
 type CorsPluginConfig struct {
+	// A boolean value that skip cors response headers when origin header of request is empty
+	AllowOriginAbsent *bool `json:"allow_origin_absent,omitempty"`
 	// Flag to determine whether the `Access-Control-Allow-Credentials` header should be sent with `true` as the value.
 	Credentials *bool `json:"credentials,omitempty"`
 	// Value for the `Access-Control-Expose-Headers` header. If not specified, no custom headers are exposed.
@@ -113,6 +115,13 @@ type CorsPluginConfig struct {
 	PreflightContinue *bool `json:"preflight_continue,omitempty"`
 	// Flag to determine whether the `Access-Control-Allow-Private-Network` header should be sent with `true` as the value.
 	PrivateNetwork *bool `json:"private_network,omitempty"`
+}
+
+func (o *CorsPluginConfig) GetAllowOriginAbsent() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.AllowOriginAbsent
 }
 
 func (o *CorsPluginConfig) GetCredentials() *bool {

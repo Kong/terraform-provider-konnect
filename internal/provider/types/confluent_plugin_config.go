@@ -5,6 +5,7 @@ package types
 import "github.com/hashicorp/terraform-plugin-framework/types"
 
 type ConfluentPluginConfig struct {
+	AllowedTopics                                []types.String     `tfsdk:"allowed_topics"`
 	BootstrapServers                             []BootstrapServers `tfsdk:"bootstrap_servers"`
 	ClusterAPIKey                                types.String       `tfsdk:"cluster_api_key"`
 	ClusterAPISecret                             types.String       `tfsdk:"cluster_api_secret"`
@@ -17,6 +18,7 @@ type ConfluentPluginConfig struct {
 	ForwardURI                                   types.Bool         `tfsdk:"forward_uri"`
 	Keepalive                                    types.Int64        `tfsdk:"keepalive"`
 	KeepaliveEnabled                             types.Bool         `tfsdk:"keepalive_enabled"`
+	MessageByLuaFunctions                        []types.String     `tfsdk:"message_by_lua_functions"`
 	ProducerAsync                                types.Bool         `tfsdk:"producer_async"`
 	ProducerAsyncBufferingLimitsMessagesInMemory types.Int64        `tfsdk:"producer_async_buffering_limits_messages_in_memory"`
 	ProducerAsyncFlushTimeout                    types.Int64        `tfsdk:"producer_async_flush_timeout"`
@@ -28,4 +30,5 @@ type ConfluentPluginConfig struct {
 	ProducerRequestTimeout                       types.Int64        `tfsdk:"producer_request_timeout"`
 	Timeout                                      types.Int64        `tfsdk:"timeout"`
 	Topic                                        types.String       `tfsdk:"topic"`
+	TopicsQueryArg                               types.String       `tfsdk:"topics_query_arg"`
 }

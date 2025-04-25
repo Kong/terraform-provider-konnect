@@ -205,10 +205,162 @@ func (o *AiSemanticCachePluginAuth) GetParamValue() *string {
 	return o.ParamValue
 }
 
+type AiSemanticCachePluginAzure struct {
+	// 'api-version' for Azure OpenAI instances.
+	APIVersion *string `json:"api_version,omitempty"`
+	// Deployment ID for Azure OpenAI instances.
+	DeploymentID *string `json:"deployment_id,omitempty"`
+	// Instance name for Azure OpenAI hosted models.
+	Instance *string `json:"instance,omitempty"`
+}
+
+func (o *AiSemanticCachePluginAzure) GetAPIVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIVersion
+}
+
+func (o *AiSemanticCachePluginAzure) GetDeploymentID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeploymentID
+}
+
+func (o *AiSemanticCachePluginAzure) GetInstance() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+type AiSemanticCachePluginBedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
+	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+}
+
+func (o *AiSemanticCachePluginBedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *AiSemanticCachePluginBedrock) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+func (o *AiSemanticCachePluginBedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *AiSemanticCachePluginBedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
+}
+
+type AiSemanticCachePluginGemini struct {
+	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
+	// If running Gemini on Vertex, specify the location ID.
+	LocationID *string `json:"location_id,omitempty"`
+	// If running Gemini on Vertex, specify the project ID.
+	ProjectID *string `json:"project_id,omitempty"`
+}
+
+func (o *AiSemanticCachePluginGemini) GetAPIEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIEndpoint
+}
+
+func (o *AiSemanticCachePluginGemini) GetLocationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LocationID
+}
+
+func (o *AiSemanticCachePluginGemini) GetProjectID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProjectID
+}
+
+type AiSemanticCachePluginHuggingface struct {
+	// Use the cache layer on the inference API
+	UseCache *bool `json:"use_cache,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *AiSemanticCachePluginHuggingface) GetUseCache() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseCache
+}
+
+func (o *AiSemanticCachePluginHuggingface) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
+}
+
 // AiSemanticCachePluginOptions - Key/value settings for the model
 type AiSemanticCachePluginOptions struct {
+	Azure       AiSemanticCachePluginAzure        `json:"azure"`
+	Bedrock     *AiSemanticCachePluginBedrock     `json:"bedrock,omitempty"`
+	Gemini      *AiSemanticCachePluginGemini      `json:"gemini,omitempty"`
+	Huggingface *AiSemanticCachePluginHuggingface `json:"huggingface,omitempty"`
 	// upstream url for the embeddings
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (o *AiSemanticCachePluginOptions) GetAzure() AiSemanticCachePluginAzure {
+	if o == nil {
+		return AiSemanticCachePluginAzure{}
+	}
+	return o.Azure
+}
+
+func (o *AiSemanticCachePluginOptions) GetBedrock() *AiSemanticCachePluginBedrock {
+	if o == nil {
+		return nil
+	}
+	return o.Bedrock
+}
+
+func (o *AiSemanticCachePluginOptions) GetGemini() *AiSemanticCachePluginGemini {
+	if o == nil {
+		return nil
+	}
+	return o.Gemini
+}
+
+func (o *AiSemanticCachePluginOptions) GetHuggingface() *AiSemanticCachePluginHuggingface {
+	if o == nil {
+		return nil
+	}
+	return o.Huggingface
 }
 
 func (o *AiSemanticCachePluginOptions) GetUpstreamURL() *string {
@@ -222,8 +374,12 @@ func (o *AiSemanticCachePluginOptions) GetUpstreamURL() *string {
 type AiSemanticCachePluginProvider string
 
 const (
-	AiSemanticCachePluginProviderMistral AiSemanticCachePluginProvider = "mistral"
-	AiSemanticCachePluginProviderOpenai  AiSemanticCachePluginProvider = "openai"
+	AiSemanticCachePluginProviderAzure       AiSemanticCachePluginProvider = "azure"
+	AiSemanticCachePluginProviderBedrock     AiSemanticCachePluginProvider = "bedrock"
+	AiSemanticCachePluginProviderGemini      AiSemanticCachePluginProvider = "gemini"
+	AiSemanticCachePluginProviderHuggingface AiSemanticCachePluginProvider = "huggingface"
+	AiSemanticCachePluginProviderMistral     AiSemanticCachePluginProvider = "mistral"
+	AiSemanticCachePluginProviderOpenai      AiSemanticCachePluginProvider = "openai"
 )
 
 func (e AiSemanticCachePluginProvider) ToPointer() *AiSemanticCachePluginProvider {
@@ -235,6 +391,14 @@ func (e *AiSemanticCachePluginProvider) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "azure":
+		fallthrough
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "huggingface":
+		fallthrough
 	case "mistral":
 		fallthrough
 	case "openai":
@@ -294,6 +458,36 @@ func (o *AiSemanticCachePluginEmbeddings) GetModel() *AiSemanticCachePluginModel
 	return o.Model
 }
 
+// AiSemanticCachePluginLlmFormat - LLM input and output format and schema to use
+type AiSemanticCachePluginLlmFormat string
+
+const (
+	AiSemanticCachePluginLlmFormatBedrock AiSemanticCachePluginLlmFormat = "bedrock"
+	AiSemanticCachePluginLlmFormatGemini  AiSemanticCachePluginLlmFormat = "gemini"
+	AiSemanticCachePluginLlmFormatOpenai  AiSemanticCachePluginLlmFormat = "openai"
+)
+
+func (e AiSemanticCachePluginLlmFormat) ToPointer() *AiSemanticCachePluginLlmFormat {
+	return &e
+}
+func (e *AiSemanticCachePluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiSemanticCachePluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticCachePluginLlmFormat: %v", v)
+	}
+}
+
 // AiSemanticCachePluginDistanceMetric - the distance metric to use for vector searches
 type AiSemanticCachePluginDistanceMetric string
 
@@ -319,6 +513,147 @@ func (e *AiSemanticCachePluginDistanceMetric) UnmarshalJSON(data []byte) error {
 	default:
 		return fmt.Errorf("invalid value for AiSemanticCachePluginDistanceMetric: %v", v)
 	}
+}
+
+// AiSemanticCachePluginSslVersion - the ssl version to use for the pgvector database
+type AiSemanticCachePluginSslVersion string
+
+const (
+	AiSemanticCachePluginSslVersionAny    AiSemanticCachePluginSslVersion = "any"
+	AiSemanticCachePluginSslVersionTlsv12 AiSemanticCachePluginSslVersion = "tlsv1_2"
+	AiSemanticCachePluginSslVersionTlsv13 AiSemanticCachePluginSslVersion = "tlsv1_3"
+)
+
+func (e AiSemanticCachePluginSslVersion) ToPointer() *AiSemanticCachePluginSslVersion {
+	return &e
+}
+func (e *AiSemanticCachePluginSslVersion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "any":
+		fallthrough
+	case "tlsv1_2":
+		fallthrough
+	case "tlsv1_3":
+		*e = AiSemanticCachePluginSslVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticCachePluginSslVersion: %v", v)
+	}
+}
+
+type AiSemanticCachePluginPgvector struct {
+	// the database of the pgvector database
+	Database *string `json:"database,omitempty"`
+	// the host of the pgvector database
+	Host *string `json:"host,omitempty"`
+	// the password of the pgvector database
+	Password *string `json:"password,omitempty"`
+	// the port of the pgvector database
+	Port *int64 `json:"port,omitempty"`
+	// whether to use ssl for the pgvector database
+	Ssl *bool `json:"ssl,omitempty"`
+	// the path of ssl cert to use for the pgvector database
+	SslCert *string `json:"ssl_cert,omitempty"`
+	// the path of ssl cert key to use for the pgvector database
+	SslCertKey *string `json:"ssl_cert_key,omitempty"`
+	// whether ssl is required for the pgvector database
+	SslRequired *bool `json:"ssl_required,omitempty"`
+	// whether to verify ssl for the pgvector database
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// the ssl version to use for the pgvector database
+	SslVersion *AiSemanticCachePluginSslVersion `json:"ssl_version,omitempty"`
+	// the timeout of the pgvector database
+	Timeout *float64 `json:"timeout,omitempty"`
+	// the user of the pgvector database
+	User *string `json:"user,omitempty"`
+}
+
+func (o *AiSemanticCachePluginPgvector) GetDatabase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *AiSemanticCachePluginPgvector) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *AiSemanticCachePluginPgvector) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *AiSemanticCachePluginPgvector) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSslCert() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCert
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSslCertKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCertKey
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSslRequired() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslRequired
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *AiSemanticCachePluginPgvector) GetSslVersion() *AiSemanticCachePluginSslVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SslVersion
+}
+
+func (o *AiSemanticCachePluginPgvector) GetTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *AiSemanticCachePluginPgvector) GetUser() *string {
+	if o == nil {
+		return nil
+	}
+	return o.User
 }
 
 type AiSemanticCachePluginClusterNodes struct {
@@ -589,7 +924,8 @@ func (o *AiSemanticCachePluginRedis) GetUsername() *string {
 type AiSemanticCachePluginStrategy string
 
 const (
-	AiSemanticCachePluginStrategyRedis AiSemanticCachePluginStrategy = "redis"
+	AiSemanticCachePluginStrategyPgvector AiSemanticCachePluginStrategy = "pgvector"
+	AiSemanticCachePluginStrategyRedis    AiSemanticCachePluginStrategy = "redis"
 )
 
 func (e AiSemanticCachePluginStrategy) ToPointer() *AiSemanticCachePluginStrategy {
@@ -601,6 +937,8 @@ func (e *AiSemanticCachePluginStrategy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "pgvector":
+		fallthrough
 	case "redis":
 		*e = AiSemanticCachePluginStrategy(v)
 		return nil
@@ -614,6 +952,7 @@ type AiSemanticCachePluginVectordb struct {
 	Dimensions *int64 `json:"dimensions,omitempty"`
 	// the distance metric to use for vector searches
 	DistanceMetric *AiSemanticCachePluginDistanceMetric `json:"distance_metric,omitempty"`
+	Pgvector       *AiSemanticCachePluginPgvector       `json:"pgvector,omitempty"`
 	Redis          *AiSemanticCachePluginRedis          `json:"redis,omitempty"`
 	// which vector database driver to use
 	Strategy *AiSemanticCachePluginStrategy `json:"strategy,omitempty"`
@@ -633,6 +972,13 @@ func (o *AiSemanticCachePluginVectordb) GetDistanceMetric() *AiSemanticCachePlug
 		return nil
 	}
 	return o.DistanceMetric
+}
+
+func (o *AiSemanticCachePluginVectordb) GetPgvector() *AiSemanticCachePluginPgvector {
+	if o == nil {
+		return nil
+	}
+	return o.Pgvector
 }
 
 func (o *AiSemanticCachePluginVectordb) GetRedis() *AiSemanticCachePluginRedis {
@@ -670,6 +1016,8 @@ type AiSemanticCachePluginConfig struct {
 	IgnoreSystemPrompts *bool `json:"ignore_system_prompts,omitempty"`
 	// Ignore and discard any tool prompts when Vectorizing the request
 	IgnoreToolPrompts *bool `json:"ignore_tool_prompts,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiSemanticCachePluginLlmFormat `json:"llm_format,omitempty"`
 	// Number of messages in the chat history to Vectorize/Cache
 	MessageCountback *float64 `json:"message_countback,omitempty"`
 	// Halt the LLM request process in case of a caching system failure
@@ -724,6 +1072,13 @@ func (o *AiSemanticCachePluginConfig) GetIgnoreToolPrompts() *bool {
 		return nil
 	}
 	return o.IgnoreToolPrompts
+}
+
+func (o *AiSemanticCachePluginConfig) GetLlmFormat() *AiSemanticCachePluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiSemanticCachePluginConfig) GetMessageCountback() *float64 {
