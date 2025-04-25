@@ -15,6 +15,7 @@ GatewayPluginAiPromptDecorator Resource
 ```terraform
 resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptdecorator" {
   config = {
+    llm_format            = "bedrock"
     max_request_body_size = 3
     prompts = {
       append = [
@@ -101,6 +102,7 @@ resource "konnect_gateway_plugin_ai_prompt_decorator" "my_gatewaypluginaipromptd
 
 Optional:
 
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected
 - `prompts` (Attributes) (see [below for nested schema](#nestedatt--config--prompts))
 

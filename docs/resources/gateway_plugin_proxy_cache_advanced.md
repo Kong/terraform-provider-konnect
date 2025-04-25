@@ -161,7 +161,7 @@ Optional:
 - `storage_ttl` (Number) Number of seconds to keep resources in the storage backend. This value is independent of `cache_ttl` or resource TTLs defined by Cache-Control behaviors.
 - `strategy` (String) The backing data store in which to hold cache entities. Accepted values are: `memory` and `redis`. must be one of ["memory", "redis"]
 - `vary_headers` (List of String) Relevant headers considered for the cache key. If undefined, none of the headers are taken into consideration.
-- `vary_query_params` (List of String) Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration.
+- `vary_query_params` (List of String) Relevant query parameters considered for the cache key. If undefined, all params are taken into consideration. By default, the max number of params accepted is 100. You can change this value via the `lua_max_post_args` in `kong.conf`.
 
 <a id="nestedatt--config--memory"></a>
 ### Nested Schema for `config.memory`

@@ -30,7 +30,7 @@ resource "konnect_gateway_plugin_opentelemetry" "my_gatewaypluginopentelemetry" 
       ]
       default_format = "aws"
       extract = [
-        "jaeger"
+        "instana"
       ]
       inject = [
         "b3"
@@ -123,7 +123,7 @@ Optional:
 - `batch_flush_delay` (Number) The delay, in seconds, between two consecutive batches.
 - `batch_span_count` (Number) The number of spans to be sent in a single batch.
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `header_type` (String) must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "jaeger", "ot", "preserve", "w3c"]
+- `header_type` (String) must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
 - `headers` (Map of String) The custom headers to be added in the HTTP request sent to the OTLP server. This setting is useful for adding the authentication headers (token) for the APM backend.
 - `http_response_header_for_traceid` (String)
 - `logs_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
@@ -141,7 +141,7 @@ Optional:
 Optional:
 
 - `clear` (List of String) Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]
+- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
 - `extract` (List of String) Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 - `inject` (List of String) Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
 

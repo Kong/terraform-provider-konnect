@@ -29,7 +29,7 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
       clear = [
         "..."
       ]
-      default_format = "gcp"
+      default_format = "instana"
       extract = [
         "datadog"
       ]
@@ -126,9 +126,9 @@ resource "konnect_gateway_plugin_zipkin" "my_gatewaypluginzipkin" {
 Optional:
 
 - `connect_timeout` (Number) An integer representing a timeout in milliseconds. Must be between 0 and 2^31-2.
-- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]
+- `default_header_type` (String) Allows specifying the type of header to be added to requests with no pre-existing tracing headers and when `config.header_type` is set to `"preserve"`. When `header_type` is set to any other value, `default_header_type` is ignored. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
 - `default_service_name` (String) Set a default service name to override `unknown-service-name` in the Zipkin spans.
-- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "jaeger", "ot", "preserve", "w3c"]
+- `header_type` (String) All HTTP requests going through the plugin are tagged with a tracing HTTP request. This property codifies what kind of tracing header the plugin expects on incoming requests. must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "ignore", "instana", "jaeger", "ot", "preserve", "w3c"]
 - `http_endpoint` (String) A string representing a URL, such as https://example.com/path/to/resource?q=search.
 - `http_response_header_for_traceid` (String)
 - `http_span_name` (String) Specify whether to include the HTTP path in the span name. must be one of ["method", "method_path"]
@@ -150,7 +150,7 @@ Optional:
 Optional:
 
 - `clear` (List of String) Header names to clear after context extraction. This allows to extract the context from a certain header and then remove it from the request, useful when extraction and injection are performed on different header formats and the original header should not be sent to the upstream. If left empty, no headers are cleared.
-- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "jaeger", "ot", "w3c"]
+- `default_format` (String) The default header format to use when extractors did not match any format in the incoming headers and `inject` is configured with the value: `preserve`. This can happen when no tracing header was found in the request, or the incoming tracing header formats were not included in `extract`. Not Null; must be one of ["aws", "b3", "b3-single", "datadog", "gcp", "instana", "jaeger", "ot", "w3c"]
 - `extract` (List of String) Header formats used to extract tracing context from incoming requests. If multiple values are specified, the first one found will be used for extraction. If left empty, Kong will not extract any tracing context information from incoming requests and generate a trace with no parent and a new trace ID.
 - `inject` (List of String) Header formats used to inject tracing context. The value `preserve` will use the same header format as the incoming request. If multiple values are specified, all of them will be used during injection. If left empty, Kong will not inject any tracing context information in outgoing requests.
 
