@@ -136,6 +136,8 @@ func (o *RouteExpressionService) GetID() *string {
 type RouteExpression struct {
 	// Unix epoch when the resource was created.
 	CreatedAt *int64 `json:"created_at,omitempty"`
+	// Use Router Expression to perform route match. This option is only available when `router_flavor` is set to `expressions`.
+	Expression *string `json:"expression,omitempty"`
 	// The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is `HTTP` instead of `HTTPS`. `Location` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the `https` protocol.
 	HTTPSRedirectStatusCode *RouteExpressionHTTPSRedirectStatusCode `json:"https_redirect_status_code,omitempty"`
 	ID                      *string                                 `json:"id,omitempty"`
@@ -144,7 +146,8 @@ type RouteExpression struct {
 	// Controls how the Service path, Route path and requested path are combined when sending a request to the upstream. See above for a detailed description of each behavior.
 	PathHandling *RouteExpressionPathHandling `json:"path_handling,omitempty"`
 	// When matching a Route via one of the `hosts` domain names, use the request `Host` header in the upstream request headers. If set to `false`, the upstream `Host` header will be that of the Service's `host`.
-	PreserveHost *bool `json:"preserve_host,omitempty"`
+	PreserveHost *bool  `json:"preserve_host,omitempty"`
+	Priority     *int64 `json:"priority,omitempty"`
 	// An array of the protocols this Route should allow. See the [Route Object](#route-object) section for a list of accepted protocols. When set to only `"https"`, HTTP requests are answered with an upgrade error. When set to only `"http"`, HTTPS requests are answered with an error.
 	Protocols []RouteExpressionProtocols `json:"protocols"`
 	// Whether to enable request body buffering or not. With HTTP 1.1, it may make sense to turn this off on services that receive data with chunked transfer encoding.
@@ -166,6 +169,13 @@ func (o *RouteExpression) GetCreatedAt() *int64 {
 		return nil
 	}
 	return o.CreatedAt
+}
+
+func (o *RouteExpression) GetExpression() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Expression
 }
 
 func (o *RouteExpression) GetHTTPSRedirectStatusCode() *RouteExpressionHTTPSRedirectStatusCode {
@@ -201,6 +211,13 @@ func (o *RouteExpression) GetPreserveHost() *bool {
 		return nil
 	}
 	return o.PreserveHost
+}
+
+func (o *RouteExpression) GetPriority() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Priority
 }
 
 func (o *RouteExpression) GetProtocols() []RouteExpressionProtocols {

@@ -31,11 +31,13 @@ type GatewayRouteExpressionDataSource struct {
 type GatewayRouteExpressionDataSourceModel struct {
 	ControlPlaneID          types.String                       `tfsdk:"control_plane_id"`
 	CreatedAt               types.Int64                        `tfsdk:"created_at"`
+	Expression              types.String                       `tfsdk:"expression"`
 	HTTPSRedirectStatusCode types.Int64                        `tfsdk:"https_redirect_status_code"`
 	ID                      types.String                       `tfsdk:"id"`
 	Name                    types.String                       `tfsdk:"name"`
 	PathHandling            types.String                       `tfsdk:"path_handling"`
 	PreserveHost            types.Bool                         `tfsdk:"preserve_host"`
+	Priority                types.Int64                        `tfsdk:"priority"`
 	Protocols               []types.String                     `tfsdk:"protocols"`
 	RequestBuffering        types.Bool                         `tfsdk:"request_buffering"`
 	ResponseBuffering       types.Bool                         `tfsdk:"response_buffering"`
@@ -64,6 +66,10 @@ func (r *GatewayRouteExpressionDataSource) Schema(ctx context.Context, req datas
 				Computed:    true,
 				Description: `Unix epoch when the resource was created.`,
 			},
+			"expression": schema.StringAttribute{
+				Computed:    true,
+				Description: `Use Router Expression to perform route match. This option is only available when ` + "`" + `router_flavor` + "`" + ` is set to ` + "`" + `expressions` + "`" + `.`,
+			},
 			"https_redirect_status_code": schema.Int64Attribute{
 				Computed:    true,
 				Description: `The status code Kong responds with when all properties of a Route match except the protocol i.e. if the protocol of the request is ` + "`" + `HTTP` + "`" + ` instead of ` + "`" + `HTTPS` + "`" + `. ` + "`" + `Location` + "`" + ` header is injected by Kong if the field is set to 301, 302, 307 or 308. Note: This config applies only if the Route is configured to only accept the ` + "`" + `https` + "`" + ` protocol.`,
@@ -82,6 +88,9 @@ func (r *GatewayRouteExpressionDataSource) Schema(ctx context.Context, req datas
 			"preserve_host": schema.BoolAttribute{
 				Computed:    true,
 				Description: `When matching a Route via one of the ` + "`" + `hosts` + "`" + ` domain names, use the request ` + "`" + `Host` + "`" + ` header in the upstream request headers. If set to ` + "`" + `false` + "`" + `, the upstream ` + "`" + `Host` + "`" + ` header will be that of the Service's ` + "`" + `host` + "`" + `.`,
+			},
+			"priority": schema.Int64Attribute{
+				Computed: true,
 			},
 			"protocols": schema.ListAttribute{
 				Computed:    true,

@@ -17,6 +17,12 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 	} else {
 		createdAt = nil
 	}
+	expression := new(string)
+	if !r.Expression.IsUnknown() && !r.Expression.IsNull() {
+		*expression = r.Expression.ValueString()
+	} else {
+		expression = nil
+	}
 	httpsRedirectStatusCode := new(shared.RouteExpressionHTTPSRedirectStatusCode)
 	if !r.HTTPSRedirectStatusCode.IsUnknown() && !r.HTTPSRedirectStatusCode.IsNull() {
 		*httpsRedirectStatusCode = shared.RouteExpressionHTTPSRedirectStatusCode(r.HTTPSRedirectStatusCode.ValueInt64())
@@ -46,6 +52,12 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 		*preserveHost = r.PreserveHost.ValueBool()
 	} else {
 		preserveHost = nil
+	}
+	priority := new(int64)
+	if !r.Priority.IsUnknown() && !r.Priority.IsNull() {
+		*priority = r.Priority.ValueInt64()
+	} else {
+		priority = nil
 	}
 	var protocols []shared.RouteExpressionProtocols = []shared.RouteExpressionProtocols{}
 	for _, protocolsItem := range r.Protocols {
@@ -93,11 +105,13 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 	}
 	out := shared.RouteExpression{
 		CreatedAt:               createdAt,
+		Expression:              expression,
 		HTTPSRedirectStatusCode: httpsRedirectStatusCode,
 		ID:                      id,
 		Name:                    name,
 		PathHandling:            pathHandling,
 		PreserveHost:            preserveHost,
+		Priority:                priority,
 		Protocols:               protocols,
 		RequestBuffering:        requestBuffering,
 		ResponseBuffering:       responseBuffering,
@@ -114,6 +128,7 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Expression = types.StringPointerValue(resp.Expression)
 		if resp.HTTPSRedirectStatusCode != nil {
 			r.HTTPSRedirectStatusCode = types.Int64Value(int64(*resp.HTTPSRedirectStatusCode))
 		} else {
@@ -127,6 +142,7 @@ func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(c
 			r.PathHandling = types.StringNull()
 		}
 		r.PreserveHost = types.BoolPointerValue(resp.PreserveHost)
+		r.Priority = types.Int64PointerValue(resp.Priority)
 		if resp.Protocols != nil {
 			r.Protocols = make([]types.String, 0, len(resp.Protocols))
 			for _, v := range resp.Protocols {

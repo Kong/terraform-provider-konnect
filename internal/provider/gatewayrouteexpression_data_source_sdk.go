@@ -15,6 +15,7 @@ func (r *GatewayRouteExpressionDataSourceModel) RefreshFromSharedRouteExpression
 
 	if resp != nil {
 		r.CreatedAt = types.Int64PointerValue(resp.CreatedAt)
+		r.Expression = types.StringPointerValue(resp.Expression)
 		if resp.HTTPSRedirectStatusCode != nil {
 			r.HTTPSRedirectStatusCode = types.Int64Value(int64(*resp.HTTPSRedirectStatusCode))
 		} else {
@@ -28,6 +29,7 @@ func (r *GatewayRouteExpressionDataSourceModel) RefreshFromSharedRouteExpression
 			r.PathHandling = types.StringNull()
 		}
 		r.PreserveHost = types.BoolPointerValue(resp.PreserveHost)
+		r.Priority = types.Int64PointerValue(resp.Priority)
 		if resp.Protocols != nil {
 			r.Protocols = make([]types.String, 0, len(resp.Protocols))
 			for _, v := range resp.Protocols {
