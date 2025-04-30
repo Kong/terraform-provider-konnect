@@ -12529,6 +12529,7 @@ components:
             - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
             - CLUSTER_TYPE_CONTROL_PLANE_GROUP
             - CLUSTER_TYPE_SERVERLESS
+            - CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY
             - CLUSTER_TYPE_HYBRID
         auth_type:
           description: The auth type value of the cluster associated with the Runtime Group.
@@ -12622,6 +12623,7 @@ components:
                 - CLUSTER_TYPE_K8S_INGRESS_CONTROLLER
                 - CLUSTER_TYPE_CONTROL_PLANE_GROUP
                 - CLUSTER_TYPE_SERVERLESS
+                - CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY
                 - CLUSTER_TYPE_HYBRID
               readOnly: true
             auth_type:
@@ -14708,6 +14710,11 @@ components:
           format: byte
           minLength: 1
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64InputType{}'
+            valueType: encodedstring.Base64Input
       additionalProperties: false
       required:
         - name
@@ -14740,6 +14747,11 @@ components:
           description: Can be markdown string content or base64 encoded string
           example: '## My Markdown'
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64OrPlainInputType{}'
+            valueType: encodedstring.Base64OrPlainInput
         metadata:
           description: metadata of the document
           type: object
@@ -14780,6 +14792,11 @@ components:
           description: Can be markdown string content or base64 encoded string
           example: YmFzZTY0LWVuY29kZWQgdGV4dCBzdHJpbmc=
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64OrPlainInputType{}'
+            valueType: encodedstring.Base64OrPlainInput
         metadata:
           type: object
           nullable: false
@@ -14845,6 +14862,11 @@ components:
           format: byte
           minLength: 1
           type: string
+          x-speakeasy-terraform-custom-type:
+            imports:
+              - github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring
+            schemaType: 'encodedstring.Base64InputType{}'
+            valueType: encodedstring.Base64Input
       additionalProperties: false
       title: Update API Product Version Specification Request
     LegacyGatewayServicePayload:
