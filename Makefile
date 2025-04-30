@@ -34,3 +34,6 @@ test-cleanup:
 
 acceptance:
 	@TF_ACC=1 go test -v ./tests/resources
+	
+test-unit:
+	go test -v -tags=unit ./...
