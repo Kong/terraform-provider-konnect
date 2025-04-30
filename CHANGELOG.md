@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.1  
+> Released on ?
+
+### Bug fixes
+
+* The perpetual diff seen in `konnect_api_product_document` and `konnect_api_product_specification` is now fixed
+
 ## 2.7.0  
 > Released on 2025/04/30
 
