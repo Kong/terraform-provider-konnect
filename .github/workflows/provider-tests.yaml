@@ -32,3 +32,19 @@ jobs:
       - env:
           KONNECT_SPAT: ${{ secrets.KONNECT_SPAT }}
         run: make acceptance
+  unit:
+    name: Unit Tests (Terraform ${{ matrix.terraform-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Only test against one version for now as these tests are not
+        # namespaced and will conflict
+        terraform-version:
+          - "1.11.*"
+    steps:
+      - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
+      - uses: actions/setup-go@cd53bc84d5e2fd85362f4cb840513e06427082d3 # v4
+        with:
+          go-version-file: "go.mod"
+      - run: make test-unit
