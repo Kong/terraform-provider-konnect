@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
@@ -35,13 +36,13 @@ type APIProductSpecificationResource struct {
 
 // APIProductSpecificationResourceModel describes the resource data model.
 type APIProductSpecificationResourceModel struct {
-	APIProductID        types.String `tfsdk:"api_product_id"`
-	APIProductVersionID types.String `tfsdk:"api_product_version_id"`
-	Content             types.String `tfsdk:"content"`
-	CreatedAt           types.String `tfsdk:"created_at"`
-	ID                  types.String `tfsdk:"id"`
-	Name                types.String `tfsdk:"name"`
-	UpdatedAt           types.String `tfsdk:"updated_at"`
+	APIProductID        types.String              `tfsdk:"api_product_id"`
+	APIProductVersionID types.String              `tfsdk:"api_product_version_id"`
+	Content             encodedstring.Base64Input `tfsdk:"content"`
+	CreatedAt           types.String              `tfsdk:"created_at"`
+	ID                  types.String              `tfsdk:"id"`
+	Name                types.String              `tfsdk:"name"`
+	UpdatedAt           types.String              `tfsdk:"updated_at"`
 }
 
 func (r *APIProductSpecificationResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,6 +62,7 @@ func (r *APIProductSpecificationResource) Schema(ctx context.Context, req resour
 				Description: `The API product version identifier`,
 			},
 			"content": schema.StringAttribute{
+				CustomType:  encodedstring.Base64InputType{},
 				Required:    true,
 				Description: `The base64 encoded contents of the API product version specification`,
 				Validators: []validator.String{

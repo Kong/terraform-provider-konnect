@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/kong/terraform-provider-konnect/v2/customtypes/encodedstring"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
@@ -36,16 +37,16 @@ type APIProductDocumentResource struct {
 
 // APIProductDocumentResourceModel describes the resource data model.
 type APIProductDocumentResourceModel struct {
-	APIProductID     types.String      `tfsdk:"api_product_id"`
-	Content          types.String      `tfsdk:"content"`
-	CreatedAt        types.String      `tfsdk:"created_at"`
-	ID               types.String      `tfsdk:"id"`
-	Metadata         *tfTypes.Metadata `tfsdk:"metadata"`
-	ParentDocumentID types.String      `tfsdk:"parent_document_id"`
-	Slug             types.String      `tfsdk:"slug"`
-	Status           types.String      `tfsdk:"status"`
-	Title            types.String      `tfsdk:"title"`
-	UpdatedAt        types.String      `tfsdk:"updated_at"`
+	APIProductID     types.String                     `tfsdk:"api_product_id"`
+	Content          encodedstring.Base64OrPlainInput `tfsdk:"content"`
+	CreatedAt        types.String                     `tfsdk:"created_at"`
+	ID               types.String                     `tfsdk:"id"`
+	Metadata         *tfTypes.Metadata                `tfsdk:"metadata"`
+	ParentDocumentID types.String                     `tfsdk:"parent_document_id"`
+	Slug             types.String                     `tfsdk:"slug"`
+	Status           types.String                     `tfsdk:"status"`
+	Title            types.String                     `tfsdk:"title"`
+	UpdatedAt        types.String                     `tfsdk:"updated_at"`
 }
 
 func (r *APIProductDocumentResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -61,6 +62,7 @@ func (r *APIProductDocumentResource) Schema(ctx context.Context, req resource.Sc
 				Description: `The API product identifier`,
 			},
 			"content": schema.StringAttribute{
+				CustomType:  encodedstring.Base64OrPlainInputType{},
 				Computed:    true,
 				Optional:    true,
 				Description: `Can be markdown string content or base64 encoded string`,

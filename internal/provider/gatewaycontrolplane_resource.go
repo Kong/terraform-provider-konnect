@@ -77,13 +77,14 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplaceIfConfigured(),
 				},
-				Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID"]; Requires replacement if changed.`,
+				Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY", "CLUSTER_TYPE_HYBRID"]; Requires replacement if changed.`,
 				Validators: []validator.String{
 					stringvalidator.OneOf(
 						"CLUSTER_TYPE_CONTROL_PLANE",
 						"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
 						"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
 						"CLUSTER_TYPE_SERVERLESS",
+						"CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY",
 						"CLUSTER_TYPE_HYBRID",
 					),
 				},
@@ -107,13 +108,14 @@ func (r *GatewayControlPlaneResource) Schema(ctx context.Context, req resource.S
 					},
 					"cluster_type": schema.StringAttribute{
 						Computed:    true,
-						Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_HYBRID"]`,
+						Description: `The ClusterType value of the cluster associated with the Control Plane. must be one of ["CLUSTER_TYPE_CONTROL_PLANE", "CLUSTER_TYPE_K8S_INGRESS_CONTROLLER", "CLUSTER_TYPE_CONTROL_PLANE_GROUP", "CLUSTER_TYPE_SERVERLESS", "CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY", "CLUSTER_TYPE_HYBRID"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"CLUSTER_TYPE_CONTROL_PLANE",
 								"CLUSTER_TYPE_K8S_INGRESS_CONTROLLER",
 								"CLUSTER_TYPE_CONTROL_PLANE_GROUP",
 								"CLUSTER_TYPE_SERVERLESS",
+								"CLUSTER_TYPE_KAFKA_NATIVE_EVENT_PROXY",
 								"CLUSTER_TYPE_HYBRID",
 							),
 						},
