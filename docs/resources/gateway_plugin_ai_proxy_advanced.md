@@ -16,8 +16,11 @@ GatewayPluginAiProxyAdvanced Resource
 resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadvanced" {
   config = {
     balancer = {
-      algorithm             = "lowest-latency"
-      connect_timeout       = 1069677678
+      algorithm       = "lowest-usage"
+      connect_timeout = 1069677678
+      failover_criteria = [
+        "http_403"
+      ]
       hash_on_header        = "...my_hash_on_header..."
       latency_strategy      = "e2e"
       read_timeout          = 1128540479
@@ -46,11 +49,32 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
       model = {
         name = "...my_name..."
         options = {
+          azure = {
+            api_version   = "...my_api_version..."
+            deployment_id = "...my_deployment_id..."
+            instance      = "...my_instance..."
+          }
+          bedrock = {
+            aws_assume_role_arn   = "...my_aws_assume_role_arn..."
+            aws_region            = "...my_aws_region..."
+            aws_role_session_name = "...my_aws_role_session_name..."
+            aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
+          }
+          gemini = {
+            api_endpoint = "...my_api_endpoint..."
+            location_id  = "...my_location_id..."
+            project_id   = "...my_project_id..."
+          }
+          huggingface = {
+            use_cache      = false
+            wait_for_model = false
+          }
           upstream_url = "...my_upstream_url..."
         }
-        provider = "mistral"
+        provider = "gemini"
       }
     }
+    llm_format            = "openai"
     max_request_body_size = 5
     model_name_header     = true
     response_streaming    = "allow"
@@ -85,7 +109,10 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
             azure_deployment_id = "...my_azure_deployment_id..."
             azure_instance      = "...my_azure_instance..."
             bedrock = {
-              aws_region = "...my_aws_region..."
+              aws_assume_role_arn   = "...my_aws_assume_role_arn..."
+              aws_region            = "...my_aws_region..."
+              aws_role_session_name = "...my_aws_role_session_name..."
+              aws_sts_endpoint_url  = "...my_aws_sts_endpoint_url..."
             }
             gemini = {
               api_endpoint = "...my_api_endpoint..."
@@ -116,6 +143,20 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
     vectordb = {
       dimensions      = 3
       distance_metric = "euclidean"
+      pgvector = {
+        database     = "...my_database..."
+        host         = "...my_host..."
+        password     = "...my_password..."
+        port         = 5
+        ssl          = true
+        ssl_cert     = "...my_ssl_cert..."
+        ssl_cert_key = "...my_ssl_cert_key..."
+        ssl_required = true
+        ssl_verify   = true
+        ssl_version  = "any"
+        timeout      = 3.81
+        user         = "...my_user..."
+      }
       redis = {
         cluster_max_redirections = 4
         cluster_nodes = [
@@ -149,7 +190,7 @@ resource "konnect_gateway_plugin_ai_proxy_advanced" "my_gatewaypluginaiproxyadva
         ssl_verify        = false
         username          = "...my_username..."
       }
-      strategy  = "redis"
+      strategy  = "pgvector"
       threshold = 6.56
     }
   }
@@ -225,6 +266,7 @@ Optional:
 
 - `balancer` (Attributes) (see [below for nested schema](#nestedatt--config--balancer))
 - `embeddings` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings))
+- `llm_format` (String) LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]
 - `max_request_body_size` (Number) max allowed body size allowed to be introspected
 - `model_name_header` (Boolean) Display the model name selected in the X-Kong-LLM-Model response header
 - `response_streaming` (String) Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events. must be one of ["allow", "always", "deny"]
@@ -236,14 +278,15 @@ Optional:
 
 Optional:
 
-- `algorithm` (String) Which load balancing algorithm to use. must be one of ["consistent-hashing", "lowest-latency", "lowest-usage", "round-robin", "semantic"]
+- `algorithm` (String) Which load balancing algorithm to use. must be one of ["consistent-hashing", "lowest-latency", "lowest-usage", "priority", "round-robin", "semantic"]
 - `connect_timeout` (Number)
+- `failover_criteria` (List of String) Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
 - `hash_on_header` (String) The header to use for consistent-hashing.
 - `latency_strategy` (String) What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`. must be one of ["e2e", "tpot"]
 - `read_timeout` (Number)
 - `retries` (Number) The number of retries to execute upon failure to proxy.
 - `slots` (Number) The number of slots in the load balancer algorithm.
-- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, and `completion_tokens`. must be one of ["completion-tokens", "prompt-tokens", "total-tokens"]
+- `tokens_count_strategy` (String) What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`. must be one of ["completion-tokens", "cost", "prompt-tokens", "total-tokens"]
 - `write_timeout` (Number)
 
 
@@ -283,14 +326,58 @@ Optional:
 
 - `name` (String) Model name to execute. Not Null
 - `options` (Attributes) Key/value settings for the model (see [below for nested schema](#nestedatt--config--embeddings--model--options))
-- `provider` (String) AI provider format to use for embeddings API. Not Null; must be one of ["mistral", "openai"]
+- `provider` (String) AI provider format to use for embeddings API. Not Null; must be one of ["azure", "bedrock", "gemini", "huggingface", "mistral", "openai"]
 
 <a id="nestedatt--config--embeddings--model--options"></a>
 ### Nested Schema for `config.embeddings.model.options`
 
 Optional:
 
+- `azure` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--embeddings--model--options--azure))
+- `bedrock` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--bedrock))
+- `gemini` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--gemini))
+- `huggingface` (Attributes) (see [below for nested schema](#nestedatt--config--embeddings--model--options--huggingface))
 - `upstream_url` (String) upstream url for the embeddings
+
+<a id="nestedatt--config--embeddings--model--options--azure"></a>
+### Nested Schema for `config.embeddings.model.options.azure`
+
+Optional:
+
+- `api_version` (String) 'api-version' for Azure OpenAI instances.
+- `deployment_id` (String) Deployment ID for Azure OpenAI instances.
+- `instance` (String) Instance name for Azure OpenAI hosted models.
+
+
+<a id="nestedatt--config--embeddings--model--options--bedrock"></a>
+### Nested Schema for `config.embeddings.model.options.bedrock`
+
+Optional:
+
+- `aws_assume_role_arn` (String) If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+- `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+- `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
+- `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+
+
+<a id="nestedatt--config--embeddings--model--options--gemini"></a>
+### Nested Schema for `config.embeddings.model.options.gemini`
+
+Optional:
+
+- `api_endpoint` (String) If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+- `location_id` (String) If running Gemini on Vertex, specify the location ID.
+- `project_id` (String) If running Gemini on Vertex, specify the project ID.
+
+
+<a id="nestedatt--config--embeddings--model--options--huggingface"></a>
+### Nested Schema for `config.embeddings.model.options.huggingface`
+
+Optional:
+
+- `use_cache` (Boolean) Use the cache layer on the inference API
+- `wait_for_model` (Boolean) Wait for the model if it is not ready
+
 
 
 
@@ -301,7 +388,7 @@ Optional:
 Optional:
 
 - `auth` (Attributes) (see [below for nested schema](#nestedatt--config--targets--auth))
-- `description` (String) The semantic description of the target, required if using semantic load balancing.
+- `description` (String) The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
 - `logging` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--logging))
 - `model` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--targets--model))
 - `route_type` (String) The model's operation implementation, for this provider. Set to `preserve` to pass through without transformation. Not Null; must be one of ["llm/v1/chat", "llm/v1/completions", "preserve"]
@@ -374,7 +461,10 @@ Optional:
 
 Optional:
 
+- `aws_assume_role_arn` (String) If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
 - `aws_region` (String) If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+- `aws_role_session_name` (String) If using AWS providers (Bedrock), set the identifier of the assumed role session.
+- `aws_sts_endpoint_url` (String) If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
 
 
 <a id="nestedatt--config--targets--model--options--gemini"></a>
@@ -406,9 +496,29 @@ Optional:
 
 - `dimensions` (Number) the desired dimensionality for the vectors. Not Null
 - `distance_metric` (String) the distance metric to use for vector searches. Not Null; must be one of ["cosine", "euclidean"]
+- `pgvector` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--vectordb--pgvector))
 - `redis` (Attributes) Not Null (see [below for nested schema](#nestedatt--config--vectordb--redis))
-- `strategy` (String) which vector database driver to use. Not Null; must be "redis"
+- `strategy` (String) which vector database driver to use. Not Null; must be one of ["pgvector", "redis"]
 - `threshold` (Number) the default similarity threshold for accepting semantic search results (float). Not Null
+
+<a id="nestedatt--config--vectordb--pgvector"></a>
+### Nested Schema for `config.vectordb.pgvector`
+
+Optional:
+
+- `database` (String) the database of the pgvector database
+- `host` (String) the host of the pgvector database
+- `password` (String) the password of the pgvector database
+- `port` (Number) the port of the pgvector database
+- `ssl` (Boolean) whether to use ssl for the pgvector database
+- `ssl_cert` (String) the path of ssl cert to use for the pgvector database
+- `ssl_cert_key` (String) the path of ssl cert key to use for the pgvector database
+- `ssl_required` (Boolean) whether ssl is required for the pgvector database
+- `ssl_verify` (Boolean) whether to verify ssl for the pgvector database
+- `ssl_version` (String) the ssl version to use for the pgvector database. must be one of ["any", "tlsv1_2", "tlsv1_3"]
+- `timeout` (Number) the timeout of the pgvector database
+- `user` (String) the user of the pgvector database
+
 
 <a id="nestedatt--config--vectordb--redis"></a>
 ### Nested Schema for `config.vectordb.redis`

@@ -140,7 +140,7 @@ Optional:
 
 Optional:
 
-- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN` or `SCRAM-SHA-256`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
+- `mechanism` (String) The SASL authentication mechanism.  Supported options: `PLAIN`, `SCRAM-SHA-256` or `SCRAM-SHA-512`. must be one of ["PLAIN", "SCRAM-SHA-256", "SCRAM-SHA-512"]
 - `password` (String) Password for SASL authentication.
 - `strategy` (String) The authentication strategy for the plugin, the only option for the value is `sasl`. must be "sasl"
 - `tokenauth` (Boolean) Enable this to indicate `DelegationToken` authentication

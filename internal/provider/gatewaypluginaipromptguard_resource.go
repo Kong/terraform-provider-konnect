@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,6 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
@@ -80,6 +82,18 @@ func (r *GatewayPluginAiPromptGuardResource) Schema(ctx context.Context, req res
 						Optional:    true,
 						ElementType: types.StringType,
 						Description: `Array of invalid regex patterns, or invalid questions from the 'user' role in chat.`,
+					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"bedrock",
+								"gemini",
+								"openai",
+							),
+						},
 					},
 					"match_all_roles": schema.BoolAttribute{
 						Computed:    true,

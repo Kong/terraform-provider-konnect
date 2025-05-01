@@ -150,6 +150,18 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 							},
 						},
 					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"bedrock",
+								"gemini",
+								"openai",
+							),
+						},
+					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -208,10 +220,25 @@ func (r *GatewayPluginAiProxyResource) Schema(ctx context.Context, req resource.
 										Computed: true,
 										Optional: true,
 										Attributes: map[string]schema.Attribute{
+											"aws_assume_role_arn": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.`,
+											},
 											"aws_region": schema.StringAttribute{
 												Computed:    true,
 												Optional:    true,
 												Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If using AWS providers (Bedrock), set the identifier of the assumed role session.`,
+											},
+											"aws_sts_endpoint_url": schema.StringAttribute{
+												Computed:    true,
+												Optional:    true,
+												Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 											},
 										},
 									},

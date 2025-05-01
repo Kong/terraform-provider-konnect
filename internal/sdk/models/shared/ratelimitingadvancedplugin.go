@@ -90,7 +90,7 @@ func (e *CompoundIdentifier) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+// RateLimitingAdvancedPluginIdentifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 type RateLimitingAdvancedPluginIdentifier string
 
 const (
@@ -505,7 +505,7 @@ type RateLimitingAdvancedPluginConfig struct {
 	HeaderName *string `json:"header_name,omitempty"`
 	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
-	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 	Identifier *RateLimitingAdvancedPluginIdentifier `json:"identifier,omitempty"`
 	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
 	Limit []float64 `json:"limit,omitempty"`

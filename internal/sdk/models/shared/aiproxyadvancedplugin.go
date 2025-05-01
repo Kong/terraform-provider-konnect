@@ -56,6 +56,7 @@ const (
 	AiProxyAdvancedPluginAlgorithmConsistentHashing AiProxyAdvancedPluginAlgorithm = "consistent-hashing"
 	AiProxyAdvancedPluginAlgorithmLowestLatency     AiProxyAdvancedPluginAlgorithm = "lowest-latency"
 	AiProxyAdvancedPluginAlgorithmLowestUsage       AiProxyAdvancedPluginAlgorithm = "lowest-usage"
+	AiProxyAdvancedPluginAlgorithmPriority          AiProxyAdvancedPluginAlgorithm = "priority"
 	AiProxyAdvancedPluginAlgorithmRoundRobin        AiProxyAdvancedPluginAlgorithm = "round-robin"
 	AiProxyAdvancedPluginAlgorithmSemantic          AiProxyAdvancedPluginAlgorithm = "semantic"
 )
@@ -75,6 +76,8 @@ func (e *AiProxyAdvancedPluginAlgorithm) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "lowest-usage":
 		fallthrough
+	case "priority":
+		fallthrough
 	case "round-robin":
 		fallthrough
 	case "semantic":
@@ -82,6 +85,59 @@ func (e *AiProxyAdvancedPluginAlgorithm) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for AiProxyAdvancedPluginAlgorithm: %v", v)
+	}
+}
+
+type FailoverCriteria string
+
+const (
+	FailoverCriteriaError         FailoverCriteria = "error"
+	FailoverCriteriaHttp403       FailoverCriteria = "http_403"
+	FailoverCriteriaHttp404       FailoverCriteria = "http_404"
+	FailoverCriteriaHttp429       FailoverCriteria = "http_429"
+	FailoverCriteriaHttp500       FailoverCriteria = "http_500"
+	FailoverCriteriaHttp502       FailoverCriteria = "http_502"
+	FailoverCriteriaHttp503       FailoverCriteria = "http_503"
+	FailoverCriteriaHttp504       FailoverCriteria = "http_504"
+	FailoverCriteriaInvalidHeader FailoverCriteria = "invalid_header"
+	FailoverCriteriaNonIdempotent FailoverCriteria = "non_idempotent"
+	FailoverCriteriaTimeout       FailoverCriteria = "timeout"
+)
+
+func (e FailoverCriteria) ToPointer() *FailoverCriteria {
+	return &e
+}
+func (e *FailoverCriteria) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "error":
+		fallthrough
+	case "http_403":
+		fallthrough
+	case "http_404":
+		fallthrough
+	case "http_429":
+		fallthrough
+	case "http_500":
+		fallthrough
+	case "http_502":
+		fallthrough
+	case "http_503":
+		fallthrough
+	case "http_504":
+		fallthrough
+	case "invalid_header":
+		fallthrough
+	case "non_idempotent":
+		fallthrough
+	case "timeout":
+		*e = FailoverCriteria(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for FailoverCriteria: %v", v)
 	}
 }
 
@@ -112,11 +168,12 @@ func (e *LatencyStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-// AiProxyAdvancedPluginTokensCountStrategy - What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, and `completion_tokens`.
+// AiProxyAdvancedPluginTokensCountStrategy - What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`.
 type AiProxyAdvancedPluginTokensCountStrategy string
 
 const (
 	AiProxyAdvancedPluginTokensCountStrategyCompletionTokens AiProxyAdvancedPluginTokensCountStrategy = "completion-tokens"
+	AiProxyAdvancedPluginTokensCountStrategyCost             AiProxyAdvancedPluginTokensCountStrategy = "cost"
 	AiProxyAdvancedPluginTokensCountStrategyPromptTokens     AiProxyAdvancedPluginTokensCountStrategy = "prompt-tokens"
 	AiProxyAdvancedPluginTokensCountStrategyTotalTokens      AiProxyAdvancedPluginTokensCountStrategy = "total-tokens"
 )
@@ -132,6 +189,8 @@ func (e *AiProxyAdvancedPluginTokensCountStrategy) UnmarshalJSON(data []byte) er
 	switch v {
 	case "completion-tokens":
 		fallthrough
+	case "cost":
+		fallthrough
 	case "prompt-tokens":
 		fallthrough
 	case "total-tokens":
@@ -146,6 +205,8 @@ type Balancer struct {
 	// Which load balancing algorithm to use.
 	Algorithm      *AiProxyAdvancedPluginAlgorithm `json:"algorithm,omitempty"`
 	ConnectTimeout *int64                          `json:"connect_timeout,omitempty"`
+	// Specifies in which cases an upstream response should be failover to the next target. Each option in the array is equivalent to the function of http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_next_upstream
+	FailoverCriteria []FailoverCriteria `json:"failover_criteria,omitempty"`
 	// The header to use for consistent-hashing.
 	HashOnHeader *string `json:"hash_on_header,omitempty"`
 	// What metrics to use for latency. Available values are: `tpot` (time-per-output-token) and `e2e`.
@@ -155,7 +216,7 @@ type Balancer struct {
 	Retries *int64 `json:"retries,omitempty"`
 	// The number of slots in the load balancer algorithm.
 	Slots *int64 `json:"slots,omitempty"`
-	// What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, and `completion_tokens`.
+	// What tokens to use for usage calculation. Available values are: `total_tokens` `prompt_tokens`, `completion_tokens` and `cost`.
 	TokensCountStrategy *AiProxyAdvancedPluginTokensCountStrategy `json:"tokens_count_strategy,omitempty"`
 	WriteTimeout        *int64                                    `json:"write_timeout,omitempty"`
 }
@@ -172,6 +233,13 @@ func (o *Balancer) GetConnectTimeout() *int64 {
 		return nil
 	}
 	return o.ConnectTimeout
+}
+
+func (o *Balancer) GetFailoverCriteria() []FailoverCriteria {
+	if o == nil {
+		return nil
+	}
+	return o.FailoverCriteria
 }
 
 func (o *Balancer) GetHashOnHeader() *string {
@@ -379,10 +447,162 @@ func (o *AiProxyAdvancedPluginAuth) GetParamValue() *string {
 	return o.ParamValue
 }
 
+type Azure struct {
+	// 'api-version' for Azure OpenAI instances.
+	APIVersion *string `json:"api_version,omitempty"`
+	// Deployment ID for Azure OpenAI instances.
+	DeploymentID *string `json:"deployment_id,omitempty"`
+	// Instance name for Azure OpenAI hosted models.
+	Instance *string `json:"instance,omitempty"`
+}
+
+func (o *Azure) GetAPIVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIVersion
+}
+
+func (o *Azure) GetDeploymentID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeploymentID
+}
+
+func (o *Azure) GetInstance() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+type AiProxyAdvancedPluginBedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
+	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *AiProxyAdvancedPluginBedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
+}
+
+type AiProxyAdvancedPluginGemini struct {
+	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
+	// If running Gemini on Vertex, specify the location ID.
+	LocationID *string `json:"location_id,omitempty"`
+	// If running Gemini on Vertex, specify the project ID.
+	ProjectID *string `json:"project_id,omitempty"`
+}
+
+func (o *AiProxyAdvancedPluginGemini) GetAPIEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIEndpoint
+}
+
+func (o *AiProxyAdvancedPluginGemini) GetLocationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LocationID
+}
+
+func (o *AiProxyAdvancedPluginGemini) GetProjectID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProjectID
+}
+
+type AiProxyAdvancedPluginHuggingface struct {
+	// Use the cache layer on the inference API
+	UseCache *bool `json:"use_cache,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *AiProxyAdvancedPluginHuggingface) GetUseCache() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseCache
+}
+
+func (o *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
+}
+
 // AiProxyAdvancedPluginOptions - Key/value settings for the model
 type AiProxyAdvancedPluginOptions struct {
+	Azure       Azure                             `json:"azure"`
+	Bedrock     *AiProxyAdvancedPluginBedrock     `json:"bedrock,omitempty"`
+	Gemini      *AiProxyAdvancedPluginGemini      `json:"gemini,omitempty"`
+	Huggingface *AiProxyAdvancedPluginHuggingface `json:"huggingface,omitempty"`
 	// upstream url for the embeddings
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (o *AiProxyAdvancedPluginOptions) GetAzure() Azure {
+	if o == nil {
+		return Azure{}
+	}
+	return o.Azure
+}
+
+func (o *AiProxyAdvancedPluginOptions) GetBedrock() *AiProxyAdvancedPluginBedrock {
+	if o == nil {
+		return nil
+	}
+	return o.Bedrock
+}
+
+func (o *AiProxyAdvancedPluginOptions) GetGemini() *AiProxyAdvancedPluginGemini {
+	if o == nil {
+		return nil
+	}
+	return o.Gemini
+}
+
+func (o *AiProxyAdvancedPluginOptions) GetHuggingface() *AiProxyAdvancedPluginHuggingface {
+	if o == nil {
+		return nil
+	}
+	return o.Huggingface
 }
 
 func (o *AiProxyAdvancedPluginOptions) GetUpstreamURL() *string {
@@ -396,8 +616,12 @@ func (o *AiProxyAdvancedPluginOptions) GetUpstreamURL() *string {
 type AiProxyAdvancedPluginProvider string
 
 const (
-	AiProxyAdvancedPluginProviderMistral AiProxyAdvancedPluginProvider = "mistral"
-	AiProxyAdvancedPluginProviderOpenai  AiProxyAdvancedPluginProvider = "openai"
+	AiProxyAdvancedPluginProviderAzure       AiProxyAdvancedPluginProvider = "azure"
+	AiProxyAdvancedPluginProviderBedrock     AiProxyAdvancedPluginProvider = "bedrock"
+	AiProxyAdvancedPluginProviderGemini      AiProxyAdvancedPluginProvider = "gemini"
+	AiProxyAdvancedPluginProviderHuggingface AiProxyAdvancedPluginProvider = "huggingface"
+	AiProxyAdvancedPluginProviderMistral     AiProxyAdvancedPluginProvider = "mistral"
+	AiProxyAdvancedPluginProviderOpenai      AiProxyAdvancedPluginProvider = "openai"
 )
 
 func (e AiProxyAdvancedPluginProvider) ToPointer() *AiProxyAdvancedPluginProvider {
@@ -409,6 +633,14 @@ func (e *AiProxyAdvancedPluginProvider) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "azure":
+		fallthrough
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "huggingface":
+		fallthrough
 	case "mistral":
 		fallthrough
 	case "openai":
@@ -466,6 +698,36 @@ func (o *Embeddings) GetModel() AiProxyAdvancedPluginModel {
 		return AiProxyAdvancedPluginModel{}
 	}
 	return o.Model
+}
+
+// AiProxyAdvancedPluginLlmFormat - LLM input and output format and schema to use
+type AiProxyAdvancedPluginLlmFormat string
+
+const (
+	AiProxyAdvancedPluginLlmFormatBedrock AiProxyAdvancedPluginLlmFormat = "bedrock"
+	AiProxyAdvancedPluginLlmFormatGemini  AiProxyAdvancedPluginLlmFormat = "gemini"
+	AiProxyAdvancedPluginLlmFormatOpenai  AiProxyAdvancedPluginLlmFormat = "openai"
+)
+
+func (e AiProxyAdvancedPluginLlmFormat) ToPointer() *AiProxyAdvancedPluginLlmFormat {
+	return &e
+}
+func (e *AiProxyAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiProxyAdvancedPluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiProxyAdvancedPluginLlmFormat: %v", v)
+	}
 }
 
 // AiProxyAdvancedPluginResponseStreaming - Whether to 'optionally allow', 'deny', or 'always' (force) the streaming of answers via server sent events.
@@ -675,19 +937,46 @@ func (o *AiProxyAdvancedPluginLogging) GetLogStatistics() *bool {
 	return o.LogStatistics
 }
 
-type AiProxyAdvancedPluginBedrock struct {
+type AiProxyAdvancedPluginConfigBedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginBedrock) GetAwsRegion() *string {
+func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsRegion() *string {
 	if o == nil {
 		return nil
 	}
 	return o.AwsRegion
 }
 
-type AiProxyAdvancedPluginGemini struct {
+func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *AiProxyAdvancedPluginConfigBedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
+}
+
+type AiProxyAdvancedPluginConfigGemini struct {
 	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
 	APIEndpoint *string `json:"api_endpoint,omitempty"`
 	// If running Gemini on Vertex, specify the location ID.
@@ -696,42 +985,42 @@ type AiProxyAdvancedPluginGemini struct {
 	ProjectID *string `json:"project_id,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetAPIEndpoint() *string {
+func (o *AiProxyAdvancedPluginConfigGemini) GetAPIEndpoint() *string {
 	if o == nil {
 		return nil
 	}
 	return o.APIEndpoint
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetLocationID() *string {
+func (o *AiProxyAdvancedPluginConfigGemini) GetLocationID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.LocationID
 }
 
-func (o *AiProxyAdvancedPluginGemini) GetProjectID() *string {
+func (o *AiProxyAdvancedPluginConfigGemini) GetProjectID() *string {
 	if o == nil {
 		return nil
 	}
 	return o.ProjectID
 }
 
-type AiProxyAdvancedPluginHuggingface struct {
+type AiProxyAdvancedPluginConfigHuggingface struct {
 	// Use the cache layer on the inference API
 	UseCache *bool `json:"use_cache,omitempty"`
 	// Wait for the model if it is not ready
 	WaitForModel *bool `json:"wait_for_model,omitempty"`
 }
 
-func (o *AiProxyAdvancedPluginHuggingface) GetUseCache() *bool {
+func (o *AiProxyAdvancedPluginConfigHuggingface) GetUseCache() *bool {
 	if o == nil {
 		return nil
 	}
 	return o.UseCache
 }
 
-func (o *AiProxyAdvancedPluginHuggingface) GetWaitForModel() *bool {
+func (o *AiProxyAdvancedPluginConfigHuggingface) GetWaitForModel() *bool {
 	if o == nil {
 		return nil
 	}
@@ -804,10 +1093,10 @@ type AiProxyAdvancedPluginConfigOptions struct {
 	// Deployment ID for Azure OpenAI instances.
 	AzureDeploymentID *string `json:"azure_deployment_id,omitempty"`
 	// Instance name for Azure OpenAI hosted models.
-	AzureInstance *string                           `json:"azure_instance,omitempty"`
-	Bedrock       *AiProxyAdvancedPluginBedrock     `json:"bedrock,omitempty"`
-	Gemini        *AiProxyAdvancedPluginGemini      `json:"gemini,omitempty"`
-	Huggingface   *AiProxyAdvancedPluginHuggingface `json:"huggingface,omitempty"`
+	AzureInstance *string                                 `json:"azure_instance,omitempty"`
+	Bedrock       *AiProxyAdvancedPluginConfigBedrock     `json:"bedrock,omitempty"`
+	Gemini        *AiProxyAdvancedPluginConfigGemini      `json:"gemini,omitempty"`
+	Huggingface   *AiProxyAdvancedPluginConfigHuggingface `json:"huggingface,omitempty"`
 	// Defines the cost per 1M tokens in your prompt.
 	InputCost *float64 `json:"input_cost,omitempty"`
 	// If using llama2 provider, select the upstream message format.
@@ -858,21 +1147,21 @@ func (o *AiProxyAdvancedPluginConfigOptions) GetAzureInstance() *string {
 	return o.AzureInstance
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPluginBedrock {
+func (o *AiProxyAdvancedPluginConfigOptions) GetBedrock() *AiProxyAdvancedPluginConfigBedrock {
 	if o == nil {
 		return nil
 	}
 	return o.Bedrock
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetGemini() *AiProxyAdvancedPluginGemini {
+func (o *AiProxyAdvancedPluginConfigOptions) GetGemini() *AiProxyAdvancedPluginConfigGemini {
 	if o == nil {
 		return nil
 	}
 	return o.Gemini
 }
 
-func (o *AiProxyAdvancedPluginConfigOptions) GetHuggingface() *AiProxyAdvancedPluginHuggingface {
+func (o *AiProxyAdvancedPluginConfigOptions) GetHuggingface() *AiProxyAdvancedPluginConfigHuggingface {
 	if o == nil {
 		return nil
 	}
@@ -1059,7 +1348,7 @@ func (e *AiProxyAdvancedPluginRouteType) UnmarshalJSON(data []byte) error {
 
 type Targets struct {
 	Auth *AiProxyAdvancedPluginConfigAuth `json:"auth,omitempty"`
-	// The semantic description of the target, required if using semantic load balancing.
+	// The semantic description of the target, required if using semantic load balancing. Specially, setting this to 'CATCHALL' will indicate such target to be used when no other targets match the semantic threshold.
 	Description *string                          `json:"description,omitempty"`
 	Logging     AiProxyAdvancedPluginLogging     `json:"logging"`
 	Model       AiProxyAdvancedPluginConfigModel `json:"model"`
@@ -1136,6 +1425,147 @@ func (e *DistanceMetric) UnmarshalJSON(data []byte) error {
 	default:
 		return fmt.Errorf("invalid value for DistanceMetric: %v", v)
 	}
+}
+
+// SslVersion - the ssl version to use for the pgvector database
+type SslVersion string
+
+const (
+	SslVersionAny    SslVersion = "any"
+	SslVersionTlsv12 SslVersion = "tlsv1_2"
+	SslVersionTlsv13 SslVersion = "tlsv1_3"
+)
+
+func (e SslVersion) ToPointer() *SslVersion {
+	return &e
+}
+func (e *SslVersion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "any":
+		fallthrough
+	case "tlsv1_2":
+		fallthrough
+	case "tlsv1_3":
+		*e = SslVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for SslVersion: %v", v)
+	}
+}
+
+type Pgvector struct {
+	// the database of the pgvector database
+	Database *string `json:"database,omitempty"`
+	// the host of the pgvector database
+	Host *string `json:"host,omitempty"`
+	// the password of the pgvector database
+	Password *string `json:"password,omitempty"`
+	// the port of the pgvector database
+	Port *int64 `json:"port,omitempty"`
+	// whether to use ssl for the pgvector database
+	Ssl *bool `json:"ssl,omitempty"`
+	// the path of ssl cert to use for the pgvector database
+	SslCert *string `json:"ssl_cert,omitempty"`
+	// the path of ssl cert key to use for the pgvector database
+	SslCertKey *string `json:"ssl_cert_key,omitempty"`
+	// whether ssl is required for the pgvector database
+	SslRequired *bool `json:"ssl_required,omitempty"`
+	// whether to verify ssl for the pgvector database
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// the ssl version to use for the pgvector database
+	SslVersion *SslVersion `json:"ssl_version,omitempty"`
+	// the timeout of the pgvector database
+	Timeout *float64 `json:"timeout,omitempty"`
+	// the user of the pgvector database
+	User *string `json:"user,omitempty"`
+}
+
+func (o *Pgvector) GetDatabase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *Pgvector) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *Pgvector) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *Pgvector) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *Pgvector) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *Pgvector) GetSslCert() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCert
+}
+
+func (o *Pgvector) GetSslCertKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCertKey
+}
+
+func (o *Pgvector) GetSslRequired() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslRequired
+}
+
+func (o *Pgvector) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *Pgvector) GetSslVersion() *SslVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SslVersion
+}
+
+func (o *Pgvector) GetTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *Pgvector) GetUser() *string {
+	if o == nil {
+		return nil
+	}
+	return o.User
 }
 
 type AiProxyAdvancedPluginClusterNodes struct {
@@ -1406,7 +1836,8 @@ func (o *AiProxyAdvancedPluginRedis) GetUsername() *string {
 type AiProxyAdvancedPluginStrategy string
 
 const (
-	AiProxyAdvancedPluginStrategyRedis AiProxyAdvancedPluginStrategy = "redis"
+	AiProxyAdvancedPluginStrategyPgvector AiProxyAdvancedPluginStrategy = "pgvector"
+	AiProxyAdvancedPluginStrategyRedis    AiProxyAdvancedPluginStrategy = "redis"
 )
 
 func (e AiProxyAdvancedPluginStrategy) ToPointer() *AiProxyAdvancedPluginStrategy {
@@ -1418,6 +1849,8 @@ func (e *AiProxyAdvancedPluginStrategy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "pgvector":
+		fallthrough
 	case "redis":
 		*e = AiProxyAdvancedPluginStrategy(v)
 		return nil
@@ -1431,6 +1864,7 @@ type Vectordb struct {
 	Dimensions int64 `json:"dimensions"`
 	// the distance metric to use for vector searches
 	DistanceMetric DistanceMetric             `json:"distance_metric"`
+	Pgvector       Pgvector                   `json:"pgvector"`
 	Redis          AiProxyAdvancedPluginRedis `json:"redis"`
 	// which vector database driver to use
 	Strategy AiProxyAdvancedPluginStrategy `json:"strategy"`
@@ -1450,6 +1884,13 @@ func (o *Vectordb) GetDistanceMetric() DistanceMetric {
 		return DistanceMetric("")
 	}
 	return o.DistanceMetric
+}
+
+func (o *Vectordb) GetPgvector() Pgvector {
+	if o == nil {
+		return Pgvector{}
+	}
+	return o.Pgvector
 }
 
 func (o *Vectordb) GetRedis() AiProxyAdvancedPluginRedis {
@@ -1476,6 +1917,8 @@ func (o *Vectordb) GetThreshold() float64 {
 type AiProxyAdvancedPluginConfig struct {
 	Balancer   *Balancer   `json:"balancer,omitempty"`
 	Embeddings *Embeddings `json:"embeddings,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiProxyAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
 	// max allowed body size allowed to be introspected
 	MaxRequestBodySize *int64 `json:"max_request_body_size,omitempty"`
 	// Display the model name selected in the X-Kong-LLM-Model response header
@@ -1498,6 +1941,13 @@ func (o *AiProxyAdvancedPluginConfig) GetEmbeddings() *Embeddings {
 		return nil
 	}
 	return o.Embeddings
+}
+
+func (o *AiProxyAdvancedPluginConfig) GetLlmFormat() *AiProxyAdvancedPluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiProxyAdvancedPluginConfig) GetMaxRequestBodySize() *int64 {

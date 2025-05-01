@@ -182,7 +182,7 @@ func (r *GatewayPluginKeyAuthEncResourceModel) RefreshFromSharedKeyAuthEncPlugin
 		if resp.Config == nil {
 			r.Config = nil
 		} else {
-			r.Config = &tfTypes.KeyAuthPluginConfig{}
+			r.Config = &tfTypes.KeyAuthEncPluginConfig{}
 			r.Config.Anonymous = types.StringPointerValue(resp.Config.Anonymous)
 			r.Config.HideCredentials = types.BoolPointerValue(resp.Config.HideCredentials)
 			r.Config.KeyInBody = types.BoolPointerValue(resp.Config.KeyInBody)

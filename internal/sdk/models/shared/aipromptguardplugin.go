@@ -49,6 +49,36 @@ func (o *AiPromptGuardPluginOrdering) GetBefore() *AiPromptGuardPluginBefore {
 	return o.Before
 }
 
+// AiPromptGuardPluginLlmFormat - LLM input and output format and schema to use
+type AiPromptGuardPluginLlmFormat string
+
+const (
+	AiPromptGuardPluginLlmFormatBedrock AiPromptGuardPluginLlmFormat = "bedrock"
+	AiPromptGuardPluginLlmFormatGemini  AiPromptGuardPluginLlmFormat = "gemini"
+	AiPromptGuardPluginLlmFormatOpenai  AiPromptGuardPluginLlmFormat = "openai"
+)
+
+func (e AiPromptGuardPluginLlmFormat) ToPointer() *AiPromptGuardPluginLlmFormat {
+	return &e
+}
+func (e *AiPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiPromptGuardPluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiPromptGuardPluginLlmFormat: %v", v)
+	}
+}
+
 type AiPromptGuardPluginConfig struct {
 	// If true, will ignore all previous chat prompts from the conversation history.
 	AllowAllConversationHistory *bool `json:"allow_all_conversation_history,omitempty"`
@@ -56,6 +86,8 @@ type AiPromptGuardPluginConfig struct {
 	AllowPatterns []string `json:"allow_patterns,omitempty"`
 	// Array of invalid regex patterns, or invalid questions from the 'user' role in chat.
 	DenyPatterns []string `json:"deny_patterns,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
 	// If true, will match all roles in addition to 'user' role in conversation history.
 	MatchAllRoles *bool `json:"match_all_roles,omitempty"`
 	// max allowed body size allowed to be introspected
@@ -81,6 +113,13 @@ func (o *AiPromptGuardPluginConfig) GetDenyPatterns() []string {
 		return nil
 	}
 	return o.DenyPatterns
+}
+
+func (o *AiPromptGuardPluginConfig) GetLlmFormat() *AiPromptGuardPluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiPromptGuardPluginConfig) GetMatchAllRoles() *bool {

@@ -49,6 +49,36 @@ func (o *AiPromptDecoratorPluginOrdering) GetBefore() *AiPromptDecoratorPluginBe
 	return o.Before
 }
 
+// LlmFormat - LLM input and output format and schema to use
+type LlmFormat string
+
+const (
+	LlmFormatBedrock LlmFormat = "bedrock"
+	LlmFormatGemini  LlmFormat = "gemini"
+	LlmFormatOpenai  LlmFormat = "openai"
+)
+
+func (e LlmFormat) ToPointer() *LlmFormat {
+	return &e
+}
+func (e *LlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = LlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for LlmFormat: %v", v)
+	}
+}
+
 type Role string
 
 const (
@@ -167,9 +197,18 @@ func (o *Prompts) GetPrepend() []Prepend {
 }
 
 type AiPromptDecoratorPluginConfig struct {
+	// LLM input and output format and schema to use
+	LlmFormat *LlmFormat `json:"llm_format,omitempty"`
 	// max allowed body size allowed to be introspected
 	MaxRequestBodySize *int64   `json:"max_request_body_size,omitempty"`
 	Prompts            *Prompts `json:"prompts,omitempty"`
+}
+
+func (o *AiPromptDecoratorPluginConfig) GetLlmFormat() *LlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiPromptDecoratorPluginConfig) GetMaxRequestBodySize() *int64 {

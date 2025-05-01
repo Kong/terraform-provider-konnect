@@ -49,11 +49,67 @@ func (o *KeyAuthPluginOrdering) GetBefore() *KeyAuthPluginBefore {
 	return o.Before
 }
 
+type Scope string
+
+const (
+	ScopeCp    Scope = "cp"
+	ScopeRealm Scope = "realm"
+)
+
+func (e Scope) ToPointer() *Scope {
+	return &e
+}
+func (e *Scope) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "cp":
+		fallthrough
+	case "realm":
+		*e = Scope(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for Scope: %v", v)
+	}
+}
+
+type IdentityRealms struct {
+	// A string representing a UUID (universally unique identifier).
+	ID     *string `json:"id,omitempty"`
+	Region *string `json:"region,omitempty"`
+	Scope  *Scope  `json:"scope,omitempty"`
+}
+
+func (o *IdentityRealms) GetID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ID
+}
+
+func (o *IdentityRealms) GetRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Region
+}
+
+func (o *IdentityRealms) GetScope() *Scope {
+	if o == nil {
+		return nil
+	}
+	return o.Scope
+}
+
 type KeyAuthPluginConfig struct {
 	// An optional string (consumer UUID or username) value to use as an “anonymous” consumer if authentication fails. If empty (default null), the request will fail with an authentication failure `4xx`.
 	Anonymous *string `json:"anonymous,omitempty"`
 	// An optional boolean value telling the plugin to show or hide the credential from the upstream service. If `true`, the plugin strips the credential from the request.
 	HideCredentials *bool `json:"hide_credentials,omitempty"`
+	// A configuration of Konnect Identity Realms that indicate where to source a consumer from.
+	IdentityRealms []IdentityRealms `json:"identity_realms,omitempty"`
 	// If enabled, the plugin reads the request body. Supported MIME types: `application/www-form-urlencoded`, `application/json`, and `multipart/form-data`.
 	KeyInBody *bool `json:"key_in_body,omitempty"`
 	// If enabled (default), the plugin reads the request header and tries to find the key in it.
@@ -80,6 +136,13 @@ func (o *KeyAuthPluginConfig) GetHideCredentials() *bool {
 		return nil
 	}
 	return o.HideCredentials
+}
+
+func (o *KeyAuthPluginConfig) GetIdentityRealms() []IdentityRealms {
+	if o == nil {
+		return nil
+	}
+	return o.IdentityRealms
 }
 
 func (o *KeyAuthPluginConfig) GetKeyInBody() *bool {

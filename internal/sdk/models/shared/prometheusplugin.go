@@ -62,6 +62,8 @@ type PrometheusPluginConfig struct {
 	StatusCodeMetrics *bool `json:"status_code_metrics,omitempty"`
 	// A boolean value that determines if upstream metrics should be collected. If enabled, `upstream_target_health` metric will be exported.
 	UpstreamHealthMetrics *bool `json:"upstream_health_metrics,omitempty"`
+	// A boolean value that determines if Wasm metrics should be collected.
+	WasmMetrics *bool `json:"wasm_metrics,omitempty"`
 }
 
 func (o *PrometheusPluginConfig) GetAiMetrics() *bool {
@@ -104,6 +106,13 @@ func (o *PrometheusPluginConfig) GetUpstreamHealthMetrics() *bool {
 		return nil
 	}
 	return o.UpstreamHealthMetrics
+}
+
+func (o *PrometheusPluginConfig) GetWasmMetrics() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WasmMetrics
 }
 
 // PrometheusPluginConsumer - If set, the plugin will activate only for requests where the specified has been authenticated. (Note that some plugins can not be restricted to consumers this way.). Leave unset for the plugin to activate regardless of the authenticated Consumer.

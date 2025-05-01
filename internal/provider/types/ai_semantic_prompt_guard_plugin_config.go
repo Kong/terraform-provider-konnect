@@ -2,9 +2,12 @@
 
 package types
 
+import "github.com/hashicorp/terraform-plugin-framework/types"
+
 type AiSemanticPromptGuardPluginConfig struct {
-	Embeddings *AiSemanticCachePluginEmbeddings `tfsdk:"embeddings"`
-	Rules      *Rules                           `tfsdk:"rules"`
-	Search     *Search                          `tfsdk:"search"`
-	Vectordb   *AiSemanticCachePluginVectordb   `tfsdk:"vectordb"`
+	Embeddings *AiRagInjectorPluginEmbeddings `tfsdk:"embeddings"`
+	LlmFormat  types.String                   `tfsdk:"llm_format"`
+	Rules      *Rules                         `tfsdk:"rules"`
+	Search     *Search                        `tfsdk:"search"`
+	Vectordb   *AiSemanticCachePluginVectordb `tfsdk:"vectordb"`
 }

@@ -49,7 +49,7 @@ func (o *AiRateLimitingAdvancedPluginOrdering) GetBefore() *AiRateLimitingAdvanc
 	return o.Before
 }
 
-// Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+// Identifier - The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 type Identifier string
 
 const (
@@ -88,6 +88,36 @@ func (e *Identifier) UnmarshalJSON(data []byte) error {
 		return nil
 	default:
 		return fmt.Errorf("invalid value for Identifier: %v", v)
+	}
+}
+
+// AiRateLimitingAdvancedPluginLlmFormat - LLM input and output format and schema to use
+type AiRateLimitingAdvancedPluginLlmFormat string
+
+const (
+	AiRateLimitingAdvancedPluginLlmFormatBedrock AiRateLimitingAdvancedPluginLlmFormat = "bedrock"
+	AiRateLimitingAdvancedPluginLlmFormatGemini  AiRateLimitingAdvancedPluginLlmFormat = "gemini"
+	AiRateLimitingAdvancedPluginLlmFormatOpenai  AiRateLimitingAdvancedPluginLlmFormat = "openai"
+)
+
+func (e AiRateLimitingAdvancedPluginLlmFormat) ToPointer() *AiRateLimitingAdvancedPluginLlmFormat {
+	return &e
+}
+func (e *AiRateLimitingAdvancedPluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiRateLimitingAdvancedPluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiRateLimitingAdvancedPluginLlmFormat: %v", v)
 	}
 }
 
@@ -143,17 +173,17 @@ func (e *AiRateLimitingAdvancedPluginName) UnmarshalJSON(data []byte) error {
 }
 
 type LlmProviders struct {
-	// The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter.
-	Limit float64 `json:"limit"`
+	// One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.
+	Limit []float64 `json:"limit"`
 	// The LLM provider to which the rate limit applies.
 	Name AiRateLimitingAdvancedPluginName `json:"name"`
-	// The window size to apply a limit (defined in seconds).
-	WindowSize float64 `json:"window_size"`
+	// One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.
+	WindowSize []float64 `json:"window_size"`
 }
 
-func (o *LlmProviders) GetLimit() float64 {
+func (o *LlmProviders) GetLimit() []float64 {
 	if o == nil {
-		return 0.0
+		return []float64{}
 	}
 	return o.Limit
 }
@@ -165,9 +195,9 @@ func (o *LlmProviders) GetName() AiRateLimitingAdvancedPluginName {
 	return o.Name
 }
 
-func (o *LlmProviders) GetWindowSize() float64 {
+func (o *LlmProviders) GetWindowSize() []float64 {
 	if o == nil {
-		return 0.0
+		return []float64{}
 	}
 	return o.WindowSize
 }
@@ -541,8 +571,10 @@ type AiRateLimitingAdvancedPluginConfig struct {
 	HeaderName *string `json:"header_name,omitempty"`
 	// Optionally hide informative response headers that would otherwise provide information about the current status of limits and counters.
 	HideClientHeaders *bool `json:"hide_client_headers,omitempty"`
-	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`.
+	// The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be `ip`, `credential`, `consumer`, `service`, `header`, `path` or `consumer-group`. Note if `identifier` is `consumer-group`, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.
 	Identifier *Identifier `json:"identifier,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiRateLimitingAdvancedPluginLlmFormat `json:"llm_format,omitempty"`
 	// The provider config. Takes an array of `name`, `limit` and `window size` values.
 	LlmProviders []LlmProviders `json:"llm_providers,omitempty"`
 	// A string representing a URL path, such as /path/to/resource. Must start with a forward slash (/) and must not contain empty segments (i.e., two consecutive forward slashes).
@@ -616,6 +648,13 @@ func (o *AiRateLimitingAdvancedPluginConfig) GetIdentifier() *Identifier {
 		return nil
 	}
 	return o.Identifier
+}
+
+func (o *AiRateLimitingAdvancedPluginConfig) GetLlmFormat() *AiRateLimitingAdvancedPluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiRateLimitingAdvancedPluginConfig) GetLlmProviders() []LlmProviders {

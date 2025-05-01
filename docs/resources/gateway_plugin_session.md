@@ -23,6 +23,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     cookie_path      = "...my_cookie_path..."
     cookie_same_site = "Strict"
     cookie_secure    = true
+    hash_subject     = false
     idling_timeout   = 6.27
     logout_methods = [
       "GET"
@@ -44,6 +45,7 @@ resource "konnect_gateway_plugin_session" "my_gatewaypluginsession" {
     secret          = "...my_secret..."
     stale_ttl       = 3.88
     storage         = "cookie"
+    store_metadata  = true
   }
   control_plane_id = "9524ec7d-36d9-465d-a8c5-83a3c9390458"
   created_at       = 4
@@ -115,6 +117,7 @@ Optional:
 - `cookie_path` (String) The resource in the host where the cookie is available.
 - `cookie_same_site` (String) Determines whether and how a cookie may be sent with cross-site requests. must be one of ["Default", "Lax", "None", "Strict"]
 - `cookie_secure` (Boolean) Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.
+- `hash_subject` (Boolean) Whether to hash or not the subject when store_metadata is enabled.
 - `idling_timeout` (Number) The session cookie idle time, in seconds.
 - `logout_methods` (List of String) A set of HTTP methods that the plugin will respond to.
 - `logout_post_arg` (String) The POST argument passed to logout requests. Do not change this property.
@@ -130,6 +133,7 @@ Optional:
 - `secret` (String) The secret that is used in keyed HMAC generation.
 - `stale_ttl` (Number) The duration, in seconds, after which an old cookie is discarded, starting from the moment when the session becomes outdated and is replaced by a new one.
 - `storage` (String) Determines where the session data is stored. `kong`: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. `cookie`: Stores encrypted session data within the cookie itself. must be one of ["cookie", "kong"]
+- `store_metadata` (Boolean) Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.
 
 
 <a id="nestedatt--ordering"></a>

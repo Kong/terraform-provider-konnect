@@ -74,6 +74,12 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProte
 	}
 	var config *shared.JSONThreatProtectionPluginConfig
 	if r.Config != nil {
+		allowDuplicateObjectEntryName := new(bool)
+		if !r.Config.AllowDuplicateObjectEntryName.IsUnknown() && !r.Config.AllowDuplicateObjectEntryName.IsNull() {
+			*allowDuplicateObjectEntryName = r.Config.AllowDuplicateObjectEntryName.ValueBool()
+		} else {
+			allowDuplicateObjectEntryName = nil
+		}
 		enforcementMode := new(shared.JSONThreatProtectionPluginEnforcementMode)
 		if !r.Config.EnforcementMode.IsUnknown() && !r.Config.EnforcementMode.IsNull() {
 			*enforcementMode = shared.JSONThreatProtectionPluginEnforcementMode(r.Config.EnforcementMode.ValueString())
@@ -129,15 +135,16 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) ToSharedJSONThreatProte
 			maxStringValueLength = nil
 		}
 		config = &shared.JSONThreatProtectionPluginConfig{
-			EnforcementMode:          enforcementMode,
-			ErrorMessage:             errorMessage,
-			ErrorStatusCode:          errorStatusCode,
-			MaxArrayElementCount:     maxArrayElementCount,
-			MaxBodySize:              maxBodySize,
-			MaxContainerDepth:        maxContainerDepth,
-			MaxObjectEntryCount:      maxObjectEntryCount,
-			MaxObjectEntryNameLength: maxObjectEntryNameLength,
-			MaxStringValueLength:     maxStringValueLength,
+			AllowDuplicateObjectEntryName: allowDuplicateObjectEntryName,
+			EnforcementMode:               enforcementMode,
+			ErrorMessage:                  errorMessage,
+			ErrorStatusCode:               errorStatusCode,
+			MaxArrayElementCount:          maxArrayElementCount,
+			MaxBodySize:                   maxBodySize,
+			MaxContainerDepth:             maxContainerDepth,
+			MaxObjectEntryCount:           maxObjectEntryCount,
+			MaxObjectEntryNameLength:      maxObjectEntryNameLength,
+			MaxStringValueLength:          maxStringValueLength,
 		}
 	}
 	var protocols []shared.JSONThreatProtectionPluginProtocols = []shared.JSONThreatProtectionPluginProtocols{}
@@ -192,6 +199,7 @@ func (r *GatewayPluginJSONThreatProtectionResourceModel) RefreshFromSharedJSONTh
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.JSONThreatProtectionPluginConfig{}
+			r.Config.AllowDuplicateObjectEntryName = types.BoolPointerValue(resp.Config.AllowDuplicateObjectEntryName)
 			if resp.Config.EnforcementMode != nil {
 				r.Config.EnforcementMode = types.StringValue(string(*resp.Config.EnforcementMode))
 			} else {

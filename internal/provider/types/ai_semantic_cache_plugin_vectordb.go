@@ -7,6 +7,7 @@ import "github.com/hashicorp/terraform-plugin-framework/types"
 type AiSemanticCachePluginVectordb struct {
 	Dimensions     types.Int64                 `tfsdk:"dimensions"`
 	DistanceMetric types.String                `tfsdk:"distance_metric"`
+	Pgvector       *Pgvector                   `tfsdk:"pgvector"`
 	Redis          *AiProxyAdvancedPluginRedis `tfsdk:"redis"`
 	Strategy       types.String                `tfsdk:"strategy"`
 	Threshold      types.Float64               `tfsdk:"threshold"`

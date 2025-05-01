@@ -22,7 +22,7 @@ import (
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
-	speakeasy_float64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/float64validators"
+	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -108,7 +108,7 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 					"identifier": schema.StringAttribute{
 						Computed:    true,
 						Optional:    true,
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate. must be one of ["consumer", "consumer-group", "credential", "header", "ip", "path", "service"]`,
 						Validators: []validator.String{
 							stringvalidator.OneOf(
 								"consumer",
@@ -121,6 +121,18 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 							),
 						},
 					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Optional:    true,
+						Description: `LLM input and output format and schema to use. must be one of ["bedrock", "gemini", "openai"]`,
+						Validators: []validator.String{
+							stringvalidator.OneOf(
+								"bedrock",
+								"gemini",
+								"openai",
+							),
+						},
+					},
 					"llm_providers": schema.ListNestedAttribute{
 						Computed: true,
 						Optional: true,
@@ -129,12 +141,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 								speakeasy_objectvalidators.NotNull(),
 							},
 							Attributes: map[string]schema.Attribute{
-								"limit": schema.Float64Attribute{
+								"limit": schema.ListAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter. Not Null`,
-									Validators: []validator.Float64{
-										speakeasy_float64validators.NotNull(),
+									ElementType: types.Float64Type,
+									Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified. Not Null`,
+									Validators: []validator.List{
+										speakeasy_listvalidators.NotNull(),
 									},
 								},
 								"name": schema.StringAttribute{
@@ -157,12 +170,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Schema(ctx context.Context
 										),
 									},
 								},
-								"window_size": schema.Float64Attribute{
+								"window_size": schema.ListAttribute{
 									Computed:    true,
 									Optional:    true,
-									Description: `The window size to apply a limit (defined in seconds). Not Null`,
-									Validators: []validator.Float64{
-										speakeasy_float64validators.NotNull(),
+									ElementType: types.Float64Type,
+									Description: `One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified. Not Null`,
+									Validators: []validator.List{
+										speakeasy_listvalidators.NotNull(),
 									},
 								},
 							},

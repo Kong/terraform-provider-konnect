@@ -120,7 +120,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 				UpstreamAccessTokenHeaderName:   upstreamAccessTokenHeaderName,
 			}
 		}
-		var cache *shared.Cache
+		var cache *shared.UpstreamOauthPluginCache
 		if r.Config.Cache != nil {
 			defaultTTL := new(float64)
 			if !r.Config.Cache.DefaultTTL.IsUnknown() && !r.Config.Cache.DefaultTTL.IsNull() {
@@ -330,7 +330,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) ToSharedUpstreamOauthPlugin() 
 			} else {
 				strategy = nil
 			}
-			cache = &shared.Cache{
+			cache = &shared.UpstreamOauthPluginCache{
 				DefaultTTL:    defaultTTL,
 				EagerlyExpire: eagerlyExpire,
 				Memory:        memory,
@@ -593,7 +593,7 @@ func (r *GatewayPluginUpstreamOauthResourceModel) RefreshFromSharedUpstreamOauth
 			if resp.Config.Cache == nil {
 				r.Config.Cache = nil
 			} else {
-				r.Config.Cache = &tfTypes.Cache{}
+				r.Config.Cache = &tfTypes.UpstreamOauthPluginCache{}
 				r.Config.Cache.DefaultTTL = types.Float64PointerValue(resp.Config.Cache.DefaultTTL)
 				r.Config.Cache.EagerlyExpire = types.Int64PointerValue(resp.Config.Cache.EagerlyExpire)
 				if resp.Config.Cache.Memory == nil {

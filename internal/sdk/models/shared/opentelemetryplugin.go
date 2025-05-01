@@ -58,6 +58,7 @@ const (
 	HeaderTypeDatadog  HeaderType = "datadog"
 	HeaderTypeGcp      HeaderType = "gcp"
 	HeaderTypeIgnore   HeaderType = "ignore"
+	HeaderTypeInstana  HeaderType = "instana"
 	HeaderTypeJaeger   HeaderType = "jaeger"
 	HeaderTypeOt       HeaderType = "ot"
 	HeaderTypePreserve HeaderType = "preserve"
@@ -85,6 +86,8 @@ func (e *HeaderType) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "ignore":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -108,6 +111,7 @@ const (
 	DefaultFormatB3Single DefaultFormat = "b3-single"
 	DefaultFormatDatadog  DefaultFormat = "datadog"
 	DefaultFormatGcp      DefaultFormat = "gcp"
+	DefaultFormatInstana  DefaultFormat = "instana"
 	DefaultFormatJaeger   DefaultFormat = "jaeger"
 	DefaultFormatOt       DefaultFormat = "ot"
 	DefaultFormatW3c      DefaultFormat = "w3c"
@@ -132,6 +136,8 @@ func (e *DefaultFormat) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -151,6 +157,7 @@ const (
 	ExtractB3      Extract = "b3"
 	ExtractDatadog Extract = "datadog"
 	ExtractGcp     Extract = "gcp"
+	ExtractInstana Extract = "instana"
 	ExtractJaeger  Extract = "jaeger"
 	ExtractOt      Extract = "ot"
 	ExtractW3c     Extract = "w3c"
@@ -173,6 +180,8 @@ func (e *Extract) UnmarshalJSON(data []byte) error {
 		fallthrough
 	case "gcp":
 		fallthrough
+	case "instana":
+		fallthrough
 	case "jaeger":
 		fallthrough
 	case "ot":
@@ -193,6 +202,7 @@ const (
 	InjectB3Single Inject = "b3-single"
 	InjectDatadog  Inject = "datadog"
 	InjectGcp      Inject = "gcp"
+	InjectInstana  Inject = "instana"
 	InjectJaeger   Inject = "jaeger"
 	InjectOt       Inject = "ot"
 	InjectPreserve Inject = "preserve"
@@ -217,6 +227,8 @@ func (e *Inject) UnmarshalJSON(data []byte) error {
 	case "datadog":
 		fallthrough
 	case "gcp":
+		fallthrough
+	case "instana":
 		fallthrough
 	case "jaeger":
 		fallthrough

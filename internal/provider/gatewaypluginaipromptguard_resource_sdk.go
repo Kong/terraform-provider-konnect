@@ -88,6 +88,12 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 		for _, denyPatternsItem := range r.Config.DenyPatterns {
 			denyPatterns = append(denyPatterns, denyPatternsItem.ValueString())
 		}
+		llmFormat := new(shared.AiPromptGuardPluginLlmFormat)
+		if !r.Config.LlmFormat.IsUnknown() && !r.Config.LlmFormat.IsNull() {
+			*llmFormat = shared.AiPromptGuardPluginLlmFormat(r.Config.LlmFormat.ValueString())
+		} else {
+			llmFormat = nil
+		}
 		matchAllRoles := new(bool)
 		if !r.Config.MatchAllRoles.IsUnknown() && !r.Config.MatchAllRoles.IsNull() {
 			*matchAllRoles = r.Config.MatchAllRoles.ValueBool()
@@ -104,6 +110,7 @@ func (r *GatewayPluginAiPromptGuardResourceModel) ToSharedAiPromptGuardPlugin() 
 			AllowAllConversationHistory: allowAllConversationHistory,
 			AllowPatterns:               allowPatterns,
 			DenyPatterns:                denyPatterns,
+			LlmFormat:                   llmFormat,
 			MatchAllRoles:               matchAllRoles,
 			MaxRequestBodySize:          maxRequestBodySize,
 		}
@@ -194,6 +201,11 @@ func (r *GatewayPluginAiPromptGuardResourceModel) RefreshFromSharedAiPromptGuard
 			r.Config.DenyPatterns = make([]types.String, 0, len(resp.Config.DenyPatterns))
 			for _, v := range resp.Config.DenyPatterns {
 				r.Config.DenyPatterns = append(r.Config.DenyPatterns, types.StringValue(v))
+			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
 			}
 			r.Config.MatchAllRoles = types.BoolPointerValue(resp.Config.MatchAllRoles)
 			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)

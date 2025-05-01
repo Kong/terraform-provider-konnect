@@ -18,6 +18,11 @@ func (r *GatewayPluginAiPromptDecoratorDataSourceModel) RefreshFromSharedAiPromp
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.AiPromptDecoratorPluginConfig{}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			r.Config.MaxRequestBodySize = types.Int64PointerValue(resp.Config.MaxRequestBodySize)
 			if resp.Config.Prompts == nil {
 				r.Config.Prompts = nil

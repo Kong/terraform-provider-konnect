@@ -7,6 +7,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -14,11 +15,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/objectdefault"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
+	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -71,6 +74,38 @@ func (r *GatewayPluginKeyAuthResource) Schema(ctx context.Context, req resource.
 						Computed:    true,
 						Optional:    true,
 						Description: `An optional boolean value telling the plugin to show or hide the credential from the upstream service. If ` + "`" + `true` + "`" + `, the plugin strips the credential from the request.`,
+					},
+					"identity_realms": schema.ListNestedAttribute{
+						Computed: true,
+						Optional: true,
+						NestedObject: schema.NestedAttributeObject{
+							Validators: []validator.Object{
+								speakeasy_objectvalidators.NotNull(),
+							},
+							Attributes: map[string]schema.Attribute{
+								"id": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `A string representing a UUID (universally unique identifier).`,
+								},
+								"region": schema.StringAttribute{
+									Computed: true,
+									Optional: true,
+								},
+								"scope": schema.StringAttribute{
+									Computed:    true,
+									Optional:    true,
+									Description: `must be one of ["cp", "realm"]`,
+									Validators: []validator.String{
+										stringvalidator.OneOf(
+											"cp",
+											"realm",
+										),
+									},
+								},
+							},
+						},
+						Description: `A configuration of Konnect Identity Realms that indicate where to source a consumer from.`,
 					},
 					"key_in_body": schema.BoolAttribute{
 						Computed:    true,

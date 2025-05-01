@@ -120,6 +120,10 @@ func (r *GatewayPluginAiProxyDataSource) Schema(ctx context.Context, req datasou
 							},
 						},
 					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Description: `LLM input and output format and schema to use`,
+					},
 					"logging": schema.SingleNestedAttribute{
 						Computed: true,
 						Attributes: map[string]schema.Attribute{
@@ -166,9 +170,21 @@ func (r *GatewayPluginAiProxyDataSource) Schema(ctx context.Context, req datasou
 									"bedrock": schema.SingleNestedAttribute{
 										Computed: true,
 										Attributes: map[string]schema.Attribute{
+											"aws_assume_role_arn": schema.StringAttribute{
+												Computed:    true,
+												Description: `If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.`,
+											},
 											"aws_region": schema.StringAttribute{
 												Computed:    true,
 												Description: `If using AWS providers (Bedrock) you can override the ` + "`" + `AWS_REGION` + "`" + ` environment variable by setting this option.`,
+											},
+											"aws_role_session_name": schema.StringAttribute{
+												Computed:    true,
+												Description: `If using AWS providers (Bedrock), set the identifier of the assumed role session.`,
+											},
+											"aws_sts_endpoint_url": schema.StringAttribute{
+												Computed:    true,
+												Description: `If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.`,
 											},
 										},
 									},

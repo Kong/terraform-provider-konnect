@@ -74,6 +74,12 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 	}
 	var config *shared.CorsPluginConfig
 	if r.Config != nil {
+		allowOriginAbsent := new(bool)
+		if !r.Config.AllowOriginAbsent.IsUnknown() && !r.Config.AllowOriginAbsent.IsNull() {
+			*allowOriginAbsent = r.Config.AllowOriginAbsent.ValueBool()
+		} else {
+			allowOriginAbsent = nil
+		}
 		credentials := new(bool)
 		if !r.Config.Credentials.IsUnknown() && !r.Config.Credentials.IsNull() {
 			*credentials = r.Config.Credentials.ValueBool()
@@ -115,6 +121,7 @@ func (r *GatewayPluginCorsResourceModel) ToSharedCorsPlugin() *shared.CorsPlugin
 			privateNetwork = nil
 		}
 		config = &shared.CorsPluginConfig{
+			AllowOriginAbsent: allowOriginAbsent,
 			Credentials:       credentials,
 			ExposedHeaders:    exposedHeaders,
 			Headers:           headers,
@@ -177,6 +184,7 @@ func (r *GatewayPluginCorsResourceModel) RefreshFromSharedCorsPlugin(ctx context
 			r.Config = nil
 		} else {
 			r.Config = &tfTypes.CorsPluginConfig{}
+			r.Config.AllowOriginAbsent = types.BoolPointerValue(resp.Config.AllowOriginAbsent)
 			r.Config.Credentials = types.BoolPointerValue(resp.Config.Credentials)
 			r.Config.ExposedHeaders = make([]types.String, 0, len(resp.Config.ExposedHeaders))
 			for _, v := range resp.Config.ExposedHeaders {

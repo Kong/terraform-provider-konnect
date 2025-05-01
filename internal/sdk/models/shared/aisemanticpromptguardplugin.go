@@ -205,10 +205,162 @@ func (o *AiSemanticPromptGuardPluginAuth) GetParamValue() *string {
 	return o.ParamValue
 }
 
+type AiSemanticPromptGuardPluginAzure struct {
+	// 'api-version' for Azure OpenAI instances.
+	APIVersion *string `json:"api_version,omitempty"`
+	// Deployment ID for Azure OpenAI instances.
+	DeploymentID *string `json:"deployment_id,omitempty"`
+	// Instance name for Azure OpenAI hosted models.
+	Instance *string `json:"instance,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginAzure) GetAPIVersion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIVersion
+}
+
+func (o *AiSemanticPromptGuardPluginAzure) GetDeploymentID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.DeploymentID
+}
+
+func (o *AiSemanticPromptGuardPluginAzure) GetInstance() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Instance
+}
+
+type AiSemanticPromptGuardPluginBedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
+	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
+	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetAwsRegion() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRegion
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *AiSemanticPromptGuardPluginBedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
+}
+
+type AiSemanticPromptGuardPluginGemini struct {
+	// If running Gemini on Vertex, specify the regional API endpoint (hostname only).
+	APIEndpoint *string `json:"api_endpoint,omitempty"`
+	// If running Gemini on Vertex, specify the location ID.
+	LocationID *string `json:"location_id,omitempty"`
+	// If running Gemini on Vertex, specify the project ID.
+	ProjectID *string `json:"project_id,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginGemini) GetAPIEndpoint() *string {
+	if o == nil {
+		return nil
+	}
+	return o.APIEndpoint
+}
+
+func (o *AiSemanticPromptGuardPluginGemini) GetLocationID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.LocationID
+}
+
+func (o *AiSemanticPromptGuardPluginGemini) GetProjectID() *string {
+	if o == nil {
+		return nil
+	}
+	return o.ProjectID
+}
+
+type AiSemanticPromptGuardPluginHuggingface struct {
+	// Use the cache layer on the inference API
+	UseCache *bool `json:"use_cache,omitempty"`
+	// Wait for the model if it is not ready
+	WaitForModel *bool `json:"wait_for_model,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginHuggingface) GetUseCache() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.UseCache
+}
+
+func (o *AiSemanticPromptGuardPluginHuggingface) GetWaitForModel() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.WaitForModel
+}
+
 // AiSemanticPromptGuardPluginOptions - Key/value settings for the model
 type AiSemanticPromptGuardPluginOptions struct {
+	Azure       AiSemanticPromptGuardPluginAzure        `json:"azure"`
+	Bedrock     *AiSemanticPromptGuardPluginBedrock     `json:"bedrock,omitempty"`
+	Gemini      *AiSemanticPromptGuardPluginGemini      `json:"gemini,omitempty"`
+	Huggingface *AiSemanticPromptGuardPluginHuggingface `json:"huggingface,omitempty"`
 	// upstream url for the embeddings
 	UpstreamURL *string `json:"upstream_url,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginOptions) GetAzure() AiSemanticPromptGuardPluginAzure {
+	if o == nil {
+		return AiSemanticPromptGuardPluginAzure{}
+	}
+	return o.Azure
+}
+
+func (o *AiSemanticPromptGuardPluginOptions) GetBedrock() *AiSemanticPromptGuardPluginBedrock {
+	if o == nil {
+		return nil
+	}
+	return o.Bedrock
+}
+
+func (o *AiSemanticPromptGuardPluginOptions) GetGemini() *AiSemanticPromptGuardPluginGemini {
+	if o == nil {
+		return nil
+	}
+	return o.Gemini
+}
+
+func (o *AiSemanticPromptGuardPluginOptions) GetHuggingface() *AiSemanticPromptGuardPluginHuggingface {
+	if o == nil {
+		return nil
+	}
+	return o.Huggingface
 }
 
 func (o *AiSemanticPromptGuardPluginOptions) GetUpstreamURL() *string {
@@ -222,8 +374,12 @@ func (o *AiSemanticPromptGuardPluginOptions) GetUpstreamURL() *string {
 type AiSemanticPromptGuardPluginProvider string
 
 const (
-	AiSemanticPromptGuardPluginProviderMistral AiSemanticPromptGuardPluginProvider = "mistral"
-	AiSemanticPromptGuardPluginProviderOpenai  AiSemanticPromptGuardPluginProvider = "openai"
+	AiSemanticPromptGuardPluginProviderAzure       AiSemanticPromptGuardPluginProvider = "azure"
+	AiSemanticPromptGuardPluginProviderBedrock     AiSemanticPromptGuardPluginProvider = "bedrock"
+	AiSemanticPromptGuardPluginProviderGemini      AiSemanticPromptGuardPluginProvider = "gemini"
+	AiSemanticPromptGuardPluginProviderHuggingface AiSemanticPromptGuardPluginProvider = "huggingface"
+	AiSemanticPromptGuardPluginProviderMistral     AiSemanticPromptGuardPluginProvider = "mistral"
+	AiSemanticPromptGuardPluginProviderOpenai      AiSemanticPromptGuardPluginProvider = "openai"
 )
 
 func (e AiSemanticPromptGuardPluginProvider) ToPointer() *AiSemanticPromptGuardPluginProvider {
@@ -235,6 +391,14 @@ func (e *AiSemanticPromptGuardPluginProvider) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "azure":
+		fallthrough
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "huggingface":
+		fallthrough
 	case "mistral":
 		fallthrough
 	case "openai":
@@ -292,6 +456,36 @@ func (o *AiSemanticPromptGuardPluginEmbeddings) GetModel() *AiSemanticPromptGuar
 		return nil
 	}
 	return o.Model
+}
+
+// AiSemanticPromptGuardPluginLlmFormat - LLM input and output format and schema to use
+type AiSemanticPromptGuardPluginLlmFormat string
+
+const (
+	AiSemanticPromptGuardPluginLlmFormatBedrock AiSemanticPromptGuardPluginLlmFormat = "bedrock"
+	AiSemanticPromptGuardPluginLlmFormatGemini  AiSemanticPromptGuardPluginLlmFormat = "gemini"
+	AiSemanticPromptGuardPluginLlmFormatOpenai  AiSemanticPromptGuardPluginLlmFormat = "openai"
+)
+
+func (e AiSemanticPromptGuardPluginLlmFormat) ToPointer() *AiSemanticPromptGuardPluginLlmFormat {
+	return &e
+}
+func (e *AiSemanticPromptGuardPluginLlmFormat) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "bedrock":
+		fallthrough
+	case "gemini":
+		fallthrough
+	case "openai":
+		*e = AiSemanticPromptGuardPluginLlmFormat(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginLlmFormat: %v", v)
+	}
 }
 
 type Rules struct {
@@ -379,6 +573,147 @@ func (e *AiSemanticPromptGuardPluginDistanceMetric) UnmarshalJSON(data []byte) e
 	default:
 		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginDistanceMetric: %v", v)
 	}
+}
+
+// AiSemanticPromptGuardPluginSslVersion - the ssl version to use for the pgvector database
+type AiSemanticPromptGuardPluginSslVersion string
+
+const (
+	AiSemanticPromptGuardPluginSslVersionAny    AiSemanticPromptGuardPluginSslVersion = "any"
+	AiSemanticPromptGuardPluginSslVersionTlsv12 AiSemanticPromptGuardPluginSslVersion = "tlsv1_2"
+	AiSemanticPromptGuardPluginSslVersionTlsv13 AiSemanticPromptGuardPluginSslVersion = "tlsv1_3"
+)
+
+func (e AiSemanticPromptGuardPluginSslVersion) ToPointer() *AiSemanticPromptGuardPluginSslVersion {
+	return &e
+}
+func (e *AiSemanticPromptGuardPluginSslVersion) UnmarshalJSON(data []byte) error {
+	var v string
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	switch v {
+	case "any":
+		fallthrough
+	case "tlsv1_2":
+		fallthrough
+	case "tlsv1_3":
+		*e = AiSemanticPromptGuardPluginSslVersion(v)
+		return nil
+	default:
+		return fmt.Errorf("invalid value for AiSemanticPromptGuardPluginSslVersion: %v", v)
+	}
+}
+
+type AiSemanticPromptGuardPluginPgvector struct {
+	// the database of the pgvector database
+	Database *string `json:"database,omitempty"`
+	// the host of the pgvector database
+	Host *string `json:"host,omitempty"`
+	// the password of the pgvector database
+	Password *string `json:"password,omitempty"`
+	// the port of the pgvector database
+	Port *int64 `json:"port,omitempty"`
+	// whether to use ssl for the pgvector database
+	Ssl *bool `json:"ssl,omitempty"`
+	// the path of ssl cert to use for the pgvector database
+	SslCert *string `json:"ssl_cert,omitempty"`
+	// the path of ssl cert key to use for the pgvector database
+	SslCertKey *string `json:"ssl_cert_key,omitempty"`
+	// whether ssl is required for the pgvector database
+	SslRequired *bool `json:"ssl_required,omitempty"`
+	// whether to verify ssl for the pgvector database
+	SslVerify *bool `json:"ssl_verify,omitempty"`
+	// the ssl version to use for the pgvector database
+	SslVersion *AiSemanticPromptGuardPluginSslVersion `json:"ssl_version,omitempty"`
+	// the timeout of the pgvector database
+	Timeout *float64 `json:"timeout,omitempty"`
+	// the user of the pgvector database
+	User *string `json:"user,omitempty"`
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetDatabase() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Database
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetHost() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Host
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetPassword() *string {
+	if o == nil {
+		return nil
+	}
+	return o.Password
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetPort() *int64 {
+	if o == nil {
+		return nil
+	}
+	return o.Port
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSsl() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.Ssl
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSslCert() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCert
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSslCertKey() *string {
+	if o == nil {
+		return nil
+	}
+	return o.SslCertKey
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSslRequired() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslRequired
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSslVerify() *bool {
+	if o == nil {
+		return nil
+	}
+	return o.SslVerify
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetSslVersion() *AiSemanticPromptGuardPluginSslVersion {
+	if o == nil {
+		return nil
+	}
+	return o.SslVersion
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetTimeout() *float64 {
+	if o == nil {
+		return nil
+	}
+	return o.Timeout
+}
+
+func (o *AiSemanticPromptGuardPluginPgvector) GetUser() *string {
+	if o == nil {
+		return nil
+	}
+	return o.User
 }
 
 type AiSemanticPromptGuardPluginClusterNodes struct {
@@ -649,7 +984,8 @@ func (o *AiSemanticPromptGuardPluginRedis) GetUsername() *string {
 type AiSemanticPromptGuardPluginStrategy string
 
 const (
-	AiSemanticPromptGuardPluginStrategyRedis AiSemanticPromptGuardPluginStrategy = "redis"
+	AiSemanticPromptGuardPluginStrategyPgvector AiSemanticPromptGuardPluginStrategy = "pgvector"
+	AiSemanticPromptGuardPluginStrategyRedis    AiSemanticPromptGuardPluginStrategy = "redis"
 )
 
 func (e AiSemanticPromptGuardPluginStrategy) ToPointer() *AiSemanticPromptGuardPluginStrategy {
@@ -661,6 +997,8 @@ func (e *AiSemanticPromptGuardPluginStrategy) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	switch v {
+	case "pgvector":
+		fallthrough
 	case "redis":
 		*e = AiSemanticPromptGuardPluginStrategy(v)
 		return nil
@@ -674,6 +1012,7 @@ type AiSemanticPromptGuardPluginVectordb struct {
 	Dimensions *int64 `json:"dimensions,omitempty"`
 	// the distance metric to use for vector searches
 	DistanceMetric *AiSemanticPromptGuardPluginDistanceMetric `json:"distance_metric,omitempty"`
+	Pgvector       *AiSemanticPromptGuardPluginPgvector       `json:"pgvector,omitempty"`
 	Redis          *AiSemanticPromptGuardPluginRedis          `json:"redis,omitempty"`
 	// which vector database driver to use
 	Strategy *AiSemanticPromptGuardPluginStrategy `json:"strategy,omitempty"`
@@ -693,6 +1032,13 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetDistanceMetric() *AiSemanticPro
 		return nil
 	}
 	return o.DistanceMetric
+}
+
+func (o *AiSemanticPromptGuardPluginVectordb) GetPgvector() *AiSemanticPromptGuardPluginPgvector {
+	if o == nil {
+		return nil
+	}
+	return o.Pgvector
 }
 
 func (o *AiSemanticPromptGuardPluginVectordb) GetRedis() *AiSemanticPromptGuardPluginRedis {
@@ -718,9 +1064,11 @@ func (o *AiSemanticPromptGuardPluginVectordb) GetThreshold() *float64 {
 
 type AiSemanticPromptGuardPluginConfig struct {
 	Embeddings *AiSemanticPromptGuardPluginEmbeddings `json:"embeddings,omitempty"`
-	Rules      *Rules                                 `json:"rules,omitempty"`
-	Search     *Search                                `json:"search,omitempty"`
-	Vectordb   *AiSemanticPromptGuardPluginVectordb   `json:"vectordb,omitempty"`
+	// LLM input and output format and schema to use
+	LlmFormat *AiSemanticPromptGuardPluginLlmFormat `json:"llm_format,omitempty"`
+	Rules     *Rules                                `json:"rules,omitempty"`
+	Search    *Search                               `json:"search,omitempty"`
+	Vectordb  *AiSemanticPromptGuardPluginVectordb  `json:"vectordb,omitempty"`
 }
 
 func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGuardPluginEmbeddings {
@@ -728,6 +1076,13 @@ func (o *AiSemanticPromptGuardPluginConfig) GetEmbeddings() *AiSemanticPromptGua
 		return nil
 	}
 	return o.Embeddings
+}
+
+func (o *AiSemanticPromptGuardPluginConfig) GetLlmFormat() *AiSemanticPromptGuardPluginLlmFormat {
+	if o == nil {
+		return nil
+	}
+	return o.LlmFormat
 }
 
 func (o *AiSemanticPromptGuardPluginConfig) GetRules() *Rules {

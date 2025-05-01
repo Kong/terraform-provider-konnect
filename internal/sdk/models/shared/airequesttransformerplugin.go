@@ -227,8 +227,21 @@ func (o *AiRequestTransformerPluginLogging) GetLogStatistics() *bool {
 }
 
 type AiRequestTransformerPluginBedrock struct {
+	// If using AWS providers (Bedrock) you can assume a different role after authentication with the current IAM context is successful.
+	AwsAssumeRoleArn *string `json:"aws_assume_role_arn,omitempty"`
 	// If using AWS providers (Bedrock) you can override the `AWS_REGION` environment variable by setting this option.
 	AwsRegion *string `json:"aws_region,omitempty"`
+	// If using AWS providers (Bedrock), set the identifier of the assumed role session.
+	AwsRoleSessionName *string `json:"aws_role_session_name,omitempty"`
+	// If using AWS providers (Bedrock), override the STS endpoint URL when assuming a different role.
+	AwsStsEndpointURL *string `json:"aws_sts_endpoint_url,omitempty"`
+}
+
+func (o *AiRequestTransformerPluginBedrock) GetAwsAssumeRoleArn() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsAssumeRoleArn
 }
 
 func (o *AiRequestTransformerPluginBedrock) GetAwsRegion() *string {
@@ -236,6 +249,20 @@ func (o *AiRequestTransformerPluginBedrock) GetAwsRegion() *string {
 		return nil
 	}
 	return o.AwsRegion
+}
+
+func (o *AiRequestTransformerPluginBedrock) GetAwsRoleSessionName() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsRoleSessionName
+}
+
+func (o *AiRequestTransformerPluginBedrock) GetAwsStsEndpointURL() *string {
+	if o == nil {
+		return nil
+	}
+	return o.AwsStsEndpointURL
 }
 
 type AiRequestTransformerPluginGemini struct {

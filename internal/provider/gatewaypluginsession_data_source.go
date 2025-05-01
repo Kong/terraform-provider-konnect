@@ -89,6 +89,10 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 						Computed:    true,
 						Description: `Applies the Secure directive so that the cookie may be sent to the server only with an encrypted request over the HTTPS protocol.`,
 					},
+					"hash_subject": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to hash or not the subject when store_metadata is enabled.`,
+					},
 					"idling_timeout": schema.Float64Attribute{
 						Computed:    true,
 						Description: `The session cookie idle time, in seconds.`,
@@ -150,6 +154,10 @@ func (r *GatewayPluginSessionDataSource) Schema(ctx context.Context, req datasou
 					"storage": schema.StringAttribute{
 						Computed:    true,
 						Description: `Determines where the session data is stored. ` + "`" + `kong` + "`" + `: Stores encrypted session data into Kong's current database strategy; the cookie will not contain any session data. ` + "`" + `cookie` + "`" + `: Stores encrypted session data within the cookie itself.`,
+					},
+					"store_metadata": schema.BoolAttribute{
+						Computed:    true,
+						Description: `Whether to also store metadata of sessions, such as collecting data of sessions for a specific audience belonging to a specific subject.`,
 					},
 				},
 			},

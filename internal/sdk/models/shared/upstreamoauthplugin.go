@@ -409,7 +409,7 @@ func (e *UpstreamOauthPluginStrategy) UnmarshalJSON(data []byte) error {
 	}
 }
 
-type Cache struct {
+type UpstreamOauthPluginCache struct {
 	// The lifetime of a token without an explicit `expires_in` value.
 	DefaultTTL *float64 `json:"default_ttl,omitempty"`
 	// The number of seconds to eagerly expire a cached token. By default, a cached token expires 5 seconds before its lifetime as defined in `expires_in`.
@@ -420,35 +420,35 @@ type Cache struct {
 	Strategy *UpstreamOauthPluginStrategy `json:"strategy,omitempty"`
 }
 
-func (o *Cache) GetDefaultTTL() *float64 {
+func (o *UpstreamOauthPluginCache) GetDefaultTTL() *float64 {
 	if o == nil {
 		return nil
 	}
 	return o.DefaultTTL
 }
 
-func (o *Cache) GetEagerlyExpire() *int64 {
+func (o *UpstreamOauthPluginCache) GetEagerlyExpire() *int64 {
 	if o == nil {
 		return nil
 	}
 	return o.EagerlyExpire
 }
 
-func (o *Cache) GetMemory() *UpstreamOauthPluginMemory {
+func (o *UpstreamOauthPluginCache) GetMemory() *UpstreamOauthPluginMemory {
 	if o == nil {
 		return nil
 	}
 	return o.Memory
 }
 
-func (o *Cache) GetRedis() *UpstreamOauthPluginRedis {
+func (o *UpstreamOauthPluginCache) GetRedis() *UpstreamOauthPluginRedis {
 	if o == nil {
 		return nil
 	}
 	return o.Redis
 }
 
-func (o *Cache) GetStrategy() *UpstreamOauthPluginStrategy {
+func (o *UpstreamOauthPluginCache) GetStrategy() *UpstreamOauthPluginStrategy {
 	if o == nil {
 		return nil
 	}
@@ -738,10 +738,10 @@ func (o *Oauth) GetUsername() *string {
 }
 
 type UpstreamOauthPluginConfig struct {
-	Behavior *Behavior `json:"behavior,omitempty"`
-	Cache    *Cache    `json:"cache,omitempty"`
-	Client   *Client   `json:"client,omitempty"`
-	Oauth    *Oauth    `json:"oauth,omitempty"`
+	Behavior *Behavior                 `json:"behavior,omitempty"`
+	Cache    *UpstreamOauthPluginCache `json:"cache,omitempty"`
+	Client   *Client                   `json:"client,omitempty"`
+	Oauth    *Oauth                    `json:"oauth,omitempty"`
 }
 
 func (o *UpstreamOauthPluginConfig) GetBehavior() *Behavior {
@@ -751,7 +751,7 @@ func (o *UpstreamOauthPluginConfig) GetBehavior() *Behavior {
 	return o.Behavior
 }
 
-func (o *UpstreamOauthPluginConfig) GetCache() *Cache {
+func (o *UpstreamOauthPluginConfig) GetCache() *UpstreamOauthPluginCache {
 	if o == nil {
 		return nil
 	}

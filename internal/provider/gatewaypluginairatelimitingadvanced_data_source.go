@@ -89,23 +89,29 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSource) Schema(ctx context.Conte
 					},
 					"identifier": schema.StringAttribute{
 						Computed:    true,
-						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `.`,
+						Description: `The type of identifier used to generate the rate limit key. Defines the scope used to increment the rate limiting counters. Can be ` + "`" + `ip` + "`" + `, ` + "`" + `credential` + "`" + `, ` + "`" + `consumer` + "`" + `, ` + "`" + `service` + "`" + `, ` + "`" + `header` + "`" + `, ` + "`" + `path` + "`" + ` or ` + "`" + `consumer-group` + "`" + `. Note if ` + "`" + `identifier` + "`" + ` is ` + "`" + `consumer-group` + "`" + `, the plugin must be applied on a consumer group entity. Because a consumer may belong to multiple consumer groups, the plugin needs to know explicitly which consumer group to limit the rate.`,
+					},
+					"llm_format": schema.StringAttribute{
+						Computed:    true,
+						Description: `LLM input and output format and schema to use`,
 					},
 					"llm_providers": schema.ListNestedAttribute{
 						Computed: true,
 						NestedObject: schema.NestedAttributeObject{
 							Attributes: map[string]schema.Attribute{
-								"limit": schema.Float64Attribute{
+								"limit": schema.ListAttribute{
 									Computed:    true,
-									Description: `The limit applies to the LLM provider within the defined window size. It used the query cost from the tokens to increment the counter.`,
+									ElementType: types.Float64Type,
+									Description: `One or more requests-per-window limits to apply. There must be a matching number of window limits and sizes specified.`,
 								},
 								"name": schema.StringAttribute{
 									Computed:    true,
 									Description: `The LLM provider to which the rate limit applies.`,
 								},
-								"window_size": schema.Float64Attribute{
+								"window_size": schema.ListAttribute{
 									Computed:    true,
-									Description: `The window size to apply a limit (defined in seconds).`,
+									ElementType: types.Float64Type,
+									Description: `One or more window sizes to apply a limit to (defined in seconds). There must be a matching number of window limits and sizes specified.`,
 								},
 							},
 						},

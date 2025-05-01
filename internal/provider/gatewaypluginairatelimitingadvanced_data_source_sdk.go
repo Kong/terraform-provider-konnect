@@ -30,15 +30,26 @@ func (r *GatewayPluginAiRateLimitingAdvancedDataSourceModel) RefreshFromSharedAi
 			} else {
 				r.Config.Identifier = types.StringNull()
 			}
+			if resp.Config.LlmFormat != nil {
+				r.Config.LlmFormat = types.StringValue(string(*resp.Config.LlmFormat))
+			} else {
+				r.Config.LlmFormat = types.StringNull()
+			}
 			r.Config.LlmProviders = []tfTypes.LlmProviders{}
 			if len(r.Config.LlmProviders) > len(resp.Config.LlmProviders) {
 				r.Config.LlmProviders = r.Config.LlmProviders[:len(resp.Config.LlmProviders)]
 			}
 			for llmProvidersCount, llmProvidersItem := range resp.Config.LlmProviders {
 				var llmProviders tfTypes.LlmProviders
-				llmProviders.Limit = types.Float64Value(llmProvidersItem.Limit)
+				llmProviders.Limit = make([]types.Float64, 0, len(llmProvidersItem.Limit))
+				for _, v := range llmProvidersItem.Limit {
+					llmProviders.Limit = append(llmProviders.Limit, types.Float64Value(v))
+				}
 				llmProviders.Name = types.StringValue(string(llmProvidersItem.Name))
-				llmProviders.WindowSize = types.Float64Value(llmProvidersItem.WindowSize)
+				llmProviders.WindowSize = make([]types.Float64, 0, len(llmProvidersItem.WindowSize))
+				for _, v := range llmProvidersItem.WindowSize {
+					llmProviders.WindowSize = append(llmProviders.WindowSize, types.Float64Value(v))
+				}
 				if llmProvidersCount+1 > len(r.Config.LlmProviders) {
 					r.Config.LlmProviders = append(r.Config.LlmProviders, llmProviders)
 				} else {
