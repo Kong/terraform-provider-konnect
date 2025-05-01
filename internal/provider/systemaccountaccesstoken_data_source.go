@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -118,17 +117,13 @@ func (r *SystemAccountAccessTokenDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var tokenID string
-	tokenID = data.ID.ValueString()
-
-	request := operations.GetSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountID,
-		TokenID:   tokenID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, request)
+	res, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -138,10 +133,6 @@ func (r *SystemAccountAccessTokenDataSource) Read(ctx context.Context, req datas
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

@@ -22,7 +22,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_float64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/float64validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
@@ -1229,15 +1228,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Create(ctx context.Context, req r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiproxyadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPlugin()
-	request := operations.CreateAiproxyadvancedPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		AiProxyAdvancedPlugin: aiProxyAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiproxyadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1291,17 +1288,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Read(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiproxyadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiproxyadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiproxyadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1349,19 +1342,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Update(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiproxyadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiProxyAdvancedPlugin := *data.ToSharedAiProxyAdvancedPlugin()
-	request := operations.UpdateAiproxyadvancedPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		AiProxyAdvancedPlugin: aiProxyAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiproxyadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -1415,17 +1402,13 @@ func (r *GatewayPluginAiProxyAdvancedResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiproxyadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiproxyadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiproxyadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiproxyadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -774,15 +773,13 @@ func (r *CloudGatewayTransitGatewayResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var networkID string
-	networkID = data.NetworkID.ValueString()
+	request, requestDiags := data.ToOperationsCreateTransitGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createTransitGatewayRequest := *data.ToSharedCreateTransitGatewayRequest()
-	request := operations.CreateTransitGatewayRequest{
-		NetworkID:                   networkID,
-		CreateTransitGatewayRequest: createTransitGatewayRequest,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.CreateTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.CreateTransitGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -836,17 +833,13 @@ func (r *CloudGatewayTransitGatewayResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var networkID string
-	networkID = data.NetworkID.ValueString()
+	request, requestDiags := data.ToOperationsGetTransitGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var transitGatewayID string
-	transitGatewayID = data.ID.ValueString()
-
-	request := operations.GetTransitGatewayRequest{
-		NetworkID:        networkID,
-		TransitGatewayID: transitGatewayID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.GetTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.GetTransitGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -918,17 +911,13 @@ func (r *CloudGatewayTransitGatewayResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var networkID string
-	networkID = data.NetworkID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTransitGatewayRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var transitGatewayID string
-	transitGatewayID = data.ID.ValueString()
-
-	request := operations.DeleteTransitGatewayRequest{
-		NetworkID:        networkID,
-		TransitGatewayID: transitGatewayID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.DeleteTransitGateway(ctx, request)
+	res, err := r.client.CloudGateways.DeleteTransitGateway(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

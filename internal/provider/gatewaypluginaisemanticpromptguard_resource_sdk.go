@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticPromptGuardPlugin() *shared.AiSemanticPromptGuardPlugin {
+func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticPromptGuardPlugin(ctx context.Context) (*shared.AiSemanticPromptGuardPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 	if r.Ordering != nil {
 		var after *shared.AiSemanticPromptGuardPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 		}
 		var before *shared.AiSemanticPromptGuardPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -329,11 +332,11 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 		}
 		var rules *shared.Rules
 		if r.Config.Rules != nil {
-			var allowPrompts []string = []string{}
+			allowPrompts := make([]string, 0, len(r.Config.Rules.AllowPrompts))
 			for _, allowPromptsItem := range r.Config.Rules.AllowPrompts {
 				allowPrompts = append(allowPrompts, allowPromptsItem.ValueString())
 			}
-			var denyPrompts []string = []string{}
+			denyPrompts := make([]string, 0, len(r.Config.Rules.DenyPrompts))
 			for _, denyPromptsItem := range r.Config.Rules.DenyPrompts {
 				denyPrompts = append(denyPrompts, denyPromptsItem.ValueString())
 			}
@@ -486,7 +489,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AiSemanticPromptGuardPluginClusterNodes = []shared.AiSemanticPromptGuardPluginClusterNodes{}
+				clusterNodes := make([]shared.AiSemanticPromptGuardPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
 				for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
 					ip := new(string)
 					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -571,7 +574,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AiSemanticPromptGuardPluginSentinelNodes = []shared.AiSemanticPromptGuardPluginSentinelNodes{}
+				sentinelNodes := make([]shared.AiSemanticPromptGuardPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
 				for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
 					host2 := new(string)
 					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -709,7 +712,7 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiSemanticPromptGuardPluginProtocols = []shared.AiSemanticPromptGuardPluginProtocols{}
+	protocols := make([]shared.AiSemanticPromptGuardPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiSemanticPromptGuardPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -752,7 +755,88 @@ func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToSharedAiSemanticProm
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsCreateAisemanticpromptguardPluginRequest(ctx context.Context) (*operations.CreateAisemanticpromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSemanticPromptGuardPlugin, aiSemanticPromptGuardPluginDiags := r.ToSharedAiSemanticPromptGuardPlugin(ctx)
+	diags.Append(aiSemanticPromptGuardPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAisemanticpromptguardPluginRequest{
+		ControlPlaneID:              controlPlaneID,
+		AiSemanticPromptGuardPlugin: *aiSemanticPromptGuardPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsUpdateAisemanticpromptguardPluginRequest(ctx context.Context) (*operations.UpdateAisemanticpromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiSemanticPromptGuardPlugin, aiSemanticPromptGuardPluginDiags := r.ToSharedAiSemanticPromptGuardPlugin(ctx)
+	diags.Append(aiSemanticPromptGuardPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAisemanticpromptguardPluginRequest{
+		PluginID:                    pluginID,
+		ControlPlaneID:              controlPlaneID,
+		AiSemanticPromptGuardPlugin: *aiSemanticPromptGuardPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsGetAisemanticpromptguardPluginRequest(ctx context.Context) (*operations.GetAisemanticpromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAisemanticpromptguardPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiSemanticPromptGuardResourceModel) ToOperationsDeleteAisemanticpromptguardPluginRequest(ctx context.Context) (*operations.DeleteAisemanticpromptguardPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAisemanticpromptguardPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiSemanticPromptGuardResourceModel) RefreshFromSharedAiSemanticPromptGuardPlugin(ctx context.Context, resp *shared.AiSemanticPromptGuardPlugin) diag.Diagnostics {

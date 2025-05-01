@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -150,13 +149,13 @@ func (r *CloudGatewayCustomDomainDataSource) Read(ctx context.Context, req datas
 		return
 	}
 
-	var customDomainID string
-	customDomainID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCustomDomainRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetCustomDomainRequest{
-		CustomDomainID: customDomainID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.GetCustomDomain(ctx, request)
+	res, err := r.client.CloudGateways.GetCustomDomain(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -166,10 +165,6 @@ func (r *CloudGatewayCustomDomainDataSource) Read(ctx context.Context, req datas
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

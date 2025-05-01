@@ -23,7 +23,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
@@ -646,15 +645,13 @@ func (r *GatewayPluginUpstreamOauthResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateUpstreamoauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPlugin()
-	request := operations.CreateUpstreamoauthPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		UpstreamOauthPlugin: upstreamOauthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateUpstreamoauthPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -708,17 +705,13 @@ func (r *GatewayPluginUpstreamOauthResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetUpstreamoauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetUpstreamoauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetUpstreamoauthPlugin(ctx, request)
+	res, err := r.client.Plugins.GetUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -766,19 +759,13 @@ func (r *GatewayPluginUpstreamOauthResource) Update(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateUpstreamoauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	upstreamOauthPlugin := *data.ToSharedUpstreamOauthPlugin()
-	request := operations.UpdateUpstreamoauthPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		UpstreamOauthPlugin: upstreamOauthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateUpstreamoauthPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -832,17 +819,13 @@ func (r *GatewayPluginUpstreamOauthResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteUpstreamoauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteUpstreamoauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteUpstreamoauthPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteUpstreamoauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -224,15 +223,13 @@ func (r *GatewayPluginGrpcGatewayResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateGrpcgatewayPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPlugin()
-	request := operations.CreateGrpcgatewayPluginRequest{
-		ControlPlaneID:    controlPlaneID,
-		GrpcGatewayPlugin: grpcGatewayPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateGrpcgatewayPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -286,17 +283,13 @@ func (r *GatewayPluginGrpcGatewayResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetGrpcgatewayPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetGrpcgatewayPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetGrpcgatewayPlugin(ctx, request)
+	res, err := r.client.Plugins.GetGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -344,19 +337,13 @@ func (r *GatewayPluginGrpcGatewayResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateGrpcgatewayPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	grpcGatewayPlugin := *data.ToSharedGrpcGatewayPlugin()
-	request := operations.UpdateGrpcgatewayPluginRequest{
-		PluginID:          pluginID,
-		ControlPlaneID:    controlPlaneID,
-		GrpcGatewayPlugin: grpcGatewayPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateGrpcgatewayPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -410,17 +397,13 @@ func (r *GatewayPluginGrpcGatewayResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteGrpcgatewayPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteGrpcgatewayPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteGrpcgatewayPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteGrpcgatewayPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

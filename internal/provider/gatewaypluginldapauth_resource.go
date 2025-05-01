@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -279,15 +278,13 @@ func (r *GatewayPluginLdapAuthResource) Create(ctx context.Context, req resource
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateLdapauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	ldapAuthPlugin := *data.ToSharedLdapAuthPlugin()
-	request := operations.CreateLdapauthPluginRequest{
-		ControlPlaneID: controlPlaneID,
-		LdapAuthPlugin: ldapAuthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateLdapauthPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -341,17 +338,13 @@ func (r *GatewayPluginLdapAuthResource) Read(ctx context.Context, req resource.R
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetLdapauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetLdapauthPlugin(ctx, request)
+	res, err := r.client.Plugins.GetLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -399,19 +392,13 @@ func (r *GatewayPluginLdapAuthResource) Update(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateLdapauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	ldapAuthPlugin := *data.ToSharedLdapAuthPlugin()
-	request := operations.UpdateLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
-		LdapAuthPlugin: ldapAuthPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateLdapauthPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -465,17 +452,13 @@ func (r *GatewayPluginLdapAuthResource) Delete(ctx context.Context, req resource
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteLdapauthPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteLdapauthPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteLdapauthPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteLdapauthPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

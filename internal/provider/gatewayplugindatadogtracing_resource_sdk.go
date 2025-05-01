@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin() *shared.DatadogTracingPlugin {
+func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(ctx context.Context) (*shared.DatadogTracingPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 	if r.Ordering != nil {
 		var after *shared.DatadogTracingPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 		}
 		var before *shared.DatadogTracingPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -145,7 +148,7 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 			ID: id1,
 		}
 	}
-	var protocols []shared.DatadogTracingPluginProtocols = []shared.DatadogTracingPluginProtocols{}
+	protocols := make([]shared.DatadogTracingPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.DatadogTracingPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -187,7 +190,88 @@ func (r *GatewayPluginDatadogTracingResourceModel) ToSharedDatadogTracingPlugin(
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogTracingResourceModel) ToOperationsCreateDatadogtracingPluginRequest(ctx context.Context) (*operations.CreateDatadogtracingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	datadogTracingPlugin, datadogTracingPluginDiags := r.ToSharedDatadogTracingPlugin(ctx)
+	diags.Append(datadogTracingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateDatadogtracingPluginRequest{
+		ControlPlaneID:       controlPlaneID,
+		DatadogTracingPlugin: *datadogTracingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogTracingResourceModel) ToOperationsUpdateDatadogtracingPluginRequest(ctx context.Context) (*operations.UpdateDatadogtracingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	datadogTracingPlugin, datadogTracingPluginDiags := r.ToSharedDatadogTracingPlugin(ctx)
+	diags.Append(datadogTracingPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateDatadogtracingPluginRequest{
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		DatadogTracingPlugin: *datadogTracingPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogTracingResourceModel) ToOperationsGetDatadogtracingPluginRequest(ctx context.Context) (*operations.GetDatadogtracingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetDatadogtracingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginDatadogTracingResourceModel) ToOperationsDeleteDatadogtracingPluginRequest(ctx context.Context) (*operations.DeleteDatadogtracingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteDatadogtracingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginDatadogTracingResourceModel) RefreshFromSharedDatadogTracingPlugin(ctx context.Context, resp *shared.DatadogTracingPlugin) diag.Diagnostics {

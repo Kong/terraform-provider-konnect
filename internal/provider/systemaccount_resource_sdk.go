@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.CreateSystemAccount {
+func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount(ctx context.Context) (*shared.CreateSystemAccount, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -28,25 +31,13 @@ func (r *SystemAccountResourceModel) ToSharedCreateSystemAccount() *shared.Creat
 		Description:    description,
 		KonnectManaged: konnectManaged,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *SystemAccountResourceModel) RefreshFromSharedSystemAccount(ctx context.Context, resp *shared.SystemAccount) diag.Diagnostics {
+func (r *SystemAccountResourceModel) ToSharedUpdateSystemAccount(ctx context.Context) (*shared.UpdateSystemAccount, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
-		r.Description = types.StringPointerValue(resp.Description)
-		r.ID = types.StringPointerValue(resp.ID)
-		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
-		r.Name = types.StringPointerValue(resp.Name)
-		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *SystemAccountResourceModel) ToSharedUpdateSystemAccount() *shared.UpdateSystemAccount {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -63,5 +54,68 @@ func (r *SystemAccountResourceModel) ToSharedUpdateSystemAccount() *shared.Updat
 		Name:        name,
 		Description: description,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *SystemAccountResourceModel) ToOperationsPatchSystemAccountsIDRequest(ctx context.Context) (*operations.PatchSystemAccountsIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.ID.ValueString()
+
+	updateSystemAccount, updateSystemAccountDiags := r.ToSharedUpdateSystemAccount(ctx)
+	diags.Append(updateSystemAccountDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PatchSystemAccountsIDRequest{
+		AccountID:           accountID,
+		UpdateSystemAccount: updateSystemAccount,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountResourceModel) ToOperationsGetSystemAccountsIDRequest(ctx context.Context) (*operations.GetSystemAccountsIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.ID.ValueString()
+
+	out := operations.GetSystemAccountsIDRequest{
+		AccountID: accountID,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountResourceModel) ToOperationsDeleteSystemAccountsIDRequest(ctx context.Context) (*operations.DeleteSystemAccountsIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.ID.ValueString()
+
+	out := operations.DeleteSystemAccountsIDRequest{
+		AccountID: accountID,
+	}
+
+	return &out, diags
+}
+
+func (r *SystemAccountResourceModel) RefreshFromSharedSystemAccount(ctx context.Context, resp *shared.SystemAccount) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.CreatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.CreatedAt))
+		r.Description = types.StringPointerValue(resp.Description)
+		r.ID = types.StringPointerValue(resp.ID)
+		r.KonnectManaged = types.BoolPointerValue(resp.KonnectManaged)
+		r.Name = types.StringPointerValue(resp.Name)
+		r.UpdatedAt = types.StringPointerValue(typeconvert.TimePointerToStringPointer(resp.UpdatedAt))
+	}
+
+	return diags
 }

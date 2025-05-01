@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortalRequest {
+func (r *PortalResourceModel) ToSharedCreatePortalRequest(ctx context.Context) (*shared.CreatePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -91,42 +94,13 @@ func (r *PortalResourceModel) ToSharedCreatePortalRequest() *shared.CreatePortal
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
 		Labels:                           labels,
 	}
-	return &out
+
+	return &out, diags
 }
 
-func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.Context, resp *shared.CreatePortalResponse) diag.Diagnostics {
+func (r *PortalResourceModel) ToSharedUpdatePortalRequest(ctx context.Context) (*shared.UpdatePortalRequest, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
-	if resp != nil {
-		r.ApplicationCount = types.Float64Value(resp.ApplicationCount)
-		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
-		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
-		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
-		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
-		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
-		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
-		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
-		r.Description = types.StringPointerValue(resp.Description)
-		r.DeveloperCount = types.Float64Value(resp.DeveloperCount)
-		r.DisplayName = types.StringValue(resp.DisplayName)
-		r.ID = types.StringValue(resp.ID)
-		r.IsPublic = types.BoolValue(resp.IsPublic)
-		if len(resp.Labels) > 0 {
-			r.Labels = make(map[string]types.String, len(resp.Labels))
-			for key, value := range resp.Labels {
-				r.Labels[key] = types.StringPointerValue(value)
-			}
-		}
-		r.Name = types.StringValue(resp.Name)
-		r.PublishedProductCount = types.Float64Value(resp.PublishedProductCount)
-		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
-		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
-	}
-
-	return diags
-}
-
-func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortalRequest {
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
 		*name = r.Name.ValueString()
@@ -210,5 +184,79 @@ func (r *PortalResourceModel) ToSharedUpdatePortalRequest() *shared.UpdatePortal
 		DefaultApplicationAuthStrategyID: defaultApplicationAuthStrategyID,
 		Labels:                           labels,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsUpdatePortalRequest(ctx context.Context) (*operations.UpdatePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	updatePortalRequest, updatePortalRequestDiags := r.ToSharedUpdatePortalRequest(ctx)
+	diags.Append(updatePortalRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalRequest{
+		PortalID:            portalID,
+		UpdatePortalRequest: *updatePortalRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) ToOperationsDeletePortalRequest(ctx context.Context) (*operations.DeletePortalRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.ID.ValueString()
+
+	force := new(operations.Force)
+	if !r.Force.IsUnknown() && !r.Force.IsNull() {
+		*force = operations.Force(r.Force.ValueString())
+	} else {
+		force = nil
+	}
+	out := operations.DeletePortalRequest{
+		PortalID: portalID,
+		Force:    force,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalResourceModel) RefreshFromSharedCreatePortalResponse(ctx context.Context, resp *shared.CreatePortalResponse) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if resp != nil {
+		r.ApplicationCount = types.Float64Value(resp.ApplicationCount)
+		r.AutoApproveApplications = types.BoolValue(resp.AutoApproveApplications)
+		r.AutoApproveDevelopers = types.BoolValue(resp.AutoApproveDevelopers)
+		r.CreatedAt = types.StringValue(typeconvert.TimeToString(resp.CreatedAt))
+		r.CustomClientDomain = types.StringPointerValue(resp.CustomClientDomain)
+		r.CustomDomain = types.StringPointerValue(resp.CustomDomain)
+		r.DefaultApplicationAuthStrategyID = types.StringPointerValue(resp.DefaultApplicationAuthStrategyID)
+		r.DefaultDomain = types.StringValue(resp.DefaultDomain)
+		r.Description = types.StringPointerValue(resp.Description)
+		r.DeveloperCount = types.Float64Value(resp.DeveloperCount)
+		r.DisplayName = types.StringValue(resp.DisplayName)
+		r.ID = types.StringValue(resp.ID)
+		r.IsPublic = types.BoolValue(resp.IsPublic)
+		if len(resp.Labels) > 0 {
+			r.Labels = make(map[string]types.String, len(resp.Labels))
+			for key, value := range resp.Labels {
+				r.Labels[key] = types.StringPointerValue(value)
+			}
+		}
+		r.Name = types.StringValue(resp.Name)
+		r.PublishedProductCount = types.Float64Value(resp.PublishedProductCount)
+		r.RbacEnabled = types.BoolValue(resp.RbacEnabled)
+		r.UpdatedAt = types.StringValue(typeconvert.TimeToString(resp.UpdatedAt))
+	}
+
+	return diags
 }

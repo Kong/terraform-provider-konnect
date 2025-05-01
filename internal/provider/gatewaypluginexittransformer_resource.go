@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -234,15 +233,13 @@ func (r *GatewayPluginExitTransformerResource) Create(ctx context.Context, req r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateExittransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	exitTransformerPlugin := *data.ToSharedExitTransformerPlugin()
-	request := operations.CreateExittransformerPluginRequest{
-		ControlPlaneID:        controlPlaneID,
-		ExitTransformerPlugin: exitTransformerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateExittransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -296,17 +293,13 @@ func (r *GatewayPluginExitTransformerResource) Read(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetExittransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetExittransformerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetExittransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.GetExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -354,19 +347,13 @@ func (r *GatewayPluginExitTransformerResource) Update(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateExittransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	exitTransformerPlugin := *data.ToSharedExitTransformerPlugin()
-	request := operations.UpdateExittransformerPluginRequest{
-		PluginID:              pluginID,
-		ControlPlaneID:        controlPlaneID,
-		ExitTransformerPlugin: exitTransformerPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateExittransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -420,17 +407,13 @@ func (r *GatewayPluginExitTransformerResource) Delete(ctx context.Context, req r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteExittransformerPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteExittransformerPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteExittransformerPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteExittransformerPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

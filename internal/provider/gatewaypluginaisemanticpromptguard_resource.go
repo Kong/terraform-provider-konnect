@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -795,15 +794,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Create(ctx context.Context,
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAisemanticpromptguardPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiSemanticPromptGuardPlugin := *data.ToSharedAiSemanticPromptGuardPlugin()
-	request := operations.CreateAisemanticpromptguardPluginRequest{
-		ControlPlaneID:              controlPlaneID,
-		AiSemanticPromptGuardPlugin: aiSemanticPromptGuardPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAisemanticpromptguardPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -857,17 +854,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Read(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAisemanticpromptguardPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAisemanticpromptguardPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAisemanticpromptguardPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -915,19 +908,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Update(ctx context.Context,
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAisemanticpromptguardPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiSemanticPromptGuardPlugin := *data.ToSharedAiSemanticPromptGuardPlugin()
-	request := operations.UpdateAisemanticpromptguardPluginRequest{
-		PluginID:                    pluginID,
-		ControlPlaneID:              controlPlaneID,
-		AiSemanticPromptGuardPlugin: aiSemanticPromptGuardPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAisemanticpromptguardPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -981,17 +968,13 @@ func (r *GatewayPluginAiSemanticPromptGuardResource) Delete(ctx context.Context,
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAisemanticpromptguardPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAisemanticpromptguardPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAisemanticpromptguardPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAisemanticpromptguardPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

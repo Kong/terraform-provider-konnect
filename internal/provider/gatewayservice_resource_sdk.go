@@ -7,13 +7,19 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayServiceResourceModel) ToSharedService() *shared.Service {
-	var caCertificates []string = []string{}
-	for _, caCertificatesItem := range r.CaCertificates {
-		caCertificates = append(caCertificates, caCertificatesItem.ValueString())
+func (r *GatewayServiceResourceModel) ToSharedService(ctx context.Context) (*shared.Service, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var caCertificates []string
+	if r.CaCertificates != nil {
+		caCertificates = make([]string, 0, len(r.CaCertificates))
+		for _, caCertificatesItem := range r.CaCertificates {
+			caCertificates = append(caCertificates, caCertificatesItem.ValueString())
+		}
 	}
 	var clientCertificate *shared.ClientCertificate
 	if r.ClientCertificate != nil {
@@ -90,7 +96,7 @@ func (r *GatewayServiceResourceModel) ToSharedService() *shared.Service {
 	} else {
 		retries = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -138,7 +144,88 @@ func (r *GatewayServiceResourceModel) ToSharedService() *shared.Service {
 		UpdatedAt:         updatedAt,
 		WriteTimeout:      writeTimeout,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsCreateServiceRequest(ctx context.Context) (*operations.CreateServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	service, serviceDiags := r.ToSharedService(ctx)
+	diags.Append(serviceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateServiceRequest{
+		ControlPlaneID: controlPlaneID,
+		Service:        *service,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsUpsertServiceRequest(ctx context.Context) (*operations.UpsertServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	service, serviceDiags := r.ToSharedService(ctx)
+	diags.Append(serviceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertServiceRequest{
+		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
+		Service:        *service,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsGetServiceRequest(ctx context.Context) (*operations.GetServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetServiceRequest{
+		ServiceID:      serviceID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayServiceResourceModel) ToOperationsDeleteServiceRequest(ctx context.Context) (*operations.DeleteServiceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var serviceID string
+	serviceID = r.ID.ValueString()
+
+	out := operations.DeleteServiceRequest{
+		ControlPlaneID: controlPlaneID,
+		ServiceID:      serviceID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayServiceResourceModel) RefreshFromSharedService(ctx context.Context, resp *shared.Service) diag.Diagnostics {

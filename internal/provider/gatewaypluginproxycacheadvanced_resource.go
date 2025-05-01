@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 )
 
@@ -510,15 +509,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Create(ctx context.Context, re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateProxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	proxyCacheAdvancedPlugin := *data.ToSharedProxyCacheAdvancedPlugin()
-	request := operations.CreateProxycacheadvancedPluginRequest{
-		ControlPlaneID:           controlPlaneID,
-		ProxyCacheAdvancedPlugin: proxyCacheAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateProxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -572,17 +569,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Read(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetProxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetProxycacheadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetProxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.GetProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -630,19 +623,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Update(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateProxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	proxyCacheAdvancedPlugin := *data.ToSharedProxyCacheAdvancedPlugin()
-	request := operations.UpdateProxycacheadvancedPluginRequest{
-		PluginID:                 pluginID,
-		ControlPlaneID:           controlPlaneID,
-		ProxyCacheAdvancedPlugin: proxyCacheAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateProxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -696,17 +683,13 @@ func (r *GatewayPluginProxyCacheAdvancedResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteProxycacheadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteProxycacheadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteProxycacheadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteProxycacheadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

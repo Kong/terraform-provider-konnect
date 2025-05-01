@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance() *shared.PortalAppearance {
+func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance(ctx context.Context) (*shared.PortalAppearance, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	themeName := new(shared.PortalTheme)
 	if !r.ThemeName.IsUnknown() && !r.ThemeName.IsNull() {
 		*themeName = shared.PortalTheme(r.ThemeName.ValueString())
@@ -369,7 +372,42 @@ func (r *PortalAppearanceResourceModel) ToSharedPortalAppearance() *shared.Porta
 		Text:           text1,
 		Images:         images,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalAppearanceResourceModel) ToOperationsUpdatePortalAppearanceRequest(ctx context.Context) (*operations.UpdatePortalAppearanceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	portalAppearance, portalAppearanceDiags := r.ToSharedPortalAppearance(ctx)
+	diags.Append(portalAppearanceDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePortalAppearanceRequest{
+		PortalID:         portalID,
+		PortalAppearance: *portalAppearance,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalAppearanceResourceModel) ToOperationsGetPortalAppearanceRequest(ctx context.Context) (*operations.GetPortalAppearanceRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAppearanceRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
 }
 
 func (r *PortalAppearanceResourceModel) RefreshFromSharedUpdatePortalAppearanceResponse(ctx context.Context, resp *shared.UpdatePortalAppearanceResponse) diag.Diagnostics {

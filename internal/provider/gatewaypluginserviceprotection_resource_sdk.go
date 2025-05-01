@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionPlugin() *shared.ServiceProtectionPlugin {
+func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionPlugin(ctx context.Context) (*shared.ServiceProtectionPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 	if r.Ordering != nil {
 		var after *shared.ServiceProtectionPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		}
 		var before *shared.ServiceProtectionPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -104,7 +107,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		} else {
 			hideClientHeaders = nil
 		}
-		var limit []float64 = []float64{}
+		limit := make([]float64, 0, len(r.Config.Limit))
 		for _, limitItem := range r.Config.Limit {
 			limit = append(limit, limitItem.ValueFloat64())
 		}
@@ -128,7 +131,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.ServiceProtectionPluginClusterNodes = []shared.ServiceProtectionPluginClusterNodes{}
+			clusterNodes := make([]shared.ServiceProtectionPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -213,7 +216,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.ServiceProtectionPluginSentinelNodes = []shared.ServiceProtectionPluginSentinelNodes{}
+			sentinelNodes := make([]shared.ServiceProtectionPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -316,7 +319,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		} else {
 			syncRate = nil
 		}
-		var windowSize []float64 = []float64{}
+		windowSize := make([]float64, 0, len(r.Config.WindowSize))
 		for _, windowSizeItem := range r.Config.WindowSize {
 			windowSize = append(windowSize, windowSizeItem.ValueFloat64())
 		}
@@ -343,7 +346,7 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 			WindowType:          windowType,
 		}
 	}
-	var protocols []shared.ServiceProtectionPluginProtocols = []shared.ServiceProtectionPluginProtocols{}
+	protocols := make([]shared.ServiceProtectionPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ServiceProtectionPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -371,7 +374,88 @@ func (r *GatewayPluginServiceProtectionResourceModel) ToSharedServiceProtectionP
 		Protocols:    protocols,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsCreateServiceprotectionPluginRequest(ctx context.Context) (*operations.CreateServiceprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	serviceProtectionPlugin, serviceProtectionPluginDiags := r.ToSharedServiceProtectionPlugin(ctx)
+	diags.Append(serviceProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateServiceprotectionPluginRequest{
+		ControlPlaneID:          controlPlaneID,
+		ServiceProtectionPlugin: *serviceProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsUpdateServiceprotectionPluginRequest(ctx context.Context) (*operations.UpdateServiceprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	serviceProtectionPlugin, serviceProtectionPluginDiags := r.ToSharedServiceProtectionPlugin(ctx)
+	diags.Append(serviceProtectionPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateServiceprotectionPluginRequest{
+		PluginID:                pluginID,
+		ControlPlaneID:          controlPlaneID,
+		ServiceProtectionPlugin: *serviceProtectionPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsGetServiceprotectionPluginRequest(ctx context.Context) (*operations.GetServiceprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetServiceprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginServiceProtectionResourceModel) ToOperationsDeleteServiceprotectionPluginRequest(ctx context.Context) (*operations.DeleteServiceprotectionPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteServiceprotectionPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginServiceProtectionResourceModel) RefreshFromSharedServiceProtectionPlugin(ctx context.Context, resp *shared.ServiceProtectionPlugin) diag.Diagnostics {

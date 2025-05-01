@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *shared.PrometheusPlugin {
+func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin(ctx context.Context) (*shared.PrometheusPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 	if r.Ordering != nil {
 		var after *shared.PrometheusPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 		}
 		var before *shared.PrometheusPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -138,7 +141,7 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 			ID: id1,
 		}
 	}
-	var protocols []shared.PrometheusPluginProtocols = []shared.PrometheusPluginProtocols{}
+	protocols := make([]shared.PrometheusPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.PrometheusPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -180,7 +183,88 @@ func (r *GatewayPluginPrometheusResourceModel) ToSharedPrometheusPlugin() *share
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsCreatePrometheusPluginRequest(ctx context.Context) (*operations.CreatePrometheusPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
+	diags.Append(prometheusPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreatePrometheusPluginRequest{
+		ControlPlaneID:   controlPlaneID,
+		PrometheusPlugin: *prometheusPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsUpdatePrometheusPluginRequest(ctx context.Context) (*operations.UpdatePrometheusPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	prometheusPlugin, prometheusPluginDiags := r.ToSharedPrometheusPlugin(ctx)
+	diags.Append(prometheusPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdatePrometheusPluginRequest{
+		PluginID:         pluginID,
+		ControlPlaneID:   controlPlaneID,
+		PrometheusPlugin: *prometheusPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsGetPrometheusPluginRequest(ctx context.Context) (*operations.GetPrometheusPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetPrometheusPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginPrometheusResourceModel) ToOperationsDeletePrometheusPluginRequest(ctx context.Context) (*operations.DeletePrometheusPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeletePrometheusPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginPrometheusResourceModel) RefreshFromSharedPrometheusPlugin(ctx context.Context, resp *shared.PrometheusPlugin) diag.Diagnostics {

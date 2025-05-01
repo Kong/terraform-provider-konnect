@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPlugin() *shared.AiAzureContentSafetyPlugin {
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentSafetyPlugin(ctx context.Context) (*shared.AiAzureContentSafetyPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 	if r.Ordering != nil {
 		var after *shared.AiAzureContentSafetyPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		}
 		var before *shared.AiAzureContentSafetyPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -104,11 +107,11 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		} else {
 			azureUseManagedIdentity = nil
 		}
-		var blocklistNames []string = []string{}
+		blocklistNames := make([]string, 0, len(r.Config.BlocklistNames))
 		for _, blocklistNamesItem := range r.Config.BlocklistNames {
 			blocklistNames = append(blocklistNames, blocklistNamesItem.ValueString())
 		}
-		var categories []shared.Categories = []shared.Categories{}
+		categories := make([]shared.Categories, 0, len(r.Config.Categories))
 		for _, categoriesItem := range r.Config.Categories {
 			var name string
 			name = categoriesItem.Name.ValueString()
@@ -173,7 +176,7 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 			TextSource:              textSource,
 		}
 	}
-	var protocols []shared.AiAzureContentSafetyPluginProtocols = []shared.AiAzureContentSafetyPluginProtocols{}
+	protocols := make([]shared.AiAzureContentSafetyPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiAzureContentSafetyPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -214,7 +217,88 @@ func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToSharedAiAzureContentS
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsCreateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.CreateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
+	diags.Append(aiAzureContentSafetyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiazurecontentsafetyPluginRequest{
+		ControlPlaneID:             controlPlaneID,
+		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsUpdateAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.UpdateAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiAzureContentSafetyPlugin, aiAzureContentSafetyPluginDiags := r.ToSharedAiAzureContentSafetyPlugin(ctx)
+	diags.Append(aiAzureContentSafetyPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiazurecontentsafetyPluginRequest{
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		AiAzureContentSafetyPlugin: *aiAzureContentSafetyPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsGetAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.GetAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiazurecontentsafetyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiAzureContentSafetyResourceModel) ToOperationsDeleteAiazurecontentsafetyPluginRequest(ctx context.Context) (*operations.DeleteAiazurecontentsafetyPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiazurecontentsafetyPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiAzureContentSafetyResourceModel) RefreshFromSharedAiAzureContentSafetyPlugin(ctx context.Context, resp *shared.AiAzureContentSafetyPlugin) diag.Diagnostics {

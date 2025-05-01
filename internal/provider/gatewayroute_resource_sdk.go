@@ -7,46 +7,55 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
+func (r *GatewayRouteResourceModel) ToSharedRouteJSON(ctx context.Context) (*shared.RouteJSON, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
 	} else {
 		createdAt = nil
 	}
-	var destinations []shared.Destinations = []shared.Destinations{}
-	for _, destinationsItem := range r.Destinations {
-		ip := new(string)
-		if !destinationsItem.IP.IsUnknown() && !destinationsItem.IP.IsNull() {
-			*ip = destinationsItem.IP.ValueString()
-		} else {
-			ip = nil
+	var destinations []shared.Destinations
+	if r.Destinations != nil {
+		destinations = make([]shared.Destinations, 0, len(r.Destinations))
+		for _, destinationsItem := range r.Destinations {
+			ip := new(string)
+			if !destinationsItem.IP.IsUnknown() && !destinationsItem.IP.IsNull() {
+				*ip = destinationsItem.IP.ValueString()
+			} else {
+				ip = nil
+			}
+			port := new(int64)
+			if !destinationsItem.Port.IsUnknown() && !destinationsItem.Port.IsNull() {
+				*port = destinationsItem.Port.ValueInt64()
+			} else {
+				port = nil
+			}
+			destinations = append(destinations, shared.Destinations{
+				IP:   ip,
+				Port: port,
+			})
 		}
-		port := new(int64)
-		if !destinationsItem.Port.IsUnknown() && !destinationsItem.Port.IsNull() {
-			*port = destinationsItem.Port.ValueInt64()
-		} else {
-			port = nil
-		}
-		destinations = append(destinations, shared.Destinations{
-			IP:   ip,
-			Port: port,
-		})
 	}
 	headers := make(map[string][]string)
 	for headersKey, headersValue := range r.Headers {
-		var headersInst []string = []string{}
+		headersInst := make([]string, 0, len(headersValue))
 		for _, item := range headersValue {
 			headersInst = append(headersInst, item.ValueString())
 		}
 		headers[headersKey] = headersInst
 	}
-	var hosts []string = []string{}
-	for _, hostsItem := range r.Hosts {
-		hosts = append(hosts, hostsItem.ValueString())
+	var hosts []string
+	if r.Hosts != nil {
+		hosts = make([]string, 0, len(r.Hosts))
+		for _, hostsItem := range r.Hosts {
+			hosts = append(hosts, hostsItem.ValueString())
+		}
 	}
 	httpsRedirectStatusCode := new(shared.HTTPSRedirectStatusCode)
 	if !r.HTTPSRedirectStatusCode.IsUnknown() && !r.HTTPSRedirectStatusCode.IsNull() {
@@ -60,9 +69,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 	} else {
 		id = nil
 	}
-	var methods []string = []string{}
-	for _, methodsItem := range r.Methods {
-		methods = append(methods, methodsItem.ValueString())
+	var methods []string
+	if r.Methods != nil {
+		methods = make([]string, 0, len(r.Methods))
+		for _, methodsItem := range r.Methods {
+			methods = append(methods, methodsItem.ValueString())
+		}
 	}
 	name := new(string)
 	if !r.Name.IsUnknown() && !r.Name.IsNull() {
@@ -76,9 +88,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 	} else {
 		pathHandling = nil
 	}
-	var paths []string = []string{}
-	for _, pathsItem := range r.Paths {
-		paths = append(paths, pathsItem.ValueString())
+	var paths []string
+	if r.Paths != nil {
+		paths = make([]string, 0, len(r.Paths))
+		for _, pathsItem := range r.Paths {
+			paths = append(paths, pathsItem.ValueString())
+		}
 	}
 	preserveHost := new(bool)
 	if !r.PreserveHost.IsUnknown() && !r.PreserveHost.IsNull() {
@@ -86,9 +101,12 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 	} else {
 		preserveHost = nil
 	}
-	var protocols []shared.RouteJSONProtocols = []shared.RouteJSONProtocols{}
-	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.RouteJSONProtocols(protocolsItem.ValueString()))
+	var protocols []shared.RouteJSONProtocols
+	if r.Protocols != nil {
+		protocols = make([]shared.RouteJSONProtocols, 0, len(r.Protocols))
+		for _, protocolsItem := range r.Protocols {
+			protocols = append(protocols, shared.RouteJSONProtocols(protocolsItem.ValueString()))
+		}
 	}
 	regexPriority := new(int64)
 	if !r.RegexPriority.IsUnknown() && !r.RegexPriority.IsNull() {
@@ -120,28 +138,34 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 			ID: id1,
 		}
 	}
-	var snis []string = []string{}
-	for _, snisItem := range r.Snis {
-		snis = append(snis, snisItem.ValueString())
+	var snis []string
+	if r.Snis != nil {
+		snis = make([]string, 0, len(r.Snis))
+		for _, snisItem := range r.Snis {
+			snis = append(snis, snisItem.ValueString())
+		}
 	}
-	var sources []shared.Sources = []shared.Sources{}
-	for _, sourcesItem := range r.Sources {
-		ip1 := new(string)
-		if !sourcesItem.IP.IsUnknown() && !sourcesItem.IP.IsNull() {
-			*ip1 = sourcesItem.IP.ValueString()
-		} else {
-			ip1 = nil
+	var sources []shared.Sources
+	if r.Sources != nil {
+		sources = make([]shared.Sources, 0, len(r.Sources))
+		for _, sourcesItem := range r.Sources {
+			ip1 := new(string)
+			if !sourcesItem.IP.IsUnknown() && !sourcesItem.IP.IsNull() {
+				*ip1 = sourcesItem.IP.ValueString()
+			} else {
+				ip1 = nil
+			}
+			port1 := new(int64)
+			if !sourcesItem.Port.IsUnknown() && !sourcesItem.Port.IsNull() {
+				*port1 = sourcesItem.Port.ValueInt64()
+			} else {
+				port1 = nil
+			}
+			sources = append(sources, shared.Sources{
+				IP:   ip1,
+				Port: port1,
+			})
 		}
-		port1 := new(int64)
-		if !sourcesItem.Port.IsUnknown() && !sourcesItem.Port.IsNull() {
-			*port1 = sourcesItem.Port.ValueInt64()
-		} else {
-			port1 = nil
-		}
-		sources = append(sources, shared.Sources{
-			IP:   ip1,
-			Port: port1,
-		})
 	}
 	stripPath := new(bool)
 	if !r.StripPath.IsUnknown() && !r.StripPath.IsNull() {
@@ -149,7 +173,7 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 	} else {
 		stripPath = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -182,7 +206,88 @@ func (r *GatewayRouteResourceModel) ToSharedRouteJSON() *shared.RouteJSON {
 		Tags:                    tags,
 		UpdatedAt:               updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsCreateRouteRequest(ctx context.Context) (*operations.CreateRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
+	diags.Append(routeJSONDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRouteRequest{
+		ControlPlaneID: controlPlaneID,
+		RouteJSON:      *routeJSON,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsUpsertRouteRequest(ctx context.Context) (*operations.UpsertRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeJSON, routeJSONDiags := r.ToSharedRouteJSON(ctx)
+	diags.Append(routeJSONDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertRouteRequest{
+		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
+		RouteJSON:      *routeJSON,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsGetRouteRequest(ctx context.Context) (*operations.GetRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRouteRequest{
+		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteResourceModel) ToOperationsDeleteRouteRequest(ctx context.Context) (*operations.DeleteRouteRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	out := operations.DeleteRouteRequest{
+		ControlPlaneID: controlPlaneID,
+		RouteID:        routeID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayRouteResourceModel) RefreshFromSharedRouteJSON(ctx context.Context, resp *shared.RouteJSON) diag.Diagnostics {

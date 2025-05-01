@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *SystemAccountDataSourceModel) ToOperationsGetSystemAccountsIDRequest(ctx context.Context) (*operations.GetSystemAccountsIDRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var accountID string
+	accountID = r.ID.ValueString()
+
+	out := operations.GetSystemAccountsIDRequest{
+		AccountID: accountID,
+	}
+
+	return &out, diags
+}
 
 func (r *SystemAccountDataSourceModel) RefreshFromSharedSystemAccount(ctx context.Context, resp *shared.SystemAccount) diag.Diagnostics {
 	var diags diag.Diagnostics

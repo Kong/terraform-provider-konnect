@@ -24,7 +24,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -183,19 +182,13 @@ func (r *GatewayBasicAuthResource) Create(ctx context.Context, req resource.Crea
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateBasicAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	basicAuthWithoutParents := *data.ToSharedBasicAuthWithoutParents()
-	request := operations.CreateBasicAuthWithConsumerRequest{
-		ControlPlaneID:          controlPlaneID,
-		ConsumerID:              consumerID,
-		BasicAuthWithoutParents: basicAuthWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.BasicAuthCredentials.CreateBasicAuthWithConsumer(ctx, request)
+	res, err := r.client.BasicAuthCredentials.CreateBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -249,21 +242,13 @@ func (r *GatewayBasicAuthResource) Read(ctx context.Context, req resource.ReadRe
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetBasicAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var basicAuthID string
-	basicAuthID = data.ID.ValueString()
-
-	request := operations.GetBasicAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		BasicAuthID:    basicAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, request)
+	res, err := r.client.BasicAuthCredentials.GetBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -335,21 +320,13 @@ func (r *GatewayBasicAuthResource) Delete(ctx context.Context, req resource.Dele
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteBasicAuthWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var basicAuthID string
-	basicAuthID = data.ID.ValueString()
-
-	request := operations.DeleteBasicAuthWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		BasicAuthID:    basicAuthID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.BasicAuthCredentials.DeleteBasicAuthWithConsumer(ctx, request)
+	res, err := r.client.BasicAuthCredentials.DeleteBasicAuthWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

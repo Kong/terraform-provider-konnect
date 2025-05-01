@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
+func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin(ctx context.Context) (*shared.ACLPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 	if r.Ordering != nil {
 		var after *shared.ACLPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 		}
 		var before *shared.ACLPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -74,7 +77,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 	}
 	var config *shared.ACLPluginConfig
 	if r.Config != nil {
-		var allow []string = []string{}
+		allow := make([]string, 0, len(r.Config.Allow))
 		for _, allowItem := range r.Config.Allow {
 			allow = append(allow, allowItem.ValueString())
 		}
@@ -84,7 +87,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 		} else {
 			alwaysUseAuthenticatedGroups = nil
 		}
-		var deny []string = []string{}
+		deny := make([]string, 0, len(r.Config.Deny))
 		for _, denyItem := range r.Config.Deny {
 			deny = append(deny, denyItem.ValueString())
 		}
@@ -108,7 +111,7 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 			IncludeConsumerGroups:        includeConsumerGroups,
 		}
 	}
-	var protocols []shared.ACLPluginProtocols = []shared.ACLPluginProtocols{}
+	protocols := make([]shared.ACLPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ACLPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -149,7 +152,88 @@ func (r *GatewayPluginACLResourceModel) ToSharedACLPlugin() *shared.ACLPlugin {
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginACLResourceModel) ToOperationsCreateACLPluginRequest(ctx context.Context) (*operations.CreateACLPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aclPlugin, aclPluginDiags := r.ToSharedACLPlugin(ctx)
+	diags.Append(aclPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateACLPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		ACLPlugin:      *aclPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginACLResourceModel) ToOperationsUpdateACLPluginRequest(ctx context.Context) (*operations.UpdateACLPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aclPlugin, aclPluginDiags := r.ToSharedACLPlugin(ctx)
+	diags.Append(aclPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateACLPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		ACLPlugin:      *aclPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginACLResourceModel) ToOperationsGetACLPluginRequest(ctx context.Context) (*operations.GetACLPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetACLPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginACLResourceModel) ToOperationsDeleteACLPluginRequest(ctx context.Context) (*operations.DeleteACLPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteACLPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginACLResourceModel) RefreshFromSharedACLPlugin(ctx context.Context, resp *shared.ACLPlugin) diag.Diagnostics {

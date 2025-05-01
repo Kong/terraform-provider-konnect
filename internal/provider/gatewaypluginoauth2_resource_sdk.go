@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2Plugin {
+func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin(ctx context.Context) (*shared.Oauth2Plugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 	if r.Ordering != nil {
 		var after *shared.Oauth2PluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 		}
 		var before *shared.Oauth2PluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -170,7 +173,7 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 		} else {
 			reuseRefreshToken = nil
 		}
-		var scopes []string = []string{}
+		scopes := make([]string, 0, len(r.Config.Scopes))
 		for _, scopesItem := range r.Config.Scopes {
 			scopes = append(scopes, scopesItem.ValueString())
 		}
@@ -201,7 +204,7 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 			TokenExpiration:               tokenExpiration,
 		}
 	}
-	var protocols []shared.Oauth2PluginProtocols = []shared.Oauth2PluginProtocols{}
+	protocols := make([]shared.Oauth2PluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.Oauth2PluginProtocols(protocolsItem.ValueString()))
 	}
@@ -242,7 +245,88 @@ func (r *GatewayPluginOauth2ResourceModel) ToSharedOauth2Plugin() *shared.Oauth2
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2ResourceModel) ToOperationsCreateOauth2PluginRequest(ctx context.Context) (*operations.CreateOauth2PluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2Plugin, oauth2PluginDiags := r.ToSharedOauth2Plugin(ctx)
+	diags.Append(oauth2PluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateOauth2PluginRequest{
+		ControlPlaneID: controlPlaneID,
+		Oauth2Plugin:   *oauth2Plugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2ResourceModel) ToOperationsUpdateOauth2PluginRequest(ctx context.Context) (*operations.UpdateOauth2PluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oauth2Plugin, oauth2PluginDiags := r.ToSharedOauth2Plugin(ctx)
+	diags.Append(oauth2PluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateOauth2PluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		Oauth2Plugin:   *oauth2Plugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2ResourceModel) ToOperationsGetOauth2PluginRequest(ctx context.Context) (*operations.GetOauth2PluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOauth2PluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOauth2ResourceModel) ToOperationsDeleteOauth2PluginRequest(ctx context.Context) (*operations.DeleteOauth2PluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteOauth2PluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginOauth2ResourceModel) RefreshFromSharedOauth2Plugin(ctx context.Context, resp *shared.Oauth2Plugin) diag.Diagnostics {

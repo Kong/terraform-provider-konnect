@@ -7,10 +7,13 @@ import (
 	"encoding/json"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayVaultResourceModel) ToSharedVault() *shared.Vault {
+func (r *GatewayVaultResourceModel) ToSharedVault(ctx context.Context) (*shared.Vault, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var config interface{}
 	_ = json.Unmarshal([]byte(r.Config.ValueString()), &config)
 	createdAt := new(int64)
@@ -37,7 +40,7 @@ func (r *GatewayVaultResourceModel) ToSharedVault() *shared.Vault {
 	var prefix string
 	prefix = r.Prefix.ValueString()
 
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -57,7 +60,88 @@ func (r *GatewayVaultResourceModel) ToSharedVault() *shared.Vault {
 		Tags:        tags,
 		UpdatedAt:   updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayVaultResourceModel) ToOperationsCreateVaultRequest(ctx context.Context) (*operations.CreateVaultRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	vault, vaultDiags := r.ToSharedVault(ctx)
+	diags.Append(vaultDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateVaultRequest{
+		ControlPlaneID: controlPlaneID,
+		Vault:          *vault,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayVaultResourceModel) ToOperationsUpsertVaultRequest(ctx context.Context) (*operations.UpsertVaultRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var vaultID string
+	vaultID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	vault, vaultDiags := r.ToSharedVault(ctx)
+	diags.Append(vaultDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertVaultRequest{
+		VaultID:        vaultID,
+		ControlPlaneID: controlPlaneID,
+		Vault:          *vault,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayVaultResourceModel) ToOperationsGetVaultRequest(ctx context.Context) (*operations.GetVaultRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var vaultID string
+	vaultID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetVaultRequest{
+		VaultID:        vaultID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayVaultResourceModel) ToOperationsDeleteVaultRequest(ctx context.Context) (*operations.DeleteVaultRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var vaultID string
+	vaultID = r.ID.ValueString()
+
+	out := operations.DeleteVaultRequest{
+		ControlPlaneID: controlPlaneID,
+		VaultID:        vaultID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayVaultResourceModel) RefreshFromSharedVault(ctx context.Context, resp *shared.Vault) diag.Diagnostics {

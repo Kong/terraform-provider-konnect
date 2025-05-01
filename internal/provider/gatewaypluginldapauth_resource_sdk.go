@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.LdapAuthPlugin {
+func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin(ctx context.Context) (*shared.LdapAuthPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.Ld
 	if r.Ordering != nil {
 		var after *shared.LdapAuthPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.Ld
 		}
 		var before *shared.LdapAuthPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.Ld
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -175,7 +178,7 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.Ld
 			VerifyLdapHost:  verifyLdapHost,
 		}
 	}
-	var protocols []shared.LdapAuthPluginProtocols = []shared.LdapAuthPluginProtocols{}
+	protocols := make([]shared.LdapAuthPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.LdapAuthPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -216,7 +219,88 @@ func (r *GatewayPluginLdapAuthResourceModel) ToSharedLdapAuthPlugin() *shared.Ld
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsCreateLdapauthPluginRequest(ctx context.Context) (*operations.CreateLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
+	diags.Append(ldapAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateLdapauthPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: *ldapAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsUpdateLdapauthPluginRequest(ctx context.Context) (*operations.UpdateLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	ldapAuthPlugin, ldapAuthPluginDiags := r.ToSharedLdapAuthPlugin(ctx)
+	diags.Append(ldapAuthPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		LdapAuthPlugin: *ldapAuthPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsGetLdapauthPluginRequest(ctx context.Context) (*operations.GetLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginLdapAuthResourceModel) ToOperationsDeleteLdapauthPluginRequest(ctx context.Context) (*operations.DeleteLdapauthPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteLdapauthPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginLdapAuthResourceModel) RefreshFromSharedLdapAuthPlugin(ctx context.Context, resp *shared.LdapAuthPlugin) diag.Diagnostics {

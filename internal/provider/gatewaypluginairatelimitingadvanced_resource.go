@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_listvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/listvalidators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -585,15 +584,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Create(ctx context.Context
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAiratelimitingadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	aiRateLimitingAdvancedPlugin := *data.ToSharedAiRateLimitingAdvancedPlugin()
-	request := operations.CreateAiratelimitingadvancedPluginRequest{
-		ControlPlaneID:               controlPlaneID,
-		AiRateLimitingAdvancedPlugin: aiRateLimitingAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateAiratelimitingadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -647,17 +644,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Read(ctx context.Context, 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAiratelimitingadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetAiratelimitingadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetAiratelimitingadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.GetAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -705,19 +698,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Update(ctx context.Context
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAiratelimitingadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	aiRateLimitingAdvancedPlugin := *data.ToSharedAiRateLimitingAdvancedPlugin()
-	request := operations.UpdateAiratelimitingadvancedPluginRequest{
-		PluginID:                     pluginID,
-		ControlPlaneID:               controlPlaneID,
-		AiRateLimitingAdvancedPlugin: aiRateLimitingAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateAiratelimitingadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -771,17 +758,13 @@ func (r *GatewayPluginAiRateLimitingAdvancedResource) Delete(ctx context.Context
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAiratelimitingadvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteAiratelimitingadvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteAiratelimitingadvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteAiratelimitingadvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

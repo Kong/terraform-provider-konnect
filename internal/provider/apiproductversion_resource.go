@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
@@ -216,15 +215,13 @@ func (r *APIProductVersionResource) Create(ctx context.Context, req resource.Cre
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAPIProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createAPIProductVersionDTO := *data.ToSharedCreateAPIProductVersionDTO()
-	request := operations.CreateAPIProductVersionRequest{
-		APIProductID:               apiProductID,
-		CreateAPIProductVersionDTO: createAPIProductVersionDTO,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductVersions.CreateAPIProductVersion(ctx, request)
+	res, err := r.client.APIProductVersions.CreateAPIProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -278,17 +275,13 @@ func (r *APIProductVersionResource) Read(ctx context.Context, req resource.ReadR
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsGetAPIProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.GetAPIProductVersionRequest{
-		APIProductID: apiProductID,
-		ID:           id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductVersions.GetAPIProductVersion(ctx, request)
+	res, err := r.client.APIProductVersions.GetAPIProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -336,19 +329,13 @@ func (r *APIProductVersionResource) Update(ctx context.Context, req resource.Upd
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPIProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	updateAPIProductVersionDTO := *data.ToSharedUpdateAPIProductVersionDTO()
-	request := operations.UpdateAPIProductVersionRequest{
-		APIProductID:               apiProductID,
-		ID:                         id,
-		UpdateAPIProductVersionDTO: updateAPIProductVersionDTO,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductVersions.UpdateAPIProductVersion(ctx, request)
+	res, err := r.client.APIProductVersions.UpdateAPIProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -379,17 +366,13 @@ func (r *APIProductVersionResource) Update(ctx context.Context, req resource.Upd
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var apiProductId1 string
-	apiProductId1 = data.APIProductID.ValueString()
+	request1, request1Diags := data.ToOperationsGetAPIProductVersionRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var id1 string
-	id1 = data.ID.ValueString()
-
-	request1 := operations.GetAPIProductVersionRequest{
-		APIProductID: apiProductId1,
-		ID:           id1,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.APIProductVersions.GetAPIProductVersion(ctx, request1)
+	res1, err := r.client.APIProductVersions.GetAPIProductVersion(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -443,17 +426,13 @@ func (r *APIProductVersionResource) Delete(ctx context.Context, req resource.Del
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIProductVersionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.DeleteAPIProductVersionRequest{
-		APIProductID: apiProductID,
-		ID:           id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductVersions.DeleteAPIProductVersion(ctx, request)
+	res, err := r.client.APIProductVersions.DeleteAPIProductVersion(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

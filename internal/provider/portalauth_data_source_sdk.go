@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *PortalAuthDataSourceModel) ToOperationsGetPortalAuthenticationSettingsRequest(ctx context.Context) (*operations.GetPortalAuthenticationSettingsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalAuthenticationSettingsRequest{
+		PortalID: portalID,
+	}
+
+	return &out, diags
+}
 
 func (r *PortalAuthDataSourceModel) RefreshFromSharedPortalAuthenticationSettingsResponse(ctx context.Context, resp *shared.PortalAuthenticationSettingsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.MTLSAuthWithoutParents {
+func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents(ctx context.Context) (*shared.MTLSAuthWithoutParents, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var caCertificate *shared.MTLSAuthWithoutParentsCaCertificate
 	if r.CaCertificate != nil {
 		id := new(string)
@@ -50,7 +53,7 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 	var subjectName string
 	subjectName = r.SubjectName.ValueString()
 
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -62,7 +65,75 @@ func (r *GatewayMTLSAuthResourceModel) ToSharedMTLSAuthWithoutParents() *shared.
 		SubjectName:   subjectName,
 		Tags:          tags,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsCreateMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.CreateMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	mtlsAuthWithoutParents, mtlsAuthWithoutParentsDiags := r.ToSharedMTLSAuthWithoutParents(ctx)
+	diags.Append(mtlsAuthWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateMtlsAuthWithConsumerRequest{
+		ControlPlaneID:         controlPlaneID,
+		ConsumerID:             consumerID,
+		MTLSAuthWithoutParents: *mtlsAuthWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsGetMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var mtlsAuthID string
+	mtlsAuthID = r.ID.ValueString()
+
+	out := operations.GetMtlsAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		MTLSAuthID:     mtlsAuthID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayMTLSAuthResourceModel) ToOperationsDeleteMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var mtlsAuthID string
+	mtlsAuthID = r.ID.ValueString()
+
+	out := operations.DeleteMtlsAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		MTLSAuthID:     mtlsAuthID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayMTLSAuthResourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {

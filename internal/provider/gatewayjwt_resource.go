@@ -26,7 +26,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -223,19 +222,13 @@ func (r *GatewayJWTResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateJwtWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	jwtWithoutParents := *data.ToSharedJWTWithoutParents()
-	request := operations.CreateJwtWithConsumerRequest{
-		ControlPlaneID:    controlPlaneID,
-		ConsumerID:        consumerID,
-		JWTWithoutParents: jwtWithoutParents,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, request)
+	res, err := r.client.JWTs.CreateJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -289,21 +282,13 @@ func (r *GatewayJWTResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsGetJwtWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var jwtID string
-	jwtID = data.ID.ValueString()
-
-	request := operations.GetJwtWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		JWTID:          jwtID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, request)
+	res, err := r.client.JWTs.GetJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -375,21 +360,13 @@ func (r *GatewayJWTResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteJwtWithConsumerRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var consumerID string
-	consumerID = data.ConsumerID.ValueString()
-
-	var jwtID string
-	jwtID = data.ID.ValueString()
-
-	request := operations.DeleteJwtWithConsumerRequest{
-		ControlPlaneID: controlPlaneID,
-		ConsumerID:     consumerID,
-		JWTID:          jwtID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.JWTs.DeleteJwtWithConsumer(ctx, request)
+	res, err := r.client.JWTs.DeleteJwtWithConsumer(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -345,15 +344,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Create(ctx context.Context, r
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateXmlthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	xmlThreatProtectionPlugin := *data.ToSharedXMLThreatProtectionPlugin()
-	request := operations.CreateXmlthreatprotectionPluginRequest{
-		ControlPlaneID:            controlPlaneID,
-		XMLThreatProtectionPlugin: xmlThreatProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateXmlthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -407,17 +404,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Read(ctx context.Context, req
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetXmlthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetXmlthreatprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetXmlthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.GetXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -465,19 +458,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Update(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateXmlthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	xmlThreatProtectionPlugin := *data.ToSharedXMLThreatProtectionPlugin()
-	request := operations.UpdateXmlthreatprotectionPluginRequest{
-		PluginID:                  pluginID,
-		ControlPlaneID:            controlPlaneID,
-		XMLThreatProtectionPlugin: xmlThreatProtectionPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateXmlthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -531,17 +518,13 @@ func (r *GatewayPluginXMLThreatProtectionResource) Delete(ctx context.Context, r
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteXmlthreatprotectionPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteXmlthreatprotectionPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteXmlthreatprotectionPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteXmlthreatprotectionPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

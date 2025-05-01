@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() *shared.OasValidationPlugin {
+func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin(ctx context.Context) (*shared.OasValidationPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() 
 	if r.Ordering != nil {
 		var after *shared.OasValidationPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() 
 		}
 		var before *shared.OasValidationPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -194,7 +197,7 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() 
 			ID: id1,
 		}
 	}
-	var protocols []shared.OasValidationPluginProtocols = []shared.OasValidationPluginProtocols{}
+	protocols := make([]shared.OasValidationPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.OasValidationPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -236,7 +239,88 @@ func (r *GatewayPluginOasValidationResourceModel) ToSharedOasValidationPlugin() 
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsCreateOasvalidationPluginRequest(ctx context.Context) (*operations.CreateOasvalidationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oasValidationPlugin, oasValidationPluginDiags := r.ToSharedOasValidationPlugin(ctx)
+	diags.Append(oasValidationPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateOasvalidationPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		OasValidationPlugin: *oasValidationPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsUpdateOasvalidationPluginRequest(ctx context.Context) (*operations.UpdateOasvalidationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	oasValidationPlugin, oasValidationPluginDiags := r.ToSharedOasValidationPlugin(ctx)
+	diags.Append(oasValidationPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateOasvalidationPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		OasValidationPlugin: *oasValidationPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsGetOasvalidationPluginRequest(ctx context.Context) (*operations.GetOasvalidationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOasvalidationPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOasValidationResourceModel) ToOperationsDeleteOasvalidationPluginRequest(ctx context.Context) (*operations.DeleteOasvalidationPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteOasvalidationPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginOasValidationResourceModel) RefreshFromSharedOasValidationPlugin(ctx context.Context, resp *shared.OasValidationPlugin) diag.Diagnostics {

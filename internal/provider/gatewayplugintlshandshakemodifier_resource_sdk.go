@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeModifierPlugin() *shared.TLSHandshakeModifierPlugin {
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeModifierPlugin(ctx context.Context) (*shared.TLSHandshakeModifierPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 	if r.Ordering != nil {
 		var after *shared.TLSHandshakeModifierPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 		}
 		var before *shared.TLSHandshakeModifierPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -84,7 +87,7 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 			TLSClientCertificate: tlsClientCertificate,
 		}
 	}
-	var protocols []shared.TLSHandshakeModifierPluginProtocols = []shared.TLSHandshakeModifierPluginProtocols{}
+	protocols := make([]shared.TLSHandshakeModifierPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.TLSHandshakeModifierPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -125,7 +128,88 @@ func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToSharedTLSHandshakeMod
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsCreateTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.CreateTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
+	diags.Append(tlsHandshakeModifierPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTlshandshakemodifierPluginRequest{
+		ControlPlaneID:             controlPlaneID,
+		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsUpdateTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.UpdateTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tlsHandshakeModifierPlugin, tlsHandshakeModifierPluginDiags := r.ToSharedTLSHandshakeModifierPlugin(ctx)
+	diags.Append(tlsHandshakeModifierPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateTlshandshakemodifierPluginRequest{
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		TLSHandshakeModifierPlugin: *tlsHandshakeModifierPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsGetTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.GetTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetTlshandshakemodifierPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTLSHandshakeModifierResourceModel) ToOperationsDeleteTlshandshakemodifierPluginRequest(ctx context.Context) (*operations.DeleteTlshandshakemodifierPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteTlshandshakemodifierPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginTLSHandshakeModifierResourceModel) RefreshFromSharedTLSHandshakeModifierPlugin(ctx context.Context, resp *shared.TLSHandshakeModifierPlugin) diag.Diagnostics {

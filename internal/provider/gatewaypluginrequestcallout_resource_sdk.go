@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin() *shared.RequestCalloutPlugin {
+func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(ctx context.Context) (*shared.RequestCalloutPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 	if r.Ordering != nil {
 		var after *shared.RequestCalloutPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		}
 		var before *shared.RequestCalloutPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -103,7 +106,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.RequestCalloutPluginClusterNodes = []shared.RequestCalloutPluginClusterNodes{}
+				clusterNodes := make([]shared.RequestCalloutPluginClusterNodes, 0, len(r.Config.Cache.Redis.ClusterNodes))
 				for _, clusterNodesItem := range r.Config.Cache.Redis.ClusterNodes {
 					ip := new(string)
 					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -188,7 +191,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.RequestCalloutPluginSentinelNodes = []shared.RequestCalloutPluginSentinelNodes{}
+				sentinelNodes := make([]shared.RequestCalloutPluginSentinelNodes, 0, len(r.Config.Cache.Redis.SentinelNodes))
 				for _, sentinelNodesItem := range r.Config.Cache.Redis.SentinelNodes {
 					host1 := new(string)
 					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -286,7 +289,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 				Strategy: strategy,
 			}
 		}
-		var callouts []shared.Callouts = []shared.Callouts{}
+		callouts := make([]shared.Callouts, 0, len(r.Config.Callouts))
 		for _, calloutsItem := range r.Config.Callouts {
 			bypass := new(bool)
 			if !calloutsItem.Cache.Bypass.IsUnknown() && !calloutsItem.Cache.Bypass.IsNull() {
@@ -297,7 +300,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			cache1 := shared.RequestCalloutPluginCache{
 				Bypass: bypass,
 			}
-			var dependsOn []string = []string{}
+			dependsOn := make([]string, 0, len(calloutsItem.DependsOn))
 			for _, dependsOnItem := range calloutsItem.DependsOn {
 				dependsOn = append(dependsOn, dependsOnItem.ValueString())
 			}
@@ -345,7 +348,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			} else {
 				errorResponseMsg = nil
 			}
-			var httpStatuses []int64 = []int64{}
+			httpStatuses := make([]int64, 0, len(calloutsItem.Request.Error.HTTPStatuses))
 			for _, httpStatusesItem := range calloutsItem.Request.Error.HTTPStatuses {
 				httpStatuses = append(httpStatuses, httpStatusesItem.ValueInt64())
 			}
@@ -649,7 +652,7 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 			ID: id2,
 		}
 	}
-	var protocols []shared.RequestCalloutPluginProtocols = []shared.RequestCalloutPluginProtocols{}
+	protocols := make([]shared.RequestCalloutPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RequestCalloutPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -692,7 +695,88 @@ func (r *GatewayPluginRequestCalloutResourceModel) ToSharedRequestCalloutPlugin(
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsCreateRequestcalloutPluginRequest(ctx context.Context) (*operations.CreateRequestcalloutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
+	diags.Append(requestCalloutPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequestcalloutPluginRequest{
+		ControlPlaneID:       controlPlaneID,
+		RequestCalloutPlugin: *requestCalloutPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsUpdateRequestcalloutPluginRequest(ctx context.Context) (*operations.UpdateRequestcalloutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestCalloutPlugin, requestCalloutPluginDiags := r.ToSharedRequestCalloutPlugin(ctx)
+	diags.Append(requestCalloutPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequestcalloutPluginRequest{
+		PluginID:             pluginID,
+		ControlPlaneID:       controlPlaneID,
+		RequestCalloutPlugin: *requestCalloutPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsGetRequestcalloutPluginRequest(ctx context.Context) (*operations.GetRequestcalloutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestcalloutPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestCalloutResourceModel) ToOperationsDeleteRequestcalloutPluginRequest(ctx context.Context) (*operations.DeleteRequestcalloutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequestcalloutPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRequestCalloutResourceModel) RefreshFromSharedRequestCalloutPlugin(ctx context.Context, resp *shared.RequestCalloutPlugin) diag.Diagnostics {

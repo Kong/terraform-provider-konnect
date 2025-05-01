@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorPlugin() *shared.AiPromptDecoratorPlugin {
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorPlugin(ctx context.Context) (*shared.AiPromptDecoratorPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 	if r.Ordering != nil {
 		var after *shared.AiPromptDecoratorPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 		}
 		var before *shared.AiPromptDecoratorPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -88,7 +91,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 		}
 		var prompts *shared.Prompts
 		if r.Config.Prompts != nil {
-			var append1 []shared.AiPromptDecoratorPluginAppend = []shared.AiPromptDecoratorPluginAppend{}
+			append1 := make([]shared.AiPromptDecoratorPluginAppend, 0, len(r.Config.Prompts.Append))
 			for _, appendItem := range r.Config.Prompts.Append {
 				var content string
 				content = appendItem.Content.ValueString()
@@ -104,7 +107,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 					Role:    role,
 				})
 			}
-			var prepend []shared.Prepend = []shared.Prepend{}
+			prepend := make([]shared.Prepend, 0, len(r.Config.Prompts.Prepend))
 			for _, prependItem := range r.Config.Prompts.Prepend {
 				var content1 string
 				content1 = prependItem.Content.ValueString()
@@ -155,7 +158,7 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiPromptDecoratorPluginProtocols = []shared.AiPromptDecoratorPluginProtocols{}
+	protocols := make([]shared.AiPromptDecoratorPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiPromptDecoratorPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -198,7 +201,88 @@ func (r *GatewayPluginAiPromptDecoratorResourceModel) ToSharedAiPromptDecoratorP
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsCreateAipromptdecoratorPluginRequest(ctx context.Context) (*operations.CreateAipromptdecoratorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptDecoratorPlugin, aiPromptDecoratorPluginDiags := r.ToSharedAiPromptDecoratorPlugin(ctx)
+	diags.Append(aiPromptDecoratorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAipromptdecoratorPluginRequest{
+		ControlPlaneID:          controlPlaneID,
+		AiPromptDecoratorPlugin: *aiPromptDecoratorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsUpdateAipromptdecoratorPluginRequest(ctx context.Context) (*operations.UpdateAipromptdecoratorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiPromptDecoratorPlugin, aiPromptDecoratorPluginDiags := r.ToSharedAiPromptDecoratorPlugin(ctx)
+	diags.Append(aiPromptDecoratorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAipromptdecoratorPluginRequest{
+		PluginID:                pluginID,
+		ControlPlaneID:          controlPlaneID,
+		AiPromptDecoratorPlugin: *aiPromptDecoratorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsGetAipromptdecoratorPluginRequest(ctx context.Context) (*operations.GetAipromptdecoratorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAipromptdecoratorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiPromptDecoratorResourceModel) ToOperationsDeleteAipromptdecoratorPluginRequest(ctx context.Context) (*operations.DeleteAipromptdecoratorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAipromptdecoratorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiPromptDecoratorResourceModel) RefreshFromSharedAiPromptDecoratorPlugin(ctx context.Context, resp *shared.AiPromptDecoratorPlugin) diag.Diagnostics {

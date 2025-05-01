@@ -6,8 +6,26 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayConsumerGroupDataSourceModel) ToOperationsGetConsumerGroupRequest(ctx context.Context) (*operations.GetConsumerGroupRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var consumerGroupID string
+	consumerGroupID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetConsumerGroupRequest{
+		ConsumerGroupID: consumerGroupID,
+		ControlPlaneID:  controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayConsumerGroupDataSourceModel) RefreshFromSharedConsumerGroup(ctx context.Context, resp *shared.ConsumerGroup) diag.Diagnostics {
 	var diags diag.Diagnostics

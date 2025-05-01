@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.RouteExpression {
+func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression(ctx context.Context) (*shared.RouteExpression, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -59,9 +62,12 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 	} else {
 		priority = nil
 	}
-	var protocols []shared.RouteExpressionProtocols = []shared.RouteExpressionProtocols{}
-	for _, protocolsItem := range r.Protocols {
-		protocols = append(protocols, shared.RouteExpressionProtocols(protocolsItem.ValueString()))
+	var protocols []shared.RouteExpressionProtocols
+	if r.Protocols != nil {
+		protocols = make([]shared.RouteExpressionProtocols, 0, len(r.Protocols))
+		for _, protocolsItem := range r.Protocols {
+			protocols = append(protocols, shared.RouteExpressionProtocols(protocolsItem.ValueString()))
+		}
 	}
 	requestBuffering := new(bool)
 	if !r.RequestBuffering.IsUnknown() && !r.RequestBuffering.IsNull() {
@@ -93,7 +99,7 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 	} else {
 		stripPath = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -120,7 +126,88 @@ func (r *GatewayRouteExpressionResourceModel) ToSharedRouteExpression() *shared.
 		Tags:                    tags,
 		UpdatedAt:               updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayRouteExpressionResourceModel) ToOperationsCreateRouteRouteExpressionRequest(ctx context.Context) (*operations.CreateRouteRouteExpressionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeExpression, routeExpressionDiags := r.ToSharedRouteExpression(ctx)
+	diags.Append(routeExpressionDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRouteRouteExpressionRequest{
+		ControlPlaneID:  controlPlaneID,
+		RouteExpression: *routeExpression,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteExpressionResourceModel) ToOperationsUpsertRouteRouteExpressionRequest(ctx context.Context) (*operations.UpsertRouteRouteExpressionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeExpression, routeExpressionDiags := r.ToSharedRouteExpression(ctx)
+	diags.Append(routeExpressionDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertRouteRouteExpressionRequest{
+		RouteID:         routeID,
+		ControlPlaneID:  controlPlaneID,
+		RouteExpression: *routeExpression,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteExpressionResourceModel) ToOperationsGetRouteRouteExpressionRequest(ctx context.Context) (*operations.GetRouteRouteExpressionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRouteRouteExpressionRequest{
+		RouteID:        routeID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayRouteExpressionResourceModel) ToOperationsDeleteRouteRouteExpressionRequest(ctx context.Context) (*operations.DeleteRouteRouteExpressionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var routeID string
+	routeID = r.ID.ValueString()
+
+	out := operations.DeleteRouteRouteExpressionRequest{
+		ControlPlaneID: controlPlaneID,
+		RouteID:        routeID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayRouteExpressionResourceModel) RefreshFromSharedRouteExpression(ctx context.Context, resp *shared.RouteExpression) diag.Diagnostics {

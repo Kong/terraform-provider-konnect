@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
@@ -357,15 +356,13 @@ func (r *GatewayPluginConfluentConsumeResource) Create(ctx context.Context, req 
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateConfluentconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	confluentConsumePlugin := *data.ToSharedConfluentConsumePlugin()
-	request := operations.CreateConfluentconsumePluginRequest{
-		ControlPlaneID:         controlPlaneID,
-		ConfluentConsumePlugin: confluentConsumePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateConfluentconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.CreateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -419,17 +416,13 @@ func (r *GatewayPluginConfluentConsumeResource) Read(ctx context.Context, req re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetConfluentconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetConfluentconsumePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetConfluentconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.GetConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -477,19 +470,13 @@ func (r *GatewayPluginConfluentConsumeResource) Update(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateConfluentconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	confluentConsumePlugin := *data.ToSharedConfluentConsumePlugin()
-	request := operations.UpdateConfluentconsumePluginRequest{
-		PluginID:               pluginID,
-		ControlPlaneID:         controlPlaneID,
-		ConfluentConsumePlugin: confluentConsumePlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateConfluentconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -543,17 +530,13 @@ func (r *GatewayPluginConfluentConsumeResource) Delete(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteConfluentconsumePluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteConfluentconsumePluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteConfluentconsumePlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteConfluentconsumePlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

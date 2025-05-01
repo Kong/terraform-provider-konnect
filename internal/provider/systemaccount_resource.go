@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_boolplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/boolplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -127,7 +126,12 @@ func (r *SystemAccountResource) Create(ctx context.Context, req resource.CreateR
 		return
 	}
 
-	request := data.ToSharedCreateSystemAccount()
+	request, requestDiags := data.ToSharedCreateSystemAccount(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.SystemAccounts.PostSystemAccounts(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -182,13 +186,13 @@ func (r *SystemAccountResource) Read(ctx context.Context, req resource.ReadReque
 		return
 	}
 
-	var accountID string
-	accountID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetSystemAccountsIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetSystemAccountsIDRequest{
-		AccountID: accountID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccounts.GetSystemAccountsID(ctx, request)
+	res, err := r.client.SystemAccounts.GetSystemAccountsID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -236,15 +240,13 @@ func (r *SystemAccountResource) Update(ctx context.Context, req resource.UpdateR
 		return
 	}
 
-	var accountID string
-	accountID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsPatchSystemAccountsIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateSystemAccount := data.ToSharedUpdateSystemAccount()
-	request := operations.PatchSystemAccountsIDRequest{
-		AccountID:           accountID,
-		UpdateSystemAccount: updateSystemAccount,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccounts.PatchSystemAccountsID(ctx, request)
+	res, err := r.client.SystemAccounts.PatchSystemAccountsID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -298,13 +300,13 @@ func (r *SystemAccountResource) Delete(ctx context.Context, req resource.DeleteR
 		return
 	}
 
-	var accountID string
-	accountID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteSystemAccountsIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteSystemAccountsIDRequest{
-		AccountID: accountID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccounts.DeleteSystemAccountsID(ctx, request)
+	res, err := r.client.SystemAccounts.DeleteSystemAccountsID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

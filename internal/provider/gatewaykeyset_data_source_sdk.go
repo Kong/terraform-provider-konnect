@@ -6,8 +6,26 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayKeySetDataSourceModel) ToOperationsGetKeySetRequest(ctx context.Context) (*operations.GetKeySetRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var keySetID string
+	keySetID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKeySetRequest{
+		KeySetID:       keySetID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayKeySetDataSourceModel) RefreshFromSharedKeySet(ctx context.Context, resp *shared.KeySet) diag.Diagnostics {
 	var diags diag.Diagnostics

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithoutParents {
+func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents(ctx context.Context) (*shared.JWTWithoutParents, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	algorithm := new(shared.Algorithm)
 	if !r.Algorithm.IsUnknown() && !r.Algorithm.IsNull() {
 		*algorithm = shared.Algorithm(r.Algorithm.ValueString())
@@ -59,7 +62,7 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 	} else {
 		secret = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -73,7 +76,75 @@ func (r *GatewayJWTResourceModel) ToSharedJWTWithoutParents() *shared.JWTWithout
 		Secret:       secret,
 		Tags:         tags,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayJWTResourceModel) ToOperationsCreateJwtWithConsumerRequest(ctx context.Context) (*operations.CreateJwtWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	jwtWithoutParents, jwtWithoutParentsDiags := r.ToSharedJWTWithoutParents(ctx)
+	diags.Append(jwtWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateJwtWithConsumerRequest{
+		ControlPlaneID:    controlPlaneID,
+		ConsumerID:        consumerID,
+		JWTWithoutParents: *jwtWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayJWTResourceModel) ToOperationsGetJwtWithConsumerRequest(ctx context.Context) (*operations.GetJwtWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var jwtID string
+	jwtID = r.ID.ValueString()
+
+	out := operations.GetJwtWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		JWTID:          jwtID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayJWTResourceModel) ToOperationsDeleteJwtWithConsumerRequest(ctx context.Context) (*operations.DeleteJwtWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var jwtID string
+	jwtID = r.ID.ValueString()
+
+	out := operations.DeleteJwtWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		JWTID:          jwtID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayJWTResourceModel) RefreshFromSharedJwt(ctx context.Context, resp *shared.Jwt) diag.Diagnostics {

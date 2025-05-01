@@ -8,8 +8,39 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *PortalListDataSourceModel) ToOperationsListPortalsRequest(ctx context.Context) (*operations.ListPortalsRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	pageSize := new(int64)
+	if !r.PageSize.IsUnknown() && !r.PageSize.IsNull() {
+		*pageSize = r.PageSize.ValueInt64()
+	} else {
+		pageSize = nil
+	}
+	pageNumber := new(int64)
+	if !r.PageNumber.IsUnknown() && !r.PageNumber.IsNull() {
+		*pageNumber = r.PageNumber.ValueInt64()
+	} else {
+		pageNumber = nil
+	}
+	sort := new(string)
+	if !r.Sort.IsUnknown() && !r.Sort.IsNull() {
+		*sort = r.Sort.ValueString()
+	} else {
+		sort = nil
+	}
+	out := operations.ListPortalsRequest{
+		PageSize:   pageSize,
+		PageNumber: pageNumber,
+		Sort:       sort,
+	}
+
+	return &out, diags
+}
 
 func (r *PortalListDataSourceModel) RefreshFromSharedListPortalsResponse(ctx context.Context, resp *shared.ListPortalsResponse) diag.Diagnostics {
 	var diags diag.Diagnostics

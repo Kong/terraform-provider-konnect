@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -235,15 +234,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Create(ctx context.Conte
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateRoutetransformeradvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPlugin()
-	request := operations.CreateRoutetransformeradvancedPluginRequest{
-		ControlPlaneID:                 controlPlaneID,
-		RouteTransformerAdvancedPlugin: routeTransformerAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateRoutetransformeradvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -297,17 +294,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Read(ctx context.Context
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetRoutetransformeradvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetRoutetransformeradvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetRoutetransformeradvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.GetRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -355,19 +348,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Update(ctx context.Conte
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateRoutetransformeradvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	routeTransformerAdvancedPlugin := *data.ToSharedRouteTransformerAdvancedPlugin()
-	request := operations.UpdateRoutetransformeradvancedPluginRequest{
-		PluginID:                       pluginID,
-		ControlPlaneID:                 controlPlaneID,
-		RouteTransformerAdvancedPlugin: routeTransformerAdvancedPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateRoutetransformeradvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -421,17 +408,13 @@ func (r *GatewayPluginRouteTransformerAdvancedResource) Delete(ctx context.Conte
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteRoutetransformeradvancedPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteRoutetransformeradvancedPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteRoutetransformeradvancedPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteRoutetransformeradvancedPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

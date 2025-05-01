@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLogPlugin {
+func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin(ctx context.Context) (*shared.TCPLogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 	if r.Ordering != nil {
 		var after *shared.TCPLogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 		}
 		var before *shared.TCPLogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -139,7 +142,7 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 			ID: id1,
 		}
 	}
-	var protocols []shared.TCPLogPluginProtocols = []shared.TCPLogPluginProtocols{}
+	protocols := make([]shared.TCPLogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.TCPLogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -181,7 +184,88 @@ func (r *GatewayPluginTCPLogResourceModel) ToSharedTCPLogPlugin() *shared.TCPLog
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsCreateTcplogPluginRequest(ctx context.Context) (*operations.CreateTcplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
+	diags.Append(tcpLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTcplogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		TCPLogPlugin:   *tcpLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsUpdateTcplogPluginRequest(ctx context.Context) (*operations.UpdateTcplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	tcpLogPlugin, tcpLogPluginDiags := r.ToSharedTCPLogPlugin(ctx)
+	diags.Append(tcpLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateTcplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		TCPLogPlugin:   *tcpLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsGetTcplogPluginRequest(ctx context.Context) (*operations.GetTcplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetTcplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginTCPLogResourceModel) ToOperationsDeleteTcplogPluginRequest(ctx context.Context) (*operations.DeleteTcplogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteTcplogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginTCPLogResourceModel) RefreshFromSharedTCPLogPlugin(ctx context.Context, resp *shared.TCPLogPlugin) diag.Diagnostics {

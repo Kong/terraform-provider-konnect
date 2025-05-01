@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin {
+func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin(ctx context.Context) (*shared.SamlPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 	if r.Ordering != nil {
 		var after *shared.SamlPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 		}
 		var before *shared.SamlPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -118,7 +121,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.SamlPluginClusterNodes = []shared.SamlPluginClusterNodes{}
+			clusterNodes := make([]shared.SamlPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -209,7 +212,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.SamlPluginSentinelNodes = []shared.SamlPluginSentinelNodes{}
+			sentinelNodes := make([]shared.SamlPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -464,11 +467,11 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 		} else {
 			sessionRememberRollingTimeout = nil
 		}
-		var sessionRequestHeaders []shared.SamlPluginSessionRequestHeaders = []shared.SamlPluginSessionRequestHeaders{}
+		sessionRequestHeaders := make([]shared.SamlPluginSessionRequestHeaders, 0, len(r.Config.SessionRequestHeaders))
 		for _, sessionRequestHeadersItem := range r.Config.SessionRequestHeaders {
 			sessionRequestHeaders = append(sessionRequestHeaders, shared.SamlPluginSessionRequestHeaders(sessionRequestHeadersItem.ValueString()))
 		}
-		var sessionResponseHeaders []shared.SamlPluginSessionResponseHeaders = []shared.SamlPluginSessionResponseHeaders{}
+		sessionResponseHeaders := make([]shared.SamlPluginSessionResponseHeaders, 0, len(r.Config.SessionResponseHeaders))
 		for _, sessionResponseHeadersItem := range r.Config.SessionResponseHeaders {
 			sessionResponseHeaders = append(sessionResponseHeaders, shared.SamlPluginSessionResponseHeaders(sessionResponseHeadersItem.ValueString()))
 		}
@@ -546,7 +549,7 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 			ValidateAssertionSignature:     validateAssertionSignature,
 		}
 	}
-	var protocols []shared.SamlPluginProtocols = []shared.SamlPluginProtocols{}
+	protocols := make([]shared.SamlPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.SamlPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -587,7 +590,88 @@ func (r *GatewayPluginSamlResourceModel) ToSharedSamlPlugin() *shared.SamlPlugin
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSamlResourceModel) ToOperationsCreateSamlPluginRequest(ctx context.Context) (*operations.CreateSamlPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
+	diags.Append(samlPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateSamlPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		SamlPlugin:     *samlPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSamlResourceModel) ToOperationsUpdateSamlPluginRequest(ctx context.Context) (*operations.UpdateSamlPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	samlPlugin, samlPluginDiags := r.ToSharedSamlPlugin(ctx)
+	diags.Append(samlPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateSamlPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SamlPlugin:     *samlPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSamlResourceModel) ToOperationsGetSamlPluginRequest(ctx context.Context) (*operations.GetSamlPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetSamlPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSamlResourceModel) ToOperationsDeleteSamlPluginRequest(ctx context.Context) (*operations.DeleteSamlPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteSamlPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginSamlResourceModel) RefreshFromSharedSamlPlugin(ctx context.Context, resp *shared.SamlPlugin) diag.Diagnostics {

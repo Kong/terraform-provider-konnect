@@ -18,7 +18,6 @@ import (
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	speakeasy_int64validators "github.com/kong/terraform-provider-konnect/v2/internal/validators/int64validators"
 	speakeasy_objectvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/objectvalidators"
@@ -473,8 +472,13 @@ func (r *CloudGatewayConfigurationResource) Create(ctx context.Context, req reso
 		return
 	}
 
-	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
+	request, requestDiags := data.ToSharedCreateConfigurationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -528,13 +532,13 @@ func (r *CloudGatewayConfigurationResource) Read(ctx context.Context, req resour
 		return
 	}
 
-	var configurationID string
-	configurationID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetConfigurationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetConfigurationRequest{
-		ConfigurationID: configurationID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.CloudGateways.GetConfiguration(ctx, request)
+	res, err := r.client.CloudGateways.GetConfiguration(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -582,8 +586,13 @@ func (r *CloudGatewayConfigurationResource) Update(ctx context.Context, req reso
 		return
 	}
 
-	request := *data.ToSharedCreateConfigurationRequest()
-	res, err := r.client.CloudGateways.CreateConfiguration(ctx, request)
+	request, requestDiags := data.ToSharedCreateConfigurationRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.CloudGateways.CreateConfiguration(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

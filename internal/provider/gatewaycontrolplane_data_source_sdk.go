@@ -7,8 +7,22 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayControlPlaneDataSourceModel) ToOperationsGetControlPlaneRequest(ctx context.Context) (*operations.GetControlPlaneRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	out := operations.GetControlPlaneRequest{
+		ID: id,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayControlPlaneDataSourceModel) RefreshFromSharedControlPlane(ctx context.Context, resp *shared.ControlPlane) diag.Diagnostics {
 	var diags diag.Diagnostics

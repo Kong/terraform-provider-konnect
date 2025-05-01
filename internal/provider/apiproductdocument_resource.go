@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
@@ -160,15 +159,13 @@ func (r *APIProductDocumentResource) Create(ctx context.Context, req resource.Cr
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsCreateAPIProductDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createAPIProductDocumentDTO := *data.ToSharedCreateAPIProductDocumentDTO()
-	request := operations.CreateAPIProductDocumentRequest{
-		APIProductID:                apiProductID,
-		CreateAPIProductDocumentDTO: createAPIProductDocumentDTO,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductDocumentation.CreateAPIProductDocument(ctx, request)
+	res, err := r.client.APIProductDocumentation.CreateAPIProductDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -222,17 +219,13 @@ func (r *APIProductDocumentResource) Read(ctx context.Context, req resource.Read
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsGetAPIProductDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.GetAPIProductDocumentRequest{
-		APIProductID: apiProductID,
-		ID:           id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductDocumentation.GetAPIProductDocument(ctx, request)
+	res, err := r.client.APIProductDocumentation.GetAPIProductDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -280,19 +273,13 @@ func (r *APIProductDocumentResource) Update(ctx context.Context, req resource.Up
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPIProductDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	updateAPIProductDocumentDTO := *data.ToSharedUpdateAPIProductDocumentDTO()
-	request := operations.UpdateAPIProductDocumentRequest{
-		APIProductID:                apiProductID,
-		ID:                          id,
-		UpdateAPIProductDocumentDTO: updateAPIProductDocumentDTO,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductDocumentation.UpdateAPIProductDocument(ctx, request)
+	res, err := r.client.APIProductDocumentation.UpdateAPIProductDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -346,17 +333,13 @@ func (r *APIProductDocumentResource) Delete(ctx context.Context, req resource.De
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIProductDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.DeleteAPIProductDocumentRequest{
-		APIProductID: apiProductID,
-		ID:           id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductDocumentation.DeleteAPIProductDocument(ctx, request)
+	res, err := r.client.APIProductDocumentation.DeleteAPIProductDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

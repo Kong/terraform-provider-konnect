@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -243,15 +242,13 @@ func (r *GatewayPluginCorrelationIDResource) Create(ctx context.Context, req res
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateCorrelationidPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	correlationIDPlugin := *data.ToSharedCorrelationIDPlugin()
-	request := operations.CreateCorrelationidPluginRequest{
-		ControlPlaneID:      controlPlaneID,
-		CorrelationIDPlugin: correlationIDPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateCorrelationidPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -305,17 +302,13 @@ func (r *GatewayPluginCorrelationIDResource) Read(ctx context.Context, req resou
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetCorrelationidPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetCorrelationidPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetCorrelationidPlugin(ctx, request)
+	res, err := r.client.Plugins.GetCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -363,19 +356,13 @@ func (r *GatewayPluginCorrelationIDResource) Update(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateCorrelationidPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	correlationIDPlugin := *data.ToSharedCorrelationIDPlugin()
-	request := operations.UpdateCorrelationidPluginRequest{
-		PluginID:            pluginID,
-		ControlPlaneID:      controlPlaneID,
-		CorrelationIDPlugin: correlationIDPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateCorrelationidPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -429,17 +416,13 @@ func (r *GatewayPluginCorrelationIDResource) Delete(ctx context.Context, req res
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteCorrelationidPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteCorrelationidPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteCorrelationidPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteCorrelationidPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

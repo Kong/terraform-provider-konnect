@@ -3,15 +3,59 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *TeamUserResourceModel) ToSharedAddUserToTeam() *shared.AddUserToTeam {
+func (r *TeamUserResourceModel) ToSharedAddUserToTeam(ctx context.Context) (*shared.AddUserToTeam, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var userID string
 	userID = r.UserID.ValueString()
 
 	out := shared.AddUserToTeam{
 		UserID: userID,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *TeamUserResourceModel) ToOperationsAddUserToTeamRequest(ctx context.Context) (*operations.AddUserToTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	addUserToTeam, addUserToTeamDiags := r.ToSharedAddUserToTeam(ctx)
+	diags.Append(addUserToTeamDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.AddUserToTeamRequest{
+		TeamID:        teamID,
+		AddUserToTeam: addUserToTeam,
+	}
+
+	return &out, diags
+}
+
+func (r *TeamUserResourceModel) ToOperationsRemoveUserFromTeamRequest(ctx context.Context) (*operations.RemoveUserFromTeamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var userID string
+	userID = r.UserID.ValueString()
+
+	var teamID string
+	teamID = r.TeamID.ValueString()
+
+	out := operations.RemoveUserFromTeamRequest{
+		UserID: userID,
+		TeamID: teamID,
+	}
+
+	return &out, diags
 }

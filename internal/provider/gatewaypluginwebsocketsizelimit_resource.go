@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -235,15 +234,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Create(ctx context.Context, re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateWebsocketsizelimitPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	websocketSizeLimitPlugin := *data.ToSharedWebsocketSizeLimitPlugin()
-	request := operations.CreateWebsocketsizelimitPluginRequest{
-		ControlPlaneID:           controlPlaneID,
-		WebsocketSizeLimitPlugin: websocketSizeLimitPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateWebsocketsizelimitPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -297,17 +294,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Read(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetWebsocketsizelimitPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetWebsocketsizelimitPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetWebsocketsizelimitPlugin(ctx, request)
+	res, err := r.client.Plugins.GetWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -355,19 +348,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Update(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateWebsocketsizelimitPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	websocketSizeLimitPlugin := *data.ToSharedWebsocketSizeLimitPlugin()
-	request := operations.UpdateWebsocketsizelimitPluginRequest{
-		PluginID:                 pluginID,
-		ControlPlaneID:           controlPlaneID,
-		WebsocketSizeLimitPlugin: websocketSizeLimitPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateWebsocketsizelimitPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -421,17 +408,13 @@ func (r *GatewayPluginWebsocketSizeLimitResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteWebsocketsizelimitPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteWebsocketsizelimitPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteWebsocketsizelimitPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteWebsocketsizelimitPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

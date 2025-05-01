@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
+func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin(ctx context.Context) (*shared.JwtPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 	if r.Ordering != nil {
 		var after *shared.JwtPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 		}
 		var before *shared.JwtPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -80,15 +83,15 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 		} else {
 			anonymous = nil
 		}
-		var claimsToVerify []shared.ClaimsToVerify = []shared.ClaimsToVerify{}
+		claimsToVerify := make([]shared.ClaimsToVerify, 0, len(r.Config.ClaimsToVerify))
 		for _, claimsToVerifyItem := range r.Config.ClaimsToVerify {
 			claimsToVerify = append(claimsToVerify, shared.ClaimsToVerify(claimsToVerifyItem.ValueString()))
 		}
-		var cookieNames []string = []string{}
+		cookieNames := make([]string, 0, len(r.Config.CookieNames))
 		for _, cookieNamesItem := range r.Config.CookieNames {
 			cookieNames = append(cookieNames, cookieNamesItem.ValueString())
 		}
-		var headerNames []string = []string{}
+		headerNames := make([]string, 0, len(r.Config.HeaderNames))
 		for _, headerNamesItem := range r.Config.HeaderNames {
 			headerNames = append(headerNames, headerNamesItem.ValueString())
 		}
@@ -122,7 +125,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 		} else {
 			secretIsBase64 = nil
 		}
-		var uriParamNames []string = []string{}
+		uriParamNames := make([]string, 0, len(r.Config.URIParamNames))
 		for _, uriParamNamesItem := range r.Config.URIParamNames {
 			uriParamNames = append(uriParamNames, uriParamNamesItem.ValueString())
 		}
@@ -139,7 +142,7 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 			URIParamNames:     uriParamNames,
 		}
 	}
-	var protocols []shared.JwtPluginProtocols = []shared.JwtPluginProtocols{}
+	protocols := make([]shared.JwtPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.JwtPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -180,7 +183,88 @@ func (r *GatewayPluginJwtResourceModel) ToSharedJwtPlugin() *shared.JwtPlugin {
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJwtResourceModel) ToOperationsCreateJwtPluginRequest(ctx context.Context) (*operations.CreateJwtPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jwtPlugin, jwtPluginDiags := r.ToSharedJwtPlugin(ctx)
+	diags.Append(jwtPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateJwtPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		JwtPlugin:      *jwtPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJwtResourceModel) ToOperationsUpdateJwtPluginRequest(ctx context.Context) (*operations.UpdateJwtPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	jwtPlugin, jwtPluginDiags := r.ToSharedJwtPlugin(ctx)
+	diags.Append(jwtPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateJwtPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		JwtPlugin:      *jwtPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJwtResourceModel) ToOperationsGetJwtPluginRequest(ctx context.Context) (*operations.GetJwtPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetJwtPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginJwtResourceModel) ToOperationsDeleteJwtPluginRequest(ctx context.Context) (*operations.DeleteJwtPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteJwtPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginJwtResourceModel) RefreshFromSharedJwtPlugin(ctx context.Context, resp *shared.JwtPlugin) diag.Diagnostics {

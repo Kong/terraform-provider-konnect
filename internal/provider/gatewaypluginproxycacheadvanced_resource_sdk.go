@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvancedPlugin() *shared.ProxyCacheAdvancedPlugin {
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvancedPlugin(ctx context.Context) (*shared.ProxyCacheAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 	if r.Ordering != nil {
 		var after *shared.ProxyCacheAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		}
 		var before *shared.ProxyCacheAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -92,7 +95,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		} else {
 			cacheTTL = nil
 		}
-		var contentType []string = []string{}
+		contentType := make([]string, 0, len(r.Config.ContentType))
 		for _, contentTypeItem := range r.Config.ContentType {
 			contentType = append(contentType, contentTypeItem.ValueString())
 		}
@@ -122,7 +125,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.ProxyCacheAdvancedPluginClusterNodes = []shared.ProxyCacheAdvancedPluginClusterNodes{}
+			clusterNodes := make([]shared.ProxyCacheAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -207,7 +210,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.ProxyCacheAdvancedPluginSentinelNodes = []shared.ProxyCacheAdvancedPluginSentinelNodes{}
+			sentinelNodes := make([]shared.ProxyCacheAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -292,11 +295,11 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 				Username:               username,
 			}
 		}
-		var requestMethod []shared.ProxyCacheAdvancedPluginRequestMethod = []shared.ProxyCacheAdvancedPluginRequestMethod{}
+		requestMethod := make([]shared.ProxyCacheAdvancedPluginRequestMethod, 0, len(r.Config.RequestMethod))
 		for _, requestMethodItem := range r.Config.RequestMethod {
 			requestMethod = append(requestMethod, shared.ProxyCacheAdvancedPluginRequestMethod(requestMethodItem.ValueString()))
 		}
-		var responseCode []int64 = []int64{}
+		responseCode := make([]int64, 0, len(r.Config.ResponseCode))
 		for _, responseCodeItem := range r.Config.ResponseCode {
 			responseCode = append(responseCode, responseCodeItem.ValueInt64())
 		}
@@ -338,11 +341,11 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		} else {
 			strategy = nil
 		}
-		var varyHeaders []string = []string{}
+		varyHeaders := make([]string, 0, len(r.Config.VaryHeaders))
 		for _, varyHeadersItem := range r.Config.VaryHeaders {
 			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
 		}
-		var varyQueryParams []string = []string{}
+		varyQueryParams := make([]string, 0, len(r.Config.VaryQueryParams))
 		for _, varyQueryParamsItem := range r.Config.VaryQueryParams {
 			varyQueryParams = append(varyQueryParams, varyQueryParamsItem.ValueString())
 		}
@@ -387,7 +390,7 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 			ID: id2,
 		}
 	}
-	var protocols []shared.ProxyCacheAdvancedPluginProtocols = []shared.ProxyCacheAdvancedPluginProtocols{}
+	protocols := make([]shared.ProxyCacheAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.ProxyCacheAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -430,7 +433,88 @@ func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToSharedProxyCacheAdvance
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsCreateProxycacheadvancedPluginRequest(ctx context.Context) (*operations.CreateProxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
+	diags.Append(proxyCacheAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateProxycacheadvancedPluginRequest{
+		ControlPlaneID:           controlPlaneID,
+		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsUpdateProxycacheadvancedPluginRequest(ctx context.Context) (*operations.UpdateProxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	proxyCacheAdvancedPlugin, proxyCacheAdvancedPluginDiags := r.ToSharedProxyCacheAdvancedPlugin(ctx)
+	diags.Append(proxyCacheAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateProxycacheadvancedPluginRequest{
+		PluginID:                 pluginID,
+		ControlPlaneID:           controlPlaneID,
+		ProxyCacheAdvancedPlugin: *proxyCacheAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsGetProxycacheadvancedPluginRequest(ctx context.Context) (*operations.GetProxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetProxycacheadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginProxyCacheAdvancedResourceModel) ToOperationsDeleteProxycacheadvancedPluginRequest(ctx context.Context) (*operations.DeleteProxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteProxycacheadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginProxyCacheAdvancedResourceModel) RefreshFromSharedProxyCacheAdvancedPlugin(ctx context.Context, resp *shared.ProxyCacheAdvancedPlugin) diag.Diagnostics {

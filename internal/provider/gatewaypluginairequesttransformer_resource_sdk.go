@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransformerPlugin() *shared.AiRequestTransformerPlugin {
+func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransformerPlugin(ctx context.Context) (*shared.AiRequestTransformerPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 	if r.Ordering != nil {
 		var after *shared.AiRequestTransformerPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		}
 		var before *shared.AiRequestTransformerPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -494,7 +497,7 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 			ID: id1,
 		}
 	}
-	var protocols []shared.AiRequestTransformerPluginProtocols = []shared.AiRequestTransformerPluginProtocols{}
+	protocols := make([]shared.AiRequestTransformerPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiRequestTransformerPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -536,7 +539,88 @@ func (r *GatewayPluginAiRequestTransformerResourceModel) ToSharedAiRequestTransf
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsCreateAirequesttransformerPluginRequest(ctx context.Context) (*operations.CreateAirequesttransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRequestTransformerPlugin, aiRequestTransformerPluginDiags := r.ToSharedAiRequestTransformerPlugin(ctx)
+	diags.Append(aiRequestTransformerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAirequesttransformerPluginRequest{
+		ControlPlaneID:             controlPlaneID,
+		AiRequestTransformerPlugin: *aiRequestTransformerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsUpdateAirequesttransformerPluginRequest(ctx context.Context) (*operations.UpdateAirequesttransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRequestTransformerPlugin, aiRequestTransformerPluginDiags := r.ToSharedAiRequestTransformerPlugin(ctx)
+	diags.Append(aiRequestTransformerPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAirequesttransformerPluginRequest{
+		PluginID:                   pluginID,
+		ControlPlaneID:             controlPlaneID,
+		AiRequestTransformerPlugin: *aiRequestTransformerPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsGetAirequesttransformerPluginRequest(ctx context.Context) (*operations.GetAirequesttransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAirequesttransformerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRequestTransformerResourceModel) ToOperationsDeleteAirequesttransformerPluginRequest(ctx context.Context) (*operations.DeleteAirequesttransformerPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAirequesttransformerPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiRequestTransformerResourceModel) RefreshFromSharedAiRequestTransformerPlugin(ctx context.Context, resp *shared.AiRequestTransformerPlugin) diag.Diagnostics {

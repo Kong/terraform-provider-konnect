@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugin() *shared.UpstreamTimeoutPlugin {
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugin(ctx context.Context) (*shared.UpstreamTimeoutPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 	if r.Ordering != nil {
 		var after *shared.UpstreamTimeoutPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 		}
 		var before *shared.UpstreamTimeoutPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -110,7 +113,7 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 			ID: id1,
 		}
 	}
-	var protocols []shared.UpstreamTimeoutPluginProtocols = []shared.UpstreamTimeoutPluginProtocols{}
+	protocols := make([]shared.UpstreamTimeoutPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.UpstreamTimeoutPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -152,7 +155,88 @@ func (r *GatewayPluginUpstreamTimeoutResourceModel) ToSharedUpstreamTimeoutPlugi
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsCreateUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.CreateUpstreamtimeoutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamTimeoutPlugin, upstreamTimeoutPluginDiags := r.ToSharedUpstreamTimeoutPlugin(ctx)
+	diags.Append(upstreamTimeoutPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateUpstreamtimeoutPluginRequest{
+		ControlPlaneID:        controlPlaneID,
+		UpstreamTimeoutPlugin: *upstreamTimeoutPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsUpdateUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.UpdateUpstreamtimeoutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	upstreamTimeoutPlugin, upstreamTimeoutPluginDiags := r.ToSharedUpstreamTimeoutPlugin(ctx)
+	diags.Append(upstreamTimeoutPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateUpstreamtimeoutPluginRequest{
+		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
+		UpstreamTimeoutPlugin: *upstreamTimeoutPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsGetUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.GetUpstreamtimeoutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetUpstreamtimeoutPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginUpstreamTimeoutResourceModel) ToOperationsDeleteUpstreamtimeoutPluginRequest(ctx context.Context) (*operations.DeleteUpstreamtimeoutPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteUpstreamtimeoutPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginUpstreamTimeoutResourceModel) RefreshFromSharedUpstreamTimeoutPlugin(ctx context.Context, resp *shared.UpstreamTimeoutPlugin) diag.Diagnostics {

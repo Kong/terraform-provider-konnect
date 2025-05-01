@@ -7,8 +7,30 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayMTLSAuthDataSourceModel) ToOperationsGetMtlsAuthWithConsumerRequest(ctx context.Context) (*operations.GetMtlsAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var mtlsAuthID string
+	mtlsAuthID = r.ID.ValueString()
+
+	out := operations.GetMtlsAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		MTLSAuthID:     mtlsAuthID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayMTLSAuthDataSourceModel) RefreshFromSharedMTLSAuth(ctx context.Context, resp *shared.MTLSAuth) diag.Diagnostics {
 	var diags diag.Diagnostics

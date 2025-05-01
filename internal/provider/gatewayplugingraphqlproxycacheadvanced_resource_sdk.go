@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlProxyCacheAdvancedPlugin() *shared.GraphqlProxyCacheAdvancedPlugin {
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlProxyCacheAdvancedPlugin(ctx context.Context) (*shared.GraphqlProxyCacheAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 	if r.Ordering != nil {
 		var after *shared.GraphqlProxyCacheAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 		}
 		var before *shared.GraphqlProxyCacheAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -106,7 +109,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.GraphqlProxyCacheAdvancedPluginClusterNodes = []shared.GraphqlProxyCacheAdvancedPluginClusterNodes{}
+			clusterNodes := make([]shared.GraphqlProxyCacheAdvancedPluginClusterNodes, 0, len(r.Config.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -191,7 +194,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.GraphqlProxyCacheAdvancedPluginSentinelNodes = []shared.GraphqlProxyCacheAdvancedPluginSentinelNodes{}
+			sentinelNodes := make([]shared.GraphqlProxyCacheAdvancedPluginSentinelNodes, 0, len(r.Config.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Redis.SentinelNodes {
 				host1 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -282,7 +285,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 		} else {
 			strategy = nil
 		}
-		var varyHeaders []string = []string{}
+		varyHeaders := make([]string, 0, len(r.Config.VaryHeaders))
 		for _, varyHeadersItem := range r.Config.VaryHeaders {
 			varyHeaders = append(varyHeaders, varyHeadersItem.ValueString())
 		}
@@ -307,7 +310,7 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 			ID: id1,
 		}
 	}
-	var protocols []shared.GraphqlProxyCacheAdvancedPluginProtocols = []shared.GraphqlProxyCacheAdvancedPluginProtocols{}
+	protocols := make([]shared.GraphqlProxyCacheAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.GraphqlProxyCacheAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -349,7 +352,88 @@ func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToSharedGraphqlPro
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsCreateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.CreateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
+	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateGraphqlproxycacheadvancedPluginRequest{
+		ControlPlaneID:                  controlPlaneID,
+		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsUpdateGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.UpdateGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	graphqlProxyCacheAdvancedPlugin, graphqlProxyCacheAdvancedPluginDiags := r.ToSharedGraphqlProxyCacheAdvancedPlugin(ctx)
+	diags.Append(graphqlProxyCacheAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateGraphqlproxycacheadvancedPluginRequest{
+		PluginID:                        pluginID,
+		ControlPlaneID:                  controlPlaneID,
+		GraphqlProxyCacheAdvancedPlugin: *graphqlProxyCacheAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsGetGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.GetGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetGraphqlproxycacheadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) ToOperationsDeleteGraphqlproxycacheadvancedPluginRequest(ctx context.Context) (*operations.DeleteGraphqlproxycacheadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteGraphqlproxycacheadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginGraphqlProxyCacheAdvancedResourceModel) RefreshFromSharedGraphqlProxyCacheAdvancedPlugin(ctx context.Context, resp *shared.GraphqlProxyCacheAdvancedPlugin) diag.Diagnostics {

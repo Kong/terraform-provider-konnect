@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugin() *shared.AiProxyAdvancedPlugin {
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugin(ctx context.Context) (*shared.AiProxyAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 	if r.Ordering != nil {
 		var after *shared.AiProxyAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		}
 		var before *shared.AiProxyAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -88,7 +91,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				connectTimeout = nil
 			}
-			var failoverCriteria []shared.FailoverCriteria = []shared.FailoverCriteria{}
+			failoverCriteria := make([]shared.FailoverCriteria, 0, len(r.Config.Balancer.FailoverCriteria))
 			for _, failoverCriteriaItem := range r.Config.Balancer.FailoverCriteria {
 				failoverCriteria = append(failoverCriteria, shared.FailoverCriteria(failoverCriteriaItem.ValueString()))
 			}
@@ -407,7 +410,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		} else {
 			responseStreaming = nil
 		}
-		var targets []shared.Targets = []shared.Targets{}
+		targets := make([]shared.Targets, 0, len(r.Config.Targets))
 		for _, targetsItem := range r.Config.Targets {
 			var auth1 *shared.AiProxyAdvancedPluginConfigAuth
 			if targetsItem.Auth != nil {
@@ -844,7 +847,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				clusterMaxRedirections = nil
 			}
-			var clusterNodes []shared.AiProxyAdvancedPluginClusterNodes = []shared.AiProxyAdvancedPluginClusterNodes{}
+			clusterNodes := make([]shared.AiProxyAdvancedPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
 			for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
 				ip := new(string)
 				if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -929,7 +932,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			} else {
 				sentinelMaster = nil
 			}
-			var sentinelNodes []shared.AiProxyAdvancedPluginSentinelNodes = []shared.AiProxyAdvancedPluginSentinelNodes{}
+			sentinelNodes := make([]shared.AiProxyAdvancedPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
 			for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
 				host2 := new(string)
 				if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -1061,7 +1064,7 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiProxyAdvancedPluginProtocols = []shared.AiProxyAdvancedPluginProtocols{}
+	protocols := make([]shared.AiProxyAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiProxyAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -1104,7 +1107,88 @@ func (r *GatewayPluginAiProxyAdvancedResourceModel) ToSharedAiProxyAdvancedPlugi
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsCreateAiproxyadvancedPluginRequest(ctx context.Context) (*operations.CreateAiproxyadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
+	diags.Append(aiProxyAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiproxyadvancedPluginRequest{
+		ControlPlaneID:        controlPlaneID,
+		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsUpdateAiproxyadvancedPluginRequest(ctx context.Context) (*operations.UpdateAiproxyadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiProxyAdvancedPlugin, aiProxyAdvancedPluginDiags := r.ToSharedAiProxyAdvancedPlugin(ctx)
+	diags.Append(aiProxyAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiproxyadvancedPluginRequest{
+		PluginID:              pluginID,
+		ControlPlaneID:        controlPlaneID,
+		AiProxyAdvancedPlugin: *aiProxyAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsGetAiproxyadvancedPluginRequest(ctx context.Context) (*operations.GetAiproxyadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiproxyadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiProxyAdvancedResourceModel) ToOperationsDeleteAiproxyadvancedPluginRequest(ctx context.Context) (*operations.DeleteAiproxyadvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiproxyadvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiProxyAdvancedResourceModel) RefreshFromSharedAiProxyAdvancedPlugin(ctx context.Context, resp *shared.AiProxyAdvancedPlugin) diag.Diagnostics {

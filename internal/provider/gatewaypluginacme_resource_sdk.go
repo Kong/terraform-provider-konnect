@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin {
+func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin(ctx context.Context) (*shared.AcmePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 	if r.Ordering != nil {
 		var after *shared.AcmePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 		}
 		var before *shared.AcmePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -115,7 +118,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 		} else {
 			certType = nil
 		}
-		var domains []string = []string{}
+		domains := make([]string, 0, len(r.Config.Domains))
 		for _, domainsItem := range r.Config.Domains {
 			domains = append(domains, domainsItem.ValueString())
 		}
@@ -444,7 +447,7 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 			TosAccepted:          tosAccepted,
 		}
 	}
-	var protocols []shared.AcmePluginProtocols = []shared.AcmePluginProtocols{}
+	protocols := make([]shared.AcmePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AcmePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -459,7 +462,88 @@ func (r *GatewayPluginAcmeResourceModel) ToSharedAcmePlugin() *shared.AcmePlugin
 		Config:       config,
 		Protocols:    protocols,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAcmeResourceModel) ToOperationsCreateAcmePluginRequest(ctx context.Context) (*operations.CreateAcmePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	acmePlugin, acmePluginDiags := r.ToSharedAcmePlugin(ctx)
+	diags.Append(acmePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAcmePluginRequest{
+		ControlPlaneID: controlPlaneID,
+		AcmePlugin:     *acmePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAcmeResourceModel) ToOperationsUpdateAcmePluginRequest(ctx context.Context) (*operations.UpdateAcmePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	acmePlugin, acmePluginDiags := r.ToSharedAcmePlugin(ctx)
+	diags.Append(acmePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAcmePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		AcmePlugin:     *acmePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAcmeResourceModel) ToOperationsGetAcmePluginRequest(ctx context.Context) (*operations.GetAcmePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAcmePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAcmeResourceModel) ToOperationsDeleteAcmePluginRequest(ctx context.Context) (*operations.DeleteAcmePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAcmePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAcmeResourceModel) RefreshFromSharedAcmePlugin(ctx context.Context, resp *shared.AcmePlugin) diag.Diagnostics {

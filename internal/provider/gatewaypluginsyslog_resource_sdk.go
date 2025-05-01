@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.SyslogPlugin {
+func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin(ctx context.Context) (*shared.SyslogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 	if r.Ordering != nil {
 		var after *shared.SyslogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 		}
 		var before *shared.SyslogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -132,7 +135,7 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 			ID: id1,
 		}
 	}
-	var protocols []shared.SyslogPluginProtocols = []shared.SyslogPluginProtocols{}
+	protocols := make([]shared.SyslogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.SyslogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -174,7 +177,88 @@ func (r *GatewayPluginSyslogResourceModel) ToSharedSyslogPlugin() *shared.Syslog
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSyslogResourceModel) ToOperationsCreateSyslogPluginRequest(ctx context.Context) (*operations.CreateSyslogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	syslogPlugin, syslogPluginDiags := r.ToSharedSyslogPlugin(ctx)
+	diags.Append(syslogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateSyslogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		SyslogPlugin:   *syslogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSyslogResourceModel) ToOperationsUpdateSyslogPluginRequest(ctx context.Context) (*operations.UpdateSyslogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	syslogPlugin, syslogPluginDiags := r.ToSharedSyslogPlugin(ctx)
+	diags.Append(syslogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateSyslogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		SyslogPlugin:   *syslogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSyslogResourceModel) ToOperationsGetSyslogPluginRequest(ctx context.Context) (*operations.GetSyslogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetSyslogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginSyslogResourceModel) ToOperationsDeleteSyslogPluginRequest(ctx context.Context) (*operations.DeleteSyslogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteSyslogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginSyslogResourceModel) RefreshFromSharedSyslogPlugin(ctx context.Context, resp *shared.SyslogPlugin) diag.Diagnostics {

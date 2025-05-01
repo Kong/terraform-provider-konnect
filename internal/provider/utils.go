@@ -6,14 +6,12 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/textproto"
-	"reflect"
 	"strings"
 
 	"github.com/hashicorp/go-uuid"
@@ -45,19 +43,6 @@ func debugResponse(response *http.Response) string {
 		}
 	}
 	return fmt.Sprintf("**Request**:\n%s\n**Response**:\n%s", string(dumpReq), string(dumpRes))
-}
-
-func reflectJSONKey(data any, key string) reflect.Value {
-	jsonIfied, err := json.Marshal(data)
-	if err != nil {
-		panic(fmt.Errorf("failed to marshal data: %w", err))
-	}
-	var jsonMap map[string]interface{}
-	err = json.Unmarshal(jsonIfied, &jsonMap)
-	if err != nil {
-		panic(fmt.Errorf("failed to unmarshal data: %w", err))
-	}
-	return reflect.ValueOf(jsonMap[key])
 }
 
 func merge(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse, target interface{}) {

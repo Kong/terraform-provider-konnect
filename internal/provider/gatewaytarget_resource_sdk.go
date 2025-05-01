@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.TargetWithoutParents {
+func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents(ctx context.Context) (*shared.TargetWithoutParents, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(float64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueFloat64()
@@ -23,7 +26,7 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 	} else {
 		id = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -66,7 +69,75 @@ func (r *GatewayTargetResourceModel) ToSharedTargetWithoutParents() *shared.Targ
 		Upstream:  upstream,
 		Weight:    weight,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsCreateTargetWithUpstreamRequest(ctx context.Context) (*operations.CreateTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	targetWithoutParents, targetWithoutParentsDiags := r.ToSharedTargetWithoutParents(ctx)
+	diags.Append(targetWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateTargetWithUpstreamRequest{
+		ControlPlaneID:       controlPlaneID,
+		UpstreamID:           upstreamID,
+		TargetWithoutParents: *targetWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsGetTargetWithUpstreamRequest(ctx context.Context) (*operations.GetTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	var targetID string
+	targetID = r.ID.ValueString()
+
+	out := operations.GetTargetWithUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayTargetResourceModel) ToOperationsDeleteTargetWithUpstreamRequest(ctx context.Context) (*operations.DeleteTargetWithUpstreamRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var upstreamID string
+	upstreamID = r.UpstreamID.ValueString()
+
+	var targetID string
+	targetID = r.ID.ValueString()
+
+	out := operations.DeleteTargetWithUpstreamRequest{
+		ControlPlaneID: controlPlaneID,
+		UpstreamID:     upstreamID,
+		TargetID:       targetID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayTargetResourceModel) RefreshFromSharedTarget(ctx context.Context, resp *shared.Target) diag.Diagnostics {

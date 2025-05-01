@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.AwsLambdaPlugin {
+func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin(ctx context.Context) (*shared.AwsLambdaPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.
 	if r.Ordering != nil {
 		var after *shared.AwsLambdaPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.
 		}
 		var before *shared.AwsLambdaPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -278,7 +281,7 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.
 			ID: id1,
 		}
 	}
-	var protocols []shared.AwsLambdaPluginProtocols = []shared.AwsLambdaPluginProtocols{}
+	protocols := make([]shared.AwsLambdaPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AwsLambdaPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -320,7 +323,88 @@ func (r *GatewayPluginAwsLambdaResourceModel) ToSharedAwsLambdaPlugin() *shared.
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsCreateAwslambdaPluginRequest(ctx context.Context) (*operations.CreateAwslambdaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
+	diags.Append(awsLambdaPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAwslambdaPluginRequest{
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: *awsLambdaPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsUpdateAwslambdaPluginRequest(ctx context.Context) (*operations.UpdateAwslambdaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	awsLambdaPlugin, awsLambdaPluginDiags := r.ToSharedAwsLambdaPlugin(ctx)
+	diags.Append(awsLambdaPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAwslambdaPluginRequest{
+		PluginID:        pluginID,
+		ControlPlaneID:  controlPlaneID,
+		AwsLambdaPlugin: *awsLambdaPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsGetAwslambdaPluginRequest(ctx context.Context) (*operations.GetAwslambdaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAwslambdaPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAwsLambdaResourceModel) ToOperationsDeleteAwslambdaPluginRequest(ctx context.Context) (*operations.DeleteAwslambdaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAwslambdaPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAwsLambdaResourceModel) RefreshFromSharedAwsLambdaPlugin(ctx context.Context, resp *shared.AwsLambdaPlugin) diag.Diagnostics {

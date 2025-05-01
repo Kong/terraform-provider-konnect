@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() *shared.RouteByHeaderPlugin {
+func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin(ctx context.Context) (*shared.RouteByHeaderPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 	if r.Ordering != nil {
 		var after *shared.RouteByHeaderPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 		}
 		var before *shared.RouteByHeaderPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -75,7 +78,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 	}
 	var config *shared.RouteByHeaderPluginConfig
 	if r.Config != nil {
-		var rules []shared.RouteByHeaderPluginRules = []shared.RouteByHeaderPluginRules{}
+		rules := make([]shared.RouteByHeaderPluginRules, 0, len(r.Config.Rules))
 		for _, rulesItem := range r.Config.Rules {
 			condition := make(map[string]interface{})
 			for conditionKey, conditionValue := range rulesItem.Condition {
@@ -107,7 +110,7 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 			ID: id1,
 		}
 	}
-	var protocols []shared.RouteByHeaderPluginProtocols = []shared.RouteByHeaderPluginProtocols{}
+	protocols := make([]shared.RouteByHeaderPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RouteByHeaderPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -149,7 +152,88 @@ func (r *GatewayPluginRouteByHeaderResourceModel) ToSharedRouteByHeaderPlugin() 
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsCreateRoutebyheaderPluginRequest(ctx context.Context) (*operations.CreateRoutebyheaderPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
+	diags.Append(routeByHeaderPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRoutebyheaderPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		RouteByHeaderPlugin: *routeByHeaderPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsUpdateRoutebyheaderPluginRequest(ctx context.Context) (*operations.UpdateRoutebyheaderPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeByHeaderPlugin, routeByHeaderPluginDiags := r.ToSharedRouteByHeaderPlugin(ctx)
+	diags.Append(routeByHeaderPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRoutebyheaderPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		RouteByHeaderPlugin: *routeByHeaderPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsGetRoutebyheaderPluginRequest(ctx context.Context) (*operations.GetRoutebyheaderPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRoutebyheaderPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteByHeaderResourceModel) ToOperationsDeleteRoutebyheaderPluginRequest(ctx context.Context) (*operations.DeleteRoutebyheaderPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRoutebyheaderPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRouteByHeaderResourceModel) RefreshFromSharedRouteByHeaderPlugin(ctx context.Context, resp *shared.RouteByHeaderPlugin) diag.Diagnostics {

@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
+func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin(ctx context.Context) (*shared.OpaPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
 	if r.Ordering != nil {
 		var after *shared.OpaPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
 		}
 		var before *shared.OpaPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -154,7 +157,7 @@ func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
 			SslVerify:                       sslVerify,
 		}
 	}
-	var protocols []shared.OpaPluginProtocols = []shared.OpaPluginProtocols{}
+	protocols := make([]shared.OpaPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.OpaPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -195,7 +198,88 @@ func (r *GatewayPluginOpaResourceModel) ToSharedOpaPlugin() *shared.OpaPlugin {
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOpaResourceModel) ToOperationsCreateOpaPluginRequest(ctx context.Context) (*operations.CreateOpaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
+	diags.Append(opaPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateOpaPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		OpaPlugin:      *opaPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOpaResourceModel) ToOperationsUpdateOpaPluginRequest(ctx context.Context) (*operations.UpdateOpaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	opaPlugin, opaPluginDiags := r.ToSharedOpaPlugin(ctx)
+	diags.Append(opaPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateOpaPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		OpaPlugin:      *opaPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOpaResourceModel) ToOperationsGetOpaPluginRequest(ctx context.Context) (*operations.GetOpaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetOpaPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginOpaResourceModel) ToOperationsDeleteOpaPluginRequest(ctx context.Context) (*operations.DeleteOpaPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteOpaPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginOpaResourceModel) RefreshFromSharedOpaPlugin(ctx context.Context, resp *shared.OpaPlugin) diag.Diagnostics {

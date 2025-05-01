@@ -21,7 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -210,15 +209,13 @@ func (r *GatewayRouteExpressionResource) Create(ctx context.Context, req resourc
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateRouteRouteExpressionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	routeExpression := *data.ToSharedRouteExpression()
-	request := operations.CreateRouteRouteExpressionRequest{
-		ControlPlaneID:  controlPlaneID,
-		RouteExpression: routeExpression,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Routes.CreateRouteRouteExpression(ctx, request)
+	res, err := r.client.Routes.CreateRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -272,17 +269,13 @@ func (r *GatewayRouteExpressionResource) Read(ctx context.Context, req resource.
 		return
 	}
 
-	var routeID string
-	routeID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetRouteRouteExpressionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetRouteRouteExpressionRequest{
-		RouteID:        routeID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Routes.GetRouteRouteExpression(ctx, request)
+	res, err := r.client.Routes.GetRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -330,19 +323,13 @@ func (r *GatewayRouteExpressionResource) Update(ctx context.Context, req resourc
 		return
 	}
 
-	var routeID string
-	routeID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpsertRouteRouteExpressionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	routeExpression := *data.ToSharedRouteExpression()
-	request := operations.UpsertRouteRouteExpressionRequest{
-		RouteID:         routeID,
-		ControlPlaneID:  controlPlaneID,
-		RouteExpression: routeExpression,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Routes.UpsertRouteRouteExpression(ctx, request)
+	res, err := r.client.Routes.UpsertRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -396,17 +383,13 @@ func (r *GatewayRouteExpressionResource) Delete(ctx context.Context, req resourc
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteRouteRouteExpressionRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var routeID string
-	routeID = data.ID.ValueString()
-
-	request := operations.DeleteRouteRouteExpressionRequest{
-		ControlPlaneID: controlPlaneID,
-		RouteID:        routeID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Routes.DeleteRouteRouteExpression(ctx, request)
+	res, err := r.client.Routes.DeleteRouteRouteExpression(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

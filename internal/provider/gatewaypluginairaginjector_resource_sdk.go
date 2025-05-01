@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() *shared.AiRagInjectorPlugin {
+func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin(ctx context.Context) (*shared.AiRagInjectorPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 	if r.Ordering != nil {
 		var after *shared.AiRagInjectorPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 		}
 		var before *shared.AiRagInjectorPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -456,7 +459,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 				} else {
 					clusterMaxRedirections = nil
 				}
-				var clusterNodes []shared.AiRagInjectorPluginClusterNodes = []shared.AiRagInjectorPluginClusterNodes{}
+				clusterNodes := make([]shared.AiRagInjectorPluginClusterNodes, 0, len(r.Config.Vectordb.Redis.ClusterNodes))
 				for _, clusterNodesItem := range r.Config.Vectordb.Redis.ClusterNodes {
 					ip := new(string)
 					if !clusterNodesItem.IP.IsUnknown() && !clusterNodesItem.IP.IsNull() {
@@ -541,7 +544,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 				} else {
 					sentinelMaster = nil
 				}
-				var sentinelNodes []shared.AiRagInjectorPluginSentinelNodes = []shared.AiRagInjectorPluginSentinelNodes{}
+				sentinelNodes := make([]shared.AiRagInjectorPluginSentinelNodes, 0, len(r.Config.Vectordb.Redis.SentinelNodes))
 				for _, sentinelNodesItem := range r.Config.Vectordb.Redis.SentinelNodes {
 					host2 := new(string)
 					if !sentinelNodesItem.Host.IsUnknown() && !sentinelNodesItem.Host.IsNull() {
@@ -680,7 +683,7 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 			ID: id2,
 		}
 	}
-	var protocols []shared.AiRagInjectorPluginProtocols = []shared.AiRagInjectorPluginProtocols{}
+	protocols := make([]shared.AiRagInjectorPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.AiRagInjectorPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -723,7 +726,88 @@ func (r *GatewayPluginAiRagInjectorResourceModel) ToSharedAiRagInjectorPlugin() 
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsCreateAiraginjectorPluginRequest(ctx context.Context) (*operations.CreateAiraginjectorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
+	diags.Append(aiRagInjectorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateAiraginjectorPluginRequest{
+		ControlPlaneID:      controlPlaneID,
+		AiRagInjectorPlugin: *aiRagInjectorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsUpdateAiraginjectorPluginRequest(ctx context.Context) (*operations.UpdateAiraginjectorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	aiRagInjectorPlugin, aiRagInjectorPluginDiags := r.ToSharedAiRagInjectorPlugin(ctx)
+	diags.Append(aiRagInjectorPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAiraginjectorPluginRequest{
+		PluginID:            pluginID,
+		ControlPlaneID:      controlPlaneID,
+		AiRagInjectorPlugin: *aiRagInjectorPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsGetAiraginjectorPluginRequest(ctx context.Context) (*operations.GetAiraginjectorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetAiraginjectorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginAiRagInjectorResourceModel) ToOperationsDeleteAiraginjectorPluginRequest(ctx context.Context) (*operations.DeleteAiraginjectorPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteAiraginjectorPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginAiRagInjectorResourceModel) RefreshFromSharedAiRagInjectorPlugin(ctx context.Context, resp *shared.AiRagInjectorPlugin) diag.Diagnostics {

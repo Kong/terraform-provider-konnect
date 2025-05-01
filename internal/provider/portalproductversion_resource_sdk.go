@@ -8,12 +8,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload() *shared.ReplacePortalProductVersionPayload {
+func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionPayload(ctx context.Context) (*shared.ReplacePortalProductVersionPayload, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	publishStatus := shared.PortalProductVersionPublishStatus(r.PublishStatus.ValueString())
-	var authStrategyIds []string = []string{}
+	authStrategyIds := make([]string, 0, len(r.AuthStrategyIds))
 	for _, authStrategyIdsItem := range r.AuthStrategyIds {
 		authStrategyIds = append(authStrategyIds, authStrategyIdsItem.ValueString())
 	}
@@ -40,7 +43,67 @@ func (r *PortalProductVersionResourceModel) ToSharedReplacePortalProductVersionP
 		Deprecated:                     deprecated,
 		NotifyDevelopers:               notifyDevelopers,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsReplacePortalProductVersionRequest(ctx context.Context) (*operations.ReplacePortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	replacePortalProductVersionPayload, replacePortalProductVersionPayloadDiags := r.ToSharedReplacePortalProductVersionPayload(ctx)
+	diags.Append(replacePortalProductVersionPayloadDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.ReplacePortalProductVersionRequest{
+		ProductVersionID:                   productVersionID,
+		PortalID:                           portalID,
+		ReplacePortalProductVersionPayload: *replacePortalProductVersionPayload,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsGetPortalProductVersionRequest(ctx context.Context) (*operations.GetPortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.GetPortalProductVersionRequest{
+		ProductVersionID: productVersionID,
+		PortalID:         portalID,
+	}
+
+	return &out, diags
+}
+
+func (r *PortalProductVersionResourceModel) ToOperationsDeletePortalProductVersionRequest(ctx context.Context) (*operations.DeletePortalProductVersionRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var productVersionID string
+	productVersionID = r.ProductVersionID.ValueString()
+
+	var portalID string
+	portalID = r.PortalID.ValueString()
+
+	out := operations.DeletePortalProductVersionRequest{
+		ProductVersionID: productVersionID,
+		PortalID:         portalID,
+	}
+
+	return &out, diags
 }
 
 func (r *PortalProductVersionResourceModel) RefreshFromSharedPortalProductVersion(ctx context.Context, resp *shared.PortalProductVersion) diag.Diagnostics {

@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -170,8 +169,13 @@ func (r *APIProductResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	request := *data.ToSharedCreateAPIProductDTO()
-	res, err := r.client.APIProducts.CreateAPIProduct(ctx, request)
+	request, requestDiags := data.ToSharedCreateAPIProductDTO(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
+	res, err := r.client.APIProducts.CreateAPIProduct(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -225,13 +229,13 @@ func (r *APIProductResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetAPIProductRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetAPIProductRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProducts.GetAPIProduct(ctx, request)
+	res, err := r.client.APIProducts.GetAPIProduct(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -279,15 +283,13 @@ func (r *APIProductResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateAPIProductRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateAPIProductDTO := *data.ToSharedUpdateAPIProductDTO()
-	request := operations.UpdateAPIProductRequest{
-		ID:                  id,
-		UpdateAPIProductDTO: updateAPIProductDTO,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProducts.UpdateAPIProduct(ctx, request)
+	res, err := r.client.APIProducts.UpdateAPIProduct(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -341,13 +343,13 @@ func (r *APIProductResource) Delete(ctx context.Context, req resource.DeleteRequ
 		return
 	}
 
-	var id string
-	id = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteAPIProductRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteAPIProductRequest{
-		ID: id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProducts.DeleteAPIProduct(ctx, request)
+	res, err := r.client.APIProducts.DeleteAPIProduct(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

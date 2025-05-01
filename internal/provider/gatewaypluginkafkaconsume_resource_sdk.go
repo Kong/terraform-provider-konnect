@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *shared.KafkaConsumePlugin {
+func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin(ctx context.Context) (*shared.KafkaConsumePlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 	if r.Ordering != nil {
 		var after *shared.KafkaConsumePluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 		}
 		var before *shared.KafkaConsumePluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -120,7 +123,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 		} else {
 			autoOffsetReset = nil
 		}
-		var bootstrapServers []shared.KafkaConsumePluginBootstrapServers = []shared.KafkaConsumePluginBootstrapServers{}
+		bootstrapServers := make([]shared.KafkaConsumePluginBootstrapServers, 0, len(r.Config.BootstrapServers))
 		for _, bootstrapServersItem := range r.Config.BootstrapServers {
 			var host string
 			host = bootstrapServersItem.Host.ValueString()
@@ -176,7 +179,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 				Ssl:           ssl,
 			}
 		}
-		var topics []shared.KafkaConsumePluginTopics = []shared.KafkaConsumePluginTopics{}
+		topics := make([]shared.KafkaConsumePluginTopics, 0, len(r.Config.Topics))
 		for _, topicsItem := range r.Config.Topics {
 			var name string
 			name = topicsItem.Name.ValueString()
@@ -209,7 +212,7 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 			ID: id1,
 		}
 	}
-	var protocols []shared.KafkaConsumePluginProtocols = []shared.KafkaConsumePluginProtocols{}
+	protocols := make([]shared.KafkaConsumePluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KafkaConsumePluginProtocols(protocolsItem.ValueString()))
 	}
@@ -251,7 +254,88 @@ func (r *GatewayPluginKafkaConsumeResourceModel) ToSharedKafkaConsumePlugin() *s
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsCreateKafkaconsumePluginRequest(ctx context.Context) (*operations.CreateKafkaconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaConsumePlugin, kafkaConsumePluginDiags := r.ToSharedKafkaConsumePlugin(ctx)
+	diags.Append(kafkaConsumePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKafkaconsumePluginRequest{
+		ControlPlaneID:     controlPlaneID,
+		KafkaConsumePlugin: *kafkaConsumePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsUpdateKafkaconsumePluginRequest(ctx context.Context) (*operations.UpdateKafkaconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaConsumePlugin, kafkaConsumePluginDiags := r.ToSharedKafkaConsumePlugin(ctx)
+	diags.Append(kafkaConsumePluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateKafkaconsumePluginRequest{
+		PluginID:           pluginID,
+		ControlPlaneID:     controlPlaneID,
+		KafkaConsumePlugin: *kafkaConsumePlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsGetKafkaconsumePluginRequest(ctx context.Context) (*operations.GetKafkaconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKafkaconsumePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaConsumeResourceModel) ToOperationsDeleteKafkaconsumePluginRequest(ctx context.Context) (*operations.DeleteKafkaconsumePluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteKafkaconsumePluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginKafkaConsumeResourceModel) RefreshFromSharedKafkaConsumePlugin(ctx context.Context, resp *shared.KafkaConsumePlugin) diag.Diagnostics {

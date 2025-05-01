@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *shared.CreateNetworkRequest {
+func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest(ctx context.Context) (*shared.CreateNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var name string
 	name = r.Name.ValueString()
 
@@ -20,7 +23,7 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 	var region string
 	region = r.Region.ValueString()
 
-	var availabilityZones []string = []string{}
+	availabilityZones := make([]string, 0, len(r.AvailabilityZones))
 	for _, availabilityZonesItem := range r.AvailabilityZones {
 		availabilityZones = append(availabilityZones, availabilityZonesItem.ValueString())
 	}
@@ -34,7 +37,71 @@ func (r *CloudGatewayNetworkResourceModel) ToSharedCreateNetworkRequest() *share
 		AvailabilityZones:             availabilityZones,
 		CidrBlock:                     cidrBlock,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToSharedPatchNetworkRequest(ctx context.Context) (*shared.PatchNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	out := shared.PatchNetworkRequest{
+		Name: name,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsUpdateNetworkRequest(ctx context.Context) (*operations.UpdateNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	patchNetworkRequest, patchNetworkRequestDiags := r.ToSharedPatchNetworkRequest(ctx)
+	diags.Append(patchNetworkRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateNetworkRequest{
+		NetworkID:           networkID,
+		PatchNetworkRequest: *patchNetworkRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsGetNetworkRequest(ctx context.Context) (*operations.GetNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	out := operations.GetNetworkRequest{
+		NetworkID: networkID,
+	}
+
+	return &out, diags
+}
+
+func (r *CloudGatewayNetworkResourceModel) ToOperationsDeleteNetworkRequest(ctx context.Context) (*operations.DeleteNetworkRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var networkID string
+	networkID = r.ID.ValueString()
+
+	out := operations.DeleteNetworkRequest{
+		NetworkID: networkID,
+	}
+
+	return &out, diags
 }
 
 func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.Context, resp *shared.Network) diag.Diagnostics {
@@ -64,17 +131,4 @@ func (r *CloudGatewayNetworkResourceModel) RefreshFromSharedNetwork(ctx context.
 	}
 
 	return diags
-}
-
-func (r *CloudGatewayNetworkResourceModel) ToSharedPatchNetworkRequest() *shared.PatchNetworkRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	out := shared.PatchNetworkRequest{
-		Name: name,
-	}
-	return &out
 }

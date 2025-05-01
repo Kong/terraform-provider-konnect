@@ -20,7 +20,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	speakeasy_stringvalidators "github.com/kong/terraform-provider-konnect/v2/internal/validators/stringvalidators"
 )
 
@@ -326,15 +325,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Create(ctx context.Context, re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateWebsocketvalidatorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	websocketValidatorPlugin := *data.ToSharedWebsocketValidatorPlugin()
-	request := operations.CreateWebsocketvalidatorPluginRequest{
-		ControlPlaneID:           controlPlaneID,
-		WebsocketValidatorPlugin: websocketValidatorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateWebsocketvalidatorPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -388,17 +385,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Read(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetWebsocketvalidatorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetWebsocketvalidatorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetWebsocketvalidatorPlugin(ctx, request)
+	res, err := r.client.Plugins.GetWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -446,19 +439,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Update(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateWebsocketvalidatorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	websocketValidatorPlugin := *data.ToSharedWebsocketValidatorPlugin()
-	request := operations.UpdateWebsocketvalidatorPluginRequest{
-		PluginID:                 pluginID,
-		ControlPlaneID:           controlPlaneID,
-		WebsocketValidatorPlugin: websocketValidatorPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateWebsocketvalidatorPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -512,17 +499,13 @@ func (r *GatewayPluginWebsocketValidatorResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteWebsocketvalidatorPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteWebsocketvalidatorPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteWebsocketvalidatorPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteWebsocketvalidatorPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

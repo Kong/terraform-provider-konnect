@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	speakeasy_stringplanmodifier "github.com/kong/terraform-provider-konnect/v2/internal/planmodifiers/stringplanmodifier"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 )
 
@@ -145,15 +144,13 @@ func (r *SystemAccountAccessTokenResource) Create(ctx context.Context, req resou
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsPostSystemAccountsIDAccessTokensRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	createSystemAccountAccessToken := data.ToSharedCreateSystemAccountAccessToken()
-	request := operations.PostSystemAccountsIDAccessTokensRequest{
-		AccountID:                      accountID,
-		CreateSystemAccountAccessToken: createSystemAccountAccessToken,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsAccessTokens.PostSystemAccountsIDAccessTokens(ctx, request)
+	res, err := r.client.SystemAccountsAccessTokens.PostSystemAccountsIDAccessTokens(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -184,17 +181,13 @@ func (r *SystemAccountAccessTokenResource) Create(ctx context.Context, req resou
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var accountId1 string
-	accountId1 = data.AccountID.ValueString()
+	request1, request1Diags := data.ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx)
+	resp.Diagnostics.Append(request1Diags...)
 
-	var tokenID string
-	tokenID = data.ID.ValueString()
-
-	request1 := operations.GetSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountId1,
-		TokenID:   tokenID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res1, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, request1)
+	res1, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, *request1)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res1 != nil && res1.RawResponse != nil {
@@ -248,17 +241,13 @@ func (r *SystemAccountAccessTokenResource) Read(ctx context.Context, req resourc
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsGetSystemAccountsIDAccessTokensIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var tokenID string
-	tokenID = data.ID.ValueString()
-
-	request := operations.GetSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountID,
-		TokenID:   tokenID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, request)
+	res, err := r.client.SystemAccountsAccessTokens.GetSystemAccountsIDAccessTokensID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -306,19 +295,13 @@ func (r *SystemAccountAccessTokenResource) Update(ctx context.Context, req resou
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsPatchSystemAccountsIDAccessTokensIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var tokenID string
-	tokenID = data.ID.ValueString()
-
-	updateSystemAccountAccessToken := data.ToSharedUpdateSystemAccountAccessToken()
-	request := operations.PatchSystemAccountsIDAccessTokensIDRequest{
-		AccountID:                      accountID,
-		TokenID:                        tokenID,
-		UpdateSystemAccountAccessToken: updateSystemAccountAccessToken,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsAccessTokens.PatchSystemAccountsIDAccessTokensID(ctx, request)
+	res, err := r.client.SystemAccountsAccessTokens.PatchSystemAccountsIDAccessTokensID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -372,17 +355,13 @@ func (r *SystemAccountAccessTokenResource) Delete(ctx context.Context, req resou
 		return
 	}
 
-	var accountID string
-	accountID = data.AccountID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteSystemAccountsIDAccessTokensIDRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var tokenID string
-	tokenID = data.ID.ValueString()
-
-	request := operations.DeleteSystemAccountsIDAccessTokensIDRequest{
-		AccountID: accountID,
-		TokenID:   tokenID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.SystemAccountsAccessTokens.DeleteSystemAccountsIDAccessTokensID(ctx, request)
+	res, err := r.client.SystemAccountsAccessTokens.DeleteSystemAccountsIDAccessTokensID(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

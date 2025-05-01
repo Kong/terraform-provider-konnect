@@ -11,7 +11,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -129,17 +128,13 @@ func (r *APIProductDocumentDataSource) Read(ctx context.Context, req datasource.
 		return
 	}
 
-	var apiProductID string
-	apiProductID = data.APIProductID.ValueString()
+	request, requestDiags := data.ToOperationsGetAPIProductDocumentRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var id string
-	id = data.ID.ValueString()
-
-	request := operations.GetAPIProductDocumentRequest{
-		APIProductID: apiProductID,
-		ID:           id,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.APIProductDocumentation.GetAPIProductDocument(ctx, request)
+	res, err := r.client.APIProductDocumentation.GetAPIProductDocument(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -149,10 +144,6 @@ func (r *APIProductDocumentDataSource) Read(ctx context.Context, req datasource.
 	}
 	if res == nil {
 		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
 		return
 	}
 	if res.StatusCode != 200 {

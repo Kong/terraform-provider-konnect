@@ -18,7 +18,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
@@ -234,15 +233,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Create(ctx context.Context, re
 		return
 	}
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
+	request, requestDiags := data.ToOperationsCreateTlsmetadataheadersPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	tlsMetadataHeadersPlugin := *data.ToSharedTLSMetadataHeadersPlugin()
-	request := operations.CreateTlsmetadataheadersPluginRequest{
-		ControlPlaneID:           controlPlaneID,
-		TLSMetadataHeadersPlugin: tlsMetadataHeadersPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.CreateTlsmetadataheadersPlugin(ctx, request)
+	res, err := r.client.Plugins.CreateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -296,17 +293,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Read(ctx context.Context, req 
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetTlsmetadataheadersPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.GetTlsmetadataheadersPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.GetTlsmetadataheadersPlugin(ctx, request)
+	res, err := r.client.Plugins.GetTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -354,19 +347,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Update(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateTlsmetadataheadersPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	tlsMetadataHeadersPlugin := *data.ToSharedTLSMetadataHeadersPlugin()
-	request := operations.UpdateTlsmetadataheadersPluginRequest{
-		PluginID:                 pluginID,
-		ControlPlaneID:           controlPlaneID,
-		TLSMetadataHeadersPlugin: tlsMetadataHeadersPlugin,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.UpdateTlsmetadataheadersPlugin(ctx, request)
+	res, err := r.client.Plugins.UpdateTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -420,17 +407,13 @@ func (r *GatewayPluginTLSMetadataHeadersResource) Delete(ctx context.Context, re
 		return
 	}
 
-	var pluginID string
-	pluginID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTlsmetadataheadersPluginRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	var controlPlaneID string
-	controlPlaneID = data.ControlPlaneID.ValueString()
-
-	request := operations.DeleteTlsmetadataheadersPluginRequest{
-		PluginID:       pluginID,
-		ControlPlaneID: controlPlaneID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Plugins.DeleteTlsmetadataheadersPlugin(ctx, request)
+	res, err := r.client.Plugins.DeleteTlsmetadataheadersPlugin(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

@@ -8,10 +8,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.KafkaLogPlugin {
+func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin(ctx context.Context) (*shared.KafkaLogPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -40,7 +43,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 	if r.Ordering != nil {
 		var after *shared.KafkaLogPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -50,7 +53,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 		}
 		var before *shared.KafkaLogPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -63,7 +66,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -115,7 +118,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 				User:      user,
 			}
 		}
-		var bootstrapServers []shared.KafkaLogPluginBootstrapServers = []shared.KafkaLogPluginBootstrapServers{}
+		bootstrapServers := make([]shared.KafkaLogPluginBootstrapServers, 0, len(r.Config.BootstrapServers))
 		for _, bootstrapServersItem := range r.Config.BootstrapServers {
 			var host string
 			host = bootstrapServersItem.Host.ValueString()
@@ -270,7 +273,7 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 			ID: id1,
 		}
 	}
-	var protocols []shared.KafkaLogPluginProtocols = []shared.KafkaLogPluginProtocols{}
+	protocols := make([]shared.KafkaLogPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.KafkaLogPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -312,7 +315,88 @@ func (r *GatewayPluginKafkaLogResourceModel) ToSharedKafkaLogPlugin() *shared.Ka
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsCreateKafkalogPluginRequest(ctx context.Context) (*operations.CreateKafkalogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
+	diags.Append(kafkaLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateKafkalogPluginRequest{
+		ControlPlaneID: controlPlaneID,
+		KafkaLogPlugin: *kafkaLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsUpdateKafkalogPluginRequest(ctx context.Context) (*operations.UpdateKafkalogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	kafkaLogPlugin, kafkaLogPluginDiags := r.ToSharedKafkaLogPlugin(ctx)
+	diags.Append(kafkaLogPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateKafkalogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+		KafkaLogPlugin: *kafkaLogPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsGetKafkalogPluginRequest(ctx context.Context) (*operations.GetKafkalogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetKafkalogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginKafkaLogResourceModel) ToOperationsDeleteKafkalogPluginRequest(ctx context.Context) (*operations.DeleteKafkalogPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteKafkalogPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginKafkaLogResourceModel) RefreshFromSharedKafkaLogPlugin(ctx context.Context, resp *shared.KafkaLogPlugin) diag.Diagnostics {

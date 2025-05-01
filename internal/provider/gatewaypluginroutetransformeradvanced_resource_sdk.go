@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransformerAdvancedPlugin() *shared.RouteTransformerAdvancedPlugin {
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransformerAdvancedPlugin(ctx context.Context) (*shared.RouteTransformerAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 	if r.Ordering != nil {
 		var after *shared.RouteTransformerAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 		}
 		var before *shared.RouteTransformerAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -117,7 +120,7 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 			ID: id1,
 		}
 	}
-	var protocols []shared.RouteTransformerAdvancedPluginProtocols = []shared.RouteTransformerAdvancedPluginProtocols{}
+	protocols := make([]shared.RouteTransformerAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RouteTransformerAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -159,7 +162,88 @@ func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToSharedRouteTransf
 		Route:        route,
 		Service:      service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsCreateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
+	diags.Append(routeTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRoutetransformeradvancedPluginRequest{
+		ControlPlaneID:                 controlPlaneID,
+		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsUpdateRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	routeTransformerAdvancedPlugin, routeTransformerAdvancedPluginDiags := r.ToSharedRouteTransformerAdvancedPlugin(ctx)
+	diags.Append(routeTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRoutetransformeradvancedPluginRequest{
+		PluginID:                       pluginID,
+		ControlPlaneID:                 controlPlaneID,
+		RouteTransformerAdvancedPlugin: *routeTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsGetRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRoutetransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRouteTransformerAdvancedResourceModel) ToOperationsDeleteRoutetransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRoutetransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRoutetransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRouteTransformerAdvancedResourceModel) RefreshFromSharedRouteTransformerAdvancedPlugin(ctx context.Context, resp *shared.RouteTransformerAdvancedPlugin) diag.Diagnostics {

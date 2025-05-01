@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk"
-	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/validators"
 	"regexp"
 )
@@ -138,7 +137,12 @@ func (r *TeamResource) Create(ctx context.Context, req resource.CreateRequest, r
 		return
 	}
 
-	request := data.ToSharedCreateTeam()
+	request, requestDiags := data.ToSharedCreateTeam(ctx)
+	resp.Diagnostics.Append(requestDiags...)
+
+	if resp.Diagnostics.HasError() {
+		return
+	}
 	res, err := r.client.Teams.CreateTeam(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -193,13 +197,13 @@ func (r *TeamResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsGetTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.GetTeamRequest{
-		TeamID: teamID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Teams.GetTeam(ctx, request)
+	res, err := r.client.Teams.GetTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -247,15 +251,13 @@ func (r *TeamResource) Update(ctx context.Context, req resource.UpdateRequest, r
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsUpdateTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	updateTeam := data.ToSharedUpdateTeam()
-	request := operations.UpdateTeamRequest{
-		TeamID:     teamID,
-		UpdateTeam: updateTeam,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Teams.UpdateTeam(ctx, request)
+	res, err := r.client.Teams.UpdateTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {
@@ -309,13 +311,13 @@ func (r *TeamResource) Delete(ctx context.Context, req resource.DeleteRequest, r
 		return
 	}
 
-	var teamID string
-	teamID = data.ID.ValueString()
+	request, requestDiags := data.ToOperationsDeleteTeamRequest(ctx)
+	resp.Diagnostics.Append(requestDiags...)
 
-	request := operations.DeleteTeamRequest{
-		TeamID: teamID,
+	if resp.Diagnostics.HasError() {
+		return
 	}
-	res, err := r.client.Teams.DeleteTeam(ctx, request)
+	res, err := r.client.Teams.DeleteTeam(ctx, *request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
 		if res != nil && res.RawResponse != nil {

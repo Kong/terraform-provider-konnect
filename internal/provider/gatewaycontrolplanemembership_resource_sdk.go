@@ -3,11 +3,16 @@
 package provider
 
 import (
+	"context"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership() *shared.GroupMembership {
-	var members []shared.Members = []shared.Members{}
+func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership(ctx context.Context) (*shared.GroupMembership, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	members := make([]shared.Members, 0, len(r.Members))
 	for _, membersItem := range r.Members {
 		var id string
 		id = membersItem.ID.ValueString()
@@ -19,5 +24,48 @@ func (r *GatewayControlPlaneMembershipResourceModel) ToSharedGroupMembership() *
 	out := shared.GroupMembership{
 		Members: members,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneMembershipResourceModel) ToOperationsPostControlPlanesIDGroupMembershipsAddRequest(ctx context.Context) (*operations.PostControlPlanesIDGroupMembershipsAddRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	groupMembership, groupMembershipDiags := r.ToSharedGroupMembership(ctx)
+	diags.Append(groupMembershipDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostControlPlanesIDGroupMembershipsAddRequest{
+		ID:              id,
+		GroupMembership: groupMembership,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayControlPlaneMembershipResourceModel) ToOperationsPostControlPlanesIDGroupMembershipsRemoveRequest(ctx context.Context) (*operations.PostControlPlanesIDGroupMembershipsRemoveRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var id string
+	id = r.ID.ValueString()
+
+	groupMembership, groupMembershipDiags := r.ToSharedGroupMembership(ctx)
+	diags.Append(groupMembershipDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.PostControlPlanesIDGroupMembershipsRemoveRequest{
+		ID:              id,
+		GroupMembership: groupMembership,
+	}
+
+	return &out, diags
 }

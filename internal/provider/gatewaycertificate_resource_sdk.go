@@ -6,10 +6,13 @@ import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayCertificateResourceModel) ToSharedCertificate() *shared.Certificate {
+func (r *GatewayCertificateResourceModel) ToSharedCertificate(ctx context.Context) (*shared.Certificate, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var cert string
 	cert = r.Cert.ValueString()
 
@@ -40,11 +43,14 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificate() *shared.Certific
 	} else {
 		keyAlt = nil
 	}
-	var snis []string = []string{}
-	for _, snisItem := range r.Snis {
-		snis = append(snis, snisItem.ValueString())
+	var snis []string
+	if r.Snis != nil {
+		snis = make([]string, 0, len(r.Snis))
+		for _, snisItem := range r.Snis {
+			snis = append(snis, snisItem.ValueString())
+		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -65,7 +71,88 @@ func (r *GatewayCertificateResourceModel) ToSharedCertificate() *shared.Certific
 		Tags:      tags,
 		UpdatedAt: updatedAt,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayCertificateResourceModel) ToOperationsCreateCertificateRequest(ctx context.Context) (*operations.CreateCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	certificate, certificateDiags := r.ToSharedCertificate(ctx)
+	diags.Append(certificateDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateCertificateRequest{
+		ControlPlaneID: controlPlaneID,
+		Certificate:    *certificate,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCertificateResourceModel) ToOperationsUpsertCertificateRequest(ctx context.Context) (*operations.UpsertCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	certificate, certificateDiags := r.ToSharedCertificate(ctx)
+	diags.Append(certificateDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpsertCertificateRequest{
+		CertificateID:  certificateID,
+		ControlPlaneID: controlPlaneID,
+		Certificate:    *certificate,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCertificateResourceModel) ToOperationsGetCertificateRequest(ctx context.Context) (*operations.GetCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetCertificateRequest{
+		CertificateID:  certificateID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayCertificateResourceModel) ToOperationsDeleteCertificateRequest(ctx context.Context) (*operations.DeleteCertificateRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var certificateID string
+	certificateID = r.ID.ValueString()
+
+	out := operations.DeleteCertificateRequest{
+		ControlPlaneID: controlPlaneID,
+		CertificateID:  certificateID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayCertificateResourceModel) RefreshFromSharedCertificate(ctx context.Context, resp *shared.Certificate) diag.Diagnostics {

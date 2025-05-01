@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTransformerAdvancedPlugin() *shared.RequestTransformerAdvancedPlugin {
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTransformerAdvancedPlugin(ctx context.Context) (*shared.RequestTransformerAdvancedPlugin, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	createdAt := new(int64)
 	if !r.CreatedAt.IsUnknown() && !r.CreatedAt.IsNull() {
 		*createdAt = r.CreatedAt.ValueInt64()
@@ -39,7 +42,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 	if r.Ordering != nil {
 		var after *shared.RequestTransformerAdvancedPluginAfter
 		if r.Ordering.After != nil {
-			var access []string = []string{}
+			access := make([]string, 0, len(r.Ordering.After.Access))
 			for _, accessItem := range r.Ordering.After.Access {
 				access = append(access, accessItem.ValueString())
 			}
@@ -49,7 +52,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var before *shared.RequestTransformerAdvancedPluginBefore
 		if r.Ordering.Before != nil {
-			var access1 []string = []string{}
+			access1 := make([]string, 0, len(r.Ordering.Before.Access))
 			for _, accessItem1 := range r.Ordering.Before.Access {
 				access1 = append(access1, accessItem1.ValueString())
 			}
@@ -62,7 +65,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 			Before: before,
 		}
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -76,19 +79,19 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 	if r.Config != nil {
 		var add *shared.RequestTransformerAdvancedPluginAdd
 		if r.Config.Add != nil {
-			var body []string = []string{}
+			body := make([]string, 0, len(r.Config.Add.Body))
 			for _, bodyItem := range r.Config.Add.Body {
 				body = append(body, bodyItem.ValueString())
 			}
-			var headers []string = []string{}
+			headers := make([]string, 0, len(r.Config.Add.Headers))
 			for _, headersItem := range r.Config.Add.Headers {
 				headers = append(headers, headersItem.ValueString())
 			}
-			var jsonTypes []shared.JSONTypes = []shared.JSONTypes{}
+			jsonTypes := make([]shared.JSONTypes, 0, len(r.Config.Add.JSONTypes))
 			for _, jsonTypesItem := range r.Config.Add.JSONTypes {
 				jsonTypes = append(jsonTypes, shared.JSONTypes(jsonTypesItem.ValueString()))
 			}
-			var querystring []string = []string{}
+			querystring := make([]string, 0, len(r.Config.Add.Querystring))
 			for _, querystringItem := range r.Config.Add.Querystring {
 				querystring = append(querystring, querystringItem.ValueString())
 			}
@@ -101,7 +104,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var allow *shared.Allow
 		if r.Config.Allow != nil {
-			var body1 []string = []string{}
+			body1 := make([]string, 0, len(r.Config.Allow.Body))
 			for _, bodyItem1 := range r.Config.Allow.Body {
 				body1 = append(body1, bodyItem1.ValueString())
 			}
@@ -111,19 +114,19 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var append1 *shared.RequestTransformerAdvancedPluginAppend
 		if r.Config.Append != nil {
-			var body2 []string = []string{}
+			body2 := make([]string, 0, len(r.Config.Append.Body))
 			for _, bodyItem2 := range r.Config.Append.Body {
 				body2 = append(body2, bodyItem2.ValueString())
 			}
-			var headers1 []string = []string{}
+			headers1 := make([]string, 0, len(r.Config.Append.Headers))
 			for _, headersItem1 := range r.Config.Append.Headers {
 				headers1 = append(headers1, headersItem1.ValueString())
 			}
-			var jsonTypes1 []shared.RequestTransformerAdvancedPluginJSONTypes = []shared.RequestTransformerAdvancedPluginJSONTypes{}
+			jsonTypes1 := make([]shared.RequestTransformerAdvancedPluginJSONTypes, 0, len(r.Config.Append.JSONTypes))
 			for _, jsonTypesItem1 := range r.Config.Append.JSONTypes {
 				jsonTypes1 = append(jsonTypes1, shared.RequestTransformerAdvancedPluginJSONTypes(jsonTypesItem1.ValueString()))
 			}
-			var querystring1 []string = []string{}
+			querystring1 := make([]string, 0, len(r.Config.Append.Querystring))
 			for _, querystringItem1 := range r.Config.Append.Querystring {
 				querystring1 = append(querystring1, querystringItem1.ValueString())
 			}
@@ -148,15 +151,15 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var remove *shared.RequestTransformerAdvancedPluginRemove
 		if r.Config.Remove != nil {
-			var body3 []string = []string{}
+			body3 := make([]string, 0, len(r.Config.Remove.Body))
 			for _, bodyItem3 := range r.Config.Remove.Body {
 				body3 = append(body3, bodyItem3.ValueString())
 			}
-			var headers2 []string = []string{}
+			headers2 := make([]string, 0, len(r.Config.Remove.Headers))
 			for _, headersItem2 := range r.Config.Remove.Headers {
 				headers2 = append(headers2, headersItem2.ValueString())
 			}
-			var querystring2 []string = []string{}
+			querystring2 := make([]string, 0, len(r.Config.Remove.Querystring))
 			for _, querystringItem2 := range r.Config.Remove.Querystring {
 				querystring2 = append(querystring2, querystringItem2.ValueString())
 			}
@@ -168,15 +171,15 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var rename *shared.RequestTransformerAdvancedPluginRename
 		if r.Config.Rename != nil {
-			var body4 []string = []string{}
+			body4 := make([]string, 0, len(r.Config.Rename.Body))
 			for _, bodyItem4 := range r.Config.Rename.Body {
 				body4 = append(body4, bodyItem4.ValueString())
 			}
-			var headers3 []string = []string{}
+			headers3 := make([]string, 0, len(r.Config.Rename.Headers))
 			for _, headersItem3 := range r.Config.Rename.Headers {
 				headers3 = append(headers3, headersItem3.ValueString())
 			}
-			var querystring3 []string = []string{}
+			querystring3 := make([]string, 0, len(r.Config.Rename.Querystring))
 			for _, querystringItem3 := range r.Config.Rename.Querystring {
 				querystring3 = append(querystring3, querystringItem3.ValueString())
 			}
@@ -188,19 +191,19 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		}
 		var replace *shared.RequestTransformerAdvancedPluginReplace
 		if r.Config.Replace != nil {
-			var body5 []string = []string{}
+			body5 := make([]string, 0, len(r.Config.Replace.Body))
 			for _, bodyItem5 := range r.Config.Replace.Body {
 				body5 = append(body5, bodyItem5.ValueString())
 			}
-			var headers4 []string = []string{}
+			headers4 := make([]string, 0, len(r.Config.Replace.Headers))
 			for _, headersItem4 := range r.Config.Replace.Headers {
 				headers4 = append(headers4, headersItem4.ValueString())
 			}
-			var jsonTypes2 []shared.RequestTransformerAdvancedPluginConfigJSONTypes = []shared.RequestTransformerAdvancedPluginConfigJSONTypes{}
+			jsonTypes2 := make([]shared.RequestTransformerAdvancedPluginConfigJSONTypes, 0, len(r.Config.Replace.JSONTypes))
 			for _, jsonTypesItem2 := range r.Config.Replace.JSONTypes {
 				jsonTypes2 = append(jsonTypes2, shared.RequestTransformerAdvancedPluginConfigJSONTypes(jsonTypesItem2.ValueString()))
 			}
-			var querystring4 []string = []string{}
+			querystring4 := make([]string, 0, len(r.Config.Replace.Querystring))
 			for _, querystringItem4 := range r.Config.Replace.Querystring {
 				querystring4 = append(querystring4, querystringItem4.ValueString())
 			}
@@ -253,7 +256,7 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 			ID: id2,
 		}
 	}
-	var protocols []shared.RequestTransformerAdvancedPluginProtocols = []shared.RequestTransformerAdvancedPluginProtocols{}
+	protocols := make([]shared.RequestTransformerAdvancedPluginProtocols, 0, len(r.Protocols))
 	for _, protocolsItem := range r.Protocols {
 		protocols = append(protocols, shared.RequestTransformerAdvancedPluginProtocols(protocolsItem.ValueString()))
 	}
@@ -296,7 +299,88 @@ func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToSharedRequestTr
 		Route:         route,
 		Service:       service,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsCreateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.CreateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
+	diags.Append(requestTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateRequesttransformeradvancedPluginRequest{
+		ControlPlaneID:                   controlPlaneID,
+		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsUpdateRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.UpdateRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	requestTransformerAdvancedPlugin, requestTransformerAdvancedPluginDiags := r.ToSharedRequestTransformerAdvancedPlugin(ctx)
+	diags.Append(requestTransformerAdvancedPluginDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateRequesttransformeradvancedPluginRequest{
+		PluginID:                         pluginID,
+		ControlPlaneID:                   controlPlaneID,
+		RequestTransformerAdvancedPlugin: *requestTransformerAdvancedPlugin,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsGetRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.GetRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequesttransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayPluginRequestTransformerAdvancedResourceModel) ToOperationsDeleteRequesttransformeradvancedPluginRequest(ctx context.Context) (*operations.DeleteRequesttransformeradvancedPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.DeleteRequesttransformeradvancedPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayPluginRequestTransformerAdvancedResourceModel) RefreshFromSharedRequestTransformerAdvancedPlugin(ctx context.Context, resp *shared.RequestTransformerAdvancedPlugin) diag.Diagnostics {

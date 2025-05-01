@@ -7,10 +7,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.HMACAuthWithoutParents {
+func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents(ctx context.Context) (*shared.HMACAuthWithoutParents, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var consumer *shared.HMACAuthWithoutParentsConsumer
 	if r.Consumer != nil {
 		id := new(string)
@@ -41,7 +44,7 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 	} else {
 		secret = nil
 	}
-	var tags []string = []string{}
+	tags := make([]string, 0, len(r.Tags))
 	for _, tagsItem := range r.Tags {
 		tags = append(tags, tagsItem.ValueString())
 	}
@@ -56,7 +59,75 @@ func (r *GatewayHMACAuthResourceModel) ToSharedHMACAuthWithoutParents() *shared.
 		Tags:      tags,
 		Username:  username,
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *GatewayHMACAuthResourceModel) ToOperationsCreateHmacAuthWithConsumerRequest(ctx context.Context) (*operations.CreateHmacAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	hmacAuthWithoutParents, hmacAuthWithoutParentsDiags := r.ToSharedHMACAuthWithoutParents(ctx)
+	diags.Append(hmacAuthWithoutParentsDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.CreateHmacAuthWithConsumerRequest{
+		ControlPlaneID:         controlPlaneID,
+		ConsumerID:             consumerID,
+		HMACAuthWithoutParents: *hmacAuthWithoutParents,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayHMACAuthResourceModel) ToOperationsGetHmacAuthWithConsumerRequest(ctx context.Context) (*operations.GetHmacAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var hmacAuthID string
+	hmacAuthID = r.ID.ValueString()
+
+	out := operations.GetHmacAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		HMACAuthID:     hmacAuthID,
+	}
+
+	return &out, diags
+}
+
+func (r *GatewayHMACAuthResourceModel) ToOperationsDeleteHmacAuthWithConsumerRequest(ctx context.Context) (*operations.DeleteHmacAuthWithConsumerRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	var consumerID string
+	consumerID = r.ConsumerID.ValueString()
+
+	var hmacAuthID string
+	hmacAuthID = r.ID.ValueString()
+
+	out := operations.DeleteHmacAuthWithConsumerRequest{
+		ControlPlaneID: controlPlaneID,
+		ConsumerID:     consumerID,
+		HMACAuthID:     hmacAuthID,
+	}
+
+	return &out, diags
 }
 
 func (r *GatewayHMACAuthResourceModel) RefreshFromSharedHMACAuth(ctx context.Context, resp *shared.HMACAuth) diag.Diagnostics {

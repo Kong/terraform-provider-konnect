@@ -9,10 +9,13 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/kong/terraform-provider-konnect/v2/internal/provider/typeconvert"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
 
-func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequest() *shared.CreateAppAuthStrategyRequest {
+func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequest(ctx context.Context) (*shared.CreateAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
 	var out shared.CreateAppAuthStrategyRequest
 	var appAuthStrategyKeyAuthRequest *shared.AppAuthStrategyKeyAuthRequest
 	if r.KeyAuth != nil {
@@ -23,7 +26,7 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		displayName = r.KeyAuth.DisplayName.ValueString()
 
 		strategyType := shared.StrategyType(r.KeyAuth.StrategyType.ValueString())
-		var keyNames []string = []string{}
+		keyNames := make([]string, 0, len(r.KeyAuth.Configs.KeyAuth.KeyNames))
 		for _, keyNamesItem := range r.KeyAuth.Configs.KeyAuth.KeyNames {
 			keyNames = append(keyNames, keyNamesItem.ValueString())
 		}
@@ -68,15 +71,15 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 		var issuer string
 		issuer = r.OpenidConnect.Configs.OpenidConnect.Issuer.ValueString()
 
-		var credentialClaim []string = []string{}
+		credentialClaim := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.CredentialClaim))
 		for _, credentialClaimItem := range r.OpenidConnect.Configs.OpenidConnect.CredentialClaim {
 			credentialClaim = append(credentialClaim, credentialClaimItem.ValueString())
 		}
-		var scopes []string = []string{}
+		scopes := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.Scopes))
 		for _, scopesItem := range r.OpenidConnect.Configs.OpenidConnect.Scopes {
 			scopes = append(scopes, scopesItem.ValueString())
 		}
-		var authMethods []string = []string{}
+		authMethods := make([]string, 0, len(r.OpenidConnect.Configs.OpenidConnect.AuthMethods))
 		for _, authMethodsItem := range r.OpenidConnect.Configs.OpenidConnect.AuthMethods {
 			authMethods = append(authMethods, authMethodsItem.ValueString())
 		}
@@ -135,14 +138,84 @@ func (r *ApplicationAuthStrategyResourceModel) ToSharedCreateAppAuthStrategyRequ
 			AppAuthStrategyOpenIDConnectRequest: appAuthStrategyOpenIDConnectRequest,
 		}
 	}
-	return &out
+
+	return &out, diags
+}
+
+func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest(ctx context.Context) (*shared.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+	displayName := new(string)
+	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
+		*displayName = r.DisplayName.ValueString()
+	} else {
+		displayName = nil
+	}
+	out := shared.UpdateAppAuthStrategyRequest{
+		Name:        name,
+		DisplayName: displayName,
+	}
+
+	return &out, diags
+}
+
+func (r *ApplicationAuthStrategyResourceModel) ToOperationsUpdateAppAuthStrategyRequest(ctx context.Context) (*operations.UpdateAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authStrategyID string
+	authStrategyID = r.ID.ValueString()
+
+	updateAppAuthStrategyRequest, updateAppAuthStrategyRequestDiags := r.ToSharedUpdateAppAuthStrategyRequest(ctx)
+	diags.Append(updateAppAuthStrategyRequestDiags...)
+
+	if diags.HasError() {
+		return nil, diags
+	}
+
+	out := operations.UpdateAppAuthStrategyRequest{
+		AuthStrategyID:               authStrategyID,
+		UpdateAppAuthStrategyRequest: *updateAppAuthStrategyRequest,
+	}
+
+	return &out, diags
+}
+
+func (r *ApplicationAuthStrategyResourceModel) ToOperationsGetAppAuthStrategyRequest(ctx context.Context) (*operations.GetAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authStrategyID string
+	authStrategyID = r.ID.ValueString()
+
+	out := operations.GetAppAuthStrategyRequest{
+		AuthStrategyID: authStrategyID,
+	}
+
+	return &out, diags
+}
+
+func (r *ApplicationAuthStrategyResourceModel) ToOperationsDeleteAppAuthStrategyRequest(ctx context.Context) (*operations.DeleteAppAuthStrategyRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var authStrategyID string
+	authStrategyID = r.ID.ValueString()
+
+	out := operations.DeleteAppAuthStrategyRequest{
+		AuthStrategyID: authStrategyID,
+	}
+
+	return &out, diags
 }
 
 func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStrategyResponse(ctx context.Context, resp *shared.CreateAppAuthStrategyResponse) diag.Diagnostics {
 	var diags diag.Diagnostics
 
-	if resp == nil {
-	} else {
+	if resp != nil {
 		if resp.AppAuthStrategyKeyAuthResponse != nil {
 			r.KeyAuth = &tfTypes.AppAuthStrategyKeyAuthRequest{}
 			r.KeyAuth.Active = types.BoolValue(resp.AppAuthStrategyKeyAuthResponse.Active)
@@ -233,24 +306,4 @@ func (r *ApplicationAuthStrategyResourceModel) RefreshFromSharedCreateAppAuthStr
 	}
 
 	return diags
-}
-
-func (r *ApplicationAuthStrategyResourceModel) ToSharedUpdateAppAuthStrategyRequest() *shared.UpdateAppAuthStrategyRequest {
-	name := new(string)
-	if !r.Name.IsUnknown() && !r.Name.IsNull() {
-		*name = r.Name.ValueString()
-	} else {
-		name = nil
-	}
-	displayName := new(string)
-	if !r.DisplayName.IsUnknown() && !r.DisplayName.IsNull() {
-		*displayName = r.DisplayName.ValueString()
-	} else {
-		displayName = nil
-	}
-	out := shared.UpdateAppAuthStrategyRequest{
-		Name:        name,
-		DisplayName: displayName,
-	}
-	return &out
 }

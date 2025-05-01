@@ -7,8 +7,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	tfTypes "github.com/kong/terraform-provider-konnect/v2/internal/provider/types"
+	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/operations"
 	"github.com/kong/terraform-provider-konnect/v2/internal/sdk/models/shared"
 )
+
+func (r *GatewayPluginRequestSizeLimitingDataSourceModel) ToOperationsGetRequestsizelimitingPluginRequest(ctx context.Context) (*operations.GetRequestsizelimitingPluginRequest, diag.Diagnostics) {
+	var diags diag.Diagnostics
+
+	var pluginID string
+	pluginID = r.ID.ValueString()
+
+	var controlPlaneID string
+	controlPlaneID = r.ControlPlaneID.ValueString()
+
+	out := operations.GetRequestsizelimitingPluginRequest{
+		PluginID:       pluginID,
+		ControlPlaneID: controlPlaneID,
+	}
+
+	return &out, diags
+}
 
 func (r *GatewayPluginRequestSizeLimitingDataSourceModel) RefreshFromSharedRequestSizeLimitingPlugin(ctx context.Context, resp *shared.RequestSizeLimitingPlugin) diag.Diagnostics {
 	var diags diag.Diagnostics
