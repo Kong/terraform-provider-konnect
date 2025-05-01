@@ -22382,7 +22382,6 @@ components:
             path:
               description: The file path of the output log file. The plugin creates the log file if it doesn't exist yet.
               type: string
-              pattern: '^[^[\t\n\v\f\r ]*&%%\`][^*&%%\`]*[^[\t\n\v\f\r ]*&%%\`]$'
             reopen:
               description: Determines whether the log file is closed and reopened on every request.
               type: boolean
